@@ -39,21 +39,33 @@ instanceArray.forEach((instance) => {
 	(err) => {
 		if (typeof err.response === 'undefined') {
 			useAlert().openAlert({ type: 'ERROR', msg: 'kindly check your network connection' })
-			return 'ERROR'
+			return {
+				type: 'ERROR',
+				...err.response
+			}
 		}
 		if (err.response.status === 401) {
 			useAlert().openAlert({ type: 'ERROR', msg: 'Unauthorised ERROR' })
-			return 'ERROR'
+			return {
+				type: 'ERROR',
+				...err.response
+			}
 		} else if (statusCodeStartsWith(err.response.status, 4)) {
 			if (err.response.data.message) {
 				useAlert().openAlert({ type: 'ERROR', msg: err.response.data.message })
 			} else {
 				useAlert().openAlert({ type: 'ERROR', msg: err.response.data.error })
 			}
-			return 'ERROR'
+			return {
+				type: 'ERROR',
+				...err.response
+			}
 		} else if (err.response.status === 500) {
 			useAlert().openAlert({ type: 'ERROR', msg: err.response.data.message })
-			return 'ERROR'
+			return {
+				type: 'ERROR',
+				...err.response
+			}
 		} else if (err.response.status === 409) {
 			useAlert().openAlert({ type: 'ERROR', msg: err.response.data.message })
 		}
