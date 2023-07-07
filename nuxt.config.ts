@@ -21,7 +21,7 @@ export default {
 		'@': './src'
 	},
 
-	css: ['/src/assets/css/main.css'],
+	css: ['/src/assets/styles/main.css'],
 	components: [
 		'@/components',
 		{ path: '@/components/core', extensions: ['vue'] }
