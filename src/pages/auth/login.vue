@@ -1,8 +1,9 @@
 <template>
 	<main class="flex center w-full min-h-screen  px-4">
 		<section class="flex flex-col w-full max-w-[405px] mx-auto gap-4 center-col">
-			<div class="flex center">
+			<div class="flex  gap-4 items-end">
 				<img src="@/assets/images/core/logo.svg" alt="logo" class="w-60">
+				<span class="bg-dark text-light text-[10px] p-1 rounded-full px-2">Admin</span>
 			</div>
 			<p class="text-lg text-center font-medium">
 				Log in to your account

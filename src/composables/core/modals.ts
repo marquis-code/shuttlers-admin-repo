@@ -1,7 +1,6 @@
-// import { ref } from 'vue'
-// import { useModal } from './modal'
-// import Logout from '@/components/modals/settings/logout.vue'
-// import ChangePassword from '@/components/modals/settings/ChangePassword.vue'
+import { ref } from 'vue'
+import { useModal } from './modal'
+import ChangePassword from '@/components/modals/test.vue'
 // import FundWallet from '@/components/modals/wallet/FundWallet.vue'
 // import SuggestRoute from '@/components/modals/settings/suggestRoute.vue'
 // import CharterRequest from '@/components/modals/dashboard/CharterRequest.vue'
@@ -22,7 +21,7 @@
 // import PaymentMethod from '@/components/modals/events/PaymentMethod.vue'
 // import ImageCropper from '@/components/modals/dashboard/ImageCropper.vue'
 
-// type AuthTypes = 'Logout' | 'ChangePassword'
+type AuthTypes = 'ChangePassword'
 // type BookingTypes = 'CancelSubscription' | 'BookAgain' | 'GuestBooking'
 // type WalletTypes = 'FundWallet' | 'SelectPayment' | 'ViewDetails' | 'SelectPaymentDiscover'
 // type DashboardTypes = 'CharterRequest' | 'SuggestRoute' | 'CreateEventSuccess' | 'ModifyEvent' | 'ModifyEventSuccess' | 'ImageCropper'
@@ -30,7 +29,7 @@
 // type CoreTypes = 'SocialShare'
 // type EventTypes = 'JoinWaitlist' | 'BookingInfo' | 'PaymentMethod'
 
-// const AuthModals = { Logout, ChangePassword } as Record<AuthTypes, any>
+const AuthModals = { ChangePassword } as Record<AuthTypes, any>
 // const BookingModals = { CancelSubscription, BookAgain, GuestBooking } as Record<BookingTypes, any>
 // const WalletModals = { FundWallet, SelectPayment, ViewDetails, SelectPaymentDiscover } as Record<WalletTypes, any>
 // const DashboardModals = { CharterRequest, SuggestRoute, CreateEventSuccess, ModifyEvent, ModifyEventSuccess, ImageCropper } as Record<DashboardTypes, any>
@@ -38,9 +37,9 @@
 // const CoreModals = { SocialShare } as Record<CoreTypes, any>
 // const EventModals = { JoinWaitlist, BookingInfo, PaymentMethod } as Record<EventTypes, any>
 
-// export const modal = useModal(ref([] as any))
+export const modal = useModal(ref([] as any))
 
-// const authModal = modal.register('Auth', AuthModals)
+const authModal = modal.register('Auth', AuthModals)
 // const bookingModal = modal.register('Booking', BookingModals)
 // const walletModal = modal.register('Wallet', WalletModals)
 // const dashboardModal = modal.register('Dashboard', DashboardModals)
@@ -48,7 +47,7 @@
 // const coreModal = modal.register('Core', CoreModals)
 // const eventModal = modal.register('Event', EventModals)
 
-// export const useAuthModal = () => authModal
+export const useAuthModal = () => authModal
 // export const useBookingModal = () => bookingModal
 // export const useWalletModal = () => walletModal
 // export const useDashboardModal = () => dashboardModal

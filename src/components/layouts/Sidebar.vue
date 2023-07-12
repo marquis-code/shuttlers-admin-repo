@@ -35,7 +35,6 @@ const SidebarData = {
     }
   ]
 }
-console.log(SidebarData)
 </script>
 
 <style scoped>

@@ -60,7 +60,7 @@ const BG = computed({
 		get: () => {
 			switch (type.value) {
 				case 'ERROR':
-					return 'bg-red-500'
+					return 'bg-red'
 				case 'SUCCESS':
 					return 'bg-green-700'
 				default:
@@ -73,7 +73,7 @@ const TEXT = computed({
 	get: () => {
 		switch (type.value) {
 			case 'ERROR':
-				return 'text-red-500'
+				return 'text-red'
 			case 'SUCCESS':
 				return 'text-green-700'
 			default:

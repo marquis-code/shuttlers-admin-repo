@@ -3,15 +3,14 @@
 		custom
 		:to="menu.routePath?{path: menu.routePath}:{path: menu.rootPath}">
 		<template #default="{isActive, href}">
-			<li class="nav-menu" :class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
+			<li class="nav-menu transite" :class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
 				<template v-if="hasSubMenus(menu)">
 					<div class="nav-title" @click="toggleMenuOpenedState(menu)">
-						<span class="d-flex align-items-center">
-							<component :is="menu.icon" class="img" />
-							<span>{{ menu.title }}</span>
+						<span class="flex items-center">
+							<component :is="menu.iconComponent" class="img" />
+							<span class="text-sm">{{ menu.title }}</span>
 						</span>
-						<i v-if="menu.isOpen" class="float-right fe fe-chevron-up" />
-						<i v-else class="float-right fe fe-chevron-down" />
+						<component :is="downIcon" class="float-right ml-auto w-4 transite" :class="[menu.isOpen ? 'rotate-180' : '']" />
 					</div>
 					<ul class="nav-submenus">
 						<nuxt-link
@@ -33,13 +32,11 @@
 				<template v-else>
 					<a :href="href">
 						<div class="nav-title">
-							<span class="d-flex align-items-center">
-								<inline-svg
-									v-if="menu.iconPath"
-									class="img"
-									:src="menu.iconPath" />
-								<i v-else class="img fe" :class="menu.feIcon" />
-								<span>{{ menu.title }}</span>
+							<span class="flex items-center">
+								<component
+									:is="menu.iconComponent"
+									class="img" />
+								<span class="text-sm">{{ menu.title }}</span>
 							</span>
 						</div>
 					</a>
@@ -50,6 +47,8 @@
 </template>
 
 <script setup>
+import downIcon from '@/assets/icons/src/down.vue'
+
 const props = defineProps({
   menu: {
     type: Object,
@@ -62,9 +61,9 @@ const props = defineProps({
 })
 const currentRoute = ref(props.route)
 
-watch(props.route, (value) => {
-  currentRoute.value = value
-})
+// watch(props.route, (value) => {
+//   currentRoute.value = value
+// })
 const toggleMenuOpenedState = (menu) => {
   menu.isOpen = !menu?.isOpen
 }

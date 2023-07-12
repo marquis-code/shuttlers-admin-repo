@@ -1,7 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap'); */
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("./fonts/cerebrisans/cerebrisans-regular.eot");
+  src: url("./fonts/cerebrisans/cerebrisans-regular.eot?#iefix") format("embedded-opentype"), url("./fonts/cerebrisans/cerebrisans-regular.woff") format("woff"), url("./fonts/cerebrisans/cerebrisans-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("./fonts/cerebrisans/cerebrisans-medium.eot");
+  src: url("./fonts/cerebrisans/cerebrisans-medium.eot?#iefix") format("embedded-opentype"), url("./fonts/cerebrisans/cerebrisans-medium.woff") format("woff"), url("./fonts/cerebrisans/cerebrisans-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Cerebri Sans";
+  src: url("./fonts/cerebrisans/cerebrisans-semibold.eot");
+  src: url("./fonts/cerebrisans/cerebrisans-semibold.eot?#iefix") format("embedded-opentype"), url("./fonts/cerebrisans/cerebrisans-semibold.woff") format("woff"), url("./fonts/cerebrisans/cerebrisans-semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
 
 * {
-    font-family: 'Heebo', sans-serif;
+    font-family:"Cerebri Sans", sans-serif;
 }
 
 html,

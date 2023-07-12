@@ -19,13 +19,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="sidebar-footer d-none d-md-block">
+		<div class="sidebar-footer hidden md:block">
 			<div v-if="currentUser" id="sidebarUser" class="user-box">
 				<div class="avatar avatar-sm w-auto">
 					<router-link class="flex items-center" to="/profile" title="View your profile">
 						<div class="w-10 h-10 flex-1 ">
-							<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-circle">
-							<div v-else class="avatar-title rounded-full">
+							<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-full">
+							<div v-else class="avatar-title rounded-full w-10 h-10">
 								{{ getInitials(currentUser.fname, currentUser.lname) }}
 							</div>
 						</div>
@@ -34,7 +34,7 @@
 					</router-link>
 				</div>
 				<span class="icon" title="Logout" @click="signOutFunction()">
-					<i class="fe fe-log-out" />
+					<component :is="logoutIcon" class="img" />
 				</span>
 			</div>
 		</div>
@@ -44,6 +44,7 @@
 <script setup>
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
+import logoutIcon from '@/assets/icons/src/logoutIcon.vue'
 
 const getInitials = (string1, string2) => {
     const initials = string1[0] + string2[0]
@@ -68,15 +69,10 @@ const props = defineProps({
         required: true
     }
 })
-watch(
-    props.route,
-    (value) => {
-        resetMenus()
-    },
-    { deep: true }
-)
-
-console.log('data', props.data)
+// watch(
+//     props.route,
+//     (value) => {resetMenus()}
+// )
 
 const pathContainsRoot = (rootPath) => {
     if (rootPath === '/users') {
@@ -116,6 +112,25 @@ $sh-gray-3: #444854;
 $sidebar-width: 14rem;
 $content-area-width: calc(100vw - 14rem);
 
+.avatar {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1rem;
+}
+
+.avatar-sm {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 0.8333333333rem;
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
 .avatar-title {
     display: flex;
     align-items: center;

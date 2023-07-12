@@ -2,7 +2,6 @@
 	// https://v3.nuxtjs.org/concepts/typescript
 	"compilerOptions": {
 		"noImplicitAny": false,
-		"types": ["vite-plugin-pwa/client"]
 	},
 	"extends": "./.nuxt/tsconfig.json"
 }

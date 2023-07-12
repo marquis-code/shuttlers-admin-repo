@@ -1,22 +1,30 @@
-
-// const isProductionEnv = process.env.VUE_APP_API_URL === 'https://api.shuttlers.africa' || process.env.VUE_APP_API_URL === 'https://api.shuttlers.ng'
+import homeIcon from '@/assets/icons/src/home.vue'
+import routeIcon from '@/assets/icons/src/compass.vue'
+import corporateIcon from '@/assets/icons/src/companies.vue'
+import userIcon from '@/assets/icons/src/users.vue'
+import partnerIcon from '@/assets/icons/src/vehicle_partner.vue'
+import eventIcon from '@/assets/icons/src/fleet management.vue'
+import transactionIcon from '@/assets/icons/src/payment.vue'
+import charterIcon from '@/assets/icons/src/charter.vue'
+import tagIcon from '@/assets/icons/src/tag.vue'
+import adminIcon from '@/assets/icons/src/admin.vue'
+import configureIcon from '@/assets/icons/src/configure.vue'
 
 export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Dashboard',
     routePath: '/dashboard',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/home.svg'),
+    iconComponent: shallowRef(homeIcon),
     children: null,
     modulePermission: ['ROUTES', 'CORPORATES', 'USERS', 'TRIPS', 'PARTNERS', 'DRIVERS', 'EVENTS', 'TRANSACTIONS', 'VEHICLES', 'REFERRALS', 'PROMOTIONS', 'ADMINCONFIG', 'STAFF']
   },
   {
     title: 'Route Search',
-    routePath: 'route-searches.review',
+    routePath: '/route-searches',
     description: '',
-    iconPath: null,
+    iconComponent: shallowRef(routeIcon),
     rootPath: '/route-searches',
-    feIcon: 'fe-compass',
     children: null,
     modulePermission: 'ROUTES'
   }
@@ -27,18 +35,18 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Corporates',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/companies.svg'),
+    iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
     modulePermission: 'CORPORATES',
     children: [
       {
         title: 'Insights',
-        routePath: 'CompanyInsights',
+        routePath: '/companies',
         description: 'Insights into company requests'
       },
       {
         title: 'Companies',
-        routePath: 'Companies',
+        routePath: '/companies',
         description: '',
         excludedPaths: ['/companies/insights']
       }
@@ -48,67 +56,66 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Users',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/users.svg'),
+    iconComponent: shallowRef(userIcon),
     rootPath: '/users',
     modulePermission: 'USERS',
     children: [
       {
         title: 'Insights',
-        routePath: 'UsersInsight',
+        routePath: '/users',
         description: 'Insights into company requests'
       },
       {
         title: 'Manage Users',
-        routePath: 'Users',
+        routePath: '/users',
         description: '',
         excludedPaths: ['/users/insights']
       },
       {
         title: ' Batch Bookings',
-        routePath: 'ListBatchBookings',
+        routePath: '/users',
         description: ''
       }
     ]
   },
-
   {
     title: 'Commute',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/charter.svg'),
-    rootPath: '/routes',
+    iconComponent: shallowRef(charterIcon),
+    rootPath: '/trips',
     modulePermission: ['TRIPS', 'ROUTES', 'CHARTER'],
     children: [
       {
         title: 'Trips',
-        routePath: 'Trips',
+        routePath: '/trips',
         description: 'Insights into company requests',
         excludedPaths: ['/trips/track-vehicle']
       },
       {
         title: 'Track Vehicle',
-        routePath: 'NewTrackVehicle',
+        routePath: '/trips',
         description: ''
       },
       {
         title: 'Routes',
-        routePath: 'RoutesList',
+        routePath: '/trips',
         description: 'All routes',
         excludedPaths: ['/routes/suggested-routes']
       },
       {
         title: 'Suggested routes',
-        routePath: 'SuggestedRoutes',
+        routePath: '/trips',
         description: ''
       },
       {
         title: 'Waitlist',
-        routePath: 'WaitList',
+        routePath: '/trips',
         description: ''
       },
       {
         title: 'Charter',
-        routePath: 'ChartersList',
+        routePath: '/trips',
         description: 'Handle shuttlers charter requests'
       }
     ]
@@ -117,91 +124,87 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Vehicle Partners',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/vehicle_partner.svg'),
+    iconComponent: shallowRef(partnerIcon),
     rootPath: '/partners',
     modulePermission: 'PARTNERS',
     children: [
       {
         title: 'Partners List',
-        routePath: 'PartnersList',
+        routePath: '/partners',
         description: 'Vechiles Partners List'
       },
       {
         title: 'Payout',
-        routePath: 'Payout',
+        routePath: '/partners',
         description: 'Vechiles Partners payout'
       }
     ]
   },
   {
     title: 'Drivers',
-    routePath: 'DriversList',
+    routePath: '/drivers',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/users.svg'),
+    iconComponent: shallowRef(userIcon),
     children: null,
-
     modulePermission: 'DRIVERS'
   },
   {
     title: 'Events',
-    routePath: 'EventList',
+    routePath: '/events',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/fleet management.svg'),
+    iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
     children: null,
     modulePermission: 'EVENTS'
   },
   {
     title: 'Transactions',
-    routePath: 'transactions.index',
+    routePath: '/transactions',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/payment.svg'),
+    iconComponent: shallowRef(transactionIcon),
     children: null,
     modulePermission: 'TRANSACTIONS'
   },
   {
     title: 'Fleet',
-    routePath: 'Fleet',
+    routePath: '/fleet',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/charter.svg'),
+    iconComponent: shallowRef(charterIcon),
     children: null,
     modulePermission: 'VEHICLES'
   },
   {
     title: 'Referral Codes',
-    routePath: 'ListReferralCodes',
+    routePath: '/referral',
     description: '',
-    iconPath: null,
-    feIcon: 'fe-tag',
+    iconComponent: shallowRef(tagIcon),
     children: null,
     modulePermission: 'PROMOTIONS'
   },
   {
     title: 'Promo Codes',
-    routePath: 'ListPromoCode',
+    routePath: '/promotion',
     description: '',
-    iconPath: null,
-    feIcon: 'fe-tag',
+    iconComponent: shallowRef(tagIcon),
     modulePermission: 'PROMOTIONS',
     children: null
   },
-
   {
     title: 'Campaigns',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/vehicle_partner.svg'),
-    rootPath: '/games&campaigns',
+    iconComponent: shallowRef(partnerIcon),
+    rootPath: '/campaigns',
     modulePermission: 'CAMPAIGNS',
     children: [
       {
         title: 'Valentine',
-        routePath: 'ValentineCampaignList',
+        routePath: 'campaigns',
         description: 'Valentine management'
       },
       {
         title: 'CMS Banners',
-        routePath: 'BannerConfig',
+        routePath: 'campaigns',
         description: 'CMS promotional banner',
         excludedPaths: ['/games&campaigns/valentine']
       }
@@ -212,9 +215,9 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
 export const ADMIN_SIDEBAR_MENUS = [
   {
     title: 'Admins',
-    routePath: 'StaffList',
+    routePath: '/admin',
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/admin.svg'),
+    iconComponent: shallowRef(adminIcon),
     children: null,
     rootPath: '/admin',
     modulePermission: 'STAFF',
@@ -224,28 +227,28 @@ export const ADMIN_SIDEBAR_MENUS = [
     title: 'Configure',
     routePath: null,
     description: '',
-    // iconPath: require('@/assets/img/icons/sidebar/configure.svg'),
+    iconComponent: shallowRef(configureIcon),
     rootPath: '/configuration',
     modulePermission: 'ADMINCONFIG',
     children: [
       {
         title: 'Trip Rating Settings',
-        routePath: 'TripRatingSettings',
+        routePath: '/configuration',
         description: 'Configure and manage trip rating parameters'
       },
       {
         title: 'Vehicle Categories',
-        routePath: 'VehicleCategoryManagement',
+        routePath: '/configuration',
         description: 'Manage vehicle categories'
       },
       {
         title: 'Amenities',
-        routePath: 'VehicleAmenitiesSettings',
+        routePath: '/configuration',
         description: 'Manage vehicle amenities'
       },
       {
         title: 'Route Price Control',
-        routePath: 'PricingControls',
+        routePath: '/configuration',
         description: 'Manage route pricing centrally'
       }
     ]
