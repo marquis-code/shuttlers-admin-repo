@@ -55,17 +55,13 @@ module.exports = {
 		'no-return-assign': 'off',
 		'vue/multi-word-component-names': 'off',
 		curly: 'off',
-		'vue/html-indent': [
-			'off',
-			'tab',
-			{
-				attribute: 1,
-				baseIndent: 1,
-				closeBracket: 0,
-				alignAttributesVertically: true,
-				ignores: []
-			}
-		],
+		'vue/html-indent': ['error', 'tab', {
+			attribute: 1,
+			baseIndent: 1,
+			closeBracket: 0,
+			alignAttributesVertically: true,
+			ignores: []
+		}],
 		'vue/no-mutating-props': 'off',
 		'object-property-newline': 'off',
 		'require-atomic-updates': 'off',

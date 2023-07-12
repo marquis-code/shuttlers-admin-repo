@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITH_AUTH } from './SetupBase'
+import { GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITH_AUTH } from '../axios.config'
 import { useUser } from '@/composables/auth/user'
 
 const { user } = useUser()
@@ -59,6 +59,10 @@ export const auth_api = {
 	$_guess_login: (credential: any) => {
         const url = '/guests'
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, credential)
-    }
+	},
+	$_get_permissions: () => {
+		const url = `/super-admin/staff-module-permissions/staff/${user.value.id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	}
 
 }

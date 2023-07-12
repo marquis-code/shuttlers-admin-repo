@@ -41,7 +41,7 @@ export const use_auth_register = () => {
 		})) as any
 
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			await useUser().createUser(res.data)
 			location.assign('/dashboard')
 		}
@@ -128,7 +128,7 @@ export const use_register_confirm_otp = () => {
 		})) as any
 
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			credential.id.value = res.data.id
 		}
 	}
@@ -140,7 +140,7 @@ export const use_register_confirm_otp = () => {
 			id: credential.id.value
 		})) as any
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			step.value = 3
 		}
 	}
@@ -165,7 +165,7 @@ export const use_verify_phone = () => {
 		})) as any
 
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			if (res.data.exists) {
 				useAlert().openAlert({ type: 'ERROR', msg: 'Phone number already exists' })
 			} else {

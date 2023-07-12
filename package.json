@@ -41,8 +41,10 @@
 		"vite-plugin-eslint": "^1.7.0"
 	},
 	"dependencies": {
+		"@shuttlershq/shuttlers-ui": "^0.0.14",
 		"@vueuse/core": "^10.2.1",
 		"axios": "^1.4.0",
-		"postcss-custom-properties": "^12.1.11"
+		"postcss-custom-properties": "^12.1.11",
+		"vue3-otp-input": "^0.4.1"
 	}
 }

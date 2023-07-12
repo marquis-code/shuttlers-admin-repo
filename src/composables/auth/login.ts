@@ -31,17 +31,19 @@ export const use_auth_login = () => {
 		if (auth_type.value === 'email') {
 			 res = (await auth_api.$_login({
 			email: credential.email.value,
-			password: credential.password.value
+			password: credential.password.value,
+			type: 'staff'
 		})) as any
 		} else {
 			 res = (await auth_api.$_login({
 			...credential.phone.value,
-			password: credential.password.value
+			password: credential.password.value,
+			type: 'staff'
 		})) as any
 		}
 
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			await useUser().createUser(res.data)
 			const redirectUrl = useUser().redirect.value
 			useUser().redirect.value = null
@@ -57,16 +59,18 @@ export const use_auth_login = () => {
 			let res
 		if (auth_type.value === 'email') {
 			 res = (await auth_api.$_otp_login({
-			email: credential.email.value
+				 email: credential.email.value,
+				 type: 'staff'
 		})) as any
 		} else {
 			 res = (await auth_api.$_otp_login({
-			 ...credential.phone.value
+				 ...credential.phone.value,
+				 type: 'staff'
 		})) as any
 		}
 
 		loading.value = false
-		if (res !== 'ERROR') {
+		if (res.type !== 'ERROR') {
 			if (auth_type.value === 'email') Router.push(`/auth/confirm?id=${res.data.reference_id}&type=email&value=${credential.email.value}`)
 			else Router.push(`/auth/confirm?id=${res.data.reference_id}&type=${auth_type.value}&value=${credential.phone.value.phone}&country_code=${credential.phone.value.country_code}`)
 		}

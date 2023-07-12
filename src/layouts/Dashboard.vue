@@ -1,9 +1,15 @@
 <template>
-	<div class="relative overflow-hidden min-h-screen">
+	<div class="container-fluid px-0 root-layout">
 		<NuxtLoadingIndicator />
-		<section class="dashboard-body">
-<slot />
-</section>
+		<LayoutsSidebar />
+
+		<div class="main-content">
+			<div class="dashboard-view">
+				<div class="">
+					<slot />
+				</div>
+			</div>
+		</div>
 
 		<Alert />
 		<ModalBase />
@@ -14,6 +20,31 @@
 
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+$sidebar-width: 14rem;
+$content-area-width: calc(100vw - 14rem);
+.main-content {
+  background-color: var(--grey);
+  min-height: 100vh;
+}
 
+.dashboard-view {
+  position: relative;
+}
+.dashboard-padded {
+  padding-top: 60px !important;
+}
+
+.root-layout {
+  & > .main-content {
+    width: 100%;
+    margin-left: 0;
+    background-color: var(--grey);
+
+    @media screen and (min-width: 768px) {
+      width: $content-area-width;
+      margin-left: $sidebar-width;
+    }
+  }
+}
 </style>

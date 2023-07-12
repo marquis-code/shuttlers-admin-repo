@@ -45,6 +45,10 @@ export default {
 		plugins: [
 			eslintPlugin({ useEslintrc: true })
 		],
+			optimizeDeps: {
+			// exclude: ['@shuttlershq/shuttlers-ui'],
+			// include: ['@shuttlershq/shuttlers-ui']
+		},
 		server: {
 			watch: {
 				usePolling: true

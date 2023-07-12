@@ -32,7 +32,7 @@ export const use_auth_reset_password = () => {
             type: credential.type.value
         })) as any
         loading.value = false
-        if (res !== 'ERROR') {
+        if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Password reset successfully' })
             useRouter().push('/auth/login')
         }
