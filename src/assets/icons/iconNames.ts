@@ -9,5 +9,6 @@ export enum IconNames {
   'eye' = 'eye',
   'info' = 'info',
   'info_2' = 'info_2',
-  'invoice' = 'invoice'
+  'invoice' = 'invoice',
+  'warning' = 'warning'
 }

@@ -1,5 +1,5 @@
 <template>
-	<Sidebar :data="SidebarData" :sign-out-function="logOut" :current-user="user" :route="$route" />
+	<Sidebar :data="SidebarData" :sign-out-function="useAuthModal().openLogout" :current-user="user" :route="$route" />
 </template>
 
 <script setup lang="ts">
@@ -9,7 +9,8 @@ import { useUser } from '@/composables/auth/user'
 import { currentUserPermission } from '@/composables/core/permission'
 import logoIcon from '@/assets/icons/src/logo.vue'
 import menuIcon from '@/assets/icons/src/menu.vue'
-const { user, logOut } = useUser()
+import { useAuthModal } from '@/composables/core/modals'
+const { user } = useUser()
 
 const permissionModules = currentUserPermission.value
 

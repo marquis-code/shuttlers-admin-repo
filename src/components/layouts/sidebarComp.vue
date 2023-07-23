@@ -41,7 +41,7 @@
 	</aside>
 </template>
 
-<script setup>
+<script setup lang='ts'>
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
 import logoutIcon from '@/assets/icons/src/logoutIcon.vue'
@@ -60,7 +60,7 @@ const props = defineProps({
         required: true
     },
     signOutFunction: {
-        type: Function,
+        type: Function as PropType<() => void>,
         required: true
     },
     currentUser: {

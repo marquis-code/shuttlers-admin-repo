@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { useModal } from './modal'
-import ChangePassword from '@/components/modals/test.vue'
+import Logout from '@/components/modals/modules/auth/Logout.vue'
 // import FundWallet from '@/components/modals/wallet/FundWallet.vue'
 // import SuggestRoute from '@/components/modals/settings/suggestRoute.vue'
 // import CharterRequest from '@/components/modals/dashboard/CharterRequest.vue'
@@ -21,7 +21,7 @@ import ChangePassword from '@/components/modals/test.vue'
 // import PaymentMethod from '@/components/modals/events/PaymentMethod.vue'
 // import ImageCropper from '@/components/modals/dashboard/ImageCropper.vue'
 
-type AuthTypes = 'ChangePassword'
+type AuthTypes = 'Logout'
 // type BookingTypes = 'CancelSubscription' | 'BookAgain' | 'GuestBooking'
 // type WalletTypes = 'FundWallet' | 'SelectPayment' | 'ViewDetails' | 'SelectPaymentDiscover'
 // type DashboardTypes = 'CharterRequest' | 'SuggestRoute' | 'CreateEventSuccess' | 'ModifyEvent' | 'ModifyEventSuccess' | 'ImageCropper'
@@ -29,7 +29,7 @@ type AuthTypes = 'ChangePassword'
 // type CoreTypes = 'SocialShare'
 // type EventTypes = 'JoinWaitlist' | 'BookingInfo' | 'PaymentMethod'
 
-const AuthModals = { ChangePassword } as Record<AuthTypes, any>
+const AuthModals = { Logout } as Record<AuthTypes, any>
 // const BookingModals = { CancelSubscription, BookAgain, GuestBooking } as Record<BookingTypes, any>
 // const WalletModals = { FundWallet, SelectPayment, ViewDetails, SelectPaymentDiscover } as Record<WalletTypes, any>
 // const DashboardModals = { CharterRequest, SuggestRoute, CreateEventSuccess, ModifyEvent, ModifyEventSuccess, ImageCropper } as Record<DashboardTypes, any>

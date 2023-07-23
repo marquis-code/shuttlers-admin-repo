@@ -48,7 +48,8 @@ const props = defineProps({
 	},
 	_modal: {
 		type: String,
-		required: true
+		required: false,
+		default: 'modal'
 	},
 	title: {
 		default: 'Default Title',
