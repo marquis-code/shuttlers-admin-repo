@@ -6,6 +6,7 @@
 		<div class="main-content">
 			<div class="dashboard-view">
 				<div class="">
+					<Headers />
 					<slot />
 				</div>
 			</div>

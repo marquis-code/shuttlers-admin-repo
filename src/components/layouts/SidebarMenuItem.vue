@@ -1,6 +1,5 @@
 <template>
-	<router-link
-		custom
+	<nuxt-link
 		:to="menu.routePath?{path: menu.routePath}:{path: menu.rootPath}">
 		<template #default="{isActive, href}">
 			<li class="nav-menu transite" :class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
@@ -43,7 +42,7 @@
 				</template>
 			</li>
 		</template>
-	</router-link>
+	</nuxt-link>
 </template>
 
 <script setup>
@@ -61,9 +60,10 @@ const props = defineProps({
 })
 const currentRoute = ref(props.route)
 
-// watch(props.route, (value) => {
-//   currentRoute.value = value
-// })
+watch(() => props.route, (value) => {
+  currentRoute.value = value
+})
+
 const toggleMenuOpenedState = (menu) => {
   menu.isOpen = !menu?.isOpen
 }

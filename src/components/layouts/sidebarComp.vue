@@ -5,7 +5,7 @@
 				<component :is="data.logoIcon" class="img" />
 			</router-link>
 			<button ref="menuToggle" type="button" class="hidden">
-				<component :is="data.menuIcon" class="img" />
+				<component :is="data.menuIcon" class="img w-8" />
 			</button>
 		</div>
 		<div class="sidebar-menus">
@@ -47,6 +47,9 @@ import SidebarMenu from './SidebarMenuItem.vue'
 import logoutIcon from '@/assets/icons/src/logoutIcon.vue'
 
 const getInitials = (string1, string2) => {
+    if (!string1 || !string2) {
+        return ''
+    }
     const initials = string1[0] + string2[0]
     return initials.toUpperCase()
 }
@@ -69,10 +72,10 @@ const props = defineProps({
         required: true
     }
 })
-// watch(
-//     props.route,
-//     (value) => {resetMenus()}
-// )
+watch(
+    () => props.route,
+    (value) => { resetMenus() }
+)
 
 const pathContainsRoot = (rootPath) => {
     if (rootPath === '/users') {
