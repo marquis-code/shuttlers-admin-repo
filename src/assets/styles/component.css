@@ -12,7 +12,12 @@
     .input-field-search {
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
-
+    .btn{
+        @apply px-5 py-3 rounded-md font-bold  cursor-pointer disabled:bg-gray-500 disabled:cursor-not-allowed;
+    }
+    .btn-primary {
+        @apply btn  text-white bg-primary;
+    }
     .input-field::placeholder,
     .input-field-search::placeholder {
         @apply !text-start;

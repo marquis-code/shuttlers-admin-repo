@@ -5,15 +5,18 @@
 <script setup lang="ts">
 import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
+import Admin from '@/components/headers/modules/Admin.vue'
 
 const componentRouteKey = {
-    '/dashboard': Dashboard,
-    '/route-searches': RouteSearches
+    admin: Admin,
+    dashboard: Dashboard,
+    'route-searches': RouteSearches
 }
 
 const component = computed(() => {
-    console.log(useRoute().path)
-    return componentRouteKey[useRoute().path]
+    const res = useRoute().fullPath.split('/')[1]
+
+    return componentRouteKey[res]
 })
 </script>
 
