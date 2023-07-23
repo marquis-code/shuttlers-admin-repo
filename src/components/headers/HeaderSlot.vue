@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white border-b flex flex-col gap-2 md:px-10 px-6 md:py-5 py-3.5 relative" :class="headerCss">
+	<div class="bg-white border-b flex flex-col gap-2 md:px-9 px-6 md:pt-5 pt-3.5 relative h-auto" :class="headerCss">
 		<section class="flex justify-between">
 			<div class="flex flex-col">
 				<h6 class="text-xs uppercase font-bold text-gray-400">
@@ -9,8 +9,11 @@
 					{{ title }}
 				</h1>
 			</div>
+			<div class="">
+				<slot name="actions" />
+			</div>
 		</section>
-		<div v-if="!loading && hasTabs">
+		<div v-if="!loading && hasTabs" class="">
 			<slot name="tabs" />
 		</div>
 	</div>

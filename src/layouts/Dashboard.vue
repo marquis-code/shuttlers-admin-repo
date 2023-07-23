@@ -7,7 +7,9 @@
 			<div class="dashboard-view">
 				<div class="">
 					<Headers />
-					<slot />
+					<div class="px-9 py-8">
+						<slot />
+					</div>
 				</div>
 			</div>
 		</div>
