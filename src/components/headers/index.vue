@@ -1,25 +1,31 @@
 <template>
 	<component :is="component" />
 </template>
-
 <script setup lang="ts">
+import Fleet from '@/components/headers/modules/Fleet.vue'
 import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
 import Admin from '@/components/headers/modules/Admin.vue'
-
+import Drivers from '@/components/headers/modules/Drivers.vue'
+import Events from '@/components/headers/modules/Events.vue'
+import Transactions from '@/components/headers/modules/Transactions.vue'
+import Referral from '@/components/headers/modules/Referral.vue'
+import Promotion from '@/components/headers/modules/Promotion.vue'
 const componentRouteKey = {
     admin: Admin,
     dashboard: Dashboard,
+    drivers: Drivers,
+    events: Events,
+    transactions: Transactions,
+    fleet: Fleet,
+    referral: Referral,
+    promotion: Promotion,
     'route-searches': RouteSearches
 }
-
 const component = computed(() => {
     const res = useRoute().fullPath.split('/')[1]
-
     return componentRouteKey[res]
 })
 </script>
-
 <style scoped>
-
 </style>
