@@ -40,15 +40,15 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     modulePermission: 'CORPORATES',
     children: [
       {
-        title: 'Insights',
-        routePath: '/companies',
-        description: 'Insights into company requests'
-      },
-      {
         title: 'Companies',
         routePath: '/companies',
         description: '',
         excludedPaths: ['/companies/insights']
+      },
+      {
+        title: 'Insights',
+        routePath: '/companies/insights',
+        description: 'Insights into company requests'
       }
     ]
   },
@@ -135,7 +135,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       },
       {
         title: 'Payout',
-        routePath: '/partners',
+        routePath: '/partners/payouts',
         description: 'Vechiles Partners payout'
       }
     ]
