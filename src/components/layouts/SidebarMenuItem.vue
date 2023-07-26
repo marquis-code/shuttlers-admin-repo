@@ -1,25 +1,23 @@
 <template>
-	<nuxt-link
-		:to="menu.routePath?{path: menu?.routePath}:{path: menu?.rootPath}">
-		<template #default="{isActive, href}">
-			<li class="nav-menu transite" :class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
+	<nuxt-link :to="menu.routePath ? { path: menu.routePath } : { path: menu.rootPath }">
+		<template #default="{ isActive, href }">
+			<li class="nav-menu transite"
+				:class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
 				<template v-if="hasSubMenus(menu)">
 					<div class="nav-title" @click="toggleMenuOpenedState(menu)">
 						<span class="flex items-center">
 							<component :is="menu.iconComponent" class="img" />
 							<span class="text-sm">{{ menu.title }}</span>
 						</span>
-						<component :is="downIcon" class="float-right ml-auto w-4 transite" :class="[menu.isOpen ? 'rotate-180' : '']" />
+						<component :is="downIcon" class="float-right ml-auto w-4 transite"
+							:class="[menu.isOpen ? 'rotate-180' : '']" />
 					</div>
 					<ul class="nav-submenus">
-						<nuxt-link
-							v-for="(submenu, submenuIndex) in menu.children"
-							:key="submenuIndex" 
-							exact-active-class="nav-submenu--active"
-							active-class="nav-submenu--active"
-							:to="{ path: submenu.routePath}">
-							<template #default="{isActive, href}">
-								<li class="nav-submenu" :class="{'nav-submenu--active': isActive && excludedPathsIgnored(submenu)}">
+						<nuxt-link v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex"
+							exact-active-class="nav-submenu--active" active-class="nav-submenu--active"
+							:to="{ path: submenu.routePath }">
+							<template #default="{ isActive, href }">
+								<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">
 									<a :href="href">
 										{{ submenu.title }}
 									</a>
@@ -32,9 +30,7 @@
 					<a :href="href">
 						<div class="nav-title">
 							<span class="flex items-center">
-								<component
-									:is="menu.iconComponent"
-									class="img" />
+								<component :is="menu.iconComponent" class="img" />
 								<span class="text-sm">{{ menu.title }}</span>
 							</span>
 						</div>
@@ -239,4 +235,5 @@ $sh-neutral-900 : #101211;
       padding-right: 1rem;
     }
   }
-}</style>
+}
+</style>
