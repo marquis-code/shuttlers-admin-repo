@@ -10,11 +10,14 @@
 				</p>
 			</div>
 		</section>
-		<section class="border shadow-md rounded-md bg-white h-[400px]">
+		<section class="border shadow-md rounded-md bg-white">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Trips
 				</h3>
+			</div>
+			<div class="p-3">
+				<Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
 			</div>
 		</section>
 		<section class="border shadow-md rounded-md bg-white h-[400px]">
@@ -56,7 +59,8 @@
 										02:01 PM Jul 23, 2023
 									</td>
 									<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-										Booking refund for SRL103. from Sandfill Bus Stop to Ogunlana Drive Bus Stop (Itire Rd) for 2023-07-24 trip on Company wallet.
+										Booking refund for SRL103. from Sandfill Bus Stop to Ogunlana Drive Bus Stop (Itire
+										Rd) for 2023-07-24 trip on Company wallet.
 									</td>
 									<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
 										Oshokpekha
@@ -97,7 +101,8 @@
 									<td class="px-4 py-2 text-gray-900 font-light text-xs  flex items-center space-x-3">
 										<p class="inline p-3 font-semibold rounded-full text-white bg-gray-300">
 											AA
-										</p> <p class="font-medium">
+										</p>
+										<p class="font-medium">
 											Temitope Sodiq
 										</p>
 									</td>
@@ -146,7 +151,8 @@
 										02:01 PM Jul 23, 2023
 									</td>
 									<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-										Booking refund for SRL103. from Sandfill Bus Stop to Ogunlana Drive Bus Stop (Itire Rd) for 2023-07-24 trip on Company wallet.
+										Booking refund for SRL103. from Sandfill Bus Stop to Ogunlana Drive Bus Stop (Itire
+										Rd) for 2023-07-24 trip on Company wallet.
 									</td>
 									<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
 										Oshokpekha
@@ -209,26 +215,42 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+import { Bar } from 'vue-chartjs'
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const chartData = computed(() => {
+    return {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: [{ data: [40, 20, 12, 40, 20, 12, 40, 20, 12, 40, 20, 12] }]
+    }
+})
+
+const chartOptions = computed(() => {
+    return { responsive: true }
+})
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
 const dashboardStats = ref([
-        {
-            title: 'TOTAL RIDES',
-            count: '102,354'
-        },
-        {
-            title: 'TOTAL TRANSACTIONS',
-            count: '1,441,860'
-        },
-        {
-            title: 'TOTAL USERS',
-            count: '77,472'
-        },
-        {
-            title: 'TOTAL DRIVERS',
-            count: '1,606'
-        }
-     ])
+    {
+        title: 'TOTAL RIDES',
+        count: '102,354'
+    },
+    {
+        title: 'TOTAL TRANSACTIONS',
+        count: '1,441,860'
+    },
+    {
+        title: 'TOTAL USERS',
+        count: '77,472'
+    },
+    {
+        title: 'TOTAL DRIVERS',
+        count: '1,606'
+    }
+])
 </script>
