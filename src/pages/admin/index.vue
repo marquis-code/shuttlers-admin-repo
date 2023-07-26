@@ -1,9 +1,6 @@
 <template>
 	<main class="">
-		<button class="text-gray-900 mb-6 flex justify-center items-center bg-gray-200 rounded-lg px-5 py-2.5 hover:bg-gray-300  text-xs" @click="$router.go(-1)">
-			Go back
-		</button>
-		<TableAdminTable :table-fields="tableFields" :table-data="tableData" />
+		<Table :headers="tableFields" :table-data="tableData" />
 	</main>
 </template>
 <script setup lang="ts">
@@ -14,65 +11,48 @@ definePageMeta({
 })
 const tableFields = ref([
     {
-        name: 'Staff',
-        key: 'staff'
+        text: 'Staff',
+        value: 'staff'
     },
     {
-        name: 'Phone',
-        key: 'phone'
+        text: 'Phone',
+        value: 'phone'
     },
     {
-        name: 'Email',
-        key: 'email'
+        text: 'Email',
+        value: 'email'
     },
     {
-        name: 'Status',
-        key: 'status'
+        text: 'Status',
+        value: 'status'
     },
     {
-        name: 'Role',
-        key: 'role'
+        text: 'Role',
+        value: 'role'
     },
     {
-        name: 'Created At',
-        key: 'created_at'
+        text: 'Created At',
+        value: 'created_at'
     },
     {
-        name: 'Updated At',
-        key: 'updated_at'
+        text: 'Updated At',
+        value: 'updated_at'
     }
 ])
 const tableData = ref([
     {
-        key: 'staff',
-        value: 'Paul Chukwuka'
-    },
-    {
-        key: 'phone',
-        value: '09094187040'
-    },
-    {
-        key: 'email',
-        value: 'paul.chukwuka@shuttlers.ng'
-    },
-    {
-        key: 'status',
-        value: 'Active'
-    },
-    {
-        key: 'role',
-        value: 'User'
-    },
-    {
-        key: 'created_at',
-        value: 'July 18, 2023'
-    },
-    {
-        key: 'updatd_at',
-        value: 'July 19, 2023'
+        staff: 'Paul Chukwuka',
+        phone: '09094187040',
+        email: 'paul.chukwuka@shuttlers.ng',
+        status: 'Active',
+        role: 'User',
+        created_at: 'July 18, 2023',
+        updated_at: 'July 19, 2023'
     }
+
 ])
 </script>
+
 <style scoped>
 </style>
 
