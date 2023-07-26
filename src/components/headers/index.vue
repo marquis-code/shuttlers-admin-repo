@@ -19,7 +19,3 @@ const component = computed(() => {
     return componentRouteKey[res]
 })
 </script>
-
-<style scoped>
-
-</style>

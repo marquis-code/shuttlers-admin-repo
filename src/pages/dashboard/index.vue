@@ -1,6 +1,6 @@
 <template>
 	<div>
-		Dashboard
+		Dashboard 123
 	</div>
 </template>
 
