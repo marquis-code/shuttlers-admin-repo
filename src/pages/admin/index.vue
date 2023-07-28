@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :headers="tableFields" :table-data="tableData" />
+		<Table :showOneLayerFilter="true" :headers="tableFields" :table-data="tableData" />
 	</main>
 </template>
 <script setup lang="ts">

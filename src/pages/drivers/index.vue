@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<TableDriversTable :table-data="tableData" :table-fields="tableFields" />
+		<Table :show-two-layer-filter="true" :has-options="true" :headers="tableFields" :table-data="tableData" :checkbox="true" />
 	</div>
 </template>
 
@@ -12,43 +12,33 @@ definePageMeta({
 
 const tableFields = ref([
 	{
-		name: 'Staff',
-		key: 'staff'
+		text: 'User',
+		value: 'user'
 	},
 	{
-		name: 'Phone',
-		key: 'phone'
+		text: 'Average Rating',
+		value: 'average_rating'
 	},
 	{
-		name: 'Email',
-		key: 'email'
+		text: 'Avatar',
+		value: 'avatar'
 	},
 	{
-		name: 'Status',
-		key: 'status'
+		text: 'Date Joined',
+		value: 'date_joined'
 	},
 	{
-		name: 'Role',
-		key: 'role'
-	},
-	{
-		name: 'Created At',
-		key: 'created_at'
-	},
-	{
-		name: 'Updated At',
-		key: 'updated_at'
+		text: 'Status',
+		value: 'status'
 	}
 ])
 const tableData = ref([
 	{
-		staff: 'Paul Chukwuka',
-		phone: '09094187040',
-		email: 'paul.chukwuka@shuttlers.ng',
-		status: 'Active',
-		role: 'User',
-		created_at: 'July 18, 2023',
-		updated_at: 'July 19, 2023'
+		user: 'Paul Chukwuka',
+		average_rating: '0 (0 trips)',
+		avatar: 'PC',
+		date_joined: '24/07/2023',
+		status: 'Active'
 	}
 ])
 </script>
