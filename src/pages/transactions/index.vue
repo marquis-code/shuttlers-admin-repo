@@ -1,7 +1,10 @@
 <template>
-	<div>
-		transactions
-	</div>
+	<main>
+		<div class="flex">
+			<ModulesTransactionsCharts />
+			<ModulesTransactionsDistribution />
+		</div>
+	</main>
 </template>
 
 <script setup lang="ts">
@@ -11,6 +14,4 @@ definePageMeta({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
