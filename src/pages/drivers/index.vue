@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<Table :show-two-layer-filter="true" :has-options="true" :headers="tableFields" :table-data="tableData" :checkbox="true" />
+		<Table :show-search-bar="true" :show-date-picker="true" :show-download-button="true" :show-options="true" :show-radio-buttons="true" :headers="tableFields"
+			:table-data="tableData" />
 	</div>
 </template>
 

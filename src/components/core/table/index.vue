@@ -1,7 +1,8 @@
 <template>
 	<div class="flex flex-col">
-		<TableOneLayerFilter v-if="showOneLayerFilter" />
-		<TableTwoLayersFilter v-if="showTwoLayerFilter" />
+		<TableFilter :show-options="showOptions" :show-date-picker="showDatePicker"
+			:show-download-button="showDownloadButton" :show-radio-buttons="showRadioButtons"
+			:show-search-bar="showSearchBar" />
 		<div class="border border-gray-200 md:rounded-b-lg">
 			<table v-if="loading || displayTable.length > 0" class="w-full table">
 				<thead class="px-4">
@@ -44,14 +45,31 @@
 import gsap from 'gsap'
 
 const props = defineProps({
-	showOneLayerFilter: {
+	showRadioButtons: {
+		type: Boolean
+	},
+	showDatePicker: {
+		type: Boolean
+	},
+	showSearchBar: {
+		type: Boolean
+	},
+	showDownloadButton: {
+		type: Boolean
+	},
+	showOptions: {
 		type: Boolean,
 		default: false
 	},
-	showTwoLayerFilter: {
-		type: Boolean,
-		default: false
-	},
+
+	// showOneLayerFilter: {
+	// 	type: Boolean,
+	// 	default: false
+	// },
+	// showTwoLayerFilter: {
+	// 	type: Boolean,
+	// 	default: false
+	// },
 	option: {
 		type: Function,
 		default: () => { }
