@@ -7,7 +7,7 @@
 				</h3>
 			</div>
 			<div class="pr-3">
-				<vue-date-picker placeholder="Filter by date" />
+				<date-picker v-model:value="dateSelected" placeholder="Filter by date" />
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
@@ -50,7 +50,8 @@ const props = defineProps({
 		required: true
 	}
 })
-// })
+
+const dateSelected = ref(null)
 
 </script>
 

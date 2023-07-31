@@ -1,6 +1,7 @@
 <template>
 	<main class="">
-		<Table :showOneLayerFilter="true" :headers="tableFields" :table-data="tableData" />
+		<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="true" :headers="tableFields"
+			:table-data="tableData" />
 	</main>
 </template>
 <script setup lang="ts">
@@ -53,7 +54,6 @@ const tableData = ref([
 ])
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
 
 Jot something down
