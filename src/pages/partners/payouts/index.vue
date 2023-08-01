@@ -1,6 +1,6 @@
 <template>
 	<div>
-		partners payout
+		partners payout here
 	</div>
 </template>
 
