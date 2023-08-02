@@ -2,7 +2,7 @@
 	<div class="flex flex-col">
 		<TableFilter :show-options="showOptions" :show-date-picker="showDatePicker"
 			:show-download-button="showDownloadButton" :show-radio-buttons="showRadioButtons"
-			:show-search-bar="showSearchBar" />
+			:show-search-bar="showSearchBar" :checkbox="checkbox" />
 		<div class="border border-gray-200 md:rounded-b-lg">
 			<table v-if="loading || displayTable.length > 0" class="w-full table">
 				<thead class="px-4">
