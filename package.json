@@ -48,7 +48,6 @@
 		"chart.js": "^4.3.1",
 		"gsap": "^3.12.2",
 		"postcss-custom-properties": "^12.1.11",
-		"vue-chartjs": "^5.2.0",
 		"vue-datepicker-next": "^1.0.3",
 		"vue3-apexcharts": "^1.4.4",
 		"vue3-otp-input": "^0.4.1"

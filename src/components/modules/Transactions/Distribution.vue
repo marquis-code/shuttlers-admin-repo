@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { Pie } from 'vue-chartjs'
 import { ref, computed } from 'vue'
 const chartData = ref({
 	labels: [

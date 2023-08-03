@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { Bar } from 'vue-chartjs'
 import { ref, computed } from 'vue'
 const chartData = ref({
 	labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'August', 'Sept', 'Oct', 'Nov', 'Dec'],

@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import { Bar } from 'vue-chartjs'
 const props = defineProps({
 	chartOptions: {
 		type: Object,
