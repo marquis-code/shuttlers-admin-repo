@@ -24,10 +24,14 @@ const componentRouteKey = {
     partners: Partners,
     'route-searches': RouteSearches
 }
+
 const component = computed(() => {
-    const res = useRoute().fullPath.split('/')[1]
-    return componentRouteKey[res]
+    const res = useRoute().fullPath.split('/')
+    const parentRoute = useRoute().fullPath.split('/')[1]
+    const routeMap = new Map()
+    routeMap.set([...res], parentRoute)
+    return routeMap
 })
+
 </script>
-<style scoped>
-</style>
+<style scoped></style>
