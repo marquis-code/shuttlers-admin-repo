@@ -43,9 +43,14 @@
 	"dependencies": {
 		"@shuttlershq/shuttlers-ui": "^0.0.14",
 		"@vueuse/core": "^10.2.1",
+		"apexcharts": "^3.41.0",
 		"axios": "^1.4.0",
+		"chart.js": "^4.3.1",
 		"gsap": "^3.12.2",
 		"postcss-custom-properties": "^12.1.11",
+		"vue-chartjs": "^5.2.0",
+		"vue-datepicker-next": "^1.0.3",
+		"vue3-apexcharts": "^1.4.4",
 		"vue3-otp-input": "^0.4.1"
 	}
 }

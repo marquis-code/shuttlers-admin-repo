@@ -2,9 +2,9 @@
 	<HeadersHeaderSlot title="Promo Codes" pre-title="Overview">
 		<template #actions>
 			<div class="space-x-2 flex items-center">
-				<button class="btn-primary">
+				<NuxtLink to="/promotion/new" class="btn-primary">
 					Create Promo Code
-				</button>
+				</NuxtLink>
 			</div>
 		</template>
 	</HeadersHeaderSlot>

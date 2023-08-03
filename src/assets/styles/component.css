@@ -45,4 +45,8 @@
     .card{
         @apply rounded-md shadow-sm bg-white p-6 
     }
+
+    .stat_card{
+        @apply rounded-md shadow-sm bg-white py-6 
+    }
 }

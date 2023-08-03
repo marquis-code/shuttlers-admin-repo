@@ -11,6 +11,7 @@ import Events from '@/components/headers/modules/Events.vue'
 import Transactions from '@/components/headers/modules/Transactions.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
+import Partners from '@/components/headers/modules/Partners.vue'
 const componentRouteKey = {
     admin: Admin,
     dashboard: Dashboard,
@@ -20,6 +21,7 @@ const componentRouteKey = {
     fleet: Fleet,
     referral: Referral,
     promotion: Promotion,
+    partners: Partners,
     'route-searches': RouteSearches
 }
 const component = computed(() => {
