@@ -7,7 +7,7 @@
 						<div class="card-body">
 							<h1>New Referral Code</h1>
 
-							<form class="space-y-6" @submit.prevent="createReferralCode">
+							<form class="space-y-6">
 								<div class="form-group">
 									<label for="" class="form-label">Name of Campaign</label>
 									<input v-model.trim="newPromoCode.name" type="text"
@@ -395,7 +395,4 @@ const ownerRewardAmountLabel = computed(() => {
 	return 'How much do you want to reward the owner with?'
 })
 
-const createReferralCode = () => {
-	console.log('create referall code')
-}
 </script>
