@@ -12,7 +12,7 @@
 				</p>
 			</div>
 			<hr>
-			<form class="space-y-6 p-6 mt-5" @submit.prevent="createPromoCode">
+			<form class="space-y-6 p-6 mt-5">
 				<div class="w-full">
 					<label for="" class="text-sm font-light text-gray">
 						Name of Campaign</label>
@@ -147,10 +147,6 @@ const rewardAmountLabel = computed(() => {
 
 	return 'How much do you want to reward your customers with?'
 })
-
-const createPromoCode = () => {
-	console.log(newPromoCode)
-}
 
 </script>
 
