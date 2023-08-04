@@ -1,14 +1,16 @@
 <template>
 	<div>
-		partners payout here
+		{{ $route.params.id }}
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+
+</style>

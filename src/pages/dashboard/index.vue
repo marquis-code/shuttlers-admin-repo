@@ -8,7 +8,7 @@
 	</main>
 </template>
 <script setup lang="ts">
-// import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -53,8 +53,6 @@ const tripRatingChartOptions = computed(() => {
 		}
 	}
 })
-
-// ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const dashboardStats = ref([
     {
