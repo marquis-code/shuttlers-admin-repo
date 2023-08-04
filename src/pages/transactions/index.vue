@@ -1,8 +1,8 @@
 <template>
 	<main>
-		<div class="flex">
-			<ModulesTransactionsCharts />
-			<ModulesTransactionsDistribution />
+		<div class="flex justify-between ">
+			<ModulesDashboardTransactionsCharts />
+			<ModulesDashboardTransactionsDistribution />
 		</div>
 	</main>
 </template>
