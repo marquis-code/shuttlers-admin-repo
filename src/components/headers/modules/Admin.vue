@@ -1,9 +1,12 @@
 <template>
 	<HeadersHeaderSlot title="Admin controls" pre-title="Overview">
 		<template #actions>
-			<button class="btn-primary">
+			<!-- <button class="btn-primary">
 				Add Staff
-			</button>
+			</button> -->
+			<NuxtLink to="/admin/add" class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
+				Add Staff
+			</NuxtLink>
 		</template>
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
@@ -13,18 +16,16 @@
 
 <script setup lang="ts">
 const pageTabs = [
-    {
-        name: 'Access',
-        path: '/admin'
-    },
-    {
-        name: 'Audit Trail',
-        path: '/admin/audit-trail'
-    }
+	{
+		name: 'Access',
+		path: '/admin'
+	},
+	{
+		name: 'Audit Trail',
+		path: '/admin/audit-trail'
+	}
 
 ]
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

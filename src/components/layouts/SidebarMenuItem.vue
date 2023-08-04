@@ -14,7 +14,6 @@
 					</div>
 					<ul class="nav-submenus">
 						<nuxt-link v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex"
-							exact-active-class="nav-submenu--active" active-class="nav-submenu--active"
 							:to="{ path: submenu.routePath }">
 							<template #default="{ isActive, href }">
 								<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">

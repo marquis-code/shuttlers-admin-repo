@@ -1,7 +1,7 @@
 <template>
-	<main>
-		<ModulesCompanyInsightsChart />
-	</main>
+	<div>
+		interested partners
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -11,4 +11,6 @@ definePageMeta({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

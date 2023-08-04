@@ -37,9 +37,16 @@
     }
 
     .profile-inner{
-        @apply flex flex-col md:px-14 md:py-12  p-6 relative overflow-auto h-full  overflow-hidden
+        @apply flex flex-col md:px-14 md:py-12  p-6 relative  h-full  overflow-hidden
     }
     .profile-title{
         @apply md:text-[32px] text-2xl font-bold flex items-center gap-4
     }     
+    .card{
+        @apply rounded-md shadow-sm bg-white p-6 
+    }
+
+    .stat_card{
+        @apply rounded-md shadow-sm bg-white py-6 
+    }
 }

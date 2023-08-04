@@ -11,21 +11,38 @@ import Events from '@/components/headers/modules/Events.vue'
 import Transactions from '@/components/headers/modules/Transactions.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
-const componentRouteKey = {
-    admin: Admin,
-    dashboard: Dashboard,
-    drivers: Drivers,
-    events: Events,
-    transactions: Transactions,
-    fleet: Fleet,
-    referral: Referral,
-    promotion: Promotion,
-    'route-searches': RouteSearches
-}
+import Partners from '@/components/headers/modules/Partners.vue'
+import Companies from '@/components/headers/modules/Companies.vue'
+
+const componentRouteArray = [
+    { routes: ['dashboard'], component: Dashboard },
+    { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
+    { routes: ['companies'], component: null },
+    { routes: ['users'], component: null },
+    { routes: ['trips'], component: null },
+    { routes: ['companies', 'companies-insights'], component: Companies },
+    { routes: ['partners'], component: Partners },
+    { routes: ['drivers'], component: Drivers },
+    { routes: ['events'], component: Events },
+    { routes: ['transactions'], component: Transactions },
+    { routes: ['fleet'], component: Fleet },
+    { routes: ['referral'], component: Referral },
+    { routes: ['promotion'], component: Promotion },
+    { routes: ['campaigns'], component: null },
+    { routes: ['admin'], component: Admin },
+    { routes: ['configuration'], component: null }
+    // { routes: ['companies', 'companies-insights'], component: Companies }
+]
+
+const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
+    curr.routes.forEach((route) => {
+        acc[route] = curr.component
+    })
+    return acc
+}, {})
+
 const component = computed(() => {
-    const res = useRoute().fullPath.split('/')[1]
-    return componentRouteKey[res]
+    return componentRouteKey[useRoute().name as string]
 })
 </script>
-<style scoped>
-</style>
+<style scoped></style>

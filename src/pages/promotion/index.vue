@@ -1,6 +1,6 @@
 <template>
 	<div>
-		referral
+		shuttlers promotions code
 	</div>
 </template>
 
