@@ -1,8 +1,14 @@
 <template>
 	<main>
 		<div class="border-b">
-			<h3>Transactions (30 days)</h3>
-			<p>User transactions over the last 30 days</p>
+			<div class="px-6 py-3">
+				<h3 class="font-medium">
+					Transactions (30 days)
+				</h3>
+				<p class="font-light  text-xs text-gray-500">
+					User transactions over the last 30 days
+				</p>
+			</div>
 		</div>
 	</main>
 </template>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		promotion
+		shuttlers promotions code
 	</div>
 </template>
 

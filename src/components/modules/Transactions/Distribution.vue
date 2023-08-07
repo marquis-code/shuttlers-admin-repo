@@ -1,8 +1,16 @@
 <template>
 	<main>
 		<div class="border-b">
-			<h3>Transaction Distribution</h3>
-			<p>Type of users transactions (Credits, Debits)</p>
+			<!-- <h3>Transaction Distribution</h3>
+			<p>Type of users transactions (Credits, Debits)</p> -->
+			<div class="px-6 py-3">
+				<h3 class="font-medium">
+					Transaction Distribution
+				</h3>
+				<p class="font-light  text-xs text-gray-500">
+					Type of users transactions (Credits, Debits)
+				</p>
+			</div>
 		</div>
 		<div>
 			<Pie style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />

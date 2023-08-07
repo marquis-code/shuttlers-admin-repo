@@ -12,6 +12,7 @@ import Transactions from '@/components/headers/modules/Transactions.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners.vue'
+import Companies from '@/components/headers/modules/Companies.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -19,6 +20,7 @@ const componentRouteArray = [
     { routes: ['companies'], component: null },
     { routes: ['users'], component: null },
     { routes: ['trips'], component: null },
+    { routes: ['companies', 'companies-insights'], component: Companies },
     { routes: ['partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },
     { routes: ['events'], component: Events },
@@ -29,7 +31,7 @@ const componentRouteArray = [
     { routes: ['campaigns'], component: null },
     { routes: ['admin'], component: Admin },
     { routes: ['configuration'], component: null }
-
+    // { routes: ['companies', 'companies-insights'], component: Companies }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
@@ -43,5 +45,4 @@ const component = computed(() => {
     return componentRouteKey[useRoute().name as string]
 })
 </script>
-<style scoped>
-</style>
+<style scoped></style>

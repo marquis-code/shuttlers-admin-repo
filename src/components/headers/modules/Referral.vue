@@ -2,9 +2,9 @@
 	<HeadersHeaderSlot title="Referral Codes" pre-title="Overview">
 		<template #actions>
 			<div class="space-x-2 flex items-center">
-				<button class="btn-primary">
+				<NuxtLink to="/referral/new" class="btn-primary">
 					Create Referral Code
-				</button>
+				</NuxtLink>
 			</div>
 		</template>
 	</HeadersHeaderSlot>
