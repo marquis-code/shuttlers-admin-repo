@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<div class="mb-6">
-			<button class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2">
+			<button @click="$router.go(-1)" class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2">
 				Go back
 			</button>
 		</div>
@@ -85,8 +85,8 @@
 
 <script setup lang="ts">
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 </script>
 

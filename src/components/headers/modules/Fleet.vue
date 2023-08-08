@@ -5,9 +5,9 @@
 				<button class="border-2 border-gray-950 bg-white text-gray-800 py-2 rounded-lg px-4">
 					Export QR Codes
 				</button>
-				<button class="btn-primary">
+				<NuxtLink to="/fleet/add" class="btn-primary">
 					Add Vehicle
-				</button>
+				</NuxtLink>
 			</div>
 		</template>
 
