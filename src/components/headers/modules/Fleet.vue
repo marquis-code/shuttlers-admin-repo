@@ -10,7 +10,22 @@
 				</button>
 			</div>
 		</template>
+
+		<template #tabs>
+			<RouterTabs :tabs="pageTabs" />
+		</template>
 	</HeadersHeaderSlot>
 </template>
 <script setup lang="ts">
+
+const pageTabs = ref([
+	{
+		name: 'Vehicles',
+		path: '/fleet'
+	},
+	{
+		name: 'Inspection Days',
+		path: '/fleet/inspection-days'
+	}
+])
 </script>
