@@ -13,6 +13,7 @@ import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners.vue'
 import Companies from '@/components/headers/modules/Companies.vue'
+import Campaigns from '@/components/headers/modules/Campaigns.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -30,7 +31,8 @@ const componentRouteArray = [
     { routes: ['promotion'], component: Promotion },
     { routes: ['campaigns'], component: null },
     { routes: ['admin'], component: Admin },
-    { routes: ['configuration'], component: null }
+    { routes: ['configuration'], component: null },
+    { routes: ['campaigns'], component: Campaigns }
     // { routes: ['companies', 'companies-insights'], component: Companies }
 ]
 
