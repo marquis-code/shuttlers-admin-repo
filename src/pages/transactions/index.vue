@@ -4,15 +4,15 @@
 			<div class="rounded-lg bg-white  h-[300px] lg:w-8/12 border">
 				<ModulesTransactionsCharts />
 			</div>
-			<div class="rounded-lg bg-white h-42 lg:w-4/12 h-[200px] border">
+			<div class="rounded-lg bg-white  lg:w-4/12">
 				<ModulesTransactionsDistribution />
 			</div>
 		</div>
 
-		<div>
+		<!-- <div>
 			<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="false" :headers="tableFields" :show-date-range="true"
 				:table-data="tableData" />
-		</div>
+		</div> -->
 	</main>
 </template>
 

@@ -1,15 +1,14 @@
 <template>
 	<main>
-		<div class="border-b">
-			<div class="px-6 py-3">
-				<h3 class="font-medium">
-					Transactions (30 days)
-				</h3>
-				<p class="font-light  text-xs text-gray-500">
-					User transactions over the last 30 days
-				</p>
+		<section class="flex justify-between border-2 border-red-500">
+			<div class="h-32 bg-white shadow-sm rounded-md border-2 border-red-500">
+				<div>
+					<h3>Transactions (30 days)</h3>
+					<p>User transactions over the last 30 days</p>
+				</div>
+				<hr />
 			</div>
-		</div>
+		</section>
 	</main>
 </template>
 
@@ -38,3 +37,6 @@ const chartOptions = computed(() => {
 	}
 })
 </script>
+
+<style scoped></style>
+<style></style>
