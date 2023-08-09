@@ -394,8 +394,4 @@ const ownerRewardAmountLabel = computed(() => {
 
 	return 'How much do you want to reward the owner with?'
 })
-<<<<<<< HEAD
-
-=======
->>>>>>> test
 </script>

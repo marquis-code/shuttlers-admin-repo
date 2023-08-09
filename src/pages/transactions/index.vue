@@ -1,25 +1,18 @@
 <template>
-<<<<<<< HEAD
 	<main class="space-y-10">
 		<div class="lg:flex space-y-6 lg:space-y-0 lg:space-x-6 justify-start">
 			<div class="rounded-lg bg-white  h-[300px] lg:w-8/12 border">
 				<ModulesTransactionsCharts />
 			</div>
-			<div class="rounded-lg bg-white h-42 lg:w-4/12 h-[200px] border">
+			<div class="rounded-lg bg-white  lg:w-4/12">
 				<ModulesTransactionsDistribution />
 			</div>
 		</div>
 
-		<div>
+		<!-- <div>
 			<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="false" :headers="tableFields" :show-date-range="true"
 				:table-data="tableData" />
-=======
-	<main>
-		<div class="flex justify-between ">
-			<ModulesDashboardTransactionsCharts />
-			<ModulesDashboardTransactionsDistribution />
->>>>>>> test
-		</div>
+		</div> -->
 	</main>
 </template>
 
