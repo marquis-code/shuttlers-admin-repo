@@ -1,43 +1,38 @@
 <template>
-	<main>
+	<main class="">
 		<div class="border-b">
-			<h3>Transaction Distribution</h3>
-			<p>Type of users transactions (Credits, Debits)</p>
+			<!-- <h3>Transaction Distribution</h3>
+			<p>Type of users transactions (Credits, Debits)</p> -->
+			<div class="px-6 py-3">
+				<h3 class="font-medium">
+					Transaction Distribution
+				</h3>
+				<p class="font-light  text-xs text-gray-500">
+					Type of users transactions (Credits, Debits)
+				</p>
+			</div>
 		</div>
-		<div>
-			<Pie style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />
+		<div class="py-6">
+			<DoughnutChart :chart-data="testData" :height="300" :width="300" />
 		</div>
 	</main>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-const chartData = ref({
-	labels: [
-        'Red',
-        'Yellow',
-        'Blue'
-    ],
+import { Chart, DoughnutController, ArcElement, Tooltip, registerables } from 'chart.js'
+
+Chart.register(DoughnutController, ArcElement, Tooltip)
+Chart.register(...registerables)
+
+const testData = {
+	labels: ['Credits', 'Debits'],
 	datasets: [
 		{
-			label: 'My First Dataset',
-			data: [10, 20, 30],
-			backgroundColor: [
-				'rgba(153, 102, 255, 0.2)'
-			]
+			data: [43, 57],
+			backgroundColor: ['#FFCCCB', '#FF5733 ']
 		}
 	]
-})
-
-const chartOptions = computed(() => {
-	return {
-		responsive: true, scales: {
-			y: {
-				beginAtZero: true
-			}
-		}
-	}
-})
+}
 </script>
 
 <style scoped></style>

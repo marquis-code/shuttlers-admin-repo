@@ -9,6 +9,9 @@
 			<div v-if="showDatePicker" class="pt-2">
 				<date-picker v-model:value="dateSelected" class="font-light" placeholder="Filter by date" />
 			</div>
+			<div v-if="showDateRange" class="pt-2">
+				<date-picker v-model:value="dateRange" range />
+			</div>
 		</div>
 
 		<div :class="[showOptions ? '' : 'hidden']"
@@ -36,27 +39,33 @@
 
 <script setup lang="ts">
 const props = defineProps({
-    showRadioButtons: {
-        type: Boolean,
-        default: false
-    },
-    showDatePicker: {
-        type: Boolean,
-        default: false
-    },
-    showSearchBar: {
-        type: Boolean,
-        default: true
-    },
-    showDownloadButton: {
-        type: Boolean,
-        default: false
-    },
-    showOptions: {
-        type: Boolean,
-        default: false
-    }
+	showRadioButtons: {
+		type: Boolean,
+		default: false
+	},
+	showDatePicker: {
+		type: Boolean,
+		default: false
+	},
+	showSearchBar: {
+		type: Boolean,
+		default: true
+	},
+	showDownloadButton: {
+		type: Boolean,
+		default: false
+	},
+	showOptions: {
+		type: Boolean,
+		default: false
+	},
+	showDateRange: {
+	type: Boolean,
+	default: false
+}
 })
 
 const dateSelected = ref(null)
+
+const dateRange = ref(null)
 </script>

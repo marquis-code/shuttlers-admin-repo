@@ -1,5 +1,7 @@
 <template>
-	<h1>Insights position</h1>
+	<main>
+		<ModulesCompanyInsightsChart />
+	</main>
 </template>
 
 <script setup lang="ts">

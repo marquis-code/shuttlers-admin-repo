@@ -5,12 +5,27 @@
 				<button class="border-2 border-gray-950 bg-white text-gray-800 py-2 rounded-lg px-4">
 					Export QR Codes
 				</button>
-				<button class="btn-primary">
+				<NuxtLink to="/fleet/add" class="btn-primary">
 					Add Vehicle
-				</button>
+				</NuxtLink>
 			</div>
+		</template>
+
+		<template #tabs>
+			<RouterTabs :tabs="pageTabs" />
 		</template>
 	</HeadersHeaderSlot>
 </template>
 <script setup lang="ts">
+
+const pageTabs = ref([
+	{
+		name: 'Vehicles',
+		path: '/fleet'
+	},
+	{
+		name: 'Inspection Days',
+		path: '/fleet/inspection-days'
+	}
+])
 </script>
