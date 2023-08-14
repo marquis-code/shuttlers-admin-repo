@@ -46,7 +46,7 @@ const props = defineProps({
 		type: Boolean,
 		required: false
 	},
-	_modal: {
+	propsModal: {
 		type: String,
 		required: false,
 		default: 'modal'
@@ -83,7 +83,7 @@ const close = (e:any) => {
 }
 
 const closeModal = () => {
-	modal.close(props._modal)
+	modal.close(props.propsModal)
 }
 </script>
 

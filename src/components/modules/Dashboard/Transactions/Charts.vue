@@ -6,7 +6,7 @@
 					<h3>Transactions (30 days)</h3>
 					<p>User transactions over the last 30 days</p>
 				</div>
-				<hr />
+				<hr>
 			</div>
 		</section>
 	</main>
