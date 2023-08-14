@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<div class="mb-6">
-			<button class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2">
+			<button  @click="$router.go(-1)" class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2">
 				Go back
 			</button>
 		</div>
@@ -12,52 +12,53 @@
 				</p>
 			</div>
 			<hr>
-			<div class="space-y-6 p-6 mt-5">
+			<form class="space-y-6 p-6 mt-5">
 				<div class="w-full">
-					<label for="campaignName" class="text-sm font-light text-gray">
+					<label for="" class="text-sm font-light text-gray">
 						Name of Campaign</label>
-					<input type="text" name="campaignName"
+					<input v-model.trim="newPromoCode.name" type="text" name=""
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 				</div>
 				<div class="w-full">
-					<label for="lastName" class="text-sm font-light text-gray">
+					<label for="" class="text-sm font-light text-gray">
 						Promo Code</label>
-					<input type="text" name="lastName"
+					<input v-model.trim="newPromoCode.promo_code" type="text" name="l"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 				</div>
 
 				<div class="w-full">
 					<label for="lastName" class="text-sm font-light text-gray">
 						Description of promo code Campaign</label>
-					<textarea rows="3" cols="3"
+					<textarea v-model.trim="newPromoCode.description" rows="3" cols="3"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900" />
 				</div>
 
-				<div class="w-">
-					<label for="password" class="text-sm font-light text-gray">
-						How do you want to reward the customers that use this referral code?</label>
-					<select class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-						<option>Credit Customer Wallet</option>
-						<option>Discount Customers Trip by an Amount</option>
-						<option>Discount Customers Trip by an Percentage</option>
-					</select>
-				</div>
-
-				<div class="w-">
-					<label for="customerRewardFee" class="text-sm font-light text-gray">
-						How much do you want to reward customers?</label>
-					<input type="number" name="customerRewardFee"
-						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+				<div class="form-group">
+					<label for="" class="form-label">{{
+						rewardAmountLabel
+					}}</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text">{{
+								rewardAmountLabelSymbol
+							}}</span>
+						</div>
+						<input v-model.number="newPromoCode.reward_amount" type="number" class="form-control"
+							placeholder="">
+					</div>
 				</div>
 
 				<div class="w-">
 					<label for="password" class="text-sm font-light text-gray">
 						Which customers can use this referral code?</label>
-					<select class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-						<option>All Customers</option>
-						<option>Only New Customers</option>
-						<option>Seleect Customers</option>
-						<option>Select Corporates</option>
+					<select v-model="newPromoCode.customer_constraint"
+						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<option value="none">
+							All Customers
+						</option>
+						<option value="new_customers">
+							Only New Customers
+						</option>
 					</select>
 				</div>
 
@@ -66,46 +67,87 @@
 						When should this referral code expire?</label>
 					<div class="space-y-3">
 						<div class="space-x-2">
-							<span><input name="usageImmediatlyAfterCreating" type="radio"> </span>
-							<span><date-picker v-model:value="dateSelected" class="font-light"
+							<span><input id="should_expire_yes" type="radio" value="1" name="should_expire"> </span>
+							<span><date-picker v-model:value="newPromoCode.expires_at" class="font-light"
 								placeholder="Filter by date" /></span>
 						</div>
 						<div class="flex items-center gap-x-2">
-							<span><input name="usageImmediatlyAfterCreating" type="radio"></span>
+							<span><input id="should_expire_no" type="radio" name="should_expire"
+								:checked="newPromoCode.expires_at == null" value="0"
+								@click="newPromoCode.expires_at = null"></span>
 							<span> <label> Never expires</label></span>
 						</div>
 					</div>
 				</div>
-
-				<div class="w-">
-					<label for="password" class="text-sm font-light text-gray">
-						Apply promo code to beneficiaries immediately after creating?</label>
-					<div class="flex items-center gap-x-3">
-						<span><input name="usageImmediatlyAfterCreating" type="radio"></span>
-						<span><label>Yes</label></span>
-					</div>
-
-					<div class="flex items-center gap-x-2">
-						<span> <input name="usageImmediatlyAfterCreating" type="radio"></span>
-						<span> <label>No</label></span>
-					</div>
-				</div>
-
 				<div>
-					<button class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
-						Create Promo Code
+					<button :disabled="sendingRequest" type="submit"
+						class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
+						{{
+							sendingRequest
+								? 'Creating Promo Code..'
+								: 'Create Promo Code'
+						}}
 					</button>
 				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
+
+const shouldRewardOwners = ref(0)
+const sendingRequest = ref(false)
+const newPromoCode = ref({
+	name: '',
+	description: '',
+	customer_constraint: 'none',
+	owner_type: 'admin',
+	owner_id: 1,
+	expires_at: null,
+	max_number_of_uses: 0,
+	reward_amount: 0,
+	reward_kind: 'wallet_credit',
+	should_owner_benefit: false,
+	promo_code: ''
+})
+const isLoading = ref(false)
+
+const rewardAmountLabelSymbol = computed(() => {
+	if (
+		newPromoCode.value.reward_kind === 'wallet_credit' ||
+		newPromoCode.value.reward_kind === 'flat_rate_discount_on_trips'
+	) {
+		return 'NGN'
+	}
+
+	if (newPromoCode.value.reward_kind === 'percentage_discount_on_trips') {
+		return '%'
+	}
+
+	return 'NGN'
+})
+
+const rewardAmountLabel = computed(() => {
+	if (newPromoCode.value.reward_kind === 'wallet_credit') {
+		return 'How much do you want to reward customers?'
+	}
+
+	if (newPromoCode.value.reward_kind === 'flat_rate_discount_on_trips') {
+		return 'How much do you want to remove from the trip?'
+	}
+
+	if (newPromoCode.value.reward_kind === 'percentage_discount_on_trips') {
+		return 'What percentage discount do you want to give on the trip?'
+	}
+
+	return 'How much do you want to reward your customers with?'
+})
+
 </script>
 
 <style></style>
