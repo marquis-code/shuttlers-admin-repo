@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { useAlert } from '@/composables/core/useNotification'
 import { useUser } from '@/composables/auth/user'
 const { token } = useUser()
@@ -28,15 +28,18 @@ export const GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH = axios.create({
 export const IMAGE_UPLOAD_ENDPOINT = axios.create({
 	baseURL: $IMAGE_UPLOAD_ENDPOINT
 })
+export interface CustomAxiosResponse extends AxiosResponse {
+  type?: string;
+}
 
 const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH]
 
 instanceArray.forEach((instance) => {
 	instance.interceptors.response.use(
-	(response) => {
+	(response:CustomAxiosResponse) => {
 		return response
 	},
-	(err) => {
+	(err:any) => {
 		if (typeof err.response === 'undefined') {
 			useAlert().openAlert({ type: 'ERROR', msg: 'kindly check your network connection' })
 			return {
