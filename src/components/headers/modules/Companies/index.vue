@@ -5,8 +5,8 @@
 		</template>
 
 		<template #actions>
-			<div class="space-x-2 flex items-center">
-				<button class="border-2 border-gray-950 bg-white text-gray-800 py-2 rounded-lg px-4">
+			<div class="flex items-center space-x-2">
+				<button class="px-4 py-2 text-gray-800 bg-white border-2 rounded-lg border-gray-950">
 					Add Company
 				</button>
 			</div>

@@ -1,19 +1,43 @@
 <template>
 	<main class="">
-		<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="true" :headers="tableFields"
-			:table-data="tableData" />
+		<Table :loading="loading" :headers="tableFields"
+			:table-data="staffsData">
+			<template #item="{ item }">
+				<span v-if="item.fname" class="flex items-center gap-4">
+					<div>
+						<Avatar :name="item.data.fname" bg="#B1C2D9" />
+					</div>
+
+					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
+				</span>
+				<span v-else-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
+					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
+				</span>
+				<span v-else-if="item.created_at">
+					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+				</span>
+				<span v-else-if="item.updated_at">
+					{{ useDateFormat(item.data.updated_at, "MMMM d, YYYY").value }}
+				</span>
+			</template>
+		</Table>
 	</main>
 </template>
+
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
+import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+
+const { getStaffs, loading, staffsData } = useGetStaffs()
+getStaffs()
 definePageMeta({
-    key: 'authentication',
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 const tableFields = ref([
     {
         text: 'Staff',
-        value: 'staff'
+        value: 'fname'
     },
     {
         text: 'Phone',
@@ -25,7 +49,7 @@ const tableFields = ref([
     },
     {
         text: 'Status',
-        value: 'status'
+        value: 'active'
     },
     {
         text: 'Role',

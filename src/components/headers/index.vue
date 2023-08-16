@@ -12,16 +12,17 @@ import Transactions from '@/components/headers/modules/Transactions.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners.vue'
-import Companies from '@/components/headers/modules/Companies.vue'
+import Companies from '@/components/headers/modules/Companies/index.vue'
+import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
-    { routes: ['companies'], component: null },
+    { routes: ['companies'], component: Companies },
+    { routes: ['companies-insights'], component: Company_insight },
     { routes: ['users'], component: null },
     { routes: ['trips'], component: null },
-    { routes: ['companies', 'companies-insights'], component: Companies },
     { routes: ['partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },
     { routes: ['events'], component: Events },
@@ -33,7 +34,6 @@ const componentRouteArray = [
     { routes: ['admin'], component: Admin },
     { routes: ['configuration'], component: null },
     { routes: ['campaigns'], component: Campaigns }
-    // { routes: ['companies', 'companies-insights'], component: Companies }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

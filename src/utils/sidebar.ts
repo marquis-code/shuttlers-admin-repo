@@ -33,7 +33,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
 export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Corporates',
-    routePath: null,
+    routePath: '/companies/insights',
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',

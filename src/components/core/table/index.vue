@@ -1,17 +1,16 @@
 <template>
 	<div class="flex flex-col">
-		<TableFilter :show-options="showOptions" :show-date-picker="showDatePicker"
-			:show-download-button="showDownloadButton" :show-radio-buttons="showRadioButtons"
-			:show-search-bar="showSearchBar" :checkbox="checkbox" :show-date-range="showDateRannge" />
+		<slot name="header" />
+
 		<div class="border border-gray-200 md:rounded-b-lg">
-			<table v-if="loading || displayTable.length > 0" class="w-full table">
+			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
-						<th class="bg-dark pl-4">
-							<input v-if="checkbox" type="checkbox">
+						<th v-if="checkbox" class="pl-4 bg-dark">
+							<input type="checkbox">
 						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
-							class="uppercase text-sm text-light font-bold text-left px-4 bg-dark"
+							class="px-4 text-sm font-bold text-left uppercase text-light bg-dark"
 							:style="`width: ${header.width ? header.width : defaultColWidth}%;`">
 							{{ header.text }}
 						</th>
@@ -23,8 +22,8 @@
 						'border-t border-gray50 py-8 font-normal text-sm h-[52px]',
 						hasOptions ? 'cursor-pointer' : '',
 					]">
-						<td class="pl-4">
-							<input v-if="checkbox" type="checkbox">
+						<td v-if="checkbox" class="pl-4">
+							<input type="checkbox">
 						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
@@ -45,38 +44,11 @@
 		</div>
 	</div>
 </template>
+
 <script lang="ts" setup>
 import gsap from 'gsap'
 
 const props = defineProps({
-	showRadioButtons: {
-		type: Boolean
-	},
-	showDatePicker: {
-		type: Boolean
-	},
-	showSearchBar: {
-		type: Boolean
-	},
-	showDownloadButton: {
-		type: Boolean
-	},
-	showDateRannge: {
-		type: Boolean
-	},
-	showOptions: {
-		type: Boolean,
-		default: false
-	},
-
-	// showOneLayerFilter: {
-	// 	type: Boolean,
-	// 	default: false
-	// },
-	// showTwoLayerFilter: {
-	// 	type: Boolean,
-	// 	default: false
-	// },
 	option: {
 		type: Function,
 		default: () => { }

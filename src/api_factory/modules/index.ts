@@ -1,5 +1,7 @@
 export * from './auth'
 export * from './stats'
 export * from './trips'
+export * from './corporates'
+export * from './staffs'
 export * from '../axios.config'
 // export * from './users'
