@@ -1,7 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '../axios.config'
-import { useUser } from '@/composables/auth/user'
-
-const { user } = useUser()
+import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 
 export const stats_api = {
 	$_rides_count: () => {
