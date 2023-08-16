@@ -46,7 +46,6 @@ interface Datum {
 
 export function getYearlyBarChartData(data: Datum[]): any {
   if (!data || isEmptyObject(data as any)) return {}
-  console.log(data, 'I was called')
 
   const labels = months({ count: 12 })
 
