@@ -19,7 +19,7 @@ import Campaigns from '@/components/headers/modules/Campaigns.vue'
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
-    { routes: ['companies'], component: Companies },
+    { routes: ['companies', 'companies-demo-requests'], component: Companies },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['users'], component: null },
     { routes: ['trips'], component: null },

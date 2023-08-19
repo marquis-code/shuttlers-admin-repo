@@ -37,3 +37,24 @@ export const useGetCorporateList = () => {
 
     return { getCorporatesList, loading, corporatesList }
 }
+
+export const useGetDemoRequest = () => {
+    const loading = ref(false)
+    const corporatesList = ref([] as any)
+    const corporateMetaData = ref({} as any)
+
+    const { $_get_demo_request } = corporates_api
+
+    const getCorporatesDemoRequest = async () => {
+        loading.value = true
+        const res = await $_get_demo_request() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            corporatesList.value = res.data.data
+            corporateMetaData.value = res.data.pagination?.rowCount
+            console.log(corporatesList.value)
+        }
+        loading.value = false
+    }
+
+    return { getCorporatesDemoRequest, loading, corporatesList }
+}

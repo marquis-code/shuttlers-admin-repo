@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 
 const { getCorporatesList, loading, corporatesList } = useGetCorporateList()
