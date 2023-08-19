@@ -1,7 +1,9 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields"
-			:table-data="staffsData">
+		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs">
+			<template #header>
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
+			</template>
 			<template #item="{ item }">
 				<span v-if="item.fname" class="flex items-center gap-4">
 					<div>
@@ -28,8 +30,9 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 
-const { getStaffs, loading, staffsData } = useGetStaffs()
+const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate } = useGetStaffs()
 getStaffs()
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -64,20 +67,7 @@ const tableFields = ref([
         value: 'updated_at'
     }
 ])
-const tableData = ref([
-    {
-        staff: 'Paul Chukwuka',
-        phone: '09094187040',
-        email: 'paul.chukwuka@shuttlers.ng',
-        status: 'Active',
-        role: 'User',
-        created_at: 'July 18, 2023',
-        updated_at: 'July 19, 2023'
-    }
 
-])
 </script>
 
 <style scoped></style>
-
-Jot something down

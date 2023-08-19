@@ -21,10 +21,6 @@ const pageTabs = [
         path: '/companies'
     },
     {
-        name: 'New Sign ups',
-        path: '/companies/interests'
-    },
-    {
         name: 'Demo requests',
         path: '/companies/demo-requests'
     }

@@ -1,13 +1,16 @@
 <template>
-	<div class="flex flex-col">
+	<section class="flex flex-col max-w-full overflow-auto">
 		<slot name="header" />
 
 		<div class="border border-gray-200 md:rounded-b-lg">
 			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
-						<th v-if="checkbox" class="pl-4 bg-dark">
+						<th v-if="checkbox" class="pl-4 bg-dark text-light">
 							<input type="checkbox">
+						</th>
+						<th v-if="hasIndex" class="pl-4 bg-dark text-light">
+							ID
 						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
 							class="px-4 text-sm font-bold text-left uppercase text-light bg-dark"
@@ -25,6 +28,9 @@
 						<td v-if="checkbox" class="pl-4">
 							<input type="checkbox">
 						</td>
+						<td v-if="hasIndex" class="pl-4">
+							{{ index + 1 }}
+						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
 							<slot name="item" :item="({ [key]: key, data } as any)">
@@ -35,14 +41,20 @@
 				</tbody>
 				<tbody v-else>
 					<tr v-for="n in 3" :key="n" class="border-t border-gray50 py-8 font-normal  text-sm h-[52px]">
+						<td v-if="hasIndex" class="pl-4">
+							<Skeleton height="15px" radius="3px" />
+						</td>
 						<td v-for="(header, i) in headers" :key="i" class="px-4">
 							<Skeleton height="15px" radius="3px" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div v-else class="flex items-center justify-center py-8">
+				<span class="text-gray-400">No data available</span>
+			</div>
 		</div>
-	</div>
+	</section>
 </template>
 
 <script lang="ts" setup>
@@ -75,6 +87,10 @@ const props = defineProps({
 		default: false
 	},
 	checkbox: {
+		type: Boolean,
+		default: false
+	},
+	hasIndex: {
 		type: Boolean,
 		default: false
 	},
