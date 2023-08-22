@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+// import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
 
 const emit = defineEmits(['filter'])
