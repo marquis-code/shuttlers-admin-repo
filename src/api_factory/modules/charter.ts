@@ -1,8 +1,8 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 
-export const users_api = {
-    $_recent_signups: () => {
-		const url = '/users?limit=5&page=1&sort[created_at]=desc'
+export const charter_api = {
+    $_recent_charter_requests: () => {
+		const url = '/charters?limit=5'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
