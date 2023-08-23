@@ -52,15 +52,15 @@
 			</div>
 
 			<div>
-				<div v-for="({time, activity}, index) in audits" :key="index" class="gap-x-3 cursor-pointer" @click="setActive(activity)">
-					<div class="flex w-full" :class="[activity === activeActivity ? 'h-16' : 'h-16']">
-						<span v-if="activity === activeActivity" class="block border border-green-500  my-3 ml-2" />
+				<div v-for="(item, index) in audits" :key="index" class="gap-x-3 cursor-pointer" @click="setActive(item)">
+					<div class="flex w-full" :class="[item.activity === activeActivity ? 'h-16' : 'h-16']">
+						<span v-if="item.activity === activeActivity" class="block border border-green-500  my-3 ml-2" />
 						<div class="flex justify-between items-center  py-2 space-x-3 px-3 w-full">
-							<p class="font-medium text-gray-900 text-sm">
-								{{ time }}
+							<p class="font-medium text-gray-900 text-sm   w-2/12">
+								{{ item.time }}
 							</p>
-							<p class="text-gray-600 text-sm">
-								{{ activity }}
+							<p class="text-gray-600 text-sm  w-10/12">
+								{{ item.activity }}
 							</p>
 							<div>
 								<img src="@/assets/icons/greater.svg" alt="" class="">
@@ -94,15 +94,30 @@ const onFilter = (data: Record<FilterKeys, string>) => {
 const audits = ref([
 	{
 		time: '6 minutes ago',
-		activity: 'grace with email address grace.obasi@shuttlers.ng requested to get all users'
+		activity: 'grace with email address grace.obasi@shuttlers.ng requested to get all users',
+        actor: 'Efetobor Otivhia',
+        email: 'eotivhia@valefinance.com',
+        ipAddress: '192.168.17.242',
+        dateAndTime: '22nd August, 2023 10:34 PM',
+        type: 'Normal'
 	},
 	{
 		time: '3 minutes ago',
-		activity: 'Nsikan requested a user\'s data user email: hollansikan@gmail.com'
+		activity: 'Nsikan requested a user\'s data user email: hollansikan@gmail.com',
+        actor: 'Efetobor Otivhia',
+        email: 'eotivhia@valefinance.com',
+        ipAddress: '192.168.17.242',
+        dateAndTime: '22nd August, 2023 10:34 PM',
+        type: 'Normal'
 	},
 	{
 		time: '5 minutes ago',
-		activity: 'Iniekom requested a user\'s data user email: inileo48@gmail.com'
+		activity: 'Iniekom requested a user\'s data user email: inileo48@gmail.com',
+        actor: 'Efetobor Otivhia',
+        email: 'eotivhia@valefinance.com',
+        ipAddress: '192.168.17.242',
+        dateAndTime: '22nd August, 2023 10:34 PM',
+        type: 'Normal'
 	}
 ])
 
