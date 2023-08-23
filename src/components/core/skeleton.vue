@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="pulsate border border-gray-400"
+		class="pulsate shadow"
 		:style="{ width: width, height: height, 'border-radius': radius }"
 	/>
 </template>

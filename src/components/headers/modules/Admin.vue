@@ -1,9 +1,6 @@
 <template>
 	<HeadersHeaderSlot title="Admin controls" pre-title="Overview">
 		<template #actions>
-			<!-- <button class="btn-primary">
-				Add Staff
-			</button> -->
 			<NuxtLink to="/admin/add" class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
 				Add Staff
 			</NuxtLink>

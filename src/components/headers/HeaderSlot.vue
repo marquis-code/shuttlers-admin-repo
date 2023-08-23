@@ -20,12 +20,11 @@
 </template>
 
 <script setup>
-import { defineProps, computed, withDefaults, useSlots } from 'vue'
 
 const slots = useSlots()
 
 const props = defineProps({
-  headerCss: [Array, Object],
+  headerCss: { type: [Array, Object], required: false, default: () => ({}) },
   title: { type: String, required: true },
   preTitle: { type: String, required: false, default: 'Overview' },
   loading: { type: Boolean, required: false, default: false }

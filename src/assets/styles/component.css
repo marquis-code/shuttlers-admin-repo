@@ -1,10 +1,10 @@
 @layer components {
     .field {
-        @apply flex flex-col w-full items-start;
+        @apply flex flex-col items-start w-full;
     }
     label,
     .label {
-        @apply font-medium text-sm text-grey5 mb-2 flex gap-2 items-center;
+        @apply flex items-center gap-2 mb-2 text-sm font-medium text-grey5;
     }
     .input-field {
         @apply w-full !bg-grey px-4 py-[13px] outline-none text-black rounded-lg relative !text-start;
@@ -13,10 +13,10 @@
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
     .btn{
-        @apply px-5 py-3 rounded-md font-bold  cursor-pointer disabled:bg-gray-500 disabled:cursor-not-allowed;
+        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-gray-500 disabled:cursor-not-allowed;
     }
     .btn-primary {
-        @apply btn  text-white bg-primary;
+        @apply text-white btn bg-primary;
     }
     .input-field::placeholder,
     .input-field-search::placeholder {
@@ -26,14 +26,14 @@
         color: var(--grey8);
     }
     .main-body {
-        @apply flex justify-start w-full md:p-6 h-full;
+        @apply flex justify-start w-full h-full md:p-6;
     }
     .content-box {
         @apply bg-light md:rounded-lg px-5 py-6 w-full md:w-auto min-w-[375px] xl:min-w-[450px] md:max-w-[70%]  flex flex-col h-full;
         box-shadow: 0px 0px 64px rgba(0, 0, 0, 0.05);
     }
     .modal-btn {
-        @apply rounded-md px-4 py-3 border border-grey6 font-bold text-dark  w-full mt-6 flex justify-center disabled:bg-gray-500 cursor-pointer disabled:cursor-not-allowed;
+        @apply flex justify-center w-full px-4 py-3 mt-6 font-bold border rounded-md cursor-pointer border-grey6 text-dark disabled:bg-gray-500 disabled:cursor-not-allowed;
     }
 
     .profile-inner{
@@ -46,7 +46,9 @@
         @apply rounded-md shadow-sm bg-white p-6 
     }
 
-    .stat_card{
-        @apply rounded-md shadow-sm bg-white py-6 
+    .stat-card{
+        @apply rounded-md shadow-sm bg-white
     }
+
+
 }

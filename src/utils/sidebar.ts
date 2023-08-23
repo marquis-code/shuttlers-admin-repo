@@ -33,23 +33,24 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
 export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Corporates',
-    routePath: null,
+    routePath: '/companies/insights',
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
     modulePermission: 'CORPORATES',
     children: [
+        {
+        title: 'Insights',
+        routePath: '/companies/insights',
+        description: 'Insights into company requests'
+      },
       {
         title: 'Companies',
         routePath: '/companies',
         description: '',
         excludedPaths: ['/companies/insights']
-      },
-      {
-        title: 'Insights',
-        routePath: '/companies/insights',
-        description: 'Insights into company requests'
       }
+
     ]
   },
   {
@@ -260,7 +261,7 @@ export function getSidebarMenus(menus, permissionsModules, userRole) {
     // eslint-disable-next-line array-callback-return
     .filter((menu) => {
       if (Array.isArray(permissionsModules)) {
-        if (menu.title === 'Dashboard') return true
+        if (menu.title === 'Dashboard' || menu.title === 'Events') return true
         const whiteListRoles = ['admin', 'super_admin']
         if (whiteListRoles.includes(userRole)) return true
 

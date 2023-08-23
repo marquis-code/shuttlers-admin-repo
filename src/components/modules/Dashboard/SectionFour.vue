@@ -1,6 +1,6 @@
 <template>
 	<section class="lg:flex lg:space-x-10 items-start space-y-6 lg:space-y-0">
-		<section class="card h-[400px] lg:w-6/12">
+		<section class="h-[400px] lg:w-6/12 stat-card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Last 5 Transactions
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="card h-[400px] lg:w-6/12">
+		<section class="h-[400px] lg:w-6/12 stat-card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Last 5 User Signups

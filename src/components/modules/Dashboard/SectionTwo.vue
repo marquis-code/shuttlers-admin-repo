@@ -1,25 +1,21 @@
 <template>
-	<section class="stat_card">
-		<div class="border-b">
+	<section class="px-0 card">
+		<header class="border-b">
 			<h3 class="font-medium pb-3.5 px-6">
 				Trips
 			</h3>
-		</div>
+		</header>
 		<div class="p-5">
-			<Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />
+			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(tripsGraphData)" />
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-	chartOptions: {
-		type: Object,
-		required: true
-	},
-	chartData: {
-		type: Object,
-		required: true
-	}
-})
+import { useGetTripsGraph } from '@/composables/modules/trips/fetch'
+import { getYearlyBarChartData } from '@/composables/utils/charts'
+
+const { getTripsGraph, loading, tripsGraphData } = useGetTripsGraph()
+getTripsGraph()
+
 </script>

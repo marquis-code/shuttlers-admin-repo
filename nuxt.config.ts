@@ -43,12 +43,9 @@ export default {
 	},
 	vite: {
 		plugins: [
-			eslintPlugin({ useEslintrc: true }),
-			{ src: '~/plugins/chartjs.js', ssr: false }
+			eslintPlugin({ useEslintrc: true })
 		],
 			optimizeDeps: {
-			// exclude: ['@shuttlershq/shuttlers-ui'],
-			// include: ['@shuttlershq/shuttlers-ui']
 		},
 		server: {
 			watch: {
