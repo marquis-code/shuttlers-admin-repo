@@ -22,10 +22,8 @@ export const useGetStaffs = () => {
     const filteredStaffs = computed(() => {
         const searchValue = filterKeys.search?.value?.toLowerCase()
         const statusValue = filterKeys.status.value
-        console.log(searchValue, statusValue)
         if (searchValue || statusValue) {
             return staffsData.value.filter((staff) => {
-                    console.log(staff.fname.toLowerCase().includes(searchValue))
             return (
                 staff.fname.toLowerCase().includes(searchValue) ||
                 staff.lname.toLowerCase().includes(searchValue) ||
