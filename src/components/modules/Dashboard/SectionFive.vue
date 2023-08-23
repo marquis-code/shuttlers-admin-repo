@@ -6,7 +6,7 @@
 					Our Routes
 				</h3>
 			</div>
-			<div class="space-y-6 pt-4">
+			<div class="">
 				<div v-for="item, index in routes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3">
 					<div class="space-y-6">
 						<div class="space-y-2">
