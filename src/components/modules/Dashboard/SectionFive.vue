@@ -1,6 +1,6 @@
 <template>
 	<section class="lg:flex space-y-6 lg:space-y-0 lg:space-x-10 items-start">
-		<section class="h-[400px] lg:w-6/12 rounded-md shadow-sm bg-white">
+		<section class="h-[400px] lg:w-6/12 card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Our Routes
@@ -38,7 +38,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="card h-[400px] lg:lg:w-6/12">
+		<section class="h-[400px] lg:lg:w-6/12 card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Recent Charter Requests
