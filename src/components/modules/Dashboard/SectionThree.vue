@@ -1,8 +1,8 @@
 <template>
 	<section class="stat_card">
-		<div class="flex items-center justify-between pb-3 border-b">
+		<div class="border-b flex justify-between items-center pb-3">
 			<div>
-				<h3 class="px-6 font-medium">
+				<h3 class="font-medium px-6">
 					Trip rating service
 				</h3>
 			</div>
@@ -11,16 +11,16 @@
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
-			<div class="w-4/12 p-6 space-y-4 bg-white border rounded-md shadow-sm">
-				<div class="flex items-center justify-between">
+			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 w-4/12">
+				<div class="flex justify-between items-center">
 					<div>
-						<p class="font-light text-gray-400">
+						<p class="text-gray-400 font-light">
 							Customer Satisfaction
 						</p>
 						<p><span class="text-3xl font-bold">4.4</span>/5</p>
 					</div>
 					<div>
-						<img src="@/assets/images/rating-star.jpg" alt="" class="p-3 bg-yellow-200 rounded-full h-14 w-14">
+						<img src="@/assets/images/rating-star.jpg" alt="" class="rounded-full h-14 w-14 bg-yellow-200 p-3">
 					</div>
 				</div>
 				<p class="flex items-center space-x-1">
@@ -28,27 +28,27 @@
 						fill="none" stroke="#21d369" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M20.2 7.8l-7.7 7.7-4-4-5.7 5.7" />
 						<path d="M15 7h6v6" />
-					</svg></span> <span class="inline text-green-600">73 ratings</span> in total
+					</svg></span> <span class="text-green-600 inline">73 ratings</span> in total
 				</p>
 			</div>
 			<div>
-				<!-- <Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" /> -->
+				<Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />
 			</div>
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-// const props = defineProps({
-// 	chartOptions: {
-// 		type: Object,
-// 		required: true
-// 	},
-// 	chartData: {
-// 		type: Object,
-// 		required: true
-// 	}
-// })
+const props = defineProps({
+	chartOptions: {
+		type: Object,
+		required: true
+	},
+	chartData: {
+		type: Object,
+		required: true
+	}
+})
 
 const dateSelected = ref(null)
 
