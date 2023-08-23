@@ -7,7 +7,9 @@
 			<table v-if="loading || displayTable.length > 0" class="w-full table">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
-						<th class="bg-dark pl-4"><input v-if="checkbox" type="checkbox"></th>
+						<th class="bg-dark pl-4">
+							<input v-if="checkbox" type="checkbox">
+						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
 							class="uppercase text-sm text-light font-bold text-left px-4 bg-dark"
 							:style="`width: ${header.width ? header.width : defaultColWidth}%;`">
@@ -21,7 +23,9 @@
 						'border-t border-gray50 py-8 font-normal text-sm h-[52px]',
 						hasOptions ? 'cursor-pointer' : '',
 					]">
-						<td class="pl-4"><input v-if="checkbox" type="checkbox"></td>
+						<td class="pl-4">
+							<input v-if="checkbox" type="checkbox">
+						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
 							<slot name="item" :item="({ [key]: key, data } as any)">
