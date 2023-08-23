@@ -1,5 +1,5 @@
 <template>
-	<section class="stat_card">
+	<section class="card">
 		<div class="border-b flex justify-between items-center pb-3">
 			<div>
 				<h3 class="font-medium px-6">

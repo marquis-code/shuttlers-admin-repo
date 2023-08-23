@@ -25,10 +25,6 @@ import { useGetDemoRequest } from '@/composables/modules/corporates/fetch'
 const { getCorporatesDemoRequest, loading, corporatesList } = useGetDemoRequest()
 getCorporatesDemoRequest()
 
-const onFilterUpdate = (data) => {
-	console.log(data)
-}
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']

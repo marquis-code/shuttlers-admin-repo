@@ -43,6 +43,10 @@
         @apply md:text-[32px] text-2xl font-bold flex items-center gap-4
     }     
     .card{
+        @apply rounded-md shadow-sm bg-white p-6 
+    }
+
+    .stat-card{
         @apply rounded-md shadow-sm bg-white
     }
 
