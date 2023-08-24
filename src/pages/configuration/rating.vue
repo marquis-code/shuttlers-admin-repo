@@ -1,5 +1,7 @@
 <template>
-	<h1>Fleet inspection days</h1>
+	<div>
+		configuration
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -8,3 +10,7 @@ definePageMeta({
 	middleware: ['is-authenticated']
 })
 </script>
+
+<style scoped>
+
+</style>

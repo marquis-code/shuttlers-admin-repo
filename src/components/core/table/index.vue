@@ -54,6 +54,7 @@
 				<span class="text-gray-400">No data available</span>
 			</div>
 		</div>
+		<slot name="footer" />
 	</section>
 </template>
 

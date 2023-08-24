@@ -37,7 +37,8 @@
 </template>
 
 <script setup lang="ts">
-// import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { watchDebounced } from '@vueuse/core'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
 
 const emit = defineEmits(['filter'])
@@ -88,7 +89,7 @@ const filterData = {
 	status: ref('')
 }
 
-watch([filterData.search, filterData.dateSelected, filterData.dateRange, filterData.status], (val) => {
+watchDebounced([filterData.search, filterData.dateSelected, filterData.dateRange, filterData.status], (val) => {
 	if (val[0] || val[0] === '') {
 		appendObjectToCurrentURL('q', val[0])
 		onFilter({ type: 'search', value: val[0] })
@@ -105,6 +106,8 @@ watch([filterData.search, filterData.dateSelected, filterData.dateRange, filterD
 		appendObjectToCurrentURL('status', val[3])
 		onFilter({ type: 'status', value: val[3] })
 	}
+}, {
+	debounce: 500
 })
 
 const convertURLParamsToObject = (() => {

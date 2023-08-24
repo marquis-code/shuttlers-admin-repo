@@ -7,7 +7,11 @@
 				</h3>
 			</div>
 			<div v-if="!loading" class="">
+<<<<<<< HEAD
 				<div v-for="item, index in recentRoutes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3">
+=======
+				<div v-for="item, index in recentRoutes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3 cursor-pointer">
+>>>>>>> 68e694e2d970b88dd0e40e5a0c242b2babac0d40
 					<div class="space-y-6 w-10/12">
 						<div class="space-y-2">
 							<p class="text-gray-700">
@@ -69,7 +73,7 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200 ">
-							<tr v-for="charter, index in recentCharter" :key="index" class="h-24">
+							<tr v-for="charter, index in recentCharter" :key="index" class="h-24 cursor-pointer">
 								<td class="px-4 py-2 text-gray-900 font-light text-xs">
 									<span>{{ charter?.pickup_date ?? 'N/A' }}</span>
 								</td>

@@ -26,7 +26,7 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200">
-							<tr v-for="transaction, index in recentTransactions" :key="index" class="h-24 py-10">
+							<tr v-for="transaction, index in recentTransactions" :key="index" class="h-24 py-10 cursor-pointer">
 								<td class="px-4 py-2 text-gray-900 font-light text-xs">
 									{{ transaction?.created_at ?? 'N/A' }}
 								</td>
@@ -72,7 +72,7 @@
 						</thead>
 
 						<tbody class="divide-y divide-gray-200">
-							<tr v-for="item, index in recentSignups" :key="index" class="h-24">
+							<tr v-for="item, index in recentSignups" :key="index" class="h-24 cursor-pointer">
 								<th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center space-x-2">
 									<p class="h-10 w-10 text-center flex justify-center items-center  text-white bg-gray-400 rounded-full">
 										{{ item.fname.charAt(0).toUpperCase() + item.lname.charAt(0).toUpperCase() }}

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		events
+		upcoming events
 	</main>
 </template>
 <script setup lang="ts">
