@@ -2,7 +2,10 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList" :has-index="true">
 			<template #header>
-				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="onFilterUpdate" />
+			</template>
+			<template #footer>
+				<!-- <TablePagination /> -->
 			</template>
 		</Table>
 	</main>
@@ -11,12 +14,8 @@
 <script setup lang="ts">
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 
-const { getCorporatesList, loading, corporatesList } = useGetCorporateList()
+const { getCorporatesList, loading, corporatesList, onFilterUpdate } = useGetCorporateList()
 getCorporatesList()
-
-const onFilterUpdate = (data) => {
-	console.log(data)
-}
 
 definePageMeta({
     layout: 'dashboard',
