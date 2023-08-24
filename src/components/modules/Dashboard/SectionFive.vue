@@ -1,17 +1,13 @@
 <template>
 	<section class="lg:flex space-y-6 lg:space-y-0 lg:space-x-10 items-start">
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
+		<section :class="[loadingRoutes ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Our Routes
 				</h3>
 			</div>
-			<div v-if="!loading" class="">
-<<<<<<< HEAD
-				<div v-for="item, index in recentRoutes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3">
-=======
-				<div v-for="item, index in recentRoutes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3 cursor-pointer">
->>>>>>> 68e694e2d970b88dd0e40e5a0c242b2babac0d40
+			<div v-if="!loadingRoutes" class="">
+				<div v-for="item, index in routesList" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3 cursor-pointer">
 					<div class="space-y-6 w-10/12">
 						<div class="space-y-2">
 							<p class="text-gray-700">
@@ -47,13 +43,13 @@
 				</p>
 			</div>
 		</section>
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:lg:w-6/12 stat-card">
+		<section :class="[loadingCharter ? 'h-[400px]' : '']" class="lg:lg:w-6/12 stat-card">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Recent Charter Requests
 				</h3>
 			</div>
-			<div v-if="!loading">
+			<div v-if="!loadingCharter">
 				<div class="overflow-x-auto">
 					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
 						<thead class="bg-gray-100">
@@ -73,7 +69,7 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200 ">
-							<tr v-for="charter, index in recentCharter" :key="index" class="h-24 cursor-pointer">
+							<tr v-for="charter, index in charterList" :key="index" class="h-24 cursor-pointer">
 								<td class="px-4 py-2 text-gray-900 font-light text-xs">
 									<span>{{ charter?.pickup_date ?? 'N/A' }}</span>
 								</td>
@@ -104,12 +100,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRecentDashboardStats } from '@/composables/modules/dashboard/recentStats'
+import { useGetRecentCharterList } from '@/composables/modules/charter'
+import { useGetRecentRoutesList } from '@/composables/modules/routes'
 
-const { loadRecentStats, loading, recentCharter, recentRoutes } = useRecentDashboardStats()
-loadRecentStats()
-
-console.log(recentCharter.value, 'reecent routes here')
+const { getCorporatesList, loadingCharter, charterList } = useGetRecentCharterList()
+const { getRoutesList, loadingRoutes, routesList } = useGetRecentRoutesList()
+getCorporatesList()
+getRoutesList()
 
 </script>
 

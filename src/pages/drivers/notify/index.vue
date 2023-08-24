@@ -33,7 +33,7 @@
 		</section>
 
 		<div>
-			<Table :show-search-bar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" pagi />
+			<Table :show-search-bar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" />
 		</div>
 	</main>
 </template>

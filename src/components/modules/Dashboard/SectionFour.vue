@@ -1,12 +1,12 @@
 <template>
 	<section class="lg:flex lg:space-x-10 items-start space-y-6 lg:space-y-0">
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card rounded-lg">
+		<section :class="[loadingTransactions ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card rounded-lg">
 			<div class="border-b">
 				<h3 class="font-medium py-4 px-6">
 					Last 5 Transactions
 				</h3>
 			</div>
-			<div v-if="!loading" class="relative flex flex-col min-w-0 break-words w-full">
+			<div v-if="!loadingTransactions" class="relative flex flex-col min-w-0 break-words w-full">
 				<div class="block w-full overflow-x-auto ">
 					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
 						<thead>
@@ -26,7 +26,7 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200">
-							<tr v-for="transaction, index in recentTransactions" :key="index" class="h-24 py-10 cursor-pointer">
+							<tr v-for="transaction, index in transactionsList" :key="index" class="h-24 py-10 cursor-pointer">
 								<td class="px-4 py-2 text-gray-900 font-light text-xs">
 									{{ transaction?.created_at ?? 'N/A' }}
 								</td>
@@ -50,11 +50,11 @@
 				</p>
 			</div>
 		</section>
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
+		<section :class="[loadingSignups ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
 			<h3 class="font-medium py-4 px-6">
 				Last 5 User Signups
 			</h3>
-			<div v-if="!loading" class="relative flex flex-col min-w-0 break-words w-full">
+			<div v-if="!loadingSignups" class="relative flex flex-col min-w-0 break-words w-full">
 				<div class="block w-full overflow-x-auto ">
 					<table class="items-center w-full border-collapse">
 						<thead>
@@ -72,7 +72,7 @@
 						</thead>
 
 						<tbody class="divide-y divide-gray-200">
-							<tr v-for="item, index in recentSignups" :key="index" class="h-24 cursor-pointer">
+							<tr v-for="item, index in signupList" :key="index" class="h-24 cursor-pointer">
 								<th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center space-x-2">
 									<p class="h-10 w-10 text-center flex justify-center items-center  text-white bg-gray-400 rounded-full">
 										{{ item.fname.charAt(0).toUpperCase() + item.lname.charAt(0).toUpperCase() }}
@@ -90,7 +90,9 @@
 					</table>
 				</div>
 				<div class="flex justify-end items-end border-t py-4 pr-3">
-					<NuxtLink to="/users" class="text-xs text-blue-500 flex justify-center items-center gap-x-2">All Users<img class="inline" src="@/assets/icons/source/next.svg" alt=""></NuxtLink>
+					<NuxtLink to="/users" class="text-xs text-blue-500 flex justify-center items-center gap-x-2">
+						All Users<img class="inline" src="@/assets/icons/source/next.svg" alt="">
+					</NuxtLink>
 				</div>
 			</div>
 			<div v-else class="flex justify-center items-center h-full">
@@ -103,12 +105,14 @@
 </template>
 
 <script setup lang="ts">
-import { useRecentDashboardStats } from '@/composables/modules/dashboard/recentStats'
+import { useGetRecentTransactionsList } from '@/composables/modules/transactions'
+import { useGetRecentSignupsList } from '@/composables/modules/user'
 
-const { loadRecentStats, loading, recentTransactions, recentSignups } = useRecentDashboardStats()
-loadRecentStats()
+const { getSignupList, loadingSignups, signupList } = useGetRecentSignupsList()
+const { getTransactionList, loadingTransactions, transactionsList } = useGetRecentTransactionsList()
+getSignupList()
+getTransactionList()
 
-console.log(recentTransactions, 'recent trasnsactions')
 </script>
 
 <style scoped>
