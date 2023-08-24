@@ -75,7 +75,6 @@ export const useGetDemoRequest = () => {
         if (res.type !== 'ERROR') {
             corporatesList.value = res.data.data
             corporateMetaData.value = res.data.pagination?.rowCount
-            console.log(corporatesList.value)
         }
         loading.value = false
     }
