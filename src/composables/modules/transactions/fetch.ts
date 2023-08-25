@@ -13,7 +13,6 @@ export const useGetRecentTransactionsList = () => {
 
         if (res.type !== 'Error') {
             transactionsList.value = res.data
-            console.log(transactionsList.value)
         }
         loadingTransactions.value = false
     }
