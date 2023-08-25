@@ -43,57 +43,34 @@
 				</p>
 			</div>
 		</section>
-		<section :class="[loadingCharter ? 'h-[400px]' : '']" class="lg:lg:w-6/12 stat-card">
-			<div class="border-b">
+		<section class="lg:lg:w-6/12 stat-card">
+			<div class="">
 				<h3 class="font-medium py-4 px-6">
 					Recent Charter Requests
 				</h3>
 			</div>
-			<div v-if="!loadingCharter">
+			<div>
 				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-						<thead class="bg-gray-100">
-							<tr class="px-6">
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>PICKUP DATE</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>FROM</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>TO</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>TRIP TYPE</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 ">
-							<tr v-for="charter, index in charterList" :key="index" class="h-24 cursor-pointer">
-								<td class="px-4 py-2 text-gray-900 font-light text-xs">
-									<span>{{ charter?.pickup_date ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs">
-									<span>{{ charter?.pickup_address ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs">
-									<span>{{ charter?.return_address ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs">
-									<span>{{ charter.return_address ? 'Round Trip' : 'One Way' }}</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<Table :headers="charterHeader" :table-data="charterList" :loading="loadingCharter">
+						<template #item="{ item }">
+							<span v-if="item.pickup_date" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_date }}</span>
+							</span>
+							<span v-if="item.pickup_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_address }}</span>
+							</span>
+							<span v-if="item.return_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.return_address }}</span>
+							</span>
+							<span v-if="item.return_time" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.return_address ? 'Round Trip' : 'One Way' }}</span>
+							</span>
+						</template>
+					</Table>
 				</div>
-				<div class="flex justify-end items-end border-t py-4 pr-3">
-					<NuxtLink to="/charter" class="text-xs text-blue-500 flex justify-center items-center gap-x-2">All Charter Requests <img class="inline" src="@/assets/icons/source/next.svg" alt=""></NuxtLink>
+				<div v-if="!loadingCharter" class="flex justify-end items-end py-4 pr-3">
+					<NuxtLink to="/trips/charter" class="text-xs text-blue-500 flex justify-center items-center gap-x-2">All Charter Requests <img class="inline" src="@/assets/icons/source/next.svg" alt=""></NuxtLink>
 				</div>
-			</div>
-			<div v-else class="flex justify-center items-center h-full">
-				<p class="text-center">
-					Loading...
-				</p>
 			</div>
 		</section>
 	</section>
@@ -107,6 +84,25 @@ const { getCorporatesList, loadingCharter, charterList } = useGetRecentCharterLi
 const { getRoutesList, loadingRoutes, routesList } = useGetRecentRoutesList()
 getCorporatesList()
 getRoutesList()
+
+const charterHeader = [
+	{
+		text: 'Pickup Date',
+		value: 'pickup_date'
+	},
+	{
+		text: 'From',
+		value: 'pickup_address'
+	},
+	{
+		text: 'To',
+		value: 'return_address'
+	},
+	{
+		text: 'Trip Type',
+		value: 'return_time'
+	}
+]
 
 </script>
 

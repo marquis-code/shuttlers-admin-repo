@@ -6,14 +6,14 @@
 			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
-						<th v-if="checkbox" class="pl-4 bg-dark text-light">
+						<th v-if="checkbox" class="pl-4 text-light">
 							<input type="checkbox">
 						</th>
-						<th v-if="hasIndex" class="pl-4 bg-dark text-light">
+						<th v-if="hasIndex" class="pl-4 text-light">
 							ID
 						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
-							class="px-4 text-sm font-bold text-left uppercase text-light bg-dark"
+							class="px-4 text-xs font-medium text-left uppercase text-gray-900"
 							:style="`width: ${header.width ? header.width : defaultColWidth}%;`">
 							{{ header.text }}
 						</th>
