@@ -17,6 +17,10 @@ export const corporates_api = {
 	$_get_demo_request: () => {
 		const url = '/prospective-corporates'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_shuttle_request: () => {
+		const url = '/shuttle-requests?page=1&limit=10&sort[created_at]=desc'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 
 }

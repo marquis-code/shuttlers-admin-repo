@@ -81,3 +81,21 @@ export const useGetDemoRequest = () => {
 
     return { getCorporatesDemoRequest, loading, corporatesList }
 }
+
+export const useGetShuttleRequests = () => {
+    const loading = ref(false)
+    const shuttleRequestsList = ref([] as any)
+
+    const { $_get_shuttle_request } = corporates_api
+
+    const loadShuttleRequest = async () => {
+      loading.value = true
+      const res = await $_get_shuttle_request() as CustomAxiosResponse
+      if (res.type !== 'ERROR') {
+        shuttleRequestsList.value = res.data.data
+    }
+    loading.value = false
+    }
+
+    return { loadShuttleRequest, loading, shuttleRequestsList }
+}
