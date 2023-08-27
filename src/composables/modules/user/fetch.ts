@@ -19,3 +19,23 @@ export const useGetRecentSignupsList = () => {
 
     return { getSignupList, loadingSignups, signupList }
 }
+
+export const useGetUsersList = () => {
+    const loading = ref(false)
+    const usersList = ref([] as any)
+
+    const { $_get_users } = users_api
+
+    const getUsersList = async () => {
+        loading.value = true
+
+        const res = await $_get_users() as CustomAxiosResponse
+
+        if (res.type !== 'Error') {
+            usersList.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { getUsersList, loading, usersList }
+}

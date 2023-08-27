@@ -4,5 +4,9 @@ export const users_api = {
     $_recent_signups: () => {
 		const url = '/users?limit=5&page=1&sort[created_at]=desc'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_users: () => {
+		const url = '/users?limit=20&page=1&metadata=true&sort[id]=desc&related=wallet&status=active'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

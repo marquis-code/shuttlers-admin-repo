@@ -49,8 +49,12 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/companies',
         description: '',
         excludedPaths: ['/companies/insights']
+      },
+      {
+        title: 'Shuttle request',
+        routePath: '/companies/shuttle-requests',
+        description: ''
       }
-
     ]
   },
   {
