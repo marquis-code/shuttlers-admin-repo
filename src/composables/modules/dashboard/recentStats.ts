@@ -15,7 +15,7 @@ export const useRecentDashboardStats = () => {
     const loadRecentStats = async () => {
         loading.value = true
         const res = await Promise.allSettled([$_recent_signups(), $_recent_transactions(), $_recent_routes(), $_recent_charter_requests()]) as unknown as CustomAxiosResponse[]
-        console.log(res, 'ap res resu;lt here')
+
         recentSignups.value = res[0]?.value?.data
         recentTransactions.value = res[1]?.value?.data
         recentRoutes.value = res[2]?.value?.data

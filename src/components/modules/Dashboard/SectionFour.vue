@@ -1,14 +1,15 @@
 <template>
-	<section class="lg:flex lg:space-x-10 items-start space-y-6 lg:space-y-0">
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card rounded-lg">
+	<section class="items-start space-y-6 lg:flex lg:space-x-10 lg:space-y-0">
+		<section :class="[loading ? 'h-[400px]' : '']" class="rounded-lg lg:w-6/12 stat-card">
 			<div class="border-b">
-				<h3 class="font-medium py-4 px-6">
+				<h3 class="px-6 py-4 font-medium">
 					Last 5 Transactions
 				</h3>
 			</div>
-			<div v-if="!loading" class="relative flex flex-col min-w-0 break-words w-full">
+			<div v-if="!loading" class="relative flex flex-col w-full min-w-0 break-words">
 				<div class="block w-full overflow-x-auto ">
-					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+					<Table />
+					<!-- <table class="min-w-full text-sm bg-white divide-y-2 divide-gray-200">
 						<thead>
 							<tr>
 								<th class="py-5 text-[10px] text-gray-500 font-medium">
@@ -27,34 +28,34 @@
 						</thead>
 						<tbody class="divide-y divide-gray-200">
 							<tr v-for="transaction, index in recentTransactions" :key="index" class="h-24 py-10 cursor-pointer">
-								<td class="px-4 py-2 text-gray-900 font-light text-xs">
+								<td class="px-4 py-2 text-xs font-light text-gray-900">
 									{{ transaction?.created_at ?? 'N/A' }}
 								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs">
+								<td class="px-4 py-2 text-xs font-light text-gray-700">
 									{{ transaction?.title ?? 'N/A' }}
 								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs">
+								<td class="px-4 py-2 text-xs font-light text-gray-700">
 									{{ transaction?.user?.fname }} {{ transaction?.user?.lname }}
 								</td>
-								<td class="px-4 py-2 font-light text-xs w-3/12" :style="{color: transaction?.type === 'debit' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}">
+								<td class="w-3/12 px-4 py-2 text-xs font-light" :style="{color: transaction?.type === 'debit' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}">
 									₦{{ transaction?.amount }}
 								</td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 				</div>
 			</div>
-			<div v-else class="flex justify-center items-center h-full">
+			<div v-else class="flex items-center justify-center h-full">
 				<p class="text-center">
 					Loading...
 				</p>
 			</div>
 		</section>
 		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
-			<h3 class="font-medium py-4 px-6">
+			<h3 class="px-6 py-4 font-medium">
 				Last 5 User Signups
 			</h3>
-			<div v-if="!loading" class="relative flex flex-col min-w-0 break-words w-full">
+			<div v-if="!loading" class="relative flex flex-col w-full min-w-0 break-words">
 				<div class="block w-full overflow-x-auto ">
 					<table class="items-center w-full border-collapse">
 						<thead>
@@ -73,27 +74,29 @@
 
 						<tbody class="divide-y divide-gray-200">
 							<tr v-for="item, index in recentSignups" :key="index" class="h-24 cursor-pointer">
-								<th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center space-x-2">
-									<p class="h-10 w-10 text-center flex justify-center items-center  text-white bg-gray-400 rounded-full">
+								<th class="flex items-center p-4 px-6 space-x-2 text-xs text-left align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
+									<p class="flex items-center justify-center w-10 h-10 text-center text-white bg-gray-400 rounded-full">
 										{{ item.fname.charAt(0).toUpperCase() + item.lname.charAt(0).toUpperCase() }}
 									</p>
 									<span class="text-gray-600"> {{ item.fname }} {{ item.lname }}</span>
 								</th>
-								<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-gray-600">
+								<td class="p-4 px-6 text-sm text-gray-600 align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
 									{{ item.email }}
 								</td>
-								<td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-gray-600">
+								<td class="p-4 px-6 text-sm text-gray-600 align-middle border-t-0 border-l-0 border-r-0 whitespace-nowrap">
 									{{ item.active == '1' ? 'Active' : 'Inactive' }}
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-				<div class="flex justify-end items-end border-t py-4 pr-3">
-					<NuxtLink to="/users" class="text-xs text-blue-500 flex justify-center items-center gap-x-2">All Users<img class="inline" src="@/assets/icons/source/next.svg" alt=""></NuxtLink>
+				<div class="flex items-end justify-end py-4 pr-3 border-t">
+					<NuxtLink to="/users" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+						All Users<img class="inline" src="@/assets/icons/source/next.svg" alt="">
+					</NuxtLink>
 				</div>
 			</div>
-			<div v-else class="flex justify-center items-center h-full">
+			<div v-else class="flex items-center justify-center h-full">
 				<p class="text-center">
 					Loading...
 				</p>
@@ -108,7 +111,6 @@ import { useRecentDashboardStats } from '@/composables/modules/dashboard/recentS
 const { loadRecentStats, loading, recentTransactions, recentSignups } = useRecentDashboardStats()
 loadRecentStats()
 
-console.log(recentTransactions, 'recent trasnsactions')
 </script>
 
 <style scoped>
