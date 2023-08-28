@@ -2,6 +2,7 @@
 	<component :is="component" />
 </template>
 <script setup lang="ts">
+import ShuttleRequests from '@/components/headers/modules/Companies/shuttleRequests.vue'
 import Fleet from '@/components/headers/modules/Fleet.vue'
 import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
@@ -15,13 +16,15 @@ import Partners from '@/components/headers/modules/Partners.vue'
 import Companies from '@/components/headers/modules/Companies/index.vue'
 import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
+import Users from '@/components/headers/modules/Users.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
     { routes: ['companies', 'companies-demo-requests'], component: Companies },
     { routes: ['companies-insights'], component: Company_insight },
-    { routes: ['users'], component: null },
+    { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
+    { routes: ['users'], component: Users },
     { routes: ['trips'], component: null },
     { routes: ['partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },

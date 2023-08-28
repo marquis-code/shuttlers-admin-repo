@@ -29,6 +29,7 @@ export const IMAGE_UPLOAD_ENDPOINT = axios.create({
 	baseURL: $IMAGE_UPLOAD_ENDPOINT
 })
 export interface CustomAxiosResponse extends AxiosResponse {
+  value: any
   type?: string;
 }
 

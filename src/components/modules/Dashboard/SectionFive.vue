@@ -1,13 +1,13 @@
 <template>
 	<section class="items-start space-y-6 lg:flex lg:space-y-0 lg:space-x-10">
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
+		<section :class="[loadingRoutes ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
 			<div class="border-b">
 				<h3 class="px-6 py-4 font-medium">
 					Our Routes
 				</h3>
 			</div>
-			<div v-if="!loading" class="">
-				<div v-for="item, index in recentRoutes" :key="index" class="flex items-center justify-between w-full px-6 py-3 overflow-x-auto text-sm cursor-pointer hover:bg-gray-100">
+			<div v-if="!loadingRoutes" class="">
+				<div v-for="item, index in routesList" :key="index" class="flex items-center justify-between w-full px-6 py-3 overflow-x-auto text-sm cursor-pointer hover:bg-gray-100">
 					<div class="w-10/12 space-y-6">
 						<div class="space-y-2">
 							<p class="text-gray-700">
@@ -43,71 +43,68 @@
 				</p>
 			</div>
 		</section>
-		<section :class="[loading ? 'h-[400px]' : '']" class="lg:lg:w-6/12 stat-card">
-			<div class="border-b">
+		<section class="lg:lg:w-6/12 stat-card">
+			<div class="">
 				<h3 class="px-6 py-4 font-medium">
 					Recent Charter Requests
 				</h3>
 			</div>
-			<div v-if="!loading">
+			<div>
 				<div class="overflow-x-auto">
-					<table class="min-w-full text-sm bg-white divide-y-2 divide-gray-200">
-						<thead class="bg-gray-100">
-							<tr class="px-6">
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>PICKUP DATE</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>FROM</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>TO</span>
-								</th>
-								<th class="py-4 text-[10px] text-gray-500 font-medium">
-									<span>TRIP TYPE</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 ">
-							<tr v-for="charter, index in recentCharter" :key="index" class="h-24 cursor-pointer">
-								<td class="px-4 py-2 text-xs font-light text-gray-900">
-									<span>{{ charter?.pickup_date ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-xs font-light text-gray-700">
-									<span>{{ charter?.pickup_address ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-xs font-light text-gray-700">
-									<span>{{ charter?.return_address ?? 'N/A' }}</span>
-								</td>
-								<td class="px-4 py-2 text-xs font-light text-gray-700">
-									<span>{{ charter.return_address ? 'Round Trip' : 'One Way' }}</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<Table :headers="charterHeader" :table-data="charterList" :loading="loadingCharter">
+						<template #item="{ item }">
+							<span v-if="item.pickup_date" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_date }}</span>
+							</span>
+							<span v-if="item.pickup_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_address }}</span>
+							</span>
+							<span v-if="item.return_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.return_address }}</span>
+							</span>
+							<span v-if="item.return_time" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.return_address ? 'Round Trip' : 'One Way' }}</span>
+							</span>
+						</template>
+					</Table>
 				</div>
-				<div class="flex items-end justify-end py-4 pr-3 border-t">
-					<NuxtLink to="/charter" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+				<div v-if="!loadingCharter" class="flex items-end justify-end py-4 pr-3">
+					<NuxtLink to="/trips/charter" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
 						All Charter Requests <img class="inline" src="@/assets/icons/source/next.svg" alt="">
 					</NuxtLink>
 				</div>
-			</div>
-			<div v-else class="flex items-center justify-center h-full">
-				<p class="text-center">
-					Loading...
-				</p>
 			</div>
 		</section>
 	</section>
 </template>
 
 <script setup lang="ts">
-import { useRecentDashboardStats } from '@/composables/modules/dashboard/recentStats'
+import { useGetRecentCharterList } from '@/composables/modules/charter'
+import { useGetRecentRoutesList } from '@/composables/modules/routes'
 
-const { loadRecentStats, loading, recentCharter, recentRoutes } = useRecentDashboardStats()
-loadRecentStats()
+const { getCorporatesList, loadingCharter, charterList } = useGetRecentCharterList()
+const { getRoutesList, loadingRoutes, routesList } = useGetRecentRoutesList()
+getCorporatesList()
+getRoutesList()
 
-console.log(recentCharter.value, 'reecent routes here')
+const charterHeader = [
+	{
+		text: 'Pickup Date',
+		value: 'pickup_date'
+	},
+	{
+		text: 'From',
+		value: 'pickup_address'
+	},
+	{
+		text: 'To',
+		value: 'return_address'
+	},
+	{
+		text: 'Trip Type',
+		value: 'return_time'
+	}
+]
 
 </script>
 

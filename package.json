@@ -50,7 +50,6 @@
 		"postcss-custom-properties": "^12.1.11",
 		"vue-chartjs": "^5.2.0",
 		"vue-datepicker-next": "^1.0.3",
-		"vue3-otp-input": "^0.4.1",
-		"yarn": "^1.22.19"
+		"vue3-otp-input": "^0.4.1"
 	}
 }
