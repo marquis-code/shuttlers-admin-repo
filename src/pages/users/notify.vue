@@ -1,6 +1,6 @@
 <template>
 	<div>
-		users batch
+		users norify
 	</div>
 </template>
 
