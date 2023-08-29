@@ -8,9 +8,5 @@ export const users_api = {
 	$_get_users: () => {
 		const url = '/users?limit=20&page=1&metadata=true&sort[id]=desc&related=wallet&status=active'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-	},
-	$_get_batch_booking: () => {
-		const url = '/batch-bookings?limit=10&page=1&metadata=true'
-		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
