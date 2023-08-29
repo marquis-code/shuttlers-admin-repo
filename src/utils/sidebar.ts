@@ -78,7 +78,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       },
       {
         title: ' Batch Bookings',
-        routePath: '/users/batch',
+        routePath: '/users/batch-booking',
         description: ''
       }
     ]

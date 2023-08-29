@@ -39,3 +39,23 @@ export const useGetUsersList = () => {
 
     return { getUsersList, loading, usersList }
 }
+
+export const useGetBatchBookingList = () => {
+    const loading = ref(false)
+    const batchBookingList = ref([] as any)
+
+    const { $_get_batch_booking } = users_api
+
+    const getBatchBookingList = async () => {
+        loading.value = true
+
+        const res = await $_get_batch_booking() as CustomAxiosResponse
+
+        if (res.type !== 'Error') {
+            batchBookingList.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { getBatchBookingList, loading, batchBookingList }
+}
