@@ -2,23 +2,23 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}"/>
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.fname">
-					<Avatar :name="item.data.fname" bg="#B1C2D9" />
-				</div>
-				<span v-if="item.lname" class="flex items-center gap-4">
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
+				<span v-if="item.pickup" class="flex items-center gap-4">
+					<span>{{ item.data.pickup }}</span>
 				</span>
-				<span v-if="item.wallet" class="flex items-center gap-4">
-					<span>{{ item.data.wallet.amount }}</span>
+				<span v-if="item.dropoff" class="flex items-center gap-4">
+					<span>{{ item.data.dropoff }}</span>
 				</span>
-				<span v-if="item.corporate_id" class="flex items-center gap-4">
-					<span>{{ item.data.wallet.credit_amount }}</span>
+				<span v-if="item.routeCode" class="flex items-center gap-4">
+					<span>{{ item.data.routeCode }}</span>
 				</span>
-				<span class="text-white text-xs rounded-lg" v-else-if="item.active" :class="[item.data.active == 1 ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
+				<span v-if="item.userCount" class="flex items-center gap-4">
+					<span>{{ item.data.userCount }}</span>
+				</span>
+				<span v-if="item.status" class="text-white text-xs rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1']">
+					{{ item.data.status }}
 				</span>
 				<span v-else-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetBatchBookingList } from '@/composables/modules/user/fetch'
+import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
 
 const { getBatchBookingList, loading, batchBookingList } = useGetBatchBookingList()
 getBatchBookingList()
@@ -42,23 +42,23 @@ definePageMeta({
 const tableFields = ref([
     {
         text: 'PICKUP',
-        value: 'fname'
+        value: 'pickup'
     },
     {
         text: 'DROPOFF',
-        value: 'lname'
+        value: 'dropoff'
     },
     {
         text: 'ROUTE CODE',
-        value: 'created_at'
+        value: 'routeCode'
     },
     {
         text: 'USERS COUNT',
-        value: 'requested_by'
+        value: 'userCount'
     },
     {
         text: 'STATUS',
-        value: 'corporate_id'
+        value: 'status'
     },
     {
         text: 'CREATED AT',
