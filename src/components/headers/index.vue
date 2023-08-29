@@ -16,7 +16,10 @@ import Partners from '@/components/headers/modules/Partners.vue'
 import Companies from '@/components/headers/modules/Companies/index.vue'
 import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
-import Users from '@/components/headers/modules/Users.vue'
+import Users from '@/components/headers/modules/Users/index.vue'
+import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
+import BatchBooking from '@/components/headers/modules/BatchBooking/index.vue'
+import CreateBatchBooking from '@/components/headers/modules/BatchBooking/create-batch-booking.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -25,6 +28,9 @@ const componentRouteArray = [
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
+    { routes: ['users-notify'], component: NotifyUsers },
+    { routes: ['bookings'], component: BatchBooking },
+    { routes: ['bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['trips'], component: null },
     { routes: ['partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },
