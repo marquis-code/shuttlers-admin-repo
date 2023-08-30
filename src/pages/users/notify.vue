@@ -72,10 +72,10 @@
 					<input type="checkbox">
 				</div>
 				<div class="px-10 pb-10">
-					<div v-for="({name, email, phone}, index) in users" :key="index" class="flex justify-between items-center border-b py-6">
+					<div v-for="({fname, email, phone}, index) in usersList" :key="index" class="flex justify-between items-center border-b py-6">
 						<div class="flex items-center gap-x-3">
 							<div class="flex justify-center items-center bg-gray-300 text-center text-white rounded-full h-10 w-10">
-								<span class="text-sm">{{ name }}</span>
+								<span class="text-sm">{{ fname }}</span>
 							</div>
 							<div>
 								<p class="text-sm font-medium">
@@ -97,6 +97,9 @@
 </template>
 
 <script setup lang="ts">
+import { useGetUsersList } from '@/composables/modules/user/fetch'
+const { getUsersList, loading, usersList } = useGetUsersList()
+getUsersList()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
