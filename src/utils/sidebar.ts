@@ -47,8 +47,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Companies',
         routePath: '/companies',
-        description: '',
-        excludedPaths: ['/companies/insights']
+        description: ''
       },
       {
         title: 'Shuttle request',
@@ -73,12 +72,16 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Manage Users',
         routePath: '/users',
-        description: '',
-        excludedPaths: ['/users/insights']
+        description: ''
       },
       {
         title: ' Batch Bookings',
-        routePath: '/bookings',
+        routePath: '/users/bookings',
+        description: ''
+      },
+      {
+        title: ' Batch Refund',
+        routePath: '/users/batch-refund',
         description: ''
       }
     ]
