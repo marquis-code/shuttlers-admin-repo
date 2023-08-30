@@ -1,13 +1,13 @@
 <template>
-	<div class="lg:flex justify-between space-y-10 lg:space-y-0">
-		<div class="lg:w-6/12 p-6 space-y-6">
+	<div class="justify-between space-y-10 lg:flex lg:space-y-0">
+		<div class="p-6 space-y-6 lg:w-6/12">
 			<div class="w-full">
-				<input type="text" placeholder="Enter notification title" class=" py-3 rounded-md px-4 bg-white placeholder-gray-400 outline-none border w-full">
+				<input type="text" placeholder="Enter notification title" class="w-full px-4 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
 			</div>
-			<div class="w-full rounded-lg bg-white">
-				<div class="flex justify-between items-center border-b pr-6 py-3">
+			<div class="w-full bg-white rounded-lg">
+				<div class="flex items-center justify-between py-3 pr-6 border-b">
 					<div>
-						<input type="text" placeholder="Add users" class="outline-none pl-4 bg-white">
+						<input type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
 					</div>
 					<p class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
 						0 user selected
@@ -16,22 +16,22 @@
 				<div class="p-6">
 					<ModulesUsersTextEditor />
 				</div>
-				<div class="flex justify-between items-center px-6 pb-6">
+				<div class="flex items-center justify-between px-6 pb-6">
 					<div class="flex items-center gap-x-4">
 						<div class="">
-							<label for="AcceptConditions" class="relative h-8 w-14 cursor-pointer">
-								<input id="AcceptConditions" type="checkbox" class="peer sr-only">
+							<label for="AcceptConditions" class="relative h-8 cursor-pointer w-14">
+								<input id="AcceptConditions" type="checkbox" class="sr-only peer">
 
 								<span
-									class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-green-500"
+									class="absolute inset-0 transition bg-gray-300 rounded-full peer-checked:bg-green-500"
 								/>
 
 								<span
-									class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
+									class="absolute inset-y-0 w-6 h-6 m-1 transition-all bg-white rounded-full start-0 peer-checked:start-6"
 								/>
 							</label>
 						</div>
-						<span class="font-medium text-sm pb-2">
+						<span class="pb-2 text-sm font-medium">
 							Enable sms notification
 						</span>
 					</div>
@@ -43,17 +43,17 @@
 				</div>
 			</div>
 		</div>
-		<div class="lg:w-6/12 p-6 space-y-6">
-			<div class="w-full relative">
+		<div class="p-6 space-y-6 lg:w-6/12">
+			<div class="relative w-full">
 				<div class="w-full">
-					<input type="text" placeholder="Search users" class=" py-3 rounded-md px-3 bg-white placeholder-gray-400 outline-none border w-full">
+					<input type="text" placeholder="Search users" class="w-full px-3 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
 				</div>
 				<div class="absolute top-1.5 right-3">
 					<div class="flex items-center gap-x-3">
 						<p class="text-sm">
 							Filter by:
 						</p>
-						<select class="border outline-none px-3 py-2 text-sm rounded-full">
+						<select class="px-3 py-2 text-sm border rounded-full outline-none">
 							<option class="text-xs" value="all">
 								All
 							</option>
@@ -64,17 +64,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="rounded-lg bg-white">
-				<div class="flex justify-end items-center gap-x-3 border-b pb-6 pr-6 pt-6">
+			<div class="bg-white rounded-lg">
+				<div class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
 					<p class="text-sm text-green-500">
 						select all users
 					</p>
 					<input type="checkbox">
 				</div>
 				<div class="px-10 pb-10">
-					<div v-for="({fname, email, phone}, index) in usersList" :key="index" class="flex justify-between items-center border-b py-6">
+					<div v-for="({fname, email, phone}, index) in usersList" :key="index" class="flex items-center justify-between py-6 border-b">
 						<div class="flex items-center gap-x-3">
-							<div class="flex justify-center items-center bg-gray-300 text-center text-white rounded-full h-10 w-10">
+							<div class="flex items-center justify-center w-10 h-10 text-center text-white bg-gray-300 rounded-full">
 								<span class="text-sm">{{ fname }}</span>
 							</div>
 							<div>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGetUsersList } from '@/composables/modules/user/fetch'
+import { useGetUsersList } from '@/composables/modules/users/fetch'
 const { getUsersList, loading, usersList } = useGetUsersList()
 getUsersList()
 definePageMeta({

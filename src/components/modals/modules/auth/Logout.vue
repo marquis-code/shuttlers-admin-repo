@@ -5,21 +5,21 @@
 		:no-close-btn="false"
 		class="text-center"
 	>
-		<div class="flex flex-col justify-center items-center">
+		<div class="flex flex-col items-center justify-center">
 			<icon name="warning" class="w-24 mb-9" />
-			<h1 class="font-bold text-2xl">
+			<h1 class="text-2xl font-bold">
 				Logout
 			</h1>
 
-			<p class="text-grey4 mt-2">
+			<p class="mt-2 text-grey4">
 				Are you sure you want to logout?
 			</p>
 
 			<div class="flex flex-col w-full">
-				<button class="modal-btn border-red bg-red text-light hover:bg-red w-full" @click="logOut">
+				<button class="w-full modal-btn border-red bg-red text-light hover:bg-red" @click="logOut">
 					Logout
 				</button>
-				<button class="modal-btn text-dark mt-3 w-full" @click="useAuthModal().closeLogout()">
+				<button class="w-full mt-3 modal-btn text-dark" @click="useAuthModal().closeLogout()">
 					Cancel
 				</button>
 			</div>
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { useAuthModal } from '@/composables/core/modals'
-import { useUser } from '@/composables/user/index'
+import { useUser } from '@/composables/auth/user'
 import Modal from '@/components/core/modal/Modal.vue'
 
 const { logOut } = useUser()

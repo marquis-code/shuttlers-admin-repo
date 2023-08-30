@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList">
+		<Table :loading="loading" :headers="tableFields" :table-data="refundList">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
 			</template>
@@ -30,10 +30,10 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
+import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
 
-const { getBatchBookingList, loading, batchBookingList } = useGetBatchBookingList()
-getBatchBookingList()
+const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
+getBatchRefundList()
 
 definePageMeta({
     layout: 'dashboard',

@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { useGetRecentTransactionsList } from '@/composables/modules/transactions'
-import { useGetRecentSignupsList } from '@/composables/modules/user'
+import { useGetRecentSignupsList } from '@/composables/modules/users/fetch'
 
 const { getSignupList, loadingSignups, signupList } = useGetRecentSignupsList()
 const { getTransactionList, loadingTransactions, transactionsList } = useGetRecentTransactionsList()

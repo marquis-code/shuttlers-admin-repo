@@ -19,6 +19,7 @@ import Campaigns from '@/components/headers/modules/Campaigns.vue'
 import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
 import UsersInsights from '@/components/headers/modules/Users/insights.vue'
+import BatchRefund from '@/components/headers/modules/Users/batch-refund.vue'
 import BatchBooking from '@/components/headers/modules/BatchBooking/index.vue'
 import CreateBatchBooking from '@/components/headers/modules/BatchBooking/create-batch-booking.vue'
 
@@ -29,6 +30,7 @@ const componentRouteArray = [
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
+    { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
     { routes: ['users-bookings'], component: BatchBooking },
