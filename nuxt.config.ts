@@ -7,6 +7,9 @@ export default {
 	app: {
 	head: {
 		title: 'Test',
+		script: [
+			{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/'}
+		  ],
 		htmlAttrs: { lang: 'en' },
 		meta: [
 			{ charset: 'utf-8' },
