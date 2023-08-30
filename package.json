@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@heroicons/vue": "^2.0.18",
 		"@shuttlershq/shuttlers-ui": "^0.0.14",
+		"@vueup/vue-quill": "^1.2.0",
 		"@vueuse/core": "^10.2.1",
 		"axios": "^1.4.0",
 		"chart.js": "^4.3.3",

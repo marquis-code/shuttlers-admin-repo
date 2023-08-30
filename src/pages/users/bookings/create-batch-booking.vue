@@ -1,5 +1,6 @@
 <template>
 	<main>
+<<<<<<< HEAD:src/pages/users/bookings/create-batch-booking.vue
 		<div class="mb-6">
 			<button class="px-3 py-2 text-xs text-gray-900 bg-gray-200 rounded-lg text" @click="router.go(-1)">
 				Go back
@@ -78,6 +79,9 @@
 				</div>
 			</form>
 		</div>
+=======
+		<ModulesCreateBatchBooking />
+>>>>>>> 44dc2adf1bad90c44115b335cdd7ce53c39fa409:src/pages/bookings/create-batch-booking.vue
 	</main>
 </template>
 
@@ -85,11 +89,6 @@
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
-})
-const router = useRouter()
-
-const form = ref({
-	bookingDate: ''
 })
 </script>
 
