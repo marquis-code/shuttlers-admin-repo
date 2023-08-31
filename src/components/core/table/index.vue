@@ -1,5 +1,5 @@
 <template>
-	<section class="flex flex-col max-w-full overflow-auto">
+	<section class="flex flex-col max-w-full overflow-auto bg-white">
 		<slot name="header" />
 
 		<div class="border border-gray-200 md:rounded-b-lg">
@@ -13,7 +13,7 @@
 							ID
 						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
-							class="px-4 text-xs font-medium text-left uppercase text-gray-900"
+							class="px-4 text-xs font-medium text-left text-gray-900 uppercase"
 							:style="`width: ${header.width ? header.width : defaultColWidth}%;`">
 							{{ header.text }}
 						</th>
@@ -22,7 +22,7 @@
 				<div />
 				<tbody v-if="!loading">
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
-						'border-t border-gray50 py-8 font-normal text-sm h-[52px]',
+						'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
 					]">
 						<td v-if="checkbox" class="pl-4">

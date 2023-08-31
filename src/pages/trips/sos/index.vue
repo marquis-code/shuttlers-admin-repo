@@ -1,12 +1,9 @@
 <template>
 	<main class="">
 		<Table :loading="loadingSos" :headers="tableFields" :table-data="formattedSosList" :has-index="true">
-			<!-- <template #header>
-				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="" />
-			</template> -->
-			<!-- <template #footer>
-				<TablePagination />
-			</template> -->
+			<template #header>
+				<TableFilter :filter-type="{showSearchBar:true }" />
+			</template>
 
 			<template #item="{ item }">
 				<span v-if="item.created_at">
@@ -16,6 +13,9 @@
 					{{ useDateFormat(item.data.updated_at, "HH:MM AA").value }}
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingSos" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -24,7 +24,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useSosList } from '@/composables/modules/commute/fetch'
 
-const { getSosList, loadingSos, sosList } = useSosList()
+const { getSosList, loadingSos, sosList, page, total } = useSosList()
 getSosList()
 
 const formattedSosList = computed(() =>

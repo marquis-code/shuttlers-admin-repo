@@ -44,7 +44,7 @@ export const usePagination = () => {
         fetchFunc = data
     }
 
-    return { metaObject, showLoadMore, loadMore, setFunction, next, prev }
+    return { metaObject, showLoadMore, loadMore, setFunction, next, prev, moveTo }
 }
 
 export const useTableFilter = (filterData: Record<string, Ref>) => {
