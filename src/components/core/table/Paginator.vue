@@ -7,28 +7,23 @@
 
 		<section class="flex gap-4">
 			<nav class="inline-flex -space-x-px rounded-md shadow-sm isolate" aria-label="Pagination">
-				<a href="#" class="relative inline-flex items-center px-2 py-2 text-gray-400 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+				<button type="button" class="prev" @click="emit('prev')">
 					<ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
-				</a>
-				<a v-for="n in generateNumberArray.value" :key="n" href="#" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">{{ n }}</a>
-				<a href="#" class="relative inline-flex items-center px-2 py-2 text-gray-400 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+				</button>
+				<button v-for="n in generateNumberArray.value" :key="n" type="button" :class="[currentPage === n ? 'bg-green7 !text-light':'', 'moveTo']" @click="emit('moveTo', n)">
+					{{ n }}
+				</button>
+				<button type="button" class="next" @click="emit('next')">
 					<ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
-				</a>
+				</button>
 			</nav>
-
-			<!-- <button class="btn-outline " :disabled="currentPage === 1" @click="emit('prev')">
-				Previous
-			</button>
-			<button class="btn-outline" :disabled="currentPage === totalPages" @click="emit('next')">
-				Next
-			</button> -->
 		</section>
 	</footer>
 </template>
 
 <script setup lang="ts">
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
-const emit = defineEmits(['next', 'prev', 'first'])
+const emit = defineEmits(['next', 'prev', 'moveTo'])
 const props = defineProps({
     loading: {
         type: Boolean,
@@ -55,5 +50,13 @@ const generateNumberArray = computed(() => {
 </script>
 
 <style scoped>
-
+.prev{
+@apply  relative inline-flex items-center px-2 py-2 text-gray-400 rounded-l-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0
+}
+.next{
+@apply  relative inline-flex items-center px-2 py-2 text-gray-400 rounded-r-md ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0
+}
+.moveTo{
+@apply relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300  focus:z-20 focus:outline-offset-0
+}
 </style>

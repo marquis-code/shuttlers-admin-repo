@@ -19,7 +19,7 @@ export const usePagination = () => {
 		return sigh > 0
     })
     const next = async () => {
-        if (metaObject.page.value >= (metaObject.total.value / metaObject.page_size.value)) return
+        if (metaObject.page.value === metaObject.total.value) return
         metaObject.page.value++
         await fetchFunc(false)
     }

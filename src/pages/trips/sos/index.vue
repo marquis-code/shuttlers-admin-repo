@@ -14,7 +14,7 @@
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingSos" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingSos" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -24,7 +24,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useSosList } from '@/composables/modules/commute/fetch'
 
-const { getSosList, loadingSos, sosList, page, total } = useSosList()
+const { getSosList, loadingSos, sosList, page, total, prev, next, moveTo } = useSosList()
 getSosList()
 
 const formattedSosList = computed(() =>

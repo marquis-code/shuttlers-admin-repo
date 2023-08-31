@@ -4,6 +4,7 @@ import { auth_api } from '@/api_factory/modules/auth'
 
 const { updateUser, setToken } = useUser()
 const error = ref('')
+
 export const useSignInUserExternally = () => {
     const sign_user_in = async (token: string, redirect = '/dashboard/events/manage/upcoming') => {
         error.value = ''
@@ -11,6 +12,7 @@ export const useSignInUserExternally = () => {
             error.value = 'Missing token'
             return
         }
+        console.log(token)
         await setToken(token)
 
         const res = await auth_api.$_getUserProfile() as any

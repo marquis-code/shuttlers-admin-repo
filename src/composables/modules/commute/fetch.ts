@@ -4,7 +4,7 @@ import { usePagination } from '@/composables/utils/table'
 export const useSosList = () => {
     const loadingSos = ref(false)
     const sosList = ref([] as Record<string, any>[])
-    const { prev, metaObject, next, moveTo } = usePagination()
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_sos } = sos_api
 
     const filterData = {
@@ -22,6 +22,7 @@ export const useSosList = () => {
         }
         loadingSos.value = false
     }
+    setFunction(getSosList)
 
     return { getSosList, loadingSos, sosList, prev, ...metaObject, next, moveTo }
 }
