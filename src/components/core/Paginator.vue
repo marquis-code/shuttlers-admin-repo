@@ -1,6 +1,6 @@
 <template>
 	<footer class="flex items-center justify-between w-full mb-12">
-		<span v-if="!loading" class="text-sm">
+		<span v-if="!loading" class="text-sm">added 
 			Showing {{ currentPage }} of {{ totalPages }}
 		</span>
 		<span v-else />
