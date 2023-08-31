@@ -7,11 +7,21 @@
 			<!-- <template #footer>
 				<TablePagination />
 			</template> -->
+
+			<template #item="{ item }">
+				<span v-if="item.created_at">
+					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+				</span>
+				<span v-else-if="item.updated_at">
+					{{ useDateFormat(item.data.updated_at, "HH:MM AA").value }}
+				</span>
+			</template>
 		</Table>
 	</main>
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import { useSosList } from '@/composables/modules/commute/fetch'
 
 const { getSosList, loadingSos, sosList } = useSosList()
@@ -52,15 +62,15 @@ const tableFields = ref([
     },
     {
         text: 'STATUS',
-        value: 'corporate_phone'
+        value: 'status'
     },
     {
         text: 'DATE',
-        value: 'corporate_phone'
+        value: 'created_at'
     },
     {
         text: 'TIME',
-        value: 'corporate_phone'
+        value: 'updated_at'
     }
 
 ])
