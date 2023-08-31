@@ -6,10 +6,10 @@ export const useGetEvents = () => {
 
     const { $_get_events } = events_api
 
-    const getEventsList = async () => {
+    const getEventsList = async (params) => {
         loadingEvents.value = true
 
-        const res = await $_get_events() as CustomAxiosResponse
+        const res = await $_get_events(params) as CustomAxiosResponse
 
         if (res.type !== 'Error') {
             eventsList.value = res.data.data

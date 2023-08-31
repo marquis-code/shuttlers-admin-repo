@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingEvents" :headers="tableFields" :table-data="upcomingEventsList">
+		<Table :loading="loadingEvents" :headers="tableFields" :table-data="eventsList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 			</template>
@@ -31,10 +31,14 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetUpcomingEvents } from '@/composables/modules/events/fetch'
+import { useGetEvents } from '@/composables/modules/events/fetch'
 
-const { getUpcomingEventsList, loadingUpcomingEvents, upcomingEventsList } = useGetUpcomingEvents()
-getUpcomingEventsList()
+const { getEventsList, loadingEvents, eventsList } = useGetEvents()
+const params = ref({
+	status: 'accepted'
+})
+getEventsList(params.value as any)
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']

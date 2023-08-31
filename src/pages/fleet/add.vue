@@ -5,7 +5,7 @@
 				Go back
 			</button>
 		</div>
-		<div class="bg-white rounded-md border w-7/12">
+		<div class="bg-white rounded-md border w-8/12">
 			<div class="px-6 py-5">
 				<p class="font-medium">
 					Add a New Vehicle
