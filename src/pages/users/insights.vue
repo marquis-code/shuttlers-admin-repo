@@ -7,7 +7,6 @@
 			<div class="w-6/12">
 				<ModulesUsersRecentUsers />
 			</div>
-			<div class=""></div>
 		</div>
 	</div>
 </template>
