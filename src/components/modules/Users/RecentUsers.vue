@@ -14,7 +14,7 @@
 							<span class="text-sm">{{ item.data.email }}</span>
 						</span>
 						<span v-if="item.active" class="flex items-center gap-4">
-							<span :style="{color: item.data.active !== '1' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}" class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
+							<span :style="{color: item.data.active !== '1' ? 'green' : 'red'}" class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
 						</span>
 					</template>
 				</Table>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGetRecentSignupsList } from '@/composables/modules/user'
+import { useGetRecentSignupsList } from '@/composables/modules/users/fetch'
 const { getSignupList, loadingSignups, signupList } = useGetRecentSignupsList()
 getSignupList()
 

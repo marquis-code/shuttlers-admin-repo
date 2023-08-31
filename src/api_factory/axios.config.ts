@@ -36,6 +36,15 @@ export interface CustomAxiosResponse extends AxiosResponse {
 const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH]
 
 instanceArray.forEach((instance) => {
+	instance.interceptors.request.use(
+		(config) => {
+			if (token.value) {
+				config.headers.Authorization = `Bearer ${token.value}`
+			}
+			return config
+		}
+	)
+
 	instance.interceptors.response.use(
 	(response:CustomAxiosResponse) => {
 		return response

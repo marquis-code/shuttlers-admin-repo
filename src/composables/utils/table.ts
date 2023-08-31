@@ -19,7 +19,7 @@ export const usePagination = () => {
 		return sigh > 0
     })
     const next = async () => {
-        if (metaObject.page.value >= (metaObject.total.value / metaObject.page_size.value)) return
+        if (metaObject.page.value === metaObject.total.value) return
         metaObject.page.value++
         await fetchFunc(false)
     }
@@ -27,6 +27,11 @@ export const usePagination = () => {
     const prev = async () => {
         if (metaObject.page.value <= 1) return
         metaObject.page.value--
+        await fetchFunc(false)
+    }
+    const moveTo = async (page: number) => {
+        if (page === 0) return
+        metaObject.page.value = page
         await fetchFunc(false)
     }
 
@@ -39,5 +44,11 @@ export const usePagination = () => {
         fetchFunc = data
     }
 
-    return { metaObject, showLoadMore, loadMore, setFunction, next, prev }
+    return { metaObject, showLoadMore, loadMore, setFunction, next, prev, moveTo }
+}
+
+export const useTableFilter = (filterData: Record<string, Ref>) => {
+    return Object.keys(filterData)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)
+         .join('&')
 }

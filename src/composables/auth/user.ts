@@ -5,13 +5,13 @@ const runtimeData = {
 	auth: ref(),
 	user: ref({} as any),
 	token: ref(''),
-	redirect: ref(null)
+	redirect: ref('')
 }
 const localstorageDate = {
 	auth: ref(),
 	user: useStorage('user', {} as any),
 	token: useStorage('token', ''),
-	redirect: useStorage('redirect', null)
+	redirect: useStorage('redirect', '')
 }
 watch(runtimeData.user, (val) => {
 	Object.keys(val).forEach((key) => {
@@ -45,6 +45,10 @@ export const useUser = () => {
 		runtimeData.user.value = null
 		location.href = '/auth/login'
 	}
+	const setToken = (token: string) => {
+		runtimeData.token.value = token
+		localstorageDate.token.value = token
+	}
 	const createUser = (user: any) => {
 		runtimeData.user.value = user
 		localstorageDate.token.value = user?.token?.token
@@ -54,6 +58,10 @@ export const useUser = () => {
 		runtimeData.user.value = user
 		localstorageDate.user.value = user
 	}
+		const setRedirect = (redirect: string) => {
+		runtimeData.redirect.value = redirect
+		localstorageDate.redirect.value = redirect
+	}
 
-	return { id, isLoggedIn, createUser, ...runtimeData, logOut, updateUser }
+	return { id, isLoggedIn, createUser, ...runtimeData, logOut, updateUser, setToken, setRedirect }
 }

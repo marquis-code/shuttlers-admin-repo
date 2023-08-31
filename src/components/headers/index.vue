@@ -21,8 +21,9 @@ import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
 import UsersInsights from '@/components/headers/modules/Users/insights.vue'
 import BatchRefund from '@/components/headers/modules/Users/batch-refund.vue'
-import BatchBooking from '@/components/headers/modules/BatchBooking/index.vue'
-import CreateBatchBooking from '@/components/headers/modules/BatchBooking/create-batch-booking.vue'
+import BatchBooking from '@/components/headers/modules/Users/BatchBooking/index.vue'
+import CreateBatchBooking from '@/components/headers/modules/Users/BatchBooking/create-batch-booking.vue'
+import sos from '@/components/headers/modules/commute/sos.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -48,7 +49,8 @@ const componentRouteArray = [
     { routes: ['campaigns'], component: null },
     { routes: ['admin'], component: Admin },
     { routes: ['configuration'], component: null },
-    { routes: ['campaigns'], component: Campaigns }
+    { routes: ['campaigns'], component: Campaigns },
+    { routes: ['trips-sos'], component: sos }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
