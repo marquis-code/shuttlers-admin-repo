@@ -3,7 +3,8 @@
 </template>
 <script setup lang="ts">
 import ShuttleRequests from '@/components/headers/modules/Companies/shuttleRequests.vue'
-import Fleet from '@/components/headers/modules/Fleet.vue'
+import Fleets from '@/components/headers/modules/Fleets/index.vue'
+import AddFleets from '@/components/headers/modules/Fleets/AddFleets.vue'
 import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
 import Admin from '@/components/headers/modules/Admin.vue'
@@ -41,7 +42,8 @@ const componentRouteArray = [
     { routes: ['drivers'], component: Drivers },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['transactions'], component: Transactions },
-    { routes: ['fleet', 'fleet-inspection-days'], component: Fleet },
+    { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },
+    { routes: ['fleet-add'], component: AddFleets },
     { routes: ['referral'], component: Referral },
     { routes: ['promotion'], component: Promotion },
     { routes: ['campaigns'], component: null },
