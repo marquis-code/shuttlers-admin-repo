@@ -1,8 +1,9 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { TMetaObject } from '@/composables/utils/table'
 
 export const users_api = {
-    $_recent_signups: () => {
-		const url = '/users?limit=5&page=1&sort[created_at]=desc'
+	$_recent_signups: (meta:TMetaObject, params) => {
+		const url = `/users?limit=${meta.page.value}&page=${meta.page.value}&sort[created_at]=desc`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_users: () => {

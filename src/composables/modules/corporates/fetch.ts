@@ -40,6 +40,7 @@ export const useGetCorporateList = () => {
 
     const getCorporatesList = async () => {
         loading.value = true
+
         const res = await $_get_list(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporatesList.value = res.data.models
@@ -47,6 +48,8 @@ export const useGetCorporateList = () => {
         }
         loading.value = false
     }
+
+    setFunction(getCorporatesList)
 
     const onFilterUpdate = (data) => {
         switch (data.type) {

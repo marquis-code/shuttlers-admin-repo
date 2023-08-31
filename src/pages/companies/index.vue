@@ -15,7 +15,6 @@
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 
 const { getCorporatesList, loading, corporatesList, onFilterUpdate } = useGetCorporateList()
-getCorporatesList()
 
 definePageMeta({
     layout: 'dashboard',
