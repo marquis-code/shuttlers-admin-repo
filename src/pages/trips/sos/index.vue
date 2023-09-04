@@ -9,8 +9,8 @@
 				<span v-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
 				</span>
-				<span v-else-if="item.updated_at">
-					{{ useDateFormat(item.data.updated_at, "HH:MM AA").value }}
+				<span v-else-if="item.status" class="flex">
+					<StatusBadge :name="item.data.status" />
 				</span>
 			</template>
 			<template #footer>
@@ -31,9 +31,10 @@ const formattedSosList = computed(() =>
      sosList.value.map((i) => {
          return {
              ...i,
-             name: `${i.trip.driver.fname} ${i.trip.driver.lname}`,
+             name: `${i.initiator.fname} ${i.initiator.lname}`,
              route: i.trip.route.route_code,
-             vehicle: `${i.trip?.vehicle?.brand} ${i.trip?.vehicle?.name}  (${i.trip?.vehicle?.registration_number})`
+             vehicle: `${i.trip?.vehicle?.brand} ${i.trip?.vehicle?.name}  (${i.trip?.vehicle?.registration_number})`,
+             time: useDateFormat(i.created_at, 'HH:mm:sss AA').value
          }
     })
 )
@@ -70,7 +71,7 @@ const tableFields = ref([
     },
     {
         text: 'TIME',
-        value: 'updated_at'
+        value: 'time'
     }
 
 ])

@@ -1,10 +1,10 @@
 <template>
 	<div
 		v-if="name"
-		:style="`color: ${selectPalette?.color} ; background-color: ${showBackground ? selectPalette?.bg : ''};`"
-		class="px-3 py-1 text-xs font-medium rounded-3xl"
+		:style="`color: white; background-color:${selectPalette?.bg};`"
+		class="px-3 py-1 text-xs font-medium rounded-md "
 	>
-		<slot> <span class="flex items-center gap-2 "><span class="w-2 h-2 rounded-full" :style="`background-color: ${showBackground ? selectPalette?.color : ''};`" />{{ translateStatus(name) }}</span> </slot>
+		<slot> {{ translateStatus(name) }}</slot>
 	</div>
 </template>
 
@@ -22,20 +22,17 @@ const props = defineProps({
   secondary: {
 	type: Boolean,
 	default: false
-  },
-  showBackground: {
-	type: Boolean,
-	default: true
   }
+
 })
 
 const selectPalette = ref<{color:string, bg:string}>()
 
 const palette = {
-	success: { color: '#25A254', bg: '#EDF7F1' },
-	failed: { color: '#D12E2E', bg: '#FAEAEA' },
-	pending: { color: '#E2C044', bg: '#FAF5E1' },
-	default: { color: '#1F2937', bg: '#F3F4F6' }
+	success: { color: '#25A254', bg: '#15CD70' },
+	failed: { color: '#D12E2E', bg: '#E13D45' },
+	pending: { color: '#E2C044', bg: '#FDB022' },
+	default: { color: '#1F2937', bg: '#FDB022' }
 }
 
 		switch (toLowerCase(props.name)) {

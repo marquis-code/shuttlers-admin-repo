@@ -10,3 +10,11 @@ export const formatNumberToMoney = (
   })
   return formatter.format(number ? +number.toFixed(decimals || 2) : 0)
 }
+
+export const truncateString = (input: string, maxLength = 80): string => {
+    if (input.length <= maxLength) {
+        return input
+    } else {
+        return input.slice(0, maxLength) + '...'
+    }
+}

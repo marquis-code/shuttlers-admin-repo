@@ -7,7 +7,7 @@
 				</h3>
 			</div>
 			<div class="pr-3">
-				<date-picker v-model:value="dateSelected" placeholder="Filter by date" />
+				<!-- <date-picker v-model:value="dateSelected" placeholder="Filter by date" /> -->
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
@@ -32,25 +32,15 @@
 				</p>
 			</div>
 			<div>
-				<Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />
+				<!-- <Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" /> -->
 			</div>
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-	chartOptions: {
-		type: Object,
-		required: true
-	},
-	chartData: {
-		type: Object,
-		required: true
-	}
-})
 
-const dateSelected = ref(null)
+// const dateSelected = ref(null)
 
 </script>
 

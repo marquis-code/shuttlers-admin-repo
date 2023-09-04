@@ -1,8 +1,8 @@
 <template>
 	<main class="space-y-10">
 		<ModulesDashboardSectionOne />
-		<ModulesDashboardSectionTwo :chart-data="tripsChartData" :chart-options="tripsChartOptions" />
-		<ModulesDashboardSectionThree :chart-data="tripRatingChartData" :chart-options="tripRatingChartOptions" />
+		<ModulesDashboardSectionTwo />
+		<ModulesDashboardSectionThree />
 		<ModulesDashboardSectionFour />
 		<ModulesDashboardSectionFive />
 	</main>
