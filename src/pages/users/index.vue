@@ -2,15 +2,15 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="usersList">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
 					<Avatar :name="item.data.fname" bg="#B1C2D9" />
 				</div>
-				<span v-if="item.lname" class="flex items-center gap-4">
+				<nuxtLink v-if="item.lname" :to="{ name: 'ShowUser', params: { userId: item.data.id } }" class="flex items-center gap-4">
 					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
-				</span>
+				</nuxtLink>
 				<span v-else-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
 				</span>
@@ -33,6 +33,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 
 const { getUsersList, loading, usersList } = useGetUsersList()
+console.log(usersList, 'am here')
 getUsersList()
 
 definePageMeta({

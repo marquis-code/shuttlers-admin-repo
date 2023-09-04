@@ -24,6 +24,7 @@ import BatchRefund from '@/components/headers/modules/Users/batch-refund.vue'
 import BatchBooking from '@/components/headers/modules/Users/BatchBooking/index.vue'
 import CreateBatchBooking from '@/components/headers/modules/Users/BatchBooking/create-batch-booking.vue'
 import sos from '@/components/headers/modules/commute/sos.vue'
+import UserDetails from '@/components/headers/modules/Users/UserDetails.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -36,6 +37,7 @@ const componentRouteArray = [
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
     { routes: ['users-bookings'], component: BatchBooking },
+    { routes: ['users-details-active-bookings', 'users-details-cancelled-trips', 'users-details-credit-line-usage', 'users-details-past-bookings', 'users-details-rides', 'users-details-transactions', 'users-details-user-info'], component: UserDetails },
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['trips'], component: null },
     { routes: ['partners'], component: Partners },
