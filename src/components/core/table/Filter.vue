@@ -3,7 +3,7 @@
 		<div class="flex justify-between w-full px-4 bg-white border-t border-x rounded-t-md">
 			<section v-if="filterType.showSearchBar" class="relative flex gap-3">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[18px]" aria-hidden="true" />
-				<input v-model="filterData.search.value" type="search" placeholder="search" class="input-field !bg-transparent  outline-none  text-start w-full !pl-6">
+				<input v-model="filterData.search.value" type="search" placeholder="search" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
 			</section>
 
 			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">

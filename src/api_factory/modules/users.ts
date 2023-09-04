@@ -10,6 +10,10 @@ export const users_api = {
 		const url = '/users?limit=20&page=1&metadata=true&sort[id]=desc&related=wallet&status=active'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_user_by_id: (id:string) => {
+		const url = `/users/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_batch_refund: () => {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

@@ -7,13 +7,13 @@
         @apply flex items-center gap-2 mb-2 text-sm font-medium text-grey5;
     }
     .input-field {
-        @apply w-full !bg-grey px-4 py-[13px] outline-none text-black rounded-lg relative !text-start;
+        @apply w-full !bg-grey px-4 py-[13px] outline-none text-black rounded-lg relative !text-start border;
     }
     .input-field-search {
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
-    .btn{
-        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-gray-500 disabled:cursor-not-allowed;
+    .btn {
+        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-grey10 disabled:text-grey5 disabled:cursor-not-allowed;
     }
     .btn-primary {
         @apply text-white btn bg-primary;
@@ -36,19 +36,17 @@
         @apply flex justify-center w-full px-4 py-3 mt-6 font-bold border rounded-md cursor-pointer border-grey6 text-dark disabled:bg-gray-500 disabled:cursor-not-allowed;
     }
 
-    .profile-inner{
-        @apply flex flex-col md:px-14 md:py-12  p-6 relative  h-full  overflow-hidden
+    .profile-inner {
+        @apply flex flex-col md:px-14 md:py-12  p-6 relative  h-full  overflow-hidden;
     }
-    .profile-title{
-        @apply md:text-[32px] text-2xl font-bold flex items-center gap-4
-    }     
-    .card{
-        @apply rounded-md shadow-sm bg-white p-6 
+    .profile-title {
+        @apply md:text-[32px] text-2xl font-bold flex items-center gap-4;
     }
-
-    .stat-card{
-        @apply rounded-md shadow-sm bg-white
+    .card {
+        @apply rounded-md shadow-sm bg-white p-6;
     }
 
-
+    .stat-card {
+        @apply rounded-md shadow-sm bg-white;
+    }
 }

@@ -1,10 +1,7 @@
 <template>
 	<main>
-		<div class="mb-6">
-			<button class="px-3 py-2 text-xs text-gray-900 bg-gray-200 rounded-lg text" @click="$router.go(-1)">
-				Go back
-			</button>
-		</div>
+		<ButtonGoBack class="mb-6" />
+
 		<div class="w-8/12 bg-white border rounded-md">
 			<div class="px-6 py-5">
 				<p class="font-medium">

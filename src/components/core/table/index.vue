@@ -22,9 +22,11 @@
 				<div />
 				<tbody v-if="!loading">
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
-						'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
-						hasOptions ? 'cursor-pointer' : '',
-					]">
+							'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
+							hasOptions ? 'cursor-pointer' : '',
+						]"
+						@click="option(data)"
+					>
 						<td v-if="checkbox" class="pl-4">
 							<input type="checkbox">
 						</td>
