@@ -14,5 +14,4 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
-
 </script>
