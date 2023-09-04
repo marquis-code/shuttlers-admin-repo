@@ -1,34 +1,34 @@
 <template>
-	<section class="lg:flex space-y-6 lg:space-y-0 lg:space-x-10 items-start">
-		<section class="h-[400px] lg:w-6/12 stat-card">
+	<section class="items-start space-y-6 lg:flex lg:space-y-0 lg:space-x-10">
+		<section :class="[loadingRoutes ? 'h-[400px]' : '']" class="lg:w-6/12 stat-card">
 			<div class="border-b">
-				<h3 class="font-medium py-4 px-6">
+				<h3 class="px-6 py-4 font-medium">
 					Our Routes
 				</h3>
 			</div>
-			<div class="">
-				<div v-for="item, index in routes" :key="index" class="overflow-x-auto flex justify-between items-center text-sm hover:bg-gray-100 w-full px-6 py-3">
-					<div class="space-y-6">
+			<div v-if="!loadingRoutes" class="">
+				<div v-for="item, index in routesList" :key="index" class="flex items-center justify-between w-full px-6 py-3 overflow-x-auto text-sm cursor-pointer hover:bg-gray-100">
+					<div class="w-10/12 space-y-6">
 						<div class="space-y-2">
 							<p class="text-gray-700">
-								{{ item.pickup }}
+								{{ item?.pickup ?? 'N/A' }}
 							</p>
 							<p class="text-gray-700">
-								{{ item.dropoff }}
+								{{ item?.destination ?? 'N/A' }}
 							</p>
 						</div>
-						<div class="flex justify-between items-center text-gray-700">
+						<div class="flex items-center justify-between w-full text-gray-700">
 							<p class="font-light text-[12px]">
-								{{ item.routeCode }}
+								{{ item?.route_code ?? 'N/A' }}
 							</p>
 							<p class="font-light text-[12px]">
-								{{ item.time }}
+								{{ item?.duration ?? 'N/A' }}
 							</p>
 							<p class="font-light text-[12px]">
-								{{ item.distance }}
+								{{ item?.distance ?? 'N/A' }}
 							</p>
-							<p class="text-white font-medium text-[12px] rounded-md py-0.5 px-1" :class="[item.status === 'Active' ? 'bg-green-500' : 'bg-gray-500']">
-								{{ item.status }}
+							<p class="text-white font-medium text-[9px] rounded-md py-[0.4px] px-1" :style="{backgroundColor: item?.status === 0 ? &quot;#e63757&quot; : &quot;#00d97e&quot;}">
+								{{ item?.status === 0 ? 'Inactive' : 'Active' }}
 							</p>
 						</div>
 					</div>
@@ -37,49 +37,41 @@
 					</p>
 				</div>
 			</div>
+			<div v-else class="flex items-center justify-center h-full">
+				<p class="text-center">
+					Loading...
+				</p>
+			</div>
 		</section>
-		<section class="h-[400px] lg:lg:w-6/12 stat-card">
-			<div class="border-b">
-				<h3 class="font-medium py-4 px-6">
+		<section class="lg:lg:w-6/12 stat-card">
+			<div class="">
+				<h3 class="px-6 py-4 font-medium">
 					Recent Charter Requests
 				</h3>
 			</div>
 			<div>
 				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-						<thead class="bg-gray-100">
-							<tr>
-								<th class="py-4 text-xs text-gray-500 font-medium">
-									<span>PICKUP DATE</span>
-								</th>
-								<th class="py-4 text-xs text-gray-500 font-medium">
-									<span>FROM</span>
-								</th>
-								<th class="py-4 text-xs text-gray-500 font-medium">
-									<span>TO</span>
-								</th>
-								<th class="py-4 text-xs text-gray-500 font-medium">
-									<span>TRIP TYPE</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 ">
-							<tr class="">
-								<td class="px-4 py-2 text-gray-900 font-light text-xs w-3/12">
-									<span>2023-07-29</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									<span>Sam Ethnan Airforce Base, Alh Abibat Street, Lagos, Nigeria</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									<span>Victoria Island, Lagos, Lagos, Nigeria</span>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									<span>Round Trip</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<Table :headers="charterHeader" :table-data="charterList" :loading="loadingCharter">
+						<template #item="{ item }">
+							<span v-if="item.pickup_date" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_date }}</span>
+							</span>
+							<span v-if="item.pickup_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.pickup_address }}</span>
+							</span>
+							<span v-if="item.return_address" class="flex items-center gap-4">
+								<span class="text-sm">{{ item?.data?.return_address }}</span>
+							</span>
+							<span v-if="item.return_time" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.return_address ? 'Round Trip' : 'One Way' }}</span>
+							</span>
+						</template>
+					</Table>
+				</div>
+				<div v-if="!loadingCharter" class="flex items-end justify-end py-4 pr-3">
+					<NuxtLink to="/trips/charter" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+						All Charter Requests <img class="inline" src="@/assets/icons/source/next.svg" alt="">
+					</NuxtLink>
 				</div>
 			</div>
 		</section>
@@ -87,32 +79,35 @@
 </template>
 
 <script setup lang="ts">
-  const routes = ref([
+import { useGetRecentCharterList } from '@/composables/modules/charter'
+import { useGetRecentRoutesList } from '@/composables/modules/routes'
+
+const { getCorporatesList, loadingCharter, charterList } = useGetRecentCharterList()
+const { getRoutesList, loadingRoutes, routesList } = useGetRecentRoutesList()
+getCorporatesList()
+getRoutesList()
+
+const charterHeader = [
 	{
-		pickup: 'Shoprite Sangotedo., Sangotedo, Nigeria',
-		dropoff: 'OANDO Gas and Petrol Station, Alakoro Marina St, Lagos, Nigeria',
-		routeCode: 'SGT4',
-		time: '57 mins',
-		distance: '32.64 km',
-		status: 'Active'
+		text: 'Pickup Date',
+		value: 'pickup_date'
 	},
 	{
-		pickup: 'Jakande Gate Bus Stop., LCDA, Egbe Road, Lagos, Nigeria',
-		dropoff: 'EvertyOne Towers, Lagos, Nigeria',
-		routeCode: 'JAK16.',
-		time: '51 mins',
-		distance: '33.76 km',
-		status: 'Inactive'
+		text: 'From',
+		value: 'pickup_address'
+	},
+	{
+		text: 'To',
+		value: 'return_address'
+	},
+	{
+		text: 'Trip Type',
+		value: 'return_time'
 	}
-  ])
+]
+
 </script>
 
 <style scoped>
 
 </style>
-
-Shoprite Sangotedo., Sangotedo, Nigeria
-
-57 mins
-32.64 km
-Active

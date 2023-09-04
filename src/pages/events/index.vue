@@ -1,59 +1,84 @@
 <template>
 	<main class="">
-		<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="false" :headers="tableFields" :show-date-picker="true"
-			:table-data="tableData" />
+		<Table :loading="loadingEvents" :headers="tableFields" :table-data="eventsList">
+			<template #header>
+				<TableFilter :filter-type="{showSearchBar:true}" />
+			</template>
+			<template #item="{ item }">
+				<div v-if="item.title">
+					<span class="text-blue-600">{{ item.data.title }}</span>
+				</div>
+				<div v-if="item.firstName" class="">
+					<p class="text-blue-600">
+						{{ item.data.firstName }} {{ item.data.lastName }}
+					</p>
+					<p>{{ item.data.email }}</p>
+				</div>
+				<div v-if="item.location" class="flex items-center gap-x-2">
+					<img src="@/assets/icons/location.svg" alt="">
+					<p class="font-medium">
+						{{ item.data.location }}
+					</p>
+				</div>
+				<div v-if="item.returnTrip">
+					<span>{{ item.data.returnTrip ? 'Return' : 'One-way' }}</span>
+				</div>
+				<span v-else-if="item.createdAt">
+					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
+				</span>
+				<div v-if="item.status">
+					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
+				</div>
+			</template>
+		</Table>
 	</main>
 </template>
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
+import { useGetEvents } from '@/composables/modules/events/fetch'
+
+const { getEventsList, loadingEvents, eventsList } = useGetEvents()
+const params = ref({
+	status: ''
+})
+getEventsList(params.value as any)
+
 definePageMeta({
-    key: 'authentication',
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
 const tableFields = ref([
     {
-        text: 'Event Title',
-        value: 'event_title'
+        text: 'EVENT TITLE',
+        value: 'title'
     },
     {
-        text: 'Customer Name',
-        value: 'customer_name'
+        text: 'CUSTOMER NAME',
+        value: 'firstName'
     },
     {
-        text: 'Date',
-        value: 'date'
+        text: 'DATE',
+        value: 'createdAt'
     },
     {
-        text: 'Event Location',
-        value: 'event_location'
+        text: 'EVENT LOCATION',
+        value: 'location'
     },
     {
-        text: 'Trip type',
-        value: 'trip_type'
+        text: 'TRIP TYPE',
+        value: 'returnTrip'
+    },
+	{
+        text: 'NO OF ATTENDEES',
+        value: 'attendeesEstimate'
     },
     {
-        text: 'No Of Attendees',
-        value: 'no_of_attendees'
-    },
-    {
-        text: 'Status',
+        text: 'STATUS',
         value: 'status'
     }
 ])
-const tableData = ref([
-    {
-        event_title: 'Testing Even ts',
-        customer_name: 'Anthony Akpan',
-        date: 'Jul 11th 2023',
-        event_location: 'IIupeju, Ikeja Nigeria',
-        trip_type: 'one way',
-        no_of_attendees: '1000',
-        status: 'accepted'
-    }
 
-])
 </script>
 
 <style scoped></style>
-
-Jot something down

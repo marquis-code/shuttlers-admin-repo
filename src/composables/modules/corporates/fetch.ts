@@ -1,4 +1,5 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
 
 export const useGetCorporateGraph = () => {
     const loading = ref(false)
@@ -22,20 +23,46 @@ export const useGetCorporateList = () => {
     const loading = ref(false)
     const corporatesList = ref([] as any)
     const corporateMetaData = ref({} as any)
+    const { loadMore, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_list } = corporates_api
 
+    const filterData = {
+        search: ref(''),
+        start_date_filter: ref(''),
+        end_date_filter: ref(''),
+        active: ref(1)
+    }
+
+    watch([filterData.search, filterData.start_date_filter, filterData.end_date_filter, filterData.active], (val) => {
+        getCorporatesList()
+    })
+
     const getCorporatesList = async () => {
         loading.value = true
-        const res = await $_get_list() as CustomAxiosResponse
+
+        const res = await $_get_list(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporatesList.value = res.data.models
-            corporateMetaData.value = res.data.pagination?.rowCount
+            metaObject.total.value = res.data.pagination?.rowCount
         }
         loading.value = false
     }
 
-    return { getCorporatesList, loading, corporatesList }
+    setFunction(getCorporatesList)
+
+    const onFilterUpdate = (data) => {
+        switch (data.type) {
+            case 'search':
+                filterData.search.value = data.value
+                break
+            case 'status':
+                filterData.active.value = data.value
+                break
+        }
+    }
+
+    return { getCorporatesList, loading, corporatesList, filterData, onFilterUpdate }
 }
 
 export const useGetDemoRequest = () => {
@@ -56,4 +83,22 @@ export const useGetDemoRequest = () => {
     }
 
     return { getCorporatesDemoRequest, loading, corporatesList }
+}
+
+export const useGetShuttleRequests = () => {
+    const loading = ref(false)
+    const shuttleRequestsList = ref([] as any)
+
+    const { $_get_shuttle_request } = corporates_api
+
+    const loadShuttleRequest = async () => {
+      loading.value = true
+      const res = await $_get_shuttle_request() as CustomAxiosResponse
+      if (res.type !== 'ERROR') {
+        shuttleRequestsList.value = res.data.data
+    }
+    loading.value = false
+    }
+
+    return { loadShuttleRequest, loading, shuttleRequestsList }
 }

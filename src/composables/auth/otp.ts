@@ -1,4 +1,4 @@
-import { useUser, REDIRECT_URL } from '../user'
+import { useUser } from '../auth/user'
 import { use_auth_login } from './login'
 import { useAlert } from '@/composables/core/useNotification'
 import { auth_api } from '@/api_factory/modules/auth'

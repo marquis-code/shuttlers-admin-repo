@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core'
-import { useUser } from '../user'
+import { useUser } from '../auth/user'
 import { auth_api } from '@/api_factory/modules/auth'
 
 export const currentUserPermission = useStorage('permissions', [] as any)
