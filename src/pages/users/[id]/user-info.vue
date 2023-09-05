@@ -127,7 +127,7 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Edit User', func: () => { console.log('edit') } },
+	{ name: 'Edit User', func: () => { } },
 	{ name: 'Topup User Wallet', func: () => { } },
 	{ name: 'Change Password', func: () => { } },
 	{ name: 'Add Profile Picture', func: () => { } },
