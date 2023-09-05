@@ -17,5 +17,24 @@ export const users_api = {
 	$_get_batch_refund: () => {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_wallet_transactions: (id:string) => {
+		const url = `/users/${id}/wallet`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_active_booking: (id:string) => {
+		const url = `/users/${id}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_past_booking: (id:string, params:any) => {
+		let url = `/users/${id}/user-route-schedules`
+        if (params.status === 'completed') {
+			url = `${url}?status=completed`
+		}
+
+		if (params.status === 'cancelled') {
+			url = `${url}?status=cancelled`
+		}
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
