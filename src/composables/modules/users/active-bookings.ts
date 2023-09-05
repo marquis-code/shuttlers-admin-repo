@@ -7,7 +7,7 @@ export const useUserActiveBookings = () => {
     const getUserActiveBookingsById = async (id: string) => {
         loading.value = true
         const res = await users_api.$_get_active_booking(id) as CustomAxiosResponse
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             activeBookingsList.value = res.data
         }
         loading.value = false

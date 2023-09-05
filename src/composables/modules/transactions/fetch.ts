@@ -11,7 +11,7 @@ export const useGetRecentTransactionsList = () => {
 
         const res = await $_recent_transactions() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             transactionsList.value = res.data
         }
         loadingTransactions.value = false

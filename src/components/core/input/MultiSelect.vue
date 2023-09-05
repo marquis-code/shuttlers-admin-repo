@@ -1,5 +1,7 @@
 <template>
-	<Multiselect v-bind="$attrs" :close-on-select="false" :clear-on-select="false" />
+	<Multiselect v-bind="$attrs" :close-on-select="true" :clear-on-select="false">
+		<slot />
+	</Multiselect>
 </template>
 
 <script setup lang="ts">

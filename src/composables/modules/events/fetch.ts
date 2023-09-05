@@ -11,7 +11,7 @@ export const useGetEvents = () => {
 
         const res = await $_get_events(params) as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             eventsList.value = res.data.data
         }
         loadingEvents.value = false
@@ -31,7 +31,7 @@ export const useGetUpcomingEvents = () => {
 
         const res = await $_get_upcoming_events() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             upcomingEventsList.value = res.data.data
         }
         loadingUpcomingEvents.value = false

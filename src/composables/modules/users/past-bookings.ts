@@ -4,10 +4,10 @@ export const useUserPastBookings = () => {
     const loading = ref(false)
     const pastBookingsList = ref([] as any)
 
-    const getUserPastBookingsById = async (id: string, params: any) => {
+    const getUserPastBookingsById = async (id: string, params?: any) => {
         loading.value = true
         const res = await users_api.$_get_past_booking(id, params) as CustomAxiosResponse
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             pastBookingsList.value = res.data
         }
         loading.value = false

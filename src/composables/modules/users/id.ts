@@ -10,7 +10,7 @@ export const useUserIdDetails = () => {
         selectedUserId.value = id
         loading.value = true
         const res = await users_api.$_get_user_by_id(id) as CustomAxiosResponse
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             selectedUser.value = res.data
         }
         loading.value = false

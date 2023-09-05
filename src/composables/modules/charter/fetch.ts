@@ -11,7 +11,7 @@ export const useGetRecentCharterList = () => {
 
         const res = await $_recent_charter_requests() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             charterList.value = res.data.data
         }
         loadingCharter.value = false

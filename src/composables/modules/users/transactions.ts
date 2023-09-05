@@ -7,7 +7,7 @@ export const useUserTransactions = () => {
     const getUserTransactionsById = async (id: string) => {
         loading.value = true
         const res = await users_api.$_get_wallet_transactions(id) as CustomAxiosResponse
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             transactionsList.value = res?.data?.walletHistory
         }
         loading.value = false

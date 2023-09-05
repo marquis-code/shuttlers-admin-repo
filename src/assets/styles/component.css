@@ -7,7 +7,7 @@
         @apply flex items-center gap-2 mb-2 text-sm font-medium text-grey5;
     }
     .input-field {
-        @apply w-full !bg-grey px-4 py-[13px] outline-none text-black rounded-lg relative !text-start border;
+        @apply w-full !bg-grey px-4 py-2.5 outline-none text-black rounded-lg relative !text-start border;
     }
     .input-field-search {
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;

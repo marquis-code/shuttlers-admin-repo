@@ -11,7 +11,7 @@ export const useGetBatchRefundList = () => {
 
         const res = await $_get_batch_refund() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             refundList.value = res.data.data
         }
         loading.value = false

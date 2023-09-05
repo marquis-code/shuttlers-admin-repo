@@ -10,8 +10,8 @@ export const useQueryUsers = () => {
         loadingQueriedUsers.value = true
         const res = await $_query_users(query) as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
-            queriedUsers.value = res.data.data
+        if (res.type !== 'ERROR') {
+            queriedUsers.value = res.data
         }
         loadingQueriedUsers.value = false
     }

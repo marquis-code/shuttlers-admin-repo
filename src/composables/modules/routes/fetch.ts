@@ -11,7 +11,7 @@ export const useGetRecentRoutesList = () => {
 
         const res = await $_recent_routes() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             routesList.value = res.data
         }
         loadingRoutes.value = false

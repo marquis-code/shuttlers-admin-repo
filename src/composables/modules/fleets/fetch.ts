@@ -11,7 +11,7 @@ export const useGetFleets = () => {
 
         const res = await $_get_fleets() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             fleetsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.brand} ${item.name}`, registration_number: item.registration_number, seats: item.seats, type: item.type, drivers: item.drivers, created_at: item.created_at, rating: 'N/A', amenities: 'N/A' }))
         }
         loadingFleets.value = false
@@ -31,7 +31,7 @@ export const useGetFleetInspectionDays = () => {
 
         const res = await $_get_fleet_inspection_days() as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             fleetInspectionDaysList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle.brand}  ${item.vehicle.name}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, inspectionSite: item?.inspectionSite.name, partner: item.partner.company_name, inspectionDateAndTime: `${item.date} (${item.time})`, created_at: item?.created_at }))
         }
         loadingInspectionDays.value = false

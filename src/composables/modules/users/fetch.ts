@@ -13,7 +13,7 @@ export const useGetRecentSignupsList = () => {
         metaObject.page_size.value = 5
         const res = await $_get_users(metaObject) as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             signupList.value = res.data.data
         }
         loadingSignups.value = false
@@ -34,7 +34,7 @@ export const useGetUsersList = () => {
 
         const res = await $_get_users(metaObject) as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             usersList.value = res.data.data
             metaObject.total.value = res.data.metadata.total_pages
         }

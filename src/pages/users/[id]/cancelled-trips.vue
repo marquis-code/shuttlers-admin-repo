@@ -34,6 +34,7 @@
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
 const { pastBookingsList, loading, getUserPastBookingsById } = useUserPastBookings()
 const id = useRoute().params.id as string
+
 const params = ref({
 	status: 'cancelled'
 })

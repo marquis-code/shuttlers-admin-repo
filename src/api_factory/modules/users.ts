@@ -8,7 +8,7 @@ export const users_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_query_users: (query: string) => {
-		const url = '/users/search'
+		const url = '/users/search?limit=10'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })
 	},
 	$_get_user_by_id: (id:string) => {
@@ -18,6 +18,10 @@ export const users_api = {
 	$_get_batch_refund: () => {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_create_refund: (params: Record<string, any>) => {
+		const url = '/refund-logs'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, params)
 	},
 	$_get_wallet_transactions: (id:string) => {
 		const url = `/users/${id}/wallet`

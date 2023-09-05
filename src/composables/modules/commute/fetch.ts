@@ -16,7 +16,7 @@ export const useSosList = () => {
 
         const res = await $_get_sos(filterData, metaObject) as CustomAxiosResponse
 
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             sosList.value = res.data.data
             metaObject.total.value = res.data.metadata?.total_pages
         }

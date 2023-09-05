@@ -7,7 +7,7 @@ export const useUserCreditLineUsage = () => {
     const getUserCreditLineUsage = async (id: string) => {
         loading.value = true
         const res = await corporates_api.$_get_credit_line_usage(id) as CustomAxiosResponse
-        if (res.type !== 'Error') {
+        if (res.type !== 'ERROR') {
             creditLineUsageList.value = res.data
         }
         loading.value = false
