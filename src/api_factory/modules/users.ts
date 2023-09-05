@@ -7,6 +7,10 @@ export const users_api = {
 		const url = `/users?limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet&status=active`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_query_users: (query: string) => {
+		const url = '/users/search'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })
+	},
 	$_get_user_by_id: (id:string) => {
 		const url = `/users/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

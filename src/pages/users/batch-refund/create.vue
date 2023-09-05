@@ -12,7 +12,13 @@
 			</header>
 			<div class="field relative">
 				<label for="email">Select users</label>
-				<input id="user" autocomplete="true" type="email" class="input-field" required>
+				<InputMultiSelect id="select_users_input" v-model="test"
+					track-by="id" placeholder="Select user to log refund"
+					open-direction="bottom" :options="queriedUsers" :multiple="true" :searchable="true"
+					:loading="loadingQueriedUsers" :internal-search="false"
+					:options-limit="300" :limit="10"
+					:show-no-results="false" :hide-selected="true" @search-change="queryUsers" />
+				<!-- <input id="user" autocomplete="true" type="email" class="input-field" required> -->
 			</div>
 
 			<div class="field relative">
@@ -40,7 +46,20 @@
 </template>
 
 <script lang="ts" setup>
+import { useQueryUsers } from '@/composables/modules/users/query'
+
+const { loadingQueriedUsers, queriedUsers, queryUsers } = useQueryUsers()
+
 const router = useRouter()
+
+const test = ref([])
+const usersList = ref([1, 2, 3, 4, 5])
+const isLoading = ref(false)
+const asyncFindUsers = async (query: string) => {
+	isLoading.value = true
+	await new Promise((resolve) => setTimeout(resolve, 1000))
+	isLoading.value = false
+}
 
 const form = ref({
 	bookingDate: ''
