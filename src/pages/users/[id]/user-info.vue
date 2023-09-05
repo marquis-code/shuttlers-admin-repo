@@ -219,8 +219,6 @@ import { useUserIdDetails } from '@/composables/modules/users/id'
 const { getUserById, loading, selectedUser } = useUserIdDetails()
 const id = useRoute().params.id as string
 getUserById(id)
-console.log(selectedUser)
-
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
