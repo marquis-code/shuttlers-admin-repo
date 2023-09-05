@@ -5,7 +5,7 @@
 				<div class="font-medium">
 					User Information
 				</div>
-				<Dropdown :children="dropdownChildren" />
+				<ButtonDropdown :children="dropdownChildren" />
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-3">
 				<p class="text-gray-500 text-sm">
