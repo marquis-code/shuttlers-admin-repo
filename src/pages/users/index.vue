@@ -24,6 +24,10 @@
 					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
 				</span>
 			</template>
+
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -33,7 +37,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 
-const { getUsersList, loading, usersList } = useGetUsersList()
+const { getUsersList, loading, usersList, moveTo, next, prev, total, page } = useGetUsersList()
 getUsersList()
 
 const onRowClicked = (data) => {

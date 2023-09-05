@@ -1,105 +1,11 @@
 <template>
-	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
+	<div v-if="!loading" class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 		<div class="w-8/12 bg-white rounded-md shadow-sm p-3">
 			<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 				<div class="font-medium">
 					User Information
 				</div>
-				<div>
-					<div class="relative">
-						<div
-							class="inline-flex items-center overflow-hidden rounded-md border py-1" style="background-color: #CA3433"
-						>
-							<a
-								href="#"
-								class="border-e px-4 py-2 text-sm/none   text-white"
-							>
-								Actions
-							</a>
-
-							<button
-								class="h-full p-2 text-gray-600  hover:text-gray-700"
-								@click="openDropdown = !openDropdown"
-							>
-								<span class="sr-only">Menu</span>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-4 w-4"
-									viewBox="0 0 20 20"
-									fill="white"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-										clip-rule="evenodd"
-									/>
-								</svg>
-							</button>
-						</div>
-
-						<div v-if="openDropdown"
-							class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
-							role="menu"
-						>
-							<div class="p-2">
-								<a
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Edit User
-								</a>
-
-								<a
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Topup User Wallet
-								</a>
-
-								<a
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Change Password
-								</a>
-
-								<a
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Add Profile Picture
-								</a>
-								<a
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Make bus captain
-								</a>
-								<a
-									style="color: red"
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Debit User Wallet
-								</a>
-								<a
-									style="color: red"
-									href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-									role="menuitem"
-								>
-									Suspend User
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
+				<Dropdown :children="dropdownChildren" />
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-3">
 				<p class="text-gray-500 text-sm">
@@ -181,9 +87,7 @@
 
 			<div class="flex justify-center gap-y-2 items-center flex-col py-10">
 				<p class="text-4xl font-semibold">
-					{{
-						Number(selectedUser.wallet.amount).toLocaleString('en-NG', {style: 'currency', currency : 'NGN'})
-					}}
+					{{ convertToCurrency(selectedUser.wallet.amount) }}
 				</p>
 				<p class="text-gray-400 text-xs">
 					ACCOUNT BALANCE
@@ -195,9 +99,7 @@
 					Main Balance
 				</p>
 				<p class="text-xs">
-					{{
-						Number(selectedUser.wallet.main_balance).toLocaleString('en-NG', {style: 'currency', currency : 'NGN'})
-					}}
+					{{ convertToCurrency(selectedUser.wallet.main_balance) }}
 				</p>
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-6">
@@ -205,9 +107,7 @@
 					Company Balance
 				</p>
 				<p class="text-xs">
-					{{
-						Number(selectedUser.wallet.credit_amount).toLocaleString('en-NG', {style: 'currency', currency : 'NGN'})
-					}}
+					{{ convertToCurrency(selectedUser.wallet.company_balance) }}
 				</p>
 			</div>
 		</div>
@@ -216,13 +116,25 @@
 
 <script setup lang="ts">
 import { useUserIdDetails } from '@/composables/modules/users/id'
+import { convertToCurrency } from '@/composables/utils/formatter'
 const { getUserById, loading, selectedUser } = useUserIdDetails()
 const id = useRoute().params.id as string
 getUserById(id)
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+
+const dropdownChildren = computed(() => [
+	{ name: 'Edit User', func: () => { console.log('edit') } },
+	{ name: 'Topup User Wallet', func: () => { } },
+	{ name: 'Change Password', func: () => { } },
+	{ name: 'Add Profile Picture', func: () => { } },
+	{ name: 'Make bus captain', func: () => { } },
+	{ name: 'Debit User Wallet', func: () => { }, class: '!cotext-red' },
+	{ name: 'Suspend User', func: () => { }, class: '!text-red' }
+])
 
 const openDropdown = ref(false)
 </script>

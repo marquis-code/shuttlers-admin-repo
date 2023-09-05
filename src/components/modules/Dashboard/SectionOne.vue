@@ -5,7 +5,7 @@
 				{{ statsData[item].name }}
 			</h3>
 			<p v-if="!loading" class="text-lg font-bold text-black">
-				{{ formatNumberToMoney(statsData[item].value) }}
+				{{ convertToCurrency(statsData[item].value) }}
 			</p>
 			<Skeleton v-else class="" height="20px" />
 		</div>
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { useGetDashboardStats } from '@/composables/modules/dashboard/stats'
-import { formatNumberToMoney } from '@/composables/utils/formatter'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { getStats, loading, statsData } = useGetDashboardStats()
 getStats()

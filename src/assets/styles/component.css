@@ -16,7 +16,7 @@
         @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-grey10 disabled:text-grey5 disabled:cursor-not-allowed;
     }
     .btn-primary {
-        @apply text-white btn bg-primary;
+        @apply text-white btn bg-dark;
     }
     .input-field::placeholder,
     .input-field-search::placeholder {

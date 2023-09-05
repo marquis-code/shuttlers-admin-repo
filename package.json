@@ -41,6 +41,7 @@
 		"vite-plugin-eslint": "^1.7.0"
 	},
 	"dependencies": {
+		"@headlessui/vue": "^1.7.16",
 		"@heroicons/vue": "^2.0.18",
 		"@shuttlershq/shuttlers-ui": "^0.0.14",
 		"@vueup/vue-quill": "^1.2.0",

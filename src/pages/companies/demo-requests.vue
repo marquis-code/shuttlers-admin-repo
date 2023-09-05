@@ -1,9 +1,9 @@
 <template>
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList">
-			<template #header>
+			<!-- <template #header>
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" @filter="onFilterUpdate" />
-			</template>
+			</template> -->
 
 			<template #item="{ item }">
 				<span v-if="item.contact_fname" class="flex items-center gap-4">
@@ -14,6 +14,9 @@
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -22,7 +25,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetDemoRequest } from '@/composables/modules/corporates/fetch'
 
-const { getCorporatesDemoRequest, loading, corporatesList } = useGetDemoRequest()
+const { getCorporatesDemoRequest, loading, corporatesList, moveTo, next, prev, total, page } = useGetDemoRequest()
 getCorporatesDemoRequest()
 
 definePageMeta({

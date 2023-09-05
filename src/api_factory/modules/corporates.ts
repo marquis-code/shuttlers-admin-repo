@@ -6,15 +6,15 @@ export const corporates_api = {
 		const url = '/corporates/graph'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_list: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
+	$_get_list: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 
 		const url = `/corporates?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_demo_request: () => {
-		const url = '/prospective-corporates'
+	$_get_demo_request: (metaObject: TMetaObject) => {
+		const url = `/prospective-corporates?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_shuttle_request: () => {

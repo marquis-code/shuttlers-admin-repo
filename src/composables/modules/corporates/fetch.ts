@@ -22,8 +22,7 @@ export const useGetCorporateGraph = () => {
 export const useGetCorporateList = () => {
     const loading = ref(false)
     const corporatesList = ref([] as any)
-    const corporateMetaData = ref({} as any)
-    const { loadMore, metaObject, next, prev, setFunction } = usePagination()
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_list } = corporates_api
 
@@ -41,10 +40,10 @@ export const useGetCorporateList = () => {
     const getCorporatesList = async () => {
         loading.value = true
 
-        const res = await $_get_list(filterData, metaObject) as CustomAxiosResponse
+        const res = await $_get_list(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporatesList.value = res.data.models
-            metaObject.total.value = res.data.pagination?.rowCount
+            metaObject.total.value = res.data.pagination?.pageCount
         }
         loading.value = false
     }
@@ -62,27 +61,29 @@ export const useGetCorporateList = () => {
         }
     }
 
-    return { getCorporatesList, loading, corporatesList, filterData, onFilterUpdate }
+    return { getCorporatesList, loading, corporatesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
 
 export const useGetDemoRequest = () => {
     const loading = ref(false)
     const corporatesList = ref([] as any)
-    const corporateMetaData = ref({} as any)
+
+        const { metaObject, moveTo, next, prev, setFunction } = usePagination()
 
     const { $_get_demo_request } = corporates_api
 
     const getCorporatesDemoRequest = async () => {
         loading.value = true
-        const res = await $_get_demo_request() as CustomAxiosResponse
+        const res = await $_get_demo_request(metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporatesList.value = res.data.data
-            corporateMetaData.value = res.data.pagination?.rowCount
+            metaObject.total.value = res.data.pagination?.pageCount
         }
         loading.value = false
     }
+    setFunction(getCorporatesDemoRequest)
 
-    return { getCorporatesDemoRequest, loading, corporatesList }
+    return { getCorporatesDemoRequest, loading, corporatesList, ...metaObject, next, prev, moveTo }
 }
 
 export const useGetShuttleRequests = () => {

@@ -20,7 +20,7 @@
 								<span class="text-sm">{{ item.data.user.fname }} {{ item.data.user.lname }}</span>
 							</span>
 							<span v-if="item.amount" class="flex items-center gap-4 py-3">
-								<span :style="{color: item.data.type === 'debit' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}" class="text-sm">₦ {{ item.data.amount }}</span>
+								<span class="text-sm">{{ convertToCurrency(item.data.amount) }}</span>
 							</span>
 						</template>
 					</Table>
@@ -42,7 +42,7 @@
 								<span class="text-sm">{{ item.data.email }}</span>
 							</span>
 							<span v-if="item.active" class="flex items-center gap-4">
-								<span :style="{color: item.data.active !== '1' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}" class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
+								<span class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
 							</span>
 						</template>
 					</Table>
@@ -60,6 +60,7 @@
 <script setup lang="ts">
 import { useGetRecentTransactionsList } from '@/composables/modules/transactions'
 import { useGetRecentSignupsList } from '@/composables/modules/users/fetch'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { getSignupList, loadingSignups, signupList } = useGetRecentSignupsList()
 const { getTransactionList, loadingTransactions, transactionsList } = useGetRecentTransactionsList()

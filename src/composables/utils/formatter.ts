@@ -1,4 +1,4 @@
-export const formatNumberToMoney = (
+export const convertToCurrency = (
   number = 0,
   decimals = 0,
   { countryCode = 'NG', currencyCode }: { countryCode?: string; currencyCode?: string } = {}
@@ -8,7 +8,8 @@ export const formatNumberToMoney = (
     currency: currencyCode,
     minimumFractionDigits: decimals
   })
-  return formatter.format(number ? +number.toFixed(decimals || 2) : 0)
+  if (typeof number === 'string') number = parseFloat(number)
+  return formatter.format(number ? +number?.toFixed(decimals || 2) : 0)
 }
 
 export const truncateString = (input: string, maxLength = 80): string => {

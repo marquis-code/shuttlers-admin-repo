@@ -1,5 +1,5 @@
 <template>
-	<footer class="flex items-center justify-between w-full py-4 mb-12">
+	<footer class="flex items-center justify-between w-full p-4 mb-12">
 		<span v-if="!loading" class="text-sm">
 			Showing {{ currentPage }} of {{ totalPages }}
 		</span>
@@ -10,9 +10,15 @@
 				<button type="button" class="prev" @click="emit('prev')">
 					<ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
 				</button>
-				<button v-for="n in generateNumberArray.value" :key="n" type="button" :class="[currentPage === n ? 'bg-green7 !text-light':'', 'moveTo']" @click="emit('moveTo', n)">
+				<button v-for="n in visiblePages" :key="n" type="button" :class="[currentPage === n ? 'bg-green7 !text-light':'', 'moveTo']" @click="emit('moveTo', n)">
 					{{ n }}
 				</button>
+				<!-- <span v-if="totalPages > visiblePages.length">
+					<span v-if="currentPage + visiblePages.length < totalPages" type="button" class="moveTo">...</span>
+					<button type="button" class="moveTo" @click="emit('moveTo', totalPages)">
+						{{ totalPages }}
+					</button>
+				</span> -->
 				<button type="button" class="next" @click="emit('next')">
 					<ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
 				</button>
@@ -25,27 +31,37 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
 const emit = defineEmits(['next', 'prev', 'moveTo'])
 const props = defineProps({
-    loading: {
-        type: Boolean,
-        required: true
-    },
-    currentPage: {
-        type: Number,
-        required: true
-    },
-    totalPages: {
-        type: Number,
-        required: true
-	}
-
+  loading: {
+    type: Boolean,
+    required: true
+  },
+  currentPage: {
+    type: Number,
+    required: true
+  },
+  totalPages: {
+    type: Number,
+    required: true
+  }
 })
 
-const generateNumberArray = computed(() => {
-	const arr = ref([] as number[])
-	for (let i = 1; i <= props.totalPages; i++) {
-		arr.value.push(i)
-	}
-	return arr
+const visiblePages = computed(() => {
+  const maxVisiblePages = 5 // Adjust this number as needed
+  const halfMaxVisiblePages = Math.floor(maxVisiblePages / 2)
+
+  if (props.totalPages <= maxVisiblePages) {
+    return Array.from({ length: props.totalPages }, (_, i) => i + 1)
+  } else {
+    const start = Math.max(props.currentPage - halfMaxVisiblePages, 1)
+    const end = Math.min(start + maxVisiblePages - 1, props.totalPages)
+
+    if (start > 1) {
+      // Add ellipsis before the first page
+      return [1, '...', ...Array.from({ length: end - start + 1 }, (_, i) => start + i)]
+    } else {
+      return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+    }
+  }
 })
 </script>
 

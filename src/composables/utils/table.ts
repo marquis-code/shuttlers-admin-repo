@@ -30,7 +30,8 @@ export const usePagination = () => {
         await fetchFunc(false)
     }
     const moveTo = async (page: number) => {
-        if (page === 0) return
+        if (page === 0 || typeof page !== 'number') return
+
         metaObject.page.value = page
         await fetchFunc(false)
     }
@@ -47,7 +48,8 @@ export const usePagination = () => {
     return { metaObject, showLoadMore, loadMore, setFunction, next, prev, moveTo }
 }
 
-export const useTableFilter = (filterData: Record<string, Ref>) => {
+export const useTableFilter = (filterData?: Record<string, Ref>) => {
+    if (!filterData) return ''
     return Object.keys(filterData)
     .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)
          .join('&')

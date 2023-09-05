@@ -5,7 +5,7 @@
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #footer>
-				<!-- <TablePagination /> -->
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -14,7 +14,8 @@
 <script setup lang="ts">
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 
-const { getCorporatesList, loading, corporatesList, onFilterUpdate } = useGetCorporateList()
+const { getCorporatesList, loading, corporatesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetCorporateList()
+getCorporatesList()
 
 definePageMeta({
     layout: 'dashboard',
