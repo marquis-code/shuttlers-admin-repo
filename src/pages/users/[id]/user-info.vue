@@ -1,5 +1,5 @@
 <template>
-	<div class="flex gap-x-10 justify-center items-start">
+	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 		<div class="w-8/12 bg-white rounded-md shadow-sm p-3">
 			<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 				<div class="font-medium">
