@@ -15,6 +15,10 @@ export const useUserCreditLineUsage = () => {
       staffId: ref(''),
       endDate: ref('')
     }
+    // @Marquis the solution to this is to use a watch on the selectedUser because on load the selectedUser is null and you need to watch for it and trigger the function after it loads
+    watch(selectedUser, () => {
+        getUserCreditLineUsage()
+    })
 
     const getUserCreditLineUsage = async () => {
         if (!selectedUser?.value?.corporate_id) {
