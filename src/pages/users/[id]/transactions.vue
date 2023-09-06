@@ -20,6 +20,9 @@
 					<span>{{ item?.data?.payment_source ?? 'N/A' }}</span>
 				</div>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -27,7 +30,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserTransactions } from '@/composables/modules/users/transactions'
-const { transactionsList, loading, getUserTransactionsById } = useUserTransactions()
+const { transactionsList, loading, getUserTransactionsById, moveTo, next, prev, total, page } = useUserTransactions()
 const id = useRoute().params.id as string
 getUserTransactionsById(id)
 

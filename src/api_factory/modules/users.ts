@@ -24,8 +24,8 @@ export const users_api = {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, params)
 	},
-	$_get_wallet_transactions: (id:string) => {
-		const url = `/users/${id}/wallet`
+	$_get_wallet_transactions: (id:string, metaObject: TMetaObject) => {
+		const url = `/users/${id}/wallet?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_active_booking: (id:string, metaObject: TMetaObject) => {
