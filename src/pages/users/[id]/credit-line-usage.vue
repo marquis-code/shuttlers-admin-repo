@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="creditLineUsageList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.title">
@@ -27,14 +27,21 @@
 					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
 				</div>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
+
 import { useUserCreditLineUsage } from '@/composables/modules/users/credit-line-usage'
-const { creditLineUsageList, loading, getUserCreditLineUsage } = useUserCreditLineUsage()
+const { creditLineUsageList, loading, getUserCreditLineUsage, filterData, moveTo, next, prev, total, page, onFilterUpdate } = useUserCreditLineUsage()
 const id = useRoute().params.id as string
-getUserCreditLineUsage(id)
+filterData.startDate.value = '2023-04-03'
+filterData.endDate.value = '2023-04-03'
+filterData.staffId.value = id
+getUserCreditLineUsage()
 
 definePageMeta({
     layout: 'dashboard',

@@ -21,8 +21,9 @@ export const corporates_api = {
 		const url = '/shuttle-requests?page=1&limit=10&sort[created_at]=desc'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_credit_line_usage: (id:string) => {
-		const url = `/corporates/95/credit-line-usages?query=&limit=10&ascending=1&page=1&byColumn=0&staffId=${id}&startDate=2023-08-31T23:00:00.000Z&endDate=2023-09-30T22:59:59.999Z`
+	$_get_credit_line_usage: (corporateId:number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/corporates/${corporateId}/credit-line-usages?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 
