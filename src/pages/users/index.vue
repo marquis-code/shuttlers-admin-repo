@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
@@ -37,7 +37,9 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 
-const { getUsersList, loading, usersList, moveTo, next, prev, total, page } = useGetUsersList()
+const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetUsersList()
+
+filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getUsersList()
 
 const onRowClicked = (data) => {

@@ -26,13 +26,16 @@ export const useGetUsersList = () => {
     const loading = ref(false)
     const usersList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const filterData = {
+        status: ref('')
+    }
 
     const { $_get_users } = users_api
 
     const getUsersList = async () => {
         loading.value = true
 
-        const res = await $_get_users(metaObject) as CustomAxiosResponse
+        const res = await $_get_users(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             usersList.value = res.data.data
@@ -42,5 +45,17 @@ export const useGetUsersList = () => {
     }
     setFunction(getUsersList)
 
-    return { getUsersList, loading, usersList, moveTo, ...metaObject, next, prev }
+    watch([filterData.status], (val) => {
+        getUsersList()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'status':
+                filterData.status.value = data.value
+                break
+        }
+    }
+
+    return { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
