@@ -6,23 +6,42 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.route">
-					<span class="text-blue-600">{{ item?.data?.route?.route_code }}</span>
+					<RouteLocation :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+				</div>
+				<div v-if="item.amount">
+					<span>₦ {{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
 
-				<div v-if="item.route_code">
-					<span class="text-blue-600">{{ item?.data?.route?.route_code }}</span>
+				<div v-if="item.start_date">
+					<span> {{ item.data.start_date ?? 'N/A' }}</span>
 				</div>
-
-				<div v-if="item.status">
-					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
+				<div v-if="item.end_date">
+					<span> {{ item.data.end_date ?? 'N/A' }}</span>
 				</div>
+				<div v-if="item.route_type">
+					<span>
+						{{
+							item?.data?.route_type?.visibility
+						}}
+					</span>
+					<br>
+					<span>
+						{{
+							item?.data?.route_type?.type ? "exclusive" : "shared"
+						}}
+					</span>
+				</div>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserActiveBookings } from '@/composables/modules/users/active-bookings'
-const { activeBookingsList, loading, getUserActiveBookingsById } = useUserActiveBookings()
+const { activeBookingsList, loading, getUserActiveBookingsById, moveTo, next, prev, total, page } = useUserActiveBookings()
 const id = useRoute().params.id as string
 getUserActiveBookingsById(id)
 

@@ -5,8 +5,11 @@
 				<NuxtLink to="/users/bookings/create-batch-booking" class="border border-gray-950 bg-white text-gray-800 py-1.5 rounded-lg px-4">
 					Create Batch Booking
 				</NuxtLink>
-				<NuxtLink to="/users/notify" class="btn-primary">
+				<NuxtLink to="/users/notify" class="border border-gray-950 bg-white text-gray-800 py-1.5 rounded-lg px-4">
 					Notify
+				</NuxtLink>
+				<NuxtLink to="/users/add" class="btn-primary py-2 font-light">
+					Add User
 				</NuxtLink>
 			</div>
 		</template>

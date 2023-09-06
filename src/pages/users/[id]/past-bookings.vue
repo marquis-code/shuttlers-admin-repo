@@ -2,42 +2,50 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.title">
-					<span class="text-blue-600">{{ item.data.title }}</span>
+				<div v-if="item.route">
+					<RouteLocation :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
-				<div v-if="item.firstName" class="">
-					<p class="text-blue-600">
-						{{ item.data.firstName }} {{ item.data.lastName }}
-					</p>
-					<p>{{ item.data.email }}</p>
+				<div v-if="item.amount">
+					<span>₦ {{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
-				<div v-if="item.location" class="flex items-center gap-x-2">
-					<img src="@/assets/icons/location.svg" alt="">
-					<p class="font-medium">
-						{{ item.data.location }}
-					</p>
+
+				<div v-if="item.start_date">
+					<span> {{ item.data.start_date ?? 'N/A' }}</span>
 				</div>
-				<div v-if="item.returnTrip">
-					<span>{{ item.data.returnTrip ? 'Return' : 'One-way' }}</span>
+				<div v-if="item.end_date">
+					<span> {{ item.data.end_date ?? 'N/A' }}</span>
 				</div>
-				<div v-if="item.status">
-					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
+				<div v-if="item.route_type">
+					<span>
+						{{
+							item?.data?.route_type?.visibility
+						}}
+					</span>
+					<br>
+					<span>
+						{{
+							item?.data?.route_type?.type ? "exclusive" : "shared"
+						}}
+					</span>
 				</div>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
-const { pastBookingsList, loading, getUserPastBookingsById } = useUserPastBookings()
+const { pastBookingsList, loading, filterData, getUserPastBookingsById, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
 const id = useRoute().params.id as string
-const params = ref({
-	status: 'completed'
-})
-getUserPastBookingsById(id, params.value as any)
+
+filterData.status.value = 'completed'
+getUserPastBookingsById(id)
 
 definePageMeta({
     layout: 'dashboard',

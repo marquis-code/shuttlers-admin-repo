@@ -7,7 +7,8 @@ import Fleets from '@/components/headers/modules/Fleets/index.vue'
 import AddFleets from '@/components/headers/modules/Fleets/AddFleets.vue'
 import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
-import Admin from '@/components/headers/modules/Admin.vue'
+import Admin from '@/components/headers/modules/Admin/index.vue'
+import CreateAdmin from '@/components/headers/modules/Admin/add-admin.vue'
 import Drivers from '@/components/headers/modules/Drivers.vue'
 import Events from '@/components/headers/modules/Events.vue'
 import Transactions from '@/components/headers/modules/Transactions.vue'
@@ -19,6 +20,7 @@ import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
 import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
+import AddUser from '@/components/headers/modules/Users/add-user.vue'
 import UsersInsights from '@/components/headers/modules/Users/insights.vue'
 import BatchRefund from '@/components/headers/modules/Users/batch-refund.vue'
 import BatchBooking from '@/components/headers/modules/Users/BatchBooking/index.vue'
@@ -33,6 +35,7 @@ const componentRouteArray = [
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
+    { routes: ['users-add'], component: AddUser },
     { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
@@ -50,6 +53,7 @@ const componentRouteArray = [
     { routes: ['promotion'], component: Promotion },
     { routes: ['campaigns'], component: null },
     { routes: ['admin'], component: Admin },
+    { routes: ['admin-add'], component: CreateAdmin },
     { routes: ['configuration'], component: null },
     { routes: ['campaigns'], component: Campaigns },
     { routes: ['trips-sos'], component: sos }
