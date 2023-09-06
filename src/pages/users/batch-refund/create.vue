@@ -27,14 +27,14 @@
 						Select trip
 					</option>
 					<option v-for="item in pastBookingsList" :key="item.id" :value="item.id">
-						{{ item.route }}
+						({{ item.bus_pass }})  - {{ item.trip_date }} ({{ item?.itinerary?.trip_time }}) - ₦{{ item.itinerary.default_fare }}
 					</option>
 				</select>
 			</div>
 
 			<div class="field relative">
 				<label for="percentage">Refund percentage</label>
-				<input id="percentage" autocomplete="true" type="text" class="input-field" required>
+				<input id="percentage" v-model="logRefundData.refund_value.value" autocomplete="true" type="number" class="input-field" required>
 			</div>
 
 			<div class="field relative">

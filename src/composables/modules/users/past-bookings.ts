@@ -3,7 +3,7 @@ import { usePagination } from '@/composables/utils/table'
 
 export const useUserPastBookings = () => {
     const loading = ref(false)
-    const pastBookingsList = ref([] as any)
+    const pastBookingsList = ref([] as any[])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const filterData = {

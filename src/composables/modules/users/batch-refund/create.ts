@@ -13,9 +13,10 @@ export const useLogBatchRefund = () => {
         reason: ref()
     }
     const { getUserPastBookingsById, pastBookingsList, loading: pastBookingsLoading } = useUserPastBookings()
-    watch(logRefundData.user, (newVal:any) => {
+    watch(logRefundData.user, async (newVal:any) => {
         if (newVal) {
-            getUserPastBookingsById(newVal.id)
+            await getUserPastBookingsById(newVal.id)
+            if (pastBookingsList.value.length === 0) return useAlert().openAlert({ type: 'ERROR', msg: 'No past bookings found for this user' })
             logRefundData.user_id.value = logRefundData.user.value?.id
         }
      })
@@ -32,6 +33,7 @@ export const useLogBatchRefund = () => {
 
         ) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
+            useRouter().push('/users/batch-refund')
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Refund logged successfully' })
         }
         loading.value = false
