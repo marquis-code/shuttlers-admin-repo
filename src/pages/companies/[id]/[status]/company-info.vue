@@ -127,7 +127,6 @@
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertToCurrency } from '@/composables/utils/formatter'
 const { getCorporateById, loading, selectedCorporate } = useCorporateIdDetails()
-console.log(selectedCorporate.value, 'cirporae details gere')
 const id = useRoute().params.id as string
 getCorporateById(id)
 
