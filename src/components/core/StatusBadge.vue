@@ -15,7 +15,7 @@ const toLowerCase = (val:any) => {
 }
 
 const props = defineProps({
-	  name: {
+  name: {
 	type: String,
 	required: true
   },
@@ -23,7 +23,6 @@ const props = defineProps({
 	type: Boolean,
 	default: false
   }
-
 })
 
 const selectPalette = ref<{color:string, bg:string}>()
@@ -32,7 +31,9 @@ const palette = {
 	success: { color: '#25A254', bg: '#15CD70' },
 	failed: { color: '#D12E2E', bg: '#E13D45' },
 	pending: { color: '#E2C044', bg: '#FDB022' },
-	default: { color: '#1F2937', bg: '#FDB022' }
+	default: { color: '#1F2937', bg: '#FDB022' },
+	active: { color: '#25A254', bg: '#15CD70' },
+	inactive: { color: '#D12E2E', bg: '#E13D45' }
 }
 
 		switch (toLowerCase(props.name)) {
@@ -47,6 +48,12 @@ const palette = {
 				break
 			case 'cancelled':
 					selectPalette.value = palette.failed
+				break
+			case 'active':
+					selectPalette.value = palette.active
+				break
+			case 'inactive':
+					selectPalette.value = palette.inactive
 				break
 			default :
 					selectPalette.value = palette.default

@@ -20,9 +20,8 @@
 				<span v-if="item.corporate_id" class="flex items-center gap-4">
 					<span>{{ item.data.wallet.credit_amount }}</span>
 				</span>
-				<!-- @Marquis use the status badge component -->
-				<span v-else-if="item.active" class="text-xs text-white rounded-lg" :class="[item.data.active == 1 ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
+				<span v-else-if="item.active">
+					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" class="rounded-full text-center w-20 h-8 flex justify-center items-center" />
 				</span>
 			</template>
 
