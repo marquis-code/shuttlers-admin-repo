@@ -10,8 +10,13 @@
 						<input type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
 					</div>
 					<p class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
-						0 user selected
+						{{ selectedUserList.length }} user{{ selectedUserList.length > 0 ? 's' : '' }} selected
 					</p>
+				</div>
+				<div class="grid grid-cols-3">
+					<div v-for="(item, index) in selectedUserList" :key="index">
+						<p class="rounded-md px-3 py-3 text-xs ">{{ item?.fname }} {{ item?.lname }}</p>
+					</div>
 				</div>
 				<div class="p-6">
 					<ModulesUsersTextEditor />
@@ -72,22 +77,20 @@
 					<input type="checkbox">
 				</div>
 				<div class="px-10 pb-10">
-					<div v-for="({fname, email, phone}, index) in usersList" :key="index" class="flex items-center justify-between py-6 border-b">
+					<div v-for="(item, index) in usersList" :key="index" class="flex items-center justify-between py-6 border-b">
 						<div class="flex items-center gap-x-3">
-							<div class="flex items-center justify-center w-10 h-10 text-center text-white bg-gray-300 rounded-full">
-								<span class="text-sm">{{ fname }}</span>
-							</div>
+							<Avatar :name="item.fname" bg="#B1C2D9" />
 							<div>
 								<p class="text-sm font-medium">
-									{{ email }}
+									{{ item.email }}
 								</p>
 								<p class="text-sm">
-									{{ phone }}
+									{{ item.phone }}
 								</p>
 							</div>
 						</div>
 						<div>
-							<input type="checkbox">
+							<input type="checkbox" @change="handleSelectedUser(item)">
 						</div>
 					</div>
 				</div>
@@ -144,6 +147,13 @@ const toggleStory = () => {
       notification.value.isSms = false
       }
     }
+
+const selectedUserList = ref([])
+
+const handleSelectedUser = (item: any) => {
+	selectedUserList.value.push(item)
+//   [...selectedUserList.value, item]
+}
 </script>
 
 <style>

@@ -25,6 +25,9 @@ export const corporates_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/corporates/${corporateId}/credit-line-usages?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_corporate_by_id: (id:string) => {
+		const url = `/corporates/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
-
 }

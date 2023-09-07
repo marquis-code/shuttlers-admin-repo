@@ -27,11 +27,13 @@ import BatchBooking from '@/components/headers/modules/Users/BatchBooking/index.
 import CreateBatchBooking from '@/components/headers/modules/Users/BatchBooking/create-batch-booking.vue'
 import sos from '@/components/headers/modules/commute/sos.vue'
 import UserDetails from '@/components/headers/modules/Users/user-details.vue'
+import CompanyDetails from '@/components/headers/modules/Companies/company-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
     { routes: ['companies', 'companies-demo-requests'], component: Companies },
+    { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings'], component: CompanyDetails },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
