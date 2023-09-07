@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList" :has-index="true">
+		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList" :has-index="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="onFilterUpdate" />
 			</template>
@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
+import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 
 const { getCorporatesList, loading, corporatesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetCorporateList()
 getCorporatesList()
@@ -37,6 +38,13 @@ const tableFields = ref([
     }
 
 ])
+
+const onRowClicked = (data) => {
+	const { selectedCorporate } = useCorporateIdDetails()
+    const status = data.active === 1 ? 'active' : 'inactive'
+	useRouter().push(`/companies/${data.id}/${status}/company-info`)
+	selectedCorporate.value = data
+}
 
 </script>
 

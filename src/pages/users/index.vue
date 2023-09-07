@@ -15,10 +15,10 @@
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
 				</span>
 				<span v-if="item.wallet" class="flex items-center gap-4">
-					<span>{{ item.data.wallet.amount }}</span>
+					<span>{{ convertToCurrency(item.data.wallet.amount) }}</span>
 				</span>
 				<span v-if="item.corporate_id" class="flex items-center gap-4">
-					<span>{{ item.data.wallet.credit_amount }}</span>
+					<span>{{ convertToCurrency(item.data.wallet.credit_amount) }}</span>
 				</span>
 				<span v-else-if="item.active">
 					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" class="rounded-full text-center w-20 h-8 flex justify-center items-center" />
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 
