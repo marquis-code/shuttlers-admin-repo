@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAlert } from '@/composables/core/useNotification'
+import { useAlert } from '@/composables/core/notification'
 const { active, message, closeAlert, type, ALERT_DURATION } = useAlert()
 
 const BORDER_WIDTH = ref(100)

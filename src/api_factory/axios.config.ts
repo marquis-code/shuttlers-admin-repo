@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { useAlert } from '@/composables/core/useNotification'
+import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
 const { token } = useUser()
 

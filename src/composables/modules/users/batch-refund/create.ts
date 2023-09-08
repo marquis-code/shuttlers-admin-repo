@@ -1,5 +1,5 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useAlert } from '@/composables/core/useNotification'
+import { useAlert } from '@/composables/core/notification'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
 
 export const useLogBatchRefund = () => {

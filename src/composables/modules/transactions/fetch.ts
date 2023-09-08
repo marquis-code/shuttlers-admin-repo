@@ -1,4 +1,4 @@
-import { useAlert } from '@/composables/core/useNotification'
+import { useAlert } from '@/composables/core/notification'
 import { transactions_api, CustomAxiosResponse } from '@/api_factory/modules'
 
 export const useGetRecentTransactionsList = () => {
