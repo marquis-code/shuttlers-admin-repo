@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList">
+		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 			</template>
@@ -12,8 +12,8 @@
 					<span>{{ item?.data?.title ?? 'N/A' }}</span>
 				</div>
 				<div v-if="item.amount">
-					<span :style="{color: item.data.type === 'credit' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}">
-						₦ {{ convertToCurrency(item?.data?.amount) }}
+					<span :class="[ item.data.type === 'credit' ? 'text-green': 'text-red']">
+						{{ convertToCurrency(item?.data?.amount) }}
 					</span>
 				</div>
 				<div v-if="item.payment_source">
@@ -33,6 +33,10 @@ import { useUserTransactions } from '@/composables/modules/users/transactions'
 const { transactionsList, loading, getUserTransactionsById, moveTo, next, prev, total, page } = useUserTransactions()
 const id = useRoute().params.id as string
 getUserTransactionsById(id)
+
+const onRowClicked = (data) => {
+	useRouter().push(`/transactions/${data.id}`)
+}
 
 definePageMeta({
     layout: 'dashboard',

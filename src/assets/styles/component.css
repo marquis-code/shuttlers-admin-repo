@@ -45,6 +45,9 @@
     .card {
         @apply rounded-md shadow-sm bg-white p-6;
     }
+    .card-header {
+        @apply font-bold pb-4 text-sm;
+    }
 
     .stat-card {
         @apply rounded-md shadow-sm bg-white;

@@ -1,15 +1,16 @@
-export const convertToCurrency = (
-  number = 0,
-  decimals = 0,
-  { countryCode = 'NG', currencyCode }: { countryCode?: string; currencyCode?: string } = {}
-): string => {
-  const formatter = new Intl.NumberFormat(`en-${countryCode}`, {
-    style: currencyCode ? 'currency' : 'decimal',
-    currency: currencyCode,
-    minimumFractionDigits: decimals
-  })
-  if (typeof number === 'string') number = parseFloat(number)
-  return formatter.format(number ? +number?.toFixed(decimals || 2) : 0)
+export const convertToCurrency = (value: number) => {
+   if (typeof value === 'undefined') return
+
+  let parseAmount
+  if (typeof value !== 'number') {
+       parseAmount = parseFloat((value as string).replace(',', '').replace(' ', ''))
+  } else {
+       parseAmount = value
+  }
+  return new Intl.NumberFormat('en-NG', {
+  style: 'currency',
+  currency: 'NGN'
+}).format(parseAmount)
 }
 
 export const truncateString = (input: string, maxLength = 80): string => {

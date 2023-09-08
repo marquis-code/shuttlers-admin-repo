@@ -1,58 +1,76 @@
 <template>
-	<main class="space-y-10">
-		<div class="lg:flex space-y-6 lg:space-y-0 lg:space-x-6 justify-start">
-			<div class="rounded-lg bg-white  h-[300px] lg:w-8/12 border">
-				<ModulesTransactionsCharts />
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<div class="card max-w-2xl">
+			<div class="card-header">
+				Transaction Information
 			</div>
-			<div class="rounded-lg bg-white  lg:w-4/12">
-				<ModulesTransactionsDistribution />
+			<div class="card-body">
+				<h5 v-if="Object.keys(transaction).length === 0 && !loading" class="text-small text-center">
+					No Transaction Deatail available
+				</h5>
+				<div v-else-if="loading" class="flex justify-content-center align-items-center">
+					<Skeleton height="500px" />
+				</div>
+				<template v-else>
+					<div class="flex justify-between items-center px-12 border-y ">
+						<div v-for="row in transactionRow" :key="row.value" class=" py-4 text-center">
+							<h6 class="uppercase text-grey2 text-xs font-medium">
+								{{ row.name }}
+							</h6>
+							<h2 class="text-xl font-bold" :class="row.class">
+								{{ row.value }}
+							</h2>
+						</div>
+					</div>
+
+					<ul class="py-3">
+						<li v-for="col in transactionCol" :key="col.name" class="flex flex-wrap gap-4 justify-between items-center px-4 py-3  border-b text-sm">
+							<span class="font-medium">{{ col.name }} </span>
+							<span>{{ col.value }} </span>
+						</li>
+					</ul>
+				</template>
 			</div>
 		</div>
-
-		<!-- <div>
-			<Table :show-search-bar="true" :show-options="true" :show-radio-buttons="false" :headers="tableFields" :show-date-range="true"
-				:table-data="tableData" />
-		</div> -->
 	</main>
 </template>
 
-<script setup lang="ts">
-definePageMeta({
-	layout: 'dashboard',
-	middleware: ['is-authenticated']
+<script lang="ts" setup>
+import { useGetTransactionById } from '@/composables/modules/transactions/fetch'
+import { convertToCurrency } from '@/composables/utils/formatter'
+
+const { getTransactionById, loading, transaction } = useGetTransactionById()
+
+const id = useRoute().params.id as string
+
+getTransactionById(id)
+
+const transactionRow = computed(() => {
+	if (!transaction.value) return []
+	return [
+		{ name: 'AMOUNT', value: convertToCurrency(transaction.value.amount), class: transaction.value.type === 'debit' ? 'text-red' : 'text-green' },
+		{ name: 'TYPE', value: transaction.value.type, class: transaction.value.type === 'debit' ? 'text-red' : 'text-green' },
+		{ name: 'BALANCE BEFORE', value: convertToCurrency(transaction.value.balance_before), class: null },
+		{ name: 'BALANCE AFTER', value: convertToCurrency(transaction.value.balance_after), class: null }
+	]
 })
 
-const tableFields = ref([
-	{
-		text: 'Transaction Date',
-		value: 'transactions_date'
-	},
-	{
-		text: 'Description',
-		value: 'description'
-	},
-	{
-		text: 'User',
-		value: 'user'
-	},
-	{
-		text: 'Amount	',
-		value: 'amount'
-	},
-	{
-		text: 'Source',
-		value: 'source'
-	}
-])
+const transactionCol = computed(() => {
+	if (!transaction.value) return []
+	return [
+		{ name: 'User', value: `${transaction.value.user.fname} ${transaction.value.user.lname}` },
+		{ name: 'Reference', value: transaction.value.reference },
+		{ name: 'Date', value: transaction.value.created_at },
+		{ name: 'Payment Source', value: transaction.value.payment_source },
+		{ name: 'Description', value: transaction.value?.title ?? 'N/A' }
+	]
+})
 
-const tableData = ref([
-	{
-		transactions_date: '10:00 AM Aug 3, 2023',
-		description: 'Payment for AIK from Agege pen cinema bridge, Ogba Road, Ikeja, Nigeria to Ikeja City Mall, Obafemi Awolowo Way, Ojodu, Nigeria for 1 trip on Tuesday, 2023-08-01',
-		user: 'Temitope Daoduu',
-		amount: '₦340.00',
-		source: 'Main Balance'
-	}
-])
-
+definePageMeta({
+    layout: 'dashboard',
+    middleware: ['is-authenticated']
+})
 </script>
+
+<style scoped></style>

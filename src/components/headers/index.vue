@@ -11,7 +11,8 @@ import Admin from '@/components/headers/modules/Admin/index.vue'
 import CreateAdmin from '@/components/headers/modules/Admin/add-admin.vue'
 import Drivers from '@/components/headers/modules/Drivers.vue'
 import Events from '@/components/headers/modules/Events.vue'
-import Transactions from '@/components/headers/modules/Transactions.vue'
+import Transactions from '@/components/headers/modules/Transactions/index.vue'
+import Transactions_id from '@/components/headers/modules/Transactions/id.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners.vue'
@@ -49,6 +50,7 @@ const componentRouteArray = [
     { routes: ['drivers'], component: Drivers },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['transactions'], component: Transactions },
+    { routes: ['transactions-id'], component: Transactions_id },
     { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },
     { routes: ['fleet-add'], component: AddFleets },
     { routes: ['referral'], component: Referral },

@@ -42,7 +42,8 @@ module.exports = {
 				purp05: 'var(--purp05)',
 				shuttlersGreen: '#0DAC5C',
 				blu06: 'var(--blu06)',
-				red: 'var(--red)'
+				red: 'var(--red)',
+				green: 'var(--green)'
 			},
 			boxShadow: {
 				'3xl': '4px 4px 16px 5px rgba(27, 25, 36, 0.12)',

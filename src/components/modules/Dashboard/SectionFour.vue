@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGetRecentTransactionsList } from '@/composables/modules/transactions'
+import { useGetRecentTransactionsList } from '@/composables/modules/transactions/fetch'
 import { useGetRecentSignupsList } from '@/composables/modules/users/fetch'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
