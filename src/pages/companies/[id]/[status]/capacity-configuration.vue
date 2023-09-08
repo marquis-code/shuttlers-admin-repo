@@ -5,14 +5,7 @@
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.fname" class="flex items-center gap-4">
-					<div>
-						<Avatar :name="item.data.fname" bg="#B1C2D9" />
-					</div>
-
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
-				</span>
-				<span v-else-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
+				<span v-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
 					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
 				</span>
 				<span v-else-if="item.created_at">
@@ -38,10 +31,6 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 const tableFields = ref([
-    {
-        text: 'Staff',
-        value: 'fname'
-    },
     {
         text: 'Phone',
         value: 'phone'
