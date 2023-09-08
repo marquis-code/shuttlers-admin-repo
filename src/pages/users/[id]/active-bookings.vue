@@ -6,7 +6,7 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.route">
-					<RouteLocation :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+					<RouteDescription:pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
 					<span>₦ {{ convertToCurrency(item?.data?.amount) }}</span>
