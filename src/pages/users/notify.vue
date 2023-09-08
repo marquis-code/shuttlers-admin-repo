@@ -14,9 +14,7 @@
 					</p>
 				</div>
 				<div class="grid grid-cols-3">
-					<div v-for="(item, index) in selectedUserList" :key="index">
-						<p class="rounded-md px-3 py-3 text-xs ">{{ item?.fname }} {{ item?.lname }}</p>
-					</div>
+					<span v-for="(item, index) in selectedUserList" :key="index" class="rounded-md px-3 py-3 text-xs bg-gray-300 inline-block">{{ item?.fname }} {{ item?.lname }}</span>
 				</div>
 				<div class="p-6">
 					<ModulesUsersTextEditor />

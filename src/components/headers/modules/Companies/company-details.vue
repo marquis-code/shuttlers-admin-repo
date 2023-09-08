@@ -55,6 +55,10 @@ const pageTabs = computed(() => [
         path: `/companies/${selectedCorporate.value.id}/${status.value}/credit-line`
     },
     {
+        name: 'Capacity Configuration',
+        path: `/companies/${selectedCorporate.value.id}/${status.value}/capacity-configuration`
+    },
+    {
         name: 'Routes',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/routes`
     },
