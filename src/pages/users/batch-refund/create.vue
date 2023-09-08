@@ -12,7 +12,7 @@
 			</header>
 			<div class="field relative">
 				<label for="email">Select user</label>
-				<InputMultiSelect id="select_users_input" v-model="logRefundData.user.value"
+				<InputMultiSelect id="select_users_input" v-model="selectedUseruse"
 					track-by="id" placeholder="Select user to log refund" :custom-label="(data)=>`${data.fname} ${data.lname} - (${data.email})`"
 					open-direction="bottom" :options="queriedUsers" :multiple="false" :searchable="true"
 					:loading="loadingQueriedUsers" :internal-search="false"
@@ -34,7 +34,15 @@
 
 			<div class="field relative">
 				<label for="percentage">Refund percentage</label>
-				<input id="percentage" v-model="logRefundData.refund_value.value" autocomplete="true" type="number" class="input-field" required>
+
+				<select id="percentage" v-model="logRefundData.refund_value.value" class="input-field" required>
+					<option value="">
+						Select Percentage
+					</option>
+					<option v-for="item in percentageArray" :key="item.value" :value="item.value">
+						{{ item.name }}
+					</option>
+				</select>
 			</div>
 
 			<div class="field relative">
@@ -46,7 +54,6 @@
 				<button class="btn-primary" :disabled="loading">
 					<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 						Log refund
-
 					</span>
 					<Spinner v-else />
 				</button>
@@ -59,20 +66,22 @@
 import { useQueryUsers } from '@/composables/modules/users/query'
 import { useLogBatchRefund } from '@/composables/modules/users/batch-refund/create'
 
-const { loading, logBatchRefund, logRefundData, pastBookingsList } = useLogBatchRefund()
+const { loading, logBatchRefund, logRefundData, pastBookingsList, selectedUser } = useLogBatchRefund()
 
 const { loadingQueriedUsers, queriedUsers, queryUsers } = useQueryUsers()
 
-const router = useRouter()
-
-const test = ref([])
-const usersList = ref([1, 2, 3, 4, 5])
-const isLoading = ref(false)
-const asyncFindUsers = async (query: string) => {
-	isLoading.value = true
-	await new Promise((resolve) => setTimeout(resolve, 1000))
-	isLoading.value = false
-}
+const percentageArray = ref([
+	{ name: '10%', value: 10 },
+	{ name: '20%', value: 20 },
+	{ name: '30%', value: 30 },
+	{ name: '40%', value: 40 },
+	{ name: '50%', value: 50 },
+	{ name: '60%', value: 60 },
+	{ name: '70%', value: 70 },
+	{ name: '80%', value: 80 },
+	{ name: '90%', value: 90 },
+	{ name: '100%', value: 100 }
+])
 
 const form = ref({
 	bookingDate: ''

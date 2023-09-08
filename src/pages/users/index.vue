@@ -21,7 +21,7 @@
 					<span>{{ convertToCurrency(item.data.wallet.credit_amount) }}</span>
 				</span>
 				<span v-else-if="item.active">
-					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" class="rounded-full text-center w-20 h-8 flex justify-center items-center" />
+					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" />
 				</span>
 			</template>
 

@@ -4,20 +4,20 @@ import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
 
 export const useLogBatchRefund = () => {
     const loading = ref(false)
+    const selectedUser = ref()
 
     const logRefundData = {
-        user: ref(),
         user_id: ref(),
         trip_id: ref(),
         refund_value: ref(),
         reason: ref()
     }
     const { getUserPastBookingsById, pastBookingsList, loading: pastBookingsLoading } = useUserPastBookings()
-    watch(logRefundData.user, async (newVal:any) => {
+    watch(selectedUser, async (newVal:any) => {
         if (newVal) {
             await getUserPastBookingsById(newVal.id)
             if (pastBookingsList.value.length === 0) return useAlert().openAlert({ type: 'ERROR', msg: 'No past bookings found for this user' })
-            logRefundData.user_id.value = logRefundData.user.value?.id
+            logRefundData.user_id.value = selectedUser.value?.id
         }
      })
 
@@ -39,5 +39,5 @@ export const useLogBatchRefund = () => {
         loading.value = false
     }
 
-    return { logBatchRefund, loading, logRefundData, pastBookingsList }
+    return { logBatchRefund, loading, logRefundData, pastBookingsList, selectedUser }
 }

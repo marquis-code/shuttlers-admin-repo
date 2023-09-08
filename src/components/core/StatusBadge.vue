@@ -2,7 +2,7 @@
 	<div
 		v-if="name"
 		:style="`color: white; background-color:${selectPalette?.bg};`"
-		class="px-3 py-1 text-xs font-medium rounded-md "
+		class="px-3 py-1 text-xs font-medium rounded-md  inline-block"
 	>
 		<slot> {{ translateStatus(name) }}</slot>
 	</div>
