@@ -1,27 +1,15 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="refundList">
+		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.pickup" class="flex items-center gap-4">
-					<span>{{ item.data.pickup }}</span>
-				</span>
-				<span v-if="item.dropoff" class="flex items-center gap-4">
-					<span>{{ item.data.dropoff }}</span>
-				</span>
-				<span v-if="item.routeCode" class="flex items-center gap-4">
-					<span>{{ item.data.routeCode }}</span>
-				</span>
-				<span v-if="item.userCount" class="flex items-center gap-4">
-					<span>{{ item.data.userCount }}</span>
-				</span>
-				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1']">
+				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
 					{{ item.data.status }}
 				</span>
-				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+				<span v-else-if="item.id">
+					<ButtonIconDropdown :children="dropdownChildren" class-name="w-40" />
 				</span>
 			</template>
 		</Table>
@@ -36,34 +24,52 @@ const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
 getBatchRefundList()
 
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
+const formatedRefundList = computed(() => {
+	if (!refundList.value.length) return []
+	return refundList.value.map((item) => {
+		return {
+			name: `${item.user.fname} ${item.user.lname}`,
+			route: item.route.route_code,
+			trip: item.trip.cost_of_supply ?? 'N/A',
+			refund: `${item.refund_value} %`,
+			reason: item.reason,
+			id: item.id
+		}
+	})
+})
+const dropdownChildren = computed(() => [
+	{ name: 'Trip details', func: () => { } },
+	{ name: 'Delete log', func: () => { }, class: '!text-red' }
+])
 const tableFields = ref([
-    {
-        text: 'PICKUP',
-        value: 'pickup'
-    },
-    {
-        text: 'DROPOFF',
-        value: 'dropoff'
-    },
-    {
-        text: 'ROUTE CODE',
-        value: 'routeCode'
-    },
-    {
-        text: 'USERS COUNT',
-        value: 'userCount'
-    },
-    {
-        text: 'STATUS',
-        value: 'status'
-    },
-    {
-        text: 'CREATED AT',
-        value: 'created_at'
-    }
+	{
+		text: 'Name',
+		value: 'name'
+	},
+	{
+		text: 'Route',
+		value: 'route'
+	},
+	{
+		text: 'TRIP (₦)',
+		value: 'trip'
+	},
+	{
+		text: 'REFUND (%)',
+		value: 'refund'
+	},
+	{
+		text: 'REASON',
+		value: 'reason'
+	},
+	{
+		text: '',
+		value: 'id',
+		width: '10%'
+	}
 ])
 
 </script>

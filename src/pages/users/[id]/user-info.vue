@@ -132,7 +132,7 @@ const dropdownChildren = computed(() => [
 	{ name: 'Change Password', func: () => { } },
 	{ name: 'Add Profile Picture', func: () => { } },
 	{ name: 'Make bus captain', func: () => { } },
-	{ name: 'Debit User Wallet', func: () => { }, class: '!cotext-red' },
+	{ name: 'Debit User Wallet', func: () => { }, class: '!text-red' },
 	{ name: 'Suspend User', func: () => { }, class: '!text-red' }
 ])
 
