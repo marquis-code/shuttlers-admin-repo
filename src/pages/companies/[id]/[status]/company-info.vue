@@ -125,11 +125,9 @@
 
 <script setup lang="ts">
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-import { convertToCurrency } from '@/composables/utils/formatter'
 const { getCorporateById, loading, selectedCorporate } = useCorporateIdDetails()
 const id = useRoute().params.id as string
 getCorporateById(id)
-
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
@@ -142,10 +140,4 @@ const dropdownChildren = computed(() => [
 	{ name: 'Export Manifest', func: () => { } },
 	{ name: 'Suspend Company', func: () => { } }
 ])
-
-const openDropdown = ref(false)
 </script>
-
-<style scoped>
-
-</style>

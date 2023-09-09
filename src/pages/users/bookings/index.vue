@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList">
+		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList"  :option="onRowClicked" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
+				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.pickup" class="flex items-center gap-4">
@@ -21,7 +21,7 @@
 					{{ item.data.status }}
 				</span>
 				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY, hh:mm:ss A").value }}
 				</span>
 			</template>
 		</Table>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
+import { useBatchBookingIdDetails } from '@/composables/modules/batchBooking/id'
 
 const { getBatchBookingList, loading, batchBookingList } = useGetBatchBookingList()
 getBatchBookingList()
@@ -39,6 +40,14 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const onRowClicked = (data) => {
+	console.log(data)
+	const { selectedBooking } = useBatchBookingIdDetails()
+	useRouter().push(`/users/bookings/${data.id}/booking-info`)
+	selectedBooking.value = data
+}
+
 const tableFields = ref([
     {
         text: 'PICKUP',

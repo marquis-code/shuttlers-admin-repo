@@ -6,15 +6,19 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.title">
-					<span class="text-blue-600">{{ item.data.title}}</span>
+					<span class="text-blue-600">{{ item.data.title }}</span>
 				</div>
 				<div v-if="item.firstName" class="">
-					<p class="text-blue-600">{{ item.data.firstName }} {{ item.data.lastName }}</p>
+					<p class="text-blue-600">
+						{{ item.data.firstName }} {{ item.data.lastName }}
+					</p>
 					<p>{{ item.data.email }}</p>
 				</div>
 				<div v-if="item.location" class="flex items-center gap-x-2">
 					<img src="@/assets/icons/location.svg" alt="">
-					<p class="font-medium">{{ item.data.location }}</p>
+					<p class="font-medium">
+						{{ item.data.location }}
+					</p>
 				</div>
 				<div v-if="item.returnTrip">
 					<span>{{ item.data.returnTrip ? 'Return' : 'One-way' }}</span>
