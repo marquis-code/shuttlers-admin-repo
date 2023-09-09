@@ -28,7 +28,7 @@
 				<div>
 					<div v-if="item.amenities">
 						<p>
-							{{ item.data.amenities}}
+							{{ item.data.amenities }}
 						</p>
 					</div>
 				</div>

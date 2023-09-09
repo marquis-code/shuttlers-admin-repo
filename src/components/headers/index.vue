@@ -29,6 +29,7 @@ import CreateBatchBooking from '@/components/headers/modules/Users/BatchBooking/
 import sos from '@/components/headers/modules/commute/sos.vue'
 import UserDetails from '@/components/headers/modules/Users/user-details.vue'
 import CompanyDetails from '@/components/headers/modules/Companies/company-details.vue'
+import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking/batch-booking-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -45,6 +46,7 @@ const componentRouteArray = [
     { routes: ['users-bookings'], component: BatchBooking },
     { routes: ['users-id-active-bookings', 'users-id-cancelled-trips', 'users-id-credit-line-usage', 'users-id-past-bookings', 'users-id-rides', 'users-id-transactions', 'users-id-user-info'], component: UserDetails },
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
+    { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
     { routes: ['trips'], component: null },
     { routes: ['partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },
