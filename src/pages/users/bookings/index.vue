@@ -42,7 +42,6 @@ definePageMeta({
 })
 
 const onRowClicked = (data) => {
-	console.log(data)
 	const { selectedBooking } = useBatchBookingIdDetails()
 	useRouter().push(`/users/bookings/${data.id}/booking-info`)
 	selectedBooking.value = data
