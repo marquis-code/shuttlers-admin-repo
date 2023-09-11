@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+const form = ref({
+  notification: ''
+})
+
+console.log(form.notification, 'notification')
+
+const onEditorChange = (e) => {
+ console.log(e, 'event here')
+}
 </script>
 <template>
 	<div>
 		<ClientOnly>
-			<QuillEditor theme="snow" />
+			<QuillEditor v-model:content="form.notification" theme="snow" @change="onEditorChange($event)" />
 		</ClientOnly>
 	</div>
 </template>
