@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList">
+		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data)=> $router.push(`/users/${data.id}/past-bookings/details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
