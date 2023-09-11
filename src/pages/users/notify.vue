@@ -2,28 +2,50 @@
 	<div class="justify-between space-y-10 lg:flex lg:space-y-0">
 		<div class="p-6 space-y-6 lg:w-6/12">
 			<div class="w-full">
-				<input type="text" placeholder="Enter notification title" class="w-full px-4 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
+				<input v-model="notification.title" type="text" placeholder="Enter notification title" class="w-full px-4 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
 			</div>
 			<div class="w-full bg-white rounded-lg">
 				<div class="flex items-center justify-between py-3 pr-6 border-b">
 					<div>
-						<input type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
+						<input v-model="search" type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
 					</div>
-					<p class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
-						{{ selectedUserList.length }} user{{ selectedUserList.length > 0 ? 's' : '' }} selected
+					<p v-if="notificationType === 'regular'" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
+						{{ selectedUsers.length }} user{{ selectedUsers.length > 0 ? 's' : '' }} selected
 					</p>
 				</div>
-				<div class="grid grid-cols-3">
-					<span v-for="(item, index) in selectedUserList" :key="index" class="rounded-md px-3 py-3 text-xs bg-gray-300 inline-block">{{ item?.fname }} {{ item?.lname }}</span>
+				<div class="p-1">
+					<div v-if="notificationType === 'regular' && selectedUsers.length > 0" class="grid grid-cols-3 gap-4">
+						<div
+							v-for="user in selectedUsers"
+							:key="user.id"
+							class="border rounded-lg text-xs flex justify-center gap-x-1 items-center py-2.5"
+						>
+							<p class="text-white rounded-full bg-green-500 text-xs px-1 py-1"
+							>
+								{{ user?.fname?.slice?.(0, 1).toUpperCase() }}{{ user?.lname?.slice?.(0, 1).toUpperCase() }}
+							</p>
+
+							<p class="pl-3 text-xs">
+								{{ user?.fname }}{{ user?.lname }}
+							</p>
+							<div class="flex justify-center items-center bg-white shadow-sm rounded-full border p-1 px-1.5">
+								<span class="cursor-pointer text-xs text-center" @click="removeSelectedUser(user)">X</span>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="p-6">
-					<ModulesUsersTextEditor />
+					{{ notification.description }}
+					<!-- <ModulesUsersTextEditor /> -->
+					<ClientOnly>
+						<QuillEditor v-model:content="notification.description" content-type="html" theme="snow" placeholder="Enter notification description" @change="onEditorChange($event)" />
+					</ClientOnly>
 				</div>
 				<div class="flex items-center justify-between px-6 pb-6">
 					<div class="flex items-center gap-x-4">
 						<div class="">
 							<label for="AcceptConditions" class="relative h-8 cursor-pointer w-14">
-								<input id="AcceptConditions" type="checkbox" class="sr-only peer">
+								<input	id="AcceptConditions" v-model="checked" type="checkbox" class="sr-only peer" @change="toggleStory">
 
 								<span
 									class="absolute inset-0 transition bg-gray-300 rounded-full peer-checked:bg-green-500"
@@ -39,8 +61,9 @@
 						</span>
 					</div>
 					<div>
-						<button class="text-white bg-gray-700 text-xs rounded-md px-6 py-2.5">
-							Notify users
+						<button class="text-white bg-gray-700 text-xs rounded-md px-6 py-2.5"
+							@click.prevent="notifyUsers">
+							{{ creatingNotification ? 'Processing...' : 'Notify users' }}
 						</button>
 					</div>
 				</div>
@@ -49,7 +72,8 @@
 		<div class="p-6 space-y-6 lg:w-6/12">
 			<div class="relative w-full">
 				<div class="w-full">
-					<input type="text" placeholder="Search users" class="w-full px-3 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
+					<input v-if="!selectedUsers.length"
+						v-model.trim="search" type="text" placeholder="Search users" class="w-full px-3 py-3 placeholder-gray-400 bg-white border rounded-md outline-none " @keyup.enter.prevent="getUsersList()">
 				</div>
 				<div class="absolute top-1.5 right-3">
 					<div class="flex items-center gap-x-3">
@@ -72,10 +96,10 @@
 					<p class="text-sm text-green-500">
 						select all users
 					</p>
-					<input type="checkbox">
+					<input id="notify-all" v-model="notification.notifyAll" type="checkbox" @change="handleAllUsersSelection($event)">
 				</div>
-				<div class="px-10 pb-10">
-					<div v-for="(item, index) in usersList" :key="index" class="flex items-center justify-between py-6 border-b">
+				<div v-if="!loading" class="px-10 pb-10 h-96 overflow-y-auto">
+					<div v-for="(item, index) in updatedUsersList" :key="index" class="flex items-center justify-between py-6 border-b">
 						<div class="flex items-center gap-x-3">
 							<Avatar :name="item.fname" bg="#B1C2D9" />
 							<div>
@@ -88,70 +112,117 @@
 							</div>
 						</div>
 						<div>
-							<input type="checkbox" @change="handleSelectedUser(item)">
+							<input type="checkbox" :checked="selectedUsers.find((user) => user.id === item.id) || notification.notifyAll" @change="selectUser($event, item)">
 						</div>
 					</div>
 				</div>
+				<Skeleton v-else height="119px" />
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { nextTick } from 'vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { useAlert } from '@/composables/core/notification'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
+import { useQueryUsers } from '@/composables/modules/users/query'
+import { useCreateNotification } from '@/composables/modules/users/notification'
 const { getUsersList, loading, usersList } = useGetUsersList()
-getUsersList()
+const { queryUsers, loadingQueriedUsers, queriedUsers } = useQueryUsers()
+const { createNotifications, creatingNotification, message } = useCreateNotification()
+// const isSearch = !!search.value
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+useCreateNotification()
 
-const users = ref([
-	{
-		name: 'LN',
-		phone: '08087868642',
-		email: 'lnlk2lknl@kl.com'
-	},
-	{
-		name: 'LN',
-		phone: '08087868642',
-		email: 'lnlk2lknl@kl.com'
-	},
-	{
-		name: 'LN',
-		phone: '08087868642',
-		email: 'lnlk2lknl@kl.com'
-	},
-	{
-		name: 'LN',
-		phone: '08087868642',
-		email: 'lnlk2lknl@kl.com'
-	},
-	{
-		name: 'LN',
-		phone: '08087868642',
-		email: 'lnlk2lknl@kl.com'
-	}
-])
-const checked = ref(false)
-const notification = ref({
-	isSms: false
+const updatedUsersList = computed(() => {
+	return search.value.length ? queriedUsers.value : usersList.value
 })
+
+const notificationType = ref('regular')
+let selectedUsers = reactive([])
+const users = ref([])
+const search = ref('')
+const checked = ref('')
+const notification = ref({
+	isSms: false,
+	title: '',
+    notifyAll: false,
+    description: ''
+})
+getUsersList()
+
+      const processing = ref(false)
+      const processingAll = ref(false)
+      const errorProcessing = ref(false)
 
 const toggleStory = () => {
       if (checked.value) {
-       notification.value.isSms = true
+        notification.value.isSms = true
       } else {
-      notification.value.isSms = false
+        notification.value.isSms = false
       }
     }
 
-const selectedUserList = ref([])
+	watch(search, (olvVal, newVal) => {
+		queryUsers(search.value)
+	})
 
-const handleSelectedUser = (item: any) => {
-	selectedUserList.value.push(item)
-//   [...selectedUserList.value, item]
-}
+	const removeSelectedUser = (selectedUser) => {
+      const index = selectedUsers.findIndex((user) => user.id === selectedUser.id)
+      selectedUsers.splice(index, 1)
+    }
+
+	const selectUser = (e, item) => {
+		if (e.target.checked) {
+		 selectedUsers.push(item)
+		}
+
+		if (!e.target.checked) {
+			const index = selectedUsers.findIndex((user) => user.id === item.id)
+		if (index !== -1) {
+			selectedUsers.splice(index, 1)
+		}
+		}
+    }
+	const isTitleEmpty = ref(false)
+
+	const handleAllUsersSelection = (e) => {
+      nextTick(() => {
+        if (e.target.checked) {
+          notificationType.value = 'all'
+          selectedUsers = users.value
+        } else {
+          notificationType.value = 'regular'
+          selectedUsers = []
+        }
+      })
+    }
+
+	const notifyUsers = () => {
+      if (notification.value.description === '') {
+		useAlert().openAlert({ type: 'ERROR', msg: 'Please enter notification message' })
+        return
+      }
+
+      if (notification.value.title === '') {
+        isTitleEmpty.value = true
+		useAlert().openAlert({ type: 'ERROR', msg: 'Please enter notification title' })
+      }
+
+	    const payload = {
+            body: `<html>${notification.value.description}</html>`,
+            title: notification.value.title,
+            sms: notification.value.isSms
+          }
+
+	  createNotifications(payload)
+    }
 </script>
 
 <style>
@@ -231,4 +302,16 @@ input[type=checkbox][disabled]{
     border-radius: 50%;
   }
 }
+
+:deep(.ql-editor) {
+	min-height: 200px;
+  }
+  :deep(.ql-toolbar.ql-snow) {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+  }
+  :deep(.ql-container.ql-snow) {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+  }
 </style>

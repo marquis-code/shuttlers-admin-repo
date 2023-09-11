@@ -12,6 +12,10 @@ export const users_api = {
 		const url = '/users/search?limit=10'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })
 	},
+	$_create_notification: (payload) => {
+		const url = '/notifications'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { ...payload })
+	},
 	$_get_user_by_id: (id:string) => {
 		const url = `/users/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
