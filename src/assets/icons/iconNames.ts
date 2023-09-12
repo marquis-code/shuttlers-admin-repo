@@ -7,6 +7,7 @@ export enum IconNames {
   'arrowForward' = 'arrowForward',
   'check' = 'check',
   'close' = 'close',
+  'destination_point' = 'destination_point',
   'down' = 'down',
   'download' = 'download',
   'eye' = 'eye',
@@ -17,6 +18,8 @@ export enum IconNames {
   'location' = 'location',
   'next' = 'next',
   'open-eye' = 'open-eye',
+  'pdf_download' = 'pdf_download',
+  'source_point' = 'source_point',
   'v-dot' = 'v-dot',
   'warning' = 'warning'
 }

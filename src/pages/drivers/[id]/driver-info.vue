@@ -87,7 +87,7 @@
 					</p>
 					<p class="text-sm">
 						{{
-							selectedDriver.device.device_brand ?? 'N/A'
+							selectedDriver?.device?.device_brand ?? 'N/A'
 						}}
 					</p>
 				</div>
@@ -144,32 +144,6 @@
 						View Document
 					</p>
 				</div>
-
-			<!-- <div class="flex justify-center gap-y-2 items-center flex-col py-10">
-				<p class="text-4xl font-semibold">
-					{{ convertToCurrency(selectedDriver.wallet.amount) }}
-				</p>
-				<p class="text-gray-400 text-xs">
-					ACCOUNT BALANCE
-				</p>
-			</div>
-
-			<div class="flex justify-between items-center border-b py-4 px-6">
-				<p class="text-gray-500 text-xs">
-					Main Balance
-				</p>
-				<p class="text-xs">
-					{{ convertToCurrency(selectedDriver.wallet.main_balance) }}
-				</p>
-			</div>
-			<div class="flex justify-between items-center border-b py-4 px-6">
-				<p class="text-gray-500 text-xs">
-					Company Balance
-				</p>
-				<p class="text-xs">
-					{{ convertToCurrency(selectedDriver.wallet.company_balance) }}
-				</p>
-			</div> -->
 			</div>
 		</div>
 		<section class="px-0 card">
@@ -218,7 +192,3 @@ const dropdownChildren = computed(() => [
 
 const openDropdown = ref(false)
 </script>
-
-<style scoped>
-
-</style>

@@ -15,7 +15,7 @@
 					<p>{{ item.data.email }}</p>
 				</div>
 				<div v-if="item.location" class="flex items-center gap-x-2">
-					<img src="@/assets/icons/location.svg" alt="">
+					<img src="@/assets/icons/source/location.svg" alt="">
 					<p class="font-medium">
 						{{ item.data.location }}
 					</p>

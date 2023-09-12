@@ -3,7 +3,7 @@
 		<div class="space-y-3">
 			<div class="flex items-center justify-between">
 				<div class="border rounded-md  bg-white px-6 py-2 flex items-center space-x-2">
-					<span>Filter</span> <img src="@/assets/icons/add.svg" alt="" class="">
+					<span>Filter</span> <img src="@/assets/icons/source/add.svg" alt="" class="">
 				</div>
 				<div class="flex items-center gap-x-2">
 					<div>
@@ -63,7 +63,7 @@
 								{{ item.activity }}
 							</p>
 							<div>
-								<img src="@/assets/icons/greater.svg" alt="" class="">
+								<img src="@/assets/icons/source/greater.svg" alt="" class="">
 							</div>
 						</div>
 					</div>

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { useModal } from './modal'
 import Logout from '@/components/modals/modules/auth/Logout.vue'
-// import FundWallet from '@/components/modals/wallet/FundWallet.vue'
+import UserRefund from '@/components/modals/modules/users/Refund.vue'
 // import SuggestRoute from '@/components/modals/settings/suggestRoute.vue'
 // import CharterRequest from '@/components/modals/dashboard/CharterRequest.vue'
 // import SocialShare from '@/components/modals/core/SocialShare.vue'

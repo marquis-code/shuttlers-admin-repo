@@ -33,7 +33,7 @@
 						</div>
 					</div>
 					<p class="">
-						<img src="@/assets/icons/greater.svg" alt="" class="">
+						<img src="@/assets/icons/source/greater.svg" alt="" class="">
 					</p>
 				</div>
 			</div>

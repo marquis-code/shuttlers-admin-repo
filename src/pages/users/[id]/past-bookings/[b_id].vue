@@ -51,10 +51,12 @@
 					</li>
 				</ul>
 				<div class="flex py-5  mt-1 items-center gap-2">
-					<Avatar />
+					<Avatar :name="pastBooking.driver.fname" />
 					<div class="flex flex-col text-xs">
 						<p>Driver</p>
-						<p>{{ pastBooking.driver.fname }} {{ pastBooking.driver.lname }}</p>
+						<nuxt-link :to="`/drivers/${pastBooking.driver.id}/driver-info`" class="underline">
+							{{ pastBooking.driver.fname }} {{ pastBooking.driver.lname }}
+						</nuxt-link>
 					</div>
 				</div>
 				<div class="flex w-full mt-4">
