@@ -1,8 +1,9 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 
+const refundList = ref([] as any)
+
 export const useGetBatchRefundList = () => {
     const loading = ref(false)
-    const refundList = ref([] as any)
 
     const { $_get_batch_refund } = users_api
 

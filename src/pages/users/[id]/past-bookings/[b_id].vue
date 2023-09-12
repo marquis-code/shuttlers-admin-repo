@@ -60,7 +60,7 @@
 					</div>
 				</div>
 				<div class="flex w-full mt-4">
-					<button class="btn-primary w-full">
+					<button class="btn-primary w-full" @click="useUserModal().openUserRefund()">
 						Refund
 					</button>
 				</div>
@@ -77,6 +77,7 @@ import { useDateFormat } from '@vueuse/core'
 import svg_template from '@/assets/icons/src/svg-template.vue'
 import { usePageHeader } from '@/composables/utils/header'
 import { useUserPastBookingsById } from '@/composables/modules/users/past-bookings'
+import { useUserModal } from '@/composables/core/modals'
 
 const { getUserPastBookingsById, loading, pastBooking } = useUserPastBookingsById()
 const id = useRoute().params.b_id as string

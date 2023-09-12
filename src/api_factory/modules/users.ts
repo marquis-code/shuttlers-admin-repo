@@ -28,6 +28,10 @@ export const users_api = {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, params)
 	},
+	$_delete_refund: (id:string) => {
+		const url = `/refund-logs/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
 	$_get_wallet_transactions: (id:string, metaObject: TMetaObject) => {
 		const url = `/users/${id}/wallet?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

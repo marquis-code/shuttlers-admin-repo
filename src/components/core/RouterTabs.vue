@@ -1,5 +1,5 @@
 <template>
-	<ul class="flex gap-4 mb-2">
+	<ul class="flex gap-4 mb-2 flex-wrap">
 		<li v-for="tab in tabs" :key="tab.path" class="nav-item">
 			<nuxt-link :to="tab.path" class="nav-link" exact-active-class="active">
 				{{ tab.name }}

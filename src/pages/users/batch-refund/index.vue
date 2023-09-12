@@ -9,7 +9,7 @@
 					{{ item.data.status }}
 				</span>
 				<span v-else-if="item.id">
-					<ButtonIconDropdown :children="dropdownChildren" class-name="w-40" />
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
 		</Table>
@@ -18,8 +18,10 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useDeleteRefund } from '../../../composables/modules/users/batch-refund/delete'
 import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
 
+const { setDeleteRefundId } = useDeleteRefund()
 const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
 getBatchRefundList()
 
@@ -31,6 +33,7 @@ const formatedRefundList = computed(() => {
 	if (!refundList.value.length) return []
 	return refundList.value.map((item) => {
 		return {
+			...item,
 			name: `${item.user.fname} ${item.user.lname}`,
 			route: item.route.route_code,
 			trip: item.trip.cost_of_supply ?? 'N/A',
@@ -40,9 +43,10 @@ const formatedRefundList = computed(() => {
 		}
 	})
 })
+
 const dropdownChildren = computed(() => [
-	{ name: 'Trip details', func: () => { } },
-	{ name: 'Delete log', func: () => { }, class: '!text-red' }
+	{ name: 'Trip details', func: (data) => { useRouter().push(`/users/${data.user_id}/past-bookings/${data.trip_id}`) } },
+	{ name: 'Delete log', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
 ])
 const tableFields = ref([
 	{

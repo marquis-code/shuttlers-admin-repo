@@ -1,8 +1,8 @@
 <template>
-	<nuxt-link :to="menu.routePath ? { path: menu.routePath } : { path: menu.rootPath }">
+	<nuxt-link :to="menu.routePath ? { path: menu?.routePath } : { path: menu?.rootPath }" custom>
 		<template #default="{ isActive, href }">
 			<li class="nav-menu transite"
-				:class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu.rootPath) }">
+				:class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu?.rootPath) }">
 				<template v-if="hasSubMenus(menu)">
 					<div class="nav-title" @click="toggleMenuOpenedState(menu)">
 						<span class="flex items-center">

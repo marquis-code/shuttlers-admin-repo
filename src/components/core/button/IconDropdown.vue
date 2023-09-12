@@ -30,7 +30,7 @@
 					>
 						<div class="p-2 w-full">
 							<div class="p-2 flex flex-col items-start w-full">
-								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func">
+								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
 									{{ item.name }}
 								</button>
 							</div>
@@ -45,7 +45,12 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { EllipsisVerticalIcon } from '@heroicons/vue/20/solid'
+
 defineProps({
+	data: {
+		type: Object,
+		default: () => ({})
+	},
     bgColor: {
         type: String,
         default: 'var(--red)'

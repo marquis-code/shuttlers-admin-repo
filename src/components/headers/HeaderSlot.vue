@@ -13,7 +13,7 @@
 				<slot name="actions" />
 			</div>
 		</section>
-		<div v-if="!loading && hasTabs" class="">
+		<div v-if="!loading && hasTabs" class="flex">
 			<slot name="tabs" />
 		</div>
 	</div>
