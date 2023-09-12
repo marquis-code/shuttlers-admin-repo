@@ -10,13 +10,14 @@ import Dashboard from '@/components/headers/modules/Dashboard.vue'
 import RouteSearches from '@/components/headers/modules/routeSearches.vue'
 import Admin from '@/components/headers/modules/Admin/index.vue'
 import CreateAdmin from '@/components/headers/modules/Admin/add-admin.vue'
-import Drivers from '@/components/headers/modules/Drivers.vue'
+import Drivers from '@/components/headers/modules/Drivers/index.vue'
+import DriverDetails from '@/components/headers/modules/Drivers/driver-details.vue'
 import Events from '@/components/headers/modules/Events.vue'
 import Transactions from '@/components/headers/modules/Transactions/index.vue'
 import Transactions_id from '@/components/headers/modules/Transactions/id.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
 import Promotion from '@/components/headers/modules/Promotion.vue'
-import Partners from '@/components/headers/modules/Partners.vue'
+import Partners from '@/components/headers/modules/Partners/index.vue'
 import Companies from '@/components/headers/modules/Companies/index.vue'
 import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
@@ -49,8 +50,9 @@ const componentRouteArray = [
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
     { routes: ['trips'], component: null },
-    { routes: ['partners'], component: Partners },
+    { routes: ['partners', 'partners-new-partners', 'partners-interested-partners'], component: Partners },
     { routes: ['drivers'], component: Drivers },
+    { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['transactions'], component: Transactions },
     { routes: ['transactions-id'], component: Transactions_id },

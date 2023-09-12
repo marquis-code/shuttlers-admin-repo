@@ -39,7 +39,7 @@
 				</span>
 
 				<span v-if="item.status" class="flex items-center gap-4">
-					<span :style="{backgroundColor: item.data.active !== 'not_completed' ? &quot;#e63757&quot; : &quot;#00d97e&quot;}" class="text-xs text-white px-2 py-1 rounded-lg">{{ item.data.status == 'not_completed' ? 'Inactive' : 'Active' }}</span>
+					<span :style="{'background-color': item.data.active !== 'not_completed' ? '#e63757': '#00d97e'}" class="text-xs text-white px-2 py-1 rounded-lg">{{ item.data.status == 'not_completed' ? 'Inactive' : 'Active' }}</span>
 				</span>
 			</template>
 		</Table>
