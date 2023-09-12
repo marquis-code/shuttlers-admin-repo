@@ -71,7 +71,6 @@ export const useGetUserByCorporateId = () => {
         const res = await $_get_users_by_corporate_id(id) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            console.log(res.data, 'result here')
             corporateUsersList.value = res.data.data
         }
         loadingCorporateUsers.value = false
