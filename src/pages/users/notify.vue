@@ -35,10 +35,8 @@
 					</div>
 				</div>
 				<div class="p-6">
-					{{ notification.description }}
-					<!-- <ModulesUsersTextEditor /> -->
 					<ClientOnly>
-						<QuillEditor v-model:content="notification.description" content-type="html" theme="snow" placeholder="Enter notification description" @change="onEditorChange($event)" />
+						<QuillEditor v-model:content="notification.description" content-type="html" theme="snow" placeholder="Enter notification description" />
 					</ClientOnly>
 				</div>
 				<div class="flex items-center justify-between px-6 pb-6">
@@ -143,6 +141,7 @@ useCreateNotification()
 const updatedUsersList = computed(() => {
 	return search.value.length ? queriedUsers.value : usersList.value
 })
+const router = useRouter()
 
 const notificationType = ref('regular')
 let selectedUsers = reactive([])
@@ -215,13 +214,27 @@ const toggleStory = () => {
 		useAlert().openAlert({ type: 'ERROR', msg: 'Please enter notification title' })
       }
 
-	    const payload = {
+	  const payload = {
             body: `<html>${notification.value.description}</html>`,
             title: notification.value.title,
             sms: notification.value.isSms
           }
 
+	  if (notificationType.value === 'all') {
+		payload.user_ids = users.value.map((user:any) => user?.id)
+        processingAll.value = true
+      } else {
+		payload.user_ids = selectedUsers.map((user:any) => user?.id)
+        processing.value = true
+      }
+
 	  createNotifications(payload)
+	 if (message) {
+		useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification was sent successfully.' })
+		router.push('/users')
+	 } else {
+		useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong while sending notification.' })
+	 }
     }
 </script>
 

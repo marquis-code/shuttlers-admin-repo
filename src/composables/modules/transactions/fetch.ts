@@ -1,22 +1,50 @@
 import { useAlert } from '@/composables/core/notification'
 import { transactions_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
 
 export const useGetRecentTransactionsList = () => {
     const loadingTransactions = ref(false)
     const transactionsList = ref([] as any)
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const filterData = {
+        source: ref(''),
+        from: ref(''),
+        to: ref('')
+    }
 
     const { $_recent_transactions } = transactions_api
 
     const getTransactionList = async () => {
-        loadingTransactions.value = true
-        const res = await $_recent_transactions() as CustomAxiosResponse
+        loadingTransactions.value = false
+        const res = await $_recent_transactions(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
+            console.log(res, 'response here')
             transactionsList.value = res.data
+            metaObject.total.value = res.data.metadata.total
+            loadingTransactions.value = false
         }
         loadingTransactions.value = false
     }
+    setFunction(getTransactionList)
 
-    return { getTransactionList, loadingTransactions, transactionsList }
+    watch([filterData.source, filterData.from, filterData.to], (val) => {
+        getTransactionList()
+    })
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'source':
+                filterData.source.value = data.value
+                break
+            case 'from':
+                    filterData.source.value = data.value
+                break
+            case 'to':
+                    filterData.source.value = data.value
+                break
+        }
+    }
+
+    return { getTransactionList, loadingTransactions, transactionsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
 const transaction = ref({} as any)
