@@ -9,7 +9,7 @@
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span>₦ {{ convertToCurrency(item?.data?.amount) }}</span>
+					<span>{{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
 
 				<div v-if="item.start_date">
@@ -41,12 +41,12 @@
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
-const { pastBookingsList, loading, getUserPastBookingsById, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
+const { pastBookingsList, loading, getUserPastBookings, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
 const id = useRoute().params.id as string
 
 filterData.status.value = 'cancelled'
 
-getUserPastBookingsById(id)
+getUserPastBookings(id)
 
 definePageMeta({
     layout: 'dashboard',

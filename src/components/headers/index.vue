@@ -2,6 +2,7 @@
 	<component :is="component" />
 </template>
 <script setup lang="ts">
+import GenericHeader from './GenericHeader.vue'
 import ShuttleRequests from '@/components/headers/modules/Companies/shuttleRequests.vue'
 import Fleets from '@/components/headers/modules/Fleets/index.vue'
 import AddFleets from '@/components/headers/modules/Fleets/AddFleets.vue'
@@ -62,7 +63,8 @@ const componentRouteArray = [
     { routes: ['admin-add'], component: CreateAdmin },
     { routes: ['configuration'], component: null },
     { routes: ['campaigns'], component: Campaigns },
-    { routes: ['trips-sos'], component: sos }
+    { routes: ['trips-sos'], component: sos },
+    { routes: ['users-id-past-bookings-b_id'], component: GenericHeader }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

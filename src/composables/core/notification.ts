@@ -1,16 +1,11 @@
-import { ref } from 'vue'
-
 const ALERT_DURATION = 5000
 
-const alertState = {
-	active: ref(false),
-	message: ref(''),
-	type: ref('Alert')
-}
 const loadingState = {
-	active: ref(false),
-	message: ref('')
+  active: ref(false),
+  message: ref('')
 }
+
+const openAlertArray = ref([] as Record<string, any>[])
 
 interface AlertTypes {
 	type: 'Alert' | 'ERROR' | 'SUCCESS'
@@ -19,27 +14,24 @@ interface AlertTypes {
 
 export const useAlert = () => {
 	const openAlert = ({ type, msg }: AlertTypes) => {
-		alertState.type.value = type
-		alertState.message.value = msg
-		alertState.active.value = true
-		setTimeout(closeAlert, ALERT_DURATION)
+		const id = Date.now().toString()
+		openAlertArray.value.push({ id, type, msg })
 	}
-	const closeAlert = () => {
-		alertState.message.value = ''
-		alertState.active.value = false
+	const closeAlert = (id:string) => {
+		openAlertArray.value = openAlertArray.value.filter((alert: any) => alert.id !== id)
 	}
 
-	return { ...alertState, openAlert, closeAlert, ALERT_DURATION }
+	return { openAlert, closeAlert, ALERT_DURATION, openAlertArray }
 }
 
 export const useLoading = () => {
-	const openLoading = (msg:string) => {
-		loadingState.message.value = msg
-		loadingState.active.value = true
-	}
-	const closeLoading = () => {
-		loadingState.message.value = ''
-		loadingState.active.value = false
-	}
-	return { ...loadingState, openLoading, closeLoading }
+  const openLoading = (msg: string) => {
+    loadingState.message.value = msg
+    loadingState.active.value = true
+  }
+  const closeLoading = () => {
+    loadingState.message.value = ''
+    loadingState.active.value = false
+  }
+  return { ...loadingState, openLoading, closeLoading }
 }

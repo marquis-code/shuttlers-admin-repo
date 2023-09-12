@@ -27,7 +27,7 @@
 						Select trip
 					</option>
 					<option v-for="item in pastBookingsList" :key="item.id" :value="item.id">
-						({{ item.bus_pass }})  - {{ item.trip_date }} ({{ item?.itinerary?.trip_time }}) - ₦{{ item.itinerary.default_fare }}
+						({{ item.bus_pass }})  - {{ item.trip_date }} ({{ item?.itinerary?.trip_time }}) - {{ convertToCurrency(item.itinerary.default_fare) }}
 					</option>
 				</select>
 			</div>
@@ -63,6 +63,7 @@
 </template>
 
 <script lang="ts" setup>
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useQueryUsers } from '@/composables/modules/users/query'
 import { useLogBatchRefund } from '@/composables/modules/users/batch-refund/create'
 

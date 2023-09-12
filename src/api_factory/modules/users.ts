@@ -36,5 +36,9 @@ export const users_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/users/${id}/user-route-schedules?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_past_booking_by_id: (id:string) => {
+		const url = `/user-route-schedules/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

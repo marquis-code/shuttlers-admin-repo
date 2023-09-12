@@ -10,7 +10,7 @@ export const useUserPastBookings = () => {
         status: ref('')
     }
 
-    const getUserPastBookingsById = async (id: string) => {
+    const getUserPastBookings = async (id: string) => {
         loading.value = true
         const res = await users_api.$_get_past_booking(id, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -20,7 +20,7 @@ export const useUserPastBookings = () => {
         loading.value = false
     }
 
-    setFunction(getUserPastBookingsById)
+    setFunction(getUserPastBookings)
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
@@ -30,5 +30,21 @@ export const useUserPastBookings = () => {
         }
     }
 
-    return { pastBookingsList, loading, getUserPastBookingsById, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+    return { pastBookingsList, loading, getUserPastBookings, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+}
+
+export const useUserPastBookingsById = () => {
+    const loading = ref(false)
+    const pastBooking = ref({} as Record<string, any>)
+
+    const getUserPastBookingsById = async (id: string) => {
+        loading.value = true
+        const res = await users_api.$_get_past_booking_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            pastBooking.value = res.data
+        }
+        loading.value = false
+    }
+
+    return { pastBooking, loading, getUserPastBookingsById }
 }

@@ -12,10 +12,10 @@ export const useLogBatchRefund = () => {
         refund_value: ref(),
         reason: ref()
     }
-    const { getUserPastBookingsById, pastBookingsList, loading: pastBookingsLoading } = useUserPastBookings()
+    const { getUserPastBookings, pastBookingsList, loading: pastBookingsLoading } = useUserPastBookings()
     watch(selectedUser, async (newVal:any) => {
         if (newVal) {
-            await getUserPastBookingsById(newVal.id)
+            await getUserPastBookings(newVal.id)
             if (pastBookingsList.value.length === 0) return useAlert().openAlert({ type: 'ERROR', msg: 'No past bookings found for this user' })
             logRefundData.user_id.value = selectedUser.value?.id
         }

@@ -2,13 +2,13 @@
 	<div class="route" :style="{maxWidth: `${maxWidth}px`}" :class="className || ''" :title="`${pickup} to ${destination}`">
 		<div class="route__source">
 			<img class="icon" src="@/assets/icons/source/source_point.svg" alt="source">
-			<p class="text" :style="{&quot;font-weight&quot;: titleWeight}">
+			<p class="text">
 				{{ pickup }}
 			</p>
 		</div>
 		<div class="route__destination">
 			<img class="icon" src="@/assets/icons/source/destination_point.svg" alt="destination">
-			<p class="text" :style="{&quot;font-weight&quot;: titleWeight}">
+			<p class="text">
 				{{ destination }}
 			</p>
 		</div>

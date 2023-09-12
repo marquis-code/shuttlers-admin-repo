@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data)=> $router.push(`/users/${data.id}/past-bookings/details`)">
+		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data)=> $router.push(`/users/${id}/past-bookings/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
@@ -9,7 +9,7 @@
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span>₦ {{ convertToCurrency(item?.data?.amount) }}</span>
+					<span>{{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
 
 				<div v-if="item.start_date">
@@ -41,11 +41,11 @@
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
-const { pastBookingsList, loading, filterData, getUserPastBookingsById, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
+const { pastBookingsList, loading, filterData, getUserPastBookings, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
 const id = useRoute().params.id as string
 
 filterData.status.value = 'completed'
-getUserPastBookingsById(id)
+getUserPastBookings(id)
 
 definePageMeta({
     layout: 'dashboard',
