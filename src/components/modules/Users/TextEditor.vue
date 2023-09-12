@@ -5,10 +5,8 @@ const form = ref({
   notification: ''
 })
 
-console.log(form.notification, 'notification')
-
 const onEditorChange = (e) => {
- console.log(e, 'event here')
+
 }
 </script>
 <template>

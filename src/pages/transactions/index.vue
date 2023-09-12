@@ -47,7 +47,6 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetRecentTransactionsList } from '@/composables/modules/transactions/fetch'
 const { getTransactionList, loadingTransactions, transactionsList, next, prev, onFilterUpdate, moveTo, total, page } = useGetRecentTransactionsList()
 getTransactionList()
-console.log(loadingTransactions.value, 'from page')
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
