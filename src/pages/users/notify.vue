@@ -20,7 +20,7 @@
 							:key="user.id"
 							class="border rounded-lg text-xs flex justify-center gap-x-1 items-center py-2.5"
 						>
-							<p class="text-white rounded-full bg-green-500 text-xs px-1 py-1"
+							<p class="text-white rounded-full bg-green-500 text-[10px] px-1 py-1"
 							>
 								{{ user?.fname?.slice?.(0, 1).toUpperCase() }}{{ user?.lname?.slice?.(0, 1).toUpperCase() }}
 							</p>
@@ -41,25 +41,20 @@
 				</div>
 				<div class="flex items-center justify-between px-6 pb-6">
 					<div class="flex items-center gap-x-4">
-						<div class="">
-							<label for="AcceptConditions" class="relative h-8 cursor-pointer w-14">
-								<input	id="AcceptConditions" v-model="checked" type="checkbox" class="sr-only peer" @change="toggleStory">
+						<label for="Toggle2" class="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-100">
+							<span class="relative">
+								<input id="Toggle2" v-model="checked" type="checkbox" class="hidden peer" @change="toggleStory">
+								<div class="w-10 h-4 rounded-full shadow dark:bg-gray-600 peer-checked:dark:bg-violet-400" />
+								<div class="absolute left-0 w-6 h-6 rounded-full shadow -inset-y-1 peer-checked:right-0 peer-checked:left-auto dark:bg-violet-400" />
+							</span>
+						</label>
 
-								<span
-									class="absolute inset-0 transition bg-gray-300 rounded-full peer-checked:bg-green-500"
-								/>
-
-								<span
-									class="absolute inset-y-0 w-6 h-6 m-1 transition-all bg-white rounded-full start-0 peer-checked:start-6"
-								/>
-							</label>
-						</div>
 						<span class="pb-2 text-sm font-medium">
 							Enable sms notification
 						</span>
 					</div>
 					<div>
-						<button class="text-white bg-gray-700 text-xs rounded-md px-6 py-2.5"
+						<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : '']" class="text-white bg-gray-700 text-xs rounded-md px-6 py-2.5"
 							@click.prevent="notifyUsers">
 							{{ creatingNotification ? 'Processing...' : 'Notify users' }}
 						</button>
@@ -70,19 +65,19 @@
 		<div class="p-6 space-y-6 lg:w-6/12">
 			<div class="relative w-full">
 				<div class="w-full">
-					<input v-if="!selectedUsers.length"
+					<input
 						v-model.trim="search" type="text" placeholder="Search users" class="w-full px-3 py-3 placeholder-gray-400 bg-white border rounded-md outline-none " @keyup.enter.prevent="getUsersList()">
 				</div>
 				<div class="absolute top-1.5 right-3">
-					<div class="flex items-center gap-x-3">
-						<p class="text-sm">
+					<div class="flex w-full">
+						<span class="text-xs">
 							Filter by:
-						</p>
-						<select class="px-3 py-2 text-sm border rounded-full outline-none">
-							<option class="text-xs" value="all">
+						</span>
+						<select v-model="itemSelected" class="px-3 py-2 border text-xs rounded-lg outline-none w-full">
+							<option value="all" class="text-xs">
 								All
 							</option>
-							<option class="text-xs" value="company">
+							<option value="company" class="text-xs">
 								Company
 							</option>
 						</select>
@@ -90,11 +85,24 @@
 				</div>
 			</div>
 			<div class="bg-white rounded-lg">
-				<div class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
+				<div v-if="itemSelected === 'all'" class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
 					<p class="text-sm text-green-500">
 						select all users
 					</p>
 					<input id="notify-all" v-model="notification.notifyAll" type="checkbox" @change="handleAllUsersSelection($event)">
+				</div>
+				<div v-if="itemSelected === 'company'" class="flex items-center justify-between  pt-6 pb-6 px-10 border-b gap-x-3 w-full">
+					<div class="w-4/12">
+						<label for="corporates" class="block mb-2 text-sm">Select Company</label>
+					</div>
+					<div class="w-8/12">
+						{{ corporateId }}
+						<select v-model="corporateId" id="countries" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
+							<option v-for="(item, index) in corporatesList" :key="index" :value="item.id">
+								{{ item.corporate_name }}
+							</option>
+						</select>
+					</div>
 				</div>
 				<div v-if="!loading" class="px-10 pb-10 h-96 overflow-y-auto">
 					<div v-for="(item, index) in updatedUsersList" :key="index" class="flex items-center justify-between py-6 border-b">
@@ -125,17 +133,20 @@ import { nextTick } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { useAlert } from '@/composables/core/notification'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
+import { useGetUsersList, useGetUserByCorporateId } from '@/composables/modules/users/fetch'
 import { useQueryUsers } from '@/composables/modules/users/query'
 import { useCreateNotification } from '@/composables/modules/users/notification'
+import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 const { getUsersList, loading, usersList } = useGetUsersList()
 const { queryUsers, loadingQueriedUsers, queriedUsers } = useQueryUsers()
 const { createNotifications, creatingNotification, message } = useCreateNotification()
-// const isSearch = !!search.value
+const { getCorporatesList, loading: loadingCorporateList, corporatesList } = useGetCorporateList()
+getCorporatesList()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+const corporateId = ref('')
 useCreateNotification()
 
 const updatedUsersList = computed(() => {
@@ -144,6 +155,7 @@ const updatedUsersList = computed(() => {
 const router = useRouter()
 
 const notificationType = ref('regular')
+const itemSelected = ref('all')
 let selectedUsers = reactive([])
 const users = ref([])
 const search = ref('')
@@ -160,6 +172,9 @@ getUsersList()
       const processingAll = ref(false)
       const errorProcessing = ref(false)
 
+const isFormEmpty = computed(() => {
+	return !!(notification.value.title && notification.value.description && (selectedUsers.length || users.value.length))
+})
 const toggleStory = () => {
       if (checked.value) {
         notification.value.isSms = true
@@ -199,6 +214,7 @@ const toggleStory = () => {
         } else {
           notificationType.value = 'regular'
           selectedUsers = []
+		  users.value = []
         }
       })
     }
@@ -213,7 +229,6 @@ const toggleStory = () => {
         isTitleEmpty.value = true
 		useAlert().openAlert({ type: 'ERROR', msg: 'Please enter notification title' })
       }
-
 	  const payload = {
             body: `<html>${notification.value.description}</html>`,
             title: notification.value.title,
@@ -231,7 +246,8 @@ const toggleStory = () => {
 	  createNotifications(payload)
 	 if (message) {
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification was sent successfully.' })
-		router.push('/users')
+		notification.value.title = ''
+		notification.value.description = ''
 	 } else {
 		useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong while sending notification.' })
 	 }

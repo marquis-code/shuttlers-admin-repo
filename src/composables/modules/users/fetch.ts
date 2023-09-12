@@ -59,3 +59,27 @@ export const useGetUsersList = () => {
 
     return { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
+
+export const useGetUserByCorporateId = () => {
+    const loadingCorporateUsers = ref(false)
+    const corporateUsersList = ref([] as any)
+
+    const { $_get_users_by_corporate_id } = users_api
+
+    const getCorporatesByIdList = async (id:string) => {
+        loadingCorporateUsers.value = true
+        const res = await $_get_users_by_corporate_id(id) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            console.log(res.data, 'result here')
+            corporateUsersList.value = res.data.data
+        }
+        loadingCorporateUsers.value = false
+    }
+
+    watch(id, () => {
+        getCorporatesByIdList(id)
+    })
+
+    return { getCorporatesByIdList, loadingCorporateUsers, corporateUsersList }
+}
