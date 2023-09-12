@@ -11,7 +11,7 @@ export const useCreateNotification = () => {
         const res = await $_create_notification(payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            message.value = res.data.message
+            message.value = res.data.success
         }
         creatingNotification.value = false
     }
