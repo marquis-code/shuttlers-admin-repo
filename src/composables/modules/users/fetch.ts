@@ -76,9 +76,5 @@ export const useGetUserByCorporateId = () => {
         loadingCorporateUsers.value = false
     }
 
-    watch(id, () => {
-        getCorporatesByIdList(id)
-    })
-
     return { getCorporatesByIdList, loadingCorporateUsers, corporateUsersList }
 }
