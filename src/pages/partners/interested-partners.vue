@@ -5,12 +5,21 @@
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
+				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
 					{{ item.data.status }}
+				</span>
+				<div v-if="item.name" class="flex items-center gap-x-2">
+					<p><Avatar :name="item.data.name" bg="#B1C2D9" /></p> <p class="text-gray-700">{{ item.data.name }}</p>
+				</div>
+				<span v-if="item.date_created">
+					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }}
 				</span>
 				<span v-if="item.id">
 					{{ item.data.id }}
 				</span>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -18,32 +27,27 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
+import { useGetInterestedPartnersList } from '@/composables/modules/partners/fetch'
 
-const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
-getBatchRefundList()
+const { getInterestedPartnersList, loading, interestedPartnersList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetInterestedPartnersList()
+getInterestedPartnersList()
 
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
 const formatedRefundList = computed(() => {
-	if (!refundList.value.length) return []
-	return refundList.value.map((item) => {
+	if (!interestedPartnersList.value.length) return []
+	return interestedPartnersList.value.map((item, index) => {
 		return {
-			name: `${item.user.fname} ${item.user.lname}`,
-			route: item.route.route_code,
-			trip: item.trip.cost_of_supply ?? 'N/A',
-			refund: `${item.refund_value} %`,
-			reason: item.reason,
-			id: item.id
+			name: `${item.fname} ${item.lname}` ?? 'N/A',
+			email: `${item.email}` ?? 'N/A',
+			company_name: `${item.company_name}` ?? 'N/A',
+			phone: item.phone ?? 'N/A',
+			id: index + 1
 		}
 	})
 })
-const dropdownChildren = computed(() => [
-	{ name: 'Trip details', func: () => { } },
-	{ name: 'Delete log', func: () => { }, class: '!text-red' }
-])
 const tableFields = ref([
 	{
 		text: 'S/N',
@@ -55,20 +59,16 @@ const tableFields = ref([
 		value: 'name'
 	},
 	{
+		text: 'Name',
+		value: 'company_name'
+	},
+	{
 		text: 'Email',
-		value: 'route'
+		value: 'email'
 	},
 	{
-		text: 'Number Of Vehicles)',
-		value: 'trip'
-	},
-	{
-		text: 'Date Created',
-		value: 'refund'
-	},
-	{
-		text: 'Status',
-		value: 'reason'
+		text: 'Phone',
+		value: 'phone'
 	}
 ])
 
