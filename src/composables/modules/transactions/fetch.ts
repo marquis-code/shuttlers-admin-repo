@@ -4,7 +4,7 @@ import { usePagination } from '@/composables/utils/table'
 
 export const useGetRecentTransactionsList = () => {
     const loadingTransactions = ref(false)
-    const transactionsList = ref([] as any)
+    const transactionsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         source: ref(''),
@@ -15,12 +15,11 @@ export const useGetRecentTransactionsList = () => {
     const { $_recent_transactions } = transactions_api
 
     const getTransactionList = async () => {
-        loadingTransactions.value = false
+        loadingTransactions.value = true
         const res = await $_recent_transactions(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             transactionsList.value = res.data
             metaObject.total.value = res.data.metadata.total
-            loadingTransactions.value = false
         }
         loadingTransactions.value = false
     }

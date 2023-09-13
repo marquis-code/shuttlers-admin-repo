@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
-			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 w-4/12">
+			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 lg:w-4/12">
 				<div class="flex justify-between items-center">
 					<div>
 						<p class="text-gray-400 font-light">

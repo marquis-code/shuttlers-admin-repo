@@ -6,8 +6,8 @@
 					Last 5 Transactions
 				</h3>
 			</div>
-			<div class="relative flex flex-col w-full min-w-0 break-words">
-				<div class="block w-full overflow-x-auto ">
+			<div class="relative flex flex-col w-full min-w-0 break-words h-[495px] overflow-y-auto">
+				<div v-if="!loadingTransactions" class="block w-full overflow-x-auto ">
 					<Table :headers="transactionHeaders" :table-data="transactionsList" :loading="loadingTransactions">
 						<template #item="{ item }">
 							<span v-if="item.created_at" class="flex items-center gap-4 py-3">
@@ -25,13 +25,14 @@
 						</template>
 					</Table>
 				</div>
+				<Skeleton v-else height="300px" />
 			</div>
 		</section>
 		<section class="lg:w-6/12 stat-card">
 			<h3 class="px-6 py-4 font-medium">
 				Last 5 User Signups
 			</h3>
-			<div class="relative flex flex-col w-full min-w-0 break-words">
+			<div v-if="!loadingSignups"  class="relative flex flex-col w-full min-w-0 break-words">
 				<div class="block w-full overflow-x-auto ">
 					<Table :headers="signupHeaders" :table-data="signupList" :loading="loadingSignups">
 						<template #item="{ item }">
@@ -53,6 +54,7 @@
 					</NuxtLink>
 				</div>
 			</div>
+			<Skeleton v-else height="300px" />
 		</section>
 	</section>
 </template>

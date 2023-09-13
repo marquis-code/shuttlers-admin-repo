@@ -37,11 +37,7 @@
 					</p>
 				</div>
 			</div>
-			<div v-else class="flex items-center justify-center h-full">
-				<p class="text-center">
-					Loading...
-				</p>
-			</div>
+			<Skeleton v-else height="300px" />
 		</section>
 		<section class="lg:lg:w-6/12 stat-card">
 			<div class="">
@@ -49,7 +45,7 @@
 					Recent Charter Requests
 				</h3>
 			</div>
-			<div>
+			<div v-if="!loadingCharter">
 				<div class="overflow-x-auto">
 					<Table :headers="charterHeader" :table-data="charterList" :loading="loadingCharter">
 						<template #item="{ item }">
@@ -74,6 +70,7 @@
 					</NuxtLink>
 				</div>
 			</div>
+			<Skeleton v-else height="300px" />
 		</section>
 	</section>
 </template>
