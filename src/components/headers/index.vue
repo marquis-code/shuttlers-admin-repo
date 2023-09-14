@@ -32,6 +32,7 @@ import sos from '@/components/headers/modules/commute/sos.vue'
 import UserDetails from '@/components/headers/modules/Users/user-details.vue'
 import CompanyDetails from '@/components/headers/modules/Companies/company-details.vue'
 import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking/batch-booking-details.vue'
+import PartnerDetails from '@/components/headers/modules/Partners/partner-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -51,6 +52,7 @@ const componentRouteArray = [
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
     { routes: ['trips'], component: null },
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners'], component: Partners },
+    { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
