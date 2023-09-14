@@ -115,7 +115,6 @@ export const useGetPartnersCompletedTripsList = (account_sid:string) => {
         const res = await $_get_partner_completed_trips_by_id(account_sid, metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            console.log(res.data.result, 'completed trips')
             partnersCompletedTripsList.value = res.data.result
             metaObject.total.value = res.data.metadata.total
         }

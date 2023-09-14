@@ -47,14 +47,10 @@ getPartnersCompletedTrips(id)
 filterData.isSettled.value = true
 filterData.status.value = 'active'
 
-console.log(partnersCompletedTripsList, 'i am here')
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-
-// console.log(partnersCompletedTripsList, 'completed data here')
 
 const formattedPartnersCompletedTripsList = computed(() => {
 	if (!partnersCompletedTripsList.value.length) return []
