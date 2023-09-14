@@ -4,6 +4,7 @@ import { usePagination } from '@/composables/utils/table'
 const selectedPartner = ref({} as Record<string, any>)
 const selectedPartnerId = ref('')
 const selectedPartnerAccountSid = ref('')
+const partnerId = ref<number>()
 
 export const usePartnerIdDetails = () => {
     const loading = ref(false)
@@ -20,7 +21,7 @@ export const usePartnerIdDetails = () => {
     return { selectedPartner, loading, getPartnerById }
 }
 
-export const useGetPartnersVehiclesList = (id: number) => {
+export const useGetPartnersVehiclesList = () => {
     const loading = ref(false)
     const partnersVehiclesList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -32,7 +33,7 @@ export const useGetPartnersVehiclesList = (id: number) => {
 
     const getPartnersVehiclesList = async (id:number) => {
         loading.value = true
-
+        partnerId.value = id
         const res = await $_get_partner_vehicles_by_id(id, metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
@@ -44,7 +45,7 @@ export const useGetPartnersVehiclesList = (id: number) => {
     setFunction(getPartnersVehiclesList)
 
     watch([filterData.status], (val) => {
-        getPartnersVehiclesList(id)
+        getPartnersVehiclesList(Number(partnerId.value))
     })
 
     const onFilterUpdate = (data: any) => {
@@ -58,7 +59,7 @@ export const useGetPartnersVehiclesList = (id: number) => {
     return { getPartnersVehiclesList, loading, partnersVehiclesList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
-export const useGetPartnersDriversList = (account_sid: number) => {
+export const useGetPartnersDriversList = (account_sid: string) => {
     const loading = ref(false)
     const partnersDriversList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -68,7 +69,7 @@ export const useGetPartnersDriversList = (account_sid: number) => {
 
     const { $_get_partner_drivers_by_id } = partners_api
 
-    const getPartnersDriversList = async (account_sid:number) => {
+    const getPartnersDriversList = async (account_sid:string) => {
         loading.value = true
 
         const res = await $_get_partner_drivers_by_id(account_sid, metaObject, filterData) as CustomAxiosResponse
@@ -211,4 +212,28 @@ export const useGetPartnerEarningSummary = () => {
     }
 
     return { getPartnerEarning, loadingEarnings, partnersEarningInformation }
+}
+
+export const useGetPartnerAccount = () => {
+    const loadingAccounts = ref(false)
+    const partnersAccountInformation = ref([])
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+
+    const { $_get_partner_accounts_by_id } = partners_api
+
+    const getPartnerAccount = async (account_sid:string) => {
+        loadingAccounts.value = true
+
+        const res = await $_get_partner_accounts_by_id(account_sid, metaObject) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            partnersAccountInformation.value = res.data.data
+            metaObject.total.value = res.data.metadata.total
+        }
+        loadingAccounts.value = false
+    }
+
+    setFunction(getPartnerAccount)
+
+    return { getPartnerAccount, loadingAccounts, partnersAccountInformation, moveTo, ...metaObject, next, prev }
 }
