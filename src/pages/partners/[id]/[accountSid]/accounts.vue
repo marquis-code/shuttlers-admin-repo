@@ -1,51 +1,38 @@
 <template>
 	<main>
-		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
+		<Table :loading="loadingAccounts" :headers="tableFields" :table-data="formattedPartnersAccountsList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-yellow-500 px-3 py-1 ']">
-					{{ item.data.status }}
+				<span v-if="item.action">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
-				<div v-if="item.vehicle" class="flex items-center gap-x-2">
-					{{ item.data.vehicle }}
-				</div>
-				<div v-if="item.driver" class="flex items-center gap-x-2">
-					{{ item.data.driver ?? 'No driver assigned' }}
-				</div>
-				<span v-if="item.date_created">
-					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY") }}sss
-				</span>
-				<span v-if="item.id">
-					{{ item.data.table_index }}
-				</span>
-			</template>
-			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
-const { getPartnersVehiclesList, loading, partnersVehiclesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
-const id = Number(useRoute().params.id)
-getPartnersVehiclesList(id)
+import { useGetPartnerAccount } from '@/composables/modules/partners/id'
+const { getPartnerAccount, loadingAccounts, partnersAccountInformation } = useGetPartnerAccount()
+const sid = useRoute().params.accountSid as string
+getPartnerAccount(sid)
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 
-const formattedPartnersVehiclesList = computed(() => {
-	if (!partnersVehiclesList.value.length) return []
-	return partnersVehiclesList.value.map((item, index) => {
+const dropdownChildren = computed(() => [
+	{ name: 'Deduct partner earnings', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
+	{ name: 'View financials', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+])
+
+const formattedPartnersAccountsList = computed(() => {
+	if (!partnersAccountInformation.value.length) return []
+	return partnersAccountInformation.value.map((item, index) => {
 		return {
 			...item,
-			vehicle: `${item.brand} ${item.name}` ?? 'N/A',
-			driver: `${item.driver.fname} ${item.driver.lname}`,
 			table_index: index + 1
 		}
 	})
@@ -54,43 +41,39 @@ const formattedPartnersVehiclesList = computed(() => {
 const tableFields = ref([
 	{
 		text: 'S/N',
-		value: 'id',
+		value: 'table_index',
 		width: '10%'
 	},
 	{
-		text: 'VEHICLE',
-		value: 'name'
+		text: 'ACCOUNT NUMBER',
+		value: 'accountNumber'
 	},
 	{
-		text: 'PLATE NUMBER',
-		value: 'registration_number'
+		text: 'BANK NAME',
+		value: 'bankName'
 	},
 	{
-		text: 'CAPACITY',
-		value: 'seats'
+		text: 'ACCOUNT NAME',
+		value: 'accountName'
 	},
 	{
-		text: 'TYPE',
-		value: 'type'
-	},
-	{
-		text: 'DRIVER',
-		value: 'driver'
-	},
-	{
-		text: 'DATE ADDED',
-		value: 'created_at'
-	},
-	{
-		text: 'STATUS',
-		value: 'status'
+		text: 'ASSIGNED ACCOUNT',
+		value: 'isDefault'
 	},
 	{
 		text: 'ACTIONS',
-		value: 'status'
+		value: 'id'
 	}
 ])
 
+// {
+//         "id": "9077963b-0309-43bf-9890-49025f90145c",
+//         "partnerId": "788474hhehhhh",
+//         "accountName": "Daniel Sumah",
+//         "accountNumber": "2150060235",
+//         "bankName": "zenith bank",
+//         "isDefault": true
+//     }
 </script>
 
 <style scoped></style>

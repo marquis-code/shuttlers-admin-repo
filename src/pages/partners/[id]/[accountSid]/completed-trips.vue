@@ -2,18 +2,27 @@
 	<main>
 		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersCompletedTripsList" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<p v-if="item.status" class="text-xs text-white rounded-lg py-1.5 w-20 text-center" :class="[item.data.status ? 'bg-green-500 py-1' : 'bg-yellow-500 py-1 ']">
+				<p v-if="item.status" class="text-xs text-white rounded-lg py-1.5 w-14 text-center" :class="[item.data.status ? 'bg-green-500 py-1' : 'bg-yellow-500 py-1 ']">
 					{{ item.data.status === false ? 'Not settled' : 'Settled' }}
 				</p>
 				<div v-if="item.date_of_creation" class="flex items-center gap-x-2">
 					{{ item.data.date_of_creation }}
 				</div>
-				<div v-if="item.driver" class="">
-					<p class="font-medium">{{ item.data.driver ?? 'No driver assigned' }}</p>
-					<p><NuxtLink class="text-blue-500" to="/">{{ item.data.vehicle }}</NuxtLink></p>
+				<div v-if="item.driver" class="flex items-center gap-x-2">
+					<img src="@/assets/icons/source/vehicle_icon.svg" alt="vehicle icon">
+					<div>
+						<p class="font-medium">
+							{{ item.data.driver ?? 'No driver assigned' }}
+						</p>
+						<p>
+							<NuxtLink class="text-blue-500" to="/">
+								{{ item.data.vehicle }}
+							</NuxtLink>
+						</p>
+					</div>
 				</div>
 				<div v-if="item.route" class="flex items-center gap-x-2">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
@@ -30,6 +39,9 @@
 				<span v-if="item.table_index">
 					{{ item.data.table_index }}
 				</span>
+				<span v-else-if="item.action">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+				</span>
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
@@ -43,14 +55,19 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetPartnersCompletedTripsList } from '@/composables/modules/partners/id'
 const { getPartnersCompletedTrips, loading, partnersCompletedTripsList, filterData, onFilterUpdate, moveTo, next, prev, page, total } = useGetPartnersCompletedTripsList()
 const id = useRoute().params.accountSid as string
+filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getPartnersCompletedTrips(id)
 filterData.isSettled.value = true
-filterData.status.value = 'active'
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const dropdownChildren = computed(() => [
+	{ name: 'Deduct partner earnings', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
+	{ name: 'View financials', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+])
 
 const formattedPartnersCompletedTripsList = computed(() => {
 	if (!partnersCompletedTripsList.value.length) return []
@@ -62,6 +79,7 @@ const formattedPartnersCompletedTripsList = computed(() => {
 			pickup: item?.metadata?.pickup,
 			dropoff: item?.metadata?.dropoff,
 			route: '',
+			action: '',
 			start_time: item?.tripStartTime,
 			vehicle: `${item?.metadata?.vehicle?.brand} ${item?.metadata?.vehicle?.name}`,
 			driver: `${item?.metadata?.driver?.fname} ${item?.metadata?.driver?.lname}`,
@@ -112,7 +130,7 @@ const tableFields = ref([
 	},
 	{
 		text: 'ACTIONS',
-		value: ''
+		value: 'action'
 	}
 ])
 

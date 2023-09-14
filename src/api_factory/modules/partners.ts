@@ -26,7 +26,7 @@ export const partners_api = {
 		const url = `/partner/${id}/vehicles?${queryParams}&metadata=true&limit=${meta.page_size.value}&page=${meta.page.value}&related=driver`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_partner_drivers_by_id: (account_sid:number, meta:TMetaObject, filterData?: Record<string, Ref>) => {
+	$_get_partner_drivers_by_id: (account_sid:string, meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/partners/${account_sid}/drivers?${queryParams}&page=${meta.page.value}&limit=${meta.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

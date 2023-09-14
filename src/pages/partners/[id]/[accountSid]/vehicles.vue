@@ -2,7 +2,7 @@
 	<main>
 		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.status" class="text-xs text-white rounded-lg py-1.5 px-2.5">
@@ -12,13 +12,16 @@
 					{{ item.data.vehicle }}
 				</div>
 				<div v-if="item.driver" class="flex items-center gap-x-2">
-					{{ item.data.driver ?? 'No driver assigned' }}
+					{{ item.data.driver }}
 				</div>
 				<span v-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
 				</span>
 				<span v-if="item.id">
 					{{ item.data.table_index }}
+				</span>
+				<span v-else-if="item.code">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
 			<template #footer>
@@ -33,6 +36,7 @@ import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
 const { getPartnersVehiclesList, loading, partnersVehiclesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
 const id = Number(useRoute().params.id)
 getPartnersVehiclesList(id)
+filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 
 definePageMeta({
     layout: 'dashboard',
@@ -45,11 +49,16 @@ const formattedPartnersVehiclesList = computed(() => {
 		return {
 			...item,
 			vehicle: `${item?.brand} ${item?.name}` ?? 'N/A',
-			driver: `${item?.driver?.fname} ${item?.driver?.lname}` ?? 'N/A',
+			driver: item.driver.fname || item.driver.lname ? `${item?.driver?.fname} ${item?.driver?.lname}` : 'No driver assigned',
 			table_index: index + 1
 		}
 	})
 })
+
+const dropdownChildren = computed(() => [
+	{ name: 'View details', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
+	{ name: 'Unassign vehicle', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+])
 
 const tableFields = ref([
 	{
@@ -87,7 +96,7 @@ const tableFields = ref([
 	},
 	{
 		text: 'ACTIONS',
-		value: 'status'
+		value: 'code'
 	}
 ])
 
