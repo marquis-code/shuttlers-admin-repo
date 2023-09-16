@@ -7,7 +7,8 @@
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
 						<th v-if="checkbox" class="pl-4 text-light">
-							<input type="checkbox">
+							<!-- <input type="checkbox"> -->
+							<div />
 						</th>
 						<th v-if="hasIndex" class="pl-4 text-light">
 							ID
@@ -28,7 +29,7 @@
 						@click="option(data)"
 					>
 						<td v-if="checkbox" class="pl-4">
-							<input type="checkbox">
+							<input v-model="checkedArray" :value="data" type="checkbox" @change="$emit('checked', checkedArray)">
 						</td>
 						<td v-if="hasIndex" class="pl-4">
 							{{ index + 1 }}
@@ -63,6 +64,10 @@
 <script lang="ts" setup>
 import gsap from 'gsap'
 
+defineEmits(['checked'])
+
+const checkedArray = ref([] as Record<string, any>[])
+
 const props = defineProps({
 	option: {
 		type: Function,
@@ -72,6 +77,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false
 	},
+	selected: {
+        type: Array,
+        default: () => []
+    },
 	headers: {
 		type: Array,
 		default: () => [],
@@ -80,10 +89,6 @@ const props = defineProps({
 	tableData: {
 		type: Array,
 		default: () => []
-	},
-	tableHeight: {
-		type: Number,
-		default: 200
 	},
 	loading: {
 		type: Boolean,
@@ -111,10 +116,9 @@ const props = defineProps({
 	}
 })
 
-const itemLength = ref(0)
-const checked = ref([])
-const pages = ref(0)
-
+watch(() => props.selected, (value:any) => {
+	checkedArray.value = value
+})
 const displayTable = computed({
 	get: () => {
 		if (props.pageSync) {
@@ -169,20 +173,6 @@ const populateTable = (data: any) => {
 	})
 
 	return element
-}
-
-const beforeEnter = (el) => {
-	el.style.opacity = 0
-	// el.style.transform = 'translateY(100px)'
-}
-const enter = (el, done) => {
-	gsap.to(el, {
-		opacity: 1,
-		// y: 0,
-		duration: 0.5,
-		onComplete: done,
-		delay: el.dataset.index * 0.1
-	})
 }
 
 </script>

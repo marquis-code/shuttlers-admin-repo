@@ -1,6 +1,7 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList">
+		<TableSelectedTray class="mb-12" :selected="log_ids" :loading="processLoading" :call_function="getConfirmation" :computed_name_function="formattedName" @update="log_ids = ($event)" />
+		<Table :loading="loading" :headers="tableFields" :selected="log_ids" :table-data="formatedRefundList" :checkbox="true" @checked="log_ids = ($event)">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
 			</template>
@@ -18,10 +19,12 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useDeleteRefund } from '../../../composables/modules/users/batch-refund/delete'
+import { useDeleteRefund } from '@/composables/modules/users/batch-refund/delete'
 import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
+import { useProcessBatchRefund } from '@/composables/modules/users/batch-refund/create'
 
 const { setDeleteRefundId } = useDeleteRefund()
+const { loading: processLoading, log_ids, getConfirmation, formattedName } = useProcessBatchRefund()
 const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
 getBatchRefundList()
 

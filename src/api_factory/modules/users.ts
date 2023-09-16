@@ -24,9 +24,13 @@ export const users_api = {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_create_refund: (params: Record<string, any>) => {
+	$_create_refund: (payload: Record<string, any>) => {
 		const url = '/refund-logs'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, params)
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_process_refund: (payload: Record<string, any>[]) => {
+		const url = '/refund-logs/process-logs'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_delete_refund: (id:string) => {
 		const url = `/refund-logs/${id}`

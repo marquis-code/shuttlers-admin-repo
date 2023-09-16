@@ -4,7 +4,7 @@
 		<span @click="$emit('closeAlert', id)">
 			<Icon
 				name="close"
-				class="text-dark w-5 absolute  right-2 top-2 cursor-pointer  "
+				class="text-dark w-5 absolute  right-2 top-2 cursor-pointer "
 			/>
 
 		</span>

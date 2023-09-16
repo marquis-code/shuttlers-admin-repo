@@ -66,7 +66,7 @@
 				</div>
 			</div>
 
-			<Skeleton height="400px" radius="10px" />
+			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" />
 		</section>
 		<Skeleton v-else height="500px" radius="10px" />
 	</main>

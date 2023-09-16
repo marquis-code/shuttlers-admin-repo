@@ -7,6 +7,7 @@ export enum IconNames {
   'arrowForward' = 'arrowForward',
   'check' = 'check',
   'close' = 'close',
+  'closed' = 'closed',
   'destination_point' = 'destination_point',
   'down' = 'down',
   'download' = 'download',
