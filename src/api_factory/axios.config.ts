@@ -5,6 +5,7 @@ const { token } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
+const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/cost-revenue/v1'
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
 
 export const GATEWAY_ENDPOINT = axios.create({
@@ -16,6 +17,14 @@ export const GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
 		Authorization: `Bearer ${token.value}`
 	}
 })
+
+export const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API = axios.create({
+	baseURL: $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE,
+	headers: {
+		Authorization: `Bearer ${token.value}`
+	}
+})
+
 export const GATEWAY_ENDPOINT_WITHOUT_VERSION = axios.create({
 	baseURL: $GATEWAY_ENDPOINT_WITHOUT_VERSION
 })
@@ -33,7 +42,7 @@ export interface CustomAxiosResponse extends AxiosResponse {
   type?: string;
 }
 
-const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH]
+const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API]
 
 instanceArray.forEach((instance) => {
 	instance.interceptors.request.use(

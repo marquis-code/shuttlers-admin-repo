@@ -1,16 +1,27 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList">
+		<Table :loading="fetchingPartners" :headers="tableFields" :table-data="formattedPartnersList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
+				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
 					{{ item.data.status }}
 				</span>
-				<span v-if="item.id">
-					{{ item.data.id }}
+				<div v-if="item.name" class="flex items-center gap-x-2">
+					<p><Avatar :name="item.data.name" bg="#B1C2D9" /></p> <p class="text-gray-700">
+						{{ item.data.name }}
+					</p>
+				</div>
+				<span v-if="item.date_created">
+					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }}
 				</span>
+				<span v-if="item.id">
+					{{ item.data.table_index }}
+				</span>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="fetchingPartners" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -18,32 +29,37 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
+import { useGetPartnersList } from '@/composables/modules/partners/fetch'
+import { usePartnerIdDetails } from '@/composables/modules/partners/id'
 
-const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
-getBatchRefundList()
+const { getPartnersList, loading: fetchingPartners, partnersList, moveTo, total, page, next, prev } = useGetPartnersList()
+// const { selectedPartner, loading, getPartnerById } = usePartnerIdDetails()
+getPartnersList()
 
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
-const formatedRefundList = computed(() => {
-	if (!refundList.value.length) return []
-	return refundList.value.map((item) => {
+const formattedPartnersList = computed(() => {
+	if (!partnersList.value.length) return []
+	return partnersList.value.map((item, index) => {
 		return {
-			name: `${item.user.fname} ${item.user.lname}`,
-			route: item.route.route_code,
-			trip: item.trip.cost_of_supply ?? 'N/A',
-			refund: `${item.refund_value} %`,
-			reason: item.reason,
-			id: item.id
+			...item,
+			name: `${item.owner.fname} ${item.owner.lname}` ?? 'N/A',
+			email: `${item.owner.email}` ?? 'N/A',
+			date_created: item.created_at ?? 'N/A',
+			table_index: index + 1,
+			status: item.status
 		}
 	})
 })
-const dropdownChildren = computed(() => [
-	{ name: 'Trip details', func: () => { } },
-	{ name: 'Delete log', func: () => { }, class: '!text-red' }
-])
+
+const onRowClicked = (data) => {
+	const { selectedPartner } = usePartnerIdDetails()
+	useRouter().push(`/partners/${data?.id}/${data?.account_sid}/partner-info`)
+	selectedPartner.value = data
+}
+
 const tableFields = ref([
 	{
 		text: 'S/N',
@@ -56,19 +72,19 @@ const tableFields = ref([
 	},
 	{
 		text: 'Email',
-		value: 'route'
+		value: 'email'
 	},
 	{
-		text: 'Number Of Vehicles)',
-		value: 'trip'
+		text: 'Number Of Vehicles',
+		value: 'vehicles_count'
 	},
 	{
 		text: 'Date Created',
-		value: 'refund'
+		value: 'date_created'
 	},
 	{
 		text: 'Status',
-		value: 'reason'
+		value: 'status'
 	}
 ])
 
