@@ -13,7 +13,8 @@ const passwordConfirmationState = {
     title: ref(''),
     type: ref('Alert'),
     call_functuon: ref(() => { }),
-    loading: ref(false)
+    loading: ref(false),
+    password: ref('')
 }
 
 interface AlertTypes {
@@ -62,5 +63,5 @@ export const usePasswordConfirmationModal = () => {
         closePasswordConfirm()
 	}
 
-	return { ...confirmationState, openAlert, closeAlert }
+	return { ...passwordConfirmationState, openAlert, closeAlert }
 }

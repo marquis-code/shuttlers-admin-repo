@@ -1,7 +1,7 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
-import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useConfirmationModal, usePasswordConfirmationModal } from '@/composables/core/confirmation'
 
 export const useLogBatchRefund = () => {
     const loading = ref(false)
@@ -50,14 +50,20 @@ export const useProcessBatchRefund = () => {
     const { $_process_refund } = users_api
 
     const getConfirmation = (id: string) => {
-		useConfirmationModal().openAlert({ call_functuon: processBatchRefund, desc: `Are you sure you want to process the selected refund of (${log_ids.value.length}) trips`, title: 'Refund Comfirmation', loading, type: 'NORMAL' })
-	}
+		useConfirmationModal().openAlert({ call_functuon: getPasswordConfirmation, desc: `Are you sure you want to process the selected refund of (${log_ids.value.length}) trips`, title: 'Refund Comfirmation', loading, type: 'NORMAL' })
+    }
+
+    const getPasswordConfirmation = () => {
+        useConfirmationModal().closeAlert()
+        usePasswordConfirmationModal().openAlert({ call_functuon: processBatchRefund, desc: 'Please enter your password to confirm', title: 'Password Comfirmation', loading, type: 'NORMAL' })
+    }
 
     const processBatchRefund = async () => {
         loading.value = true
         const res = await $_process_refund(log_ids.value.map((i) => i.id)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Refund processed successfully' })
+            usePasswordConfirmationModal().closeAlert()
         }
         loading.value = false
     }
