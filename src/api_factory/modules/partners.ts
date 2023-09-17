@@ -47,5 +47,10 @@ export const partners_api = {
 	$_get_partner_earnings_by_id: (account_sid:string) => {
 		const url = `/partners/${account_sid}/earnings-summary`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_get_partner_payout: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `earnings?${queryParams}&isApproved=false&status=pending-payout,failed,pending-settlement&${meta.page.value}&limit=${meta.page_size.value}`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	}
 }
