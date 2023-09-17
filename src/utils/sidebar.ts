@@ -113,7 +113,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       },
       {
         title: 'Suggested routes',
-        routePath: '/trips/suggested',
+        routePath: '/trips/routes/suggested-routes',
         description: ''
       },
       {
