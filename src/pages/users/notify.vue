@@ -2,7 +2,7 @@
 	<div class="justify-between space-y-10 lg:flex lg:space-y-0">
 		<div class="p-6 space-y-6 lg:w-6/12">
 			<div class="w-full">
-				<input v-model="notification.title" type="text" placeholder="Enter notification title" class="w-full px-4 py-3 placeholder-gray-400 bg-white border rounded-md outline-none ">
+				<input v-model="notification.title" type="text" placeholder="Enter notification title" class="input-field">
 			</div>
 			<div class="w-full bg-white rounded-lg">
 				<div class="flex items-center justify-between py-3 pr-6 border-b">
@@ -54,7 +54,7 @@
 						</span>
 					</div>
 					<div>
-						<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : '']" class="text-white bg-gray-700 text-xs rounded-md px-6 py-2.5"
+						<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : '']" class="btn-primary-sm"
 							@click.prevent="notifyUsers">
 							{{ creatingNotification ? 'Processing...' : 'Notify users' }}
 						</button>
@@ -89,7 +89,7 @@
 					<p class="text-sm text-green-500">
 						select all users
 					</p>
-					<input id="notify-all" v-model="notification.notifyAll" type="checkbox" @change="handleAllUsersSelection($event)">
+					<input id="notify-all" v-model="notification.notifyAll" type="checkbox" class="form-checkbox rounded-full text-green7" @change="handleAllUsersSelection($event)">
 				</div>
 				<div v-if="itemSelected === 'company'" class="flex items-center justify-between  pt-6 pb-6 px-10 border-b gap-x-3 w-full">
 					<div class="w-4/12">
@@ -97,7 +97,7 @@
 					</div>
 					<div class="w-8/12">
 						{{ corporateId }}
-						<select v-model="corporateId" id="countries" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
+						<select id="countries" v-model="corporateId" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
 							<option v-for="(item, index) in corporatesList" :key="index" :value="item.id">
 								{{ item.corporate_name }}
 							</option>
@@ -118,7 +118,7 @@
 							</div>
 						</div>
 						<div>
-							<input type="checkbox" :checked="selectedUsers.find((user) => user.id === item.id) || notification.notifyAll" @change="selectUser($event, item)">
+							<input type="checkbox" class="form-checkbox rounded-full text-green7" :checked="selectedUsers.find((user) => user.id === item.id) || notification.notifyAll" @change="selectUser($event, item)">
 						</div>
 					</div>
 				</div>

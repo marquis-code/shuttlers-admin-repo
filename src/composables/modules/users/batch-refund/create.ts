@@ -60,7 +60,7 @@ export const useProcessBatchRefund = () => {
 
     const processBatchRefund = async () => {
         loading.value = true
-        const res = await $_process_refund(log_ids.value.map((i) => i.id)) as CustomAxiosResponse
+        const res = await $_process_refund({ log_ids: log_ids.value.map((i) => i.id) }) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Refund processed successfully' })
             usePasswordConfirmationModal().closeAlert()

@@ -32,7 +32,7 @@ export const users_api = {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_process_refund: (payload: Record<string, any>[]) => {
+	$_process_refund: (payload: Record<string, any>) => {
 		const url = '/refund-logs/process-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},

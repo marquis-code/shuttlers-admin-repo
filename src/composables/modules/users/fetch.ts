@@ -27,7 +27,8 @@ export const useGetUsersList = () => {
     const usersList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref('')
+        status: ref(''),
+        search: ref('')
     }
 
     const { $_get_users } = users_api
@@ -45,15 +46,17 @@ export const useGetUsersList = () => {
     }
     setFunction(getUsersList)
 
-    watch([filterData.status], (val) => {
+    watch([filterData.status, filterData.search], (val) => {
         getUsersList()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'status':
-                filterData.status.value = data.value
+                filterData.status.value = data.value === '0' ? 'inactive' : 'active'
                 break
+            case 'search':
+                filterData.search.value = data.value
         }
     }
 

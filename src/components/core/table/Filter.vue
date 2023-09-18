@@ -3,15 +3,15 @@
 		<div class="flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
 			<section v-if="filterType.showSearchBar" class="relative flex gap-3">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[15px]" aria-hidden="true" />
-				<input v-model="filterData.search.value" type="search" placeholder="search" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
+				<input v-model="filterData.search.value" type="search" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
 			</section>
 
 			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">
 				<div v-if="filterType.showDatePicker" class="pt-2">
-					<date-picker v-model:value="filterData.dateSelected" class="font-light" placeholder="Filter by date" />
+					<date-picker v-model:value="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" />
 				</div>
 				<div v-if="filterType.showDateRange" class="pt-2">
-					<date-picker v-model:value="filterData.dateRange" range />
+					<date-picker v-model:value="filterData.dateRange.value" range placeholder="Filter by date" />
 				</div>
 			</section>
 

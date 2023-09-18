@@ -9,55 +9,51 @@
 				</p>
 			</div>
 			<hr>
-			<form class="space-y-6 p-6 mt-5" @submit="createUser">
+			<form class="space-y-6 p-6 mt-5" @submit.prevent="createUser">
 				<div class="lg:flex justify-between items-center lg:gap-x-10 gap-y-10 lg:gap-y-0">
-					<div class="w-full">
-						<label for="" class="text-sm font-light text-gray">
-							First name</label>
-						<input v-model="form.fname" type="text" name=""
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+					<div class="field relative">
+						<label for="First">First name</label>
+						<input id="First" v-model="createForm.fname.value" type="text" class="input-field">
 					</div>
 
-					<div class="w-full">
-						<label for="" class="text-sm font-light text-gray">
-							Last name</label>
-						<input v-model="form.lname" type="text" name=""
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+					<div class="field relative">
+						<label for="Last">Last name</label>
+						<input id="Last" v-model="createForm.lname.value" type="text" class="input-field">
 					</div>
 				</div>
 				<div class="lg:flex justify-between items-center lg:gap-x-10 gap-y-10 lg:gap-y-0">
-					<div class="w-full">
-						<label for="" class="text-sm font-light text-gray">
+					<div class="field relative">
+						<label for="">
 							Email address</label>
-						<input v-model="form.email" type="email" name=""
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<input v-model="createForm.email" type="email" name=""
+							class="input-field">
 					</div>
 
-					<div class="w-full">
-						<label for="" class="text-sm font-light text-gray">
+					<div class="field relative">
+						<label for="">
 							Phone</label>
-						<input v-model="form.phone" type="number" name=""
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<input v-model="createForm.phone" type="number" name=""
+							class="input-field">
 					</div>
 				</div>
 				<div class="lg:flex justify-between items-center lg:gap-x-10 gap-y-10 lg:gap-y-0">
 					<div class="w-full relative">
-						<label for="" class="text-sm font-light text-gray">
+						<label for="">
 							Password</label>
-						<input v-model="form.password" :type="showPassword ? 'text' : 'password'" name=""
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<input v-model="createForm.password" :type="showPassword ? 'text' : 'password'" name=""
+							class="input-field">
 						<img v-if="showPassword" src="@/assets/icons/source/open-eye.svg" alt="open eye" class="absolute right-4 top-10 cursor-pointer" @click="showPassword = false">
 						<img v-if="!showPassword" src="@/assets/icons/source/closed-eye.png" alt="" class="absolute right-4 top-10 cursor-pointer" @click="showPassword = true">
 					</div>
 
-					<div class="w-full">
-						<label for="" class="text-sm font-light text-gray">
+					<div class="field relative">
+						<label for="">
 							Company (optional)</label>
 						<!-- <InputDropdownList :children="corporatesList" /> -->
 					</div>
 				</div>
 				<div class="w-full lg:w-6/12">
-					<label for="" class="text-sm font-light text-gray">
+					<label for="">
 						Date of Birth</label>
 					<date-picker v-model:value="form.dob" style="width: 100%" class="font-light"
 						placeholder="Filter by date" />
@@ -74,6 +70,10 @@
 
 <script lang="ts" setup>
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
+import { useCreateUsers } from '@/composables/modules/users/create'
+
+const { createForm, createUser, loading: createLoading } = useCreateUsers()
+
 const { getCorporatesList, loading, corporatesList } = useGetCorporateList()
 getCorporatesList()
 const router = useRouter()
@@ -89,5 +89,4 @@ const form = ref({
     dob: ''
 })
 
-const createUser = () => {}
 </script>
