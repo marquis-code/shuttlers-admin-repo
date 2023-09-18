@@ -126,3 +126,48 @@ export const useGetInterestedPartnersList = () => {
 
     return { getInterestedPartnersList, loading, interestedPartnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
+
+export const useGetPartnerPayoutList = () => {
+    const loadingPayouts = ref(false)
+    const partnersPayoutList = ref([] as any)
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const filterData = {
+        start_date_filter: ref(''),
+        end_date_filter: ref(''),
+        search: ref('')
+    }
+
+    const { $_get_partner_payout } = partners_api
+
+    const getPartnersPayoutList = async () => {
+        loadingPayouts.value = true
+
+        const res = await $_get_partner_payout(metaObject, filterData) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            partnersPayoutList.value = res?.data?.result
+            metaObject.total.value = res?.data?.metadata?.total
+        }
+        loadingPayouts.value = false
+    }
+    setFunction(getPartnersPayoutList)
+
+    watch([filterData.start_date_filter, filterData.end_date_filter, filterData.search], (val) => {
+        getPartnersPayoutList()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'start_date_filter':
+                filterData.start_date_filter.value = data?.value
+                break
+            case 'end_date_filter':
+                    filterData.end_date_filter.value = data?.value
+                    break
+            case 'search':
+                filterData.search.value = data?.value
+                break
+        }
+    }
+
+    return { getPartnersPayoutList, loadingPayouts, partnersPayoutList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+}

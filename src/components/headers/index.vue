@@ -33,6 +33,12 @@ import UserDetails from '@/components/headers/modules/Users/user-details.vue'
 import CompanyDetails from '@/components/headers/modules/Companies/company-details.vue'
 import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking/batch-booking-details.vue'
 import PartnerDetails from '@/components/headers/modules/Partners/partner-details.vue'
+import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.vue'
+import Trips from '@/components/headers/modules/Trips/index.vue'
+import Routes from '@/components/headers/modules/Routes/index.vue'
+import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
+import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
+import Charter from '@/components/headers/modules/Charter/index.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -50,8 +56,8 @@ const componentRouteArray = [
     { routes: ['users-id-active-bookings', 'users-id-cancelled-trips', 'users-id-credit-line-usage', 'users-id-past-bookings', 'users-id-rides', 'users-id-transactions', 'users-id-user-info'], component: UserDetails },
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
-    { routes: ['trips'], component: null },
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners'], component: Partners },
+    { routes: ['partners-payouts'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
@@ -68,6 +74,11 @@ const componentRouteArray = [
     { routes: ['configuration'], component: null },
     { routes: ['campaigns'], component: Campaigns },
     { routes: ['trips-sos'], component: sos },
+    { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
+    { routes: ['trips-routes', 'trips-routes-suspended'], component: Routes },
+    { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
+    { routes: ['trips-waitlist'], component: Waitlist },
+    { routes: ['trips-charter'], component: Charter },
     { routes: ['users-id-past-bookings-b_id'], component: GenericHeader }
 ]
 
