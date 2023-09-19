@@ -57,7 +57,7 @@ const formattedPartnersVehiclesList = computed(() => {
 
 const dropdownChildren = computed(() => [
 	{ name: 'View details', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Unassign vehicle', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'Unassign vehicle', class: '!text-red' }
 ])
 
 const tableFields = ref([

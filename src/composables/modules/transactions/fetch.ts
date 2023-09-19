@@ -34,10 +34,10 @@ export const useGetRecentTransactionsList = () => {
                 filterData.source.value = data.value
                 break
             case 'from':
-                    filterData.source.value = data.value
+                    filterData.from.value = data.value
                 break
             case 'to':
-                    filterData.source.value = data.value
+                    filterData.to.value = data.value
                 break
         }
     }

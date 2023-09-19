@@ -1,81 +1,91 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingBusCaptains" :headers="tableFields" :table-data="formattedBusCaptainsList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
-				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
-					</p>
-				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
-				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
-				</div>
-
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
-				</div>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+				<span v-if="item.id">
+					{{ item.data.id }}
 				</span>
+				<div v-if="item.user" class="flex items-center gap-x-2">
+					<Avatar :name="item.data.user" bg="#B1C2D9" />
+					<NuxtLink class="text-blue-600" to="/">{{item.data.user }}</NuxtLink>
+				</div>
+				<div v-if="item.phone">
+					<NuxtLink class="text-blue-600" to="/">{{item.data.phone }}</NuxtLink>
+				</div>
+				<div v-if="item.email">
+					<NuxtLink class="text-blue-600" to="/">{{item.data.email }}</NuxtLink>
+				</div>
+				<div v-if="item.route">
+					<NuxtLink class="text-blue-600" to="/">{{item.data.route }}</NuxtLink>
+				</div>
+				<span v-if="item.action">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+				</span>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingBusCaptains" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useGetBusCaptainsList } from '@/composables/modules/trips/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getBusCaptains, loadingBusCaptains, busCaptainsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetBusCaptainsList()
+getBusCaptains()
+
+const formattedBusCaptainsList = computed(() =>
+busCaptainsList.value.map((i, index) => {
+         return {
+             ...i,
+             user: `${i?.user?.fname} (${i?.user?.lname})`,
+			 phone: i?.user?.phone ?? 'N/A',
+			 email: i?.user?.email ?? 'N/A',
+			 route: `${i?.route?.route_code}` ?? 'N/A',
+			 itinerary: i?.itinerary?.trip_time ?? 'N/A',
+             action: '',
+			 id: index + 1
+         }
+    })
+)
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 
+const dropdownChildren = computed(() => [
+	{ name: 'Remove as captain', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) }, class: '!text-red' }
+])
+
 const tableFields = ref([
     {
-        text: 'VEHICLE',
-        value: 'vehicle'
+        text: 'USER',
+        value: 'user'
     },
     {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
+        text: 'PHONE',
+        value: 'phone'
     },
     {
-        text: 'CAPACITY',
-        value: 'seats'
+        text: 'EMAIL',
+        value: 'email'
     },
     {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
+        text: 'ROUTE',
+        value: 'route'
     },
     {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
+        text: 'ITINERARY',
+        value: 'itinerary'
     },
 	{
-        text: 'PARTNER',
-        value: 'partner'
-    },
-    {
-        text: 'CREATED AT',
-        value: 'created_at'
-    }
+		text: 'ACTIONS',
+		value: 'action'
+	}
 ])
 
 </script>

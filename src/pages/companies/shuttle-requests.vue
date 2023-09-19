@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :has-index="true" :loading="loading" :headers="tableFields" :table-data="shuttleRequestsList">
 			<template #header>
-				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" />
 			</template>
 
 			<template #item="{ item }">
