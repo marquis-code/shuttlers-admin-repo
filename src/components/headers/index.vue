@@ -39,6 +39,7 @@ import Routes from '@/components/headers/modules/Routes/index.vue'
 import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
 import Charter from '@/components/headers/modules/Charter/index.vue'
+import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -79,6 +80,7 @@ const componentRouteArray = [
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-charter'], component: Charter },
+    { routes: ['trips-vehicle'], component: TripTracking },
     { routes: ['users-id-past-bookings-b_id'], component: GenericHeader }
 ]
 
