@@ -31,7 +31,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 
-const { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
+const { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
 
 const formattedCompletedTripsList = computed(() =>

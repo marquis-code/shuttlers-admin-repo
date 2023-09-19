@@ -29,14 +29,15 @@
 </template>
 <script setup lang="ts">
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
+import { useTripIdDetails } from '@/composables/modules/trips/id'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()
 
 const onRowClicked = (data) => {
-	const { selectedUser } = useUserIdDetails()
+	const { selectedTrip } = useTripIdDetails()
 	useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)
-	selectedUser.value = data
+	selectedTrip.value = data
 }
 
 const formattedUpcomingTripsList = computed(() =>

@@ -22,7 +22,6 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 
 const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()

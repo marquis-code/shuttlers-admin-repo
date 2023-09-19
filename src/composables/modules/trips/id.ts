@@ -9,7 +9,7 @@ export const useTripIdDetails = () => {
     const getTripById = async (id: string) => {
         selectedTripId.value = id
         loading.value = true
-        const res = await trips_api.$_get_user_by_id(id) as CustomAxiosResponse
+        const res = await trips_api.$_get_trip_by_id(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             selectedTrip.value = res.data
         }

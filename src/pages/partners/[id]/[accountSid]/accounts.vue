@@ -25,7 +25,7 @@ definePageMeta({
 
 const dropdownChildren = computed(() => [
 	{ name: 'Deduct partner earnings', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'View financials', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'View financials', class: '!text-red' }
 ])
 
 const formattedPartnersAccountsList = computed(() => {

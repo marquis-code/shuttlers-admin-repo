@@ -27,7 +27,7 @@ export const trips_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_trip_by_id: (id:string) => {
-		const url = `/users/${id}`
+		const url = `/trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
