@@ -32,7 +32,7 @@
 			<h3 class="px-6 py-4 font-medium">
 				Last 5 User Signups
 			</h3>
-			<div v-if="!loadingSignups"  class="relative flex flex-col w-full min-w-0 break-words">
+			<div v-if="!loadingSignups" class="relative flex flex-col w-full min-w-0 break-words">
 				<div class="block w-full overflow-x-auto ">
 					<Table :headers="signupHeaders" :table-data="signupList" :loading="loadingSignups">
 						<template #item="{ item }">

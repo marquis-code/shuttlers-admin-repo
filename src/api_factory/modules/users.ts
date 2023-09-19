@@ -8,13 +8,17 @@ export const users_api = {
 		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_create_users: (payload) => {
+		const url = '/users'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
 	$_query_users: (query: string) => {
 		const url = '/users/search?limit=10'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })
 	},
 	$_create_notification: (payload) => {
 		const url = '/notifications'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { ...payload })
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_user_by_id: (id:string) => {
 		const url = `/users/${id}`

@@ -1,5 +1,5 @@
 export default {
-    modelValue: { type: Array, default: () => [] },
+    modelValue: [String, Date, Array],
     format: {
         type: String,
         required: false,

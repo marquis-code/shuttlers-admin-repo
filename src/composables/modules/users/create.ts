@@ -1,5 +1,6 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 
 export const useCreateUsers = () => {
     const loading = ref(false)
@@ -16,10 +17,10 @@ export const useCreateUsers = () => {
 
     const createUser = async () => {
         loading.value = true
-        const res = await users_api.$_get_user_by_id(id) as CustomAxiosResponse
+        const res = await users_api.$_create_users(convertObjWithRefToObj(createForm)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useRouter().push('/users')
-            useAlert().openAlert({ type: 'SUCCESS', msg: 'Refund logged successfully' })
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'User created successfully' })
         }
         loading.value = false
     }

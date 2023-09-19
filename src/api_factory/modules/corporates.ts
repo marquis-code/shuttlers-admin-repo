@@ -8,9 +8,7 @@ export const corporates_api = {
 	},
 	$_get_list: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-
 		const url = `/corporates?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
-
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_demo_request: (metaObject: TMetaObject) => {

@@ -20,3 +20,9 @@ export const truncateString = (input: string, maxLength = 80): string => {
         return input.slice(0, maxLength) + '...'
     }
 }
+
+export const convertObjWithRefToObj = (obj: Record<string, Ref>) => {
+    return Object.fromEntries(
+        Object.entries(obj).map(([key, value]) => [key, value.value])
+    )
+}

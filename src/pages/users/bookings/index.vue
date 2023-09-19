@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList"  :option="onRowClicked" class="cursor-pointer">
+		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" />
 			</template>

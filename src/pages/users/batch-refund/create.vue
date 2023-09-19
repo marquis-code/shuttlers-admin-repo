@@ -12,12 +12,7 @@
 			</header>
 			<div class="field relative">
 				<label for="email">Select user</label>
-				<InputMultiSelect id="select_users_input" v-model="selectedUser"
-					track-by="id" placeholder="Select user to log refund" :custom-label="(data)=>`${data.fname} ${data.lname} - (${data.email})`"
-					open-direction="bottom" :options="queriedUsers" :multiple="false" :searchable="true"
-					:loading="loadingQueriedUsers" :internal-search="false"
-					:options-limit="300" :limit="10"
-					:show-no-results="false" :hide-selected="true" @search-change="queryUsers" />
+				<InputMultiSelectUsers v-model="selectedUser" />
 			</div>
 
 			<div class="field relative">
@@ -64,12 +59,10 @@
 
 <script lang="ts" setup>
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useQueryUsers } from '@/composables/modules/users/query'
+
 import { useLogBatchRefund } from '@/composables/modules/users/batch-refund/create'
 
 const { loading, logBatchRefund, logRefundData, pastBookingsList, selectedUser } = useLogBatchRefund()
-
-const { loadingQueriedUsers, queriedUsers, queryUsers } = useQueryUsers()
 
 const percentageArray = ref([
 	{ name: '10%', value: 10 },

@@ -107,7 +107,9 @@
 					<p class="font-medium text-sm">
 						Work branches
 					</p>
-					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">Add work branches</button>
+					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">
+						Add work branches
+					</button>
 				</div>
 			</div>
 
@@ -116,7 +118,9 @@
 					<p class="font-medium text-sm">
 						Work branches
 					</p>
-					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">Add work shifts</button>
+					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">
+						Add work shifts
+					</button>
 				</div>
 			</div>
 		</div>

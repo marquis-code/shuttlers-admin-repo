@@ -9,7 +9,9 @@
 					{{ item.data.status }}
 				</span>
 				<div v-if="item.name" class="flex items-center gap-x-2">
-					<p><Avatar :name="item.data.name" bg="#B1C2D9" /></p> <p class="text-gray-700">{{ item.data.name }}</p>
+					<p><Avatar :name="item.data.name" bg="#B1C2D9" /></p> <p class="text-gray-700">
+						{{ item.data.name }}
+					</p>
 				</div>
 				<span v-if="item.date_created">
 					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }}

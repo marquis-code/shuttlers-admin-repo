@@ -2,6 +2,7 @@ import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
 import { useConfirmationModal, usePasswordConfirmationModal } from '@/composables/core/confirmation'
+import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 
 export const useLogBatchRefund = () => {
     const loading = ref(false)
@@ -14,7 +15,8 @@ export const useLogBatchRefund = () => {
         reason: ref()
     }
     const { getUserPastBookings, pastBookingsList, loading: pastBookingsLoading, filterData } = useUserPastBookings()
-    watch(selectedUser, async (newVal:any) => {
+    watch(selectedUser, async (newVal: any) => {
+        console.log(selectedUser)
         if (newVal) {
             filterData.status.value = 'COMPLETED'
             await getUserPastBookings(newVal.id)
@@ -28,12 +30,7 @@ export const useLogBatchRefund = () => {
     const logBatchRefund = async () => {
         loading.value = true
 
-        const res = await $_create_refund(
-            Object.fromEntries(
-                Object.entries(logRefundData).map(([key, value]) => [key, value.value])
-            )
-
-        ) as CustomAxiosResponse
+        const res = await $_create_refund(convertObjWithRefToObj(logRefundData)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useRouter().push('/users/batch-refund')
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Refund logged successfully' })
