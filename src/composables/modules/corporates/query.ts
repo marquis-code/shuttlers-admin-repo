@@ -19,7 +19,6 @@ export const useQueryCompany = () => {
 
         if (res.type !== 'ERROR') {
             queriedCompany.value = res.data.models
-            console.log(queriedCompany.value)
         }
         loadingQueriedCompany.value = false
     }

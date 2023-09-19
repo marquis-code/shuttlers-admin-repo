@@ -16,7 +16,6 @@ export const useLogBatchRefund = () => {
     }
     const { getUserPastBookings, pastBookingsList, loading: pastBookingsLoading, filterData } = useUserPastBookings()
     watch(selectedUser, async (newVal: any) => {
-        console.log(selectedUser)
         if (newVal) {
             filterData.status.value = 'COMPLETED'
             await getUserPastBookings(newVal.id)
