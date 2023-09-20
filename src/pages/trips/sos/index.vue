@@ -62,6 +62,10 @@ const tableFields = ref([
         value: 'vehicle'
     },
     {
+        text: 'REASON',
+        value: 'sos_reason'
+    },
+    {
         text: 'STATUS',
         value: 'status'
     },
