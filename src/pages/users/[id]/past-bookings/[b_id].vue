@@ -76,7 +76,7 @@
 import { useDateFormat } from '@vueuse/core'
 import svg_template from '@/assets/icons/src/svg-template.vue'
 import { usePageHeader } from '@/composables/utils/header'
-import { useUserPastBookingsById } from '@/composables/modules/users/past-bookings'
+import { useUserPastBookingsById } from '@/composables/modules/users/inner/past-bookings'
 import { useUserModal } from '@/composables/core/modals'
 
 const { getUserPastBookingsById, loading, pastBooking } = useUserPastBookingsById()

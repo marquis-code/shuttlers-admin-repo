@@ -1,4 +1,4 @@
-import { useUserIdDetails } from './id'
+import { useUserIdDetails } from '../id'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 

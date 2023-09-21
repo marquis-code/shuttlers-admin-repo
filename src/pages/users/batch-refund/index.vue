@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<TableSelectedTray class="mb-12" :selected="log_ids" :loading="processLoading" :call_function="getConfirmation" :computed_name_function="formattedName" @update="log_ids = ($event)" />
+		<TableSelectedTray class="mb-12" :selected="log_ids" :loading="processLoading" :call-function="getConfirmation" :computed-name-function="formattedName" @update="log_ids = ($event)" />
 		<Table :loading="loading" :headers="tableFields" :selected="log_ids" :table-data="formatedRefundList" :checkbox="true" @checked="log_ids = ($event)">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />

@@ -19,7 +19,7 @@
   const props = defineProps({
 	pickup: { type: String, required: true },
 	destination: { type: String, required: true },
-	className: { type: String, required: false },
+	className: { type: String, required: false, default: '' },
 	titleWeight: { type: [String, Number], required: false, default: () => 500 },
 	maxWidth: {
       type: Number,

@@ -23,7 +23,6 @@ import Company_insight from '@/components/headers/modules/Companies/insight.vue'
 import Campaigns from '@/components/headers/modules/Campaigns.vue'
 import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
-import AddUser from '@/components/headers/modules/Users/add-user.vue'
 import UsersInsights from '@/components/headers/modules/Users/insights.vue'
 import BatchRefund from '@/components/headers/modules/Users/batch-refund.vue'
 import BatchBooking from '@/components/headers/modules/Users/BatchBooking/index.vue'
@@ -49,7 +48,7 @@ const componentRouteArray = [
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
-    { routes: ['users-add'], component: AddUser },
+
     { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
@@ -81,7 +80,7 @@ const componentRouteArray = [
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
-    { routes: ['users-id-past-bookings-b_id'], component: GenericHeader }
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id'], component: GenericHeader }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

@@ -97,7 +97,7 @@ export const useGetPartnersDriversList = (account_sid: string) => {
     return { getPartnersDriversList, loading, partnersDriversList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
-export const useGetPartnersCompletedTripsList = (account_sid:string) => {
+export const useGetPartnersCompletedTripsList = () => {
     const loading = ref(false)
     const partnersCompletedTripsList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -120,12 +120,12 @@ export const useGetPartnersCompletedTripsList = (account_sid:string) => {
             metaObject.total.value = res.data.metadata.total
         }
         loading.value = false
-    }
-    setFunction(getPartnersCompletedTrips)
 
-    watch([filterData.status], (val) => {
+            watch([filterData.status], (val) => {
         getPartnersCompletedTrips(account_sid)
     })
+    }
+    setFunction(getPartnersCompletedTrips)
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {

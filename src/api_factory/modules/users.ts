@@ -12,6 +12,10 @@ export const users_api = {
 		const url = '/users'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
+	$_edit_users: (payload, id) => {
+		const url = `/users/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
 	$_query_users: (query: string) => {
 		const url = '/users/search?limit=10'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })

@@ -31,7 +31,7 @@
 					>
 						<div class="p-2">
 							<div class="p-2 flex flex-col items-start w-full">
-								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func">
+								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
 									{{ item.name }}
 								</button>
 							</div>
@@ -47,6 +47,10 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 defineProps({
+	data: {
+		type: Object,
+		default: () => ({})
+	},
     bgColor: {
         type: String,
         default: 'var(--red)'

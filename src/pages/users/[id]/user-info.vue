@@ -5,7 +5,7 @@
 				<div class="font-medium">
 					User Information
 				</div>
-				<ButtonDropdown :children="dropdownChildren" />
+				<ButtonDropdown :children="dropdownChildren" :data="selectedUser" />
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-3">
 				<p class="text-gray-500 text-sm">
@@ -112,11 +112,13 @@
 			</div>
 		</div>
 	</div>
+	<Skeleton v-else height="600px" />
 </template>
 
 <script setup lang="ts">
 import { useUserIdDetails } from '@/composables/modules/users/id'
 import { convertToCurrency } from '@/composables/utils/formatter'
+
 const { getUserById, loading, selectedUser } = useUserIdDetails()
 const id = useRoute().params.id as string
 getUserById(id)
@@ -127,7 +129,12 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Edit User', func: () => { } },
+	{
+		name: 'Edit User', func: (data) => {
+			selectedUser.value = data
+			useRouter().push(`/users/add/${data.id}`)
+		}
+	},
 	{ name: 'Topup User Wallet', func: () => { } },
 	{ name: 'Change Password', func: () => { } },
 	{ name: 'Add Profile Picture', func: () => { } },

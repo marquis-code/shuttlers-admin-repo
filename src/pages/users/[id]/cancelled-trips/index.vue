@@ -40,7 +40,7 @@
 </template>
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useUserPastBookings } from '@/composables/modules/users/past-bookings'
+import { useUserPastBookings } from '@/composables/modules/users/inner/past-bookings'
 const { pastBookingsList, loading, getUserPastBookings, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
 const id = useRoute().params.id as string
 

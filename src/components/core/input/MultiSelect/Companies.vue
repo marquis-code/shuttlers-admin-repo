@@ -31,7 +31,7 @@ const props = defineProps({
     placeholder: {
         type: String,
         required: false,
-        default: 'Select user'
+        default: 'Select company'
   },
   objKey: {
           type: String,
@@ -41,7 +41,7 @@ const props = defineProps({
 
 })
 
-watch(() => props.modelValue, (val) => {
+watch(() => props.value, (val) => {
   if (val) {
     company.value = val
   }
