@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import { useDeleteRefund } from '@/composables/modules/users/batch-refund/delete'
 import { useGetBatchRefundList } from '@/composables/modules/users/batch-refund/fetch'
 import { useProcessBatchRefund } from '@/composables/modules/users/batch-refund/create'

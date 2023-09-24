@@ -1,11 +1,11 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Refund amount"
+		:title="mode === 'CREATE' ? 'Log trip refund' : 'Edit trip refund'"
 		:no-close-btn="false"
 		class="text-center"
 	>
-		<form class="flex flex-col gap-6" @submit.prevent="refund">
+		<form class="flex flex-col gap-6" @submit.prevent="logRefund">
 			<div class="field relative">
 				<label for="amount">Trip amount</label>
 				<input id="amount" :value="convertToCurrency(selectedTrip.userRoute.cost)" type="text" class="input-field" required disabled>
@@ -31,7 +31,7 @@
 			<div class="flex justify-end">
 				<button class="btn-primary" :disabled="loading">
 					<span v-if="!loading" class="flex justify-center items-center gap-2.5">
-						Log refund
+						{{ mode === 'CREATE' ? 'Log Refund' : 'Update Refund' }}
 					</span>
 					<Spinner v-else />
 				</button>
@@ -41,10 +41,10 @@
 </template>
 
 <script setup lang="ts">
-import { useRefundPastBookings } from '@/composables/modules/users/inner/refund'
+import { useLogRefund } from '@/composables/modules/users/inner/refund'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
-const { selectedTrip, refundData, loading, refund } = useRefundPastBookings()
+const { selectedTrip, refundData, loading, logRefund, mode } = useLogRefund()
 
 const percentageArray = ref([
 	{ name: '10%', value: 10 },

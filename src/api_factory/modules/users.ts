@@ -40,6 +40,14 @@ export const users_api = {
 		const url = '/refund-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
+	$_edit_refund: (id, payload: Record<string, any>) => {
+		const url = `/refund-logs/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_refund_audit: (id) => {
+		const url = `/booking-log-audits?log_id=${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_process_refund: (payload: Record<string, any>) => {
 		const url = '/refund-logs/process-logs'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
@@ -64,5 +72,9 @@ export const users_api = {
 	$_get_past_booking_by_id: (id:string) => {
 		const url = `/user-route-schedules/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_refund_user: (id: string, payload: Record<string, any>) => {
+		const url = `user-route-schedules/${id}/refund`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

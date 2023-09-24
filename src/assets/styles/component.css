@@ -21,6 +21,9 @@
     .btn-primary {
         @apply btn text-white  bg-dark;
     }
+    .btn-outline {
+        @apply btn text-dark bg-transparent border border-dark;
+    }
     .btn-primary-sm {
         @apply btn-sm btn-primary;
     }

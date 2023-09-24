@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useUserTransactions } from '@/composables/modules/users/transactions'
+import { useUserTransactions } from '@/composables/modules/users/inner/transactions'
 const { transactionsList, loading, getUserTransactionsById, moveTo, next, prev, total, page } = useUserTransactions()
 const id = useRoute().params.id as string
 getUserTransactionsById(id)

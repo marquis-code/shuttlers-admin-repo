@@ -34,7 +34,7 @@ const formattedSosList = computed(() =>
              name: `${i.initiator.fname} ${i.initiator.lname}`,
              route: i.trip.route.route_code,
              vehicle: `${i.trip?.vehicle?.brand} ${i.trip?.vehicle?.name}  (${i.trip?.vehicle?.registration_number})`,
-             time: useDateFormat(i.created_at, 'HH:mm:sss AA').value
+             time: useDateFormat(i.created_at, 'HH:mm:ss AA').value
          }
     })
 )

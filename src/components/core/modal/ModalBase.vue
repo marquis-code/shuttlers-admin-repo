@@ -1,5 +1,5 @@
 <template>
-	<component :is="modals[id]" v-for="id in stack" :key="id" :modal="id" />
+	<component :is="modals[id]" v-for="id in stack" :key="id" :props-modal="id" />
 </template>
 
 <script setup lang="ts">

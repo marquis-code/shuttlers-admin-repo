@@ -47,7 +47,6 @@ export const useCreateUsers = () => {
     }
 
     const prePopulateForm = (data: any) => {
-        console.log(data)
 		createForm.fname.value = data.fname || ''
 		createForm.lname.value = data.lname || ''
 		createForm.phone.value = data.phone || ''
