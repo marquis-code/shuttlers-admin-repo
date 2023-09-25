@@ -10,7 +10,7 @@
 				<ul class="py-5 border-b mt-5">
 					<li v-for="col in firstCol" :key="col.name" class="flex flex-wrap gap-4 justify-between items-center px-4 py-2   text-sm">
 						<span class="font-medium">{{ col.name }} </span>
-						<span class="text-grey5">{{ col.value }} </span>
+						<span class="text-gray-500">{{ col.value }} </span>
 					</li>
 				</ul>
 
@@ -20,11 +20,11 @@
 							<svg_template code="pickup-sm" class="mt-0.5" />
 							<span>
 								<p class="font-bold">Pick-up</p>
-								<p class="text-grey5">{{ pastBooking.route.pickup }}</p>
+								<p class="text-gray-500">{{ pastBooking.route.pickup }}</p>
 
 							</span>
 						</div>
-						<span class="text-grey5">
+						<span class="text-gray-500">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
 							<p>{{ pastBooking?.itinerary?.trip_time }}</p>
 						</span>
@@ -34,11 +34,11 @@
 							<svg_template code="destination-sm" />
 							<span>
 								<p class="font-bold">Drop off</p>
-								<p class="text-grey5">{{ pastBooking.route.destination_label }}</p>
+								<p class="text-gray-500">{{ pastBooking.route.destination_label }}</p>
 
 							</span>
 						</div>
-						<span class="text-grey5">
+						<span class="text-gray-500">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
 							<!-- <p>{{ pastBooking?.itinerary?.trip_time }}</p> -->
 						</span>
@@ -47,7 +47,7 @@
 				<ul class="py-5 border-b mt-5">
 					<li v-for="col in secondCol" :key="col.name" class="flex flex-wrap gap-4 justify-between items-center px-4 py-2   text-sm">
 						<span class="font-medium">{{ col.name }} </span>
-						<span class="text-grey5">{{ col.value }} </span>
+						<span class="text-gray-500">{{ col.value }} </span>
 					</li>
 				</ul>
 				<div class="flex py-5  mt-1 items-center gap-2">

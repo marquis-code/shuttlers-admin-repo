@@ -5,7 +5,7 @@
 		:no-close-btn="false"
 		class="text-center"
 	>
-		<h1 class="text-center -mt-5 text-grey4">
+		<h1 class="text-center -mt-5 text-gray-400">
 			Complete the form below to create a new password
 		</h1>
 	</Modal>

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
@@ -22,10 +22,17 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 
 const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
+
+const onRowClicked = (data) => {
+	const { selectedTrip } = useTripIdDetails()
+	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
+	selectedTrip.value = data
+}
 
 const formattedActiveTripsList = computed(() =>
 activeTripsList.value.map((i, index) => {

@@ -1,35 +1,12 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingWaitlist" :headers="tableFields" :table-data="waitlistList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
-				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
-					</p>
-				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
-				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
-				</div>
-
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
-				</div>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+				<span v-if="item.date">
+					{{ useDateFormat(item.data.date, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 			</template>
 		</Table>
@@ -37,44 +14,35 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useGetwaitlistList } from '@/composables/modules/waitlist/fetch'
+import { useWaitlistIdDetails } from '@/composables/modules/waitlist/id'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getWaitlist, loadingWaitlist, waitlistList } = useGetwaitlistList()
+getWaitlist()
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 
+const onRowClicked = (data) => {
+	const { selectedWaitlist } = useWaitlistIdDetails()
+	useRouter().push(`/waitlist/${data.id}/waitlist-info`)
+	selectedWaitlist.value = data
+}
+
 const tableFields = ref([
     {
-        text: 'VEHICLE',
-        value: 'vehicle'
+        text: 'DATE',
+        value: 'date'
     },
     {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
+        text: 'NUMBER OF ROUTES',
+        value: 'waitlistCount'
     },
     {
-        text: 'CAPACITY',
-        value: 'seats'
-    },
-    {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
-    },
-    {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
-    },
-	{
-        text: 'PARTNER',
-        value: 'partner'
-    },
-    {
-        text: 'CREATED AT',
-        value: 'created_at'
+        text: 'NUMBER OF ROUTES',
+        value: 'routeCount'
     }
 ])
 

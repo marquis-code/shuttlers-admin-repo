@@ -11,7 +11,7 @@
 				Logout
 			</h1>
 
-			<p class="mt-2 text-grey4">
+			<p class="mt-2 text-gray-400">
 				Are you sure you want to logout?
 			</p>
 

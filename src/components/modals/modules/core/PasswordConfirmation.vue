@@ -54,7 +54,7 @@ const toggleShow = () => {
 }
 const buttonStyle = computed(() => {
 	if (type.value === 'DANGER') return 'border-red bg-[#fda29bb0] text-[#B01C23]'
-	if (type.value === 'NORMAL') return 'border-dark bg-dark text-light'
+	if (type.value === 'NORMAL') return 'border-dark bg-black text-light'
 })
 
 </script>

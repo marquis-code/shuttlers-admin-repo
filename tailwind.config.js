@@ -55,9 +55,9 @@ module.exports = {
 		}
   },
 	plugins: [
-	require('@tailwindcss/forms')({
-      strategy: 'class'
-     }),
+	// require('@tailwindcss/forms')({
+    //   strategy: 'class'
+    //  }),
      require('@tailwindcss/container-queries')
   ]
 }

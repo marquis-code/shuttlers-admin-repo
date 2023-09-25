@@ -5,8 +5,8 @@
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.id">
-					{{ item.data.id }}
+				<span v-if="item.idx">
+					{{ item.data.idx }}
 				</span>
 				<span v-if="item.driver">
 					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item.data.driver }}</NuxtLink>
@@ -29,13 +29,13 @@
 </template>
 <script setup lang="ts">
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-import { useTripIdDetails } from '@/composables/modules/trips/id'
+import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()
 
 const onRowClicked = (data) => {
-	const { selectedTrip } = useTripIdDetails()
+	const { selectedTrip } = useUpcomingTripIdDetails()
 	useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)
 	selectedTrip.value = data
 }
@@ -53,7 +53,7 @@ upcomingTripsList.value.map((i, index) => {
 			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
-			 id: index + 1
+			 idx: index + 1
          }
     })
 )
@@ -72,7 +72,7 @@ const dropdownChildren = computed(() => [
 const tableFields = ref([
 	{
 		text: 'S/N',
-		value: 'id',
+		value: 'idx',
 		width: '10%'
 	},
     {

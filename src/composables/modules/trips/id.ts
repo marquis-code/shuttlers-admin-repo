@@ -17,3 +17,19 @@ export const useTripIdDetails = () => {
     }
     return { selectedTrip, loading, getTripById }
 }
+
+export const useUpcomingTripIdDetails = () => {
+    const loading = ref(false)
+
+    const getUpcomingTripById = async (id: string) => {
+        selectedTripId.value = id
+        loading.value = true
+        const res = await trips_api.$_get_upcoming_trip_by_id(id) as CustomAxiosResponse
+        console.log(res.data, 'res here')
+        if (res.type !== 'ERROR') {
+            selectedTrip.value = res.data
+        }
+        loading.value = false
+    }
+    return { selectedTrip, loading, getUpcomingTripById }
+}

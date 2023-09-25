@@ -37,6 +37,7 @@ import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.
 import Trips from '@/components/headers/modules/Trips/index.vue'
 import Routes from '@/components/headers/modules/Routes/index.vue'
 import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
+import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-details.vue'
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
 import Charter from '@/components/headers/modules/Charter/index.vue'
 import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
@@ -79,6 +80,7 @@ const componentRouteArray = [
     { routes: ['trips-routes', 'trips-routes-suspended'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
     { routes: ['trips-waitlist'], component: Waitlist },
+    { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
     { routes: ['users-id-past-bookings-b_id'], component: GenericHeader }

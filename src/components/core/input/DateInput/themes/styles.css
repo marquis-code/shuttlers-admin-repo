@@ -145,7 +145,7 @@
 }
 
 .mx-input {
-    @apply w-full !bg-grey px-4 py-[13px] h-11 outline-none text-black rounded-md relative !text-start border;
+    @apply w-full !bg-gray-500 px-4 py-[13px] h-11 outline-none text-black rounded-md relative !text-start border;
 }
 
 .mx-input:hover,

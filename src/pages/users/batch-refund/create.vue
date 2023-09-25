@@ -6,7 +6,7 @@
 				<h1 class="text-2xl font-bold">
 					Log Refund
 				</h1>
-				<p class="text-grey6">
+				<p class="text-gray-600">
 					Kindly input the correct informations
 				</p>
 			</header>

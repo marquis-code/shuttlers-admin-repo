@@ -15,7 +15,7 @@
 				<template v-else>
 					<div class="flex justify-between items-center px-12 border-y ">
 						<div v-for="row in transactionRow" :key="row.value" class=" py-4 text-center">
-							<h6 class="uppercase text-grey2 text-xs font-medium">
+							<h6 class="uppercase text-gray-200 text-xs font-medium">
 								{{ row.name }}
 							</h6>
 							<h2 class="text-xl font-bold" :class="row.class">

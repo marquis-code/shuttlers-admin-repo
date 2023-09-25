@@ -4,7 +4,7 @@
 			<h1 class="text-[40px] font-bold">
 				Login to your Shuttlers Account
 			</h1>
-			<p class="text-grey5">
+			<p class="text-gray-500">
 				Please login to your Shuttlers account with your email address and
 				password.
 			</p>
@@ -15,7 +15,7 @@
 				<h1 class="text-xl font-bold">
 					Confirm OTP
 				</h1>
-				<p class="text-grey5">
+				<p class="text-gray-500">
 					Please enter the 4-digit code sent to
 					<b>{{ value }}</b>
 				</p>
@@ -37,7 +37,7 @@
 				/>
 			</div>
 			<div class="center-col">
-				<span class="text-sm text-grey5 text-center">Didn’t receive code?</span>
+				<span class="text-sm text-gray-500 text-center">Didn’t receive code?</span>
 				<p v-if="countdown > 0" class="text-sm text-neut9 text-center">
 					Resend code in <span class="text-green7"> {{ countdown }} </span> seconds
 				</p>

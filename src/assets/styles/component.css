@@ -4,22 +4,22 @@
     }
     label,
     .label {
-        @apply flex items-center gap-2 mb-2 text-sm font-medium text-grey5;
+        @apply flex items-center gap-2 mb-2 text-sm font-medium text-gray-500;
     }
     .input-field {
-        @apply w-full !bg-grey px-4 py-2.5 outline-none text-black rounded-lg relative !text-start border;
+        @apply w-full !bg-gray-100 px-4 py-2.5 outline-none text-black rounded-lg relative !text-start border;
     }
     .input-field-search {
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
     .btn {
-        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-grey2 center disabled:text-dark disabled:cursor-not-allowed;
+        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-gray-200 center disabled:text-dark disabled:cursor-not-allowed;
     }
     .btn-sm {
         @apply btn text-sm !px-3 !py-1;
     }
     .btn-primary {
-        @apply btn text-white  bg-dark;
+        @apply btn text-white  bg-black;
     }
     .btn-primary-sm {
         @apply btn-sm btn-primary;

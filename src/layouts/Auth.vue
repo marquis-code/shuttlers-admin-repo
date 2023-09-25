@@ -27,7 +27,7 @@
 }
 
 .greenFade {
-	@apply absolute bg-primary -right-52 rounded-full opacity-10;
+	@apply absolute -right-52 rounded-full opacity-10;
 	bottom: -6rem;
 	filter: blur(86px);
 	width: 463px;

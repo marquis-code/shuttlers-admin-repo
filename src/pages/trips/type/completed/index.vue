@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList">
+		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -29,10 +29,17 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
+
+const onRowClicked = (data) => {
+	const { selectedTrip } = useTripIdDetails()
+	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
+	selectedTrip.value = data
+}
 
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i, index) => {

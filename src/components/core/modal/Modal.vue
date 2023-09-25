@@ -14,7 +14,7 @@
 					<icon
 						v-if="noCloseBtn"
 						name="close"
-						class="text-dark w-7 cursor-pointer  "
+						class="text-black w-7 cursor-pointer  "
 						@click="closeModal()"
 					/>
 				</header>
@@ -128,7 +128,7 @@ const closeModal = () => {
 	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:w-[440px] md:max-h-[90vh];
 }
 .modal-title {
-	@apply font-bold text-lg text-center w-full text-dark ;
+	@apply font-bold text-lg text-center w-full text-black ;
 }
 
 </style>

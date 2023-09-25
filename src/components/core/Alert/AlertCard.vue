@@ -85,7 +85,7 @@ const BG = computed({
 				case 'SUCCESS':
 					return 'bg-green-700'
 				default:
-					return 'bg-dark'
+					return 'bg-black'
 			}
 		},
 		set: () => {}

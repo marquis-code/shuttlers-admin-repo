@@ -17,7 +17,7 @@
 					<span class="text-dark">({{ selected.length }})</span>
 					Selected
 				</p>
-				<button class="btn-primary bg-primary text-dark" :disabled="loading" @click="call_function()">
+				<button class="btn-primary text-dark" :disabled="loading" @click="call_function()">
 					<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 						Refund
 					</span>
@@ -58,7 +58,7 @@ const removeItem = (item) => {
 
 <style scoped lang="scss">
 .badge{
-    @apply flex items-center gap-2 border bg-grey border-grey9 rounded p-1 px-3
+    @apply flex items-center gap-2 border bg-gray-500 border-gray-900 rounded p-1 px-3
 }
 .slide-enter-active,
 .slide-leave-active {
