@@ -230,6 +230,11 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         description: 'Valentine management'
       },
       {
+        title: 'Rewards',
+        routePath: '/campaigns/rewards',
+        description: 'Campaign Rewards'
+      },
+      {
         title: 'CMS Banners',
         routePath: '/campaigns/banner',
         description: 'CMS promotional banner'

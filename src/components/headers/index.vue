@@ -20,7 +20,7 @@ import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners/index.vue'
 import Companies from '@/components/headers/modules/Companies/index.vue'
 import Company_insight from '@/components/headers/modules/Companies/insight.vue'
-import Campaigns from '@/components/headers/modules/Campaigns.vue'
+// import Campaigns from '@/components/headers/modules/Campaigns.vue'
 import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
 import AddUser from '@/components/headers/modules/Users/add-user.vue'
@@ -41,6 +41,8 @@ import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-deta
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
 import Charter from '@/components/headers/modules/Charter/index.vue'
 import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
+import CampaignRewards from '@/components/headers/modules/Rewards/index.vue'
+import RewardHistory from '@/components/headers/modules/Rewards/reward-history.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -70,11 +72,11 @@ const componentRouteArray = [
     { routes: ['fleet-add'], component: AddFleets },
     { routes: ['referral'], component: Referral },
     { routes: ['promotion'], component: Promotion },
-    { routes: ['campaigns'], component: null },
     { routes: ['admin'], component: Admin },
     { routes: ['admin-add'], component: CreateAdmin },
     { routes: ['configuration'], component: null },
-    { routes: ['campaigns'], component: Campaigns },
+    { routes: ['campaigns-rewards-id-reward-history'], component: RewardHistory },
+    { routes: ['campaigns-rewards', 'campaigns-rewards-pilot-rewards', 'campaigns-rewards-customer-points', 'campaigns-rewards-customer-rewards'], component: CampaignRewards },
     { routes: ['trips-sos'], component: sos },
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended'], component: Routes },
