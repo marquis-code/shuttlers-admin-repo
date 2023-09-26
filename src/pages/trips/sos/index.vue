@@ -16,8 +16,8 @@
 					<StatusBadge :name="item.data.status" />
 				</span>
 				<div v-else-if="item.trip_id" class="flex">
-					<button class="btn-primary-xs" @click.stop="openNotifier(item.data)">
-						Notify
+					<button class="btn-primary-xs" :disabled="item.data.sos_provider_ref" @click.stop="openNotifier(item.data)">
+						{{ item.data.sos_provider_ref ? 'Notified' : 'Notify' }}
 					</button>
 				</div>
 			</template>

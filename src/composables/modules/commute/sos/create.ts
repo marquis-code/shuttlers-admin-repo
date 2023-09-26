@@ -1,6 +1,6 @@
+import { useSosList } from './fetch'
 import { sos_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCommuteModal } from '@/composables/core/modals'
-import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 
 const selectedSosTrip = ref({} as Record<string, any>)
@@ -23,6 +23,7 @@ export const useNotifySos = () => {
         if (res.type !== 'ERROR') {
             useCommuteModal().closeSosNotifier()
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Provider Notified successfully' })
+            useSosList().getSosList()
         }
         loading.value = false
     }
