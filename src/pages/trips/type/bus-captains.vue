@@ -10,16 +10,24 @@
 				</span>
 				<div v-if="item.user" class="flex items-center gap-x-2">
 					<Avatar :name="item.data.user" bg="#B1C2D9" />
-					<NuxtLink class="text-blue-600" to="/">{{item.data.user }}</NuxtLink>
+					<NuxtLink class="text-blue-600" to="/">
+						{{ item.data.user }}
+					</NuxtLink>
 				</div>
 				<div v-if="item.phone">
-					<NuxtLink class="text-blue-600" to="/">{{item.data.phone }}</NuxtLink>
+					<NuxtLink class="text-blue-600" to="/">
+						{{ item.data.phone }}
+					</NuxtLink>
 				</div>
 				<div v-if="item.email">
-					<NuxtLink class="text-blue-600" to="/">{{item.data.email }}</NuxtLink>
+					<NuxtLink class="text-blue-600" to="/">
+						{{ item.data.email }}
+					</NuxtLink>
 				</div>
 				<div v-if="item.route">
-					<NuxtLink class="text-blue-600" to="/">{{item.data.route }}</NuxtLink>
+					<NuxtLink class="text-blue-600" to="/">
+						{{ item.data.route }}
+					</NuxtLink>
 				</div>
 				<span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />

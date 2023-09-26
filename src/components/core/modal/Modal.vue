@@ -73,7 +73,7 @@ const props = defineProps({
 	}
 })
 
-const close = (e:any) => {
+const close = (e: any) => {
 	if (
 		typeof e.className === 'string' &&
 		e.className.includes('modal-background')

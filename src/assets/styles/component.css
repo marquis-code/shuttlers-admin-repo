@@ -13,16 +13,31 @@
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
     .btn {
-        @apply px-5 py-3 font-bold rounded-md cursor-pointer disabled:bg-gray-200 center disabled:text-dark disabled:cursor-not-allowed;
+        @apply font-bold rounded-md cursor-pointer disabled:bg-grey2 center disabled:text-dark disabled:cursor-not-allowed;
+    }
+    .btn-base {
+        @apply px-5 py-3 btn;
+    }
+    .b-primary {
+        @apply bg-dark text-white;
     }
     .btn-sm {
         @apply btn text-sm !px-3 !py-1;
     }
+    .btn-xs {
+        @apply btn text-xs !px-3 !py-1.5;
+    }
     .btn-primary {
-        @apply btn text-white  bg-black;
+        @apply btn-base b-primary;
+    }
+    .btn-outline {
+        @apply btn text-dark bg-transparent border border-dark;
     }
     .btn-primary-sm {
-        @apply btn-sm btn-primary;
+        @apply btn-sm b-primary;
+    }
+    .btn-primary-xs {
+        @apply btn-xs b-primary;
     }
     .input-field::placeholder,
     .input-field-search::placeholder {

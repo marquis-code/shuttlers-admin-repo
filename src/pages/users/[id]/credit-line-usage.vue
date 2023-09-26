@@ -35,7 +35,7 @@
 </template>
 <script setup lang="ts">
 
-import { useUserCreditLineUsage } from '@/composables/modules/users/credit-line-usage'
+import { useUserCreditLineUsage } from '@/composables/modules/users/inner/credit-line-usage'
 const { creditLineUsageList, loading, getUserCreditLineUsage, filterData, moveTo, next, prev, total, page, onFilterUpdate } = useUserCreditLineUsage()
 const id = useRoute().params.id as string
 filterData.startDate.value = '2023-04-03'

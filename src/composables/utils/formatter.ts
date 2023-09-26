@@ -21,8 +21,8 @@ export const truncateString = (input: string, maxLength = 80): string => {
     }
 }
 
-export const convertObjWithRefToObj = (obj: Record<string, Ref>) => {
+export const convertObjWithRefToObj = (obj: Record<string, Ref>, ignoreKeys: string[] = []) => {
     return Object.fromEntries(
-        Object.entries(obj).map(([key, value]) => [key, value.value])
+        Object.entries(obj).filter(([key]) => !ignoreKeys.includes(key)).map(([key, value]) => [key, value.value])
     )
 }

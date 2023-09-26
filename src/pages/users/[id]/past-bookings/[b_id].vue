@@ -20,7 +20,7 @@
 							<svg_template code="pickup-sm" class="mt-0.5" />
 							<span>
 								<p class="font-bold">Pick-up</p>
-								<p class="text-gray-500">{{ pastBooking.route.pickup }}</p>
+								<p class="text-grey5">{{ truncateString(pastBooking?.route?.pickup, 40) }}</p>
 
 							</span>
 						</div>
@@ -50,7 +50,7 @@
 						<span class="text-gray-500">{{ col.value }} </span>
 					</li>
 				</ul>
-				<div class="flex py-5  mt-1 items-center gap-2">
+				<section class="flex py-5  mt-1 items-center gap-2 border-b">
 					<Avatar :name="pastBooking.driver.fname" />
 					<div class="flex flex-col text-xs">
 						<p>Driver</p>
@@ -58,12 +58,36 @@
 							{{ pastBooking.driver.fname }} {{ pastBooking.driver.lname }}
 						</nuxt-link>
 					</div>
+				</section>
+
+				<section v-if="!loadingAduit" class="flex flex-col py-5  mt-1 items-center gap-2 border-b">
+					<div v-for="audit in auditArray" :key="audit.id" class="flex flex-col gap-2 text-sm w-full">
+						<span class="font-medium text-purp7">{{ audit.description }}</span>
+						<div class="flex items-center justify-between gap-4">
+							<span class="font-medium">{{ audit.action }}</span>
+							<span> by: {{ `${audit.staff.fname} ${audit.staff.lname}` }}</span>
+							<span>{{ useDateFormat(audit.created_at, 'ddd, D-MM-YY h:mm A').value }}</span>
+						</div>
+					</div>
+				</section>
+				<Skeleton v-else height="100px" />
+
+				<div v-if="pastBooking.is_refunded === 0" class="grid grid-cols-2 gap-5">
+					<div class="flex w-full mt-4">
+						<button class="btn-outline w-full" @click="openLogRefund(pastBooking.refund_log ? 'EDIT' : 'CREATE', pastBooking)">
+							{{ pastBooking.refund_log ? 'Update Log' : 'Log refund' }}
+						</button>
+					</div>
+
+					<div class="flex w-full mt-4">
+						<button class="btn-primary w-full" @click="intialRefund(pastBooking)">
+							Refund
+						</button>
+					</div>
 				</div>
-				<div class="flex w-full mt-4">
-					<button class="btn-primary w-full" @click="useUserModal().openUserRefund()">
-						Refund
-					</button>
-				</div>
+				<button v-else class="btn mt-4 !text-green08 !bg-[#EDFFF8] border border-[#93FFC5] w-full cursor-default">
+					Refund completed
+				</button>
 			</div>
 
 			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" />
@@ -76,12 +100,18 @@
 import { useDateFormat } from '@vueuse/core'
 import svg_template from '@/assets/icons/src/svg-template.vue'
 import { usePageHeader } from '@/composables/utils/header'
-import { useUserPastBookingsById } from '@/composables/modules/users/past-bookings'
-import { useUserModal } from '@/composables/core/modals'
+import { useUserPastBookingsById } from '@/composables/modules/users/inner/past-bookings'
+import { useRefundPastBookings, useLogRefund } from '@/composables/modules/users/inner/refund'
+import { truncateString } from '@/composables/utils/formatter'
 
-const { getUserPastBookingsById, loading, pastBooking } = useUserPastBookingsById()
+const { openLogRefund } = useLogRefund()
+
+const { intialRefund } = useRefundPastBookings()
+
+const { getUserPastBookingsById, loading, pastBooking, auditArray, loadingAduit } = useUserPastBookingsById()
+
 const id = useRoute().params.b_id as string
-getUserPastBookingsById(id)
+getUserPastBookingsById(id, true)
 
 const tripDays = computed(() => {
 	if (!pastBooking.value) return ''

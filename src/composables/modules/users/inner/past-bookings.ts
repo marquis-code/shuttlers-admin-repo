@@ -1,3 +1,4 @@
+import { useUserRefundLogAudit } from './booking-audit'
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
@@ -33,18 +34,22 @@ export const useUserPastBookings = () => {
     return { pastBookingsList, loading, getUserPastBookings, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
 
+const pastBooking = ref({} as Record<string, any>)
 export const useUserPastBookingsById = () => {
+    const { auditArray, getRefundAudit, loadingAduit } = useUserRefundLogAudit()
     const loading = ref(false)
-    const pastBooking = ref({} as Record<string, any>)
 
-    const getUserPastBookingsById = async (id: string) => {
+    const getUserPastBookingsById = async (id: string, withAudit = false) => {
         loading.value = true
         const res = await users_api.$_get_past_booking_by_id(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             pastBooking.value = res.data
+            if (withAudit) {
+                getRefundAudit(res.data.refund_log.id)
+            }
         }
         loading.value = false
     }
 
-    return { pastBooking, loading, getUserPastBookingsById }
+    return { pastBooking, loading, getUserPastBookingsById, auditArray, loadingAduit }
 }

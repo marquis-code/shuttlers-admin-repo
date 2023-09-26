@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange:false}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">

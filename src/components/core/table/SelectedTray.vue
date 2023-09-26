@@ -8,7 +8,7 @@
 				name="list"
 			>
 				<span v-for="item in (selected as any[])" :key="item.id" class="badge">
-					{{ computed_name_function(item) }}
+					{{ computedNameFunction(item) }}
 					<Icon name="closed" class="w-4 cursor-pointer" @click="removeItem(item)" />
 				</span>
 			</transition-group>
@@ -17,7 +17,7 @@
 					<span class="text-dark">({{ selected.length }})</span>
 					Selected
 				</p>
-				<button class="btn-primary text-dark" :disabled="loading" @click="call_function()">
+				<button class="btn-primary bg-primary text-dark" :disabled="loading" @click="callFunction()">
 					<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 						Refund
 					</span>
@@ -40,11 +40,11 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-    call_function: {
+    callFunction: {
         type: Function,
         default: () => { }
     },
-    computed_name_function: {
+    computedNameFunction: {
         type: Function,
         default: (data) => data
     }

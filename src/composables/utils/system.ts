@@ -1,3 +1,6 @@
+import { useUser } from '@/composables/auth/user'
+const { token } = useUser()
+
 export const appendObjectToCurrentURL = (key, value) => {
       let url = window.location.href
       let queryString = ''
@@ -26,4 +29,31 @@ export const insertScriptTag = (url: string): void => {
   const scriptTag = document.createElement('script')
   scriptTag.src = url
   document.body.appendChild(scriptTag)
+}
+
+const environmental_url = {
+  test: 'https://test.admin.shuttlers.africa',
+  staging: 'https://qa.admin.shuttlers.africa',
+  prod: 'https://admin.shuttlers.africa'
+}
+
+export const openAsExternalUrl = (url) => {
+  const b64 = btoa(JSON.stringify(token.value))
+  switch (process.env.ENV) {
+    case 'test':
+    case 'TEST':
+      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${b64}`
+      break
+    case 'staging':
+    case 'STAG':
+      window.location.href = `${environmental_url.staging}/redirect/?path=${url}&token=${b64}`
+      break
+    case 'prod':
+    case 'PROD':
+      window.location.href = `${environmental_url.prod}/redirect/?path=${url}&token=${b64}`
+      break
+    default:
+      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${b64}`
+      break
+  }
 }
