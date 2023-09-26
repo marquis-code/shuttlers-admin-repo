@@ -72,6 +72,10 @@ const tableFields = ref([
         value: 'created_at'
     },
     {
+        text: 'STATUS',
+        value: 'status'
+    },
+    {
         text: '',
         value: 'trip_id'
     }

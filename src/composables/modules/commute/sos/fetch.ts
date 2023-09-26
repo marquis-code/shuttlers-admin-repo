@@ -1,9 +1,10 @@
 import { sos_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
+const loadingSos = ref(false)
+const sosList = ref([] as Record<string, any>[])
+
 export const useSosList = () => {
-    const loadingSos = ref(false)
-    const sosList = ref([] as Record<string, any>[])
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_sos } = sos_api
 
