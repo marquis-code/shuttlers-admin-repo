@@ -87,7 +87,7 @@ import { useCampaignModal } from '@/composables/core/modals'
 import { use_get_pilot_point_list } from '@/composables/modules/campaigns/fetch'
 const { getPilotPoints, loadingPointsList, pointsList } = use_get_pilot_point_list()
 getPilotPoints()
-console.log(pointsList, 'pilot poits here')
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']

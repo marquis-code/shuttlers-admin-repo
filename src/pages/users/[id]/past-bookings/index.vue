@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data)=> $router.push(`/users/${id}/past-bookings/${data.id}`)">
+		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data) => $router.push(`/users/${id}/past-bookings/${data.id}`)">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{ showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.route">
@@ -20,20 +20,13 @@
 				</div>
 				<div v-if="item.route_type">
 					<span>
-						{{
-							item?.data?.route_type?.visibility
-						}}
+						{{ item?.data?.route_type?.visibility }}
 					</span>
 					<br>
 					<span>
-						{{
-							item?.data?.route_type?.type ? "exclusive" : "shared"
-						}}
+						{{ item?.data?.route_type?.type ? "exclusive" : "shared" }}
 					</span>
 				</div>
-			</template>
-			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -48,39 +41,39 @@ filterData.status.value = 'completed'
 getUserPastBookings(id)
 
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 
 const tableFields = ref([
-    {
-        text: 'ROUTE',
-        value: 'route'
-    },
-    {
-        text: 'Route Code',
-        value: 'route_code'
-    },
-    {
-        text: 'START DATE',
-        value: 'start_date'
-    },
-    {
-        text: 'END DATE',
-        value: 'end_date'
-    },
-    {
-        text: 'Amount',
-        value: 'amount'
-    },
 	{
-        text: 'PAYMENT SOURCE',
-        value: 'payment_source'
-    },
-    {
-        text: 'ROUTE TYPE',
-        value: 'route_type'
-    }
+		text: 'ROUTE',
+		value: 'route'
+	},
+	{
+		text: 'Route Code',
+		value: 'route_code'
+	},
+	{
+		text: 'START DATE',
+		value: 'start_date'
+	},
+	{
+		text: 'END DATE',
+		value: 'end_date'
+	},
+	{
+		text: 'Amount',
+		value: 'amount'
+	},
+	{
+		text: 'PAYMENT SOURCE',
+		value: 'payment_source'
+	},
+	{
+		text: 'ROUTE TYPE',
+		value: 'route_type'
+	}
 ])
 
 </script>

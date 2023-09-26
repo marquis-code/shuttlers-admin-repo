@@ -17,47 +17,57 @@ export const loader = new Loader({
 let map: google.maps.Map
 
 interface Coordinate {
-    x: number;
-    y: number;
+    lat: number;
+    lng: number;
 }
 
 export const calculateCenterAndZoom = async (
     coord1: Coordinate,
-    coord2: Coordinate,
-    mapWidth: number, mapHeight: number
+    coord2: Coordinate
 ) => {
-     const distanceLat = Math.abs(coord1.y - coord2.y)
-  const distanceLng = Math.abs(coord1.x - coord2.x)
-    const centerLatitude = (coord1.y + coord2.y) / 2
-    const centerLongitude = (coord1.x + coord2.x) / 2
+    const { DirectionsService, DirectionsRenderer } = (await google.maps.importLibrary('routes')) as google.maps.RoutesLibrary
 
-      const zoomLat = Math.floor(Math.log2(360 * mapHeight / (256 * distanceLat)))
-  const zoomLng = Math.floor(Math.log2(360 * mapWidth / (256 * distanceLng)))
-  const zoom = Math.min(zoomLat, zoomLng)
-
-    const center = { lat: centerLatitude, lng: centerLongitude }
-    const lineCoordinates = [
-        { lat: coord1.y, lng: coord1.x },
-        { lat: coord2.y, lng: coord2.x }
-    ]
-
-    const { Polyline } = (await loader.importLibrary('maps')) as google.maps.MapsLibrary
-
-    map.setCenter(center)
-    map.setZoom(zoom)
-
-    const polyline = new Polyline({
-        path: lineCoordinates,
+    const polylineOptions = {
         strokeColor: '#000000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
+		strokeWeight: 3,
+		strokeOpacity: 1
+
+    }
+    const directionsService = new DirectionsService()
+    const directionsRenderer = new DirectionsRenderer({ polylineOptions })
+
+    const lekki = new google.maps.LatLng(6.447809299999999, 3.4723495)
+
+    map.setCenter(lekki)
+    map.setZoom(7)
+    directionsRenderer.setMap(map)
+    const directionData = await directionsService.route({
+        origin: `${coord1.lat},${coord1.lng}`,
+        destination: `${coord2.lat},${coord2.lng}`,
+        travelMode: google.maps.TravelMode.DRIVING
     })
 
-    polyline.setMap(map)
+    directionsRenderer.setDirections(directionData)
+
+    const lineCoordinates = [
+        { lat: coord1.lat, lng: coord1.lng },
+        { lat: coord2.lat, lng: coord2.lng }
+    ]
+
+    // const polyline = new Polyline({
+    //     path: lineCoordinates,
+    //     strokeColor: '#000000',
+    //     strokeOpacity: 1.0,
+    //     strokeWeight: 2
+    // })
+
+    // polyline.setMap(map)
 }
 
 export const initMap = async (mapDiv: Ref) => {
-    const { Map } = (await loader.importLibrary('maps')) as google.maps.MapsLibrary
+    const { Map } = (await loader.importLibrary(
+        'maps'
+    )) as google.maps.MapsLibrary
 
     map = new Map(mapDiv.value as HTMLElement, {
         zoom: 14,
@@ -72,9 +82,7 @@ export const loadExternalDataMarkers = async (
 ) => {
     await loader.load()
     const markers = [] as google.maps.Marker[]
-    const { Marker } = (await google.maps.importLibrary(
-        'marker'
-    )) as google.maps.MarkerLibrary
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
     for (const data of dataArray) {
         const dataLocation = {

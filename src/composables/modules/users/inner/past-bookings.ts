@@ -44,7 +44,7 @@ export const useUserPastBookingsById = () => {
         const res = await users_api.$_get_past_booking_by_id(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             pastBooking.value = res.data
-            if (withAudit) {
+            if (withAudit && res.data?.refund_log?.id) {
                 getRefundAudit(res.data.refund_log.id)
             }
         }

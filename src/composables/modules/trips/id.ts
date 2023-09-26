@@ -25,7 +25,6 @@ export const useUpcomingTripIdDetails = () => {
         selectedTripId.value = id
         loading.value = true
         const res = await trips_api.$_get_upcoming_trip_by_id(id) as CustomAxiosResponse
-        console.log(res.data, 'res here')
         if (res.type !== 'ERROR') {
             selectedTrip.value = res.data
         }
