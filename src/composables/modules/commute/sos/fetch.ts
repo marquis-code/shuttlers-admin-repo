@@ -26,3 +26,21 @@ export const useSosList = () => {
 
     return { getSosList, loadingSos, sosList, prev, ...metaObject, next, moveTo }
 }
+
+export const useSosRequestList = () => {
+    const loadingSosRequest = ref(false)
+    const sosRequestList = ref([] as Record<string, any>[])
+
+    const getSosRequestList = async (id:string) => {
+        loadingSosRequest.value = true
+
+        const res = await sos_api.$_get_sos_request(id) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            sosRequestList.value = res.data.data
+        }
+        loadingSosRequest.value = false
+    }
+
+    return { getSosRequestList, loadingSosRequest, sosRequestList }
+}

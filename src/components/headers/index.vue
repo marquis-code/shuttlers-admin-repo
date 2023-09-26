@@ -80,7 +80,7 @@ const componentRouteArray = [
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
-    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id'], component: GenericHeader }
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id'], component: GenericHeader }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
