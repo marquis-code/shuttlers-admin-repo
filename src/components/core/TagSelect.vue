@@ -87,7 +87,6 @@ const hideSuggestions = () => {
 }
 
 const selectItem = (item) => {
-	console.log(item)
 	tags.value.push(item)
 	emit('update:modelValue', tags.value)
 	showingSuggestions.value = false

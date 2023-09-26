@@ -12,10 +12,6 @@ export const useNotifySos = () => {
         sos_request_ids: ref([])
     }
 
-    watch(sos_data.sos_request_ids, (val) => {
-        console.log(val)
-    })
-
     const openNotifier = (data: Record<string, any>) => {
         selectedSosTrip.value = data
         useCommuteModal().openSosNotifier()
