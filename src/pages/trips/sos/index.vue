@@ -44,6 +44,7 @@ const formattedSosList = computed(() =>
              ...i,
              route: i.trip.route.route_code,
              vehicle: `${i.trip?.vehicle?.brand} ${i.trip?.vehicle?.name}  (${i.trip?.vehicle?.registration_number})`,
+             partner: `${i.trip.vehicle?.partner?.company_name || 'N/A'}`,
              time: useDateFormat(i.created_at, 'HH:mm:ss AA').value
          }
     })
@@ -66,6 +67,10 @@ const tableFields = ref([
     {
         text: 'VEHICLE ',
         value: 'vehicle'
+    },
+    {
+        text: 'VEHICLE PARTNER',
+        value: 'partner'
     },
     {
         text: 'DATE',
