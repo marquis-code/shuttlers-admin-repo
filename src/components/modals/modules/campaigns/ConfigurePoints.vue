@@ -3,49 +3,56 @@ import { formToJSON } from 'axios';
 	<Modal
 		modal="$atts.modal"
 		title="Configure point"
-		:no-close-btn="false"
+		:no-close-btn="true"
 		class="text-center"
 	>
 		<div class="flex flex-col items-center justify-center">
 			<div class="field relative">
-				<label for="email">Email address</label>
-				<input id="email" v-model="form.amount" autocomplete="true" type="email" class="input-field" required>
+				<label for="amount" class="text-[12px] text-[#6E717C] font-[500] leading-[20px]">Naira equivalent</label>
+				<input id="amount" v-model="form.amount" placeholder="₦" autocomplete="true" type="number" class="input-field" required>
 			</div>
-			<button class="auth-form-btn mt-5" :disabled="disabled || loading">
+			<div class="bg-[#F4F5F4] flex justify-between items-center py-3 rounded-lg px-[12px] w-full mt-3">
+				<p class="text-[#6E717C] font-extralight leading-[21px] text-[14px]">
+					{{ Math.round(Number(form.amount) / 50) }} point
+				</p>
+				<p>~</p>
+				<p class="text-[#6E717C] font-extralight leading-[21px] text-[14px]">
+					{{ convertToCurrency(Number(form.amount)) }}
+				</p>
+			</div>
+			<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : null]" class="auth-form-btn font-[700] w-full py-3 text-white mt-6 bg-[#000005]" @click="handlePointConfiguration">
 				<span v-if="!loading" class="flex justify-center items-center gap-2.5">Configure</span>
 				<Spinner v-else />
 			</button>
-			<!-- <icon name="warning" class="w-24 mb-9" />
-			<h1 class="text-2xl font-bold">
-				Logout
-			</h1>
-
-			<p class="mt-2 text-gray-400">
-				Are you sure you want to logout?
-			</p>
-
-			<div class="flex flex-col w-full">
-				<button class="w-full modal-btn border-red bg-red text-light hover:bg-red" @click="logOut">
-					Logout
-				</button>
-				<button class="w-full mt-3 modal-btn text-dark" @click="useAuthModal().closeLogout()">
-					Cancel
-				</button>
-			</div> -->
 		</div>
 	</Modal>
 </template>
 
 <script setup lang="ts">
-import { useAuthModal } from '@/composables/core/modals'
-import { useUser } from '@/composables/auth/user'
-const { logOut } = useUser()
-const disabled = ref(false)
-const loading = ref(false)
-
+import { useCampaignModal } from '@/composables/core/modals'
+import { useAlert } from '@/composables/core/notification'
+import { convertToCurrency } from '@/composables/utils/formatter'
+import { use_configure_point } from '@/composables/modules/campaigns/fetch'
+const { payloads, configurePoint, loading } = use_configure_point()
+const isFormEmpty = computed(() => {
+	return !!(form.amount)
+})
 const form = reactive({
     amount: ''
 })
+
+const computedPoint = computed(() => {
+	return Math.round(Number(form.amount) / 50)
+})
+
+const handlePointConfiguration = async () => {
+	payloads.value.value = form.amount
+	payloads.min_point.value = String(computedPoint.value)
+    payloads.currency.value = 'NGN'
+	await configurePoint()
+	useCampaignModal().closeConfigurePoints()
+	useAlert().openAlert({ type: 'SUCCESS', msg: 'New Point has been created successfully' })
+}
 
 </script>
 

@@ -6,71 +6,73 @@ const payloads = {
     min_point: ref(''),
     status: ref(''),
     value: ref(''),
-    currency: ref('')
+    currency: ref('NGN')
 }
+
 export const use_create_reward = () => {
-    const loading = ref(false)
+    const processing = ref(false)
 
     const createReward = async () => {
-        loading.value = true
+        processing.value = true
         const res = (await campaigns_api.$_create_and_update_pilot_reward({
             name: payloads.name.value,
-            min_point: payloads.min_point.value
-        })) as any
-        loading.value = false
-        if (res.type !== 'ERROR') {
-            location.assign('/campaigns/rewards/')
-        }
-    }
-
-    return { payloads, createReward, loading }
-}
-
-export const use_update_reward = () => {
-    const loading = ref(false)
-
-    const updateReward = async () => {
-        loading.value = true
-        const res = (await campaigns_api.$_create_and_update_pilot_reward({
-            name: payloads.name.value,
+            min_point: payloads.min_point.value,
             status: payloads.status.value
         })) as any
-        loading.value = false
+        processing.value = false
         if (res.type !== 'ERROR') {
-            location.assign('/campaigns/rewards/')
+            // location.assign('/campaigns/rewards/')
         }
     }
 
-    return { payloads, updateReward, loading }
+    return { payloads, createReward, processing }
 }
+
+// export const use_update_reward = () => {
+//     const loading = ref(false)
+
+//     const updateReward = async () => {
+//         loading.value = true
+//         const res = (await campaigns_api.$_create_and_update_pilot_reward({
+//             name: payloads.name.value,
+//             status: payloads.status.value
+//         })) as any
+//         loading.value = false
+//         if (res.type !== 'ERROR') {
+//             location.assign('/campaigns/rewards/')
+//         }
+//     }
+
+//     return { payloads, updateReward, loading }
+// }
 
 export const use_delete_reward = () => {
-    const loading = ref(false)
+    const processingDelete = ref(false)
 
     const deleteReward = async () => {
-        loading.value = true
+        processingDelete.value = true
         const res = (await campaigns_api.$_delete_pilot_reward({
             name: payloads.name.value,
-            min_point: null
+            min_point: null,
+            status: 'inactive'
         })) as any
-        loading.value = false
+        processingDelete.value = false
         if (res.type !== 'ERROR') {
-            location.assign('/campaigns/rewards/')
+            // location.assign(`/campaigns/rewards/${id}`)
         }
     }
 
-    return { payloads, deleteReward, loading }
+    return { payloads, deleteReward, processingDelete }
 }
 
+const rewardsList = ref([])
 export const use_get_pilot_reward_list = () => {
     const loadingPilotRewardList = ref(false)
-    const rewardsList = ref([])
-
     const getPilotRewards = async () => {
         loadingPilotRewardList.value = true
         const res = await campaigns_api.$_get_pilot_reward_list() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            rewardsList.value = res.data.data
+            rewardsList.value = res.data
         }
         loadingPilotRewardList.value = false
     }
@@ -104,9 +106,9 @@ export const use_get_pilot_hightest_lowest_points = () => {
         loading_pilot_rate_points.value = true
         const res = await campaigns_api.$_get_pilot_leaderboard_points() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            pointsObject.value = res.data.data
+            pointsObject.value = res.data
         }
-        loading_pilot_rate_points.value = true
+        loading_pilot_rate_points.value = false
     }
 
     return { getPointsRate, loading_pilot_rate_points, pointsObject }
@@ -134,15 +136,69 @@ export const use_configure_point = () => {
     const configurePoint = async () => {
         loading.value = true
         const res = (await campaigns_api.$_configure_pilot_points({
-            point: payloads.name.value,
-            value: payloads.value.value,
+            point: Number(payloads.min_point.value),
+            value: Number(payloads.value.value),
             currency: payloads.currency.value
         })) as any
         loading.value = false
         if (res.type !== 'ERROR') {
-            location.assign('/campaigns/rewards/')
+            // location.assign('/campaigns/rewards/')
         }
     }
 
     return { payloads, configurePoint, loading }
+}
+
+export const use_edit_point = () => {
+    const loading = ref(false)
+
+    const editPoint = async (id:number) => {
+        loading.value = true
+        const payload = {
+            points: Number(payloads?.min_point?.value),
+            event_name: payloads?.name?.value
+        }
+        const res = (await campaigns_api.$_edit_pilot_points(id, payload)) as any
+        loading.value = false
+        if (res.type !== 'ERROR') {
+            // location.assign('/campaigns/rewards/')
+        }
+    }
+    return { payloads, editPoint, loading }
+}
+
+export const use_get_leaderboard_point_list = () => {
+    const loadingLeaderboardPointsList = ref(false)
+    const leaderboardPointsList = ref([] as any)
+
+    const { $_get_leaderboard_points_list } = campaigns_api
+
+    const getLeaderboardPointsList = async () => {
+        loadingLeaderboardPointsList.value = true
+        const res = await $_get_leaderboard_points_list() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            leaderboardPointsList.value = res?.data?.data
+        }
+        loadingLeaderboardPointsList.value = false
+    }
+
+    return { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList }
+}
+
+export const use_update_reward = () => {
+    const loadingRewardUpdate = ref(false)
+
+    const editReward = async (id:number) => {
+        loadingRewardUpdate.value = true
+        const payload = {
+            status: payloads?.status?.value,
+            name: payloads?.name?.value
+        }
+        const res = (await campaigns_api.$_update_pilot_reward_status(id, payload)) as any
+        loadingRewardUpdate.value = false
+        if (res.type !== 'ERROR') {
+            // location.assign('/campaigns/rewards/')
+        }
+    }
+    return { payloads, editReward, loadingRewardUpdate }
 }

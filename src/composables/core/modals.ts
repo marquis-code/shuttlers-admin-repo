@@ -6,18 +6,19 @@ import RefundLogger from '@/components/modals/modules/users/RefundLogger.vue'
 import Confirm from '@/components/modals/modules/core/Confirmation.vue'
 import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmation.vue'
 import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoints.vue'
+import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger'
 type CoreTypes = 'Confirm' | 'PasswordConfirm'
-type CampaignTypes = 'ConfigurePoints'
+type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm } as Record<CoreTypes, any>
-const CampaignModals = { ConfigurePoints } as Record<CampaignTypes, any>
+const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier } as Record<CommuteTypes, any>
 
 export const modal = useModal(ref([] as any))
