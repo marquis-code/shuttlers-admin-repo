@@ -41,7 +41,7 @@ const onRowClicked = (data) => {
 }
 
 const formattedUpcomingTripsList = computed(() =>
-upcomingTripsList.value.map((i, index) => {
+upcomingTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: i?.route?.route_code ?? 'N/A',
@@ -63,6 +63,9 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
+const setDeleteRefundId = (id) => {
+
+}
 const dropdownChildren = computed(() => [
 	{ name: 'Start Trip', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
 	{ name: 'Cancel Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },

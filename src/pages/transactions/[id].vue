@@ -7,7 +7,7 @@
 			</div>
 			<div class="card-body">
 				<h5 v-if="Object.keys(transaction).length === 0 && !loading" class="text-small text-center">
-					No Transaction Deatail available
+					No Transaction Detail available
 				</h5>
 				<div v-else-if="loading" class="flex justify-content-center align-items-center">
 					<Skeleton height="500px" />

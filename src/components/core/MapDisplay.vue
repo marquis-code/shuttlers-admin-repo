@@ -1,9 +1,10 @@
 <template>
-	<div ref="map" class="map-container " :style="{ height: height }" />
+	<div v-show="!loading" ref="map" class="map-container z-0" :style="{ height: height }" />
+	<Skeleton v-if="loading" :height="height" />
 </template>
 
 <script setup>
-import { initMap, calculateCenterAndZoom } from '@/composables/core/map'
+import { initMap, calculateCenterAndZoom, loading, getPathFromPolyline, loadPolyline } from '@/composables/core/map'
 
 const map = ref(null)
 
@@ -29,13 +30,22 @@ const props = defineProps({
     height: {
         default: '500px',
         type: String
+    },
+    encodedPolyline: {
+        type: String,
+        default: null
     }
 })
 
-onMounted(() => {
+onMounted(async () => {
     initMap(map)
     // calculateCenterAndZoom(props.startPoint, props.endPoint)
-    calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
+    if (props.encodedPolyline) {
+        const poly = await getPathFromPolyline(props.encodedPolyline)
+        loadPolyline(poly)
+    } else {
+            calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
+    }
 })
 
 </script>

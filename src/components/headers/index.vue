@@ -40,6 +40,7 @@ import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-deta
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
 import Charter from '@/components/headers/modules/Charter/index.vue'
 import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
+import TripDetails from '@/components/headers/modules/Trips/trip-details.vue'
 import CampaignRewards from '@/components/headers/modules/Rewards/index.vue'
 import RewardHistory from '@/components/headers/modules/Rewards/reward-history.vue'
 
@@ -84,6 +85,7 @@ const componentRouteArray = [
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
+    { routes: ['trips-type-upcoming-id-trip-details'], component: TripDetails },
     { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id'], component: GenericHeader }
 ]
 
@@ -95,6 +97,7 @@ const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
 }, {})
 
 const component = computed(() => {
+    // console.log(useRoute().name)
     return componentRouteKey[useRoute().name as string]
 })
 </script>

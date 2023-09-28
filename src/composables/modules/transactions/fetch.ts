@@ -19,7 +19,7 @@ export const useGetRecentTransactionsList = () => {
         const res = await $_recent_transactions(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             transactionsList.value = res.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data?.metadata?.total
         }
         loadingTransactions.value = false
     }

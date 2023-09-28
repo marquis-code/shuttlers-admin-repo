@@ -1,12 +1,6 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import { insertScriptTag } from '../utils/system'
 
-insertScriptTag
-
-insertScriptTag(
-    'https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js'
-)
-
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 export const loader = new Loader({
     apiKey: GOOGLE_MAPS_API_KEY,
@@ -15,6 +9,8 @@ export const loader = new Loader({
 })
 
 let map: google.maps.Map
+
+export const loading = ref(false)
 
 interface Coordinate {
     lat: number;
@@ -25,6 +21,7 @@ export const calculateCenterAndZoom = async (
     coord1: Coordinate,
     coord2: Coordinate
 ) => {
+    loading.value = true
     const { DirectionsService, DirectionsRenderer } = (await google.maps.importLibrary('routes')) as google.maps.RoutesLibrary
 
     const polylineOptions = {
@@ -49,19 +46,7 @@ export const calculateCenterAndZoom = async (
 
     directionsRenderer.setDirections(directionData)
 
-    const lineCoordinates = [
-        { lat: coord1.lat, lng: coord1.lng },
-        { lat: coord2.lat, lng: coord2.lng }
-    ]
-
-    // const polyline = new Polyline({
-    //     path: lineCoordinates,
-    //     strokeColor: '#000000',
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    // })
-
-    // polyline.setMap(map)
+    loading.value = false
 }
 
 export const initMap = async (mapDiv: Ref) => {
@@ -99,4 +84,28 @@ export const loadExternalDataMarkers = async (
 
     //    const markerCluster = new window.markerClusterer.MarkerClusterer({ markers, map })
     //  const markerCluster = new MarkerClusterer({ markers, map })
+}
+
+export const getPathFromPolyline = async (overviewPolyline) => {
+    const encodedPolyline = JSON.parse(overviewPolyline)
+
+    const { encoding } = await google.maps.importLibrary('geometry') as google.maps.GeometryLibrary
+      return encoding.decodePath(encodedPolyline.points)
+}
+
+export const loadPolyline = async (path: google.maps.LatLng[]) => {
+    const lekki = new google.maps.LatLng(6.447809299999999, 3.4723495)
+    const { Polyline } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary
+
+    const polyline = new Polyline({
+        path,
+        strokeColor: '#000000',
+        strokeWeight: 3,
+        strokeOpacity: 1
+    })
+
+    map.setCenter(lekki)
+    map.setZoom(12)
+
+    polyline.setMap(map)
 }

@@ -10,7 +10,8 @@
 		</div>
 
 		<div>
-			<Table :loading="loadingTransactions" :headers="tableFields" :table-data="transactionsList" :has-options="true">
+			<Table :loading="loadingTransactions" :headers="tableFields" :table-data="transactionsList" :has-options="true"
+				:option="(data)=> $router.push(`/transactions/${data.id}`)">
 				<template #header>
 					<TableFilter :filter-type="{showDateRange: true}" @filter="onFilterUpdate" />
 				</template>

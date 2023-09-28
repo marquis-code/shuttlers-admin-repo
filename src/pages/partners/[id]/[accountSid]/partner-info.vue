@@ -2,7 +2,7 @@
 	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 		<div class="w-8/12 space-y-10">
 			<div v-if="!Object.keys(selectedPartner).length && !loading">
-				No Partner Deatail available
+				No Partner Detail available
 			</div>
 			<div v-else-if="loading" class="flex justify-content-center align-items-center">
 				<Skeleton height="500px" />

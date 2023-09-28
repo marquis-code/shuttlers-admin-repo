@@ -64,10 +64,6 @@ const tableFields = ref([
         text: 'REASON',
         value: 'sos_reason'
     }
-    // {
-    //     text: 'STATUS',
-    //     value: 'status'
-    // },
 
 ])
 
@@ -75,20 +71,24 @@ const computedTitle = computed(() => {
     if (sosRequestList.value[0]?.trip?.route?.pickup) {
         return sosRequestList.value[0]?.trip?.route?.pickup + ' - ' + sosRequestList.value[0]?.trip?.route?.destination + ' ● ' + sosRequestList.value[0]?.trip?.route?.route_code
     }
-    // return sosRequestList.value[0]?.trip?.route?.pickup
 }) as any
+
+watch(computedTitle, (val:string) => {
+    if (val) {
+        usePageHeader().setPageHeader({
+            preTitle: 'OVERVIEW',
+            title: val
+        })
+    }
+})
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-usePageHeader().setPageHeader({
-	preTitle: 'OVERVIEW',
-	title: computedTitle
-})
+
 </script>
 
 <style scoped>
 
 </style>
-src/composables/modules/commute/sos/fetch

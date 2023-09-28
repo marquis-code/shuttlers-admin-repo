@@ -26,3 +26,7 @@ export const convertObjWithRefToObj = (obj: Record<string, Ref>, ignoreKeys: str
         Object.entries(obj).filter(([key]) => !ignoreKeys.includes(key)).map(([key, value]) => [key, value.value])
     )
 }
+export const convertLatLngStringToObj = (latLngString: string) => {
+    const [lat, lng] = latLngString.split(',')
+    return { y: parseFloat(lat), x: parseFloat(lng) }
+}
