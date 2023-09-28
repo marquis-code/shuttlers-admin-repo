@@ -1,8 +1,9 @@
 import { GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH } from '@/api_factory/axios.config'
+import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const campaigns_api = {
-    $_pilot_points_list: () => {
-        const url = '/v1/compliance-events'
+    $_pilot_points_list: (meta:TMetaObject) => {
+        const url = `/v1/compliance-events?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
     $_configure_pilot_points: (payload: any) => {
@@ -13,15 +14,14 @@ export const campaigns_api = {
 		const url = '/v1/compliance-accumulated-points/range'
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
-    $_get_leaderboard_points_list: () => {
-        const url = '/v1/compliance-accumulated-points'
+    $_get_leaderboard_points_list: (meta:TMetaObject) => {
+        const url = `/v1/compliance-accumulated-points?limit=${meta.page_size.value}&page=${meta.page.value}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
-    $_get_pilot_reward_list: () => {
-        const url = '/v1/compliance-rewards'
+    $_get_pilot_reward_list: (meta:TMetaObject) => {
+        const url = `/v1/compliance-rewards?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
-
     $_create_and_update_pilot_reward: (payload: any) => {
        const url = '/v1/compliance-rewards'
        return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.patch(url, payload)
@@ -30,8 +30,8 @@ export const campaigns_api = {
         const url = '/v1/compliance-rewards'
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.patch(url, payload)
      },
-    $_get_reward_histories_by_driver_id: (userType:string, userId:string) => {
-        const url = `/v1/compliance-reward-histories/${userType}/${userId}`
+    $_get_reward_histories_by_driver_id: (meta:TMetaObject, userType:string, userId:number) => {
+        const url = `/v1/compliance-reward-histories/${userType}/${userId}?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
     $_edit_pilot_points: (id:number, payload: {points: number, event_name: string}) => {

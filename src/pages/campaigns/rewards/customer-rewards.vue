@@ -167,7 +167,7 @@ definePageMeta({
 	middleware: ['is-authenticated']
 })
 
-const activeTab = ref('list')
+const activeTab = ref('leaderboard')
 
 const pointsList = ref([
 	{
