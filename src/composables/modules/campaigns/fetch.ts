@@ -55,7 +55,6 @@ export const use_get_pilot_reward_list = () => {
     const getPilotRewards = async () => {
         loadingPilotRewardList.value = true
         const res = await campaigns_api.$_get_pilot_reward_list(metaObject) as CustomAxiosResponse
-        console.log(res, 'here')
         if (res.type !== 'ERROR') {
             rewardsList.value = res.data
             metaObject.total.value = res.data.metadata?.total_pages
@@ -112,7 +111,6 @@ export const use_get_pilot_histories_by_id = () => {
     const getPilotRewardsHistories = async (userType:string, userId:number) => {
         loadingPilotRewardHistories.value = true
         const res = await campaigns_api.$_get_reward_histories_by_driver_id(metaObject, userType, userId) as CustomAxiosResponse
-        console.log(res.data.metadata, 'res againa')
         if (res.type !== 'ERROR') {
             rewardHistories.value = res.data.data
             metaObject.total.value = res?.data?.metadata?.total_pages

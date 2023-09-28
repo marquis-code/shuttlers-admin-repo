@@ -25,7 +25,6 @@
 import { useDateFormat } from '@vueuse/core'
 import { use_get_pilot_histories_by_id } from '@/composables/modules/campaigns/fetch'
 const route = useRoute()
-console.log(route, 'route here')
 const { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories } = use_get_pilot_histories_by_id()
 const userType = 'driver'
 const userId = Number(route.params.id)
@@ -34,8 +33,6 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-
-console.log(rewardHistories, 'reward histories here')
 
 const rewardHistoriesListTableFields = ref([
 	{
