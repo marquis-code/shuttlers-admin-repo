@@ -1,6 +1,6 @@
 <template>
 	<main class="space-y-10">
-		<div class="text-center bg-black h-14 text-white flex justify-center items-center">
+		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
 			Current pilots point rate: 1 point ~ ₦50
 		</div>
 		<div>
@@ -94,7 +94,7 @@
 					</div>
 
 					<div class="overflow-x-auto rounded-lg border-[0.4px]">
-						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList"  :option="onRowClicked">
+						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :option="onRowClicked">
 							<template #item="{ item }">
 								<div v-if="item.driver">
 									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.driver?.id}/reward-history`">
@@ -122,9 +122,10 @@ const { getPilotRewards, loadingPilotRewardList, rewardsList, next: rewardNext, 
 const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
 const { payloads: deletePayload, deleteReward, processingDelete } = use_delete_reward()
 const { payloads, editReward } = use_update_reward()
-getPointsRate()
-getPilotRewards()
-getLeaderboardPointsList()
+const userType = 'driver'
+getPointsRate(userType)
+getPilotRewards(userType)
+getLeaderboardPointsList(userType)
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
@@ -218,7 +219,7 @@ const handleEdit = async (e, item) => {
 		payloads.name.value = item.name
 		payloads.status.value = 'active'
 	    await editReward(item.id)
-		getPilotRewards()
+		getPilotRewards(userType)
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Reward status was activated successfully' })
 	}
 	if (!isChecked) {
@@ -226,7 +227,7 @@ const handleEdit = async (e, item) => {
 		payloads.name.value = item.name
 		payloads.status.value = 'inactive'
 	    await editReward(item.id)
-		getPilotRewards()
+		getPilotRewards(userType)
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Reward status was inactivated successfully' })
 	}
 }
@@ -234,12 +235,15 @@ const handleEdit = async (e, item) => {
 const handleDelete = async (item) => {
 	deletePayload.name.value = item.name
 	await deleteReward()
-	getPilotRewards()
+	getPilotRewards(userType)
 	useAlert().openAlert({ type: 'SUCCESS', msg: 'Reward was sucessfully deleted!' })
 }
 
 const onRowClicked = (data) => {
-	useRouter().push(`/campaigns/rewards/${data.id}/reward-history`)
+	useRouter().push({
+        path: `/campaigns/rewards/${data.id}/reward-history`,
+        query: { userType: 'driver' }
+      })
 }
 </script>
 

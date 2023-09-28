@@ -16,7 +16,7 @@
 				</div>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingPilotRewardHistories" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -25,9 +25,9 @@
 import { useDateFormat } from '@vueuse/core'
 import { use_get_pilot_histories_by_id } from '@/composables/modules/campaigns/fetch'
 const route = useRoute()
-const { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories } = use_get_pilot_histories_by_id()
-const userType = 'driver'
+const { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories, total, next, prev, page, moveTo } = use_get_pilot_histories_by_id()
 const userId = Number(route.params.id)
+const userType = route.query.userType
 getPilotRewardsHistories(userType, userId)
 definePageMeta({
     layout: 'dashboard',
