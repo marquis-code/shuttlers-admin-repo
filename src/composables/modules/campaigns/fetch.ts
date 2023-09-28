@@ -52,12 +52,12 @@ const rewardsList = ref([])
 export const use_get_pilot_reward_list = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const loadingPilotRewardList = ref(false)
-    const getPilotRewards = async () => {
+    const getPilotRewards = async (userType:string) => {
         loadingPilotRewardList.value = true
-        const res = await campaigns_api.$_get_pilot_reward_list(metaObject) as CustomAxiosResponse
+        const res = await campaigns_api.$_get_pilot_reward_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             rewardsList.value = res.data
-            metaObject.total.value = res.data.metadata?.total_pages
+            metaObject.total.value = res?.data.metadata?.total_pages || 0
         }
         loadingPilotRewardList.value = false
     }
@@ -73,12 +73,12 @@ export const use_get_pilot_point_list = () => {
 
     const { $_pilot_points_list } = campaigns_api
 
-    const getPilotPoints = async () => {
+    const getPilotPoints = async (userType:string) => {
         loadingPointsList.value = true
-        const res = await $_pilot_points_list(metaObject) as CustomAxiosResponse
+        const res = await $_pilot_points_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             pointsList.value = res?.data
-            metaObject.total.value = res.data.metadata?.total_pages
+            metaObject.total.value = res?.data?.metadata?.total_pages || 0
         }
         loadingPointsList.value = false
     }
@@ -91,9 +91,9 @@ export const use_get_pilot_hightest_lowest_points = () => {
     const loading_pilot_rate_points = ref(false)
     const pointsObject = ref({})
 
-    const getPointsRate = async () => {
+    const getPointsRate = async (userType:string) => {
         loading_pilot_rate_points.value = true
-        const res = await campaigns_api.$_get_pilot_leaderboard_points() as CustomAxiosResponse
+        const res = await campaigns_api.$_get_pilot_leaderboard_points(userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             pointsObject.value = res.data
         }
@@ -165,9 +165,9 @@ export const use_get_leaderboard_point_list = () => {
 
     const { $_get_leaderboard_points_list } = campaigns_api
 
-    const getLeaderboardPointsList = async () => {
+    const getLeaderboardPointsList = async (userType:string) => {
         loadingLeaderboardPointsList.value = true
-        const res = await $_get_leaderboard_points_list(metaObject) as CustomAxiosResponse
+        const res = await $_get_leaderboard_points_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             leaderboardPointsList.value = res?.data?.data
             metaObject.total.value = res.data.metadata?.total_pages

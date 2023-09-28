@@ -1,6 +1,6 @@
 <template>
 	<main class="space-y-10">
-		<div class="text-center bg-black h-14 text-white flex justify-center items-center">
+		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
 			Current pilot point rate: 1 point ~ ₦50
 		</div>
 		<div>
@@ -48,7 +48,7 @@
 							</div>
 						</template>
 						<template #footer>
-							<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+							<TablePaginator :current-page="page" :total-pages="total" :loading="loadingPointsList" @move-to="moveTo($event)" @next="next" @prev="prev" />
 						</template>
 					</Table>
 				</div>
@@ -61,11 +61,11 @@
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
-import { use_get_pilot_point_list, use_edit_point, use_configure_point } from '@/composables/modules/campaigns/fetch'
-const { getPilotPoints, loadingPointsList, pointsList } = use_get_pilot_point_list()
+import { use_get_pilot_point_list, use_edit_point } from '@/composables/modules/campaigns/fetch'
+const { getPilotPoints, loadingPointsList, pointsList, page, total, prev, moveTo, next } = use_get_pilot_point_list()
 const { payloads, editPoint, loading } = use_edit_point()
-const { payloads: configurePayload, configurePoint, loading: processingPointConfiguration } = use_configure_point()
-getPilotPoints()
+const userType = 'driver'
+getPilotPoints(userType)
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
@@ -119,7 +119,7 @@ const handleEdit = async (item, action) => {
 		payloads.min_point.value = item?.point
 		payloads.name.value = item.event_name
 		await editPoint(item.id)
-		getPilotPoints()
+		getPilotPoints(userType)
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Points was updated successfully' })
 		lookupTable.value[item.id] = false
 	}
@@ -130,7 +130,7 @@ const handleDelete = async (item) => {
 		payloads.min_point.value = ''
 		payloads.name.value = item.event_name
 		await editPoint(item.id)
-		getPilotPoints()
+		getPilotPoints(userType)
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Point was deleted successfully' })
 }
 

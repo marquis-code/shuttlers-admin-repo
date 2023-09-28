@@ -1,25 +1,26 @@
 import { GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH } from '@/api_factory/axios.config'
-import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { TMetaObject } from '@/composables/utils/table'
 
 export const campaigns_api = {
-    $_pilot_points_list: (meta:TMetaObject) => {
-        const url = `/v1/compliance-events?limit=${meta.page_size.value}&page=${meta.page.value}`
+    // Pilot Endpoints
+    $_pilot_points_list: (meta:TMetaObject, userType:string) => {
+        const url = `/v1/compliance-events?userType=${userType}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
     $_configure_pilot_points: (payload: any) => {
         const url = 'v1/reward-point-rate'
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
     },
-	$_get_pilot_leaderboard_points: () => {
-		const url = '/v1/compliance-accumulated-points/range'
+	$_get_pilot_leaderboard_points: (userType:string) => {
+		const url = `/v1/compliance-accumulated-points/range?userType=${userType}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
-    $_get_leaderboard_points_list: (meta:TMetaObject) => {
-        const url = `/v1/compliance-accumulated-points?limit=${meta.page_size.value}&page=${meta.page.value}`
+    $_get_leaderboard_points_list: (meta:TMetaObject, userType:string) => {
+        const url = `/v1/compliance-accumulated-points?userType=${userType}&limit=${meta.page_size.value}&page=${meta.page.value}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
-    $_get_pilot_reward_list: (meta:TMetaObject) => {
-        const url = `/v1/compliance-rewards?limit=${meta.page_size.value}&page=${meta.page.value}`
+    $_get_pilot_reward_list: (meta:TMetaObject, userType:string) => {
+        const url = `/v1/compliance-rewards?userType=${userType}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
     },
     $_create_and_update_pilot_reward: (payload: any) => {
