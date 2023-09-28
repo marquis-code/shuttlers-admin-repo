@@ -10,9 +10,9 @@
 						Configure customers reward points.
 					</p>
 					<div class="lg:flex items-center gap-x-3 space-y-4 lg:space-y-0">
-						<button class="bg-white text-[#344054] text-xs py-[10px] px-[16px] w-full lg:w-max border font-[500] border-[#D0D5DD] rounded-md">
+						<!-- <button class="bg-white text-[#344054] text-xs py-[10px] px-[16px] w-full lg:w-max border font-[500] border-[#D0D5DD] rounded-md">
 							Add event
-						</button>
+						</button> -->
 						<button class="bg-black text-white text-xs py-[10px] px-[16px] w-full lg:w-max rounded-md">
 							Configure point
 						</button>

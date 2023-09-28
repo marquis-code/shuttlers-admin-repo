@@ -34,7 +34,8 @@ const props = defineProps({
 
 onMounted(() => {
     initMap(map)
-    calculateCenterAndZoom(props.startPoint, props.endPoint, map.value.offsetWidth, 200)
+    // calculateCenterAndZoom(props.startPoint, props.endPoint)
+    calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
 })
 
 </script>

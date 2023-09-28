@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" @filter="onFilterUpdate"  :checkbox="true" @checked="log_ids = ($event)" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
