@@ -48,6 +48,9 @@
 								</div>
 							</div>
 						</template>
+						<template #footer>
+							<TablePaginator :current-page="rewardPageCount" :total-pages="totalReward" :loading="loadingPilotRewardList" @move-to="rewardMoveTo($event)" @next="rewardNext" @prev="rewardPrev" />
+						</template>
 					</Table>
 				</div>
 
@@ -70,7 +73,7 @@
 							</div>
 						</div>
 						<div class="rounded-lg space-y-6 bg-white p-6 border-[0.4px] lg:w-4/12">
-							<p class="text-[#6E717C] font-light text-sm">
+							<p class="text-[#6E717C] font-light text-xs">
 								LOWEST PILOT POINT
 							</p>
 							<h1 class="text-[#000005] font-[700] text-lg leading-[20px]">
@@ -91,13 +94,16 @@
 					</div>
 
 					<div class="overflow-x-auto rounded-lg border-[0.4px]">
-						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList">
+						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList"  :option="onRowClicked">
 							<template #item="{ item }">
 								<div v-if="item.driver">
-									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/drivers/${item?.data?.driver?.id}/driver-info`">
+									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.driver?.id}/reward-history`">
 										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
 									</NuxtLink>
 								</div>
+							</template>
+							<template #footer>
+								<TablePaginator :current-page="leaderboardPageCount" :total-pages="leaderboardTotal" :loading="loadingLeaderboardPointsList" @move-to="moveTo($event)" @next="leaderboardNext" @prev="leaderboardPrev" />
 							</template>
 						</Table>
 					</div>
@@ -112,8 +118,8 @@ import { useCampaignModal } from '@/composables/core/modals'
 import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_get_leaderboard_point_list, use_update_reward, use_delete_reward } from '@/composables/modules/campaigns/fetch'
 import { useAlert } from '@/composables/core/notification'
 const { getPointsRate, loading_pilot_rate_points, pointsObject } = use_get_pilot_hightest_lowest_points()
-const { getPilotRewards, loadingPilotRewardList, rewardsList } = use_get_pilot_reward_list()
-const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList } = use_get_leaderboard_point_list()
+const { getPilotRewards, loadingPilotRewardList, rewardsList, next: rewardNext, prev: rewardPrev, moveTo: rewardMoveTo, total: totalReward, page: rewardPageCount } = use_get_pilot_reward_list()
+const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
 const { payloads: deletePayload, deleteReward, processingDelete } = use_delete_reward()
 const { payloads, editReward } = use_update_reward()
 getPointsRate()
@@ -159,7 +165,7 @@ const computedPilotLeaderboardList = computed(() => {
 })
 })
 
-const activeTab = ref('list')
+const activeTab = ref('leaderboard')
 
 const rewardListTableFields = ref([
 	{
@@ -198,7 +204,7 @@ const leaderboardListTableFields = ref([
         value: 'points_earned'
     },
     {
-		text: 'CUEENT POINT',
+		text: 'CURRENT POINT',
         value: 'current_point'
     }
 ])
@@ -230,6 +236,10 @@ const handleDelete = async (item) => {
 	await deleteReward()
 	getPilotRewards()
 	useAlert().openAlert({ type: 'SUCCESS', msg: 'Reward was sucessfully deleted!' })
+}
+
+const onRowClicked = (data) => {
+	useRouter().push(`/campaigns/rewards/${data.id}/reward-history`)
 }
 </script>
 

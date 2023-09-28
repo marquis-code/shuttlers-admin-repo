@@ -47,6 +47,9 @@
 								</div>
 							</div>
 						</template>
+						<template #footer>
+							<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+						</template>
 					</Table>
 				</div>
 			</div>
@@ -80,7 +83,7 @@ const computedPointsList = computed(() => {
 	action: ''
    }
 }).filter((itm) => {
-	return itm.points !== null
+	return itm.points !== 0
 })
 })
 
