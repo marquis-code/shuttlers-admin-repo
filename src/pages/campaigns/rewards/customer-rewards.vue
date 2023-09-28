@@ -167,10 +167,6 @@ definePageMeta({
 	middleware: ['is-authenticated']
 })
 
-const edit = (val) => {
-  console.log(val)
-}
-
 const activeTab = ref('list')
 
 const pointsList = ref([

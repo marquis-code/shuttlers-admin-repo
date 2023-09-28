@@ -134,7 +134,6 @@
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 const { selectedTrip, loading, getUpcomingTripById } = useUpcomingTripIdDetails()
 const id = useRoute().params.id as string
-console.log(id, 'id here')
 getUpcomingTripById(id)
 definePageMeta({
 	layout: 'dashboard',
