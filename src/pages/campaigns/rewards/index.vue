@@ -13,9 +13,6 @@
 									Configure pilot reward points.
 								</p>
 								<div class="lg:flex items-center gap-x-3 space-y-4 lg:space-y-0">
-									<!-- <button class="bg-white text-[#344054] text-xs py-[10px] px-[16px] border font-[500] w-full lg:w-max border-[#D0D5DD] rounded-md">
-										Add event
-									</button> -->
 									<button class="bg-black text-white text-xs py-[10px] px-[16px] w-full lg:w-max rounded-md" @click="useCampaignModal().openConfigurePoints()">
 										Configure point
 									</button>
@@ -41,7 +38,7 @@
 									{{ !lookupTable[item.data.id] ? 'Edit' : 'Save' }}
 								</button>
 								<div class="w-full">
-									<button v-if="!lookupTable[item.data.id]" :disabled="item.data.points === 0" :class="[item.data.points === 0 ? 'opacity-25 cursor-not-allowed' : null]"  @click="handleDelete(item.data)">
+									<button v-if="!lookupTable[item.data.id]" :disabled="item.data.points === 0" :class="[item.data.points === 0 ? 'opacity-25 cursor-not-allowed' : null]" @click="handleDelete(item.data)">
 										<img src="@/assets/icons/source/delete.svg" alt="delete icon">
 									</button>
 									<button v-else class="text-black font-medium" @click="lookupTable[item.data.id] = false">

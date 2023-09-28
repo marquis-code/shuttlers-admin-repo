@@ -91,7 +91,7 @@
 					>
 						<img
 							v-if="vehicleData.tracking_id?.length"
-							src="@/assets/img/gps.png"
+							src="@/assets/images/gps.png"
 							width="15"
 							height="15"
 							alt="Vehicle has tracker onboard"
@@ -114,7 +114,7 @@
 					>
 						<img
 							v-if="vehicleData.tracking_id?.length"
-							src="@/assets/img/gps.png"
+							src="@/assets/images/gps.png"
 							width="15"
 							height="15"
 							alt="Vehicle has tracker onboard"
