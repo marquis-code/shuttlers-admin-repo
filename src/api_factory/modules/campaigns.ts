@@ -42,5 +42,9 @@ export const campaigns_api = {
     $_update_pilot_reward_status: (id:number, payload: {status: string, name: string}) => {
         const url = '/v1/compliance-rewards'
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.patch(url, payload)
+    },
+     $_get_pilot_points: () => {
+        const url = '/v1/reward-point-rate'
+        return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url)
     }
 }
