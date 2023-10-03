@@ -13,7 +13,7 @@ import { formToJSON } from 'axios';
 			</div>
 			<div class="bg-[#F4F5F4] flex justify-between items-center py-3 rounded-lg px-[12px] w-full mt-3">
 				<p class="text-[#6E717C] font-extralight leading-[21px] text-[14px]">
-					{{ Math.round(Number(form.amount) / 50) }} point
+					1 point
 				</p>
 				<p>~</p>
 				<p class="text-[#6E717C] font-extralight leading-[21px] text-[14px]">
@@ -47,8 +47,8 @@ const computedPoint = computed(() => {
 
 const handlePointConfiguration = async () => {
 	payloads.value.value = form.amount
-	payloads.min_point.value = String(computedPoint.value)
-    payloads.currency.value = 'NGN'
+	payloads.min_point.value = String('1')
+       payloads.currency.value = 'NGN'
 	await configurePoint()
 	useCampaignModal().closeConfigurePoints()
 	useAlert().openAlert({ type: 'SUCCESS', msg: 'New Point has been created successfully' })
