@@ -7,8 +7,8 @@
 <style>
 #loading {
 	display: block;
-	width: 28px !important;
-	height: 28px !important;
+	width: 20px !important;
+	height: 20px !important;
 	border: 3px solid rgba(255, 255, 255, 0.634);
 	border-radius: 50%;
 	border-top-color: #fff;

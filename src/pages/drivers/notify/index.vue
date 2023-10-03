@@ -1,33 +1,39 @@
 <template>
 	<main class="space-y-6">
-		<section class="flex justify-between space-x-16 items-start">
+		<section class="flex items-start justify-between space-x-16">
 			<div class="w-8/12 space-y-6">
 				<div class="w-full">
 					<input type="text"
-						class="py-3 rounded-md placeholder-gray-500 border focus:border-gray-600 px-3 w-full outline-none">
+						class="w-full px-3 py-3 placeholder-gray-500 border rounded-md outline-none focus:border-gray-600">
 				</div>
 				<div class="w-full">
-					<textarea class="border rounded-md p-4 w-full outline-none" cols="10" rows="6"
+					<textarea class="w-full p-4 border rounded-md outline-none" cols="10" rows="6"
 						placeholder="Start a notification..." />
 				</div>
-				<button class="text-gray-700 rounded-md border bg-white px-3 py-2.5 text-sm">Select All Drivers</button>
+				<button class="text-gray-700 rounded-md border bg-white px-3 py-2.5 text-sm">
+					Select All Drivers
+				</button>
 			</div>
-			<div class="w-4/12 border shadow-md rounded-md bg-white">
-				<div class="flex justify-between items-center px-6 space-x-6 py-3">
-					<p class="text-sm inline">Selected Drivers</p>
+			<div class="w-4/12 bg-white border rounded-md shadow-md">
+				<div class="flex items-center justify-between px-6 py-3 space-x-6">
+					<p class="inline text-sm">
+						Selected Drivers
+					</p>
 					<button class="text-white bg-gray-700  rounded-md px-3 py-2.5 text-xs">
 						Notify Selected Drivers
 					</button>
 				</div>
 				<hr>
-				<div class="rounded-b-md h-60 flex justify-center items-center">
-					<p class="text-sm text-gray-600 text-center">Selected drivers will show here</p>
+				<div class="flex items-center justify-center rounded-b-md h-60">
+					<p class="text-sm text-center text-gray-600">
+						Selected drivers will show here
+					</p>
 				</div>
 			</div>
 		</section>
 
 		<div>
-			<Table :showSearchBar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" pagi />
+			<Table :show-search-bar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" />
 		</div>
 	</main>
 </template>

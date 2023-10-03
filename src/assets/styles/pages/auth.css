@@ -3,7 +3,7 @@
         @apply bg-transparent py-10  container xl:max-w-[1344px] flex justify-between items-center px-4 md:px-0;
     }
     .auth-topbar-link {
-        @apply text-xs text-grey3;
+        @apply text-xs text-gray-300;
     }
     .auth-topbar-btn {
         @apply text-sm md:px-7 px-4 py-2.5 border border-black rounded-lg font-bold flex justify-center items-center gap-2.5;
@@ -24,7 +24,7 @@
         @apply flex items-center gap-4 justify-center text-[13px] text-neut6;
     }
     .auth_form_social_btn {
-        @apply flex justify-center items-center gap-2.5  py-3 rounded-lg font-bold bg-transparent border border-neut3 disabled:bg-grey9 disabled:text-light;
+        @apply flex justify-center items-center gap-2.5  py-3 rounded-lg font-bold bg-transparent border border-neut3 disabled:bg-gray-900 disabled:text-light;
     }
     .auth_tab {
         @apply text-neut5 py-2 px-3.5 rounded-md text-sm font-medium cursor-pointer;
@@ -48,7 +48,6 @@
     }
     input::placeholder {
         font-size: 15px;
-        text-align: center;
-        font-weight: 600;
+        font-weight: 400;
     }
 }

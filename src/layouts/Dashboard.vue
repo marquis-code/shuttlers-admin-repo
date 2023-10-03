@@ -1,5 +1,5 @@
 <template>
-	<div class="container-fluid px-0 root-layout">
+	<div class="px-0 container-fluid root-layout">
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
@@ -7,7 +7,7 @@
 			<div class="dashboard-view">
 				<div class="">
 					<Headers id="header" />
-					<div class="px-9 py-8">
+					<div class="px-5 py-8 md:px-9">
 						<slot />
 					</div>
 				</div>

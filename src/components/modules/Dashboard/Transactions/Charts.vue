@@ -1,9 +1,14 @@
 <template>
 	<main>
-		<div class="border-b">
-			<h3>Transactions (30 days)</h3>
-			<p>User transactions over the last 30 days</p>
-		</div>
+		<section class="flex justify-between border-2 border-red-500">
+			<div class="h-32 bg-white shadow-sm rounded-md border-2 border-red-500">
+				<div>
+					<h3>Transactions (30 days)</h3>
+					<p>User transactions over the last 30 days</p>
+				</div>
+				<hr>
+			</div>
+		</section>
 	</main>
 </template>
 

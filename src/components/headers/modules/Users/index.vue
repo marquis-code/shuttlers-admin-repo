@@ -1,0 +1,20 @@
+<template>
+	<HeadersHeaderSlot title="Users" pre-title="Overview">
+		<template #actions>
+			<div class="flex items-center space-x-2">
+				<NuxtLink to="/users/bookings/create-batch-booking" class="border border-gray-950 bg-white text-gray-800 py-1.5 rounded-lg px-4">
+					Create Batch Booking
+				</NuxtLink>
+				<NuxtLink to="/users/notify" class="border border-gray-950 bg-white text-gray-800 py-1.5 rounded-lg px-4">
+					Notify
+				</NuxtLink>
+				<NuxtLink to="/users/add" class="btn-primary py-2 font-light">
+					Add User
+				</NuxtLink>
+			</div>
+		</template>
+	</HeadersHeaderSlot>
+</template>
+<script setup lang="ts">
+</script>
+<style scoped></style>

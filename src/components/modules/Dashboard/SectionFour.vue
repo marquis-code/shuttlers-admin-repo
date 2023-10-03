@@ -1,97 +1,107 @@
 <template>
-	<section class="lg:flex lg:space-x-10 items-start space-y-6 lg:space-y-0">
-		<section class="card h-[400px] lg:w-6/12">
-			<div class="border-b">
-				<h3 class="font-medium py-4 px-6">
+	<section class="items-start space-y-6 lg:flex lg:space-x-10 lg:space-y-0">
+		<section :class="[loadingTransactions ? 'h-[400px]' : '']" class="rounded-lg lg:w-6/12 stat-card">
+			<div class="">
+				<h3 class="px-6 py-4 font-medium">
 					Last 5 Transactions
 				</h3>
 			</div>
-			<div>
-				<div class="overflow-x-auto">
-					<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-						<thead class="ltr:text-left rtl:text-right">
-							<tr>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									DATE
-								</th>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									DESCRIPTION
-								</th>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									USER
-								</th>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									AMOUNT
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200">
-							<tr class="">
-								<td class="px-4 py-2 text-gray-900 font-light text-xs w-3/12">
-									02:01 PM Jul 23, 2023
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									Booking refund for SRL103. from Sandfill Bus Stop to Ogunlana Drive Bus Stop (Itire Rd) for 2023-07-24 trip on Company wallet.
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									Oshokpekha
-								</td>
-								<td class="px-4 py-2 font-light text-xs w-3/12 text-green-500">
-									₦1,700
-								</td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="relative flex flex-col w-full min-w-0 break-words h-[495px] overflow-y-auto">
+				<div v-if="!loadingTransactions" class="block w-full overflow-x-auto ">
+					<Table :headers="transactionHeaders" :table-data="transactionsList" :loading="loadingTransactions">
+						<template #item="{ item }">
+							<span v-if="item.created_at" class="flex items-center gap-4 py-3">
+								<span class="text-sm">{{ item.data.created_at }}</span>
+							</span>
+							<span v-if="item.title" class="flex items-center gap-4 py-3">
+								<span class="text-sm">{{ item.data.title }}</span>
+							</span>
+							<span v-if="item.user" class="flex items-center gap-4 py-3">
+								<span class="text-sm">{{ item.data.user.fname }} {{ item.data.user.lname }}</span>
+							</span>
+							<span v-if="item.amount" class="flex items-center gap-4 py-3">
+								<span class="text-sm">{{ convertToCurrency(item.data.amount) }}</span>
+							</span>
+						</template>
+					</Table>
 				</div>
+				<Skeleton v-else height="300px" />
 			</div>
 		</section>
-		<section class="card h-[400px] lg:w-6/12">
-			<div class="border-b">
-				<h3 class="font-medium py-4 px-6">
-					Last 5 User Signups
-				</h3>
-			</div>
-			<div>
-				<div class="overflow-x-auto">
-					<table class="divide-y divide-gray-200 bg-white text-sm">
-						<thead class="">
-							<tr class="bg-gray-100">
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									<span>USER</span>
-								</th>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									<span>EMAIL</span>
-								</th>
-								<th class="py-5 text-xs text-gray-500 font-medium">
-									<span>STATUS</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200">
-							<tr class="">
-								<td class="px-4 py-2 text-gray-900 font-light text-xs  flex items-center space-x-3">
-									<p class="inline p-3 font-semibold rounded-full text-white bg-gray-300">
-										AA
-									</p> <p class="font-medium">
-										Temitope Sodiq
-									</p>
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									ilovecivilian27@gmail.com
-								</td>
-								<td class="px-4 py-2 text-gray-700 font-light text-xs w-3/12">
-									Active
-								</td>
-							</tr>
-						</tbody>
-					</table>
+		<section class="lg:w-6/12 stat-card">
+			<h3 class="px-6 py-4 font-medium">
+				Last 5 User Signups
+			</h3>
+			<div v-if="!loadingSignups" class="relative flex flex-col w-full min-w-0 break-words">
+				<div class="block w-full overflow-x-auto ">
+					<Table :headers="signupHeaders" :table-data="signupList" :loading="loadingSignups">
+						<template #item="{ item }">
+							<span v-if="item.fname" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.fname }} {{ item.data.lname }}</span>
+							</span>
+							<span v-if="item.email" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.email }}</span>
+							</span>
+							<span v-if="item.active" class="flex items-center gap-4">
+								<span class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
+							</span>
+						</template>
+					</Table>
+				</div>
+				<div v-if="!loadingSignups" class="flex items-end justify-end py-4 pr-3">
+					<NuxtLink to="/users" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+						All Users<img class="inline" src="@/assets/icons/source/next.svg" alt="">
+					</NuxtLink>
 				</div>
 			</div>
+			<Skeleton v-else height="300px" />
 		</section>
 	</section>
 </template>
 
 <script setup lang="ts">
+import { useGetRecentTransactionsList } from '@/composables/modules/transactions/fetch'
+import { useGetRecentSignupsList } from '@/composables/modules/users/fetch'
+import { convertToCurrency } from '@/composables/utils/formatter'
+
+const { getSignupList, loadingSignups, signupList } = useGetRecentSignupsList()
+const { getTransactionList, loadingTransactions, transactionsList } = useGetRecentTransactionsList()
+getSignupList()
+getTransactionList()
+
+const transactionHeaders = [
+	{
+		text: 'Date',
+		value: 'created_at'
+	},
+	{
+		text: 'Description',
+		value: 'title'
+	},
+	{
+		text: 'User',
+		value: 'user'
+	},
+	{
+		text: 'Amount',
+		value: 'amount'
+	}
+]
+
+const signupHeaders = [
+	{
+		text: 'User',
+		value: 'fname'
+	},
+	{
+		text: 'Email',
+		value: 'email'
+	},
+	{
+		text: 'Status',
+		value: 'active'
+	}
+]
 
 </script>
 

@@ -1,10 +1,12 @@
-import axios from 'axios'
-import { useAlert } from '@/composables/core/useNotification'
+import axios, { AxiosResponse } from 'axios'
+import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
+
 const { token } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
+const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/cost-revenue/v1'
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
 
 export const GATEWAY_ENDPOINT = axios.create({
@@ -16,6 +18,14 @@ export const GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
 		Authorization: `Bearer ${token.value}`
 	}
 })
+
+export const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API = axios.create({
+	baseURL: $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE,
+	headers: {
+		Authorization: `Bearer ${token.value}`
+	}
+})
+
 export const GATEWAY_ENDPOINT_WITHOUT_VERSION = axios.create({
 	baseURL: $GATEWAY_ENDPOINT_WITHOUT_VERSION
 })
@@ -28,15 +38,28 @@ export const GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH = axios.create({
 export const IMAGE_UPLOAD_ENDPOINT = axios.create({
 	baseURL: $IMAGE_UPLOAD_ENDPOINT
 })
+export interface CustomAxiosResponse extends AxiosResponse {
+  value?: any
+  type?: string;
+}
 
-const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH]
+const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API]
 
 instanceArray.forEach((instance) => {
+	instance.interceptors.request.use(
+		(config) => {
+			if (token.value) {
+				config.headers.Authorization = `Bearer ${token.value}`
+			}
+			return config
+		}
+	)
+
 	instance.interceptors.response.use(
-	(response) => {
+	(response:CustomAxiosResponse) => {
 		return response
 	},
-	(err) => {
+	(err:any) => {
 		if (typeof err.response === 'undefined') {
 			useAlert().openAlert({ type: 'ERROR', msg: 'kindly check your network connection' })
 			return {

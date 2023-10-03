@@ -2,7 +2,7 @@
 @import url('./global.css');
 @import url('./component.css');
 @import url('./pages/index.css');
-
+/* @import url('../../components/core/input/DateInput/themes/styles.css'); */
 
 @tailwind base;
 @tailwind components;

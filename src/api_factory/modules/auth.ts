@@ -12,6 +12,10 @@ export const auth_api = {
 		const url = `/users/${user.value.id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, credential)
 	},
+	$_getUserProfile: () => {
+		const url = '/users/profile'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_login: (credential: any) => {
 		const url = '/login'
 		return GATEWAY_ENDPOINT.post(url, credential)
@@ -55,10 +59,6 @@ export const auth_api = {
 	$_social_signin: (credential: any) => {
 		const url = '/social-signin'
 		return GATEWAY_ENDPOINT.post(url, credential)
-	},
-	$_guess_login: (credential: any) => {
-        const url = '/guests'
-        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, credential)
 	},
 	$_get_permissions: () => {
 		const url = `/super-admin/staff-module-permissions/staff/${user.value.id}`

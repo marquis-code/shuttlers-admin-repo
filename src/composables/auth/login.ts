@@ -1,5 +1,5 @@
 import { useUser, REDIRECT_URL } from '@/composables/auth/user'
-import { useAlert } from '@/composables/core/useNotification'
+import { useAlert } from '@/composables/core/notification'
 import { auth_api } from '@/api_factory/modules/auth'
 
 	const credential = {

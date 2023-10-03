@@ -1,0 +1,81 @@
+<template>
+	<main class="">
+		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList" :has-options="true" :option="(data) => $router.push(`/users/${id}/past-bookings/${data.id}`)">
+			<template #header>
+				<TableFilter :filter-type="{ showSearchBar: true }" @filter="onFilterUpdate" />
+			</template>
+			<template #item="{ item }">
+				<div v-if="item.route">
+					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+				</div>
+				<div v-if="item.amount">
+					<span>{{ convertToCurrency(item?.data?.amount) }}</span>
+				</div>
+
+				<div v-if="item.start_date">
+					<span> {{ item.data.start_date ?? 'N/A' }}</span>
+				</div>
+				<div v-if="item.end_date">
+					<span> {{ item.data.end_date ?? 'N/A' }}</span>
+				</div>
+				<div v-if="item.route_type">
+					<span>
+						{{ item?.data?.route_type?.visibility }}
+					</span>
+					<br>
+					<span>
+						{{ item?.data?.route_type?.type ? "exclusive" : "shared" }}
+					</span>
+				</div>
+			</template>
+		</Table>
+	</main>
+</template>
+<script setup lang="ts">
+import { convertToCurrency } from '@/composables/utils/formatter'
+import { useUserPastBookings } from '@/composables/modules/users/inner/past-bookings'
+const { pastBookingsList, loading, filterData, getUserPastBookings, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
+const id = useRoute().params.id as string
+
+filterData.status.value = 'completed'
+getUserPastBookings(id)
+
+definePageMeta({
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
+})
+
+const tableFields = ref([
+	{
+		text: 'ROUTE',
+		value: 'route'
+	},
+	{
+		text: 'Route Code',
+		value: 'route_code'
+	},
+	{
+		text: 'START DATE',
+		value: 'start_date'
+	},
+	{
+		text: 'END DATE',
+		value: 'end_date'
+	},
+	{
+		text: 'Amount',
+		value: 'amount'
+	},
+	{
+		text: 'PAYMENT SOURCE',
+		value: 'payment_source'
+	},
+	{
+		text: 'ROUTE TYPE',
+		value: 'route_type'
+	}
+])
+
+</script>
+
+<style scoped></style>

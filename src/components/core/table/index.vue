@@ -1,15 +1,20 @@
 <template>
-	<div class="flex flex-col">
-		<TableFilter :show-options="showOptions" :show-date-picker="showDatePicker"
-			:show-download-button="showDownloadButton" :show-radio-buttons="showRadioButtons"
-			:show-search-bar="showSearchBar" :checkbox="checkbox" />
+	<section class="flex flex-col max-w-full overflow-auto pb-32">
+		<slot name="header" />
+
 		<div class="border border-gray-200 md:rounded-b-lg">
-			<table v-if="loading || displayTable.length > 0" class="w-full table">
+			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
-						<th class="bg-dark pl-4"><input v-if="checkbox" type="checkbox"></th>
+						<th v-if="checkbox" class="pl-4 text-light">
+							<!-- <input type="checkbox"> -->
+							<div />
+						</th>
+						<th v-if="hasIndex" class="pl-4 text-light">
+							ID
+						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
-							class="uppercase text-sm text-light font-bold text-left px-4 bg-dark"
+							class="px-4 text-xs font-medium text-left text-gray-900 uppercase"
 							:style="`width: ${header.width ? header.width : defaultColWidth}%;`">
 							{{ header.text }}
 						</th>
@@ -18,10 +23,17 @@
 				<div />
 				<tbody v-if="!loading">
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
-						'border-t border-gray50 py-8 font-normal text-sm h-[52px]',
-						hasOptions ? 'cursor-pointer' : '',
-					]">
-						<td class="pl-4"><input v-if="checkbox" type="checkbox"></td>
+							'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
+							hasOptions ? 'cursor-pointer' : '',
+						]"
+						@click="option(data)"
+					>
+						<td v-if="checkbox" class="pl-4">
+							<input v-model="checkedArray" :value="data" type="checkbox" @change="$emit('checked', checkedArray)">
+						</td>
+						<td v-if="hasIndex" class="pl-4">
+							{{ index + 1 }}
+						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
 							<slot name="item" :item="({ [key]: key, data } as any)">
@@ -32,44 +44,31 @@
 				</tbody>
 				<tbody v-else>
 					<tr v-for="n in 3" :key="n" class="border-t border-gray50 py-8 font-normal  text-sm h-[52px]">
+						<td v-if="hasIndex" class="pl-4">
+							<Skeleton height="15px" radius="3px" />
+						</td>
 						<td v-for="(header, i) in headers" :key="i" class="px-4">
 							<Skeleton height="15px" radius="3px" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div v-else class="flex items-center justify-center py-8">
+				<span class="text-gray-400">No data available</span>
+			</div>
 		</div>
-	</div>
+		<slot name="footer" />
+	</section>
 </template>
+
 <script lang="ts" setup>
 import gsap from 'gsap'
 
-const props = defineProps({
-	showRadioButtons: {
-		type: Boolean
-	},
-	showDatePicker: {
-		type: Boolean
-	},
-	showSearchBar: {
-		type: Boolean
-	},
-	showDownloadButton: {
-		type: Boolean
-	},
-	showOptions: {
-		type: Boolean,
-		default: false
-	},
+defineEmits(['checked'])
 
-	// showOneLayerFilter: {
-	// 	type: Boolean,
-	// 	default: false
-	// },
-	// showTwoLayerFilter: {
-	// 	type: Boolean,
-	// 	default: false
-	// },
+const checkedArray = ref([] as Record<string, any>[])
+
+const props = defineProps({
 	option: {
 		type: Function,
 		default: () => { }
@@ -78,6 +77,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false
 	},
+	selected: {
+        type: Array,
+        default: () => []
+    },
 	headers: {
 		type: Array,
 		default: () => [],
@@ -87,15 +90,15 @@ const props = defineProps({
 		type: Array,
 		default: () => []
 	},
-	tableHeight: {
-		type: Number,
-		default: 200
-	},
 	loading: {
 		type: Boolean,
 		default: false
 	},
 	checkbox: {
+		type: Boolean,
+		default: false
+	},
+	hasIndex: {
 		type: Boolean,
 		default: false
 	},
@@ -113,10 +116,9 @@ const props = defineProps({
 	}
 })
 
-const itemLength = ref(0)
-const checked = ref([])
-const pages = ref(0)
-
+watch(() => props.selected, (value:any) => {
+	checkedArray.value = value
+})
 const displayTable = computed({
 	get: () => {
 		if (props.pageSync) {
@@ -171,20 +173,6 @@ const populateTable = (data: any) => {
 	})
 
 	return element
-}
-
-const beforeEnter = (el) => {
-	el.style.opacity = 0
-	// el.style.transform = 'translateY(100px)'
-}
-const enter = (el, done) => {
-	gsap.to(el, {
-		opacity: 1,
-		// y: 0,
-		duration: 0.5,
-		onComplete: done,
-		delay: el.dataset.index * 0.1
-	})
 }
 
 </script>

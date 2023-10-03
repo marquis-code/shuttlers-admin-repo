@@ -3,7 +3,7 @@
 		<section class="flex flex-col w-full max-w-[405px] mx-auto gap-4 center-col">
 			<div class="flex  gap-4 items-end">
 				<img src="@/assets/images/core/logo.svg" alt="logo" class="w-60">
-				<span class="bg-dark text-light text-[10px] p-1 rounded-full px-2">Admin</span>
+				<span class="bg-black text-light text-[10px] p-1 rounded-full px-2">Admin</span>
 			</div>
 			<p class="text-lg text-center font-medium">
 				Log in to your account
@@ -17,7 +17,7 @@
 					<h1 class="text-[32px] font-bold">
 						Login to your Shuttlers Account
 					</h1>
-					<p class="text-grey5">
+					<p class="text-gray-500">
 						Please login to your Shuttlers account with your email address and password.
 					</p>
 				</div>

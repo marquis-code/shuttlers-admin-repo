@@ -1,5 +1,5 @@
 <template>
-	<section class="stat_card">
+	<section class="card">
 		<div class="border-b flex justify-between items-center pb-3">
 			<div>
 				<h3 class="font-medium px-6">
@@ -7,11 +7,11 @@
 				</h3>
 			</div>
 			<div class="pr-3">
-				<date-picker v-model:value="dateSelected" placeholder="Filter by date" />
+				<!-- <date-picker v-model:value="dateSelected" placeholder="Filter by date" /> -->
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
-			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 w-4/12">
+			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 lg:w-4/12">
 				<div class="flex justify-between items-center">
 					<div>
 						<p class="text-gray-400 font-light">
@@ -32,25 +32,15 @@
 				</p>
 			</div>
 			<div>
-				<Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" />
+				<!-- <Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" /> -->
 			</div>
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-	chartOptions: {
-		type: Object,
-		required: true
-	},
-	chartData: {
-		type: Object,
-		required: true
-	}
-})
 
-const dateSelected = ref(null)
+// const dateSelected = ref(null)
 
 </script>
 

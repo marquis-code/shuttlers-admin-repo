@@ -1,9 +1,8 @@
 <template>
-	<div>
-		shuttlers promotions code
-	</div>
+	<main class="">
+		promotion
+	</main>
 </template>
-
 <script setup lang="ts">
 definePageMeta({
 	layout: 'dashboard',
@@ -11,6 +10,4 @@ definePageMeta({
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
