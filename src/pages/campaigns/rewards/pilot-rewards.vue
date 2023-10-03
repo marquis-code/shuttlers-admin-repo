@@ -169,8 +169,6 @@ const computedPilotLeaderboardList = computed(() => {
 })
 })
 
-console.log(computedPilotLeaderboardList, 'here oooo')
-
 const activeTab = ref('leaderboard')
 
 const rewardListTableFields = ref([
