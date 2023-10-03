@@ -46,5 +46,9 @@ export const campaigns_api = {
      $_get_pilot_points: () => {
         const url = '/v1/reward-point-rate'
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url)
+    },
+    $_get_point_rate: (userType:string) => {
+        const url = `/reward-point-rate?userType=${userType}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }
