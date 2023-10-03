@@ -165,11 +165,6 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Manage ',
         routePath: '/drivers',
         description: 'Manage Drivers'
-      },
-          {
-        title: 'Driver Rewards',
-        routePath: '/drivers/rewards',
-        description: 'Manage Drivers'
       }
       ]
 
