@@ -6,7 +6,7 @@ export default {
 	target: 'static',
 	app: {
 	head: {
-		title: 'Test',
+		title: 'Shuttlers Admin',
 		script: [
 			{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/' }
 		  ],
