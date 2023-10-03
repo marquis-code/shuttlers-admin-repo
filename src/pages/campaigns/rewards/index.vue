@@ -83,7 +83,7 @@ const computedPointsList = computed(() => {
 	action: ''
    }
 }).filter((itm) => {
-	return itm.points !== 0
+	return !itm.points
 })
 })
 
