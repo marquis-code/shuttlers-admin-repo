@@ -22,6 +22,7 @@ watch(selectedUser, (val) => {
 		prePopulateForm(selectedUser.value)
 	}
 }, { immediate: true })
+
 usePageHeader().setPageHeader({
 	preTitle: 'OVERVIEW',
 	title: 'Manage User'

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :option="onRowClicked">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
@@ -28,14 +28,8 @@ import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
 
-const onRowClicked = (data) => {
-	const { selectedTrip } = useTripIdDetails()
-	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
-	selectedTrip.value = data
-}
-
 const formattedActiveTripsList = computed(() =>
-activeTripsList.value.map((i, index) => {
+activeTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: `${i?.route?.route_code} (${i?.itinerary?.trip_time})`,
@@ -46,7 +40,7 @@ activeTripsList.value.map((i, index) => {
 			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
-			 id: index + 1
+			 idx: index + 1
          }
     })
 )
@@ -58,8 +52,8 @@ definePageMeta({
 
 const dropdownChildren = computed(() => [
 	{ name: 'Start Trip', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Cancel Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },
-	{ name: 'Complete Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'Cancel Trip', func: (data) => {}, class: '!text-red' },
+	{ name: 'Complete Trip', func: (data) => {}, class: '!text-red' }
 ])
 
 const tableFields = ref([

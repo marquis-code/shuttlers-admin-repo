@@ -10,9 +10,7 @@
 				<p class="text-gray-500 text-sm">
 					Route
 				</p>
-				<p class="text-sm">
-				
-				</p>
+				<p class="text-sm" />
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-3">
 				<p class="text-gray-500 text-sm">

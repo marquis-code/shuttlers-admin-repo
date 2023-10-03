@@ -15,7 +15,7 @@
         box-shadow: 0px 10px 24px rgba(33, 35, 37, 0.08);
     }
     .auth-form-btn {
-        @apply flex justify-center items-center gap-2.5  py-4 rounded-lg font-bold disabled:bg-gray-900 disabled:text-light;
+        @apply flex justify-center items-center gap-2.5  py-4 rounded-lg font-bold bg-primary disabled:bg-grey9 disabled:text-light;
     }
     .or-line {
         @apply bg-neut3 w-full h-[0.6px] max-w-[64px];

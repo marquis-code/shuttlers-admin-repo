@@ -52,7 +52,6 @@ const componentRouteArray = [
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['users'], component: Users },
-
     { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
@@ -85,7 +84,11 @@ const componentRouteArray = [
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
-    { routes: ['trips-type-upcoming-id-trip-details'], component: TripDetails },
+    {
+        routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings',
+            'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
+            'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings'], component: TripDetails
+    },
     { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id'], component: GenericHeader }
 ]
 

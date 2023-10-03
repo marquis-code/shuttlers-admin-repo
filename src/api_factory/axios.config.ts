@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
+
 const { token } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string

@@ -94,7 +94,7 @@
 					</div>
 
 					<div class="overflow-x-auto rounded-lg border-[0.4px]">
-						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList"  :option="onRowClicked">
+						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :option="onRowClicked">
 							<template #item="{ item }">
 								<div v-if="item.driver">
 									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.driver?.id}/reward-history`">

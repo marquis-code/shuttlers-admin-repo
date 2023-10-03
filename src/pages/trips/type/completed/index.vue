@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :option="onRowClicked">
+		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -35,14 +35,8 @@ import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
 
-const onRowClicked = (data) => {
-	const { selectedTrip } = useTripIdDetails()
-	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
-	selectedTrip.value = data
-}
-
 const formattedCompletedTripsList = computed(() =>
-completedTripsList.value.map((i, index) => {
+completedTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: i?.route?.route_code ?? 'N/A',
@@ -55,7 +49,7 @@ completedTripsList.value.map((i, index) => {
 			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
-			 id: index + 1
+			 idx: index + 1
          }
     })
 )

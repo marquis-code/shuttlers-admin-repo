@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :option="onRowClicked">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -33,12 +33,6 @@ import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()
-
-const onRowClicked = (data) => {
-	const { selectedTrip } = useUpcomingTripIdDetails()
-	useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)
-	selectedTrip.value = data
-}
 
 const formattedUpcomingTripsList = computed(() =>
 upcomingTripsList.value.map((i:any, index) => {
