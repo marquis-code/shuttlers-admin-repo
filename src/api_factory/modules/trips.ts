@@ -33,5 +33,9 @@ export const trips_api = {
 	$_get_upcoming_trip_by_id: (id:string) => {
 		const url = `/upcoming-trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_trip_rating: (id:string, metaObject: TMetaObject) => {
+		const url = `/ratings/trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
