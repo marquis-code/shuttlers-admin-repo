@@ -36,12 +36,16 @@ const _connectToSocket = async () => {
 export const useSocketIo = () => {
     const listenToEvent = async (event: string, Func: (item: any) => void) => {
         if (primarySocketIo.connected) {
-             primarySocketIo.on(event, Func)
+            //  primarySocketIo.on(event, Func)
+            primarySocketIo.on('passengers:all:new-position', (data) => {
+                // console.log('help')
+                // console.log(data)
+            })
         } else {
-            _connectToSocket()
+            await _connectToSocket()
             primarySocketIo.on(event, Func)
         }
     }
 
-    return { listenToEvent }
+    return { listenToEvent, _connectToSocket }
 }

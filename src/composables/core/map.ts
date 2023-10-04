@@ -54,6 +54,7 @@ export const initMap = async (mapDiv: Ref) => {
         'maps'
     )) as google.maps.MapsLibrary
 
+    if (!mapDiv.value) return
     map = new Map(mapDiv.value as HTMLElement, {
         zoom: 14,
         disableDefaultUI: true,
