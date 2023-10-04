@@ -40,7 +40,15 @@ export const campaigns_api = {
         return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
     },
     $_update_pilot_reward_status: (id:number, payload: {status: string, name: string}) => {
-        const url = '/compliance-rewards'
-        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+        const url = '/v1/compliance-rewards'
+        return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.patch(url, payload)
+    },
+     $_get_pilot_points: () => {
+        const url = '/v1/reward-point-rate'
+        return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url)
+    },
+    $_get_point_rate: (userType:string) => {
+        const url = `/reward-point-rate?userType=${userType}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }

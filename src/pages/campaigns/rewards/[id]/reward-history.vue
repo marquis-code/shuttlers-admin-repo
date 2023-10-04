@@ -12,7 +12,7 @@
 					{{ useDateFormat(item.data.updated_at, 'hh:mm A').value ?? 'N/A' }}
 				</div>
 				<div v-if="item.points" :class="[item.data.action === 'reward' ? 'text-shuttlersGreen' : 'text-rose-600']" class="font-[500]">
-					{{ item.data.action === 'reward' ? `+${item.data.points}` : item.data.points }}
+					<span>{{ item.data.action === 'reward' ? `${item.data.points === 0 ? '0' : `+${item.data.points}`}` : `${item.data.points === 0 ? '0' : `+${item.data.points}`}` }}</span>
 				</div>
 			</template>
 			<template #footer>
