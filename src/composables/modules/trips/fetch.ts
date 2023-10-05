@@ -170,3 +170,23 @@ export const useGetBusCaptainsList = () => {
 
     return { getBusCaptains, loadingBusCaptains, busCaptainsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
+
+export const useGetTripRatingList = () => {
+    const loadingTripRatings = ref(false)
+    const tripRatingList = ref([])
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const { $_get_trip_rating } = trips_api
+
+    const getTripRatings = async (id:string) => {
+        loadingTripRatings.value = true
+        const res = await $_get_trip_rating(id, metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            tripRatingList.value = res.data.data
+            metaObject.total.value = res.data.metadata.total
+        }
+        loadingTripRatings.value = false
+    }
+    setFunction(getTripRatings)
+
+    return { getTripRatings, loadingTripRatings, tripRatingList, moveTo, ...metaObject, next, prev }
+}

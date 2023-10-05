@@ -101,6 +101,13 @@
 										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
 									</NuxtLink>
 								</div>
+								<div v-if="item.current_point">
+									<span>{{ item?.data?.current_point ?? 'N/A' }}</span>
+								</div>
+
+								<div v-if="item.points_earned">
+									<span>{{ item?.data?.points_earned ?? 'N/A' }}</span>
+								</div>
 							</template>
 							<template #footer>
 								<TablePaginator :current-page="leaderboardPageCount" :total-pages="leaderboardTotal" :loading="loadingLeaderboardPointsList" @move-to="moveTo($event)" @next="leaderboardNext" @prev="leaderboardPrev" />
@@ -160,13 +167,7 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.map((item, index) => {
-	return {
-	...item,
-	tableIndex: index + 1,
-	action: ''
-}
-})
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
 })
 
 const activeTab = ref('leaderboard')
@@ -244,7 +245,7 @@ const handleDelete = async (item) => {
 
 const onRowClicked = (data) => {
 	useRouter().push({
-        path: `/campaigns/rewards/${data.id}/reward-history`,
+        path: `/campaigns/rewards/${data.user_id}/reward-history`,
         query: { userType: 'driver' }
       })
 }
