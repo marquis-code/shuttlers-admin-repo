@@ -7,15 +7,26 @@
 import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { usePageHeader } from '@/composables/utils/header'
-import { usePassangersTracking } from '@/composables/modules/trips/tracking'
+import { usePassengersTracking } from '@/composables/modules/trips/tracking'
+import { useGetTripPassenger, useShowTripPassengersCard } from '@/composables/modules/trips/passengers'
 
-const { listenToallPassangersLocation } = usePassangersTracking()
+const { getTripPassenger, tripPassengerData } = useGetTripPassenger()
+
+const { listenToSpecificPassengerLocationAndAddtoMap } = usePassengersTracking()
+
+const { openCard } = useShowTripPassengersCard()
 
 const { selectedTrip, loading, getTripById } = useTripIdDetails()
 const id = useRoute().params.id as string
-await getTripById(id)
-onMounted(async () => {
-	listenToallPassangersLocation()
+getTripById(id)
+getTripPassenger(id)
+
+watch(tripPassengerData, (val) => {
+	if (val.length > 0) {
+		val.forEach((item: any) => {
+			listenToSpecificPassengerLocationAndAddtoMap(item.user_id, openCard)
+		})
+	}
 })
 
 const computedTitle = computed(() => {
