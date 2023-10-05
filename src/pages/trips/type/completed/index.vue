@@ -5,8 +5,8 @@
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.id">
-					{{ item.data.id }}
+				<span v-if="item.idx">
+					{{ item.data.idx }}
 				</span>
 				<span v-if="item.driver">
 					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item.data.driver }}</NuxtLink>
@@ -14,6 +14,12 @@
 				<span v-if="item.route_code">
 					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
 				</span>
+				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
+					<p>{{ item.data.passengers }}</p>
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="navigateToRoutePassengers(item.data)">
+						View
+					</button>
+				</div>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
 				</div>
@@ -66,7 +72,7 @@ const dropdownChildren = computed(() => [
 const tableFields = ref([
 	{
 		text: 'S/N',
-		value: 'id',
+		value: 'idx',
 		width: '10%'
 	},
     {
