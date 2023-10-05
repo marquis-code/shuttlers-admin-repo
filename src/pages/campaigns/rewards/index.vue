@@ -84,8 +84,6 @@ const computedPointsList = computed(() => {
 	value: item?.points * 50,
 	action: ''
    }
-}).filter((itm) => {
-	return !itm.points
 })
 })
 
