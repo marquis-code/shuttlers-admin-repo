@@ -14,8 +14,7 @@ export const usePassengersTracking = () => {
 	_connectToSocket()
 	const listenToallPassengersLocation = () => {
 		listenToEvent('passengers:all:new-position', (data) => {
-			// console.log(data)
-			// console.log('passengers:all:new-position')
+
 		})
 	}
 	const listenToSpecificPassengerLocationAndAddtoMap = (

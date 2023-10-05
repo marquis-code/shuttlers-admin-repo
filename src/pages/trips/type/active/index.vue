@@ -15,7 +15,7 @@
 					</button>
 				</div>
 				<div v-if="item.route">
-					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
+					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
 				<div v-if="item.action" class="w-20">
 					<button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation">
@@ -40,10 +40,10 @@ const router = useRouter()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
-Array.isArray(activeTripsList.value) && activeTripsList.value.length && activeTripsList.value.map((i:any, index) => {
+ activeTripsList.value.map((i:any, index) => {
          return {
              ...i,
-             route_code: `${i?.route?.route_code} (${useDateFormat(i?.trip_start_time, 'HH:mm A').value})`,
+             route_code: `${i?.route?.route_code} (${useDateFormat(i?.start_trip, 'h:mm A').value})`,
 			 pickup: i?.route?.pickup,
 			 destination: i?.route?.destination,
 			 partner: i?.partner ?? 'N/A',

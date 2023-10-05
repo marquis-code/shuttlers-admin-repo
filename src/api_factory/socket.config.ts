@@ -17,7 +17,6 @@ const _connectToSocket = async () => {
         await primarySocketIo.connect()
         globalData.socketIsConnected.value = true
     } catch (error) {
-        // console.error('Failed to connect to socket:', error)
         globalData.socketIsConnected.value = false
         setTimeout(() => {
             _connectToSocket()
@@ -25,7 +24,6 @@ const _connectToSocket = async () => {
     }
 
     primarySocketIo.on('disconnect', () => {
-        // console.warn('Socket disconnected')
         globalData.socketIsConnected.value = false
         setTimeout(() => {
             _connectToSocket()
