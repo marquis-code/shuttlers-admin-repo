@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
@@ -45,7 +45,7 @@ Array.isArray(activeTripsList.value) && activeTripsList.value.length && activeTr
              ...i,
              route_code: `${i?.route?.route_code} (${useDateFormat(i?.trip_start_time, 'HH:mm A').value})`,
 			 pickup: i?.route?.pickup,
-			 dropoff: i?.route?.destination,
+			 destination: i?.route?.destination,
 			 partner: i?.partner ?? 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
 			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,

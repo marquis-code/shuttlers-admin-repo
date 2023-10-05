@@ -10,7 +10,7 @@ const globalData = {
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 
-export const primarySocketIo = io($GATEWAY_ENDPOINT_WITHOUT_VERSION, { path: '/telemetry/socket.io', auth: { token: token.value } })
+export const primarySocketIo = io($GATEWAY_ENDPOINT_WITHOUT_VERSION, { path: '/telemetry/socket.io', auth: { token: `Bearer ${token.value}` } })
 
 const _connectToSocket = async () => {
     try {
@@ -38,10 +38,10 @@ export const useSocketIo = () => {
         if (primarySocketIo.connected) {
              primarySocketIo.on(event, Func)
         } else {
-            _connectToSocket()
+            await _connectToSocket()
             primarySocketIo.on(event, Func)
         }
     }
 
-    return { listenToEvent }
+    return { listenToEvent, _connectToSocket }
 }
