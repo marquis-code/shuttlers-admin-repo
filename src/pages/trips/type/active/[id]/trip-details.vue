@@ -30,7 +30,6 @@ watch(tripPassengerData, (val) => {
 })
 
 const computedTitle = computed(() => {
-	console.log(selectedTrip.value?.start_trip)
 	if (selectedTrip.value.route?.route_code) {
 		return `${selectedTrip.value.route.route_code} ●
 		 ${useDateFormat(selectedTrip.value?.start_trip, 'h:mm A').value} ● 
