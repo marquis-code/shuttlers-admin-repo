@@ -101,6 +101,13 @@
 										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
 									</NuxtLink>
 								</div>
+								<div v-if="item.current_point">
+									<span>{{ item?.data?.current_point ?? 'N/A' }}</span>
+								</div>
+
+								<div v-if="item.points_earned">
+									<span>{{ item?.data?.points_earned ?? 'N/A' }}</span>
+								</div>
 							</template>
 							<template #footer>
 								<TablePaginator :current-page="leaderboardPageCount" :total-pages="leaderboardTotal" :loading="loadingLeaderboardPointsList" @move-to="moveTo($event)" @next="leaderboardNext" @prev="leaderboardPrev" />
@@ -166,6 +173,8 @@ const computedPilotLeaderboardList = computed(() => {
 	tableIndex: index + 1,
 	action: ''
 }
+}).filter((itm) => {
+	return itm.current_point && itm.points_earned
 })
 })
 

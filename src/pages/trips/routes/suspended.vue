@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingSuspendedRoutes" :headers="tableFields" :table-data="suspendedRoutesList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -32,15 +32,25 @@
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 			</template>
+
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingSuspendedRoutes" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useGetSuspendedRoutes } from '@/composables/modules/routes/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getSuspendedRoutesList, loadingSuspendedRoutes, suspendedRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetSuspendedRoutes()
+getSuspendedRoutesList()
+
+// const onRowClicked = (data) => {
+// 	const { selectedUser } = useUserIdDetails()
+// 	useRouter().push(`/users/${data.id}/user-info`)
+// 	selectedUser.value = data
+// }
 
 definePageMeta({
     layout: 'dashboard',
@@ -48,32 +58,44 @@ definePageMeta({
 })
 
 const tableFields = ref([
+	{
+        text: 'S/N',
+        value: 'sn'
+    },
     {
-        text: 'VEHICLE',
+        text: 'ROUTE TYPE',
         value: 'vehicle'
     },
     {
-        text: 'PLATE NUMBER',
+        text: 'ROUTE VISIBILITY',
         value: 'registrationNumber'
     },
     {
-        text: 'CAPACITY',
+        text: 'ROUTE CODES',
         value: 'seats'
     },
     {
-        text: 'INSPECTION SITE',
+        text: 'PERIOD',
         value: 'inspectionSite'
     },
     {
-        text: 'INSPECTION DATE AND TIME',
+        text: 'ADMIN',
         value: 'inspectionDateAndTime'
     },
 	{
-        text: 'PARTNER',
+        text: 'DATE PERFORMED',
         value: 'partner'
     },
     {
-        text: 'CREATED AT',
+        text: 'REASON',
+        value: 'created_at'
+    },
+	{
+        text: 'STATUS',
+        value: 'created_at'
+    },
+	{
+        text: 'ACTION',
         value: 'created_at'
     }
 ])

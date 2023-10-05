@@ -14,6 +14,12 @@
 				<span v-if="item.route_code">
 					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
 				</span>
+				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
+					<p>{{ item.data.passengers }}</p>
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="navigateToRoutePassengers(item.data)">
+						View
+					</button>
+				</div>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
 				</div>
@@ -62,8 +68,7 @@ const setDeleteRefundId = (id) => {
 }
 const dropdownChildren = computed(() => [
 	{ name: 'Start Trip', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Cancel Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },
-	{ name: 'Complete Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'Cancel Trip', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
 ])
 
 const tableFields = ref([
