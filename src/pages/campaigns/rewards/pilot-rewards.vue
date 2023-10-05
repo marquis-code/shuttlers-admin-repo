@@ -167,15 +167,7 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.map((item, index) => {
-	return {
-	...item,
-	tableIndex: index + 1,
-	action: ''
-}
-}).filter((itm) => {
-	return itm.current_point && itm.points_earned
-})
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
 })
 
 const activeTab = ref('leaderboard')
@@ -253,7 +245,7 @@ const handleDelete = async (item) => {
 
 const onRowClicked = (data) => {
 	useRouter().push({
-        path: `/campaigns/rewards/${data.id}/reward-history`,
+        path: `/campaigns/rewards/${data.user_id}/reward-history`,
         query: { userType: 'driver' }
       })
 }
