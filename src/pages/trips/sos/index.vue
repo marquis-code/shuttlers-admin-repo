@@ -10,7 +10,7 @@
 					<RouteDescription :pickup="item.data.trip.route.pickup" :destination="item.data.trip.route.destination" />
 				</div>
 				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item.data.created_at, "MMMM D, YYYY").value }}
 				</span>
 				<span v-else-if="item.status" class="flex">
 					<StatusBadge :name="item.data.status" />
@@ -29,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useSosList } from '@/composables/modules/commute/sos/fetch'
 import { useNotifySos } from '@/composables/modules/commute/sos/create'
