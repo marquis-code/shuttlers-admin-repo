@@ -167,7 +167,7 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' })).filter((itm) => { return itm.points_earned || itm.current_point })
 })
 
 const activeTab = ref('leaderboard')
