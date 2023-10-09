@@ -2,8 +2,8 @@
 	<main class="w-full flex flex-col">
 		<div class="flex items-center justify-between mb-5">
 			<ButtonGoBack />
-			<div class="text-green7 bg-green05 p-4 rounded-xl text-sm font-medium">
-				21st March, 2023
+			<div v-if="!loadingSosRequest" class="text-green7 bg-green05 p-4 rounded-xl text-sm font-medium">
+				{{ useDateFormat(formattedSosList[0]?.created_at, "MMMM D, YYYY").value }}
 			</div>
 		</div>
 
