@@ -43,6 +43,7 @@ import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
 import TripDetails from '@/components/headers/modules/Trips/trip-details.vue'
 import CampaignRewards from '@/components/headers/modules/Rewards/index.vue'
 import RewardHistory from '@/components/headers/modules/Rewards/reward-history.vue'
+import Banner from '@/components/headers/modules/Campaigns/Promotions/Banners/index.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
