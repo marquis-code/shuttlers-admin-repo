@@ -39,10 +39,5 @@
         type: Array,
         default: () => []
     }
-    // loading: {
-    //     type: Boolean
-    // }
   })
-
-//   const selected = ref(props.children[3])
 </script>
