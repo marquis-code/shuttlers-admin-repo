@@ -43,6 +43,9 @@ import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
 import TripDetails from '@/components/headers/modules/Trips/trip-details.vue'
 import CampaignRewards from '@/components/headers/modules/Rewards/index.vue'
 import RewardHistory from '@/components/headers/modules/Rewards/reward-history.vue'
+import PromotionalCampaigns from '@/components/headers/modules/Campaigns/Promotions/index.vue'
+import ValentineCampaign from '@/components/headers/modules/Campaigns/Valentine/index.vue'
+import ValentineCampaignDetails from '@/components/headers/modules/Campaigns/Valentine/campaign-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -89,7 +92,10 @@ const componentRouteArray = [
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
             'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings'], component: TripDetails
     },
-    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id'], component: GenericHeader }
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id'], component: GenericHeader },
+    { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
+    { routes: ['campaigns-valentine'], component: ValentineCampaign },
+    { routes: ['campaigns-valentine-id'], component: ValentineCampaignDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
