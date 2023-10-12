@@ -65,15 +65,6 @@ const tableFields = ref([
 		value: 'id'
 	}
 ])
-
-// {
-//         "id": "9077963b-0309-43bf-9890-49025f90145c",
-//         "partnerId": "788474hhehhhh",
-//         "accountName": "Daniel Sumah",
-//         "accountNumber": "2150060235",
-//         "bankName": "zenith bank",
-//         "isDefault": true
-//     }
 </script>
 
 <style scoped></style>
