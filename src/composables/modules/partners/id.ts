@@ -104,8 +104,6 @@ export const useGetPartnersCompletedTripsList = () => {
     const filterData = {
         status: ref(''),
         search: ref(''),
-        // startDate: ref(''),
-        // endDate: ref(''),
         isSettled: ref(false)
     }
 
@@ -135,12 +133,6 @@ export const useGetPartnersCompletedTripsList = () => {
             case 'search':
                     filterData.search.value = data.value
                 break
-            // case 'startDate':
-            //         filterData.startDate.value = data.value
-            //     break
-            // case 'endDate':
-            //         filterData.endDate.value = data.value
-            //     break
             case 'isSettled':
                     filterData.isSettled.value = data.value
                 break
