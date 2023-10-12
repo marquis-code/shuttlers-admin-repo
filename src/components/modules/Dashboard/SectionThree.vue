@@ -7,7 +7,6 @@
 				</h3>
 			</div>
 			<div class="pr-3">
-				<!-- <date-picker v-model:value="dateSelected" placeholder="Filter by date" /> -->
 			</div>
 		</div>
 		<div class="p-5 space-y-6">
@@ -30,9 +29,6 @@
 						<path d="M15 7h6v6" />
 					</svg></span> <span class="text-green-600 inline">73 ratings</span> in total
 				</p>
-			</div>
-			<div>
-				<!-- <Bar style="width: 100%" class="h-[400px]" :options="chartOptions" :data="chartData" /> -->
 			</div>
 		</div>
 	</section>
