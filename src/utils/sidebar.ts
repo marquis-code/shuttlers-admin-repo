@@ -221,7 +221,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     children: [
       {
         title: 'Valentine',
-        routePath: '/campaigns',
+        routePath: '/campaigns/valentine',
         description: 'Valentine management'
       },
       {
@@ -231,7 +231,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       },
       {
         title: 'CMS Banners',
-        routePath: '/campaigns/banner',
+        routePath: '/campaigns/promotions/banner',
         description: 'CMS promotional banner'
       }
     ]
