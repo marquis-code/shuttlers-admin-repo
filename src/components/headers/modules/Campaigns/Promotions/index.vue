@@ -23,7 +23,6 @@ const route = useRoute()
 
 const computedPageTitle = computed(() => {
     const componentName = route?.name?.split('-')[2]
-    console.log(componentName, 'de')
    if (componentName === 'banner') {
     return 'Banner'
    }
