@@ -14,6 +14,7 @@ export const useUserIdDetails = () => {
             selectedUser.value = res.data
         }
         loading.value = false
+        return res.data
     }
     return { selectedUser, loading, getUserById }
 }

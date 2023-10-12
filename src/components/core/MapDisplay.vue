@@ -1,12 +1,12 @@
 <template>
-	<div v-show="!loading" ref="map" class="map-container z-0" :style="{ height: height }" />
+	<div ref="mapRef" class="map-container z-0" :style="{ height: height }" />
 	<Skeleton v-if="loading" :height="height" />
 </template>
 
 <script setup>
-import { initMap, calculateCenterAndZoom, loading, getPathFromPolyline, loadPolyline } from '@/composables/core/map'
+import { initMap, calculateCenterAndZoom, loading, getPathFromPolyline, loadPolyline, loadExternalDataMarkers } from '@/composables/core/map'
 
-const map = ref(null)
+const mapRef = ref(null)
 
 const props = defineProps({
     startPoint: {
@@ -34,11 +34,19 @@ const props = defineProps({
     encodedPolyline: {
         type: String,
         default: null
+    },
+    loading: {
+        type: Boolean,
+        default: false
+    },
+    externalMarkers: {
+        type: Array,
+        default: () => []
     }
 })
 
 onMounted(async () => {
-    initMap(map)
+    initMap(mapRef)
     // calculateCenterAndZoom(props.startPoint, props.endPoint)
     if (props.encodedPolyline) {
         const poly = await getPathFromPolyline(props.encodedPolyline)

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingMainRoutes" :headers="tableFields" :table-data="mainRoutesList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -32,15 +32,19 @@
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 			</template>
+
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingMainRoutes" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
+getMainRoutesList()
 
 definePageMeta({
     layout: 'dashboard',
@@ -48,33 +52,25 @@ definePageMeta({
 })
 
 const tableFields = ref([
+	{
+        text: 'S/N',
+        value: 'sn'
+    },
     {
-        text: 'VEHICLE',
+        text: 'ROUTE',
         value: 'vehicle'
     },
     {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
-    },
-    {
-        text: 'CAPACITY',
+        text: 'ROUTE CODE',
         value: 'seats'
     },
-    {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
-    },
-    {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
+	{
+        text: 'TYPE',
+        value: 'seats'
     },
 	{
-        text: 'PARTNER',
-        value: 'partner'
-    },
-    {
-        text: 'CREATED AT',
-        value: 'created_at'
+        text: 'STATUS',
+        value: 'seats'
     }
 ])
 

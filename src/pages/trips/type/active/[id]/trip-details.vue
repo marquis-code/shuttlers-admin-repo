@@ -7,15 +7,32 @@
 import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { usePageHeader } from '@/composables/utils/header'
+import { usePassengersTracking } from '@/composables/modules/trips/tracking'
+import { useGetTripPassenger, useShowTripPassengersCard } from '@/composables/modules/trips/passengers'
+
+const { getTripPassenger, tripPassengerData } = useGetTripPassenger()
+
+const { listenToSpecificPassengerLocationAndAddtoMap } = usePassengersTracking()
+
+const { openCard } = useShowTripPassengersCard()
 
 const { selectedTrip, loading, getTripById } = useTripIdDetails()
 const id = useRoute().params.id as string
 getTripById(id)
+getTripPassenger(id)
+
+watch(tripPassengerData, (val) => {
+	if (val.length > 0) {
+		val.forEach((item: any) => {
+			listenToSpecificPassengerLocationAndAddtoMap(item.user_id, openCard)
+		})
+	}
+})
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
 		return `${selectedTrip.value.route.route_code} ●
-		 ${selectedTrip.value?.route_vehicle?.route_itinerary?.trip_time} ● 
+		 ${useDateFormat(selectedTrip.value?.start_trip, 'h:mm A').value} ● 
 		 ${selectedTrip.value.driver.fname} ${selectedTrip.value.driver.lname} ●
 		 ${useDateFormat(selectedTrip.value.trip_date, 'DD MMMM YYYY').value}`
 	}

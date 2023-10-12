@@ -1,13 +1,35 @@
 import { useSocketIo } from '@/api_factory/socket.config'
+import { loadMarkeronMap } from '@/composables/core/map'
 
-export const usePassangersTracking = () => {
-    const { listenToEvent } = useSocketIo()
+type PassagerType = {
+	position_latitude: number;
+	position_longitude: number;
+	bearing: number;
+	user_id: number;
+	measuredAt: string;
+};
 
-    const listenToallPassangersLocation = () => {
-        listenToEvent('passengers:all:new-position', (data) => {
-            // console.log(data)
-        })
-    }
+export const usePassengersTracking = () => {
+	const { listenToEvent, _connectToSocket } = useSocketIo()
+	_connectToSocket()
+	const listenToallPassengersLocation = () => {
+		listenToEvent('passengers:all:new-position', (data) => {
+		})
+	}
+	const listenToSpecificPassengerLocationAndAddtoMap = (
+		passengerId: string, clickFunc:(data:any)=>void
+	) => {
+        listenToEvent(`passengers:${passengerId}:new-position`, (data: PassagerType) => {
+            loadMarkeronMap({
+                id: data.user_id,
+                lat: data.position_latitude,
+                lng: data.position_longitude
+            }, clickFunc)
+		})
+	}
 
-    return { listenToallPassangersLocation }
+	return {
+		listenToallPassengersLocation,
+		listenToSpecificPassengerLocationAndAddtoMap
+	}
 }

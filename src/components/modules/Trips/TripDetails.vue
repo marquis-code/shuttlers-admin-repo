@@ -2,7 +2,7 @@
 	<main class="relative">
 		<div class="h-screen inset-0 z-0">
 			<MapDisplay :start-point="convertLatLngStringToObj(selectedTrip.route?.pickup_coordinate)"
-				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" />
+				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
 		</div>
 		<section class="absolute top-4 left-6 flex flex-col items-start z-40">
 			<ButtonGoBack class="mb-6 bg-white" />
@@ -31,6 +31,13 @@
 				</div>
 			</div>
 		</section>
+
+		<transition
+			appear
+			name="list"
+		>
+			<ModulesTripsPassengerDetails :selected-trip="selectedTrip" />
+		</transition>
 	</main>
 </template>
 
@@ -76,4 +83,17 @@ definePageMeta({
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+</style>

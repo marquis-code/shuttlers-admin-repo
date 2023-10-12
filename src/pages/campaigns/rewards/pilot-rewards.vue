@@ -1,7 +1,7 @@
 <template>
 	<main class="space-y-10">
 		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
-			Current pilots point rate: 1 point ~ ₦50
+			Current pilots point rate: 1 point ~  {{ loading_points_rate ? 'loading...' : convertToCurrency(pointsRateObject?.value) }}
 		</div>
 		<div>
 			<div class="container mx-auto space-y-3">
@@ -97,9 +97,16 @@
 						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :option="onRowClicked">
 							<template #item="{ item }">
 								<div v-if="item.driver">
-									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.driver?.id}/reward-history`">
+									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.user_id}/reward-history`">
 										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
 									</NuxtLink>
+								</div>
+								<div v-if="item.current_point">
+									<span>{{ item?.data?.current_point ?? 'N/A' }}</span>
+								</div>
+
+								<div v-if="item.points_earned">
+									<span>{{ item?.data?.points_earned ?? 'N/A' }}</span>
 								</div>
 							</template>
 							<template #footer>
@@ -114,18 +121,21 @@
 </template>
 
 <script setup lang="ts">
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useCampaignModal } from '@/composables/core/modals'
-import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_get_leaderboard_point_list, use_update_reward, use_delete_reward } from '@/composables/modules/campaigns/fetch'
+import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_get_leaderboard_point_list, use_update_reward, use_delete_reward, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 import { useAlert } from '@/composables/core/notification'
 const { getPointsRate, loading_pilot_rate_points, pointsObject } = use_get_pilot_hightest_lowest_points()
 const { getPilotRewards, loadingPilotRewardList, rewardsList, next: rewardNext, prev: rewardPrev, moveTo: rewardMoveTo, total: totalReward, page: rewardPageCount } = use_get_pilot_reward_list()
 const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
 const { payloads: deletePayload, deleteReward, processingDelete } = use_delete_reward()
 const { payloads, editReward } = use_update_reward()
+const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const userType = 'driver'
 getPointsRate(userType)
 getPilotRewards(userType)
 getLeaderboardPointsList(userType)
+getPilotPointsRate(userType)
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
@@ -157,13 +167,7 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.map((item, index) => {
-	return {
-	...item,
-	tableIndex: index + 1,
-	action: ''
-}
-})
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
 })
 
 const activeTab = ref('leaderboard')
@@ -241,7 +245,7 @@ const handleDelete = async (item) => {
 
 const onRowClicked = (data) => {
 	useRouter().push({
-        path: `/campaigns/rewards/${data.id}/reward-history`,
+        path: `/campaigns/rewards/${data.user_id}/reward-history`,
         query: { userType: 'driver' }
       })
 }

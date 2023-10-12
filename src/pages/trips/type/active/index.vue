@@ -1,19 +1,27 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.id">
-					{{ item.data.id }}
+				<span v-if="item.idx">
+					{{ item.data.idx }}
 				</span>
+				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
+					<p>{{ item.data.passengers }}</p>
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="navigateToRoutePassengers(item.data)">
+						View
+					</button>
+				</div>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
-				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
-				</span>
+				<div v-if="item.action" class="w-20">
+					<button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation">
+						End Trip
+					</button>
+				</div>
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingActiveTrips" @move-to="moveTo($event)" @next="next" @prev="prev" />
@@ -22,28 +30,36 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
+import { useConfirmationModal } from '@/composables/core/confirmation'
+const { call_functuon, closeAlert, description, title, loading, type } = useConfirmationModal()
+const router = useRouter()
 
 const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
-
 const formattedActiveTripsList = computed(() =>
-activeTripsList.value.map((i:any, index) => {
+ activeTripsList.value.map((i:any, index) => {
          return {
              ...i,
-             route_code: `${i?.route?.route_code} (${i?.itinerary?.trip_time})`,
+             route_code: `${i?.route?.route_code} (${useDateFormat(i?.start_trip, 'h:mm A').value})`,
 			 pickup: i?.route?.pickup,
-			 dropoff: i?.route?.destination,
+			 destination: i?.route?.destination,
 			 partner: i?.partner ?? 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
 			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
+			 trip_date: useDateFormat(i.trip_start_time, 'YYYY-MM-DD').value,
 			 idx: index + 1
          }
     })
 )
+
+const handleTripCancellation = () => {
+	// useConfirmationModal().openAlert({ alert('Hello world'), closeAlert, description: 'BLA BAL BA;', title: 'B;a', loading, type: 'SUCCESS' })
+}
 
 definePageMeta({
     layout: 'dashboard',
@@ -59,7 +75,7 @@ const dropdownChildren = computed(() => [
 const tableFields = ref([
 	{
 		text: 'S/N',
-		value: 'id',
+		value: 'idx',
 		width: '10%'
 	},
     {
@@ -96,6 +112,9 @@ const tableFields = ref([
 	}
 ])
 
+const navigateToRoutePassengers = (item) => {
+	router.push(`/trips/type/active/${item.id}/passengers`)
+}
 </script>
 
 <style scoped></style>

@@ -100,7 +100,6 @@ const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
 }, {})
 
 const component = computed(() => {
-    // console.log(useRoute().name)
     return componentRouteKey[useRoute().name as string]
 })
 </script>

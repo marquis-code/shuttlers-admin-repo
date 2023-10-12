@@ -16,6 +16,11 @@ interface Coordinate {
     lat: number;
     lng: number;
 }
+interface UserCoordinate {
+    id: number;
+    lat: number;
+    lng: number;
+}
 
 export const calculateCenterAndZoom = async (
     coord1: Coordinate,
@@ -54,6 +59,7 @@ export const initMap = async (mapDiv: Ref) => {
         'maps'
     )) as google.maps.MapsLibrary
 
+    if (!mapDiv.value) return
     map = new Map(mapDiv.value as HTMLElement, {
         zoom: 14,
         disableDefaultUI: true,
@@ -62,10 +68,8 @@ export const initMap = async (mapDiv: Ref) => {
 }
 
 export const loadExternalDataMarkers = async (
-    dataArray: Record<string, any>[],
-    mapDiv: Ref
+    dataArray: Record<string, any>[]
 ) => {
-    await loader.load()
     const markers = [] as google.maps.Marker[]
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
@@ -84,6 +88,28 @@ export const loadExternalDataMarkers = async (
 
     //    const markerCluster = new window.markerClusterer.MarkerClusterer({ markers, map })
     //  const markerCluster = new MarkerClusterer({ markers, map })
+}
+
+const markersArray = [] as any[]
+export const loadMarkeronMap = async (location: UserCoordinate, clickFunc:(location:UserCoordinate)=>void) => {
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+    const existingMarker = markersArray.find((marker: any) => marker.id === location.id)
+    if (existingMarker) {
+        existingMarker.setPosition(location)
+    } else {
+        const marker = new Marker({
+            map,
+            position: location,
+            icon: '/user.svg'
+        }) as any
+
+        marker.id = location.id
+
+          marker.addListener('click', () => {
+            clickFunc(location)
+        })
+        markersArray.push(marker)
+    }
 }
 
 export const getPathFromPolyline = async (overviewPolyline) => {
