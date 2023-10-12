@@ -54,7 +54,6 @@ const rewardHistoriesListTableFields = ref([
 ])
 
 const onRowClicked = (data) => {
-	// const { selectedUser } = useUserIdDetails()
 	useRouter().push(`/users/${data.id}/user-info`)
 	selectedUser.value = data
 }
