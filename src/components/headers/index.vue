@@ -71,7 +71,7 @@ const componentRouteArray = [
     { routes: ['fleet-add'], component: AddFleets },
     { routes: ['referral'], component: Referral },
     { routes: ['promotion'], component: Promotion },
-    { routes: ['admin'], component: Admin },
+    { routes: ['admin', 'admin-audit-trail'], component: Admin },
     { routes: ['admin-add'], component: CreateAdmin },
     { routes: ['configuration'], component: null },
     { routes: ['campaigns-rewards-id-reward-history'], component: RewardHistory },
