@@ -167,8 +167,16 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.sort((p1, p2) => p1.points_earned - p2.points_earned).map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
 })
+
+const tableIndex = ref(0)
+// con computedPilotLeaderboardList.value.sort((p1, p2) => parseInt(p2.points_earned) - parseInt(p1.points_earned)), 'list here')
+// rewardsList.value.sort((s1, s2) => {
+//     return s1.roll - s2.roll;
+// })
+
+const filteredData = leaderboardPointsList.value.filter((itm) => itm?.points_earned !== 0)
 
 const activeTab = ref('leaderboard')
 
