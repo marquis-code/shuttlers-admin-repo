@@ -177,7 +177,6 @@ const tableIndex = ref(0)
 // })
 
 const filteredData = leaderboardPointsList.value.filter((itm) => itm?.points_earned !== 0)
-console.log(filteredData, 'here again')
 
 const activeTab = ref('leaderboard')
 
