@@ -259,22 +259,22 @@ export const ADMIN_SIDEBAR_MENUS = [
     children: [
       {
         title: 'Trip Rating Settings',
-        routePath: '/configuration/rating',
+        routePath: '/configuration/trip-rating-settings',
         description: 'Configure and manage trip rating parameters'
       },
       {
         title: 'Vehicle Categories',
-        routePath: '/configuration/vehicle',
+        routePath: '/configuration/vehicle-category-management',
         description: 'Manage vehicle categories'
       },
       {
         title: 'Amenities',
-        routePath: '/configuration/amenities',
+        routePath: '/configuration/vehicle-amenities',
         description: 'Manage vehicle amenities'
       },
       {
         title: 'Route Price Control',
-        routePath: '/configuration/pricing',
+        routePath: '/configuration/pricing-control',
         description: 'Manage route pricing centrally'
       }
     ]
