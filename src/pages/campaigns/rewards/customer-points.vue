@@ -1,7 +1,7 @@
 <template>
 	<main class="space-y-10">
 		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
-			Current customer point rate: 1 point ~ ₦50
+			Current customer point rate: 1 point ~ {{ loading_points_rate ? 'loading...' : convertToCurrency(pointsRateObject?.value) }}
 		</div>
 		<div>
 			<div class="container mx-auto">
@@ -61,11 +61,13 @@
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
-import { use_get_pilot_point_list, use_edit_point } from '@/composables/modules/campaigns/fetch'
+import { use_get_pilot_point_list, use_edit_point, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 const { getPilotPoints, loadingPointsList, pointsList, page, total, moveTo, next, prev } = use_get_pilot_point_list()
 const { payloads, editPoint, loading } = use_edit_point()
+const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const userType = 'user'
 getPilotPoints(userType)
+getPilotPointsRate(userType)
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
