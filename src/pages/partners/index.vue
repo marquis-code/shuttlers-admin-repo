@@ -33,7 +33,6 @@ import { useGetPartnersList } from '@/composables/modules/partners/fetch'
 import { usePartnerIdDetails } from '@/composables/modules/partners/id'
 
 const { getPartnersList, loading: fetchingPartners, partnersList, moveTo, total, page, next, prev } = useGetPartnersList()
-// const { selectedPartner, loading, getPartnerById } = usePartnerIdDetails()
 getPartnersList()
 
 definePageMeta({

@@ -46,12 +46,6 @@ import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
 getMainRoutesList()
 
-// const onRowClicked = (data) => {
-// 	const { selectedUser } = useUserIdDetails()
-// 	useRouter().push(`/users/${data.id}/user-info`)
-// 	selectedUser.value = data
-// }
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
