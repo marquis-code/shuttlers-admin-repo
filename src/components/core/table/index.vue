@@ -10,8 +10,8 @@
 							<!-- <input type="checkbox"> -->
 							<div />
 						</th>
-						<th v-if="hasIndex" class="pl-4 text-light">
-							ID
+						<th v-if="hasIndex" class="pl-4 text-dark text-xs">
+							S/N
 						</th>
 						<th v-for="(header, i) in [...headers] as Record<string, any>" :key="i"
 							class="px-4 text-xs font-medium text-left text-gray-900 uppercase"
@@ -32,7 +32,7 @@
 							<input v-model="checkedArray" :value="data" type="checkbox" @change="$emit('checked', checkedArray)">
 						</td>
 						<td v-if="hasIndex" class="pl-4">
-							{{ index + 1 }}
+							{{ (page - 1) * 10 + index + 1 }}
 						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
@@ -111,8 +111,8 @@ const props = defineProps({
 		default: 10
 	},
 	page: {
-		type: String,
-		default: ''
+		type: Number,
+		default: 1
 	}
 })
 

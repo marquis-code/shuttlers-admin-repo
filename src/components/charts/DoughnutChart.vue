@@ -1,5 +1,6 @@
 <template>
 	<Doughnut v-if="!isEmptyObject(data) || !loading" :data="data" :options="chartOptions" />
+	<Skeleton v-else height="300px" />
 </template>
 
 <script setup lang="ts">
