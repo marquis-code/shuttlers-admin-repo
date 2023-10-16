@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
 
-const { token } = useUser()
+const { token, logOut } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
@@ -68,6 +68,7 @@ instanceArray.forEach((instance) => {
 			}
 		}
 		if (err.response.status === 401) {
+			logOut()
 			useAlert().openAlert({ type: 'ERROR', msg: 'Unauthorised ERROR' })
 			return {
 				type: 'ERROR',

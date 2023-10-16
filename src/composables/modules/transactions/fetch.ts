@@ -1,3 +1,4 @@
+import { setTransactionsChartData, last30DaysTransactions, transactionsDistrubution } from './graph'
 import { useAlert } from '@/composables/core/notification'
 import { transactions_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
@@ -18,8 +19,8 @@ export const useGetRecentTransactionsList = () => {
         loadingTransactions.value = true
         const res = await $_recent_transactions(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            transactionsList.value = res.data
-            metaObject.total.value = res.data?.metadata?.total
+            transactionsList.value = res.data.data
+            metaObject.total.value = res.data?.metadata?.total_pages
         }
         loadingTransactions.value = false
     }
@@ -61,4 +62,22 @@ export const useGetTransactionById = () => {
      }
 
     return { loading, getTransactionById, transaction }
+}
+
+export const useGetTransactionGraph = () => {
+    const loading = ref(false)
+    const graphData = ref({} as any)
+
+    const getTransactionGraph = async () => {
+        loading.value = true
+        const res = await transactions_api.$_get_transactions_graph() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            graphData.value = res.data
+            setTransactionsChartData(graphData)
+        }
+
+        loading.value = false
+     }
+
+    return { loading, getTransactionGraph, transaction, graphData, last30DaysTransactions, transactionsDistrubution }
 }

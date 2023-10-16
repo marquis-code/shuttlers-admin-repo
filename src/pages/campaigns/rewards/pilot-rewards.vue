@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div v-if="activeTab === 'list'" class="overflow-x-auto border-[0.4px] rounded-lg">
-					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :table-data="computedPilotRewardList">
+					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :has-index="true" :page="rewardPageCount" :table-data="computedPilotRewardList">
 						<template #item="{ item }">
 							<div v-if="item.min_point">
 								{{ item.data.min_point ?? 'N/A' }}
@@ -94,7 +94,7 @@
 					</div>
 
 					<div class="overflow-x-auto rounded-lg border-[0.4px]">
-						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :option="onRowClicked">
+						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :page="leaderboardPageCount" :has-index="true" :option="onRowClicked">
 							<template #item="{ item }">
 								<div v-if="item.driver">
 									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.user_id}/reward-history`">
@@ -167,16 +167,13 @@ const computedPilotRewardList = computed(() => {
 
 const computedPilotLeaderboardList = computed(() => {
 	if (!leaderboardPointsList.value.length) return []
-	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' })).filter((itm) => { return itm.points_earned || itm.current_point })
+	return leaderboardPointsList.value.map((item, index) => ({ ...item, tableIndex: index + 1, action: '' }))
 })
 
 const activeTab = ref('leaderboard')
 
 const rewardListTableFields = ref([
-	{
-		text: 'S/N',
-        value: 'tableIndex'
-    },
+
     {
 		text: 'REWARD',
         value: 'name'
@@ -196,10 +193,7 @@ const rewardListTableFields = ref([
 ])
 
 const leaderboardListTableFields = ref([
-	{
-		text: 'S/N',
-        value: 'tableIndex'
-    },
+
     {
 		text: 'PILOT',
         value: 'driver'

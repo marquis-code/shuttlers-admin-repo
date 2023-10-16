@@ -1,7 +1,7 @@
 <template>
 	<main class="space-y-10">
 		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
-			Current customer point rate: 1 point ~ ₦50
+			Current customer point rate: 1 point ~  {{ loading_points_rate ? 'loading...' : convertToCurrency(pointsRateObject?.value) }}
 		</div>
 		<div>
 			<div class="container mx-auto space-y-3">
@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div v-if="activeTab === 'list'" class="overflow-x-auto border-[0.4px] rounded-lg">
-					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :table-data="computedPilotRewardList">
+					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :table-data="computedPilotRewardList" :has-index="true">
 						<template #item="{ item }">
 							<div v-if="item.min_point">
 								{{ item.data.min_point ?? 'N/A' }}
@@ -101,6 +101,13 @@
 										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
 									</NuxtLink>
 								</div>
+								<div v-if="item.current_point">
+									<span>{{ item?.data?.current_point ?? 'N/A' }}</span>
+								</div>
+
+								<div v-if="item.points_earned">
+									<span>{{ item?.data?.points_earned ?? 'N/A' }}</span>
+								</div>
 							</template>
 							<template #footer>
 								<TablePaginator :current-page="leaderboardPageCount" :total-pages="leaderboardTotal" :loading="loadingLeaderboardPointsList" @move-to="moveTo($event)" @next="leaderboardNext" @prev="leaderboardPrev" />
@@ -114,18 +121,21 @@
 </template>
 
 <script setup lang="ts">
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useCampaignModal } from '@/composables/core/modals'
-import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_get_leaderboard_point_list, use_update_reward, use_delete_reward } from '@/composables/modules/campaigns/fetch'
+import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_get_leaderboard_point_list, use_update_reward, use_delete_reward, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 import { useAlert } from '@/composables/core/notification'
 const { getPointsRate, loading_pilot_rate_points, pointsObject } = use_get_pilot_hightest_lowest_points()
 const { getPilotRewards, loadingPilotRewardList, rewardsList, next: rewardNext, prev: rewardPrev, moveTo: rewardMoveTo, total: totalReward, page: rewardPageCount } = use_get_pilot_reward_list()
 const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
 const { payloads: deletePayload, deleteReward, processingDelete } = use_delete_reward()
 const { payloads, editReward } = use_update_reward()
+const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const userType = 'user'
 getPointsRate(userType)
 getPilotRewards(userType)
 getLeaderboardPointsList(userType)
+getPilotPointsRate(userType)
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
