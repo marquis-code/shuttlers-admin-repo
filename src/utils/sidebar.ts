@@ -14,6 +14,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Dashboard',
     routePath: '/dashboard',
+    oldPath: '/dashboard',
     description: '',
     iconComponent: shallowRef(homeIcon),
     children: null,
@@ -22,6 +23,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Route Search',
     routePath: '/route-searches',
+    oldPath: '/route-searches/traffic-flow',
     description: '',
     iconComponent: shallowRef(routeIcon),
     rootPath: '/route-searches',
@@ -47,11 +49,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Companies',
         routePath: '/companies',
+        oldPath: 'companies/active',
         description: ''
       },
       {
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
+        oldPath: '/request',
         description: ''
       }
     ]
@@ -72,11 +76,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Manage Users',
         routePath: '/users',
+        oldPath: '/users/list',
         description: ''
       },
       {
         title: ' Batch Bookings',
         routePath: '/users/bookings',
+        oldPath: '/bookings/batch/',
         description: ''
       },
       {
@@ -98,37 +104,44 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Trips',
         routePath: '/trips/type/active',
         description: 'Insights into company requests',
+        oldPath: '/trips/list/active-trips',
         excludedPaths: ['/trips/track-vehicle']
       },
       {
         title: 'Track Vehicle',
         routePath: '/trips/vehicle',
+        oldPath: '/trips/track-vehicle',
         description: ''
       },
       {
         title: 'Routes',
         routePath: '/trips/routes',
+        oldPath: '/routes',
         description: 'All routes',
         excludedPaths: ['/routes/suggested-routes']
       },
       {
         title: 'Suggested routes',
         routePath: '/trips/routes/suggested-routes',
+        oldPath: 'routes/suggested-routes',
         description: ''
       },
       {
         title: 'Waitlist',
         routePath: '/trips/waitlist',
+        oldPath: '/waitlist',
         description: ''
       },
       {
         title: 'Charter',
         routePath: '/trips/charter',
+        oldPath: 'charter/list',
         description: 'Handle shuttlers charter requests'
       },
       {
         title: 'Emergency report',
         routePath: '/trips/sos',
+        oldPath: '/trips/sos',
         description: 'Handle shuttlers sos requests'
       }
     ]
@@ -144,11 +157,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Partners List',
         routePath: '/partners',
+        oldPath: '/partners',
         description: 'Vehicles Partners List'
       },
       {
         title: 'Payout',
         routePath: '/partners/payouts',
+        oldPath: '/partners/payouts',
         description: 'Vehicles Partners payout'
       }
     ]
@@ -164,6 +179,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
           {
         title: 'Manage ',
         routePath: '/drivers',
+        oldPath: '/drivers',
         description: 'Manage Drivers'
       }
       ]
@@ -172,6 +188,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Events',
     routePath: '/events',
+    oldPath: '/events',
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
@@ -181,6 +198,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Transactions',
     routePath: '/transactions',
+    oldPath: '/transactions',
     description: '',
     iconComponent: shallowRef(transactionIcon),
     children: null,
@@ -190,6 +208,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Fleet',
     routePath: '/fleet',
     rootPath: '/fleet',
+    oldPath: '/fleet',
     description: '',
     iconComponent: shallowRef(charterIcon),
     children: null,
@@ -198,6 +217,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Referral Codes',
     routePath: '/referral',
+    oldPath: '/referral',
     description: '',
     iconComponent: shallowRef(tagIcon),
     children: null,
@@ -206,6 +226,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Promo Codes',
     routePath: '/promotion',
+    oldPath: '/promotion',
     description: '',
     iconComponent: shallowRef(tagIcon),
     modulePermission: 'PROMOTIONS',
@@ -246,6 +267,7 @@ export const ADMIN_SIDEBAR_MENUS = [
     iconComponent: shallowRef(adminIcon),
     children: null,
     rootPath: '/admin',
+    oldPath: '/admin/list',
     modulePermission: 'STAFF',
     requiredAdmin: true
   },
@@ -260,21 +282,25 @@ export const ADMIN_SIDEBAR_MENUS = [
       {
         title: 'Trip Rating Settings',
         routePath: '/configuration/trip-rating-settings',
+        oldPath: '/configuration/customer-app/trip-rating-settings',
         description: 'Configure and manage trip rating parameters'
       },
       {
         title: 'Vehicle Categories',
         routePath: '/configuration/vehicle-category-management',
+        oldPath: 'configuration/vehicle/category-management',
         description: 'Manage vehicle categories'
       },
       {
         title: 'Amenities',
         routePath: '/configuration/vehicle-amenities',
+        oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
         description: 'Manage vehicle amenities'
       },
       {
         title: 'Route Price Control',
         routePath: '/configuration/pricing-control',
+        oldPath: 'configuration/pricing-controls/',
         description: 'Manage route pricing centrally'
       }
     ]
