@@ -22,7 +22,7 @@
 					</div>
 				</div>
 				<div v-if="activeTab === 'list'" class="overflow-x-auto border-[0.4px] rounded-lg">
-					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :table-data="computedPilotRewardList">
+					<Table :loading="loadingPilotRewardList" :headers="rewardListTableFields" :table-data="computedPilotRewardList" :hasIndex="true">
 						<template #item="{ item }">
 							<div v-if="item.min_point">
 								{{ item.data.min_point ?? 'N/A' }}

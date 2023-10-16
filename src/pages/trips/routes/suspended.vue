@@ -46,12 +46,6 @@ import { useGetSuspendedRoutes } from '@/composables/modules/routes/fetch'
 const { getSuspendedRoutesList, loadingSuspendedRoutes, suspendedRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetSuspendedRoutes()
 getSuspendedRoutesList()
 
-// const onRowClicked = (data) => {
-// 	const { selectedUser } = useUserIdDetails()
-// 	useRouter().push(`/users/${data.id}/user-info`)
-// 	selectedUser.value = data
-// }
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
