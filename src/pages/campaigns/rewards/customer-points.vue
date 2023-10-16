@@ -47,9 +47,9 @@
 								</div>
 							</div>
 						</template>
-						<template #footer>
+						<!-- <template #footer>
 							<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
-						</template>
+						</template> -->
 					</Table>
 				</div>
 			</div>

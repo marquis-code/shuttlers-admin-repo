@@ -227,7 +227,8 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Rewards',
         routePath: '/campaigns/rewards',
-        description: 'Campaign Rewards'
+        description: 'Campaign Rewards',
+        isExternal: false
       },
       {
         title: 'CMS Banners',
