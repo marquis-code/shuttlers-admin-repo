@@ -14,6 +14,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Dashboard',
     routePath: '/dashboard',
+    oldPath: '/dashboard',
     description: '',
     iconComponent: shallowRef(homeIcon),
     children: null,

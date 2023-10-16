@@ -67,8 +67,8 @@
 								<p class="text-[#667085] font-[400] text-xs">
 									Customer
 								</p>
-								<NuxtLink :to="`/drivers/${computedPointData.highest_piolt_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.highest_piolt ?? 'N/A' }}
+								<NuxtLink :to="`/users/${computedPointData.highest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData.highest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>
@@ -83,7 +83,7 @@
 								<p class="text-[#667085] font-[400] text-xs">
 									Customer
 								</p>
-								<NuxtLink :to="`/drivers/${computedPointData.lowest_piolt_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
+								<NuxtLink :to="`/users/${computedPointData.lowest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
 									{{ computedPointData.lowest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
@@ -144,10 +144,10 @@ definePageMeta({
 const computedPointData = computed(() => {
 	return ({
 		highest_score: pointsObject.value?.highest?.points_earned,
-		highest_piolt: `${pointsObject.value?.highest.driver?.fname} ${pointsObject.value?.highest?.driver?.lname}`,
-		highest_piolt_id: pointsObject.value?.highest.driver?.id,
-		lowest_pilot: `${pointsObject.value?.lowest.driver?.fname} ${pointsObject.value?.lowest?.driver?.lname}`,
-		lowest_piolt_id: pointsObject.value?.lowest.driver?.id,
+		highest_pilot: `${pointsObject.value?.highest.user?.fname} ${pointsObject.value?.highest?.user?.lname}`,
+		highest_pilot_id: pointsObject.value?.highest.user?.id,
+		lowest_pilot: `${pointsObject.value?.lowest.user?.fname} ${pointsObject.value?.lowest?.user?.lname}`,
+		lowest_pilot_id: pointsObject.value?.lowest.user?.id,
 		lowest_score: pointsObject.value?.lowest?.points_earned
 	})
 })
