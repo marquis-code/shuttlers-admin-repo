@@ -166,7 +166,6 @@ const computedPilotRewardList = computed(() => {
 })
 
 const computedPilotLeaderboardList = computed(() => {
-	console.log(leaderboardPointsList.value)
 	if (!leaderboardPointsList.value.length) return []
 	return leaderboardPointsList.value.map((item, index) => {
 	return {
