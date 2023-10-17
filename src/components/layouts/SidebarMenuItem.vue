@@ -1,5 +1,15 @@
 <template>
-	<nuxt-link :to="menu.routePath ? { path: menu?.routePath } : { path: menu?.rootPath }" :custom="!!hasSubMenus(menu)">
+	<li v-if="!hasSubMenus(menu) && menu.shouldRedirect" class="nav-menu transite">
+		<a href="#" @click="openAsExternalUrl(menu.oldPath)">
+			<div class="nav-title">
+				<span class="flex items-center">
+					<component :is="menu.iconComponent" class="img" />
+					<span class="text-sm">{{ menu.title }}</span>
+				</span>
+			</div>
+		</a>
+	</li>
+	<nuxt-link v-else :to="menu.routePath ? { path: menu?.routePath } : { path: menu?.rootPath }" :custom="!!hasSubMenus(menu)">
 		<template #default="{ isActive, href }">
 			<li class="nav-menu transite"
 				:class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu?.rootPath) }">
@@ -13,16 +23,24 @@
 							:class="[menu.isOpen ? 'rotate-180' : '']" />
 					</div>
 					<ul class="nav-submenus">
-						<nuxt-link v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex"
-							:to="{ path: submenu.routePath }">
-							<template #default="{ isActive, href }">
-								<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">
-									<a :href="href">
-										{{ submenu.title }}
-									</a>
-								</li>
-							</template>
-						</nuxt-link>
+						<span v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex">
+							<nuxt-link v-if="!submenu.shouldRedirect"
+								:to="{ path: submenu.routePath }">
+								<template #default="{ isActive, href }">
+									<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">
+										<a :href="href">
+											{{ submenu.title }}
+										</a>
+									</li>
+								</template>
+							</nuxt-link>
+							<a v-else href="#" @click="openAsExternalUrl(submenu.oldPath)">
+								<span class="nav-submenu" @click="submenu.calling_function">
+									{{ submenu.title }}
+								</span>
+							</a>
+
+						</span>
 					</ul>
 				</template>
 				<template v-else>
@@ -42,6 +60,7 @@
 
 <script setup>
 import downIcon from '@/assets/icons/src/down.vue'
+import { openAsExternalUrl } from '@/composables/utils/system'
 
 const props = defineProps({
   menu: {

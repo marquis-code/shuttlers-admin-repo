@@ -18,6 +18,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(homeIcon),
     children: null,
+    shouldRedirect: true,
     modulePermission: ['ROUTES', 'CORPORATES', 'USERS', 'TRIPS', 'PARTNERS', 'DRIVERS', 'EVENTS', 'TRANSACTIONS', 'VEHICLES', 'REFERRALS', 'PROMOTIONS', 'ADMINCONFIG', 'STAFF']
   },
   {
@@ -249,7 +250,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Rewards',
         routePath: '/campaigns/rewards',
         description: 'Campaign Rewards',
-        isExternal: false
+        shouldRedirect: false
       },
       {
         title: 'CMS Banners',
