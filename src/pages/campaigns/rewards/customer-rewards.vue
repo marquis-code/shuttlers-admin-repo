@@ -96,9 +96,9 @@
 					<div class="overflow-x-auto rounded-lg border-[0.4px]">
 						<Table :loading="loadingLeaderboardPointsList" :headers="leaderboardListTableFields" :table-data="computedPilotLeaderboardList" :option="onRowClicked" :has-index="true" :page="leaderboardPageCount">
 							<template #item="{ item }">
-								<div v-if="item.driver">
-									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.driver?.id}/reward-history`">
-										{{ `${item?.data?.driver?.fname} ${item?.data?.driver?.lname}` ?? 'N/A' }}
+								<div v-if="item.user">
+									<NuxtLink class="font-medium underline text-[#4848ED]" :to="`/campaigns/rewards/${item?.data?.user?.id}/reward-history`">
+										{{ `${item?.data?.user?.fname} ${item?.data?.user?.lname}` ?? 'N/A' }}
 									</NuxtLink>
 								</div>
 								<div v-if="item.current_point">
@@ -166,6 +166,7 @@ const computedPilotRewardList = computed(() => {
 })
 
 const computedPilotLeaderboardList = computed(() => {
+	console.log(leaderboardPointsList.value)
 	if (!leaderboardPointsList.value.length) return []
 	return leaderboardPointsList.value.map((item, index) => {
 	return {
@@ -208,7 +209,7 @@ const leaderboardListTableFields = ref([
     // },
     {
 		text: 'CUSTOMER',
-        value: 'driver'
+        value: 'user'
     },
     {
 		text: 'TOTAL POINTS',
