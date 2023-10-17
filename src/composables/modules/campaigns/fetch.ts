@@ -1,6 +1,7 @@
 import { campaigns_api } from '@/api_factory/modules/campaigns'
 import { CustomAxiosResponse } from '@/api_factory/axios.config'
 import { usePagination } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
 
 const payloads = {
     name: ref(''),
@@ -80,6 +81,7 @@ export const use_get_pilot_point_list = () => {
             pointsList.value = res?.data
             metaObject.total.value = res?.data?.metadata?.total_pages || 0
         }
+        // useAlert().openAlert({ type: 'SUCCESS', msg: 'Points was updated successfully' })
         loadingPointsList.value = false
     }
     setFunction(getPilotPoints)
@@ -149,7 +151,7 @@ export const use_edit_point = () => {
             points: Number(payloads?.min_point?.value),
             event_name: payloads?.name?.value
         }
-        const res = (await campaigns_api.$_edit_pilot_points(id, payload)) as any
+        const res = (await campaigns_api.$_edit_pilot_points(payload)) as any
         loading.value = false
         if (res.type !== 'ERROR') {
             // location.assign('/campaigns/rewards/')

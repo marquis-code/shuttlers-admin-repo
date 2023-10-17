@@ -251,7 +251,7 @@ const handleDelete = async (item) => {
 
 const onRowClicked = (data) => {
 	useRouter().push({
-        path: `/campaigns/rewards/${data.id}/reward-history`,
+        path: `/campaigns/rewards/${data.user_id}/reward-history`,
         query: { userType: 'user' }
       })
 }

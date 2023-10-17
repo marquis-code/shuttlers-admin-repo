@@ -35,9 +35,10 @@ export const campaigns_api = {
         const url = `/compliance-reward-histories/${user_type}/${userId}?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-    $_edit_pilot_points: (id:number, payload: {points: number, event_name: string}) => {
-        const url = `/compliance-events/${id}`
-        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+
+    $_edit_pilot_points: (payload: {points: number, event_name: string}) => {
+        const url = '/compliance-events'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     },
     $_update_pilot_reward_status: (id:number, payload: {status: string, name: string}) => {
         const url = '/compliance-rewards'
