@@ -46,14 +46,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         {
         title: 'Insights',
         routePath: '/companies/insights',
-        oldPath: 'companies/active',
+        oldPath: '/companies/active',
         shouldRedirect: true,
         description: 'Insights into company requests'
       },
       {
         title: 'Companies',
         routePath: '/companies',
-        oldPath: 'companies/active',
+        oldPath: '/companies/active',
           shouldRedirect: true,
         description: ''
       },
@@ -77,6 +77,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Insights',
         routePath: '/users/insights',
+          oldPath: '/users/insights',
           shouldRedirect: true,
         description: 'Insights into company requests'
       },
@@ -97,7 +98,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: ' Batch Refund',
         routePath: '/users/batch-refund',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       }
     ]

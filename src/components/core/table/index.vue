@@ -1,5 +1,5 @@
 <template>
-	<section class="flex flex-col max-w-full overflow-auto pb-32">
+	<section class="flex flex-col max-w-full overflow-auto pb-32 z-50">
 		<slot name="header" />
 
 		<div class="border border-gray-200 md:rounded-b-lg">

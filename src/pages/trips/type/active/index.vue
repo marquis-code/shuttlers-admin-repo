@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
-				<section class="flex flex-col gap-4">
+				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter />
 					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
 				</section>

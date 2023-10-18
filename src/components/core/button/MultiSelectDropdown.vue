@@ -2,13 +2,14 @@
 	<div class="relative">
 		<Popover v-slot="{ open }" class="relative">
 			<PopoverButton
-				class="btn flex outline-none items-center px-3 py-2.5 font-normal border bg-light rounded-lg"
+				class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm"
 
 			>
-				<span>Actions</span>
+				<span v-if="title" class="text-grey5">{{ title }}</span>
+				<span class="text-dark ml-2">{{ computedSelectedString }}</span>
 				<ChevronDownIcon
 					:class="open ? '' : 'text-opacity-70'"
-					class="ml-2 h-5 w-5"
+					class="ml-3 h-5 w-5"
 					aria-hidden="true"
 				/>
 			</PopoverButton>
@@ -23,17 +24,18 @@
 				leave-to-class="translate-y-1 opacity-0"
 			>
 				<PopoverPanel
-					class="absolute right-0 z-10 mt-1"
+					class=" right-0 z-50"
 				>
 					<div
-						class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
+						class="absolute start-0 z-10 mt-2 w-full rounded-md border border-gray-100 bg-white shadow-lg"
 						role="menu"
 					>
 						<div class="p-2">
 							<div class="p-2 flex flex-col items-start w-full">
-								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
-									{{ item.name }}
-								</button>
+								<label v-for="item in (children as Record<string, any>[])" :key="item.name" :for="item.name">
+									<input :id="item.name" v-model="selected" type="checkbox" :value="item" class="form-checkbox rounded !outline-none none text-shuttlersGreen !ring-0" @change="()=>{}">
+									<span>{{ item.name }}</span>
+								</label>
 							</div>
 						</div>
 					</div>
@@ -46,7 +48,18 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
-defineProps({
+
+const selected = ref([])
+const computedSelectedString = computed(() => {
+	if (selected.value.length === 0) return 'All'
+	if (selected.value.length === props.children.length) return 'All'
+	return selected.value.map((i: any) => i.name).join(', ')
+})
+const props = defineProps({
+	title: {
+		type: String,
+		default: 'Title'
+	},
 	data: {
 		type: Object,
 		default: () => ({})
