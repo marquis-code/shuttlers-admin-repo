@@ -10,11 +10,11 @@
 const pageTabs = [
     {
         name: 'Pricing control',
-        path: '/configuration/pricing-control'
+        path: '/configuration/pricing/pricing-control'
     },
     {
         name: 'Payment option display',
-        path: '/configuration/pricing-control/payment-option'
+        path: '/configuration/pricing/payment-option'
     }
 ]
 </script>

@@ -299,7 +299,7 @@ export const ADMIN_SIDEBAR_MENUS = [
       },
       {
         title: 'Route Price Control',
-        routePath: '/configuration/pricing-control',
+        routePath: '/configuration/pricing/pricing-control',
         oldPath: 'configuration/pricing-controls/',
         description: 'Manage route pricing centrally'
       }

@@ -1,16 +1,44 @@
-import { amenities_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { configure_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const loadingAmenities = ref(false)
 const amenitiesList = ref([] as Record<string, any>[])
 const loadingInspectionSites = ref(false)
 const inspectionSiteList = ref([] as Record<string, any>[])
+
 const loadingVehicleTypes = ref(false)
 const vehicleTypesList = ref([] as Record<string, any>[])
 
+const loadingRoutePrices = ref(false)
+const routePricesList = ref([] as Record<string, any>[])
+
+const loadingGeneralPaymentOptions = ref(false)
+const generalPaymentOptionsList = ref([] as Record<string, any>[])
+
+const loadingPaymentOptions = ref(false)
+const paymentOptionsList = ref([] as Record<string, any>[])
+
+const loadingCities = ref(false)
+const citiesList = ref([] as Record<string, any>[])
+
+const loadingCostOfSupply = ref(false)
+const costOfSupplyList = ref([] as Record<string, any>[])
+
+const creatingAmenities = ref(false)
+const payloads = {
+    name: ref(''),
+    image: ref(''),
+    short_name: ref('')
+}
+
+const updatingPaymentOption = ref(false)
+const paymentOptionsPayload = {
+    payment_options_ids: ref([] as any)
+}
+
 export const useAmenitiesList = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
-    const { $_get_amenities } = amenities_api
+    const { $_get_amenities } = configure_api
 
     const getAmenitiesList = async () => {
         loadingAmenities.value = true
@@ -30,7 +58,7 @@ export const useAmenitiesList = () => {
 
 export const useInspectionSitesList = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
-    const { $_get_inspection_sites } = amenities_api
+    const { $_get_inspection_sites } = configure_api
 
     const getInspectionSiteList = async () => {
         loadingInspectionSites.value = true
@@ -50,7 +78,7 @@ export const useInspectionSitesList = () => {
 
 export const useVehicleTypesList = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
-    const { $_get_vehicle_types } = amenities_api
+    const { $_get_vehicle_types } = configure_api
 
     const getVehicleTypesList = async () => {
         loadingVehicleTypes.value = true
@@ -66,4 +94,143 @@ export const useVehicleTypesList = () => {
     setFunction(getVehicleTypesList)
 
     return { getVehicleTypesList, loadingVehicleTypes, vehicleTypesList, prev, ...metaObject, next, moveTo }
+}
+
+export const useRoutePricesList = () => {
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const { $_get_route_prices } = configure_api
+
+    const getRoutePricesList = async () => {
+        loadingRoutePrices.value = true
+
+        const res = await $_get_route_prices(metaObject) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            routePricesList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loadingRoutePrices.value = false
+    }
+    setFunction(getRoutePricesList)
+
+    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo }
+}
+
+export const useGeneralPaymentOptionsList = () => {
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const { $_get_general_payment_options } = configure_api
+
+    const getGeneralPaymentOptionsList = async () => {
+        loadingGeneralPaymentOptions.value = true
+
+        const res = await $_get_general_payment_options() as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            generalPaymentOptionsList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loadingGeneralPaymentOptions.value = false
+    }
+    setFunction(getGeneralPaymentOptionsList)
+
+    return { getGeneralPaymentOptionsList, loadingGeneralPaymentOptions, generalPaymentOptionsList, prev, ...metaObject, next, moveTo }
+}
+
+export const usePaymentOptionsList = () => {
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const { $_get_payment_options } = configure_api
+
+    const getPaymentOptionsList = async () => {
+        loadingPaymentOptions.value = true
+
+        const res = await $_get_payment_options() as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            paymentOptionsList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loadingPaymentOptions.value = false
+    }
+    setFunction(getPaymentOptionsList)
+
+    return { getPaymentOptionsList, loadingPaymentOptions, paymentOptionsList, prev, ...metaObject, next, moveTo }
+}
+
+export const useCitiesList = () => {
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const { $_get_cities } = configure_api
+
+    const getCitiesList = async () => {
+        loadingCities.value = true
+
+        const res = await $_get_cities() as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            citiesList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loadingCities.value = false
+    }
+    setFunction(getCitiesList)
+
+    return { getCitiesList, loadingCities, citiesList, prev, ...metaObject, next, moveTo }
+}
+
+export const useCostOfSupplyList = () => {
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const { $_get_cost_of_supply } = configure_api
+
+    const getCostOfSupplyList = async () => {
+        loadingCostOfSupply.value = true
+
+        const res = await $_get_cost_of_supply(metaObject) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            costOfSupplyList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loadingCostOfSupply.value = false
+    }
+    setFunction(getCostOfSupplyList)
+
+    return { getCostOfSupplyList, loadingCostOfSupply, costOfSupplyList, prev, ...metaObject, next, moveTo }
+}
+
+export const useCreateVehicleAmenity = () => {
+    const { $_create_amenity } = configure_api
+
+    const createAmenity = async () => {
+        creatingAmenities.value = true
+
+        const res = await $_create_amenity({
+            image: payloads.image,
+            name: payloads.name,
+            short_name: payloads.short_name
+        }) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            // amenity was  created successfully
+        }
+        creatingAmenities.value = false
+    }
+
+    return { payloads, createAmenity, creatingAmenities }
+}
+
+export const useUpdatePaymentOptions = () => {
+    const { $_update_payment_options } = configure_api
+
+    const updatePaymentOption = async () => {
+        updatingPaymentOption.value = true
+
+        const res = await $_update_payment_options(paymentOptionsPayload) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            console.log(res, 'res here')
+            // amenity was  created successfully
+        }
+        updatingPaymentOption.value = false
+    }
+
+    return { paymentOptionsPayload, updatePaymentOption, updatingPaymentOption }
 }
