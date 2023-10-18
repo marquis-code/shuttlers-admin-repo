@@ -39,7 +39,7 @@ const environmental_url = {
 
 export const openAsExternalUrl = (url) => {
   const tokenValue = token.value
-  switch (process.env.ENV) {
+  switch (import.meta.env.VITE_ENV_ALIAS) {
     case 'test':
     case 'TEST':
       window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${tokenValue}`
