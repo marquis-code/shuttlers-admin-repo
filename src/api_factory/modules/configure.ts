@@ -1,7 +1,7 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject } from '@/composables/utils/table'
 
-export const amenities_api = {
+export const configure_api = {
     $_get_amenities: (metaObject: TMetaObject) => {
 		const url = `/vehicle-amenities?metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
@@ -10,7 +10,7 @@ export const amenities_api = {
 		const url = `/inspection-sites?sort[created_at]=desc&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_cities: (metaObject: TMetaObject) => {
+	$_get_cities: () => {
 		const url = '/city/all?limit=1000&fields=id,name'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -18,12 +18,36 @@ export const amenities_api = {
 		const url = `/vehicle-types/cost-of-supply?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_vehicle_types: (metaObject: TMetaObject) => {
-		const url = `/vehicle-types?metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-	},
-    $_create_amenity: (payload: any) => {
+    $_create_amenity: (payload: {image: any, name: string, short_name: string}) => {
 		const url = '/vehicle-amenities?metadata=false'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_vehicle_types: (metaObject: TMetaObject) => {
+		const url = `/vehicle-types?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_prices: (metaObject: TMetaObject) => {
+		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_payment_options: () => {
+		const url = '/payment-options'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_general_payment_options: () => {
+		const url = '/general-payment-options'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_trip_rating_settings: () => {
+		const url = '/general-payment-options'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_update_payment_options: (payload: any) => {
+		const url = '/bulk/general-payment-options'
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
+	// $_get_create_rating_categories: (payload:any) => {
+	// 	const url = '/general-payment-options'
+	// 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	// }
 }
