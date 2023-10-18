@@ -57,3 +57,5 @@ export const openAsExternalUrl = (url) => {
       break
   }
 }
+
+export const is_dev = import.meta.env.DEV

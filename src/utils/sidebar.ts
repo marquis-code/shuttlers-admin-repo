@@ -41,13 +41,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
-
     modulePermission: 'CORPORATES',
     children: [
         {
         title: 'Insights',
         routePath: '/companies/insights',
-          shouldRedirect: true,
+        oldPath: 'companies/active',
+        shouldRedirect: true,
         description: 'Insights into company requests'
       },
       {
