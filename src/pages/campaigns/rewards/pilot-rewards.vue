@@ -67,8 +67,8 @@
 								<p class="text-[#667085] font-[400] text-xs">
 									Pilot
 								</p>
-								<NuxtLink :to="`/drivers/${computedPointData.highest_piolt_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.highest_piolt ?? 'N/A' }}
+								<NuxtLink :to="`/drivers/${computedPointData.highest_pilot_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData.highest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>
@@ -144,8 +144,8 @@ definePageMeta({
 const computedPointData = computed(() => {
 	return ({
 		highest_score: pointsObject.value?.highest?.points_earned,
-		highest_piolt: `${pointsObject.value?.highest.driver?.fname} ${pointsObject.value?.highest?.driver?.lname}`,
-		highest_piolt_id: pointsObject.value?.highest.driver?.id,
+		highest_pilot: `${pointsObject.value?.highest.driver?.fname} ${pointsObject.value?.highest?.driver?.lname}`,
+		highest_pilot_id: pointsObject.value?.highest.driver?.id,
 		lowest_pilot: `${pointsObject.value?.lowest.driver?.fname} ${pointsObject.value?.lowest?.driver?.lname}`,
 		lowest_piolt_id: pointsObject.value?.lowest.driver?.id,
 		lowest_score: pointsObject.value?.lowest?.points_earned

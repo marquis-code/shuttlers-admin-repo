@@ -279,12 +279,6 @@ definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
-// import Multiselect from 'vue-multiselect'
-// import { ref, computed, watch } from 'vue'
-// import { useRouter } from 'vue-router/composables'
-// import Swal from 'sweetalert2'
-// import { axiosInstance as axios } from '@/plugins/axios'
-// import promoCode from '@/api/promo_codes'
 
 const router = useRouter()
 const shouldRewardOwners = ref(0)

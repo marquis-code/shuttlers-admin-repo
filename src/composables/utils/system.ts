@@ -38,22 +38,22 @@ const environmental_url = {
 }
 
 export const openAsExternalUrl = (url) => {
-  const b64 = btoa(JSON.stringify(token.value))
+  const tokenValue = token.value
   switch (process.env.ENV) {
     case 'test':
     case 'TEST':
-      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${b64}`
+      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${tokenValue}`
       break
     case 'staging':
-    case 'STAG':
-      window.location.href = `${environmental_url.staging}/redirect/?path=${url}&token=${b64}`
+    case 'QA':
+      window.location.href = `${environmental_url.staging}/redirect/?path=${url}&token=${tokenValue}`
       break
     case 'prod':
     case 'PROD':
-      window.location.href = `${environmental_url.prod}/redirect/?path=${url}&token=${b64}`
+      window.location.href = `${environmental_url.prod}/redirect/?path=${url}&token=${tokenValue}`
       break
     default:
-      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${b64}`
+      window.location.href = `${environmental_url.test}/redirect/?path=${url}&token=${tokenValue}`
       break
   }
 }

@@ -56,7 +56,6 @@ const visiblePages = computed(() => {
     const end = Math.min(start + maxVisiblePages - 1, props.totalPages)
 
     if (start > 1) {
-      // Add ellipsis before the first page
       return [1, '...', ...Array.from({ length: end - start + 1 }, (_, i) => start + i)]
     } else {
       return Array.from({ length: end - start + 1 }, (_, i) => start + i)

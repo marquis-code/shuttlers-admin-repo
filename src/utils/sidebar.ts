@@ -18,6 +18,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(homeIcon),
     children: null,
+    shouldRedirect: true,
     modulePermission: ['ROUTES', 'CORPORATES', 'USERS', 'TRIPS', 'PARTNERS', 'DRIVERS', 'EVENTS', 'TRANSACTIONS', 'VEHICLES', 'REFERRALS', 'PROMOTIONS', 'ADMINCONFIG', 'STAFF']
   },
   {
@@ -28,6 +29,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
     iconComponent: shallowRef(routeIcon),
     rootPath: '/route-searches',
     children: null,
+      shouldRedirect: true,
     modulePermission: 'ROUTES'
   }
 ]
@@ -39,23 +41,27 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
+
     modulePermission: 'CORPORATES',
     children: [
         {
         title: 'Insights',
         routePath: '/companies/insights',
+          shouldRedirect: true,
         description: 'Insights into company requests'
       },
       {
         title: 'Companies',
         routePath: '/companies',
         oldPath: 'companies/active',
+          shouldRedirect: true,
         description: ''
       },
       {
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
+          shouldRedirect: true,
         description: ''
       }
     ]
@@ -71,23 +77,27 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Insights',
         routePath: '/users/insights',
+          shouldRedirect: true,
         description: 'Insights into company requests'
       },
       {
         title: 'Manage Users',
         routePath: '/users',
         oldPath: '/users/list',
+          shouldRedirect: true,
         description: ''
       },
       {
         title: ' Batch Bookings',
         routePath: '/users/bookings',
         oldPath: '/bookings/batch/',
+          shouldRedirect: true,
         description: ''
       },
       {
         title: ' Batch Refund',
         routePath: '/users/batch-refund',
+          shouldRedirect: true,
         description: ''
       }
     ]
@@ -105,12 +115,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/trips/type/active',
         description: 'Insights into company requests',
         oldPath: '/trips/list/active-trips',
+          shouldRedirect: true,
         excludedPaths: ['/trips/track-vehicle']
       },
       {
         title: 'Track Vehicle',
         routePath: '/trips/vehicle',
         oldPath: '/trips/track-vehicle',
+          shouldRedirect: true,
         description: ''
       },
       {
@@ -118,6 +130,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/trips/routes',
         oldPath: '/routes',
         description: 'All routes',
+          shouldRedirect: true,
         excludedPaths: ['/routes/suggested-routes']
       },
       {
@@ -130,6 +143,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Waitlist',
         routePath: '/trips/waitlist',
         oldPath: '/waitlist',
+          shouldRedirect: true,
         description: ''
       },
       {
@@ -142,6 +156,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Emergency report',
         routePath: '/trips/sos',
         oldPath: '/trips/sos',
+          shouldRedirect: true,
         description: 'Handle shuttlers sos requests'
       }
     ]
@@ -172,9 +187,10 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Drivers',
     routePath: '/drivers',
     description: '',
-      rootPath: '/drivers',
+    rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),
-      modulePermission: 'DRIVERS',
+    shouldRedirect: true,
+    modulePermission: 'DRIVERS',
     children: [
           {
         title: 'Manage ',
@@ -192,6 +208,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
+      shouldRedirect: true,
     children: null,
     modulePermission: 'EVENTS'
   },
@@ -199,6 +216,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Transactions',
     routePath: '/transactions',
     oldPath: '/transactions',
+    shouldRedirect: true,
     description: '',
     iconComponent: shallowRef(transactionIcon),
     children: null,
@@ -238,6 +256,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(partnerIcon),
     rootPath: '/campaigns',
+      shouldRedirect: true,
     modulePermission: 'CAMPAIGNS',
     children: [
       {
@@ -249,7 +268,8 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Rewards',
         routePath: '/campaigns/rewards',
-        description: 'Campaign Rewards'
+        description: 'Campaign Rewards',
+        shouldRedirect: false
       },
       {
         title: 'CMS Banners',
@@ -270,6 +290,7 @@ export const ADMIN_SIDEBAR_MENUS = [
     children: null,
     rootPath: '/admin',
     oldPath: '/admin/list',
+      shouldRedirect: true,
     modulePermission: 'STAFF',
     requiredAdmin: true
   },
@@ -279,24 +300,28 @@ export const ADMIN_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(configureIcon),
     rootPath: '/configuration',
+      shouldRedirect: true,
     modulePermission: 'ADMINCONFIG',
     children: [
       {
         title: 'Trip Rating Settings',
         routePath: '/configuration/trip-rating-settings',
         oldPath: '/configuration/customer-app/trip-rating-settings',
+          shouldRedirect: true,
         description: 'Configure and manage trip rating parameters'
       },
       {
         title: 'Vehicle Categories',
         routePath: '/configuration/vehicle-category-management',
         oldPath: 'configuration/vehicle/category-management',
+          shouldRedirect: true,
         description: 'Manage vehicle categories'
       },
       {
         title: 'Amenities',
         routePath: '/configuration/vehicle-amenities',
         oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
+          shouldRedirect: true,
         description: 'Manage vehicle amenities'
       },
       {
