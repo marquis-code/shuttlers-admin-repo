@@ -226,7 +226,6 @@ export const useUpdatePaymentOptions = () => {
         const res = await $_update_payment_options(paymentOptionsPayload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            console.log(res, 'res here')
             // amenity was  created successfully
         }
         updatingPaymentOption.value = false
