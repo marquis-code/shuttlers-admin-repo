@@ -1,5 +1,5 @@
 <template>
-	<li v-if="!hasSubMenus(menu) && menu.shouldRedirect && is_dev" class="nav-menu transite">
+	<li v-if="!hasSubMenus(menu) && menu.shouldRedirect && !is_dev" class="nav-menu transite">
 		<a href="#" @click="openAsExternalUrl(menu.oldPath)">
 			<div class="nav-title">
 				<span class="flex items-center">

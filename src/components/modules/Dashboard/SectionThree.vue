@@ -6,8 +6,7 @@
 					Trip rating service
 				</h3>
 			</div>
-			<div class="pr-3">
-			</div>
+			<div class="pr-3" />
 		</div>
 		<div class="p-5 space-y-6">
 			<div class="rounded-md border bg-white shadow-sm space-y-4 p-6 lg:w-4/12">

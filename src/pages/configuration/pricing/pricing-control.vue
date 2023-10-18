@@ -32,20 +32,32 @@
 				</span>
 				<div v-if="item.pricing_scheme" class="border border-red-50- outline-none py-1.5 rounded-md">
 					<select v-model="form.pricing_scheme">
-						<option value="per_vehicle">Per vehicle</option>
-						<option value="per_seat">Per seat</option>
+						<option value="per_vehicle">
+							Per vehicle
+						</option>
+						<option value="per_seat">
+							Per seat
+						</option>
 					</select>
 				</div>
 				<div v-if="item.pricing_type" class="border border-red-50- outline-none py-1.5 rounded-md">
 					<select v-model="form.pricing_type">
-						<option value="per_vehicle">Lookup From Pricing Table</option>
-						<option value="per_seat">Auto Generate From Margin</option>
+						<option value="per_vehicle">
+							Lookup From Pricing Table
+						</option>
+						<option value="per_seat">
+							Auto Generate From Margin
+						</option>
 					</select>
 				</div>
 				<div v-if="item.pricing_margin" class="border border-red-50- outline-none py-1.5 rounded-md">
 					<select v-model="form.pricing_margin">
-						<option value="percent">Percent</option>
-						<option value="flat">Flat</option>
+						<option value="percent">
+							Percent
+						</option>
+						<option value="flat">
+							Flat
+						</option>
 					</select>
 				</div>
 			</template>
