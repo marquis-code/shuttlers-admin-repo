@@ -1,4 +1,3 @@
-import { formToJSON } from 'axios';
 <template>
 	<Modal
 		modal="$atts.modal"
@@ -32,7 +31,7 @@ import { formToJSON } from 'axios';
 import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { use_configure_point } from '@/composables/modules/campaigns/fetch'
+import { use_configure_point, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 const { payloads, configurePoint, loading } = use_configure_point()
 const isFormEmpty = computed(() => {
 	return !!(form.amount)
@@ -41,15 +40,21 @@ const form = reactive({
     amount: ''
 })
 
+const path = useRoute().path
+const isCustomerPoint = path.includes('customer-points')
+
 const computedPoint = computed(() => {
 	return Math.round(Number(form.amount) / 50)
 })
+
+const { getPilotPointsRate } = use_get_points_rate()
 
 const handlePointConfiguration = async () => {
 	payloads.value.value = form.amount
 	payloads.min_point.value = String('1')
        payloads.currency.value = 'NGN'
 	await configurePoint()
+	getPilotPointsRate(isCustomerPoint ? 'user' : 'driver')
 	useCampaignModal().closeConfigurePoints()
 	useAlert().openAlert({ type: 'SUCCESS', msg: 'New Point has been created successfully' })
 }

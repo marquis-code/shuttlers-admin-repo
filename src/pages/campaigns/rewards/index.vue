@@ -81,8 +81,6 @@ const computedPointsList = computed(() => {
 	value: item?.points * 50,
 	action: ''
    }
-}).filter((itm) => {
-	return itm.points !== 0
 })
 })
 
@@ -98,10 +96,6 @@ const tableFields = ref([
     {
         text: 'POINT',
         value: 'point'
-    },
-    {
-        text: 'VALUE',
-        value: 'value'
     },
     {
         text: 'ACTION',

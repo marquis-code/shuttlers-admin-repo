@@ -46,7 +46,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         {
         title: 'Insights',
         routePath: '/companies/insights',
-        oldPath: '/companies/active',
+        oldPath: '/companies/insights',
         shouldRedirect: true,
         description: 'Insights into company requests'
       },
@@ -323,7 +323,7 @@ export const ADMIN_SIDEBAR_MENUS = [
       {
         title: 'Vehicle Categories',
         routePath: '/configuration/vehicle-category-management',
-        oldPath: 'configuration/vehicle/category-management',
+        oldPath: '/configuration/vehicle/category-management',
           shouldRedirect: true,
         description: 'Manage vehicle categories'
       },

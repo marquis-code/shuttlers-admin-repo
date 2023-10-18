@@ -199,10 +199,10 @@ export const use_update_reward = () => {
     return { payloads, editReward, loadingRewardUpdate }
 }
 
-export const use_get_points_rate = () => {
-    const loading_points_rate = ref(false)
-    const pointsRateObject = ref({})
+const loading_points_rate = ref(false)
+const pointsRateObject = ref({})
 
+export const use_get_points_rate = () => {
     const getPilotPointsRate = async (userType:string) => {
         loading_points_rate.value = true
         const res = await campaigns_api.$_get_point_rate(userType) as CustomAxiosResponse
