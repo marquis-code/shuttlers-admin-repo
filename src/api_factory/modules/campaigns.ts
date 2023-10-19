@@ -51,5 +51,17 @@ export const campaigns_api = {
     $_get_point_rate: (user_type:string) => {
         const url = `/reward-point-rate?user_type=${user_type}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_baners: (meta:TMetaObject) => {
+        const url = `/dynamic-dashboard/baners?limit=${meta.page_size.value}&page=${meta.page.value}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_carousels: (meta:TMetaObject) => {
+        const url = `/dynamic-dashboard/carousels?limit=${meta.page_size.value}&page=${meta.page.value}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_campaigns: (meta:TMetaObject) => {
+        const url = `/campaigns?limit=${meta.page_size.value}&page=${meta.page.value}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }
