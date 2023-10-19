@@ -127,14 +127,15 @@ import { use_get_pilot_hightest_lowest_points, use_get_pilot_reward_list, use_ge
 import { useAlert } from '@/composables/core/notification'
 const { getPointsRate, loading_pilot_rate_points, pointsObject } = use_get_pilot_hightest_lowest_points()
 const { getPilotRewards, loadingPilotRewardList, rewardsList, next: rewardNext, prev: rewardPrev, moveTo: rewardMoveTo, total: totalReward, page: rewardPageCount } = use_get_pilot_reward_list()
-const { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
+const { getLeaderboardPointsList, userType: leaderboardUserType, loadingLeaderboardPointsList, leaderboardPointsList, next: leaderboardNext, prev: leaderboardPrev, moveTo, total: leaderboardTotal, page: leaderboardPageCount } = use_get_leaderboard_point_list()
 const { payloads: deletePayload, deleteReward, processingDelete } = use_delete_reward()
 const { payloads, editReward } = use_update_reward()
 const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const userType = 'user'
+leaderboardUserType.value = userType
 getPointsRate(userType)
 getPilotRewards(userType)
-getLeaderboardPointsList(userType)
+getLeaderboardPointsList()
 getPilotPointsRate(userType)
 definePageMeta({
 	layout: 'dashboard',

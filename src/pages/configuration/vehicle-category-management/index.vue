@@ -1,18 +1,13 @@
 <template>
 	<main class="">
-		<Table :loading="loadingVehicleTypes" :headers="tableFields" :table-data="vehicleTypesList">
+		<Table :loading="loadingVehicleTypes" :headers="tableFields" :table-data="vehicleTypesList" :has-index="true" :page="page">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.category" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
-				</span>
-				<span v-if="item.action" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
-				</span>
-				<span v-if="item.index" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
+				<span v-if="item.id" class="flex items-center gap-4">
+					<button class="px-3 py-1.5 text-gray-500 border rounded-md border-gray-500 bg-white ">Edit</button>
+					<button class="px-3 py-1.5 text-rose-500 border rounded-md border-rose-500 bg-white ">Delete</button>
 				</span>
 			</template>
 
@@ -36,12 +31,8 @@ definePageMeta({
 })
 const tableFields = ref([
     {
-        text: 'ID',
-        value: 'index'
-    },
-    {
         text: 'CATEGORY',
-        value: 'category'
+        value: 'name'
     },
     {
         text: 'DESCRIPTION',
@@ -49,7 +40,7 @@ const tableFields = ref([
     },
     {
         text: 'ACTION',
-        value: 'action'
+        value: 'id'
     }
 ])
 </script>

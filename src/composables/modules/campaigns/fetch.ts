@@ -109,18 +109,22 @@ export const use_get_pilot_histories_by_id = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const loadingPilotRewardHistories = ref(false)
     const rewardHistories = ref([])
+    const userType = ref('')
+    const userId = ref(0)
 
-    const getPilotRewardsHistories = async (userType:string, userId:number) => {
+    const getPilotRewardsHistories = async () => {
         loadingPilotRewardHistories.value = true
-        const res = await campaigns_api.$_get_reward_histories_by_driver_id(metaObject, userType, userId) as CustomAxiosResponse
+        const res = await campaigns_api.$_get_reward_histories_by_driver_id(metaObject, userType.value, userId.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             rewardHistories.value = res.data.data
             metaObject.total.value = res?.data?.metadata?.total_pages
         }
         loadingPilotRewardHistories.value = false
     }
+
     setFunction(getPilotRewardsHistories)
-    return { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories, prev, ...metaObject, next, moveTo }
+
+    return { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories, prev, ...metaObject, next, moveTo, userType, userId }
 }
 
 export const use_configure_point = () => {
@@ -164,12 +168,13 @@ export const use_get_leaderboard_point_list = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const loadingLeaderboardPointsList = ref(false)
     const leaderboardPointsList = ref([] as any)
+    const userType = ref('')
 
     const { $_get_leaderboard_points_list } = campaigns_api
 
-    const getLeaderboardPointsList = async (userType:string) => {
+    const getLeaderboardPointsList = async () => {
         loadingLeaderboardPointsList.value = true
-        const res = await $_get_leaderboard_points_list(metaObject, userType) as CustomAxiosResponse
+        const res = await $_get_leaderboard_points_list(metaObject, userType.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             leaderboardPointsList.value = res?.data?.data
             metaObject.total.value = res.data.metadata?.total_pages
@@ -178,7 +183,7 @@ export const use_get_leaderboard_point_list = () => {
     }
     setFunction(getLeaderboardPointsList)
 
-    return { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, prev, ...metaObject, next, moveTo }
+    return { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, prev, ...metaObject, next, moveTo, userType }
 }
 
 export const use_update_reward = () => {
@@ -213,4 +218,52 @@ export const use_get_points_rate = () => {
     }
 
     return { getPilotPointsRate, loading_points_rate, pointsRateObject }
+}
+
+export const use_get_carousels = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_carousels = ref(false)
+const carouselsList = ref([])
+    const getCarousels = async () => {
+        loading_carousels.value = true
+        const res = await campaigns_api.$_get_carousels(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            carouselsList.value = res.data.data
+        }
+        loading_carousels.value = false
+    }
+   setFunction(getCarousels)
+    return { getCarousels, loading_carousels, carouselsList, prev, ...metaObject, next, moveTo }
+}
+
+export const use_get_baners = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_banners = ref(false)
+const banersList = ref([])
+    const getBaners = async () => {
+        loading_banners.value = true
+        const res = await campaigns_api.$_get_baners(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            banersList.value = res.data.data
+        }
+        loading_banners.value = false
+    }
+   setFunction(getBaners)
+    return { getBaners, loading_banners, banersList, prev, ...metaObject, next, moveTo }
+}
+
+export const use_get_campaigns = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_campaigns = ref(false)
+const campaignsList = ref([])
+    const getCampaigns = async () => {
+        loading_campaigns.value = true
+        const res = await campaigns_api.$_get_campaigns(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            campaignsList.value = res.data
+        }
+        loading_campaigns.value = false
+    }
+   setFunction(getCampaigns)
+    return { getCampaigns, loading_campaigns, campaignsList, prev, ...metaObject, next, moveTo }
 }
