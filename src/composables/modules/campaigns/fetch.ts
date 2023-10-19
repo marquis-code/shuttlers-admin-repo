@@ -254,7 +254,6 @@ const campaignsList = ref([])
     const getCampaigns = async () => {
         loading_campaigns.value = true
         const res = await campaigns_api.$_get_campaigns(metaObject) as CustomAxiosResponse
-        console.log(res.data.data, 'here')
         if (res.type !== 'ERROR') {
             campaignsList.value = res.data
         }
