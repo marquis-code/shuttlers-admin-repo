@@ -15,7 +15,7 @@ export const usePassengersTracking = () => {
 
 	const listenToallPassengersLocation = () => {
 		listenToEvent('trips:124827', (data) => {
-			console.log(data)
+			// console.log(data)
 		})
 	}
 
@@ -23,7 +23,6 @@ export const usePassengersTracking = () => {
 		passengerId: string, clickFunc:(data:any)=>void
 	) => {
 		listenToEvent(`passengers:${passengerId}:new-position`, (data: PassagerType) => {
-			console.log(data)
             loadMarkeronMap({
                 id: data.user_id,
                 lat: data.position_latitude,
