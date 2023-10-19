@@ -214,3 +214,51 @@ export const use_get_points_rate = () => {
 
     return { getPilotPointsRate, loading_points_rate, pointsRateObject }
 }
+
+export const use_get_carousels = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_carousels = ref(false)
+const carouselsList = ref([])
+    const getCarousels = async () => {
+        loading_carousels.value = true
+        const res = await campaigns_api.$_get_carousels(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            carouselsList.value = res.data.data
+        }
+        loading_carousels.value = false
+    }
+   setFunction(getCarousels)
+    return { getCarousels, loading_carousels, carouselsList, prev, ...metaObject, next, moveTo }
+}
+
+export const use_get_baners = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_banners = ref(false)
+const banersList = ref([])
+    const getBaners = async () => {
+        loading_banners.value = true
+        const res = await campaigns_api.$_get_baners(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            banersList.value = res.data.data
+        }
+        loading_banners.value = false
+    }
+   setFunction(getBaners)
+    return { getBaners, loading_banners, banersList, prev, ...metaObject, next, moveTo }
+}
+
+export const use_get_campaigns = () => {
+        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+        const loading_campaigns = ref(false)
+const campaignsList = ref([])
+    const getCampaigns = async () => {
+        loading_campaigns.value = true
+        const res = await campaigns_api.$_get_campaigns(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            campaignsList.value = res.data
+        }
+        loading_campaigns.value = false
+    }
+   setFunction(getCampaigns)
+    return { getCampaigns, loading_campaigns, campaignsList, prev, ...metaObject, next, moveTo }
+}

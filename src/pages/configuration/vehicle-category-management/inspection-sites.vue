@@ -6,10 +6,8 @@
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.id" class="flex items-center gap-4">
-					<div class="flex items-center">
-						<button>Edit</button>
-						<button>Delete</button>
-					</div>
+					<button class="px-3 py-1.5 text-gray-500 border rounded-md border-gray-500 bg-white ">Edit</button>
+					<button class="px-3 py-1.5 text-rose-500 border rounded-md border-rose-500 bg-white ">Delete</button>
 				</span>
 			</template>
 
