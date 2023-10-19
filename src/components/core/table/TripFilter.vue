@@ -1,26 +1,32 @@
 <template>
-	<header class="w-full flex flex-wrap gap-4 z-50">
-		<ButtonMultiSelectDropdown :children="[{name:'Exclusive', value:'E'}, {name:'Shared', value:'s'}]" title="Route type:" />
-		<ButtonMultiSelectDropdown :children="[{name:'Private', value:'E'}, {name:'Public', value:'s'}]" title="Visibility:" />
-		<ButtonMultiSelectDropdown :children="[{name:'6:30AM', value:'E'}, {name:'7:30AM', value:'s'}, {name:'12:00PM', value:'a'}, {name:'5:15PM', value:'b'}]" title="Start time:" />
-		<ButtonMultiSelectDropdown :children="[{name:'Mini bus', value:'E'}, {name:'Mini van', value:'s'}, {name:'Sedan', value:'s'}, {name:'Bus', value:'s'}]" title="Vehicle type:" />
-		<ButtonMultiSelectDropdown :children="[{name:'Lagos', value:'E'}, {name:'Abuja', value:'s'}, {name:'Ogun', value:'s'}, {name:'Bus', value:'s'}]" title="City:" />
-		<div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
-			<span class="text-grey5 w-full">Occupancy rate:</span>
-			<label for="occupancy_from">
-				<span class="text-dark">From:</span>
-				<input id="occupancy_from" v-model="tripFilterData.occupancy_from.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
+	<header class="w-full flex lg:flex-row flex-col items-start justify-between gap-4 z-50">
+		<section class="flex w-full flex-wrap gap-4">
+			<ButtonMultiSelectDropdown :children="[{name:'Exclusive', value:'E'}, {name:'Shared', value:'s'}]" title="Route type:" />
+			<ButtonMultiSelectDropdown :children="[{name:'Private', value:'E'}, {name:'Public', value:'s'}]" title="Visibility:" />
+			<ButtonMultiSelectDropdown :children="[{name:'6:30AM', value:'E'}, {name:'7:30AM', value:'s'}, {name:'12:00PM', value:'a'}, {name:'5:15PM', value:'b'}]" title="Start time:" />
+			<ButtonMultiSelectDropdown :children="[{name:'Mini bus', value:'E'}, {name:'Mini van', value:'s'}, {name:'Sedan', value:'s'}, {name:'Bus', value:'s'}]" title="Vehicle type:" />
+			<ButtonMultiSelectDropdown :children="[{name:'Lagos', value:'E'}, {name:'Abuja', value:'s'}, {name:'Ogun', value:'s'}]" title="City:" />
+			<div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
+				<span class="text-grey5 w-full">Occupancy rate:</span>
+				<label for="occupancy_from">
+					<span class="text-dark">From:</span>
+					<input id="occupancy_from" v-model="tripFilterData.occupancy_from.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
 
-			</label>
-			<label for="occupancy_to" class="w-auto">
-				<span class="text-dark mr-2">To:</span>
-				<input id="occupancy_to" v-model="tripFilterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
-			</label>
-			<span>%</span>
-			<button class="btn-primary" :disabled="!tripFilterData.occupancy_from.value || !tripFilterData.occupancy_to.value">
-				Apply
-			</button>
-		</div>
+				</label>
+				<label for="occupancy_to" class="w-auto">
+					<span class="text-dark mr-2">To:</span>
+					<input id="occupancy_to" v-model="tripFilterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
+				</label>
+				<span>%</span>
+				<button class="btn-primary" :disabled="!tripFilterData.occupancy_from.value || !tripFilterData.occupancy_to.value">
+					Apply
+				</button>
+			</div>
+		</section>
+
+		<button class="btn-primary w-32">
+			Reset all
+		</button>
 	</header>
 </template>
 

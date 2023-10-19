@@ -1,4 +1,6 @@
+import { useStorage } from '@vueuse/core'
 import { useUser } from '@/composables/auth/user'
+
 const { token } = useUser()
 
 export const appendObjectToCurrentURL = (key, value) => {
@@ -59,3 +61,5 @@ export const openAsExternalUrl = (url) => {
 }
 
 export const is_dev = import.meta.env.DEV
+
+export const shouldNotRedirectToExternalUrl = useStorage('shouldRedirectToExternalUrl', false)

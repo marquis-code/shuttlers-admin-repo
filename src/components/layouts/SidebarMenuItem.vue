@@ -1,5 +1,5 @@
 <template>
-	<li v-if="!hasSubMenus(menu) && menu.shouldRedirect && !is_dev" class="nav-menu transite">
+	<li v-if="!hasSubMenus(menu) && menu.shouldRedirect && !is_dev && !shouldNotRedirectToExternalUrl" class="nav-menu transite">
 		<a href="#" @click="openAsExternalUrl(menu.oldPath)">
 			<div class="nav-title">
 				<span class="flex items-center">
@@ -24,7 +24,7 @@
 					</div>
 					<ul class="nav-submenus">
 						<span v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex">
-							<nuxt-link v-if="!submenu.shouldRedirect || is_dev"
+							<nuxt-link v-if="!submenu.shouldRedirect || is_dev || shouldNotRedirectToExternalUrl"
 								:to="{ path: submenu.routePath }">
 								<template #default="{ isActive, href }">
 									<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">
@@ -60,7 +60,7 @@
 
 <script setup>
 import downIcon from '@/assets/icons/src/down.vue'
-import { openAsExternalUrl, is_dev } from '@/composables/utils/system'
+import { openAsExternalUrl, is_dev, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
 
 const props = defineProps({
   menu: {

@@ -6,7 +6,7 @@
 
 			>
 				<span v-if="title" class="text-grey5">{{ title }}</span>
-				<span class="text-dark ml-2">{{ computedSelectedString }}</span>
+				<span class="text-dark ml-2">{{ truncateString(computedSelectedString, 8) }}</span>
 				<ChevronDownIcon
 					:class="open ? '' : 'text-opacity-70'"
 					class="ml-3 h-5 w-5"
@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
+import { truncateString } from '@/composables/utils/formatter'
 
 const selected = ref([])
 const computedSelectedString = computed(() => {
