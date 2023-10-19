@@ -12,15 +12,18 @@ type PassagerType = {
 export const usePassengersTracking = () => {
 	const { listenToEvent, _connectToSocket } = useSocketIo()
 	_connectToSocket()
-	const listenToallPassengersLocation = () => {
-		listenToEvent('passengers:all:new-position', (data) => {
 
+	const listenToallPassengersLocation = () => {
+		listenToEvent('trips:124827', (data) => {
+			console.log(data)
 		})
 	}
+
 	const listenToSpecificPassengerLocationAndAddtoMap = (
 		passengerId: string, clickFunc:(data:any)=>void
 	) => {
-        listenToEvent(`passengers:${passengerId}:new-position`, (data: PassagerType) => {
+		listenToEvent(`passengers:${passengerId}:new-position`, (data: PassagerType) => {
+			console.log(data)
             loadMarkeronMap({
                 id: data.user_id,
                 lat: data.position_latitude,

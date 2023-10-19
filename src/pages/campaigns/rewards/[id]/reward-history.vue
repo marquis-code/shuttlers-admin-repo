@@ -1,12 +1,13 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-3" />
 		<p class="border-t border-x py-3 rounded-t-lg pl-5 font-medium">
 			Reward History
 		</p>
 		<Table :loading="loadingPilotRewardHistories" :headers="rewardHistoriesListTableFields" :table-data="rewardHistories">
 			<template #item="{ item }">
 				<div v-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, 'MMMM d, YYYY').value ?? 'N/A' }}
+					{{ useDateFormat(item.data.created_at, 'MMMM D, YYYY').value ?? 'N/A' }}
 				</div>
 				<div v-if="item.updated_at">
 					{{ useDateFormat(item.data.updated_at, 'hh:mm A').value ?? 'N/A' }}
@@ -25,10 +26,10 @@
 import { useDateFormat } from '@vueuse/core'
 import { use_get_pilot_histories_by_id } from '@/composables/modules/campaigns/fetch'
 const route = useRoute()
-const { getPilotRewardsHistories, loadingPilotRewardHistories, rewardHistories, total, next, prev, page, moveTo } = use_get_pilot_histories_by_id()
-const userId = Number(route.params.id)
-const userType = route.query.userType
-getPilotRewardsHistories(userType, userId)
+const { getPilotRewardsHistories, userId, userType, loadingPilotRewardHistories, rewardHistories, total, next, prev, page, moveTo } = use_get_pilot_histories_by_id()
+userId.value = Number(route.params.id)
+userType.value = route.query.userType as string
+getPilotRewardsHistories()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -53,10 +54,6 @@ const rewardHistoriesListTableFields = ref([
     }
 ])
 
-const onRowClicked = (data) => {
-	useRouter().push(`/users/${data.id}/user-info`)
-	selectedUser.value = data
-}
 </script>
 
 <style scoped></style>

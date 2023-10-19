@@ -12,7 +12,7 @@ import { useGetTripPassenger, useShowTripPassengersCard } from '@/composables/mo
 
 const { getTripPassenger, tripPassengerData } = useGetTripPassenger()
 
-const { listenToSpecificPassengerLocationAndAddtoMap } = usePassengersTracking()
+const { listenToSpecificPassengerLocationAndAddtoMap, listenToallPassengersLocation } = usePassengersTracking()
 
 const { openCard } = useShowTripPassengersCard()
 
@@ -28,6 +28,7 @@ watch(tripPassengerData, (val) => {
 		})
 	}
 })
+listenToallPassengersLocation()
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
