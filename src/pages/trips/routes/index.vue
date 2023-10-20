@@ -1,36 +1,23 @@
 <template>
 	<main class="">
-		{{mainRoutesList}}
 		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
+				<div v-if="item.pickup">
+					<RouteDescription :pickup="item?.data?.pickup" :destination="item?.data?.destination" />
 				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
+				<div v-if="item.visibility" class="">
+					<p class="rounded-full px-2 py-1 text-xs w-20 text-center" :class="[item?.data?.is_exclusive === 0 ? 'text-yellow-500 bg-yellow-50' : 'text-purple-500']">
+						{{ item?.data?.is_exclusive === 0 ? 'Shared' : 'Exclusive' }}
+					</p>
+					<p class="rounded-full px-2 py-1 text-xs w-20 text-center">
+						{{ item?.data?.visibility }}
 					</p>
 				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
-				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
-				</div>
-
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
-				</div>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+				<span :class="[item.data.status === 0 ? 'bg-rose-500' : 'bg-shuttlersGreen']" v-if="item.status" class="text-xs text-white rounded-lg py-1.5 px-2.5">
+					{{ item.data.status === 0 ? 'Inactive' : 'Active' }}
 				</span>
 			</template>
 
@@ -55,19 +42,19 @@ definePageMeta({
 const tableFields = ref([
     {
         text: 'ROUTE',
-        value: 'vehicle'
+        value: 'pickup'
     },
     {
         text: 'ROUTE CODE',
-        value: 'seats'
+        value: 'route_code'
     },
 	{
         text: 'TYPE',
-        value: 'seats'
+        value: 'visibility'
     },
 	{
         text: 'STATUS',
-        value: 'seats'
+        value: 'status'
     }
 ])
 
