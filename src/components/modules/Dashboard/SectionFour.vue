@@ -8,7 +8,7 @@
 			</div>
 			<div class="relative flex flex-col w-full min-w-0 break-words h-[495px] overflow-y-auto">
 				<div v-if="!loadingTransactions" class="block w-full overflow-x-auto ">
-					<Table :headers="transactionHeaders" :table-data="transactionsList" :loading="loadingTransactions">
+					<Table :headers="transactionHeaders" :table-data="computedTransactionsList" :loading="loadingTransactions">
 						<template #item="{ item }">
 							<span v-if="item.created_at" class="flex items-center gap-4 py-3">
 								<span class="text-sm">{{ item.data.created_at }}</span>
@@ -69,6 +69,9 @@ const { getTransactionList, loadingTransactions, transactionsList } = useGetRece
 getSignupList()
 getTransactionList()
 
+const computedTransactionsList = computed(() => {
+	return transactionsList.value.slice(0, 5)
+})
 const transactionHeaders = [
 	{
 		text: 'Date',

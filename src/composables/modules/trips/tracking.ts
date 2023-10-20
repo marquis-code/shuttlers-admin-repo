@@ -15,7 +15,6 @@ export const usePassengersTracking = () => {
 
 	const listenToallPassengersLocation = () => {
 		listenToEvent('trips:124827', (data) => {
-			// console.log(data)
 		})
 	}
 

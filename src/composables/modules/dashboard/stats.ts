@@ -26,3 +26,53 @@ export const useGetDashboardStats = () => {
 
     return { getStats, loading, statsData }
 }
+
+export const useGetTripRatingInfo = () => {
+    const loadingTripRatingInfo = ref(false)
+    const tripRatingData = ref({} as any)
+
+    const { $_trip_rating_info } = stats_api
+
+    const getTripRatingData = async () => {
+        loadingTripRatingInfo.value = true
+
+        const res = await $_trip_rating_info() as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            tripRatingData.value = res.data.data
+        }
+        loadingTripRatingInfo.value = false
+    }
+
+    return { getTripRatingData, loadingTripRatingInfo, tripRatingData }
+}
+
+export const useGetRatingInfoByDate = () => {
+    const loadingRatingByDate = ref(false)
+    const filteredRatingData = ref({} as any)
+    const payload = {
+        from: ref(''),
+        to: ref('')
+    }
+
+    const { $_trip_rating_info_by_date } = stats_api
+
+    const getFilteredTripRating = async () => {
+        loadingRatingByDate.value = true
+
+        const res = await $_trip_rating_info_by_date({
+            from: payload.from.value,
+            to: payload.to.value
+        }) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            filteredRatingData.value = res.data
+        }
+        loadingRatingByDate.value = false
+    }
+
+    watch([payload.from, payload.to], (val) => {
+        getFilteredTripRating()
+    })
+
+    return { getFilteredTripRating, loadingRatingByDate, filteredRatingData, payload }
+}
