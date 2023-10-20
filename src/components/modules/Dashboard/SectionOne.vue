@@ -1,11 +1,11 @@
 <template>
 	<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
 		<div v-for="(item, index) in Object.keys(statsData)" :key="index" class="card">
-			<h3 class="text-xs text-gray-400 font-medium leading-loose">
+			<h6 class="text-[11px] text-gray-400 leading-loose uppercase">
 				{{ statsData[item].name }}
-			</h3>
+			</h6>
 			<p v-if="!loading" class="text-lg font-bold text-black">
-				{{ convertToCurrency(statsData[item].value) }}
+				{{ statsData[item].value.toLocaleString() }}
 			</p>
 			<Skeleton v-else class="" height="20px" />
 		</div>

@@ -1,6 +1,7 @@
 <template>
 	<main class="">
-		<Table :loading="loadingMainRoutes" :headers="tableFields" :table-data="mainRoutesList">
+		{{mainRoutesList}}
+		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -52,10 +53,6 @@ definePageMeta({
 })
 
 const tableFields = ref([
-	{
-        text: 'S/N',
-        value: 'sn'
-    },
     {
         text: 'ROUTE',
         value: 'vehicle'
