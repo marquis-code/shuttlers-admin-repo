@@ -8,10 +8,10 @@
 
 			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">
 				<div v-if="filterType.showDatePicker" class="pt-2">
-					<date-picker v-model:value="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" />
+					<InputDateInput v-model="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" />
 				</div>
 				<div v-if="filterType.showDateRange" class="pt-2">
-					<date-picker v-model:value="filterData.dateRange.value" range placeholder="Filter by date" />
+					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" />
 				</div>
 			</section>
 

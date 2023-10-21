@@ -1,4 +1,3 @@
-
 <template>
 	<Line v-if="!isEmptyObject(data) || !loading" :data="data" :options="chartOptions" v-bind="{...$attrs}" />
 	<Skeleton v-else height="300px" />

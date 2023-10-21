@@ -35,10 +35,10 @@ const props = defineProps({
         type: String,
         default: null
     },
-    loading: {
-        type: Boolean,
-        default: false
-    },
+    // loading: {
+    //     type: Boolean,
+    //     default: false
+    // },
     externalMarkers: {
         type: Array,
         default: () => []

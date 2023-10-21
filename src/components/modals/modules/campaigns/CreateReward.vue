@@ -1,4 +1,3 @@
-
 import { formToJSON } from 'axios';
 <template>
 	<Modal

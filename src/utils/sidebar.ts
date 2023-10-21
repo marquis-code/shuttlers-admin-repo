@@ -135,6 +135,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         excludedPaths: ['/routes/suggested-routes']
       },
       {
+        title: 'Routes Replay',
+        routePath: '/trips/replay',
+        oldPath: '/routes',
+        description: 'All routes',
+        shouldRedirect: false
+      },
+      {
         title: 'Suggested routes',
         routePath: '/trips/routes/suggested-routes',
         oldPath: '/routes/suggested-routes',
@@ -306,10 +313,10 @@ export const ADMIN_SIDEBAR_MENUS = [
   },
   {
     title: 'Configure',
-    routePath: '/configuration/rating',
+    routePath: null,
     description: '',
     iconComponent: shallowRef(configureIcon),
-    rootPath: '/configuration',
+    rootPath: '/configuration/trip-rating-settings',
       shouldRedirect: true,
     modulePermission: 'ADMINCONFIG',
     children: [

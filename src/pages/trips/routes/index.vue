@@ -16,8 +16,8 @@
 						{{ item?.data?.visibility }}
 					</p>
 				</div>
-				<span :class="[item.data.status === 0 ? 'bg-rose-500' : 'bg-shuttlersGreen']" v-if="item.status" class="text-xs text-white rounded-lg py-1.5 px-2.5">
-					{{ item.data.status === 0 ? 'Inactive' : 'Active' }}
+				<span v-if="item.status">
+					<StatusBadge :name="item.data.status === 0 ? 'Inactive' : 'Active'" />
 				</span>
 			</template>
 

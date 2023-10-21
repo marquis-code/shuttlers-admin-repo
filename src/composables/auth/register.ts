@@ -52,22 +52,8 @@ export const use_auth_register = () => {
 
 export const use_user_city = () => {
 	const loading = ref(false)
-	const c_password_err = ref('')
 	const cityArray = ref([] as any)
-	watch(credential.c_password, (value) => {
-		if (value === '') { c_password_err.value = ''; return }
-		if (value !== credential.password.value) {
-			c_password_err.value = 'password does not match'
-		} else {
-			c_password_err.value = ''
-		}
-	})
-	const disabled = computed({
-		get: () => {
-			if (credential.city_id.value === '') return true
-			else return false
-		}, set: () => { }
-	})
+
 	const fetchCities = async () => {
 		loading.value = true
 		const res = (await auth_api.$_fetch_cities({})) as any
@@ -75,7 +61,7 @@ export const use_user_city = () => {
 		credential.city_id.value = 25
 		loading.value = false
 	}
-	return { credential, disabled, step, cityArray, fetchCities, loading }
+	return { cityArray, fetchCities, loading }
 }
 
 export const use_user_info = () => {

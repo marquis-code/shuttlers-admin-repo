@@ -181,6 +181,7 @@ export const use_get_leaderboard_point_list = () => {
         }
         loadingLeaderboardPointsList.value = false
     }
+
     setFunction(getLeaderboardPointsList)
 
     return { getLeaderboardPointsList, loadingLeaderboardPointsList, leaderboardPointsList, prev, ...metaObject, next, moveTo, userType }

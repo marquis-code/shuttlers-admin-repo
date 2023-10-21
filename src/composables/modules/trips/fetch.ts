@@ -25,7 +25,13 @@ export const useGetActiveTripsList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         from: ref(''),
-        to: ref('')
+        to: ref(''),
+        search: ref(''),
+        route_type: ref(''),
+        route_visibility: ref(''),
+        'city_ids[]': ref(''),
+        'vehicle_categories[]': ref(''),
+        trip_time_list: ref('')
     }
 
     const { $_get_active_trips } = trips_api
@@ -41,16 +47,29 @@ export const useGetActiveTripsList = () => {
     }
     setFunction(activeTripsList)
 
-    watch([filterData.from, filterData.to], (val) => {
+    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], (val) => {
         getActiveTrips()
     })
     const onFilterUpdate = (data: any) => {
+        console.log(data)
         switch (data.type) {
             case 'from':
                     filterData.from.value = data.value
                 break
             case 'to':
                     filterData.to.value = data.value
+                break
+            case 'routeType':
+                    filterData.route_type.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+                break
+            case 'visibility':
+                    filterData.route_visibility.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+                break
+            case 'city':
+                    filterData['city_ids[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+                break
+            case 'vehicleType':
+                    filterData['vehicle_categories[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
                 break
         }
     }
@@ -89,6 +108,9 @@ export const useGetUpcomingTripsList = () => {
                     filterData.from.value = data.value
                 break
             case 'to':
+                    filterData.to.value = data.value
+                break
+            case 'routeType':
                     filterData.to.value = data.value
                 break
         }

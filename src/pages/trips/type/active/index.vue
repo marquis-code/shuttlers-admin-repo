@@ -3,8 +3,8 @@
 		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
-					<TableTripFilter />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
+					<TableTripFilter @filter="onFilterUpdate"  />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, }" @filter="onFilterUpdate" />
 				</section>
 			</template>
 			<template #item="{ item }">
