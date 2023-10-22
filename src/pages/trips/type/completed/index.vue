@@ -2,7 +2,10 @@
 	<main class="">
 		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<section class="flex flex-col gap-4 z-50">
+					<TableTripFilter @filter="onFilterUpdate" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, }" @filter="onFilterUpdate" />
+				</section>
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.idx">
@@ -16,7 +19,7 @@
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="navigateToRoutePassengers(item.data)">
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full">
 						View
 					</button>
 				</div>
@@ -38,7 +41,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 
-const { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, moveTo, total, page, next, prev } = useGetCompletedTripsList()
+const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
 
 const formattedCompletedTripsList = computed(() =>

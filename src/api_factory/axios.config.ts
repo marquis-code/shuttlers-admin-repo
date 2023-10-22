@@ -8,9 +8,13 @@ const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as strin
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
 const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/cost-revenue/v1'
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
+const $TELEMETRY_ENDPOINT = 'https://telemetry.shuttlers.ng'
 
 export const GATEWAY_ENDPOINT = axios.create({
 	baseURL: $GATEWAY_ENDPOINT
+})
+export const TELEMETRY_ENDPOINT = axios.create({
+	baseURL: $TELEMETRY_ENDPOINT
 })
 export const GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
 	baseURL: $GATEWAY_ENDPOINT,
@@ -43,7 +47,7 @@ export interface CustomAxiosResponse extends AxiosResponse {
   type?: string;
 }
 
-const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API]
+const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, TELEMETRY_ENDPOINT, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API]
 
 instanceArray.forEach((instance) => {
 	instance.interceptors.request.use(

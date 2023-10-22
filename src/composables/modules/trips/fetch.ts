@@ -19,20 +19,44 @@ export const useGetTripsGraph = () => {
     return { getTripsGraph, loading, tripsGraphData }
 }
 
+const filterData = {
+    from: ref(''),
+    to: ref(''),
+    search: ref(''),
+    route_type: ref(''),
+    route_visibility: ref(''),
+    'city_ids[]': ref(''),
+    'vehicle_categories[]': ref(''),
+    trip_time_list: ref('')
+}
+
+const onFilterUpdate = (data: any) => {
+    switch (data.type) {
+        case 'from':
+            filterData.from.value = data.value
+            break
+        case 'to':
+            filterData.to.value = data.value
+            break
+        case 'routeType':
+            filterData.route_type.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            break
+        case 'visibility':
+            filterData.route_visibility.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            break
+        case 'city':
+            filterData['city_ids[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            break
+        case 'vehicleType':
+            filterData['vehicle_categories[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            break
+    }
+}
+
 export const useGetActiveTripsList = () => {
     const loadingActiveTrips = ref(false)
     const activeTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-    const filterData = {
-        from: ref(''),
-        to: ref(''),
-        search: ref(''),
-        route_type: ref(''),
-        route_visibility: ref(''),
-        'city_ids[]': ref(''),
-        'vehicle_categories[]': ref(''),
-        trip_time_list: ref('')
-    }
 
     const { $_get_active_trips } = trips_api
 
@@ -47,32 +71,9 @@ export const useGetActiveTripsList = () => {
     }
     setFunction(activeTripsList)
 
-    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], (val) => {
+    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
         getActiveTrips()
     })
-    const onFilterUpdate = (data: any) => {
-        console.log(data)
-        switch (data.type) {
-            case 'from':
-                    filterData.from.value = data.value
-                break
-            case 'to':
-                    filterData.to.value = data.value
-                break
-            case 'routeType':
-                    filterData.route_type.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
-                break
-            case 'visibility':
-                    filterData.route_visibility.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
-                break
-            case 'city':
-                    filterData['city_ids[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
-                break
-            case 'vehicleType':
-                    filterData['vehicle_categories[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
-                break
-        }
-    }
 
     return { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
@@ -81,10 +82,6 @@ export const useGetUpcomingTripsList = () => {
     const loadingUpcomingTrips = ref(false)
     const upcomingTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-    const filterData = {
-        from: ref(''),
-        to: ref('')
-    }
 
     const { $_get_upcoming_trips } = trips_api
 
@@ -99,22 +96,9 @@ export const useGetUpcomingTripsList = () => {
     }
     setFunction(upcomingTripsList)
 
-    watch([filterData.from, filterData.to], (val) => {
+    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
         getUpcomingTrips()
     })
-    const onFilterUpdate = (data: any) => {
-        switch (data.type) {
-            case 'from':
-                    filterData.from.value = data.value
-                break
-            case 'to':
-                    filterData.to.value = data.value
-                break
-            case 'routeType':
-                    filterData.to.value = data.value
-                break
-        }
-    }
 
     return { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
@@ -123,10 +107,6 @@ export const useGetCompletedTripsList = () => {
     const loadingCompletedTrips = ref(false)
     const completedTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-    const filterData = {
-        from: ref(''),
-        to: ref('')
-    }
 
     const { $_get_completed_trips } = trips_api
 
@@ -141,19 +121,9 @@ export const useGetCompletedTripsList = () => {
     }
     setFunction(completedTripsList)
 
-    watch([filterData.from, filterData.to], (val) => {
+    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
         getCompletedTrips()
     })
-    const onFilterUpdate = (data: any) => {
-        switch (data.type) {
-            case 'from':
-                    filterData.from.value = data.value
-                break
-            case 'to':
-                    filterData.to.value = data.value
-                break
-        }
-    }
 
     return { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
@@ -185,7 +155,7 @@ export const useGetBusCaptainsList = () => {
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'search':
-                    filterData.search.value = data.value
+                filterData.search.value = data.value
                 break
         }
     }
@@ -199,7 +169,7 @@ export const useGetTripRatingList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const { $_get_trip_rating } = trips_api
 
-    const getTripRatings = async (id:string) => {
+    const getTripRatings = async (id: string) => {
         loadingTripRatings.value = true
         const res = await $_get_trip_rating(id, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

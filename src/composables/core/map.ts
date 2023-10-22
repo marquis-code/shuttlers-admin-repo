@@ -31,8 +31,8 @@ export const calculateCenterAndZoom = async (
 
     const polylineOptions = {
         strokeColor: '#000000',
-		strokeWeight: 3,
-		strokeOpacity: 1
+        strokeWeight: 3,
+        strokeOpacity: 1
 
     }
     const directionsService = new DirectionsService()
@@ -60,10 +60,12 @@ export const initMap = async (mapDiv: Ref) => {
     )) as google.maps.MapsLibrary
 
     if (!mapDiv.value) return
+
     map = new Map(mapDiv.value as HTMLElement, {
-        zoom: 14,
+        zoom: 16,
         disableDefaultUI: true,
-        mapId: '33d190257c86f190'
+        mapId: '33d190257c86f190',
+        center: { lat: 6.447809299999999, lng: 3.4723495 }
     })
 }
 
@@ -91,7 +93,7 @@ export const loadExternalDataMarkers = async (
 }
 
 const markersArray = [] as any[]
-export const loadMarkeronMap = async (location: UserCoordinate, clickFunc:(location:UserCoordinate)=>void) => {
+export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void) => {
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
     const existingMarker = markersArray.find((marker: any) => marker.id === location.id)
     if (existingMarker) {
@@ -105,7 +107,7 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc:(locat
 
         marker.id = location.id
 
-          marker.addListener('click', () => {
+        marker.addListener('click', () => {
             clickFunc(location)
         })
         markersArray.push(marker)
@@ -116,22 +118,23 @@ export const getPathFromPolyline = async (overviewPolyline) => {
     const encodedPolyline = JSON.parse(overviewPolyline)
 
     const { encoding } = await google.maps.importLibrary('geometry') as google.maps.GeometryLibrary
-      return encoding.decodePath(encodedPolyline.points)
+    return encoding.decodePath(encodedPolyline.points)
 }
 
-export const loadPolyline = async (path: google.maps.LatLng[]) => {
-    const lekki = new google.maps.LatLng(6.447809299999999, 3.4723495)
+export const loadPolyline = async (pathLine: google.maps.LatLng[]) => {
     const { Polyline } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary
 
     const polyline = new Polyline({
-        path,
+        path: pathLine,
+        geodesic: true,
         strokeColor: '#000000',
-        strokeWeight: 3,
-        strokeOpacity: 1
+        strokeOpacity: 1.0,
+        strokeWeight: 3.5
     })
 
-    map.setCenter(lekki)
-    map.setZoom(12)
+    const bounds = new google.maps.LatLngBounds()
+    pathLine.forEach((point) => bounds.extend(point))
+    map.fitBounds(bounds)
 
     polyline.setMap(map)
 }

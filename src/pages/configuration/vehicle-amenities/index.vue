@@ -51,7 +51,7 @@
 			</template>
 
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingAmenities" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -70,7 +70,7 @@ const form = reactive({
 	short_name: '',
 	uploadedFile: ''
 })
-const previewUrl = ref(null)
+const previewUrl = ref()
 
 const handleFileUpload = (event) => {
   const input = event.target

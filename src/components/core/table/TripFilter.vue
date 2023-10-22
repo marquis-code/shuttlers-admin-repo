@@ -133,7 +133,6 @@ watchDebounced([filterData.routeType, filterData.visibility, filterData.startTim
 
 const convertURLParamsToObject = (() => {
 	const urlParams = useRoute().query
-console.log(urlParams)
 	filterData.routeType.value = urlParams.routeType as string ? JSON.parse(urlParams.routeType as string) : [] as string[]
 	filterData.visibility.value = urlParams.visibility as string ? JSON.parse(urlParams.visibility as string) : [] as string[]
 	filterData.startTime.value = urlParams.startTime as string ? JSON.parse(urlParams.startTime as string) : [] as string[]

@@ -1,47 +1,51 @@
 <template>
-	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
-			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
-			</template>
-			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
-				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
-					</p>
-				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
-				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
+	<main class=" relative">
+		<div class="h-screen inset-0 z-0">
+			<MapDisplay height="100vh" :loading="loadingVehicle" :external-markers="[]" />
+			<section v-if="!loadingVehicle && vehicleList.length > 0" class="absolute top-4 left-6 w-9/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
+				<div class="field relative">
+					<label for="vehicle">Vehicle</label>
+					<select id="vehicle" v-model="selectedVehicle" class="input-field w-full" required>
+						<option value="vehicleList">
+							Select Vehicle
+						</option>
+						<option v-for="vehicle in vehicleList" :key="vehicle.id" :value="vehicle.vehicle_id">
+							{{ vehicle.name }}
+						</option>
+					</select>
 				</div>
 
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
+				<div class="field relative">
+					<label for="vehicle">Date Range</label>
+					<InputDateInput range clearable />
 				</div>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
-				</span>
-			</template>
-		</Table>
+
+				<button class="btn-primary w-56 text-sm" :disabled="!selectedVehicle || loadingPosition" @click="getPosition(selectedVehicle)">
+					<span v-if="!loadingPosition">	Get Replay</span>
+					<Spinner v-else />
+				</button>
+			</section>
+
+			<div v-if="!loadingVehicle && vehicleList.length > 0" class="fixed bottom-8 flex items-center justify-center w-full">
+				ds
+			</div>
+
+			<Skeleton v-else-if="loadingVehicle" height="100px" width="80%" class="absolute top-4 left-6 mx-auto   z-40 " />
+
+			<section v-else class="absolute top-4 left-6 w-9/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
+				Something went wrong
+			</section>
+		</div>
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import { usePageHeader } from '@/composables/utils/header'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useRouteReplay } from '@/composables/modules/commute/replay/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getVehicle, getPosition, vehicleList, loadingVehicle, loadingPosition } = useRouteReplay()
+getVehicle()
+
+const selectedVehicle = ref('')
 
 definePageMeta({
     layout: 'dashboard',
