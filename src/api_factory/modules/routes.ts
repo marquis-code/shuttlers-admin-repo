@@ -15,5 +15,9 @@ export const routes_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_trip_time: () => {
+		const url = '/route-itineraries-trip-time'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

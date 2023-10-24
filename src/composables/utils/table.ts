@@ -51,6 +51,7 @@ export const usePagination = () => {
 export const useTableFilter = (filterData?: Record<string, Ref>) => {
     if (!filterData) return ''
     return Object.keys(filterData)
-    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)
-         .join('&')
+        .filter((key) => filterData[key].value !== '')
+        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)
+        .join('&')
 }

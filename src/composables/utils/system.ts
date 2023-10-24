@@ -10,7 +10,8 @@ export const appendObjectToCurrentURL = (key, value) => {
       if (hasQueryString) {
         const [baseUrl, existingQueryString] = url.split('?')
         const params = new URLSearchParams(existingQueryString)
-        if (params.has(key)) {
+
+        if (params.has(key) || value === '[]') {
           params.delete(key)
         }
         queryString = params.toString()
@@ -18,7 +19,7 @@ export const appendObjectToCurrentURL = (key, value) => {
           queryString += '&'
         }
       }
-      if (value) {
+      if (value && value !== '[]') {
         queryString += encodeURIComponent(key) + '=' + encodeURIComponent(value)
       }
       url = hasQueryString ? url.split('?')[0] + '?' + queryString : url + '?' + queryString

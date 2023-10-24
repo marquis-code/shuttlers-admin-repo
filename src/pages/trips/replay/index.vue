@@ -1,40 +1,40 @@
 <template>
 	<main class=" relative">
-		<div class="h-screen inset-0 z-0">
-			<MapDisplay height="100vh" :loading="loadingVehicle" :external-markers="[]" />
-			<section v-if="!loadingVehicle && vehicleList.length > 0" class="absolute top-4 left-6 w-9/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
-				<div class="field relative">
-					<label for="vehicle">Vehicle</label>
-					<select id="vehicle" v-model="selectedVehicle" class="input-field w-full" required>
-						<option value="vehicleList">
-							Select Vehicle
-						</option>
-						<option v-for="vehicle in vehicleList" :key="vehicle.id" :value="vehicle.vehicle_id">
-							{{ vehicle.name }}
-						</option>
-					</select>
-				</div>
+		<div class="inset-0 z-0">
+			<MapDisplay height="90vh" :loading="loadingVehicle" :external-markers="[]" />
+			<div class="absolute top-8 flex items-center justify-center w-full">
+				<section v-if="!loadingVehicle && vehicleList.length > 0" class="w-10/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
+					<div class="field relative">
+						<label for="vehicle">Vehicle</label>
+						<select id="vehicle" v-model="selectedVehicle" class="input-field w-full" required>
+							<option value="vehicleList">
+								Select Vehicle
+							</option>
+							<option v-for="vehicle in vehicleList" :key="vehicle.id" :value="vehicle">
+								{{ vehicle.name }}
+							</option>
+						</select>
+					</div>
 
-				<div class="field relative">
-					<label for="vehicle">Date Range</label>
-					<InputDateInput range clearable />
-				</div>
+					<div class="field relative">
+						<label for="vehicle">Date Range</label>
+						<InputDateInput range clearable />
+					</div>
 
-				<button class="btn-primary w-56 text-sm" :disabled="!selectedVehicle || loadingPosition" @click="getPosition(selectedVehicle)">
-					<span v-if="!loadingPosition">	Get Replay</span>
-					<Spinner v-else />
-				</button>
-			</section>
-
-			<div v-if="!loadingVehicle && vehicleList.length > 0" class="fixed bottom-8 flex items-center justify-center w-full">
-				ds
+					<button class="btn-primary w-56 text-sm" :disabled="!selectedVehicle || loadingPosition" @click="getPosition(selectedVehicle.vehicle_id)">
+						<span v-if="!loadingPosition">	Get Replay</span>
+						<Spinner v-else />
+					</button>
+				</section>
+				<Skeleton v-else-if="loadingVehicle" height="100px" width="80%" class="mx-auto z-40" />
+				<section v-else class="w-9/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
+					Something went wrong
+				</section>
 			</div>
 
-			<Skeleton v-else-if="loadingVehicle" height="100px" width="80%" class="absolute top-4 left-6 mx-auto   z-40 " />
-
-			<section v-else class="absolute top-4 left-6 w-9/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
-				Something went wrong
-			</section>
+			<div v-if="!loadingVehicle && vehicleList.length > 0" class="absolute bottom-8 flex items-center justify-center w-full">
+				<ModulesTripsRouteReplayController />
+			</div>
 		</div>
 	</main>
 </template>
@@ -42,13 +42,11 @@
 import { usePageHeader } from '@/composables/utils/header'
 import { useRouteReplay } from '@/composables/modules/commute/replay/fetch'
 
-const { getVehicle, getPosition, vehicleList, loadingVehicle, loadingPosition } = useRouteReplay()
+const { getVehicle, getPosition, vehicleList, loadingVehicle, loadingPosition, selectedVehicle } = useRouteReplay()
 getVehicle()
 
-const selectedVehicle = ref('')
-
 definePageMeta({
-    layout: 'dashboard',
+    layout: 'dashboard-zero',
     middleware: ['is-authenticated']
 })
 

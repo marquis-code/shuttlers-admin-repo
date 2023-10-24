@@ -10,7 +10,7 @@
 			<transition cla enter-active-class="transition duration-0 ease-out" enter-from-class="translate-y-1 opacity-0" enter-to-class="translate-y-0 opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="translate-y-0 opacity-100"
 				leave-to-class="translate-y-1 opacity-0">
 				<PopoverPanel class=" right-0 z-50">
-					<div class="absolute start-0 z-10 mt-2 w-full rounded-md border border-gray-100 bg-white shadow-lg" role="menu">
+					<div class="absolute start-0 z-10 mt-2 w-full rounded-md border card p-0 max-h-56 overflow-y-auto" role="menu">
 						<div class="p-2">
 							<div class="p-2 flex flex-col items-start w-full">
 								<label v-for="item in (children as Record<string, any>[])" :key="item.name" :for="item.name">

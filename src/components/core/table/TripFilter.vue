@@ -1,27 +1,27 @@
 <template>
 	<header class="w-full flex lg:flex-row flex-col items-start justify-between gap-4 z-50">
 		<section class="flex w-full flex-wrap gap-4">
-			<ButtonMultiSelectDropdown v-model="filterData.routeType.value" :children="[{name:'Exclusive', value:'exclusive'}, {name:'Shared', value:'shared'}]" title="Route type:" />
-			<ButtonMultiSelectDropdown v-model="filterData.visibility.value" :children="[{name:'Private', value:'private'}, {name:'Public', value:'public'}]" title="Visibility:" />
-			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="[{name:'6:30AM', value:'E'}, {name:'7:30AM', value:'s'}, {name:'12:00PM', value:'a'}, {name:'5:15PM', value:'b'}]" title="Start time:" />
+			<ButtonMultiSelectDropdown v-model="filterData.routeType.value" :children="[{ name: 'Exclusive', value: 'exclusive' }, { name: 'Shared', value: 'shared' }]" title="Route type:" />
+			<ButtonMultiSelectDropdown v-model="filterData.visibility.value" :children="[{ name: 'Private', value: 'private' }, { name: 'Public', value: 'public' }]" title="Visibility:" />
+			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="formattedTripTime" title="Start time:" />
 			<ButtonMultiSelectDropdown v-model="filterData.vehicleType.value" :children="formattedVehicle" title="Vehicle type:" />
 			<ButtonMultiSelectDropdown v-model="filterData.city.value" :children="formattedCities" title="City:" />
-			<!-- <div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
+			<div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
 				<span class="text-grey5 w-full">Occupancy rate:</span>
 				<label for="occupancy_from">
 					<span class="text-dark">From:</span>
-					<input id="occupancy_from" v-model="tripFilterData.occupancy_from.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
+					<input id="occupancy_from" v-model="filterData.occupancy_from.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0">
 
 				</label>
 				<label for="occupancy_to" class="w-auto">
 					<span class="text-dark mr-2">To:</span>
-					<input id="occupancy_to" v-model="tripFilterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0" @change="()=>{}">
+					<input id="occupancy_to" v-model="filterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0">
 				</label>
 				<span>%</span>
-				<button class="btn-primary" :disabled="!tripFilterData.occupancy_from.value || !tripFilterData.occupancy_to.value">
+				<button class="btn-primary" :disabled="!filterData.occupancy_from.value || !filterData.occupancy_to.value" @click="emitOccupancy">
 					Apply
 				</button>
-			</div> -->
+			</div>
 		</section>
 
 		<button class="btn-primary w-32" @click="resetData">
@@ -32,17 +32,21 @@
 
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
+import { format } from 'date-fns'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
 import { useVehicleTypesList } from '@/composables/modules/configure/fetch'
 import { use_user_city } from '@/composables/auth/register'
+import { useGetTripTime } from '@/composables/modules/routes/fetch'
 
+const { getTripTime, loadingTripTime, tripTimeList } = useGetTripTime()
 const { getVehicleTypesList, vehicleTypesList } = useVehicleTypesList()
 const { cityArray, fetchCities, loading } = use_user_city()
 getVehicleTypesList()
 fetchCities()
+getTripTime()
 
 const formattedVehicle = computed(() =>
-	vehicleTypesList.value.map((i:any) => {
+	vehicleTypesList.value.map((i: any) => {
 		return {
 			name: i.name,
 			value: i.name
@@ -50,8 +54,17 @@ const formattedVehicle = computed(() =>
 	})
 )
 
+const formattedTripTime = computed(() =>
+	tripTimeList.value.map((i: any) => {
+		return {
+			name: i,
+			value: i
+		}
+	})
+)
+
 const formattedCities = computed(() =>
-	cityArray.value.map((i:any) => {
+	cityArray.value.map((i: any) => {
 		return {
 			name: i.name,
 			value: i.id
@@ -61,14 +74,9 @@ const formattedCities = computed(() =>
 
 const emit = defineEmits(['filter'])
 
-const tripFilterData = {
-occupancy_from: ref(0),
-occupancy_to: ref(0)
-}
-
 type FilterKeys = 'type' | 'value'
 
-const onFilter = (data: Record<FilterKeys, string|string[]>) => {
+const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
 	emit('filter', data)
 }
 
@@ -85,10 +93,10 @@ const props = defineProps({
 
 	defaultValue: {
 		type: Object as () => DefaultValueProps,
-		    default: () => ({
+		default: () => ({
 
-    })
-  }
+		})
+	}
 })
 
 const filterData = {
@@ -96,7 +104,17 @@ const filterData = {
 	visibility: ref([]),
 	startTime: ref([]),
 	vehicleType: ref([]),
-	city: ref([])
+	city: ref([]),
+	occupancy_from: ref(),
+	occupancy_to: ref()
+}
+
+const emitOccupancy = () => {
+	if (filterData.occupancy_from.value && filterData.occupancy_to.value) {
+		appendObjectToCurrentURL('occupancy_from', JSON.stringify(filterData.occupancy_from.value))
+		appendObjectToCurrentURL('occupancy_to', JSON.stringify(filterData.occupancy_to.value))
+		onFilter({ type: 'occupancy', value: [filterData.occupancy_from.value, filterData.occupancy_to.value] })
+	}
 }
 
 const resetData = () => {
@@ -105,8 +123,10 @@ const resetData = () => {
 	filterData.startTime.value = []
 	filterData.vehicleType.value = []
 	filterData.city.value = []
+	filterData.occupancy_from.value = 0
+	filterData.occupancy_to.value = 0
 }
-watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val:any[]) => {
+watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val: any[]) => {
 	if (val[0]) {
 		appendObjectToCurrentURL('routeType', JSON.stringify(val[0]))
 		onFilter({ type: 'routeType', value: val[0] })
@@ -138,12 +158,15 @@ const convertURLParamsToObject = (() => {
 	filterData.startTime.value = urlParams.startTime as string ? JSON.parse(urlParams.startTime as string) : [] as string[]
 	filterData.vehicleType.value = urlParams.vehicleType as string ? JSON.parse(urlParams.vehicleType as string) : [] as string[]
 	filterData.city.value = urlParams.city as string ? JSON.parse(urlParams.city as string) : [] as string[]
+	filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
+	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 0
+	emitOccupancy()
 })()
 
 </script>
 
 <style scoped>
-label{
+label {
 	@apply m-0
 }
 </style>
