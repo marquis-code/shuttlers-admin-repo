@@ -24,5 +24,9 @@ export const stats_api = {
 	$_trip_rating_info_by_date: (payload:{from : string, to: string}) => {
 		const url = `/v1/stats/rating-stat?from=${payload.from}&to=${payload.to}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_trip_passenger_rating: (payload:{startDate : string, endDate: string}) => {
+		const url = `/v1/routes/passengers/stats?startDate=${payload.startDate}&endDate=${payload.endDate}`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	}
 }

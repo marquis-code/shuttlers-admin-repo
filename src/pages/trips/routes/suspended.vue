@@ -1,35 +1,56 @@
 <template>
 	<main class="">
-		<Table :loading="loadingSuspendedRoutes" :headers="tableFields" :table-data="suspendedRoutesList">
+		<Table :loading="loadingSuspendedRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="formattedSuspendedList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
-				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
+				<div v-if="item.action">
+					<button v-if="data.item.status == 'active'"
+						class="btn bg-transparent text-black text-xs rounded outline-none border-black"
+						@click="openRestoreModal(data.item)">
+						Cancel
+					</button>
+					<p v-else class="m-0 text-sm whitespace-nowrap w-fit">
+						{{ useDateFormat(data.item.updated_at, "MMMM Do YYYY").value }}
 					</p>
 				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
+				<div v-if="item.route_codes">
+					{{ item?.data?.route_codes }}
+				</div>
+				<div v-if="item.user">
+					<p class="whitespace-nowrap">
+						{{ data?.item?.user }}
 					</p>
 				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
-				</div>
-
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
+				<!-- <div v-if="item.staff">
+					<p class="whitespace-nowrap">
+						{{ data.item.staff.fname }} {{ data.item.staff.lname }} <br> {{
+							data.item.staff.email }}
+					</p>
+				</div> -->
+				<!-- <div v-if="item.staff_id">
+					<p class="whitespace-nowrap">
+						{{ data.item.staff.fname }} {{ data.item.staff.lname }} <br> {{
+							data.item.staff.email }}
+					</p>
+				</div> -->
+				<!-- <div v-if="item.suspension_dates">
+					<span v-for="n in data.value" :key="n" class="block whitespace-nowrap">
+						{{ useDateFormat(n, "dddd, MMMM Do YYYY").value }}
+					</span>
+				</div> -->
+				<!-- <div v-if="item.suspension_data">
+					{{ !data.item.suspension_data?.routes?.length ? 'All' : data.item.suspension_data.routes.map((route) =>
+						route.route_code ?? 'N/A').join(', ') }}
+				</div> -->
+				<div v-if="item.suspension_dates">
+					<span v-for="n in data.value" :key="n" class="block whitespace-nowrap">
+						{{ useDateFormat(n, "dddd, MMMM Do YYYY").value }}
+					</span>
 				</div>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+					{{ useDateFormat(item?.data?.createdAt, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 			</template>
 
@@ -51,46 +72,54 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
+const formattedSuspendedList = computed(() =>
+suspendedRoutesList.value.map((i) => {
+         return {
+             ...i,
+             route_codes: !i.suspension_data?.routes?.length ? 'All' : i.suspension_data.routes.map((route) => route.route_code ?? 'N/A').join(', '),
+			 action: '',
+			 user: `${i.staff.fname} ${i.staff.lname}`
+			//  staff_email: i.staff.email
+         }
+    })
+)
+
 const tableFields = ref([
-	{
-        text: 'S/N',
-        value: 'sn'
-    },
     {
         text: 'ROUTE TYPE',
-        value: 'vehicle'
+        value: 'route_type'
     },
     {
         text: 'ROUTE VISIBILITY',
-        value: 'registrationNumber'
+        value: 'route_visibility'
     },
     {
         text: 'ROUTE CODES',
-        value: 'seats'
+        value: 'route_codes'
     },
     {
         text: 'PERIOD',
-        value: 'inspectionSite'
+        value: 'period'
     },
     {
         text: 'ADMIN',
-        value: 'inspectionDateAndTime'
+        value: 'user'
     },
 	{
         text: 'DATE PERFORMED',
-        value: 'partner'
+        value: 'created_at'
     },
     {
         text: 'REASON',
-        value: 'created_at'
+        value: 'suspension_reason'
     },
 	{
         text: 'STATUS',
-        value: 'created_at'
+        value: 'status'
     },
 	{
         text: 'ACTION',
-        value: 'created_at'
+        value: 'action'
     }
 ])
 

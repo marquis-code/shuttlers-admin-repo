@@ -19,6 +19,9 @@
 				<span v-if="item.status">
 					<StatusBadge :name="item.data.status === 0 ? 'Inactive' : 'Active'" />
 				</span>
+				<span v-if="item.id">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+				</span>
 			</template>
 
 			<template #footer>
@@ -39,6 +42,13 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
+const dropdownChildren = computed(() => [
+	{ name: 'Edit', func: (data) => {} },
+	{ name: 'Suspend', func: (data) => {} },
+	{ name: 'Duplicate', func: (data) => {} },
+	{ name: 'Delete', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+])
+
 const tableFields = ref([
     {
         text: 'ROUTE',
@@ -55,7 +65,11 @@ const tableFields = ref([
 	{
         text: 'STATUS',
         value: 'status'
-    }
+    },
+	{
+		text: 'ACTIONS',
+		value: 'id'
+	}
 ])
 
 </script>
