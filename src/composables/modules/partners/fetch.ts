@@ -143,7 +143,6 @@ export const useGetPartnerPayoutList = () => {
         loadingPayouts.value = true
 
         const res = await $_get_partner_payout(metaObject, filterData) as CustomAxiosResponse
-        console.log(res?.data?.result, 'here')
         if (res.type !== 'ERROR') {
             partnersPayoutList.value = res?.data?.result
             metaObject.total.value = res?.data?.metadata?.total

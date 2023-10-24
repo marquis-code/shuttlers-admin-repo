@@ -28,7 +28,9 @@ export const useGetUsersList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
-        search: ref('')
+        search: ref(''),
+        start_date_filter: ref(''),
+        end_date_filter: ref('')
     }
 
     const { $_get_users } = users_api
@@ -57,6 +59,12 @@ export const useGetUsersList = () => {
                 break
             case 'search':
                 filterData.search.value = data.value
+                break
+            case 'start_date_filter':
+                filterData.start_date_filter.value = data.value
+                break
+            case 'end_date_filter':
+                filterData.end_date_filter.value = data.value
         }
     }
 

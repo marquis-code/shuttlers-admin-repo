@@ -93,7 +93,6 @@ export const usePassengersRatingsGraph = () => {
             startDate: payload.startDate.value,
             endDate: payload.endDate.value
         }) as CustomAxiosResponse
-        console.log(res, 'passengers rating res here')
         if (res.type !== 'ERROR') {
             passengersRatings.value = res.data
         }
