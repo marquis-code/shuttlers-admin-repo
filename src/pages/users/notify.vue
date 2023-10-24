@@ -12,15 +12,18 @@
 					<p v-if="notificationType === 'regular'" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
 						{{ selectedUsers.length }} user{{ selectedUsers.length > 0 ? 's' : '' }} selected
 					</p>
+					<p v-else class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
+						All users selected
+					</p>
 				</div>
 				<div class="p-1">
 					<div v-if="notificationType === 'regular' && selectedUsers.length > 0" class="grid grid-cols-3 gap-4">
 						<div
 							v-for="user in selectedUsers"
 							:key="user.id"
-							class="border rounded-lg text-xs flex justify-center gap-x-1 items-center py-2.5"
+							class="border rounded-lg text-xs flex justify-center gap-x-1 items-center py-2"
 						>
-							<p class="text-white rounded-full bg-green-500 text-[10px] px-1 py-1"
+							<p class="text-white rounded-full text-xs bg-green-500 text-[10px] px-1 py-1"
 							>
 								{{ user?.fname?.slice?.(0, 1).toUpperCase() }}{{ user?.lname?.slice?.(0, 1).toUpperCase() }}
 							</p>
@@ -28,7 +31,7 @@
 							<p class="pl-3 text-xs">
 								{{ user?.fname }}{{ user?.lname }}
 							</p>
-							<div class="flex justify-center items-center bg-white shadow-sm rounded-full border p-1 px-1.5">
+							<div class="flex justify-center items-center text-xs bg-white shadow-sm rounded-full border p-1 px-1.5">
 								<span class="cursor-pointer text-xs text-center" @click="removeSelectedUser(user)">X</span>
 							</div>
 						</div>
@@ -40,21 +43,75 @@
 					</ClientOnly>
 				</div>
 				<div class="flex items-center justify-between px-6 pb-6">
-					<div class="flex items-center gap-x-4">
-						<label for="Toggle2" class="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-100">
-							<span class="relative">
-								<input id="Toggle2" v-model="checked" type="checkbox" class="hidden peer" @change="toggleStory">
-								<div class="w-10 h-4 rounded-full shadow dark:bg-gray-600 peer-checked:dark:bg-violet-400" />
-								<div class="absolute left-0 w-6 h-6 rounded-full shadow -inset-y-1 peer-checked:right-0 peer-checked:left-auto dark:bg-violet-400" />
-							</span>
-						</label>
-
-						<span class="pb-2 text-sm font-medium">
-							Enable sms notification
-						</span>
-					</div>
 					<div>
-						<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : '']" class="btn-primary-sm"
+						<!-- <div class="flex items-center gap-x-4">
+							<label for="Toggle2" class="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-100">
+								<span class="relative">
+									<input id="Toggle2" v-model="sms" type="checkbox" class="hidden peer" @change="toggleSms">
+									<div class="w-10 h-4 rounded-full shadow dark:bg-gray-600 peer-checked:dark:bg-violet-400" />
+									<div class="absolute left-0 w-6 h-6 rounded-full shadow -inset-y-1 peer-checked:right-0 peer-checked:left-auto dark:bg-violet-400" />
+								</span>
+							</label>
+
+							<span class="pb-2 text-sm font-medium">
+								Enable sms notification
+							</span>
+						</div> -->
+						<div class="flex items-center gap-x-3">
+							<label
+								for="sms"
+								class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
+							>
+								<input id="sms" v-model="sms" type="checkbox" class="peer sr-only" @change="toggleSms">
+
+								<span
+									class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
+								/>
+
+								<span
+									class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
+								/>
+							</label>
+							<span class="pb-2 text-sm font-medium">
+								Enable sms notification
+							</span>
+						</div>
+						<div class="flex items-center gap-x-3">
+							<label
+								for="email"
+								class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
+							>
+								<input id="email" v-model="email" type="checkbox" class="peer sr-only" @change="toggleEmail">
+
+								<span
+									class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
+								/>
+
+								<span
+									class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
+								/>
+							</label>
+							<span class="pb-2 text-sm font-medium">
+								Enable Email notification
+							</span>
+						</div>
+						<!-- <div class="flex items-center gap-x-4">
+							<label for="emailNotification" class="inline-flex items-center space-x-4 cursor-pointer dark:text-gray-100">
+								<span class="relative">
+									<input id="emailNotification" v-model="email" type="checkbox" class="hidden peer" @change="toggleEmail">
+									<div class="w-10 h-4 rounded-full shadow dark:bg-gray-600 peer-checked:dark:bg-violet-400" />
+									<div class="absolute left-0 w-6 h-6 rounded-full shadow -inset-y-1 peer-checked:right-0 peer-checked:left-auto dark:bg-violet-400" />
+								</span>
+							</label>
+
+							<span class="pb-2 text-sm font-medium">
+								Enable Email notification
+							</span>
+						</div> -->
+					</div>
+
+					<div>
+						<button :disabled="!isFormEmpty" :class="[!isFormEmpty ? 'opacity-25 cursor-not-allowed' : '']" class="btn-primary-sm py-3"
 							@click.prevent="notifyUsers">
 							{{ creatingNotification ? 'Processing...' : 'Notify users' }}
 						</button>
@@ -159,9 +216,12 @@ const itemSelected = ref('all')
 let selectedUsers = reactive([])
 const users = ref([])
 const search = ref('')
-const checked = ref('')
+// const checked = ref('')
+const sms = ref('false')
+const email = ref('false')
 const notification = ref({
-	isSms: false,
+	sms: false,
+	email: false,
 	title: '',
     notifyAll: false,
     description: ''
@@ -173,13 +233,28 @@ getUsersList()
       const errorProcessing = ref(false)
 
 const isFormEmpty = computed(() => {
-	return !!(notification.value.title && notification.value.description && (selectedUsers.length || users.value.length))
+//  if (notification.value.description && notification.value.title && selectedUsers.length) {
+// 	return true
+//    } else if (notification.value.description && notification.value.title && itemSelected.value === 'all') {
+// 	return true
+//    } else {
+// 	return false
+//    }
+return !!(notification.value.description && notification.value.title && (selectedUsers.length || notificationType.value === 'all'))
 })
-const toggleStory = () => {
-      if (checked.value) {
-        notification.value.isSms = true
+const toggleSms = () => {
+      if (sms.value) {
+        notification.value.sms = true
       } else {
-        notification.value.isSms = false
+        notification.value.sms = false
+      }
+    }
+
+	const toggleEmail = () => {
+      if (email.value) {
+        notification.value.email = true
+      } else {
+        notification.value.email = false
       }
     }
 
@@ -210,7 +285,7 @@ const toggleStory = () => {
       nextTick(() => {
         if (e.target.checked) {
           notificationType.value = 'all'
-          selectedUsers = users.value
+          selectedUsers.length = users.value.length
         } else {
           notificationType.value = 'regular'
           selectedUsers = []
@@ -219,7 +294,7 @@ const toggleStory = () => {
       })
     }
 
-	const notifyUsers = () => {
+	const notifyUsers = async () => {
       if (notification.value.description === '') {
 		useAlert().openAlert({ type: 'ERROR', msg: 'Please enter notification message' })
         return
@@ -232,25 +307,28 @@ const toggleStory = () => {
 	  const payload = {
             body: `<html>${notification.value.description}</html>`,
             title: notification.value.title,
-            sms: notification.value.isSms
+            sms: notification.value.sms,
+			email: notification.value.email
           }
 
 	  if (notificationType.value === 'all') {
-		payload.user_ids = users.value.map((user:any) => user?.id)
+		payload.user_ids = usersList.value.map((user:any) => user?.id)
         processingAll.value = true
       } else {
 		payload.user_ids = selectedUsers.map((user:any) => user?.id)
         processing.value = true
       }
 
-	  createNotifications(payload)
-	 if (message) {
+	  createNotifications(payload).then(() => {
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification was sent successfully.' })
 		notification.value.title = ''
 		notification.value.description = ''
-	 } else {
+	  }).catch(() => {
 		useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong while sending notification.' })
-	 }
+	  }).finally(() => {
+		notification.value.title = ''
+		notification.value.description = ''
+	  })
     }
 </script>
 

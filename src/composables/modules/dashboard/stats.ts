@@ -37,7 +37,6 @@ export const useGetTripRatingInfo = () => {
         loadingTripRatingInfo.value = true
 
         const res = await $_trip_rating_info() as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
             tripRatingData.value = res.data.data
         }
@@ -76,3 +75,79 @@ export const useGetRatingInfoByDate = () => {
 
     return { getFilteredTripRating, loadingRatingByDate, filteredRatingData, payload }
 }
+
+export const usePassengersRatingsGraph = () => {
+    const loadingPassengersRatings = ref(false)
+    const passengersRatings = ref([] as any)
+    const payload = {
+        startDate: ref(''),
+        endDate: ref('')
+    }
+
+    const { $_trip_passenger_rating } = stats_api
+
+    const getPassengersRating = async () => {
+        loadingPassengersRatings.value = true
+
+        const res = await $_trip_passenger_rating({
+            startDate: payload.startDate.value,
+            endDate: payload.endDate.value
+        }) as CustomAxiosResponse
+        console.log(res, 'passengers rating res here')
+        if (res.type !== 'ERROR') {
+            passengersRatings.value = res.data
+        }
+        loadingPassengersRatings.value = false
+    }
+
+    watch([payload.startDate, payload.endDate], (val) => {
+        getPassengersRating()
+    })
+
+    return { getPassengersRating, loadingPassengersRatings, passengersRatings, payload }
+}
+
+// export const fetchRatingsChartData = () => {
+//     const loadingRatingsChartData = true
+//     const errorLoadingRatingsChartData = false
+//     const errorMessage = ''
+
+//     const startDate = moment().subtract(6, 'd').format('YYYY-MM-DD')
+//     const endDate = moment().format('YYYY-MM-DD')
+//     const payload = {
+//       settings_id: this.settingsId,
+//       start_date: startDate,
+//       end_date: endDate
+//     }
+
+//     Promise.all([
+//       this.axios.get(
+//         `/v1/routes/passengers/stats?startDate=${startDate}&endDate=${endDate}`
+//       ),
+//       this.axios.post('/rating/reports/graph/day', payload)
+//     ])
+//       .then((res) => {
+//         const passengersResponse = res[0].data
+//         const ratingsResponse = res[1].data.data
+//         const dates = getDatesInRange(startDate, endDate)
+
+//         const ratingsData = dates.map((date) => {
+//           const datum = {}
+//           datum.date = date
+//           datum.total_passengers = passengersResponse[date].total
+//           datum.average_daily_rating = passengersResponse[date].rating
+//           datum.total_rating =
+//             ratingsResponse.find((item) => item.day === date)?.count || 0
+
+//           return datum
+//         })
+
+//         this.ratingsChartData = getRatingsChartData(ratingsData)
+//       })
+//       .catch(() => {
+//         this.errorLoadingRatingsChartData = true
+//         this.errorMessage =
+//           'Sorry, we couldn\'t load the ratings graph at this time. Please'
+//       })
+//       .finally(() => (this.loadingRatingsChartData = false))
+//   },
