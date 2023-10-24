@@ -3,9 +3,9 @@
 		<section class="flex w-full flex-wrap gap-4">
 			<ButtonMultiSelectDropdown v-model="filterData.routeType.value" :children="[{ name: 'Exclusive', value: 'exclusive' }, { name: 'Shared', value: 'shared' }]" title="Route type:" />
 			<ButtonMultiSelectDropdown v-model="filterData.visibility.value" :children="[{ name: 'Private', value: 'private' }, { name: 'Public', value: 'public' }]" title="Visibility:" />
-			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="formattedTripTime" title="Start time:" />
-			<ButtonMultiSelectDropdown v-model="filterData.vehicleType.value" :children="formattedVehicle" title="Vehicle type:" />
-			<ButtonMultiSelectDropdown v-model="filterData.city.value" :children="formattedCities" title="City:" />
+			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="formattedTripTime" :loading="loadingTripTime" title="Start time:" />
+			<ButtonMultiSelectDropdown v-model="filterData.vehicleType.value" :children="formattedVehicle" :loading="loadingVehicleTypes" title="Vehicle type:" />
+			<ButtonMultiSelectDropdown v-model="filterData.city.value" :children="formattedCities" :loading="loading" title="City:" />
 			<div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
 				<span class="text-grey5 w-full">Occupancy rate:</span>
 				<label for="occupancy_from">
@@ -39,7 +39,7 @@ import { use_user_city } from '@/composables/auth/register'
 import { useGetTripTime } from '@/composables/modules/routes/fetch'
 
 const { getTripTime, loadingTripTime, tripTimeList } = useGetTripTime()
-const { getVehicleTypesList, vehicleTypesList } = useVehicleTypesList()
+const { getVehicleTypesList, vehicleTypesList, loadingVehicleTypes } = useVehicleTypesList()
 const { cityArray, fetchCities, loading } = use_user_city()
 getVehicleTypesList()
 fetchCities()

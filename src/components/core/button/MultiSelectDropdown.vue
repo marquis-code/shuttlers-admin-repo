@@ -3,7 +3,7 @@
 		<Popover v-slot="{ open }" class="relative">
 			<PopoverButton class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm">
 				<span v-if="title" class="text-grey5">{{ title }}</span>
-				<span class="text-dark ml-2">{{ truncateString(computedSelectedString, 8) }}</span>
+				<span class="text-dark ml-2">{{ loading ? 'loading..' : truncateString(computedSelectedString, 8) }}</span>
 				<ChevronDownIcon :class="open ? '' : 'text-opacity-70'" class="ml-3 h-5 w-5" aria-hidden="true" />
 			</PopoverButton>
 
@@ -54,6 +54,11 @@ const props = defineProps({
 		type: Array,
 		required: true,
 		default: () => []
+	},
+	loading: {
+		type: Boolean,
+		default: false,
+		required: false
 	}
 })
 const emit = defineEmits(['update:modelValue'])
