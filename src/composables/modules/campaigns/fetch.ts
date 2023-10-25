@@ -91,7 +91,7 @@ export const use_get_pilot_point_list = () => {
 
 export const use_get_pilot_hightest_lowest_points = () => {
     const loading_pilot_rate_points = ref(false)
-    const pointsObject = ref({})
+    const pointsObject = ref({} as Record<string, any>)
 
     const getPointsRate = async (userType:string) => {
         loading_pilot_rate_points.value = true
