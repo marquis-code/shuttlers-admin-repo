@@ -18,7 +18,7 @@
 					<input id="occupancy_to" v-model="filterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0">
 				</label>
 				<span>%</span>
-				<button class="btn-primary" :disabled="!filterData.occupancy_from.value || !filterData.occupancy_to.value" @click="emitOccupancy">
+				<button class="btn-primary" @click="emitOccupancy">
 					Apply
 				</button>
 			</div>
@@ -90,7 +90,6 @@ interface DefaultValueProps {
 }
 
 const props = defineProps({
-
 	defaultValue: {
 		type: Object as () => DefaultValueProps,
 		default: () => ({
@@ -110,11 +109,11 @@ const filterData = {
 }
 
 const emitOccupancy = () => {
-	if (filterData.occupancy_from.value && filterData.occupancy_to.value) {
+	// if (filterData.occupancy_from.value && filterData.occupancy_to.value) {
 		appendObjectToCurrentURL('occupancy_from', JSON.stringify(filterData.occupancy_from.value))
 		appendObjectToCurrentURL('occupancy_to', JSON.stringify(filterData.occupancy_to.value))
 		onFilter({ type: 'occupancy', value: [filterData.occupancy_from.value, filterData.occupancy_to.value] })
-	}
+	// }
 }
 
 const resetData = () => {
@@ -125,6 +124,7 @@ const resetData = () => {
 	filterData.city.value = []
 	filterData.occupancy_from.value = 0
 	filterData.occupancy_to.value = 0
+	emitOccupancy()
 }
 watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val: any[]) => {
 	if (val[0]) {
