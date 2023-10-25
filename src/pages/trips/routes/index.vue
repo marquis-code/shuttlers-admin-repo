@@ -44,7 +44,6 @@ definePageMeta({
 })
 
 const onRowClicked = (data) => {
-	console.log(data)
 	const { selectedRoute } = useRouteIdDetails()
 	useRouter().push(`/trips/routes/${data.id}/details`)
 	selectedRoute.value = data
