@@ -107,23 +107,26 @@
 				</p>
 			</div>
 		</div>
+		<header>
+			<h3 class="font-medium pb-3.5 px-6">
+				Summary
+			</h3>
+		</header>
+		<!-- <div class="p-5">
+			<ChartsBarChart class="!h-72" :loading="loadingTripRatingInfo" :data="getRatingsChartData(tripRatingData)" />
+		</div> -->
 	</section>
 </template>
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { getRatingsChartData } from '@/composables/utils/charts'
 import {
   useGetTripRatingInfo,
   useGetRatingInfoByDate
 } from '@/composables/modules/dashboard/stats'
-const { getTripRatingData, loadingTripRatingInfo, tripRatingData } =
-  useGetTripRatingInfo()
-const {
-  getFilteredTripRating,
-  loadingRatingByDate,
-  filteredRatingData,
-  payload
-} = useGetRatingInfoByDate()
+const { getTripRatingData, loadingTripRatingInfo, tripRatingData } = useGetTripRatingInfo()
+const { getFilteredTripRating, loadingRatingByDate, filteredRatingData, payload } = useGetRatingInfoByDate()
 const form = reactive({
   rate: []
 })

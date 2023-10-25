@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList">
+		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -19,6 +19,9 @@
 				<span v-if="item.status">
 					<StatusBadge :name="item.data.status === 0 ? 'Inactive' : 'Active'" />
 				</span>
+				<span v-if="item.id">
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+				</span>
 			</template>
 
 			<template #footer>
@@ -30,6 +33,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
+import { useRouteIdDetails } from '@/composables/modules/routes/id'
 
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
 getMainRoutesList()
@@ -38,6 +42,19 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const onRowClicked = (data) => {
+	const { selectedRoute } = useRouteIdDetails()
+	useRouter().push(`/trips/routes/${data.id}/details`)
+	selectedRoute.value = data
+}
+
+const dropdownChildren = computed(() => [
+	{ name: 'Edit', func: (data) => {} },
+	{ name: 'Suspend', func: (data) => {} },
+	{ name: 'Duplicate', func: (data) => {} },
+	{ name: 'Delete', func: (data) => {}, class: '!text-red' }
+])
 
 const tableFields = ref([
     {
@@ -55,7 +72,11 @@ const tableFields = ref([
 	{
         text: 'STATUS',
         value: 'status'
-    }
+    },
+	{
+		text: 'ACTIONS',
+		value: 'id'
+	}
 ])
 
 </script>

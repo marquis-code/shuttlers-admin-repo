@@ -50,6 +50,7 @@ import RoutePriceControl from '@/components/headers/modules/Configure/PricingCon
 import Amenities from '@/components/headers/modules/Configure/Amenities/index.vue'
 import VehicleConfiguration from '@/components/headers/modules/Configure/Vehicles/index.vue'
 import TripRatingSettings from '@/components/headers/modules/Configure/TripRatings/index.vue'
+import RouteDetails from '@/components/headers/modules/Routes/route-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -96,14 +97,15 @@ const componentRouteArray = [
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
             'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings'], component: TripDetails
     },
-    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay'], component: GenericHeader },
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create'], component: GenericHeader },
     { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
     { routes: ['campaigns-valentine'], component: ValentineCampaign },
     { routes: ['campaigns-valentine-id'], component: ValentineCampaignDetails },
     { routes: ['configuration-pricing-pricing-control', 'configuration-pricing-payment-option'], component: RoutePriceControl },
     { routes: ['configuration-vehicle-amenities'], component: Amenities },
     { routes: ['configuration-vehicle-category-management', 'configuration-vehicle-category-management-inspection-sites'], component: VehicleConfiguration },
-    { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings }
+    { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
+    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips'], component: RouteDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

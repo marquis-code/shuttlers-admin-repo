@@ -24,6 +24,7 @@ export const useGetUpcomingEvents = () => {
     const loadingUpcomingEvents = ref(false)
     const upcomingEventsList = ref([] as any)
 
+    // @Marquis wtf, this function doesn't exist in the api_factory
     const { $_get_upcoming_events } = events_api
 
     const getUpcomingEventsList = async () => {

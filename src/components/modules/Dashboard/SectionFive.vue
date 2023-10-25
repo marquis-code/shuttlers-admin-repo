@@ -10,12 +10,13 @@
 				<div v-for="item, index in routesList" :key="index" class="flex items-center justify-between w-full px-6 py-3 overflow-x-auto text-sm cursor-pointer hover:bg-gray-100">
 					<div class="w-10/12 space-y-6">
 						<div class="space-y-2">
-							<p class="text-gray-700">
+							<!-- <p class="text-gray-700">
 								{{ item?.pickup ?? 'N/A' }}
 							</p>
 							<p class="text-gray-700">
 								{{ item?.destination ?? 'N/A' }}
-							</p>
+							</p> -->
+							<RouteDescription :pickup="item?.pickup" :destination="item?.destination" />
 						</div>
 						<div class="flex items-center justify-between w-full text-gray-700">
 							<p class="font-light text-[12px]">
@@ -52,10 +53,10 @@
 							<span v-if="item.pickup_date" class="flex items-center gap-4">
 								<span class="text-sm">{{ item?.data?.pickup_date }}</span>
 							</span>
-							<span v-if="item.pickup_address" class="flex items-center gap-4">
+							<span v-if="item.pickup_address" class="flex items-center gap-4 text-xw">
 								<span class="text-sm">{{ item?.data?.pickup_address }}</span>
 							</span>
-							<span v-if="item.return_address" class="flex items-center gap-4">
+							<span v-if="item.return_address" class="flex items-center gap-4 w-[150px text-xs                                                                             ]">
 								<span class="text-sm">{{ item?.data?.return_address }}</span>
 							</span>
 							<span v-if="item.return_time" class="flex items-center gap-4">
