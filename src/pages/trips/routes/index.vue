@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList">
+		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
+import { useRouteIdDetails } from '@/composables/modules/routes/id'
 
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
 getMainRoutesList()
@@ -42,11 +43,17 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
+const onRowClicked = (data) => {
+	const { selectedRoute } = useRouteIdDetails()
+	useRouter().push(`/trips/routes/${data.id}/details`)
+	selectedRoute.value = data
+}
+
 const dropdownChildren = computed(() => [
 	{ name: 'Edit', func: (data) => {} },
 	{ name: 'Suspend', func: (data) => {} },
 	{ name: 'Duplicate', func: (data) => {} },
-	{ name: 'Delete', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'Delete', func: (data) => {}, class: '!text-red' }
 ])
 
 const tableFields = ref([
