@@ -166,7 +166,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Emergency report',
         routePath: '/trips/sos',
         oldPath: '/trips/sos',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Handle shuttlers sos requests'
       }
     ]
