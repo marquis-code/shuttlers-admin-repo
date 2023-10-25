@@ -7,5 +7,9 @@ export const events_api = {
           url = url + `&status=${params.status}`
 		}
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
-	}
+	},
+	    $_create_event: (credentials: any) => {
+        const url = '/event/create'
+        return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, credentials)
+    }
 }

@@ -25,9 +25,11 @@ const filterData = {
     search: ref(''),
     route_type: ref(''),
     route_visibility: ref(''),
+    occupancy_rate_from: ref(''),
+    occupancy_rate_to: ref(''),
     'city_ids[]': ref(''),
     'vehicle_categories[]': ref(''),
-    trip_time_list: ref('')
+    'trip_time_list[]': ref('')
 }
 
 const onFilterUpdate = (data: any) => {
@@ -39,10 +41,10 @@ const onFilterUpdate = (data: any) => {
             filterData.to.value = data.value
             break
         case 'routeType':
-            filterData.route_type.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            filterData.route_type.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
         case 'visibility':
-            filterData.route_visibility.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            filterData.route_visibility.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
         case 'city':
             filterData['city_ids[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
@@ -50,19 +52,28 @@ const onFilterUpdate = (data: any) => {
         case 'vehicleType':
             filterData['vehicle_categories[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
             break
+        case 'startTime':
+            filterData['trip_time_list[]'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            break
+        case 'occupancy':
+            filterData.occupancy_rate_from.value = data.value[0]
+            filterData.occupancy_rate_to.value = data.value[1]
+            break
     }
 }
+
+const watchArray = [filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
+    filterData['vehicle_categories[]'], filterData['city_ids[]'], filterData['trip_time_list[]'],
+    filterData.occupancy_rate_from, filterData.occupancy_rate_to]
 
 export const useGetActiveTripsList = () => {
     const loadingActiveTrips = ref(false)
     const activeTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
-    const { $_get_active_trips } = trips_api
-
     const getActiveTrips = async () => {
         loadingActiveTrips.value = true
-        const res = await $_get_active_trips(filterData, metaObject) as CustomAxiosResponse
+        const res = await trips_api.$_get_active_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             activeTripsList.value = res.data.data
             metaObject.total.value = res.data.metadata.total
@@ -71,7 +82,7 @@ export const useGetActiveTripsList = () => {
     }
     setFunction(activeTripsList)
 
-    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
+    watch(watchArray, () => {
         getActiveTrips()
     })
 
@@ -83,11 +94,9 @@ export const useGetUpcomingTripsList = () => {
     const upcomingTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
-    const { $_get_upcoming_trips } = trips_api
-
     const getUpcomingTrips = async () => {
         loadingUpcomingTrips.value = true
-        const res = await $_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
+        const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             upcomingTripsList.value = res.data.data
             metaObject.total.value = res.data.metadata.total
@@ -96,7 +105,7 @@ export const useGetUpcomingTripsList = () => {
     }
     setFunction(upcomingTripsList)
 
-    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
+    watch(watchArray, () => {
         getUpcomingTrips()
     })
 
@@ -108,11 +117,9 @@ export const useGetCompletedTripsList = () => {
     const completedTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
-    const { $_get_completed_trips } = trips_api
-
     const getCompletedTrips = async () => {
         loadingCompletedTrips.value = true
-        const res = await $_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
+        const res = await trips_api.$_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             completedTripsList.value = res.data.data
             metaObject.total.value = res.data.metadata.total
@@ -121,7 +128,7 @@ export const useGetCompletedTripsList = () => {
     }
     setFunction(completedTripsList)
 
-    watch([filterData.from, filterData.to, filterData.route_type, filterData.route_visibility, filterData['vehicle_categories[]'], filterData['city_ids[]']], () => {
+    watch(watchArray, () => {
         getCompletedTrips()
     })
 
@@ -136,11 +143,9 @@ export const useGetBusCaptainsList = () => {
         search: ref('')
     }
 
-    const { $_get_bus_captains } = trips_api
-
     const getBusCaptains = async () => {
         loadingBusCaptains.value = true
-        const res = await $_get_bus_captains(filterData, metaObject) as CustomAxiosResponse
+        const res = await trips_api.$_get_bus_captains(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             busCaptainsList.value = res.data.data
             metaObject.total.value = res.data.metadata.total
@@ -167,11 +172,10 @@ export const useGetTripRatingList = () => {
     const loadingTripRatings = ref(false)
     const tripRatingList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-    const { $_get_trip_rating } = trips_api
 
     const getTripRatings = async (id: string) => {
         loadingTripRatings.value = true
-        const res = await $_get_trip_rating(id, metaObject) as CustomAxiosResponse
+        const res = await trips_api.$_get_trip_rating(id, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             tripRatingList.value = res.data.data
             metaObject.total.value = res.data.metadata.total

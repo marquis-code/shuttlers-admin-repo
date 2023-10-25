@@ -116,3 +116,19 @@ export const useGetSuspendedRoutes = () => {
 
     return { getSuspendedRoutesList, loadingSuspendedRoutes, suspendedRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
+
+export const useGetTripTime = () => {
+    const loadingTripTime = ref(false)
+    const tripTimeList = ref([] as any)
+
+    const getTripTime = async () => {
+        loadingTripTime.value = true
+        const res = await routes_api.$_get_trip_time() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            tripTimeList.value = res.data
+        }
+        loadingTripTime.value = false
+    }
+
+    return { getTripTime, loadingTripTime, tripTimeList }
+}

@@ -1,0 +1,73 @@
+<template>
+	<input
+		:id="id"
+		ref="autocompleteInput"
+		:class="inputClass"
+		type="text"
+		:placeholder="placeholder"
+		required
+		@input="isEmpty"
+	>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { Loader } from '@googlemaps/js-api-loader'
+import { isObject } from '@vue/shared'
+
+const props = defineProps({
+  modelValue: { type: Object, default: () => {} },
+  placeholder: { type: String, default: '' },
+  id: { type: String, default: 'autocomplete' },
+  inputClass: { type: String, default: 'relative' },
+  busStop: { type: Boolean, dafault: false }
+})
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const options = {
+    componentRestrictions: { country: ['NG'] },
+    fields: ['address_components', 'geometry', 'name'],
+	types: props.busStop ? ['bus_station'] : []
+}
+const autocompleteInput = ref(null)
+const autocomplete = ref()
+const isEmpty = () => {
+	if (!(document.getElementById(props.id)as HTMLInputElement).value) return emit('update:modelValue', {})
+}
+const modelValueProp = toRef(props, 'modelValue')
+
+onMounted(() => {
+	const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+	const loader = new Loader({
+		apiKey: GOOGLE_MAPS_API_KEY as string,
+		libraries: ['places']
+	})
+    const fillInAddress = () => {
+		const place = autocomplete.value.getPlace()
+		const lat = place.geometry.location.lat()
+		const lng = place.geometry.location.lng()
+
+		const latlng = { lat, lng }
+
+		const emitter = {
+			name: (document.getElementById(props.id)as HTMLInputElement).value, ...latlng
+		}
+		emit('update:modelValue', emitter)
+		emit('change', emitter)
+	}
+	if (!isObject(modelValueProp.value) && modelValueProp.value) {
+		(document.getElementById(`${props.id}`) as HTMLInputElement).value = modelValueProp.value
+	}
+	loader.load().then(() => {
+		autocomplete.value = new google.maps.places.Autocomplete(
+			document.getElementById(props.id) as HTMLInputElement,
+			options
+		)
+        autocomplete.value.addListener('place_changed', fillInAddress)
+	})
+})
+</script>
+
+<style scoped>
+
+</style>
