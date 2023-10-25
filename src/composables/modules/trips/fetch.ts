@@ -27,9 +27,9 @@ const filterData = {
     route_visibility: ref(''),
     occupancy_rate_from: ref(''),
     occupancy_rate_to: ref(''),
-    'city_ids': ref(''),
-    'vehicle_categories': ref(''),
-    'trip_time_list': ref('')
+    city_ids: ref(''),
+    vehicle_categories: ref(''),
+    trip_time_list: ref('')
 }
 
 const onFilterUpdate = (data: any) => {
@@ -47,13 +47,13 @@ const onFilterUpdate = (data: any) => {
             filterData.route_visibility.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
         case 'city':
-            filterData['city_ids'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            filterData.city_ids.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
             break
         case 'vehicleType':
-            filterData['vehicle_categories'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            filterData.vehicle_categories.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
             break
         case 'startTime':
-            filterData['trip_time_list'].value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
+            filterData.trip_time_list.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
             break
         case 'occupancy':
             filterData.occupancy_rate_from.value = data.value[0]
@@ -63,7 +63,7 @@ const onFilterUpdate = (data: any) => {
 }
 
 const watchArray = [filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
-    filterData['vehicle_categories[]'], filterData['city_ids[]'], filterData['trip_time_list[]'],
+    filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list,
     filterData.occupancy_rate_from, filterData.occupancy_rate_to]
 
 export const useGetActiveTripsList = () => {
