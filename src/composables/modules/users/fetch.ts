@@ -1,6 +1,22 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
+export const useGetUsersGraph = () => {
+    const loading = ref(false)
+    const usersGraphData = ref({} as any)
+
+    const getUsersGraph = async () => {
+        loading.value = true
+        const res = await users_api.$_get_graph() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            usersGraphData.value = res.data
+        }
+        loading.value = false
+    }
+
+    return { getUsersGraph, loading, usersGraphData }
+}
+
 export const useGetRecentSignupsList = () => {
     const loadingSignups = ref(false)
     const signupList = ref([] as any)
