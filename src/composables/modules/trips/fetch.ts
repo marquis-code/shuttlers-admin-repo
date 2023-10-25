@@ -80,7 +80,7 @@ export const useGetActiveTripsList = () => {
         }
         loadingActiveTrips.value = false
     }
-    setFunction(activeTripsList)
+    setFunction(getActiveTrips)
 
     watch(watchArray, () => {
         getActiveTrips()
@@ -103,7 +103,7 @@ export const useGetUpcomingTripsList = () => {
         }
         loadingUpcomingTrips.value = false
     }
-    setFunction(upcomingTripsList)
+    setFunction(getUpcomingTrips)
 
     watch(watchArray, () => {
         getUpcomingTrips()
@@ -126,7 +126,7 @@ export const useGetCompletedTripsList = () => {
         }
         loadingCompletedTrips.value = false
     }
-    setFunction(completedTripsList)
+    setFunction(getCompletedTrips)
 
     watch(watchArray, () => {
         getCompletedTrips()

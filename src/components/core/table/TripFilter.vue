@@ -104,8 +104,8 @@ const filterData = {
 	startTime: ref([]),
 	vehicleType: ref([]),
 	city: ref([]),
-	occupancy_from: ref(),
-	occupancy_to: ref()
+	occupancy_from: ref(0),
+	occupancy_to: ref(100)
 }
 
 const emitOccupancy = () => {
@@ -123,7 +123,7 @@ const resetData = () => {
 	filterData.vehicleType.value = []
 	filterData.city.value = []
 	filterData.occupancy_from.value = 0
-	filterData.occupancy_to.value = 0
+	filterData.occupancy_to.value = 100
 	emitOccupancy()
 }
 watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val: any[]) => {
@@ -159,7 +159,7 @@ const convertURLParamsToObject = (() => {
 	filterData.vehicleType.value = urlParams.vehicleType as string ? JSON.parse(urlParams.vehicleType as string) : [] as string[]
 	filterData.city.value = urlParams.city as string ? JSON.parse(urlParams.city as string) : [] as string[]
 	filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
-	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 0
+	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 100
 	emitOccupancy()
 })()
 
