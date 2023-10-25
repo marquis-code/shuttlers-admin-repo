@@ -50,6 +50,7 @@ import RoutePriceControl from '@/components/headers/modules/Configure/PricingCon
 import Amenities from '@/components/headers/modules/Configure/Amenities/index.vue'
 import VehicleConfiguration from '@/components/headers/modules/Configure/Vehicles/index.vue'
 import TripRatingSettings from '@/components/headers/modules/Configure/TripRatings/index.vue'
+import RouteDetails from '@/components/headers/modules/Routes/route-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -103,7 +104,8 @@ const componentRouteArray = [
     { routes: ['configuration-pricing-pricing-control', 'configuration-pricing-payment-option'], component: RoutePriceControl },
     { routes: ['configuration-vehicle-amenities'], component: Amenities },
     { routes: ['configuration-vehicle-category-management', 'configuration-vehicle-category-management-inspection-sites'], component: VehicleConfiguration },
-    { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings }
+    { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
+    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips'], component: RouteDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
