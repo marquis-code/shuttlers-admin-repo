@@ -76,7 +76,7 @@ export const useGetActiveTripsList = () => {
         const res = await trips_api.$_get_active_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             activeTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingActiveTrips.value = false
     }
@@ -99,7 +99,7 @@ export const useGetUpcomingTripsList = () => {
         const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             upcomingTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingUpcomingTrips.value = false
     }
@@ -122,7 +122,7 @@ export const useGetCompletedTripsList = () => {
         const res = await trips_api.$_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             completedTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingCompletedTrips.value = false
     }
