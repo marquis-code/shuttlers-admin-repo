@@ -53,7 +53,6 @@ export const useGetUsersList = () => {
     })
 
     const onFilterUpdate = (data: any) => {
-        console.log(data, 'here')
         switch (data.type) {
             case 'status':
                 filterData.status.value = data.value === '0' ? 'inactive' : 'active'

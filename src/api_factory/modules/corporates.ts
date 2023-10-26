@@ -15,8 +15,9 @@ export const corporates_api = {
 		const url = `/prospective-corporates?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_shuttle_request: () => {
-		const url = '/shuttle-requests?page=1&limit=10&sort[created_at]=desc'
+	$_get_shuttle_request: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/shuttle-requests?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&sort[created_at]=desc`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_credit_line_usage: (corporateId:number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {

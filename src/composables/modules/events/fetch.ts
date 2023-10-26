@@ -1,42 +1,96 @@
 import { events_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
 
 export const useGetEvents = () => {
     const loadingEvents = ref(false)
     const eventsList = ref([] as any)
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+
+    const filterData = {
+        search: ref(''),
+        fromDate: ref(''),
+        toDate: ref('')
+    }
+
+    watch([filterData.fromDate, filterData.toDate, filterData.search], (val) => {
+        getEventsList()
+    })
 
     const { $_get_events } = events_api
 
-    const getEventsList = async (params) => {
+    const getEventsList = async () => {
         loadingEvents.value = true
 
-        const res = await $_get_events(params) as CustomAxiosResponse
-
+        const res = await $_get_events(metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             eventsList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.pageCount
         }
         loadingEvents.value = false
     }
 
-    return { getEventsList, loadingEvents, eventsList }
+    setFunction(getEventsList)
+
+    const onFilterUpdate = (data) => {
+        switch (data.type) {
+            case 'dateRange':
+                filterData.fromDate.value = data.value
+                filterData.toDate.value = data.value
+                break
+            case 'search':
+                filterData.search.value = data.value
+                break
+        }
+    }
+
+    return { getEventsList, loadingEvents, eventsList, filterData, onFilterUpdate, ...metaObject, next, prev, moveTo }
 }
 
 export const useGetUpcomingEvents = () => {
     const loadingUpcomingEvents = ref(false)
     const upcomingEventsList = ref([] as any)
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
 
-    // @Marquis wtf, this function doesn't exist in the api_factory
-    const { $_get_upcoming_events } = events_api
+    const filterData = {
+        search: ref(''),
+        status: ref('accepted'),
+        fromDate: ref(''),
+        toDate: ref('')
+    }
+
+    watch([filterData.status, filterData.fromDate, filterData.toDate, filterData.search], (val) => {
+        getUpcomingEventsList()
+    })
+
+    const { $_get_events } = events_api
 
     const getUpcomingEventsList = async () => {
         loadingUpcomingEvents.value = true
 
-        const res = await $_get_upcoming_events() as CustomAxiosResponse
-
+        const res = await $_get_events(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             upcomingEventsList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.pageCount
         }
         loadingUpcomingEvents.value = false
     }
 
-    return { getUpcomingEventsList, loadingUpcomingEvents, upcomingEventsList }
+    setFunction(getUpcomingEventsList)
+
+    const onFilterUpdate = (data) => {
+        switch (data.type) {
+            case 'status':
+                filterData.status.value = data.value
+                break
+            case 'search':
+                filterData.search.value = data.value
+                break
+            case 'dateRange':
+                filterData.fromDate.value = data.value
+                filterData.toDate.value = data.value
+                break
+        }
+    }
+
+    return { getUpcomingEventsList, loadingUpcomingEvents, upcomingEventsList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }

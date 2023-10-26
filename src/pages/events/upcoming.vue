@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loadingEvents" :headers="tableFields" :table-data="eventsList">
+		<Table :loading="loadingUpcomingEvents" :headers="tableFields" :table-data="upcomingEventsList" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.title">
@@ -30,18 +30,18 @@
 					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
 				</div>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingUpcomingEvents" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetEvents } from '@/composables/modules/events/fetch'
+import { useGetUpcomingEvents } from '@/composables/modules/events/fetch'
 
-const { getEventsList, loadingEvents, eventsList } = useGetEvents()
-const params = ref({
-	status: 'accepted'
-})
-getEventsList(params.value as any)
+const { getUpcomingEventsList, loadingUpcomingEvents, upcomingEventsList, filterData, onFilterUpdate, next, prev, moveTo, total, page } = useGetUpcomingEvents()
+getUpcomingEventsList()
 
 definePageMeta({
     layout: 'dashboard',
