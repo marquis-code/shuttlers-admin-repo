@@ -34,12 +34,6 @@ const filterData = {
 
 const onFilterUpdate = (data: any) => {
     switch (data.type) {
-        case 'from':
-            filterData.from.value = data.value
-            break
-        case 'to':
-            filterData.to.value = data.value
-            break
         case 'routeType':
             filterData.route_type.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
@@ -58,6 +52,10 @@ const onFilterUpdate = (data: any) => {
         case 'occupancy':
             filterData.occupancy_rate_from.value = data.value[0]
             filterData.occupancy_rate_to.value = data.value[1]
+            break
+        case 'dateRange':
+            filterData.from.value = data.value[0] ? data.value[0] : ''
+            filterData.to.value = data.value[1] ? data.value[1] : ''
             break
     }
 }
