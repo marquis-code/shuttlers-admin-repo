@@ -112,7 +112,6 @@ watchDebounced([filterData.search, filterData.dateSelected, filterData.dateRange
 
 const convertURLParamsToObject = (() => {
 	const urlParams = useRoute().query as Record<string, any>
-	console.log(urlParams.dateRange)
 	filterData.status.value = urlParams.status ? urlParams.status : '1' as any
 	filterData.search.value = urlParams.q ? urlParams.q as string : ''
 	filterData.dateSelected.value = urlParams.date ? urlParams.date as string : ''
