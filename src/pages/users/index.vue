@@ -41,10 +41,6 @@ import { useUserIdDetails } from '@/composables/modules/users/id'
 const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetUsersList()
 
 getUsersList()
-filterData.start_date_filter.value = ''
-filterData.end_date_filter.value = ''
-filterData.search.value = ''
-
 const onRowClicked = (data) => {
 	const { selectedUser } = useUserIdDetails()
 	useRouter().push(`/users/${data.id}/user-info`)

@@ -2,6 +2,7 @@
 	<component :is="component" />
 </template>
 <script setup lang="ts">
+// import EventDetails from 'src/components/headers/modules/Events/event-details.vue'
 import GenericHeader from './GenericHeader.vue'
 import ShuttleRequests from '@/components/headers/modules/Companies/shuttleRequests.vue'
 import Fleets from '@/components/headers/modules/Fleets/index.vue'
@@ -12,7 +13,8 @@ import Admin from '@/components/headers/modules/Admin/index.vue'
 import CreateAdmin from '@/components/headers/modules/Admin/add-admin.vue'
 import Drivers from '@/components/headers/modules/Drivers/index.vue'
 import DriverDetails from '@/components/headers/modules/Drivers/driver-details.vue'
-import Events from '@/components/headers/modules/Events.vue'
+import Events from '@/components/headers/modules/Events/index.vue'
+import EventDetails from '@/components/headers/modules/Events/event-details.vue'
 import Transactions from '@/components/headers/modules/Transactions/index.vue'
 import Transactions_id from '@/components/headers/modules/Transactions/id.vue'
 import Referral from '@/components/headers/modules/Referral.vue'
@@ -73,6 +75,7 @@ const componentRouteArray = [
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
+    { routes: ['events-id-event-info'], component: EventDetails },
     { routes: ['transactions'], component: Transactions },
     { routes: ['transactions-id'], component: Transactions_id },
     { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },

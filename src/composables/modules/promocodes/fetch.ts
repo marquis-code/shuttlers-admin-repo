@@ -12,9 +12,9 @@ export const useGetPromotionsList = () => {
         loadingPromotions.value = true
 
         const res = await $_get_promotions(metaObject) as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
             promotionsList.value = res.data.models
+            metaObject.total.value = res.data.meta?.total
         }
         loadingPromotions.value = false
     }

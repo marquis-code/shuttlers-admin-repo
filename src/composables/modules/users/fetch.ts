@@ -64,7 +64,7 @@ export const useGetUsersList = () => {
     }
     setFunction(getUsersList)
 
-    watch([filterData.status, filterData.search], (val) => {
+    watch([filterData.status, filterData.search, filterData.end_date_filter, filterData.start_date_filter], (val) => {
         getUsersList()
     })
 
@@ -76,11 +76,10 @@ export const useGetUsersList = () => {
             case 'search':
                 filterData.search.value = data.value
                 break
-            case 'start_date_filter':
-                filterData.start_date_filter.value = data.value
+            case 'dateRange':
+                filterData.start_date_filter.value = data.value[0]
+                filterData.end_date_filter.value = data.value[1]
                 break
-            case 'end_date_filter':
-                filterData.end_date_filter.value = data.value
         }
     }
 

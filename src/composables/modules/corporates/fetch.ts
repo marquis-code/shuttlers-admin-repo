@@ -89,17 +89,35 @@ export const useGetDemoRequest = () => {
 export const useGetShuttleRequests = () => {
     const loading = ref(false)
     const shuttleRequestsList = ref([] as any)
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+
+    const filterData = {
+        created_at: ref('')
+    }
 
     const { $_get_shuttle_request } = corporates_api
+
+    watch([filterData.created_at], (val) => {
+        loadShuttleRequest()
+    })
 
     const loadShuttleRequest = async () => {
       loading.value = true
       const res = await $_get_shuttle_request() as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         shuttleRequestsList.value = res.data.data
+        metaObject.total.value = res.data.pagination?.pageCount
     }
     loading.value = false
     }
 
-    return { loadShuttleRequest, loading, shuttleRequestsList }
+    setFunction(loadShuttleRequest)
+
+    const onFilterUpdate = (data) => {
+        if (data.type === 'dateRange') {
+            filterData.created_at.value = data.value
+        }
+    }
+
+    return { loadShuttleRequest, loading, shuttleRequestsList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
