@@ -4,10 +4,10 @@
 			<input v-model="credentials.title.value" type="text" placeholder="Enter notification title" class="input-field">
 		</div>
 		<div class="w-full bg-white rounded-lg">
-			<div class="flex items-center justify-between py-3 pr-6 border-b">
-				<div>
+			<div class="flex items-center justify-end py-3 pr-6 border-b">
+				<!-- <div>
 					<input v-model="search" type="text" placeholder="Add partners" class="pl-4 bg-white outline-none">
-				</div>
+				</div> -->
 				<p v-if="notificationType === 'regular'" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
 					{{ selectedUsers.length }} partner{{ selectedUsers.length > 0 ? 's' : '' }} selected
 				</p>
@@ -22,12 +22,10 @@
 						:key="partner.id"
 						class="border rounded-lg text-xs flex justify-start gap-1 items-center py-2 px-2"
 					>
-						<p class="text-white rounded-full text-xs bg-green-500 text-[10px] px-1 py-1">
-							{{ partner?.fname?.slice?.(0, 1).toUpperCase() }}{{ partner?.lname?.slice?.(0, 1).toUpperCase() }}
-						</p>
+						<Avatar :name="partner?.company_name" :size="24" />
 
 						<p class="pl-3 text-xs">
-							{{ partner?.fname }}{{ partner?.lname }}
+							{{ partner?.company_name }}
 						</p>
 						<Icon name="close" class="w-5 ml-auto cursor-pointer" @click="removeSelectedUser(partner)" />
 					</div>

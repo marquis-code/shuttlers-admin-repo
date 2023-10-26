@@ -3,22 +3,6 @@
 		<div class="relative w-full">
 			<input
 				v-model.trim="search" type="text" placeholder="Search partners" class="input-field " @keyup.enter.prevent="getUsersList()">
-
-			<div class="absolute top-1.5 right-3 w-auto">
-				<div class="flex w-full items-center gap-2.5">
-					<span class="text-sm w-32">
-						Filter by:
-					</span>
-					<select v-model="itemSelected" class="px-3 py-2 border text-xs rounded-lg outline-none w-full">
-						<option value="all" class="text-xs">
-							All
-						</option>
-						<option value="company" class="text-xs">
-							Company
-						</option>
-					</select>
-				</div>
-			</div>
 		</div>
 		<div class="bg-white rounded-lg">
 			<div v-if="itemSelected === 'all'" class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
@@ -40,17 +24,17 @@
 					</select>
 				</div>
 			</div>
-			<Skeleton v-if="loading || loadingQueriedUsers" height="119px" />
+			<Skeleton v-if="loading" height="119px" />
 			<div v-else class="px-10 pb-10 h-96 overflow-y-auto">
 				<div v-for="(item, index) in updatedUsersList" :key="index" class="flex items-center justify-between py-6 border-b">
 					<div class="flex items-center gap-x-3">
 						<Avatar :name="item.fname" bg="#B1C2D9" />
 						<div>
 							<p class="text-sm font-medium">
-								{{ item.email }}
+								{{ item.company_email }}
 							</p>
 							<p class="text-sm">
-								{{ item.phone }}
+								{{ item.company_phone }}
 							</p>
 						</div>
 					</div>
@@ -68,14 +52,14 @@ import { useCreateNotification } from '@/composables/modules/partners/notificati
 
 import { useGetPartnersList } from '@/composables/modules/partners/fetch'
 
-const { getPartnersList, loading: fetchingPartners, partnersList, moveTo, total, page, next, prev } = useGetPartnersList()
+const { getPartnersList, loading, partnersList, onFilterUpdate, moveTo, total, page, next, prev } = useGetPartnersList()
 
 getPartnersList()
 
 const partners = ref([])
 
 const updatedUsersList = computed(() => {
-	return search.value.length ? queriedUsers.value : partnersList.value
+	return partnersList.value
 })
 
 const { selectedUsers, search, credentials, notificationType } = useCreateNotification()
@@ -96,7 +80,7 @@ const itemSelected = ref('all')
 	}
 
 	watch(search, (olvVal, newVal) => {
-		queryUsers(search.value)
+		onFilterUpdate({ type: 'search', value: search.value })
 	})
 
 </script>

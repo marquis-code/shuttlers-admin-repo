@@ -53,6 +53,7 @@ const palette = {
 					selectPalette.value = palette.active
 				break
 			case 'inactive':
+			case 'suspended':
 					selectPalette.value = palette.inactive
 				break
 			default :
