@@ -144,7 +144,7 @@ definePageMeta({
 
 const computedPointData = computed(() => {
 	return ({
-		highest_score: pointsObject.value?.highest?.points_earned,
+		highest_score: pointsObject?.value?.highest?.points_earned,
 		highest_pilot: `${pointsObject.value?.highest.driver?.fname} ${pointsObject.value?.highest?.driver?.lname}`,
 		highest_pilot_id: pointsObject.value?.highest.driver?.id,
 		lowest_pilot: `${pointsObject.value?.lowest.driver?.fname} ${pointsObject.value?.lowest?.driver?.lname}`,
@@ -155,10 +155,9 @@ const computedPointData = computed(() => {
 
 const computedPilotRewardList = computed(() => {
 	if (!rewardsList.value.length) return []
-	return rewardsList.value.map((item, index) => {
+	return rewardsList.value.map((item:any, index) => {
 		return {
 			...item,
-			tableIndex: index + 1,
 			action: ''
 		}
 	}).filter((itm) => {

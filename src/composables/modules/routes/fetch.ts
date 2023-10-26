@@ -43,10 +43,9 @@ export const useGetMainRoutes = () => {
         loadingMainRoutes.value = true
 
         const res = await $_get_main_routes(metaObject, filterData) as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
             mainRoutesList.value = res.data.data
-            metaObject.total.value = res.data.pagination?.pageCount
+            metaObject.total.value = res.data.metadata?.total_pages
         }
         loadingMainRoutes.value = false
     }

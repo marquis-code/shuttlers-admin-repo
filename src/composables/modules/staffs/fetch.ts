@@ -1,10 +1,12 @@
 import { staffs_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
 
 const { $_get_staffs } = staffs_api
 
 export const useGetStaffs = () => {
     const loading = ref(false)
     const staffsData = ref([] as any)
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
     const filterKeys = {
         search: ref(''),
         status: ref('1')
@@ -15,6 +17,7 @@ export const useGetStaffs = () => {
         const res = await $_get_staffs() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             staffsData.value = res.data
+            metaObject.total.value = res.data.metadata?.pageCount
         }
         loading.value = false
     }
@@ -49,5 +52,5 @@ export const useGetStaffs = () => {
     }
 }
 
-    return { getStaffs, loading, staffsData, filterKeys, filteredStaffs, onFilterUpdate }
+    return { getStaffs, loading, staffsData, filterKeys, filteredStaffs, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
