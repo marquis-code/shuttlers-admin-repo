@@ -8,7 +8,10 @@
 				<div>
 					<input v-model="search" type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
 				</div>
-				<p v-if="notificationType === 'regular'" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
+				<p v-if="corporateId && !loading" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
+					All<span class="underline mx-2">{{ companyName(corporateId) }} ({{ usersList.length }})</span>users selected
+				</p>
+				<p v-else-if="notificationType === 'regular'" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
 					{{ selectedUsers.length }} user{{ selectedUsers.length > 0 ? 's' : '' }} selected
 				</p>
 				<p v-else class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
@@ -16,7 +19,7 @@
 				</p>
 			</div>
 			<div class="p-1">
-				<div v-if="selectedUsers.length > 0" class="grid grid-cols-3 gap-4 p-2">
+				<div v-if="selectedUsers.length > 0 && corporateId=== ''" class="grid grid-cols-3 gap-4 p-2">
 					<div
 						v-for="user in selectedUsers"
 						:key="user.id"
@@ -55,9 +58,16 @@
 import { QuillEditor } from '@vueup/vue-quill'
 import { useCreateNotification } from '@/composables/modules/users/notification'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
+import { useGetUsersList } from '@/composables/modules/users/fetch'
 
-const { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedUser, selectedUsers, search } = useCreateNotification()
+const { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedUser, selectedUsers, search, corporateId } = useCreateNotification()
+const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
+const { usersList, loading } = useGetUsersList()
 
+const companyName = (data) => {
+      return corporatesList.value.find((c) => c.id === data)?.corporate_name
+    }
 </script>
 
 <style scoped>

@@ -38,15 +38,17 @@ export const useGetRecentSignupsList = () => {
     return { getSignupList, loadingSignups, signupList }
 }
 
+    const usersList = ref([] as any)
 export const useGetUsersList = () => {
     const loading = ref(false)
-    const usersList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
         search: ref(''),
         start_date_filter: ref(''),
-        end_date_filter: ref('')
+        end_date_filter: ref(''),
+        corporate_id: ref(''),
+        is_corporate: ref(0)
     }
 
     const { $_get_users } = users_api

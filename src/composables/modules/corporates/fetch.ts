@@ -19,9 +19,10 @@ export const useGetCorporateGraph = () => {
     return { getCorporatesGraph, loading, corporatesGraphData }
 }
 
+    const corporatesList = ref([] as any)
 export const useGetCorporateList = () => {
     const loading = ref(false)
-    const corporatesList = ref([] as any)
+
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_list } = corporates_api
