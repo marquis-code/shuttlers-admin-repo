@@ -67,7 +67,7 @@ const formattedCities = computed(() =>
 	cityArray.value.map((i: any) => {
 		return {
 			name: i.name,
-			value: i.id
+			value: i.city_id
 		}
 	})
 )
