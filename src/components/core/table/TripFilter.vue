@@ -67,7 +67,7 @@ const formattedCities = computed(() =>
 	cityArray.value.map((i: any) => {
 		return {
 			name: i.name,
-			value: i.id
+			value: i.city_id
 		}
 	})
 )
@@ -159,7 +159,7 @@ const convertURLParamsToObject = (() => {
 	filterData.vehicleType.value = urlParams.vehicleType as string ? JSON.parse(urlParams.vehicleType as string) : [] as string[]
 	filterData.city.value = urlParams.city as string ? JSON.parse(urlParams.city as string) : [] as string[]
 	filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
-	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 0
+	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 100
 	emitOccupancy()
 })()
 

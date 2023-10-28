@@ -1,14 +1,20 @@
 <template>
 	<div class="grid grid-cols-2 gap-8 pt-12">
-		<ModulesUsersNotifySectionOne />
-		<ModulesUsersNotifySectionTwo />
+		<ModulesPartnersNotifySectionOne />
+		<ModulesPartnersNotifySectionTwo />
 	</div>
 </template>
 
 <script setup lang="ts">
+import { usePageHeader } from '@/composables/utils/header'
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
+})
+
+usePageHeader().setPageHeader({
+  title: 'Notify Partners',
+  preTitle: 'OVERVIEW'
 })
 
 </script>

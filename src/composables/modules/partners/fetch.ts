@@ -32,7 +32,7 @@ export const useGetPartnersList = () => {
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'status':
-                filterData.status.value = data.value
+                filterData.status.value = data.value === '1' ? 'active' : data.value === '0' ? 'inactive' : ''
                 break
             case 'search':
                 filterData.search.value = data.value

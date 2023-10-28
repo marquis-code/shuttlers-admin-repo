@@ -11,7 +11,7 @@
 					<InputDateInput v-model="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" />
 				</div>
 				<div v-if="filterType.showDateRange" class="pt-2">
-					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" />
+					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" :disabled-date="()=>null" clearable />
 				</div>
 			</section>
 
@@ -44,7 +44,7 @@ import { appendObjectToCurrentURL } from '@/composables/utils/system'
 const emit = defineEmits(['filter'])
 
 type FilterKeys = 'type' | 'value'
-const onFilter = (data: Record<FilterKeys, string>) => {
+const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
 	emit('filter', data)
 }
 
@@ -85,7 +85,7 @@ const props = defineProps({
 const filterData = {
 	search: ref(''),
 	dateSelected: ref(''),
-	dateRange: ref(''),
+	dateRange: ref([] as string[]),
 	status: ref('')
 }
 
@@ -111,11 +111,11 @@ watchDebounced([filterData.search, filterData.dateSelected, filterData.dateRange
 })
 
 const convertURLParamsToObject = (() => {
-	const urlParams = useRoute().query
+	const urlParams = useRoute().query as Record<string, any>
 	filterData.status.value = urlParams.status ? urlParams.status : '1' as any
 	filterData.search.value = urlParams.q ? urlParams.q as string : ''
 	filterData.dateSelected.value = urlParams.date ? urlParams.date as string : ''
-	filterData.dateRange.value = urlParams.dateRange ? urlParams.dateRange as string : ''
+	filterData.dateRange.value = urlParams.dateRange ? urlParams.dateRange.split(',') as string[] : []
 })()
 
 </script>

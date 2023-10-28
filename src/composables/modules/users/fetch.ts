@@ -1,6 +1,22 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
+export const useGetUsersGraph = () => {
+    const loading = ref(false)
+    const usersGraphData = ref({} as any)
+
+    const getUsersGraph = async () => {
+        loading.value = true
+        const res = await users_api.$_get_graph() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            usersGraphData.value = res.data
+        }
+        loading.value = false
+    }
+
+    return { getUsersGraph, loading, usersGraphData }
+}
+
 export const useGetRecentSignupsList = () => {
     const loadingSignups = ref(false)
     const signupList = ref([] as any)
@@ -22,15 +38,17 @@ export const useGetRecentSignupsList = () => {
     return { getSignupList, loadingSignups, signupList }
 }
 
+    const usersList = ref([] as any)
 export const useGetUsersList = () => {
     const loading = ref(false)
-    const usersList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
         search: ref(''),
         start_date_filter: ref(''),
-        end_date_filter: ref('')
+        end_date_filter: ref(''),
+        corporate_id: ref(''),
+        is_corporate: ref(0)
     }
 
     const { $_get_users } = users_api
@@ -48,7 +66,7 @@ export const useGetUsersList = () => {
     }
     setFunction(getUsersList)
 
-    watch([filterData.status, filterData.search], (val) => {
+    watch([filterData.status, filterData.search, filterData.end_date_filter, filterData.start_date_filter], (val) => {
         getUsersList()
     })
 
@@ -60,11 +78,10 @@ export const useGetUsersList = () => {
             case 'search':
                 filterData.search.value = data.value
                 break
-            case 'start_date_filter':
-                filterData.start_date_filter.value = data.value
+            case 'dateRange':
+                filterData.start_date_filter.value = data.value[0]
+                filterData.end_date_filter.value = data.value[1]
                 break
-            case 'end_date_filter':
-                filterData.end_date_filter.value = data.value
         }
     }
 

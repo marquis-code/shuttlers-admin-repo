@@ -12,7 +12,6 @@ const credentials = {
 const selectedUsers = ref([] as any[])
 const notificationType = ref('regular')
 const search = ref('')
-const corporateId = ref('')
 
 export const useCreateNotification = () => {
     const creatingNotification = ref(false)
@@ -43,7 +42,7 @@ export const useCreateNotification = () => {
         selectedUsers.value.splice(index, 1)
     }
 
-    return { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedUsers, removeSelectedUser, search, corporateId }
+    return { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedUsers, removeSelectedUser, search }
 }
 
 const resetCredentials = () => {

@@ -6,16 +6,17 @@
 			</h3>
 		</header>
 		<div class="p-5">
-			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(tripsGraphData)" />
+			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(usersGraphData)" />
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
-import { useGetTripsGraph } from '@/composables/modules/trips/fetch'
+
 import { getYearlyBarChartData } from '@/composables/utils/charts'
+import { useGetUsersGraph } from '@/composables/modules/users/fetch'
 
-const { getTripsGraph, loading, tripsGraphData } = useGetTripsGraph()
-getTripsGraph()
+const { getUsersGraph, loading, usersGraphData } = useGetUsersGraph()
 
+getUsersGraph()
 </script>

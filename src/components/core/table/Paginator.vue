@@ -7,6 +7,9 @@
 
 		<section class="flex gap-4">
 			<nav class="inline-flex -space-x-px rounded-md shadow-sm isolate" aria-label="Pagination">
+				<!-- <button v-if="currentPage !== 1" type="button" class="moveTo" @click="emit('moveTo', 1)">
+					first
+				</button> -->
 				<button type="button" class="prev" @click="emit('prev')">
 					<ChevronLeftIcon class="w-5 h-5" aria-hidden="true" />
 				</button>
@@ -21,6 +24,9 @@
 				</span> -->
 				<button type="button" class="next" @click="emit('next')">
 					<ChevronRightIcon class="w-5 h-5" aria-hidden="true" />
+				</button>
+				<button v-if="currentPage !== totalPages" type="button" class="moveTo" @click="emit('moveTo', totalPages)">
+					last
 				</button>
 			</nav>
 		</section>

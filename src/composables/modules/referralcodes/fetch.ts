@@ -15,6 +15,7 @@ export const useGetPromotionsList = () => {
 
         if (res.type !== 'ERROR') {
             referralsList.value = res.data.models
+            metaObject.total.value = res.data.meta?.total
         }
         loadingReferrals.value = false
     }

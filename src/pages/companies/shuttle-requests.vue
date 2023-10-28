@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :has-index="true" :loading="loading" :headers="tableFields" :table-data="shuttleRequestsList">
 			<template #header>
-				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" />
+				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 
 			<template #item="{ item }">
@@ -42,6 +42,10 @@
 					<span :style="{'background-color': item.data.active !== 'not_completed' ? '#e63757': '#00d97e'}" class="text-xs text-white px-2 py-1 rounded-lg">{{ item.data.status == 'not_completed' ? 'Inactive' : 'Active' }}</span>
 				</span>
 			</template>
+
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -50,7 +54,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetShuttleRequests } from '@/composables/modules/corporates/fetch'
 
-const { loadShuttleRequest, loading, shuttleRequestsList } = useGetShuttleRequests()
+const { loadShuttleRequest, loading, shuttleRequestsList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetShuttleRequests()
 loadShuttleRequest()
 
 definePageMeta({

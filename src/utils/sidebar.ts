@@ -192,6 +192,12 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         oldPath: '/partners/payout/pending',
         shouldRedirect: true,
         description: 'Vehicles Partners payout'
+      },
+      {
+        title: 'Notify',
+        routePath: '/partners/notify',
+        shouldRedirect: false,
+        description: 'Notify Vehicles Partners'
       }
     ]
   },

@@ -34,12 +34,6 @@ const filterData = {
 
 const onFilterUpdate = (data: any) => {
     switch (data.type) {
-        case 'from':
-            filterData.from.value = data.value
-            break
-        case 'to':
-            filterData.to.value = data.value
-            break
         case 'routeType':
             filterData.route_type.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
@@ -59,6 +53,10 @@ const onFilterUpdate = (data: any) => {
             filterData.occupancy_rate_from.value = data.value[0]
             filterData.occupancy_rate_to.value = data.value[1]
             break
+        case 'dateRange':
+            filterData.from.value = data.value[0] ? data.value[0] : ''
+            filterData.to.value = data.value[1] ? data.value[1] : ''
+            break
     }
 }
 
@@ -76,11 +74,11 @@ export const useGetActiveTripsList = () => {
         const res = await trips_api.$_get_active_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             activeTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingActiveTrips.value = false
     }
-    setFunction(activeTripsList)
+    setFunction(getActiveTrips)
 
     watch(watchArray, () => {
         getActiveTrips()
@@ -99,11 +97,11 @@ export const useGetUpcomingTripsList = () => {
         const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             upcomingTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingUpcomingTrips.value = false
     }
-    setFunction(upcomingTripsList)
+    setFunction(getUpcomingTrips)
 
     watch(watchArray, () => {
         getUpcomingTrips()
@@ -122,11 +120,11 @@ export const useGetCompletedTripsList = () => {
         const res = await trips_api.$_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             completedTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingCompletedTrips.value = false
     }
-    setFunction(completedTripsList)
+    setFunction(getCompletedTrips)
 
     watch(watchArray, () => {
         getCompletedTrips()

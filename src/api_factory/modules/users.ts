@@ -8,6 +8,10 @@ export const users_api = {
 		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_graph: () => {
+		const url = '/users/graph'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_create_users: (payload) => {
 		const url = '/users'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)

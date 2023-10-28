@@ -2,11 +2,11 @@
 	<main class="">
 		<Table :loading="fetchingPartners" :headers="tableFields" :table-data="formattedPartnersList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
-					{{ item.data.status }}
+				<span v-if="item.status">
+					<StatusBadge :name="item.data.status" />
 				</span>
 				<div v-if="item.name" class="flex items-center gap-x-2">
 					<p><Avatar :name="item.data.name" bg="#B1C2D9" /></p> <p class="text-gray-700">
@@ -32,7 +32,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersList } from '@/composables/modules/partners/fetch'
 import { usePartnerIdDetails } from '@/composables/modules/partners/id'
 
-const { getPartnersList, loading: fetchingPartners, partnersList, moveTo, total, page, next, prev } = useGetPartnersList()
+const { getPartnersList, loading: fetchingPartners, partnersList, moveTo, total, page, next, prev, onFilterUpdate } = useGetPartnersList()
 getPartnersList()
 
 definePageMeta({
