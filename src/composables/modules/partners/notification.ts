@@ -1,5 +1,6 @@
-import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 
 const credentials = {
     title: ref(''),
@@ -9,7 +10,7 @@ const credentials = {
     notifyAll: ref(false)
 }
 
-const selectedUsers = ref([] as any[])
+const selectedPartners = ref([] as any[])
 const notificationType = ref('regular')
 const search = ref('')
 
@@ -17,8 +18,12 @@ export const useCreateNotification = () => {
     const creatingNotification = ref(false)
     const message = ref('')
     const isFormEmpty = computed(() => {
-        return !!(credentials.description.value && credentials.title.value && (selectedUsers.value.length || notificationType.value === 'all'))
+        return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
     })
+
+        const sendNotification = async () => {
+            useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${selectedPartners.value.length} partners?`, loading: creatingNotification, call_function: () => createNotifications() })
+    }
 
     const createNotifications = async () => {
         const payload = {
@@ -28,7 +33,7 @@ export const useCreateNotification = () => {
             email: credentials.email.value
         }
         creatingNotification.value = true
-        const res = await users_api.$_create_notification(payload) as CustomAxiosResponse
+        const res = await partners_api.$_create_notification(payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
@@ -37,12 +42,12 @@ export const useCreateNotification = () => {
         creatingNotification.value = false
     }
 
-    const removeSelectedUser = (selectedUser) => {
-        const index = selectedUsers.value.findIndex((user:any) => user.id === selectedUser.id)
-        selectedUsers.value.splice(index, 1)
+    const removeSelectedPartner = (selectedPartner) => {
+        const index = selectedPartners.value.findIndex((partner:any) => partner.id === selectedPartner.id)
+        selectedPartners.value.splice(index, 1)
     }
 
-    return { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedUsers, removeSelectedUser, search }
+    return { createNotifications, sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedPartners, removeSelectedPartner, search }
 }
 
 const resetCredentials = () => {

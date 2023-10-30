@@ -34,6 +34,9 @@ const filterData = {
 
 const onFilterUpdate = (data: any) => {
     switch (data.type) {
+        case 'search':
+            filterData.search.value = data.value
+            break
         case 'routeType':
             filterData.route_type.value = data.value.length === 0 || data.value.length === 2 ? '' : data.value.map((item: any) => item.value).join('')
             break
@@ -60,7 +63,7 @@ const onFilterUpdate = (data: any) => {
     }
 }
 
-const watchArray = [filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
+const watchArray = [filterData.search, filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
     filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list,
     filterData.occupancy_rate_from, filterData.occupancy_rate_to]
 

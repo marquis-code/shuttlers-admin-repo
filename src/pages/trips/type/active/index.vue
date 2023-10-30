@@ -37,10 +37,10 @@ import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useConfirmationModal } from '@/composables/core/confirmation'
-const { call_functuon, closeAlert, description, title, loading, type } = useConfirmationModal()
+const { call_function, closeAlert, description, title, loading, type } = useConfirmationModal()
 const router = useRouter()
 
-const { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
+const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
  activeTripsList.value.map((i:any, index) => {

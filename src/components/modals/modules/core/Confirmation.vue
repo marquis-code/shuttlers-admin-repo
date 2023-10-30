@@ -23,7 +23,7 @@
 				<button class="modal-btn" @click="closeAlert">
 					No
 				</button>
-				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading" @click="call_functuon()">
+				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading" @click="call_function()">
 					<span v-if="!loading"> Yes</span>
 					<Spinner v-else />
 				</button>
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { useConfirmationModal } from '@/composables/core/confirmation'
 
-const { call_functuon, closeAlert, description, title, loading, type } = useConfirmationModal()
+const { call_function, closeAlert, description, title, loading, type } = useConfirmationModal()
 
 const buttonStyle = computed(() => {
 	if (type.value === 'DANGER') return 'border-red bg-[#fda29bb0] text-[#B01C23]'

@@ -12,7 +12,7 @@ export const useDeleteRefund = () => {
 	const setDeleteRefundId = (id: string) => {
 		deleteRefundId.value = id
 		// useRefundModal().openDeleteRefund()
-		useConfirmationModal().openAlert({ call_functuon: deleteRefund, desc: 'Are you sure you want to remove this refund from the refund log?', title: 'Delete trip log', loading, type: 'DANGER' })
+		useConfirmationModal().openAlert({ call_function: deleteRefund, desc: 'Are you sure you want to remove this refund from the refund log?', title: 'Delete trip log', loading, type: 'DANGER' })
 	}
 	const deleteRefund = async () => {
 		loading.value = true

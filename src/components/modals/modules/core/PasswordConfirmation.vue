@@ -34,7 +34,7 @@
 				<button class="modal-btn" @click="closeAlert">
 					cancel
 				</button>
-				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading || password === ''" @click="call_functuon()">
+				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading || password === ''" @click="call_function()">
 					<span v-if="!loading"> Proceed</span>
 					<Spinner v-else />
 				</button>
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { usePasswordConfirmationModal } from '@/composables/core/confirmation'
 
-const { call_functuon, closeAlert, description, title, loading, type, password } = usePasswordConfirmationModal()
+const { call_function, closeAlert, description, title, loading, type, password } = usePasswordConfirmationModal()
 
 const showPassword = ref(false)
 const toggleShow = () => {

@@ -4,7 +4,7 @@ const confirmationState = {
 	description: ref(''),
     title: ref(''),
     type: ref('Alert'),
-    call_functuon: ref(() => { }),
+    call_function: ref(() => { }),
     loading: ref(false)
 }
 
@@ -12,7 +12,7 @@ const passwordConfirmationState = {
 	description: ref(''),
     title: ref(''),
     type: ref('Alert'),
-    call_functuon: ref(() => { }),
+    call_function: ref(() => { }),
     loading: ref(false),
     password: ref('')
 }
@@ -21,17 +21,17 @@ interface AlertTypes {
 	type: 'DANGER' | 'NORMAL' | 'SUCCESS'
 	desc: string
     title: string
-    call_functuon: () => void
+    call_function: () => void
     loading: Ref<boolean>
 }
 
 export const useConfirmationModal = () => {
     const { openConfirm, closeConfirm } = useCoreModal()
-    const openAlert = ({ type, desc, call_functuon, title, loading }: AlertTypes) => {
+    const openAlert = ({ type, desc, call_function, title, loading }: AlertTypes) => {
 		confirmationState.type.value = type
         confirmationState.description.value = desc
         confirmationState.title.value = title
-        confirmationState.call_functuon.value = call_functuon
+        confirmationState.call_function.value = call_function
         confirmationState.loading = loading
 
         openConfirm()
@@ -39,7 +39,7 @@ export const useConfirmationModal = () => {
 	const closeAlert = () => {
         confirmationState.description.value = ''
         confirmationState.title.value = ''
-        confirmationState.call_functuon.value = () => { }
+        confirmationState.call_function.value = () => { }
         closeConfirm()
 	}
 
@@ -47,11 +47,11 @@ export const useConfirmationModal = () => {
 }
 export const usePasswordConfirmationModal = () => {
     const { openPasswordConfirm, closePasswordConfirm } = useCoreModal()
-    const openAlert = ({ type, desc, call_functuon, title, loading }: AlertTypes) => {
+    const openAlert = ({ type, desc, call_function, title, loading }: AlertTypes) => {
 		passwordConfirmationState.type.value = type
         passwordConfirmationState.description.value = desc
         passwordConfirmationState.title.value = title
-        passwordConfirmationState.call_functuon.value = call_functuon
+        passwordConfirmationState.call_function.value = call_function
         passwordConfirmationState.loading = loading
 
         openPasswordConfirm()
@@ -59,7 +59,7 @@ export const usePasswordConfirmationModal = () => {
 	const closeAlert = () => {
         passwordConfirmationState.description.value = ''
         passwordConfirmationState.title.value = ''
-        passwordConfirmationState.call_functuon.value = () => { }
+        passwordConfirmationState.call_function.value = () => { }
         closePasswordConfirm()
 	}
 

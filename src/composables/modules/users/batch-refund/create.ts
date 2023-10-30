@@ -46,12 +46,12 @@ export const useProcessBatchRefund = () => {
     const { $_process_refund } = users_api
 
     const getConfirmation = (id: string) => {
-		useConfirmationModal().openAlert({ call_functuon: getPasswordConfirmation, desc: `Are you sure you want to process the selected refund of (${log_ids.value.length}) trips`, title: 'Refund Comfirmation', loading, type: 'NORMAL' })
+		useConfirmationModal().openAlert({ call_function: getPasswordConfirmation, desc: `Are you sure you want to process the selected refund of (${log_ids.value.length}) trips`, title: 'Refund Comfirmation', loading, type: 'NORMAL' })
     }
 
     const getPasswordConfirmation = () => {
         useConfirmationModal().closeAlert()
-        usePasswordConfirmationModal().openAlert({ call_functuon: processBatchRefund, desc: 'Please enter your password to confirm', title: 'Password Comfirmation', loading, type: 'NORMAL' })
+        usePasswordConfirmationModal().openAlert({ call_function: processBatchRefund, desc: 'Please enter your password to confirm', title: 'Password Comfirmation', loading, type: 'NORMAL' })
     }
 
     const processBatchRefund = async () => {

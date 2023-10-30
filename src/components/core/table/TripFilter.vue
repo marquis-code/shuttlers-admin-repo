@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { format } from 'date-fns'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
 import { useVehicleTypesList } from '@/composables/modules/configure/fetch'
 import { use_user_city } from '@/composables/auth/register'
@@ -148,7 +147,7 @@ watchDebounced([filterData.routeType, filterData.visibility, filterData.startTim
 		onFilter({ type: 'city', value: val[4] })
 	}
 }, {
-	debounce: 100
+	debounce: 700
 })
 
 const convertURLParamsToObject = (() => {

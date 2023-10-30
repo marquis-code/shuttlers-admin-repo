@@ -1,5 +1,6 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 
 const credentials = {
     title: ref(''),
@@ -21,12 +22,17 @@ export const useCreateNotification = () => {
         return !!(credentials.description.value && credentials.title.value && (selectedUsers.value.length || notificationType.value === 'all'))
     })
 
+    const sendNotification = async () => {
+            useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${selectedUsers.value.length} users?`, loading: creatingNotification, call_function: () => createNotifications() })
+    }
+
     const createNotifications = async () => {
         const payload = {
             body: `<html>${credentials.description.value}</html>`,
             title: credentials.title.value,
             sms: credentials.sms.value,
-            email: credentials.email.value
+            email: credentials.email.value,
+            user_ids: selectedUsers.value.map((user:any) => user.id)
         }
         creatingNotification.value = true
         const res = await users_api.$_create_notification(payload) as CustomAxiosResponse
@@ -36,6 +42,7 @@ export const useCreateNotification = () => {
             resetCredentials()
         }
         creatingNotification.value = false
+        useConfirmationModal().closeAlert()
     }
 
     const removeSelectedUser = (selectedUser) => {
@@ -43,7 +50,7 @@ export const useCreateNotification = () => {
         selectedUsers.value.splice(index, 1)
     }
 
-    return { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedUsers, removeSelectedUser, search, corporateId }
+    return { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedUsers, removeSelectedUser, sendNotification, search, corporateId }
 }
 
 const resetCredentials = () => {

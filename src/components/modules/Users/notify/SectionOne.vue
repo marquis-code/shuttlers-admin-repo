@@ -1,5 +1,5 @@
 <template>
-	<form class="w-full gap-4 flex flex-col" @submit.prevent="createNotifications">
+	<form class="w-full gap-4 flex flex-col" @submit.prevent="sendNotification">
 		<div class="w-full">
 			<input v-model="credentials.title.value" type="text" placeholder="Enter notification title" class="input-field">
 		</div>
@@ -42,9 +42,9 @@
 				</ClientOnly>
 			</div>
 			<div class="flex flex-col gap-4 px-6 pb-6">
-				<ToggleButton v-model="credentials.sms.value" label="Enable Email notification" />
+				<ToggleButton v-model="credentials.sms.value" name="sms" label="Enable SMS notification" />
 
-				<ToggleButton v-model="credentials.email.value" label="Enable Email notification" />
+				<ToggleButton v-model="credentials.email.value" name="email" label="Enable Email notification" />
 
 				<button :disabled="!isFormEmpty" class="btn-primary mt-4" type="submit">
 					{{ creatingNotification ? 'Processing...' : 'Notify users' }}
@@ -61,7 +61,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 
-const { createNotifications, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedUser, selectedUsers, search, corporateId } = useCreateNotification()
+const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedUser, selectedUsers, search, corporateId } = useCreateNotification()
 const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
 const { usersList, loading } = useGetUsersList()
 
