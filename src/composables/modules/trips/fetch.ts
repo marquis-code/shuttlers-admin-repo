@@ -1,6 +1,29 @@
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
+const requestQueue: (() => Promise<void>)[] = [] // Array to store the API request functions
+let isQueueRunning = false // Flag to track the loading status
+
+// Function to add API request functions to the queue
+const addToQueue = (request: () => Promise<void>) => {
+  requestQueue.push(request)
+  if (!isQueueRunning) {
+    runQueue()
+  }
+}
+
+// Function to run the API request queue
+const runQueue = async () => {
+  isQueueRunning = true
+  while (requestQueue.length > 0) {
+    const request = requestQueue.shift()
+    if (request) {
+      await request()
+    }
+  }
+  isQueueRunning = false
+}
+
 export const useGetTripsGraph = () => {
     const loading = ref(false)
     const tripsGraphData = ref({} as any)
@@ -73,13 +96,16 @@ export const useGetActiveTripsList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getActiveTrips = async () => {
-        loadingActiveTrips.value = true
-        const res = await trips_api.$_get_active_trips(filterData, metaObject) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            activeTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total_pages
+        const request = async () => {
+            loadingActiveTrips.value = true
+            const res = await trips_api.$_get_active_trips(filterData, metaObject) as CustomAxiosResponse
+            if (res.type !== 'ERROR') {
+                activeTripsList.value = res.data.data
+                metaObject.total.value = res.data.metadata.total_pages
+            }
+            loadingActiveTrips.value = false
         }
-        loadingActiveTrips.value = false
+         addToQueue(request)
     }
     setFunction(getActiveTrips)
 
@@ -96,13 +122,16 @@ export const useGetUpcomingTripsList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getUpcomingTrips = async () => {
-        loadingUpcomingTrips.value = true
-        const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            upcomingTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total_pages
+        const request = async () => {
+            loadingUpcomingTrips.value = true
+            const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
+            if (res.type !== 'ERROR') {
+                upcomingTripsList.value = res.data.data
+                metaObject.total.value = res.data.metadata.total_pages
+            }
+            loadingUpcomingTrips.value = false
         }
-        loadingUpcomingTrips.value = false
+        addToQueue(request)
     }
     setFunction(getUpcomingTrips)
 
@@ -119,13 +148,16 @@ export const useGetCompletedTripsList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getCompletedTrips = async () => {
-        loadingCompletedTrips.value = true
-        const res = await trips_api.$_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            completedTripsList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total_pages
+        const request = async () => {
+            loadingCompletedTrips.value = true
+            const res = await trips_api.$_get_completed_trips(filterData, metaObject) as CustomAxiosResponse
+            if (res.type !== 'ERROR') {
+                completedTripsList.value = res.data.data
+                metaObject.total.value = res.data.metadata.total_pages
+            }
+            loadingCompletedTrips.value = false
         }
-        loadingCompletedTrips.value = false
+        addToQueue(request)
     }
     setFunction(getCompletedTrips)
 
