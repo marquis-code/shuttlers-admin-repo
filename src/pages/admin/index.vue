@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs">
+		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>

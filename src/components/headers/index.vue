@@ -22,7 +22,6 @@ import Promotion from '@/components/headers/modules/Promotion.vue'
 import Partners from '@/components/headers/modules/Partners/index.vue'
 import Companies from '@/components/headers/modules/Companies/index.vue'
 import Company_insight from '@/components/headers/modules/Companies/insight.vue'
-// import Campaigns from '@/components/headers/modules/Campaigns.vue'
 import Users from '@/components/headers/modules/Users/index.vue'
 import NotifyUsers from '@/components/headers/modules/Users/notify.vue'
 import UsersInsights from '@/components/headers/modules/Users/insights.vue'
@@ -36,6 +35,7 @@ import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking
 import PartnerDetails from '@/components/headers/modules/Partners/partner-details.vue'
 import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.vue'
 import Trips from '@/components/headers/modules/Trips/index.vue'
+import Rental from '@/components/headers/modules/Trips/rentals.vue'
 import Routes from '@/components/headers/modules/Routes/index.vue'
 import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
 import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-details.vue'
@@ -95,6 +95,7 @@ const componentRouteArray = [
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
+    { routes: ['trips-rental', 'trips-rental-upcoming'], component: Rental },
     {
         routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings',
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
