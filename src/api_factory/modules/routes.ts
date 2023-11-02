@@ -36,5 +36,10 @@ export const routes_api = {
 	$_get_trip_time: () => {
 		const url = '/route-itineraries-trip-time'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-	}
+	},
+	$_get_suggested_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
+        const queryParams = useTableFilter(filterData)
+        const url = `/suggest?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc&${queryParams}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    }
 }

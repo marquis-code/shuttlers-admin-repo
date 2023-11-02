@@ -20,7 +20,6 @@ export const useTripIdDetails = () => {
 
 export const useUpcomingTripIdDetails = () => {
     const loading = ref(false)
-
     const getUpcomingTripById = async (id: string) => {
         selectedTripId.value = id
         loading.value = true

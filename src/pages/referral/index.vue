@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loadingReferrals" :headers="tableFields" :table-data="referralsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
+		<Table :loading="loadingReferrals" :headers="tableFields" :table-data="referralsList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/referral/${data.id}`)">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.has_promotion_expired">
@@ -24,21 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import { useGetPromotionsList } from '@/composables/modules/referralcodes/fetch'
-// import { useDriverIdDetails } from '@/composables/modules/drivers/id'
-
 const { getReferralsList, loadingReferrals, referralsList, moveTo, next, prev, total, page } = useGetPromotionsList()
-
-// filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getReferralsList()
-
-// const onRowClicked = (data) => {
-// 	const { selectedDriver } = useDriverIdDetails()
-// 	useRouter().push(`/drivers/${data.id}/driver-info`)
-// 	selectedDriver.value = data
-// }
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']

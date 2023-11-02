@@ -116,9 +116,9 @@ export const useGetActiveTripsList = () => {
     return { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
+const upcomingTripsList = ref([])
 export const useGetUpcomingTripsList = () => {
     const loadingUpcomingTrips = ref(false)
-    const upcomingTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getUpcomingTrips = async () => {
@@ -126,6 +126,7 @@ export const useGetUpcomingTripsList = () => {
             loadingUpcomingTrips.value = true
             const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
             if (res.type !== 'ERROR') {
+                useState('upcoming', res.data.data)
                 upcomingTripsList.value = res.data.data
                 metaObject.total.value = res.data.metadata.total_pages
             }
@@ -219,3 +220,7 @@ export const useGetTripRatingList = () => {
 
     return { getTripRatings, loadingTripRatings, tripRatingList, moveTo, ...metaObject, next, prev }
 }
+
+//
+// setTrips
+// setCurrentTrip

@@ -131,3 +131,48 @@ export const useGetTripTime = () => {
 
     return { getTripTime, loadingTripTime, tripTimeList }
 }
+
+export const useGetSuggestedRoutes = () => {
+    const loadingSuggestedRoutes = ref(false)
+    const suggestedRoutesList = ref([] as any)
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+
+    const { $_get_suggested_routes } = routes_api
+
+    const filterData = {
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
+    }
+
+    watch([filterData.search, filterData.start_date, filterData.end_date], (val) => {
+        getSuggestedRoutesList()
+    })
+
+    const getSuggestedRoutesList = async () => {
+        loadingSuggestedRoutes.value = true
+
+        const res = await $_get_suggested_routes(metaObject, filterData) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            suggestedRoutesList.value = res?.data
+            metaObject.total.value = res.data?.length
+        }
+        loadingSuggestedRoutes.value = false
+    }
+
+    setFunction(getSuggestedRoutesList)
+
+    const onFilterUpdate = (data) => {
+        switch (data.type) {
+            case 'status':
+                filterData.search.value = data.value
+                break
+            case 'dateRange':
+                filterData.start_date.value = data.value
+                filterData.end_date.value = data.value
+                break
+        }
+    }
+
+    return { getSuggestedRoutesList, loadingSuggestedRoutes, suggestedRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+}
