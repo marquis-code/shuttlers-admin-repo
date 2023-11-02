@@ -117,7 +117,9 @@
 					</div>
 				</div>
 			</div>
-			<button class="py-3 rounded-md text-white bg-black px-3 text-sm">End promo code</button>
+			<button class="py-3 rounded-md text-white bg-black px-3 text-sm">
+				End promo code
+			</button>
 		</div>
 		<Skeleton v-else width="500px" height="300px" />
 		<div class="w-7/12 shadow-md border-[0.4px] rounded-md">
