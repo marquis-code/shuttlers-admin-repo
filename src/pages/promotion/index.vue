@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="promotionsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
+		<Table :loading="loadingPromotions" :headers="tableFields" :table-data="promotionsList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/promotion/${data.id}`)">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :checkbox="true" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.has_promotion_expired">
