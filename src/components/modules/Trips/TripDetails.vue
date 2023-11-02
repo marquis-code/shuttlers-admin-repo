@@ -2,21 +2,21 @@
 	<main class="relative">
 		<div class="h-screen inset-0 z-0">
 			<div
-                class="absolute right-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
-            >
-                <button class="bg-transparent border-none" @click="handlePreviousTrip">
-					<img src="@/assets/icons/source/double-less-than.svg" alt="" />
-                </button>
-            </div>
+				class="absolute right-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
+			>
+				<button class="bg-transparent border-none">
+					<img src="@/assets/icons/source/double-less-than.svg" alt="">
+				</button>
+			</div>
 			<MapDisplay :start-point="convertLatLngStringToObj(selectedTrip.route?.pickup_coordinate)"
 				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
-				<div
-                class="absolute left-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
-            >
-                <button class="bg-transparent border-none" @click="handleNextTrip">
-                   <img src="@/assets/icons/source/double-greater-than.svg" alt="" />
-                </button>
-            </div>
+			<div
+				class="absolute left-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
+			>
+				<button class="bg-transparent border-none">
+					<img src="@/assets/icons/source/double-greater-than.svg" alt="">
+				</button>
+			</div>
 		</div>
 		<section class="absolute top-4 left-6 flex flex-col items-start z-40">
 			<ButtonGoBack class="mb-6 bg-white" />
@@ -75,13 +75,13 @@ const props = defineProps({
       return props.selectedTrip?.vehicle || props.selectedTrip?.driver?.vehicle
     })
 
-	const handleNextTrip = () => {
+	// const handleNextTrip = () => {
 
-	}
+	// }
 
-	const handlePreviousTrip = () => {
+	// const handlePreviousTrip = () => {
 
-	}
+	// }
 const tripCol = computed(() => {
 	return [
 		{ name: 'Route', value: 'route' },

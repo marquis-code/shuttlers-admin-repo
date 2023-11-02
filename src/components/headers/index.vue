@@ -89,7 +89,7 @@ const componentRouteArray = [
     { routes: ['campaigns-rewards', 'campaigns-rewards-pilot-rewards', 'campaigns-rewards-customer-points', 'campaigns-rewards-customer-rewards'], component: CampaignRewards },
     { routes: ['trips-sos'], component: sos },
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
-    { routes: ['trips-routes', 'trips-routes-suspended'], component: Routes },
+    { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },

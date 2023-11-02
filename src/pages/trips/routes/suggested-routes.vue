@@ -9,8 +9,8 @@
 					{{ useDateFormat(item?.data?.createdAt, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 				<div v-if="item.name" class="space-y-2">
-					<span class="text-sm">{{ item?.data?.name }}</span><br />
-					<span class="text-sm">{{ item?.data?.email?.replace('Email:', '') }}</span><br />
+					<span class="text-sm">{{ item?.data?.name }}</span><br>
+					<span class="text-sm">{{ item?.data?.email?.replace('Email:', '') }}</span><br>
 					<span class="text-sm">{{ item?.data?.phone?.replace('Phone:', '') }}</span>
 				</div>
 				<span v-if="item.departure_time">
