@@ -91,9 +91,11 @@ const watchArray = [filterData.search, filterData.from, filterData.to, filterDat
     // filterData.occupancy_rate_from, filterData.occupancy_rate_to
 ]
 
+const activeTripsList = ref([] as Record<string, any>[])
+
 export const useGetActiveTripsList = () => {
     const loadingActiveTrips = ref(false)
-    const activeTripsList = ref([])
+
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getActiveTrips = async () => {
@@ -117,7 +119,7 @@ export const useGetActiveTripsList = () => {
     return { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
-const upcomingTripsList = ref([])
+const upcomingTripsList = ref([] as Record<string, any>[])
 export const useGetUpcomingTripsList = () => {
     const loadingUpcomingTrips = ref(false)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -127,7 +129,6 @@ export const useGetUpcomingTripsList = () => {
             loadingUpcomingTrips.value = true
             const res = await trips_api.$_get_upcoming_trips(filterData, metaObject) as CustomAxiosResponse
             if (res.type !== 'ERROR') {
-                useState('upcoming', res.data.data)
                 upcomingTripsList.value = res.data.data
                 metaObject.total.value = res.data.metadata.total_pages
             }
@@ -144,9 +145,10 @@ export const useGetUpcomingTripsList = () => {
     return { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
+const completedTripsList = ref([] as Record<string, any>[])
+
 export const useGetCompletedTripsList = () => {
     const loadingCompletedTrips = ref(false)
-    const completedTripsList = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getCompletedTrips = async () => {

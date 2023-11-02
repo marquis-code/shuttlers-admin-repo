@@ -1,7 +1,6 @@
 <template>
-	<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" />
+	<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" @next="handleNext" @prev="handlePrev" />
 	<Skeleton v-else height="70vh" />
-
 </template>
 
 <script setup lang="ts">
@@ -15,9 +14,9 @@ const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = u
 const id = useRoute().params.id as string
 getUpcomingTripById(id)
 
-onMounted(async () => {
-	listenToallPassengersLocation()
-})
+// onMounted(async () => {
+// 	listenToallPassengersLocation()
+// })
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {

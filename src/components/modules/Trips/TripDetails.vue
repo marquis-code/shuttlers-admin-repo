@@ -1,24 +1,10 @@
 <template>
 	<main class="relative">
 		<div class="h-screen inset-0 z-0">
-			<div
-				class="absolute right-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
-			>
-				<button class="bg-transparent border-none">
-					<img src="@/assets/icons/source/double-less-than.svg" alt="">
-				</button>
-			</div>
 			<MapDisplay :start-point="convertLatLngStringToObj(selectedTrip.route?.pickup_coordinate)"
 				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
-			<div
-				class="absolute left-10 top-96 rounded-full bg-white h-10 w-10 flex justify-center items-center shadow-md z-50"
-			>
-				<button class="bg-transparent border-none">
-					<img src="@/assets/icons/source/double-greater-than.svg" alt="">
-				</button>
-			</div>
 		</div>
-		<section class="absolute top-4 left-6 flex flex-col items-start z-40">
+		<section class="absolute top-4 left-[100px] flex flex-col items-start z-40">
 			<ButtonGoBack class="mb-6 bg-white" />
 			<div class="card !max-w-4xl md:w-[500px] z-[200000]">
 				<div class="card-header ">
@@ -46,6 +32,15 @@
 			</div>
 		</section>
 
+		<section class="flex justify-between items-center  absolute p-3  top-[40%] z-30 inset-x-0">
+			<button class="btn-controls" @click="$emit('prev')">
+				<Icon name="prev" class="w-7" />
+			</button>
+			<button class="btn-controls" @click="$emit('next')">
+				<Icon name="next2" class="w-7" />
+			</button>
+		</section>
+
 		<transition
 			appear
 			name="list"
@@ -59,6 +54,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency, convertLatLngStringToObj } from '@/composables/utils/formatter'
 
+defineEmits(['next', 'prev'])
 const props = defineProps({
     selectedTrip: {
         type: Object,
@@ -75,13 +71,6 @@ const props = defineProps({
       return props.selectedTrip?.vehicle || props.selectedTrip?.driver?.vehicle
     })
 
-	// const handleNextTrip = () => {
-
-	// }
-
-	// const handlePreviousTrip = () => {
-
-	// }
 const tripCol = computed(() => {
 	return [
 		{ name: 'Route', value: 'route' },
@@ -115,6 +104,10 @@ definePageMeta({
 .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+.btn-controls{
+	@apply bg-white p-2 rounded-full border border-dark
 }
 
 </style>
