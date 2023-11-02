@@ -27,16 +27,18 @@ export const useCreateNotification = () => {
 
     const createNotifications = async () => {
         const payload = {
-            body: `<html>${credentials.description.value}</html>`,
+            description: credentials.description.value,
             title: credentials.title.value,
             sms: credentials.sms.value,
-            email: credentials.email.value
+            email: credentials.email.value,
+            partner_ids: selectedPartners.value.map((partner:any) => partner.id)
         }
         creatingNotification.value = true
         const res = await partners_api.$_create_notification(payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
+            useConfirmationModal().closeAlert()
             resetCredentials()
         }
         creatingNotification.value = false
@@ -56,4 +58,5 @@ const resetCredentials = () => {
     credentials.sms.value = false
     credentials.email.value = false
     credentials.notifyAll.value = false
+    selectedPartners.value = []
 }

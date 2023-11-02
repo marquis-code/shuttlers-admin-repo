@@ -8,7 +8,7 @@ export const partners_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_notification: (payload) => {
-		const url = '/notifications'
+		const url = '/partner-notifications'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_new_partners: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
