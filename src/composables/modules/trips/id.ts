@@ -1,4 +1,7 @@
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
+
+const { getUpcomingTrips, upcomingTripsList } = useGetUpcomingTripsList()
 
 const selectedTrip = ref({} as Record<string, any>)
 const selectedTripId = ref('')
@@ -30,5 +33,12 @@ export const useUpcomingTripIdDetails = () => {
         }
         loading.value = false
     }
-    return { selectedTrip, loading, getUpcomingTripById }
+
+    const handleNext = async () => {
+
+    }
+    const handlePrev = async () => {
+
+    }
+    return { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev }
 }

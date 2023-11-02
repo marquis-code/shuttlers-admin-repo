@@ -38,7 +38,6 @@
 </template>
 <script setup lang="ts">
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()

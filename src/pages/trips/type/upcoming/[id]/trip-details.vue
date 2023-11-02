@@ -1,6 +1,7 @@
 <template>
 	<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" />
 	<Skeleton v-else height="70vh" />
+
 </template>
 
 <script setup lang="ts">
@@ -10,7 +11,7 @@ import { usePageHeader } from '@/composables/utils/header'
 import { usePassengersTracking } from '@/composables/modules/trips/tracking'
 
 const { listenToallPassengersLocation } = usePassengersTracking()
-const { selectedTrip, loading, getUpcomingTripById } = useUpcomingTripIdDetails()
+const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = useUpcomingTripIdDetails()
 const id = useRoute().params.id as string
 getUpcomingTripById(id)
 
