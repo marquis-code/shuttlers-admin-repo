@@ -153,7 +153,6 @@ export const useGetSuggestedRoutes = () => {
         loadingSuggestedRoutes.value = true
 
         const res = await $_get_suggested_routes(metaObject, filterData) as CustomAxiosResponse
-        console.log(res, 'result here')
         if (res.type !== 'ERROR') {
             suggestedRoutesList.value = res?.data
             metaObject.total.value = res.data?.length
