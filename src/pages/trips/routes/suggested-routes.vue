@@ -1,80 +1,76 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingSuggestedRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="suggestedRoutesList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: false, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
-				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
-					</p>
-				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
-				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
-				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
-				</div>
-
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
-				</div>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+					{{ useDateFormat(item?.data?.createdAt, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
+				<div v-if="item.name" class="space-y-2">
+					<span class="text-sm">{{ item?.data?.name }}</span><br>
+					<span class="text-sm">{{ item?.data?.email?.replace('Email:', '') }}</span><br>
+					<span class="text-sm">{{ item?.data?.phone?.replace('Phone:', '') }}</span>
+				</div>
+				<span v-if="item.departure_time">
+					<span>{{ item?.data?.departure_time }} {{ item?.data?.time_of_day }}</span>
+				</span>
+				<span v-if="item.pickup">
+					<span>{{ item?.data?.pickup }}</span>
+				</span>
+				<span v-if="item.destination">
+					<span>{{ item?.data?.destination }}</span>
+				</span>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingSuggestedRoutes" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
+import { useGetSuggestedRoutes } from '@/composables/modules/routes/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+const { getSuggestedRoutesList, loadingSuggestedRoutes, suggestedRoutesList, filterData, next, prev, moveTo, page, total } = useGetSuggestedRoutes()
+getSuggestedRoutesList()
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 
+// const formattedSuggestedRoutesList = computed(() => {
+//     if (!suggestedRoutesList.value.length) return []
+//     return suggestedRoutesList.value.map((i) => {
+//          return {
+//              ...i,
+//              user: `${i.name} ${i?.email?.replace('Email:', '')} ${i?.phone?.replace('Phone:', '')}`
+//          }
+//     })
+// })
+
 const tableFields = ref([
     {
-        text: 'VEHICLE',
-        value: 'vehicle'
-    },
-    {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
-    },
-    {
-        text: 'CAPACITY',
-        value: 'seats'
-    },
-    {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
-    },
-    {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
-    },
-	{
-        text: 'PARTNER',
-        value: 'partner'
-    },
-    {
-        text: 'CREATED AT',
+        text: 'DATE',
         value: 'created_at'
+    },
+    {
+        text: 'USER',
+        value: 'name'
+    },
+    {
+        text: 'DEPARTURE TIME',
+        value: 'departure_time'
+    },
+    {
+        text: 'FROM',
+        value: 'pickup'
+    },
+    {
+        text: 'TO',
+        value: 'destination'
     }
 ])
 

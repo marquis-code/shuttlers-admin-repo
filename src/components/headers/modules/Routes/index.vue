@@ -28,8 +28,11 @@ const pageTabs = [
     {
         name: 'Routes Availability',
         path: '/trips/routes/suspended'
+    },
+	{
+        name: 'Routes Auction',
+        path: '/trips/routes/auctions'
     }
-
 ]
 
 </script>
