@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :has-index="true" :page="page" :option="(data)=>useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -8,9 +8,6 @@
 				</section>
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.idx">
-					{{ item.data.idx }}
-				</span>
 				<span v-if="item.driver">
 					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item.data.driver }}</NuxtLink>
 				</span>
@@ -74,11 +71,6 @@ const dropdownChildren = computed(() => [
 ])
 
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'idx',
-		width: '10%'
-	},
     {
         text: 'TRIP DATE',
         value: 'trip_date'
