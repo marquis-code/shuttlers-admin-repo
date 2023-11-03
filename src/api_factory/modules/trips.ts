@@ -6,6 +6,18 @@ export const trips_api = {
 		const url = '/trips/graph'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_start_trip: (payload) => {
+		const url = '/trips'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_cancel_trip: (id:string, payload) => {
+		const url = `/upcoming-trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, { data: payload })
+	},
+	$_complete_trip: (id:string) => {
+		const url = `/upcoming-trips/${id}/trips`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+	},
 	$_get_active_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/trips/active?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`

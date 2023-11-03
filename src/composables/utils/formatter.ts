@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export const convertToCurrency = (value: number) => {
    if (typeof value === 'undefined') return
 
@@ -30,4 +32,12 @@ export const convertLatLngStringToObj = (latLngString: string) => {
     if (!latLngString) return { x: 0, y: 0 }
     const [lat, lng] = latLngString.split(',')
     return { y: parseFloat(lat), x: parseFloat(lng) }
+}
+
+export const dayIsInThePast = (trip_date: string) => {
+	const today = moment()
+			const formatted = moment(trip_date)
+
+			const differenceInDays = formatted.diff(today, 'days')
+			return differenceInDays < 0
 }

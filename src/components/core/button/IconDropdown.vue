@@ -30,7 +30,7 @@
 					>
 						<div class="p-2 w-full">
 							<div class="p-2 flex flex-col items-start w-full">
-								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
+								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click.stop="item.func(data)">
 									{{ item.name }}
 								</button>
 							</div>

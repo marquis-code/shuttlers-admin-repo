@@ -55,6 +55,7 @@
 		"date-fns": "^2.30.0",
 		"gsap": "^3.12.2",
 		"jwt-decode": "^3.1.2",
+		"moment": "^2.29.4",
 		"postcss-custom-properties": "^12.1.11",
 		"socket.io": "^4.7.2",
 		"socket.io-client": "^4.7.2",

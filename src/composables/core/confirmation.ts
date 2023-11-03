@@ -22,7 +22,8 @@ interface AlertTypes {
 	desc: string
     title: string
     call_function: () => void
-    loading: Ref<boolean>
+    loading: Ref<boolean>,
+    password?: Ref<string>
 }
 
 export const useConfirmationModal = () => {
@@ -47,12 +48,13 @@ export const useConfirmationModal = () => {
 }
 export const usePasswordConfirmationModal = () => {
     const { openPasswordConfirm, closePasswordConfirm } = useCoreModal()
-    const openAlert = ({ type, desc, call_function, title, loading }: AlertTypes) => {
+    const openAlert = ({ type, desc, call_function, title, loading, password = ref('') }: AlertTypes) => {
 		passwordConfirmationState.type.value = type
         passwordConfirmationState.description.value = desc
         passwordConfirmationState.title.value = title
         passwordConfirmationState.call_function.value = call_function
         passwordConfirmationState.loading = loading
+        passwordConfirmationState.password = password
 
         openPasswordConfirm()
 	}
@@ -60,6 +62,8 @@ export const usePasswordConfirmationModal = () => {
         passwordConfirmationState.description.value = ''
         passwordConfirmationState.title.value = ''
         passwordConfirmationState.call_function.value = () => { }
+        passwordConfirmationState.password.value = ''
+
         closePasswordConfirm()
 	}
 

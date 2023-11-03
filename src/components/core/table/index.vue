@@ -26,7 +26,7 @@
 							'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
 							hasOptions ? 'cursor-pointer' : '',
 						]"
-						@click.capture="option(data)"
+						@click.stop="option(data)"
 					>
 						<td v-if="checkbox" class="pl-4">
 							<input v-model="checkedArray" :value="data" type="checkbox" @change="$emit('checked', checkedArray)">
