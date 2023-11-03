@@ -85,11 +85,6 @@ const dropdownChildren = computed(() => [
 ])
 
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'idx',
-		width: '10%'
-	},
     {
         text: 'TRIP DATE',
         value: 'trip_date'
