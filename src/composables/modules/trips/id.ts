@@ -1,15 +1,15 @@
 import { ref, computed } from 'vue'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-
-const { getUpcomingTrips, upcomingTripsList, next, prev } = useGetUpcomingTripsList()
+import { useAlert } from '@/composables/core/notification'
+const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
 
 const selectedTrip = ref({} as Record<string, any>)
 const selectedTripId = ref('')
 const selectedTripIndex = computed(() => {
     return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
 })
-
+const currentIndex = ref(1)
 export const useTripIdDetails = () => {
     const loading = ref(false)
 
@@ -46,8 +46,10 @@ export const useUpcomingTripIdDetails = () => {
             await getUpcomingTripById(nextTripId)
         }
         if (selectedTripIndex.value === upcomingTripsList.value.length - 1) {
-            await next()
-            upcomingTripsList.value = [...upcomingTripsList.value]
+            currentIndex.value++
+            loading.value = true
+            await moveTo(currentIndex.value)
+            loading.value = false
         }
     }
     const handlePrev = async () => {
@@ -55,10 +57,11 @@ export const useUpcomingTripIdDetails = () => {
             const prevTripId = upcomingTripsList.value[selectedTripIndex.value - 1].id
             await getUpcomingTripById(prevTripId)
         }
-
         if (selectedTripIndex.value === 0) {
-            await prev()
-            upcomingTripsList.value = [...upcomingTripsList.value]
+            if (currentIndex.value !== 1) {
+                currentIndex.value -= 1
+               await moveTo(currentIndex.value)
+            }
         }
     }
     return { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev, selectedTripIndex }
