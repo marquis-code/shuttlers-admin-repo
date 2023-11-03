@@ -9,8 +9,8 @@
 				<div class="w-full mt-4 px-3">
 					<input v-model="search" type="search" placeholder="search.." class="py-2 pl-4 outline-none border hover:border-green05 rounded-md w-full" @keyup.enter="handleSearch">
 				</div>
-				<div class="space-y-6 overflow-y-auto h-[400px] px-2">
-					<div v-for="trip in upcomingTripsList" :key="trip.id" class="bg-white rounded-md text-xs" >
+				<div v-if="searchResults.length" class="space-y-6 overflow-y-auto h-[400px] px-2">
+					<div v-for="trip in searchResults" :key="trip.id" class="bg-white rounded-md text-xs">
 						<div v-if="!loadingUpcomingTrips" class="p-2 cursor-pointer" @click="handleSelectedTrip(trip.id)">
 							<RouteDescription class="text-xs" :pickup="trip?.route?.pickup" :destination="trip?.route?.destination" />
 							<div class="flex items-center gap-x-3">
@@ -25,6 +25,11 @@
 						<Skeleton v-else height="100px" />
 					</div>
 				</div>
+				<div v-else>
+					<p class="text-white text-center text-lg grid place-content-center pt-32">
+						No results found
+					</p>
+				</div>
 			</div>
 		</template>
 	</HeadersHeaderSlot>
@@ -34,7 +39,7 @@
 import { usePageHeader } from '@/composables/utils/header'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
-const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData } = useGetUpcomingTripsList()
+const { getUpcomingTrips, loadingUpcomingTrips, filterData } = useGetUpcomingTripsList()
 const { getUpcomingTripById } = useUpcomingTripIdDetails()
 const { headstate } = usePageHeader()
 
@@ -62,17 +67,13 @@ const toggleFilter = () => {
 }
 
 const search = ref('')
-
-// watch(search, () => {
-// 	filterData.search.value = search.value
-// 	getUpcomingTrips()
-// 	console.log(upcomingTripsList.value, 'shgqs')
-// })
+const searchResults = ref([] as Record<string, any>)
 
 const handleSearch = async () => {
 	if (search.value.length) {
 		filterData.search.value = search.value
-	    await getUpcomingTrips()
+	    const res = await getUpcomingTrips()
+		searchResults.value = res
 	}
 }
 
