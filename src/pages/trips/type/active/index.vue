@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/active/${data.id}/trip-details`)">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -17,6 +17,21 @@
 						View
 					</button>
 				</div>
+				<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap">
+					<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
+						{{
+							item.data.driver
+								? `${item.data.driver.fname} ${item.data.driver.lname}`
+								: item.data.route.driver
+									? `${item.data.route.driver.fname} ${item.data.route.driver.lname}`
+									: 'N/A'
+						}}
+					</NuxtLink>
+					<span v-if="item.data.driver && item.data.driver.phone">
+						<a :href="'tel:' + item.data.driver.phone">{{ item.data.driver
+							? item.data.driver.phone.replace(/^0/, '+234') : 'N/A' }}</a>
+					</span>
+				</span>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
@@ -51,7 +66,6 @@ const formattedActiveTripsList = computed(() =>
 			 destination: i?.route?.destination,
 			 partner: i?.partner ?? 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
-			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
 			 trip_date: useDateFormat(i.trip_start_time, 'YYYY-MM-DD').value,

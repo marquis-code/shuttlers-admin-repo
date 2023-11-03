@@ -42,7 +42,6 @@ export const useUpcomingTripIdDetails = () => {
 
     const handleNext = async () => {
         if (selectedTripIndex.value < upcomingTripsList.value.length - 1) {
-            console.log('rre')
             const nextTripId = upcomingTripsList.value[selectedTripIndex.value + 1].id
             await getUpcomingTripById(nextTripId)
         }

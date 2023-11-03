@@ -8,7 +8,7 @@
 				<component :is="data.menuIcon" class="img w-8" />
 			</button>
 		</div>
-		<label for="redirect" class="ml-5">
+		<label v-if="!isProd" for="redirect" class="ml-5">
 			<input id="redirect" v-model="shouldNotRedirectToExternalUrl" type="checkbox" class="form-checkbox">
 			<span>Shouldn't Redirect</span>
 		</label>
@@ -49,7 +49,7 @@
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
 import logoutIcon from '@/assets/icons/src/logoutIcon.vue'
-import { shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { shouldNotRedirectToExternalUrl, environmental_url } from '@/composables/utils/system'
 
 const getInitials = (string1, string2) => {
     if (!string1 || !string2) {
@@ -59,6 +59,11 @@ const getInitials = (string1, string2) => {
     return initials.toUpperCase()
 }
 
+const host = useRoute()
+
+const isProd = computed(() => {
+    return environmental_url.prod === location.host
+})
 const props = defineProps({
     data: {
         type: Object,

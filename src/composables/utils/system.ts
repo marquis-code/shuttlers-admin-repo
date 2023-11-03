@@ -34,7 +34,7 @@ export const insertScriptTag = (url: string): void => {
   document.body.appendChild(scriptTag)
 }
 
-const environmental_url = {
+export const environmental_url = {
   test: 'https://test.admin.shuttlers.africa',
   staging: 'https://qa.admin.shuttlers.africa',
   prod: 'https://admin.shuttlers.africa'

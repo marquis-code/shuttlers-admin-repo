@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/upcoming/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -11,11 +11,23 @@
 				<span v-if="item.idx">
 					{{ item.data.idx }}
 				</span>
-				<span v-if="item.driver">
-					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item.data.driver }}</NuxtLink>
+				<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap">
+					<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
+						{{
+							item.data.driver
+								? `${item.data.driver.fname} ${item.data.driver.lname}`
+								: item.data.route.driver
+									? `${item.data.route.driver.fname} ${item.data.route.driver.lname}`
+									: 'N/A'
+						}}
+					</NuxtLink>
+					<span v-if="item.data.driver && item.data.driver.phone">
+						<a :href="'tel:' + item.data.driver.phone">{{ item.data.driver
+							? item.data.driver.phone.replace(/^0/, '+234') : 'N/A' }}</a>
+					</span>
 				</span>
 				<span v-if="item.route_code">
-					<NuxtLink to="/" class="text-blue-500 font-medium">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
+					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
@@ -52,7 +64,6 @@ upcomingTripsList.value.map((i:any, index) => {
 			 dropoff: i?.route?.destination ?? 'N/A',
 			 partner: i?.vehicle?.partner?.company_name ?? 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
-			 driver: `${i?.driver?.fname} ${i?.driver?.lname}  (${i?.driver?.phone})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
 			 idx: index + 1
