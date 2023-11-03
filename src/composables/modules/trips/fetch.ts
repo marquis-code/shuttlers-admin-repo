@@ -135,6 +135,7 @@ export const useGetUpcomingTripsList = () => {
             loadingUpcomingTrips.value = false
         }
         addToQueue(request)
+        return upcomingTripsList.value
     }
     setFunction(getUpcomingTrips)
 
