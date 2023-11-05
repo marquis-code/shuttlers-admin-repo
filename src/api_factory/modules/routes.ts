@@ -41,5 +41,29 @@ export const routes_api = {
         const queryParams = useTableFilter(filterData)
         const url = `/suggest?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc&${queryParams}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_payment_options: () => {
+        const url = '/payment-options'
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_payment_options_by_route: (id:string) => {
+        const url = `/routes/${id}/payment-options`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_trip_start_time: (id:string) => {
+        const url = `/routes/${id}/itineraries?itinerary_only=1`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_route_passengers: (id:string) => {
+        const url = `/routes/${id}/users`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_route_drivers: (id:string) => {
+        const url = `/routes/${id}/drivers`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+	$_get_route_bookings: (id:string, coorporateId:string, payload) => {
+        const url = `/v1/routes/${id}/bookings/${coorporateId}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     }
 }

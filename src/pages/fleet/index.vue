@@ -1,11 +1,17 @@
 <template>
 	<main class="">
-		<Table :loading="loadingFleets" :headers="tableFields" :table-data="fleetsList">
+		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="fleetsList" :has-options="true"
+			:option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<TableFilter
+					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDatePicker: true }" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
+				<div v-if="item.vehicle" class="flex items-center gap-x-3 mr-20">
+					<!-- <core-image-zoom style-class="avatar-sm mr-1"> -->
+					<img :src="generateQRCodeImageUrl(item)" alt="QR Code" class="avatar avatar-sm h-10 w-10">
+					<!-- </core-image-zoom> -->
+					<img src="@/assets/icons/source/default-bus.png" class="avatar-img h-10 w-10" alt="Bus">
 					<span class="text-blue-600">{{ item.data.vehicle }}</span>
 				</div>
 				<div v-if="item.registration_number" class="">
@@ -43,55 +49,74 @@
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)"
+					@next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetFleets } from '@/composables/modules/fleets/fetch'
+import { useVehicleIdDetails } from '@/composables/modules/fleets/id'
 
-const { getFleetsList, loadingFleets, fleetsList } = useGetFleets()
+const { getFleetsList, loadingFleets, fleetsList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetFleets()
 getFleetsList()
 
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 
+const onRowClicked = (data) => {
+	const { selectedVehicle } = useVehicleIdDetails()
+	useRouter().push(`/fleet/${data.id}/vehicle-info`)
+	selectedVehicle.value = data
+}
+
 const tableFields = ref([
-    {
-        text: 'VEHICLE',
-        value: 'vehicle'
-    },
-    {
-        text: 'PLATE NUMBER',
-        value: 'registration_number'
-    },
-    {
-        text: 'CAPACITY',
-        value: 'seats'
-    },
-    {
-        text: 'TYPE',
-        value: 'type'
-    },
-    {
-        text: 'VEHICLE AMENITIES',
-        value: 'amenities'
-    },
 	{
-        text: 'AVERAGE RATING',
-        value: 'rating'
-    },
-    {
-        text: 'DRIVER',
-        value: 'drivers'
-    },
+		text: 'VEHICLE',
+		value: 'vehicle',
+		width: ''
+	},
 	{
-        text: 'DATE ADDED',
-        value: 'created_at'
-    }
+		text: 'PLATE NUMBER',
+		value: 'registration_number'
+	},
+	{
+		text: 'CAPACITY',
+		value: 'seats'
+	},
+	{
+		text: 'TYPE',
+		value: 'type'
+	},
+	{
+		text: 'VEHICLE AMENITIES',
+		value: 'amenities'
+	},
+	{
+		text: 'AVERAGE RATING',
+		value: 'rating'
+	},
+	{
+		text: 'DRIVER',
+		value: 'drivers'
+	},
+	{
+		text: 'DATE ADDED',
+		value: 'created_at'
+	}
 ])
+
+const generateQRCodeImageUrl = (vehicle) => {
+	const encodedUrl = encodeURIComponent(
+		`https://shuttlers.ng/#/vehicles/${vehicle.id}`
+	)
+	return `https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chs=512x512&chl=${encodedUrl}`
+}
 
 </script>
 

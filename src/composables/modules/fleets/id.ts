@@ -1,0 +1,61 @@
+import { fleets_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
+
+const selectedVehicle = ref({} as Record<string, any>)
+const selectedVehicleId = ref('')
+
+export const useVehicleIdDetails = () => {
+    const loading = ref(false)
+
+    const getVehicleById = async (id: string) => {
+        selectedVehicleId.value = id
+        loading.value = true
+        const res = await fleets_api.$_get_fleets_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            selectedVehicle.value = res.data
+        }
+        loading.value = false
+        return res.data
+    }
+    return { selectedVehicle, loading, getVehicleById }
+}
+
+export const useGetFleetTripHistory = () => {
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+    const loadingTripHistory = ref(false)
+    const fleeTripHistory = ref([] as any)
+    const filterData = {
+        start_date_filter: ref(''),
+        end_date_filter: ref('')
+    }
+
+    const { $_get_fleet_history_by_id } = fleets_api
+
+    const getFleetsTripHistory = async () => {
+        loadingTripHistory.value = true
+
+        const res = await $_get_fleet_history_by_id(selectedVehicleId.value, metaObject) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            fleeTripHistory.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle.brand}  ${item.vehicle.name}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, inspectionSite: item?.inspectionSite.name, partner: item.partner.company_name, inspectionDateAndTime: `${item.date} (${item.time})`, created_at: item?.created_at }))
+            metaObject.total.value = res.data.metadata.total_pages
+        }
+        loadingTripHistory.value = false
+    }
+    setFunction(getFleetsTripHistory)
+
+    watch([filterData.start_date_filter, filterData.end_date_filter], (val) => {
+        getFleetsTripHistory()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'dateRange':
+                filterData.start_date_filter.value = data.value[0]
+                filterData.end_date_filter.value = data.value[1]
+                break
+        }
+    }
+
+    return { getFleetsTripHistory, loadingTripHistory, fleeTripHistory, moveTo, ...metaObject, next, prev }
+}

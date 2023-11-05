@@ -53,6 +53,7 @@ import Amenities from '@/components/headers/modules/Configure/Amenities/index.vu
 import VehicleConfiguration from '@/components/headers/modules/Configure/Vehicles/index.vue'
 import TripRatingSettings from '@/components/headers/modules/Configure/TripRatings/index.vue'
 import RouteDetails from '@/components/headers/modules/Routes/route-details.vue'
+import FleetDetails from '@/components/headers/modules/Fleets/fleet-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -80,6 +81,7 @@ const componentRouteArray = [
     { routes: ['transactions-id'], component: Transactions_id },
     { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },
     { routes: ['fleet-add'], component: AddFleets },
+    { routes: ['fleet-id-vehicle-info', 'fleet-id-vehicle-documents', 'fleet-id-trips', 'fleet-id-customer-ratings'], component: FleetDetails },
     { routes: ['referral', 'referral-id'], component: Referral },
     { routes: ['promotion', 'promotion-id'], component: Promotion },
     { routes: ['admin', 'admin-audit-trail'], component: Admin },
