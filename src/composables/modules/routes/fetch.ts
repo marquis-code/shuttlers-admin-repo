@@ -176,3 +176,23 @@ export const useGetSuggestedRoutes = () => {
 
     return { getSuggestedRoutesList, loadingSuggestedRoutes, suggestedRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
+
+export const useRoutePaymentOptions = () => {
+    const loadingPaymentOptions = ref(false)
+    const paymentOptionsList = ref([] as any)
+
+    const { $_recent_routes } = routes_api
+
+    const getRoutesList = async () => {
+        loadingRoutes.value = true
+
+        const res = await $_recent_routes() as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            routesList.value = res.data
+        }
+        loadingRoutes.value = false
+    }
+
+    return { getRoutesList, loadingRoutes, routesList }
+}
