@@ -91,24 +91,24 @@
 			</div>
 
 			<div class="rounded-md bg-white shadow-md">
-				<div class="flex justify-between items-center border-b py-3 px-4">
+				<div class="flex justify-between items-center border-b py-3 px-6">
 					<div>
-						<p class="text-sm">
+						<p class="text-sm font-bold">
 							Reports
 						</p>
 					</div>
 					<div class="relative">
-						<div class="">
+						<div class="cursor-pointer flex items-center gap-x-2" @click="downloadReport">
 							<button class="">
 								<span class="sr-only">Menu</span>
-								<img src="@/assets/icons/source/download.svg" alt="download icon">
+								<img src="@/assets/icons/source/download.svg" class="h-4 w-4" alt="download icon">
 							</button>
-							<a href="#"
-								class="border-e px-4 py-2 text-sm/none text-gray-600 hover:bg-gray-50 hover:text-gray-700">
+							<p
+								class="border-e px-4 py-2 text-xs text-gray-900 font-semibold">
 								Download
-							</a>
+							</p>
 
-							<button class="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700">
+							<button class="h-full">
 								<span class="sr-only">Menu</span>
 								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
 									fill="currentColor">
@@ -119,7 +119,7 @@
 							</button>
 						</div>
 
-						<div class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
+						<div v-if="showDownloadOptions" class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
 							role="menu">
 							<div class="p-2">
 								<button v-for="(itm, idx) in downloadOptions" :key="idx" href="#"
@@ -131,7 +131,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="p-4 space-y-6">
+				<div class="p-6 space-y-6">
 					<p class="font-medium text-sm">
 						Business Booking Report
 					</p>
@@ -200,6 +200,11 @@ definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+
+const showDownloadOptions = ref(false)
+const downloadReport = () => {
+	showDownloadOptions.value = true
+}
 
 const monthsArray = ref([
 	{ name: 'Jan', value: 1 },

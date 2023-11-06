@@ -1,7 +1,13 @@
 <template>
-	<div>
+	<div class="space-y-4">
+		<div>
+			<div v-if="!loading">
+				<BreadCrums title="Vehicle" :content="breadcrum" />
+			</div>
+			<Skeleton v-else height="300px" />
+		</div>
 		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-			<div class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
+			<div v-if="!loading" class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 					<div class="font-medium">
 						Vehicle Information
@@ -9,9 +15,12 @@
 					<ButtonDropdown :children="dropdownChildren" :data="selectedVehicle" />
 				</div>
 				<div class="flex justify-between items-center border-b py-4 px-3">
-					<p class="text-gray-500 text-sm">
-						Export QR code
-					</p>
+					<div class="flex items-center gap-4 list-group-item">
+						<div class="w-28 rounded-md bg-white border">
+							<img :src="qrCodeImageUrl" alt="QR Code" class="border avatar avatar-xxl">
+						</div>
+						<span class="cursor-pointer text-sm" @click="showAllQrCode">Export QR code</span>
+					</div>
 				</div>
 				<div class="flex justify-between items-center border-b py-4 px-3">
 					<p class="text-gray-500 text-sm">
@@ -96,7 +105,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="md:w-6/12 bg-white rounded-md shadow-sm">
+			<Skeleton v-else height="300px" />
+			<div v-if="!loadingEarnings" class="md:w-6/12 bg-white rounded-md shadow-sm">
 				<div class="px-6 border-b py-3">
 					<p class="font-medium">
 						Vehicle Earnings
@@ -123,15 +133,14 @@
 					<Skeleton v-else height="30px" width="100px" />
 				</div>
 			</div>
+			<Skeleton v-else height="300px" />
 		</div>
-		<!-- <Skeleton v-else height="600px" /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useVehicleIdDetails, useGetVehicleEarnings } from '@/composables/modules/fleets/id'
-import { useGetFleetTripHistory } from '@/composables/modules/fleets/id'
+import { useVehicleIdDetails, useGetVehicleEarnings, useGetFleetTripHistory } from '@/composables/modules/fleets/id'
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFleetTripHistory()
 const { selectedVehicle, loading, getVehicleById } = useVehicleIdDetails()
 const { getVehicleEarnings, loadingEarnings, fleetEarnings } = useGetVehicleEarnings()
@@ -167,7 +176,28 @@ const formattedEarnings = computed(() => {
             .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
     })
 
+	const breadcrum = computed(() => {
+		return [
+            {
+                name: `${selectedVehicle?.value?.brand} ${selectedVehicle?.value?.name}`,
+                link: '#'
+            },
+            {
+                name: `${selectedVehicle?.value?.registration_number}`,
+                link: '#'
+            }
+        ]
+	})
 const openDropdown = ref(false)
+
+const qrCodeImageUrl = computed(() => {
+			return `${process.env.VUE_APP_API_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+		})
+
+		const showAllQrCode = () => {
+			const link = `${process.env.VUE_APP_API_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+			window.open(link, '_blank')
+		}
 </script>
 
 <style scoped>

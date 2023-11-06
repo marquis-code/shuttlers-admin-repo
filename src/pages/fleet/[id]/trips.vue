@@ -12,15 +12,6 @@
 
 					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
 				</span>
-				<!-- <span v-else-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
-				</span>
-				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-				</span>
-				<span v-else-if="item.updated_at">
-					{{ useDateFormat(item.data.updated_at, "MMMM d, YYYY").value }}
-				</span> -->
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingTripHistory" @move-to="moveTo($event)" @next="next" @prev="prev" />

@@ -4,7 +4,7 @@
 			<RouterTabs :tabs="pageTabs" />
 		</template>
 		<template #actions>
-			<CoreHeaderActionOptions :header-options="headerOptions" />
+			<HeaderActionOptions :header-options="headerOptions" />
 		</template>
 	</HeadersHeaderSlot>
 </template>
@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 const { selectedRoute, getRouteById } = useRouteIdDetails()
+const router = useRouter()
 
 if (Object.keys(selectedRoute.value).length === 0) {
     const id = useRoute().params.id as string
@@ -41,7 +42,7 @@ const headerOptions = computed(() => {
     return [
         {
             name: 'Edit',
-            func: () => {},
+            func: () => editRoute(),
             class: 'text-gray-600'
         },
         {
@@ -61,4 +62,8 @@ const headerOptions = computed(() => {
         }
     ]
 })
+
+const editRoute = () => {
+    router.push(`/trips/routes/${selectedRoute.value.id}/edit`)
+}
 </script>

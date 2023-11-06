@@ -111,7 +111,7 @@ const componentRouteArray = [
     { routes: ['configuration-vehicle-amenities'], component: Amenities },
     { routes: ['configuration-vehicle-category-management', 'configuration-vehicle-category-management-inspection-sites'], component: VehicleConfiguration },
     { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
-    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips'], component: RouteDetails }
+    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
