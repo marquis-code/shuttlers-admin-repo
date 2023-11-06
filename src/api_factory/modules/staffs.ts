@@ -25,6 +25,14 @@ export const staffs_api = {
 	$_edit_admin: (payload, id) => {
 		const url = `/staff/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_change_password: (payload, id) => {
+		const url = `/staff/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_suspend_admin: (payload, id) => {
+		const url = `/staff/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 
 }

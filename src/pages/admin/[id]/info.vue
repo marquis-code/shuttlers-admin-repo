@@ -50,9 +50,13 @@
 </template>
 
 <script setup lang="ts">
+import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useAdminModal } from '@/composables/core/modals'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useCreateAdmin } from '@/composables/modules/staffs/create'
 
 const { getStaffs, loading: loadingStaffs, staffsData } = useGetStaffs()
+const { suspendAdmin } = useCreateAdmin()
 const id = useRoute().params.id as string
 getStaffs()
 
@@ -67,8 +71,8 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Change Password', func: () => { } },
-	{ name: 'Suspend Admin', func: () => { }, class: '!text-red' }
+	{ name: 'Change Password', func: () => useAdminModal().openChangePassword() },
+	{ name: `${selectedAdmin?.value?.active === '0' ? 'Un-suspend Admin' : 'Suspend Admin'}`, func: () => handleAdminSuspension(), class: '!text-red' }
 ])
 
 const breadcrum = computed(() => {
@@ -85,6 +89,29 @@ const breadcrum = computed(() => {
 	})
 
 const openDropdown = ref(false)
+
+const handleAdminSuspension = () => {
+	const loading = ref(false)
+	if (selectedAdmin?.value?.active === '0') {
+		useConfirmationModal().openAlert({
+        title: 'Are you sure?',
+		type: 'NORMAL',
+        desc: 'Are you sure you want to un-suspend this admin?',
+		loading,
+		call_function: () => suspendAdmin(selectedAdmin.value.id, 'unsuspend')
+    })
+	}
+
+	if (selectedAdmin?.value?.active === '1') {
+		useConfirmationModal().openAlert({
+        title: 'Are you sure?',
+		type: 'NORMAL',
+        desc: 'Are you sure you want to suspend this admin?',
+		loading,
+		call_function: () => suspendAdmin(selectedAdmin.value.id, 'suspend')
+    })
+	}
+}
 </script>
 
 <style scoped>
