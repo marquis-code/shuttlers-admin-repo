@@ -28,7 +28,7 @@ export const routes_api = {
 		const url = `/routes/${id}/itineraries?itinerary_only=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_trips_by_id: (id:number, meta:TMetaObject, filterData?: Record<string, Ref>) => {
+	$_get_route_trips_by_id: (id:string, meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/routes/${id}/trips?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
@@ -46,7 +46,7 @@ export const routes_api = {
         const url = '/payment-options'
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-	$_get_payment_options_by_route: (id:string) => {
+	$_get_payment_options_by_id: (id:string) => {
         const url = `/routes/${id}/payment-options`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
@@ -62,8 +62,8 @@ export const routes_api = {
         const url = `/routes/${id}/drivers`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-	$_get_route_bookings: (id:string, coorporateId:string, payload) => {
-        const url = `/v1/routes/${id}/bookings/${coorporateId}`
+	$_get_route_bookings: (id:string, corporateId:string, payload) => {
+        const url = `/routes/${id}/bookings/${corporateId}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     }
 }

@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
+		<Table :loading="loading" :headers="tableFields" :table-data="fleetDocuments" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.fname" class="flex items-center gap-4">
@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useGetFleetDocuments } from '@/composables/modules/fleets/id'
 
-const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate } = useGetStaffs()
-getStaffs()
+const { getFleetsDocuments, loading, fleetDocuments, moveTo, total, page, next, prev } = useGetFleetDocuments()
+getFleetsDocuments()
 
 definePageMeta({
     layout: 'dashboard',

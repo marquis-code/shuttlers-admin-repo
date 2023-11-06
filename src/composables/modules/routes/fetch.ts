@@ -181,18 +181,17 @@ export const useRoutePaymentOptions = () => {
     const loadingPaymentOptions = ref(false)
     const paymentOptionsList = ref([] as any)
 
-    const { $_recent_routes } = routes_api
+    const { $_get_payment_options } = routes_api
 
-    const getRoutesList = async () => {
-        loadingRoutes.value = true
+    const getPaymentOptions = async () => {
+        loadingPaymentOptions.value = true
 
-        const res = await $_recent_routes() as CustomAxiosResponse
-
+        const res = await $_get_payment_options() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            routesList.value = res.data
+            paymentOptionsList.value = res.data.data
         }
-        loadingRoutes.value = false
+        loadingPaymentOptions.value = false
     }
 
-    return { getRoutesList, loadingRoutes, routesList }
+    return { getPaymentOptions, loadingPaymentOptions, paymentOptionsList }
 }

@@ -57,5 +57,84 @@ export const useGetFleetTripHistory = () => {
         }
     }
 
-    return { getFleetsTripHistory, loadingTripHistory, fleeTripHistory, moveTo, ...metaObject, next, prev }
+    return { getFleetsTripHistory, loadingTripHistory, fleeTripHistory, moveTo, ...metaObject, next, prev, onFilterUpdate }
+}
+
+export const useGetFleetDocuments = () => {
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+    const loading = ref(false)
+    const partnerId = ref('')
+    const fleetDocuments = ref([] as any)
+    const { $_get_fleet_documents_by_id } = fleets_api
+
+    const getFleetsDocuments = async () => {
+        loading.value = true
+
+        const res = await $_get_fleet_documents_by_id(selectedVehicleId.value, selectedVehicle?.value?.partner?.id) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            fleetDocuments.value = res.data.data
+            metaObject.total.value = res.data.metadata.total_pages
+        }
+        loading.value = false
+    }
+
+    return { getFleetsDocuments, loading, fleetDocuments, moveTo, ...metaObject, next, prev }
+}
+
+export const useGetFleetRating = () => {
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+    const loading = ref(false)
+    const fleetRatings = ref([] as any)
+    const filterData = {
+        start_date_filter: ref(''),
+        end_date_filter: ref('')
+    }
+
+    const { $_get_fleets_rating_by_id } = fleets_api
+
+    const getFleetRatings = async () => {
+        loading.value = true
+
+        const res = await $_get_fleets_rating_by_id(selectedVehicleId.value, metaObject, filterData) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            fleetRatings.value = res.data.data
+            metaObject.total.value = res.data.metadata.total_pages
+        }
+        loading.value = false
+    }
+    setFunction(getFleetRatings)
+
+    watch([filterData.start_date_filter, filterData.end_date_filter], (val) => {
+        getFleetRatings()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'dateRange':
+                filterData.start_date_filter.value = data.value[0]
+                filterData.end_date_filter.value = data.value[1]
+                break
+        }
+    }
+
+    return { getFleetRatings, loading, fleetRatings, onFilterUpdate, moveTo, ...metaObject, next, prev }
+}
+
+export const useGetVehicleEarnings = () => {
+    const loadingEarnings = ref(false)
+    const fleetEarnings = ref([] as any)
+    const { $_get_fleet_revenue_by_id } = fleets_api
+
+    const getVehicleEarnings = async () => {
+        loadingEarnings.value = true
+
+        const res = await $_get_fleet_revenue_by_id(selectedVehicleId.value) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            fleetEarnings.value = res.data.result
+        }
+        loadingEarnings.value = false
+    }
+
+    return { getVehicleEarnings, loadingEarnings, fleetEarnings }
 }
