@@ -1,9 +1,9 @@
 <template>
 	<div class="space-y-6">
-		<BreadCrums class="text-sm" title="Vehicle" :content="breadcrum" />
+		<BreadCrums v-if="!loadingStaffs" class="text-sm" title="Admin" :content="breadcrum" />
 		<ButtonGoBack class="mb-6" />
-		<div v-if="!loading" class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-			<div class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
+		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
+			<div v-if="!loadingStaffs" class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 					<div class="font-medium">
 						Admin User Information
@@ -38,37 +38,29 @@
 					<p class="text-gray-500 text-sm">
 						Status
 					</p>
-					<StatusBadge :name="selectedAdmin.active === 1 ? 'active' : 'inactive'" />
+					<StatusBadge :name="selectedAdmin.active === '1' ? 'active' : 'inactive'" />
 				</div>
 			</div>
+			<Skeleton v-else height="300px" width="700px" />
 			<div class="md:w-6/12 bg-white rounded-md shadow-sm">
 				<ModulesAdminsUpdateAdmin />
 			</div>
 		</div>
-		<Skeleton v-else height="600px" />
 	</div>
 </template>
 
 <script setup lang="ts">
-// import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 
-// const { getStaffs, loading, staffsData } = useGetStaffs()
+const { getStaffs, loading: loadingStaffs, staffsData } = useGetStaffs()
 const id = useRoute().params.id as string
-// getStaffs()
+getStaffs()
 
-// const selectedAdmin = computed(() => {
-// 	if (loading.value) return
-// 	return staffsData.value.find((staff) => staff.id === id)
-// })
-const loading = ref(false)
-const selectedAdmin = ref({
-	id: 88,
-    fname: 'Shalom',
-    lname: 'iIewole-ojo',
-    phone: '08171342535',
-    email: 'shalom.irewoleojo@shuttlers.ng',
-    active: 1
+const selectedAdmin = computed(() => {
+	if (loadingStaffs.value) return
+	return staffsData.value.find((staff) => staff.id === Number(id))
 })
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']

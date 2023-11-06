@@ -11,6 +11,11 @@ const createForm = {
     role: ref('')
 }
 
+const updatePasswordForm = {
+	oldPassword: ref(''),
+	newPassword: ref('')
+}
+
 export const useCreateAdmin = () => {
 	const loading = ref(false)
 
@@ -35,7 +40,7 @@ export const useCreateAdmin = () => {
             convertObjWithRefToObj(createForm, ['password']), id
         )) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            useRouter().push(`/admins/${id}/info`)
+            useRouter().push('/admins')
             useAlert().openAlert({
                 type: 'SUCCESS',
                 msg: 'Admin updated successfully'

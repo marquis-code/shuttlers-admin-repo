@@ -19,11 +19,11 @@ export const staffs_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_admin: (payload) => {
-		const url = '/admin'
+		const url = '/staff'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_edit_admin: (payload, id) => {
-		const url = `/admn/${id}`
+		const url = `/staff/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 
