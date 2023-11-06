@@ -1,10 +1,10 @@
-import { charter_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { rental_api, CustomAxiosResponse } from '@/api_factory/modules'
 
 export const useGetRecentCharterList = () => {
     const loadingCharter = ref(false)
     const charterList = ref([] as any)
 
-    const { $_recent_charter_requests } = charter_api
+    const { $_recent_charter_requests } = rental_api
 
     const getCorporatesList = async () => {
         loadingCharter.value = true

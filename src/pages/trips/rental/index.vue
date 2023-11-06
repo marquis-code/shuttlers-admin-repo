@@ -1,35 +1,31 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
+		<Table :loading="loadingRental" :headers="tableFields" :table-data="rentalList" :has-index="true" :page="page">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle">
-					<span class="text-blue-500">{{ item.data.vehicle }}</span>
+				<div v-if="item.pickup_address">
+					<RouteDescription :pickup="item.data.pickup_address" :destination="item.data.return_address" />
 				</div>
-				<div v-if="item.registrationNumber" class="">
-					<p>
-						{{ item.data.registrationNumber }}
-					</p>
+				<div v-if="item.return_date">
+					{{ item.data.return_date ? 'Round Trip' : 'One Way' }}
 				</div>
-				<div v-if="item.seats">
-					<p>
-						{{ item.data.seats }}
-					</p>
+				<div v-if="item.vehicle_orders">
+					{{ item.data.vehicle_orders.length }}
 				</div>
-				<div v-if="item.inspectionSite">
-					<span>{{ item.data.inspectionSite }}</span>
+				<div v-if="item.user">
+					{{ item.data.user.fname }} {{ item.data.user.lname }}
 				</div>
-				<div v-if="item.inspectionDateAndTime">
-					<span>{{ item.data.inspectionDateAndTime }}</span>
+				<div v-if="item.updated_at">
+					{{ item.data.user.phone }}
 				</div>
 
-				<div v-if="item.partner">
-					<span class="text-blue-500">{{ item.data.partner }}</span>
-				</div>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+				<span v-else-if="item.created_at">
+					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY, HH:MM A").value }}
+				</span>
+				<span v-else-if="item.status" class="flex">
+					<StatusBadge :name="item.data.status" />
 				</span>
 			</template>
 		</Table>
@@ -37,10 +33,12 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
-getFleetsInspectionDaysList()
+import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
+
+const { getRentalList, loadingRental, rentalList, page, filterData } = useGetRentalList()
+
+getRentalList()
 
 definePageMeta({
     layout: 'dashboard',
@@ -49,32 +47,36 @@ definePageMeta({
 
 const tableFields = ref([
     {
-        text: 'VEHICLE',
-        value: 'vehicle'
+        text: 'DATE CREATED',
+        value: 'created_at'
     },
     {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
+        text: 'PICKUP & DESTINATION',
+        value: 'pickup_address'
     },
     {
-        text: 'CAPACITY',
-        value: 'seats'
+        text: 'TRIP TYPE',
+        value: 'return_date'
     },
     {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
+        text: 'NUMBER OF VEHICLES',
+        value: 'vehicle_orders'
     },
     {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
+        text: 'CUSTOMER NAME',
+        value: 'user'
     },
 	{
-        text: 'PARTNER',
-        value: 'partner'
+        text: 'PHONE NUMBER',
+        value: 'updated_at'
     },
     {
-        text: 'CREATED AT',
-        value: 'created_at'
+        text: 'TRIPS DATE',
+        value: 'pickup_date'
+    },
+    {
+        text: 'STATUS',
+        value: 'status'
     }
 ])
 

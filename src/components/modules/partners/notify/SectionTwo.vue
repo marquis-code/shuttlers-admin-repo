@@ -19,7 +19,7 @@
 						<Avatar :name="item.fname" bg="#B1C2D9" />
 						<div>
 							<p class="text-sm font-medium">
-								{{ item.company_email }}
+								{{ item.owner?.email }}
 							</p>
 							<p class="text-sm">
 								{{ item.company_phone }}
