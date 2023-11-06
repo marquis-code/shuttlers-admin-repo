@@ -1,48 +1,33 @@
 <template>
 	<div class="relative">
-		<div
-			class="inline-flex items-center overflow-hidden rounded-md border bg-white"
+		<div class="inline-flex cursor-pointer py-2 text-white items-center overflow-hidden rounded-md border bg-black"
+			@click="handleDropdown"
 		>
-			<a
-				href="#"
-				class="border-e px-4 py-2 text-sm/none text-gray-600 hover:bg-gray-50 hover:text-gray-700"
+			<span
+				class="px-4 py-2 text-sm/none text-white"
 			>
 				Options
-			</a>
+			</span>
 
 			<button
-				class="h-full p-2 text-gray-600 hover:bg-gray-50 hover:text-gray-700"
+				class="h-full pr-2"
 			>
-				<span class="sr-only">Menu</span>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-4 w-4"
-					viewBox="0 0 20 20"
-					fill="currentColor"
-				>
-					<path
-						fill-rule="evenodd"
-						d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-						clip-rule="evenodd"
-					/>
-				</svg>
+				<img src="@/assets/icons/source/more.svg" alt="">
 			</button>
 		</div>
 
-		<div
+		<div v-if="showDropdown"
 			class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
 			role="menu"
 		>
 			<div class="p-2">
-				<a v-for="(itm, idx) in headerOptions" :key="idx"
-					href="#"
-					:class="itm.class"
+				<button v-for="(itm, idx) in headerOptions" :key="idx"
 					class="block rounded-lg px-4 py-2 text-sm"
 					role="menuitem"
-					@click="itm.func"
+					@click="itm?.func"
 				>
-					{{ itm.name }}
-				</a>
+					{{ itm?.name }}
+				</button>
 			</div>
 		</div>
 	</div>
@@ -55,4 +40,9 @@ const props = defineProps({
         required: true
     }
 })
+const handleDropdown = () => {
+	showDropdown.value = !showDropdown.value
+}
+const showDropdown = ref(false)
+
 </script>

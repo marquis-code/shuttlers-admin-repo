@@ -5,7 +5,7 @@
 				<h6 class="text-xs uppercase font-bold text-gray-400">
 					{{ preTitle }}
 				</h6>
-				<h1 class="text-[28px] font-bold">
+				<h1 class="text-[18px] font-bold">
 					{{ title }}
 				</h1>
 			</div>
