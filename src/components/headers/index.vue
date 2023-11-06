@@ -54,6 +54,7 @@ import VehicleConfiguration from '@/components/headers/modules/Configure/Vehicle
 import TripRatingSettings from '@/components/headers/modules/Configure/TripRatings/index.vue'
 import RouteDetails from '@/components/headers/modules/Routes/route-details.vue'
 import FleetDetails from '@/components/headers/modules/Fleets/fleet-details.vue'
+import AdminInfo from '@/components/headers/modules/Admin/admin-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -111,7 +112,8 @@ const componentRouteArray = [
     { routes: ['configuration-vehicle-amenities'], component: Amenities },
     { routes: ['configuration-vehicle-category-management', 'configuration-vehicle-category-management-inspection-sites'], component: VehicleConfiguration },
     { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
-    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails }
+    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails },
+    { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

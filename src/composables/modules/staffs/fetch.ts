@@ -54,3 +54,21 @@ export const useGetStaffs = () => {
 
     return { getStaffs, loading, staffsData, filterKeys, filteredStaffs, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
+
+export const useGetPermissions = () => {
+    const loading = ref(false)
+    const staffPermissions = ref([] as any)
+    const { metaObject, moveTo, next, prev } = usePagination()
+
+    const getStaffsPermissions = async () => {
+        loading.value = true
+        const res = await staffs_api.$_get_permisions(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            staffPermissions.value = res.data.data
+            metaObject.total.value = res.data.metadata?.pageCount
+        }
+        loading.value = false
+    }
+
+    return { getStaffsPermissions, loading, staffPermissions, next, prev, moveTo, ...metaObject }
+}
