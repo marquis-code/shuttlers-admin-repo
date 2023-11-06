@@ -1,6 +1,8 @@
 import { staffs_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { useAdminModal } from '@/composables/core/modals'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 
 const createForm = {
 	fname: ref(''),
@@ -12,8 +14,7 @@ const createForm = {
 }
 
 const updatePasswordForm = {
-	oldPassword: ref(''),
-	newPassword: ref('')
+	password: ref('')
 }
 
 export const useCreateAdmin = () => {
@@ -49,6 +50,41 @@ export const useCreateAdmin = () => {
         loading.value = false
     }
 
+	const updateAdminPassword = async (id: string) => {
+		loading.value = true
+
+        const res = (await staffs_api.$_change_password(
+            convertObjWithRefToObj(updatePasswordForm), id
+        )) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Password has been changed successfully'
+            })
+			useAdminModal().closeChangePassword()
+        }
+        loading.value = false
+    }
+
+	const suspendAdmin = async (id: string, type: string) => {
+		loading.value = true
+
+        const res = (await staffs_api.$_suspend_admin(
+            {
+				active: type === 'suspend' ? 0 : 1
+			}, id
+        )) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Admin has been suspended successfully'
+            })
+			useAdminModal().closeChangePassword()
+			useConfirmationModal().closeAlert()
+        }
+        loading.value = false
+    }
+
     const prePopulateForm = (data: any) => {
 		createForm.fname.value = data.fname || ''
 		createForm.lname.value = data.lname || ''
@@ -57,5 +93,9 @@ export const useCreateAdmin = () => {
         createForm.role.value = data.role || ''
 	}
 
-	return { createForm, loading, createAdmin, editAdmin, prePopulateForm }
+	const populatePasswordUpdateForm = (data) => {
+		updatePasswordForm.password.value = data.password || ''
+	}
+
+	return { createForm, loading, createAdmin, editAdmin, prePopulateForm, updateAdminPassword, updatePasswordForm, populatePasswordUpdateForm, suspendAdmin }
 }

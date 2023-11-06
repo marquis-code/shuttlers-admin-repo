@@ -141,6 +141,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useVehicleIdDetails, useGetVehicleEarnings, useGetFleetTripHistory } from '@/composables/modules/fleets/id'
+const base_url = import.meta.env.VITE_BASE_URL
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFleetTripHistory()
 const { selectedVehicle, loading, getVehicleById } = useVehicleIdDetails()
 const { getVehicleEarnings, loadingEarnings, fleetEarnings } = useGetVehicleEarnings()
@@ -189,13 +190,12 @@ const formattedEarnings = computed(() => {
         ]
 	})
 const openDropdown = ref(false)
-
 const qrCodeImageUrl = computed(() => {
-			return `${process.env.VUE_APP_API_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+			return `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
 		})
 
 		const showAllQrCode = () => {
-			const link = `${process.env.VUE_APP_API_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+			const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
 			window.open(link, '_blank')
 		}
 </script>

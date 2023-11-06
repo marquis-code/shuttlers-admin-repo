@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div>
-				<button type="submit" class="btn-primary py-0 ml-auto mt-12">
+				<button type="submit" class="btn-primary py-2.5 ml-auto mt-12">
 					<span v-if="!createLoading" class="text-sm">Update User</span>
 					<Spinner v-else />
 				</button>
