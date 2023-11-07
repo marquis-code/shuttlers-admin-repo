@@ -6,12 +6,12 @@
 					<span>Filter</span> <img src="@/assets/icons/source/add.svg" alt="" class="">
 				</div>
 				<div class="flex items-center gap-x-2">
-					<div>
+					<div v-if="!loading">
 						<label for="AcceptConditions" class="relative h-8 w-14 cursor-pointer">
-							<input id="AcceptConditions" type="checkbox" class="peer sr-only">
+							<input id="AcceptConditions" v-model="auditStatus" type="checkbox" class="peer sr-only" @change="handleToggle">
 
 							<span
-								class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-green-500"
+								class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
 							/>
 
 							<span
@@ -19,6 +19,9 @@
 							/>
 						</label>
 					</div>
+					<p v-else class="text-sm">
+						Loading...
+					</p>
 					<p class="font-medium text-sm">
 						View staff audit only
 					</p>
@@ -50,18 +53,21 @@
 					</p>
 				</div>
 			</div>
-
 			<div>
-				<div v-for="(item, index) in audits" :key="index" class="gap-x-3 cursor-pointer" @click="setActive(item)">
-					<div class="flex w-full" :class="[item.activity === activeActivity ? 'h-16' : 'h-16']">
-						<span v-if="item.activity === activeActivity" class="block border border-green-500  my-3 ml-2" />
-						<div class="flex justify-between items-center  py-2 space-x-3 px-3 w-full">
-							<p class="font-medium text-gray-900 text-sm   w-2/12">
-								{{ item.time }}
-							</p>
-							<p class="text-gray-600 text-sm  w-10/12">
-								{{ item.activity }}
-							</p>
+				<div v-for="(item, index) in props.auditsList" :key="index" class="gap-x-3 cursor-pointer" @click="setActive(item)">
+					<div class="flex w-full" :class="[item?.description === activeActivity ? 'h-16' : 'h-16']">
+						<span v-if="item?.eventDate === activeActivity?.eventDate" class="block border-2 border-shuttlersGreen  my-3 ml-2" />
+						<div class="flex justify-between items-center gap-x-2  py-2 space-x-3 px-3 w-full">
+							<div class="w-2/12 flex justify-start items-start">
+								<p class="font-light text-gray-900 text-xs">
+									{{ useDateFormat(item?.eventDate, "MMMM d, YYYY, hh:mm A").value }}
+								</p>
+							</div>
+							<div class="w-10/12 flex justify-start items-start">
+								<p class="text-gray-600 text-sm ">
+									{{ item?.description }}
+								</p>
+							</div>
 							<div>
 								<img src="@/assets/icons/source/greater.svg" alt="" class="">
 							</div>
@@ -75,14 +81,37 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
+import { useHandleFeatureFlaggedAudits, useFeatureFlaggedAudits } from '@/composables/modules/staffs/fetch'
+const { featureFlagAudits, loading, prePopulateFeatureForm } = useHandleFeatureFlaggedAudits()
+const { getFeatureFlaggedAudits, loading: loadingAuditStatus, featureFlaggedAuditStatus } = useFeatureFlaggedAudits()
+getFeatureFlaggedAudits()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
 
-// const props = withDefaults(defineProps<{
-//    audits: Array<any>
-// }>(), {})
+const auditStatus = ref(false)
+const handleToggle = (e) => {
+	const payload = {
+		name: 'get-all-audits',
+		active: e.target.value === 'on'
+	}
+	prePopulateFeatureForm(payload)
+	featureFlagAudits()
+}
+
+onMounted(() => {
+	auditStatus.value = featureFlaggedAuditStatus.value
+})
+
+const props = defineProps({
+	auditsList: {
+        type: Array,
+        required: true,
+		default: () => []
+    }
+})
 
 const emit = defineEmits(['filter', 'selectedAudit'])
 
@@ -90,36 +119,6 @@ type FilterKeys = 'type' | 'value'
 const onFilter = (data: Record<FilterKeys, string>) => {
 	emit('filter', data)
 }
-
-const audits = ref([
-	{
-		time: '6 minutes ago',
-		activity: 'grace with email address grace.obasi@shuttlers.ng requested to get all users',
-        actor: 'Efetobor Otivhia',
-        email: 'eotivhia@valefinance.com',
-        ipAddress: '192.168.17.242',
-        dateAndTime: '22nd August, 2023 10:34 PM',
-        type: 'Normal'
-	},
-	{
-		time: '3 minutes ago',
-		activity: 'Nsikan requested a user\'s data user email: hollansikan@gmail.com',
-        actor: 'Efetobor Otivhia',
-        email: 'eotivhia@valefinance.com',
-        ipAddress: '192.168.17.242',
-        dateAndTime: '22nd August, 2023 10:34 PM',
-        type: 'Normal'
-	},
-	{
-		time: '5 minutes ago',
-		activity: 'Iniekom requested a user\'s data user email: inileo48@gmail.com',
-        actor: 'Efetobor Otivhia',
-        email: 'eotivhia@valefinance.com',
-        ipAddress: '192.168.17.242',
-        dateAndTime: '22nd August, 2023 10:34 PM',
-        type: 'Normal'
-	}
-])
 
 const showColoredStroke = ref(false)
 
@@ -130,7 +129,7 @@ const activeActivity = ref('')
 const setActive = (item) => {
 	activeActivity.value = item
     emit('selectedAudit', item)
- if (item === activeActivity.value) {
+ if (item.eventDate === activeActivity.value?.eventDate) {
    showColoredStroke.value = true
  } else {
 	showColoredStroke.value = false

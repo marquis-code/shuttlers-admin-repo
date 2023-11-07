@@ -1,7 +1,17 @@
 import { staffs_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
 
 const { $_get_staffs } = staffs_api
+const payload = {
+    active: ref(''),
+    name: ref('get-all-audits')
+}
+
+const featureForm = {
+	name: ref('').value,
+	active: ref('').value
+}
 
 export const useGetStaffs = () => {
     const loading = ref(false)
@@ -71,4 +81,59 @@ export const useGetPermissions = () => {
     }
 
     return { getStaffsPermissions, loading, staffPermissions, next, prev, moveTo, ...metaObject }
+}
+
+export const useGetAudits = () => {
+    const loading = ref(false)
+    const auditList = ref([] as any)
+    const { metaObject, moveTo, next, prev } = usePagination()
+
+    const getAudits = async () => {
+        loading.value = true
+        const res = await staffs_api.$_get_audits(metaObject) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            auditList.value = res.data.result
+            metaObject.total.value = res.data.metadata?.pageCount
+        }
+        loading.value = false
+    }
+
+    return { getAudits, loading, auditList, next, prev, moveTo, ...metaObject }
+}
+
+export const useFeatureFlaggedAudits = () => {
+    const loading = ref(false)
+    const featureFlaggedAuditStatus = ref([] as any)
+    const { metaObject, moveTo, next, prev } = usePagination()
+
+    const getFeatureFlaggedAudits = async () => {
+        loading.value = true
+        const res = await staffs_api.$_feature_flag_flagged_audits() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            featureFlaggedAuditStatus.value = res.data.active
+            metaObject.total.value = res.data.metadata?.pageCount
+        }
+        loading.value = false
+    }
+
+    return { getFeatureFlaggedAudits, loading, featureFlaggedAuditStatus, next, prev, moveTo, ...metaObject }
+}
+
+export const useHandleFeatureFlaggedAudits = () => {
+    const loading = ref(false)
+    const featureFlagAudits = async () => {
+        loading.value = true
+        const res = await staffs_api.$_feature_flag_audits(featureForm) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: `staff audits only status has been ${featureForm?.active?.value ? 'activated' : 'deactivated'}` })
+        }
+        loading.value = false
+    }
+
+    const prePopulateFeatureForm = (data: any) => {
+		featureForm.name = data.name || ''
+		featureForm.active = data.active || ''
+	}
+
+    return { featureFlagAudits, loading, prePopulateFeatureForm }
 }
