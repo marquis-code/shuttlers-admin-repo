@@ -2,14 +2,14 @@
 	<main v-if="!loadingRental" class="flex gap-4">
 		<ModulesTripsRentalSectionOne :rental-details="rentalDetails" />
 		<section class="w-6/12 flex flex-col gap-4">
-			<div class="card">
+			<form class="card" @submit.prevent="updateCharterOrder(rentalDetails)">
 				<h1 class="card-header">
 					Admin Feedback
 				</h1>
 
 				<div class="field relative">
 					<label for="status">Select Status</label>
-					<select id="status" name="status" class="input-field">
+					<select id="status" v-model="charterStatus" name="status" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
 						<option value="" disabled selected>
 							select
 						</option>
@@ -22,25 +22,26 @@
 					</select>
 				</div>
 
-				<section class="flex flex-col gap-4 mt-5">
-					<div v-for="(vehicle, idx) in removeDuplicates(rentalDetails.vehicle_orders, 'charter_vehicle_id')" :key="vehicle.id" class="field relative">
+				<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
+					<div v-for="(vehicle, idx) in charterVehicleOrder" :key="vehicle.id" class="field relative w-full">
 						<label for="">Vehicle {{ idx+1 }} </label>
-						<div class="grid grid-cols-2 gap-4">
+						<div class="grid grid-cols-2 gap-4 w-full">
 							<input id="user" type="text" name="user" value="Vehicle" class="input-field" disabled>
-							<input id="admin" type="text" name="user" placeholder="Enter price" class="input-field">
+							<input id="admin" v-model="vehicle.price" type="number" name="price" placeholder="Enter price" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
 						</div>
 					</div>
 				</section>
 
 				<div class="flex justify-end mt-12">
-					<button class="btn-primary" :disabled="loading">
+					<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending'">
 						<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 							Update request
 						</span>
 						<Spinner v-else />
 					</button>
 				</div>
-			</div>
+			</form>
+
 			<div class="card text-center">
 				<b>No Route available</b> <br>
 
@@ -54,14 +55,25 @@
 <script setup lang="ts">
 import { usePageHeader } from '@/composables/utils/header'
 import { useGetRentalById } from '@/composables/modules/Rentals/id'
-import { removeDuplicates } from '@/composables/utils/system'
+import { isEmptyObject } from '@/composables/utils/basics'
+import { useUpdateCharter } from '@/composables/modules/Rentals/update'
 
-const loading = ref(false)
 const id = useRoute().params.id as string
 
 const { getRentalById, loadingRental, rentalDetails } = useGetRentalById()
 
+const { charterVehicleOrder, updateCharterOrder, loading, charterStatus } = useUpdateCharter()
+
 getRentalById(id)
+
+watch(rentalDetails, () => {
+	if (!isEmptyObject(rentalDetails.value)) {
+		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
+			vehicle.price = vehicle.cost || ''
+			charterVehicleOrder.push(vehicle)
+		})
+	}
+})
 
 definePageMeta({
     layout: 'dashboard',
