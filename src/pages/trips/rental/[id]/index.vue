@@ -9,7 +9,7 @@
 
 				<div class="field relative">
 					<label for="status">Select Status</label>
-					<select id="status" v-model="charterStatus" name="status" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
+					<select v-if="rentalDetails.status === 'pending'" id="status" v-model="charterStatus" name="status" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
 						<option value="" disabled selected>
 							select
 						</option>
@@ -20,6 +20,8 @@
 							Reject
 						</option>
 					</select>
+
+					<input v-else id="user" type="text" name="user" :value="rentalDetails.status" class="input-field" disabled>
 				</div>
 
 				<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
@@ -42,10 +44,22 @@
 				</div>
 			</form>
 
-			<div class="card text-center">
+			<div v-if="isEmptyObject(rentalDetails.userRoute)" class="card text-center">
 				<b>No Route available</b> <br>
 
 				The routes would be visible when the request has been accepted
+			</div>
+
+			<div class="card">
+				<h1 class="card-header">
+					Assigned routes
+				</h1>
+
+				<div class="flex gap-3 flex-wrap">
+					<span v-for="(vehicle) in charterVehicleOrder" :key="vehicle.id" class="badge">
+						{{ vehicle.userRouteSchedule.bus_pass }}
+					</span>
+				</div>
 			</div>
 		</section>
 	</main>
@@ -87,5 +101,7 @@ usePageHeader().setPageHeader({
 </script>
 
 <style scoped>
-
+.badge{
+	@apply rounded-md bg-[#EFF2F7] p-2
+}
 </style>
