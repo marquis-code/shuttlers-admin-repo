@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject } from '@/composables/utils/table'
 
 export const staffs_api = {
@@ -33,6 +33,17 @@ export const staffs_api = {
 	$_suspend_admin: (payload, id) => {
 		const url = `/staff/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_audits: (metaObject: TMetaObject) => {
+		const url = `/audits?metadata=true&page=${metaObject.page.value}&perPage=${metaObject.page_size.value}`
+		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_feature_flag_audits: (payload) => {
+		const url = '/feature-flag'
+		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_feature_flag_flagged_audits: () => {
+		const url = '/feature-flag?name=get-all-audits'
+		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
-
 }
