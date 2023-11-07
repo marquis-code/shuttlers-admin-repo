@@ -65,5 +65,9 @@ export const routes_api = {
 	$_get_route_bookings: (id:string, corporateId:string, payload) => {
         const url = `/routes/${id}/bookings/${corporateId}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-    }
+    },
+	$_get_routes_busstops: (id: string) => {
+		const url = `/routes/${id}/busstops`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	}
 }
