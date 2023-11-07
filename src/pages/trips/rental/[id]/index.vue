@@ -44,13 +44,13 @@
 				</div>
 			</form>
 
-			<div v-if="isEmptyObject(rentalDetails.userRoute)" class="card text-center">
+			<div v-if="isEmptyObject(rentalDetails?.userRoute)" class="card text-center">
 				<b>No Route available</b> <br>
 
 				The routes would be visible when the request has been accepted
 			</div>
 
-			<div class="card">
+			<div v-else class="card">
 				<h1 class="card-header">
 					Assigned routes
 				</h1>
