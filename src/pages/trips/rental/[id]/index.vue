@@ -1,69 +1,72 @@
 <template>
-	<main v-if="!loadingRental" class="flex gap-4">
-		<ModulesTripsRentalSectionOne :rental-details="rentalDetails" />
-		<section class="w-6/12 flex flex-col gap-4">
-			<form class="card" @submit.prevent="updateCharterOrder(rentalDetails)">
-				<h1 class="card-header">
-					Admin Feedback
-				</h1>
+	<section class="flex flex-col gap-4 items-start">
+		<ButtonGoBack class="mt-5" />
+		<main v-if="!loadingRental" class="flex gap-4 w-full">
+			<ModulesTripsRentalSectionOne :rental-details="rentalDetails" />
+			<section class="w-6/12 flex flex-col gap-4">
+				<form class="card" @submit.prevent="updateCharterOrder(rentalDetails)">
+					<h1 class="card-header">
+						Admin Feedback
+					</h1>
 
-				<div class="field relative">
-					<label for="status">Select Status</label>
-					<select v-if="rentalDetails.status === 'pending'" id="status" v-model="charterStatus" name="status" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
-						<option value="" disabled selected>
-							select
-						</option>
-						<option value="accepted">
-							Accept
-						</option>
-						<option value="rejected">
-							Reject
-						</option>
-					</select>
+					<div class="field relative">
+						<label for="status">Select Status</label>
+						<select v-if="rentalDetails.status === 'pending'" id="status" v-model="charterStatus" name="status" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
+							<option value="" disabled selected>
+								select
+							</option>
+							<option value="accepted">
+								Accept
+							</option>
+							<option value="rejected">
+								Reject
+							</option>
+						</select>
 
-					<input v-else id="user" type="text" name="user" :value="rentalDetails.status" class="input-field" disabled>
-				</div>
-
-				<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
-					<div v-for="(vehicle, idx) in charterVehicleOrder" :key="vehicle.id" class="field relative w-full">
-						<label for="">Vehicle {{ idx+1 }} </label>
-						<div class="grid grid-cols-2 gap-4 w-full">
-							<input id="user" type="text" name="user" value="Vehicle" class="input-field" disabled>
-							<input id="admin" v-model="vehicle.price" type="number" name="price" placeholder="Enter price" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
-						</div>
+						<input v-else id="user" type="text" name="user" :value="rentalDetails.status" class="input-field" disabled>
 					</div>
-				</section>
 
-				<div class="flex justify-end mt-12">
-					<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending'">
-						<span v-if="!loading" class="flex justify-center items-center gap-2.5">
-							Update request
+					<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
+						<div v-for="(vehicle, idx) in charterVehicleOrder" :key="vehicle.id" class="field relative w-full">
+							<label for="">Vehicle {{ idx+1 }} </label>
+							<div class="grid grid-cols-2 gap-4 w-full">
+								<input id="user" type="text" name="user" :value="vehicle.charterVehicle.name" class="input-field" disabled>
+								<input id="admin" v-model="vehicle.price" type="number" name="price" placeholder="Enter price" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
+							</div>
+						</div>
+					</section>
+
+					<div class="flex justify-end mt-12">
+						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending'">
+							<span v-if="!loading" class="flex justify-center items-center gap-2.5">
+								Update request
+							</span>
+							<Spinner v-else />
+						</button>
+					</div>
+				</form>
+
+				<div v-if="isEmptyObject(rentalDetails?.userRoute)" class="card text-center">
+					<b>No Route available</b> <br>
+
+					The routes would be visible when the request has been accepted
+				</div>
+
+				<div v-else class="card">
+					<h1 class="card-header">
+						Assigned routes
+					</h1>
+
+					<div class="flex gap-3 flex-wrap">
+						<span class="badge">
+							{{ rentalDetails.route.route_code }} - {{ rentalDetails.route.pickup }} - {{ rentalDetails.route.destination }}
 						</span>
-						<Spinner v-else />
-					</button>
+					</div>
 				</div>
-			</form>
-
-			<div v-if="isEmptyObject(rentalDetails?.userRoute)" class="card text-center">
-				<b>No Route available</b> <br>
-
-				The routes would be visible when the request has been accepted
-			</div>
-
-			<div v-else class="card">
-				<h1 class="card-header">
-					Assigned routes
-				</h1>
-
-				<div class="flex gap-3 flex-wrap">
-					<span v-for="(vehicle) in charterVehicleOrder" :key="vehicle.id" class="badge">
-						{{ vehicle.userRouteSchedule.bus_pass }}
-					</span>
-				</div>
-			</div>
-		</section>
-	</main>
-	<Skeleton v-else height="100vh" />
+			</section>
+		</main>
+		<Skeleton v-else height="100vh" />
+	</section>
 </template>
 
 <script setup lang="ts">

@@ -156,7 +156,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         description: ''
       },
       {
-        title: 'Rental Request',
+        title: 'Rental',
         routePath: '/trips/rental',
         shouldRedirect: false,
         description: 'Handle shuttlers charter requests'
