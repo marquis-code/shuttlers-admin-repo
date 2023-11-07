@@ -6,13 +6,13 @@ export const useUpdateCharter = () => {
     const loading = ref(false)
 
     const charterStatus = ref('')
-    const charterVehicleOrder = reactive([] as any[])
+    const charterVehicleOrder = ref([] as any[])
 
     const updateCharterOrder = async (rentalDetails) => {
         loading.value = true
 
         async function updateVehicleApi() {
-            for (const value of charterVehicleOrder) {
+            for (const value of charterVehicleOrder.value) {
                 try {
                     const response = await rental_api.$_update_charter_order({ charter_id: rentalDetails.id, vehicle_id: value.id, cost: value.price }) as CustomAxiosResponse
                 } catch (error: any) {

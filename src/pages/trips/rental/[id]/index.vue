@@ -84,10 +84,11 @@ const { charterVehicleOrder, updateCharterOrder, loading, charterStatus } = useU
 getRentalById(id)
 
 watch(rentalDetails, () => {
+	charterVehicleOrder.value = []
 	if (!isEmptyObject(rentalDetails.value)) {
 		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
 			vehicle.price = vehicle.cost || ''
-			charterVehicleOrder.push(vehicle)
+			charterVehicleOrder.value.push(vehicle)
 		})
 	}
 })
