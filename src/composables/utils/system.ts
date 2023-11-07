@@ -64,3 +64,9 @@ export const openAsExternalUrl = (url) => {
 export const is_dev = import.meta.env.DEV
 
 export const shouldNotRedirectToExternalUrl = useStorage('shouldRedirectToExternalUrl', false)
+
+export const removeDuplicates = (array, key) => {
+  return array.filter((obj, index, self) =>
+    index === self.findIndex((el) => el[key] === obj[key])
+  )
+}

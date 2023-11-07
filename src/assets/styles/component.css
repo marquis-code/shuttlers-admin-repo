@@ -73,4 +73,7 @@
     .stat-card {
         @apply rounded-md shadow-sm bg-white;
     }
+    .link {
+        @apply text-[#4848ED] underline;
+    }
 }

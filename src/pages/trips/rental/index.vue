@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingRental" :headers="tableFields" :table-data="rentalList" :has-index="true" :page="page">
+		<Table :loading="loadingRental" :headers="tableFields" :table-data="rentalList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/trips/rental/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true}" />
 			</template>
