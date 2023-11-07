@@ -6,6 +6,7 @@ const { token, logOut } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
+const $AUDIT_GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/audit/v1'
 const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/cost-revenue/v1'
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
 const $TELEMETRY_ENDPOINT = 'https://telemetry.shuttlers.ng'
@@ -30,6 +31,13 @@ export const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API = axios.c
 	}
 })
 
+export const AUDIT_GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
+	baseURL: $AUDIT_GATEWAY_ENDPOINT,
+	headers: {
+		Authorization: `Bearer ${token.value}`
+	}
+})
+
 export const GATEWAY_ENDPOINT_WITHOUT_VERSION = axios.create({
 	baseURL: $GATEWAY_ENDPOINT_WITHOUT_VERSION
 })
@@ -47,7 +55,7 @@ export interface CustomAxiosResponse extends AxiosResponse {
   type?: string;
 }
 
-const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, TELEMETRY_ENDPOINT, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API]
+const instanceArray = [GATEWAY_ENDPOINT, GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION, TELEMETRY_ENDPOINT, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH]
 
 instanceArray.forEach((instance) => {
 	instance.interceptors.request.use(
