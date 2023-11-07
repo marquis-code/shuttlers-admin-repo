@@ -22,7 +22,6 @@ export const useUpdateCharter = () => {
         }
 
         try {
-            console.log(charterStatus.value)
             if (charterStatus.value === 'accepted') {
                     await updateVehicleApi()
             }
