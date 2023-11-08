@@ -62,6 +62,7 @@ const pageTabs = computed(() => [
 	}
 
 ])
+
 const showFilter = ref(false)
 const toggleFilter = () => {
     showFilter.value = !showFilter.value
@@ -69,14 +70,26 @@ const toggleFilter = () => {
 
 const search = ref('')
 const searchResults = ref([] as Record<string, any>)
+const debounceTimer = ref<number>()
 
-const handleSearch = async () => {
+const debounce = (callback, delay) => {
+	clearTimeout(debounceTimer.value)
+    debounceTimer.value = setTimeout(callback, delay)
+}
+const performSearch = async () => {
 	if (search.value.length) {
 		filterData.search.value = search.value
 	    const res = await getUpcomingTrips()
 		searchResults.value = res
 	}
 }
+const handleSearch = async () => {
+	debounce(performSearch(), 3000)
+}
+
+onUnmounted(() => {
+	clearTimeout(debounceTimer.value)
+})
 
 const handleSelectedTrip = async (tripId: string) => {
 	await getUpcomingTripById(tripId)

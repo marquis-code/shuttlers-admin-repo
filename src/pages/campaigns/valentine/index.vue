@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading_campaigns" :headers="tableFields" :table-data="campaignsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :checkbox="true" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.created_at">
@@ -29,19 +29,16 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { use_get_campaigns } from '@/composables/modules/campaigns/fetch'
-// import { useDriverIdDetails } from '@/composables/modules/drivers/id'
-
-const { getCampaigns, loading_campaigns, campaignsList, moveTo, next, prev, total, page } = use_get_campaigns()
-
-// filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
+import { useCampaignWinners } from '@/composables/modules/campaigns/id'
+const { getCampaigns, onFilterUpdate, loading_campaigns, campaignsList, moveTo, next, prev, total, page } = use_get_campaigns()
 getCampaigns()
 
-// const onRowClicked = (data) => {
-// 	const { selectedDriver } = useDriverIdDetails()
-// 	useRouter().push(`/drivers/${data.id}/driver-info`)
-// 	selectedDriver.value = data
-// }
-
+const onRowClicked = (data) => {
+	const { selectedCampaign, selectedCampaignId } = useCampaignWinners()
+	useRouter().push(`/campaigns/valentine/${data.id}`)
+	selectedCampaign.value = data
+	selectedCampaignId.value = data.id
+}
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']

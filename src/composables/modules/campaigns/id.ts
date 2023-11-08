@@ -1,19 +1,107 @@
-import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { campaigns_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { usePagination } from '@/composables/utils/table'
 
-const selectedDriver = ref({} as Record<string, any>)
-const selectedDriverId = ref('')
+const selectedCampaign = ref({} as Record<string, any>)
+const selectedCampaignId = ref('')
 
-export const useDriverIdDetails = () => {
+// export const useCampaignWinners = () => {
+//     const loading = ref(false)
+//     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+//     const filterData = {
+//         status: ref(''),
+//         search: ref(''),
+//         start_date: ref(''),
+//         end_date: ref('')
+//     }
+
+//     const getCampaignWinners = async (id: string) => {
+//         const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+//         const winnersList = ref([] as any)
+//         loading.value = true
+//         const res = await campaigns_api.$_get_valentine_campaign_winners(selectedCampaignId.value, metaObject) as CustomAxiosResponse
+//         if (res.type !== 'ERROR') {
+//             winnersList.value = res.data.data
+//             metaObject.total.value = res.data.metadata.total_pages
+//         }
+//         loading.value = false
+//     }
+//     setFunction(getCampaignWinners)
+
+//     watch([filterData.status, filterData.search, filterData.end_date, filterData.start_date], (val) => {
+//         getCampaignWinners()
+//     })
+//     const onFilterUpdate = (data: any) => {
+//         switch (data.type) {
+//             case 'status':
+//                 filterData.status.value = data.value === '0' ? 'inactive' : 'active'
+//                 break
+//             case 'search':
+//                 filterData.search.value = data.value
+//                 break
+//             case 'dateRange':
+//                 filterData.start_date.value = data.value[0]
+//                 filterData.end_date.value = data.value[1]
+//                 break
+//         }
+//     }
+
+//     return { winnersList, loading, getCampaignWinners, moveTo, ...metaObject, next, prev, onFilterUpdate }
+// }
+
+export const useCampaignWinners = () => {
+    const { metaObject, moveTo, next, prev, setFunction } = usePagination()
     const loading = ref(false)
+    const campaignWinners = ref([] as any)
+    const filterData = {
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
+    }
 
-    const getDriverById = async (id: string) => {
-        selectedDriverId.value = id
+    const { $_get_valentine_campaign_winners } = campaigns_api
+
+    const getCampaignWinners = async () => {
         loading.value = true
-        const res = await drivers_api.$_get_driver_by_id(id) as CustomAxiosResponse
+
+        const res = await $_get_valentine_campaign_winners(selectedCampaignId.value, metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            selectedDriver.value = res.data
+            campaignWinners.value = res.data.data
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loading.value = false
     }
-    return { selectedDriver, loading, getDriverById }
+    setFunction(getCampaignWinners)
+
+    watch([filterData.start_date, filterData.end_date, filterData.search], (val) => {
+        getCampaignWinners()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'search':
+                filterData.search.value = data.value
+                break
+                case 'dateRange':
+                    filterData.start_date.value = data.value[0]
+                    filterData.end_date.value = data.value[1]
+                break
+        }
+    }
+
+    return { getCampaignWinners, loading, campaignWinners, selectedCampaign, onFilterUpdate, moveTo, ...metaObject, next, prev, selectedCampaignId }
 }
+
+// export const useCampaignDetails = () => {
+//     const loading = ref(false)
+
+//     const getCampaignDetails = async (id: string) => {
+//         selectedCampaignId.value = id
+//         loading.value = true
+//         const res = await corporates_api.$_get_corporate_by_id(id) as CustomAxiosResponse
+//         if (res.type !== 'ERROR') {
+//             selectedCorporate.value = res.data
+//         }
+//         loading.value = false
+//     }
+//     return { selectedCorporate, loading, getCorporateById }
+// }
