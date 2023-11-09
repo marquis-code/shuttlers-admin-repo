@@ -256,7 +256,12 @@ const banersList = ref([])
 export const use_get_campaigns = () => {
         const { prev, metaObject, next, moveTo, setFunction } = usePagination()
         const loading_campaigns = ref(false)
-const campaignsList = ref([])
+        const campaignsList = ref([])
+        const filterData = {
+                search: ref(''),
+                start_date: ref(''),
+                end_date: ref('')
+            }
     const getCampaigns = async () => {
         loading_campaigns.value = true
         const res = await campaigns_api.$_get_campaigns(metaObject) as CustomAxiosResponse
@@ -265,6 +270,21 @@ const campaignsList = ref([])
         }
         loading_campaigns.value = false
     }
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'search':
+                filterData.search.value = data.value
+                break
+            case 'dateRange':
+                filterData.start_date.value = data.value[0]
+                filterData.end_date.value = data.value[1]
+                break
+        }
+    }
    setFunction(getCampaigns)
-    return { getCampaigns, loading_campaigns, campaignsList, prev, ...metaObject, next, moveTo }
+   watch([filterData.end_date, filterData.start_date, filterData.search], () => {
+    getCampaigns()
+})
+    return { getCampaigns, loading_campaigns, campaignsList, prev, ...metaObject, onFilterUpdate, next, moveTo }
 }

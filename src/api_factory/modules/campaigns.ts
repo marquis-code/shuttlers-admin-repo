@@ -1,5 +1,5 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
-import { TMetaObject } from '@/composables/utils/table'
+import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const campaigns_api = {
     // Pilot Endpoints
@@ -62,6 +62,15 @@ export const campaigns_api = {
     },
     $_get_campaigns: (meta:TMetaObject) => {
         const url = `/campaigns?limit=${meta.page_size.value}&page=${meta.page.value}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_valentine_campaign_by_id: (id: string, meta:TMetaObject) => {
+        const url = `/campaigns/${id}?limit=${meta.page_size.value}&page=${meta.page.value}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_valentine_campaign_winners: (id: string, meta:TMetaObject, filterData?: Record<string, Ref>) => {
+        const queryParams = useTableFilter(filterData)
+        const url = `/campaigns/${id}/winners?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }
