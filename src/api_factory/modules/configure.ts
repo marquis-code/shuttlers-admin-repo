@@ -50,8 +50,4 @@ export const configure_api = {
 		const url = `/vehicle-amenities/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
-	// $_get_create_rating_categories: (payload:any) => {
-	// 	const url = '/general-payment-options'
-	// 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-	// }
 }
