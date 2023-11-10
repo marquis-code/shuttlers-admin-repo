@@ -1,32 +1,40 @@
-// import { useSosList } from './fetch'
-// import { sos_api, CustomAxiosResponse } from '@/api_factory/modules'
-// import { useCommuteModal } from '@/composables/core/modals'
-// import { useAlert } from '@/composables/core/notification'
+import { useAlert } from '@/composables/core/notification'
+import { configure_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useAmenitiesList } from '@/composables/modules/configure'
+import { useConfirmationModal } from '@/composables/core/confirmation'
+const amenitiesForm = {
+    name: '',
+	short_name: '',
+	image: '' as any
+}
 
-// const selectedSosTrip = ref({} as Record<string, any>)
+export const useCreateAmentiites = () => {
+const loading = ref(false)
+const deletingAmenity = ref(false)
+    const handleCreateAmenity = async () => {
+        loading.value = true
+        const payload = {
+            image: amenitiesForm.image,
+            name: amenitiesForm.name,
+            short_name: amenitiesForm.short_name
+        }
+        const res = await configure_api.$_create_amenity(payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'New Amenity successfully created' })
+            useAmenitiesList().getAmenitiesList()
+        }
+        loading.value = false
+    }
 
-// export const useNotifySos = () => {
-//     const loading = ref(false)
-
-//     const sos_data = {
-//         sos_request_ids: ref([])
-//     }
-
-//     const openNotifier = (data: Record<string, any>) => {
-//         selectedSosTrip.value = data
-//         useCommuteModal().openSosNotifier()
-//     }
-
-//     const notify = async () => {
-//         loading.value = true
-//         const res = await sos_api.$_sos_provider_request({ sos_request_ids: sos_data.sos_request_ids.value.map((i: any) => i.id) }) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             useCommuteModal().closeSosNotifier()
-//             useAlert().openAlert({ type: 'SUCCESS', msg: 'Provider Notified successfully' })
-//             useSosList().getSosList()
-//         }
-//         loading.value = false
-//     }
-
-//     return { loading, openNotifier, sos_data, selectedSosTrip, notify }
-// }
+    const deleteAmenity = async (id) => {
+      deletingAmenity.value = true
+      const res = await configure_api.$_delete_amenity(id) as CustomAxiosResponse
+      if (res.type !== 'ERROR') {
+        useAlert().openAlert({ type: 'SUCCESS', msg: 'Amenity was successfully deleted' })
+        useAmenitiesList().getAmenitiesList()
+       useConfirmationModal().closeAlert()
+    }
+    deletingAmenity.value = false
+    }
+    return { amenitiesForm, loading, handleCreateAmenity, deletingAmenity, deleteAmenity }
+}

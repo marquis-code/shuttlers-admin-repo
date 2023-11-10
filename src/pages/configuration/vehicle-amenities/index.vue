@@ -1,7 +1,8 @@
 <template>
 	<main class="space-y-16">
 		<section>
-			<div class="rounded-md  bg-white  border w-6/12">
+			<ModulesConfigureAmenitiesCreateAmenities />
+			<!-- <div class="rounded-md  bg-white  border w-6/12">
 				<div class="border-b border-gray-200">
 					<h1 class="px-6 py-3 font-medium text-gray-700">
 						New Amenities
@@ -30,9 +31,12 @@
 						Add amenity
 					</button>
 				</div>
-			</div>
+			</div> -->
 		</section>
-		<Table :loading="loadingAmenities" :headers="tableFields" :table-data="amenitiesList" :has-options="true" :option="onRowClicked">
+		<section>
+			<ModulesConfigureAmenitiesTableSection />
+		</section>
+		<!-- <Table :loading="loadingAmenities" :headers="tableFields" :table-data="amenitiesList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<h1 class="border bg-white px-6 py-2.5 border-b-0 rounded-md">
 					Amenities List
@@ -53,66 +57,14 @@
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingAmenities" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
-		</Table>
+		</Table> -->
 	</main>
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-import { useAmenitiesList } from '@/composables/modules/configure/fetch'
-
-const { getAmenitiesList, loadingAmenities, amenitiesList, moveTo, next, prev, total, page } = useAmenitiesList()
-
-getAmenitiesList()
-
-const form = reactive({
-	name: '',
-	short_name: '',
-	uploadedFile: ''
-})
-const previewUrl = ref()
-
-const handleFileUpload = (event) => {
-  const input = event.target
-  if (input.files) {
-	const reader = new FileReader()
-	reader.onload = (e) => {
-		previewUrl.value = e?.target?.result
-	}
-	form.uploadedFile = input.files[0]
-	reader.readAsDataURL(input.files[0])
-  }
-}
-
-const isFormComplete = computed(() => {
-	return !!(form.name && form.short_name && form.uploadedFile)
-})
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-const tableFields = ref([
-    {
-        text: 'IMAGE',
-        value: 'image'
-    },
-    {
-        text: 'DATE CREATED',
-        value: 'created_at'
-    },
-    {
-        text: 'NAME',
-        value: 'name'
-    },
-    {
-        text: 'SHORT NAME',
-        value: 'short_name'
-    },
-    {
-        text: 'ACTION',
-        value: 'id'
-    }
-])
 
 </script>

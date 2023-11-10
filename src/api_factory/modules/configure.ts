@@ -45,6 +45,10 @@ export const configure_api = {
 	$_update_payment_options: (payload: any) => {
 		const url = '/bulk/general-payment-options'
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_delete_amenity: (id:string) => {
+		const url = `/vehicle-amenities/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 	// $_get_create_rating_categories: (payload:any) => {
 	// 	const url = '/general-payment-options'

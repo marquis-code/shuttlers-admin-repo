@@ -196,27 +196,6 @@ export const useCostOfSupplyList = () => {
     return { getCostOfSupplyList, loadingCostOfSupply, costOfSupplyList, prev, ...metaObject, next, moveTo }
 }
 
-export const useCreateVehicleAmenity = () => {
-    const { $_create_amenity } = configure_api
-
-    const createAmenity = async () => {
-        creatingAmenities.value = true
-
-        const res = await $_create_amenity({
-            image: payloads.image,
-            name: payloads.name,
-            short_name: payloads.short_name
-        }) as CustomAxiosResponse
-
-        if (res.type !== 'ERROR') {
-            // amenity was  created successfully
-        }
-        creatingAmenities.value = false
-    }
-
-    return { payloads, createAmenity, creatingAmenities }
-}
-
 export const useUpdatePaymentOptions = () => {
     const { $_update_payment_options } = configure_api
 
