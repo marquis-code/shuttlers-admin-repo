@@ -1,6 +1,6 @@
-import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { users_api, corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 
-const selectedUser = ref({} as Record<string, any>)
+const selectedUser = ref({} as any)
 const selectedUserId = ref('')
 
 export const useUserIdDetails = () => {
@@ -17,4 +17,19 @@ export const useUserIdDetails = () => {
         return res.data
     }
     return { selectedUser, loading, getUserById }
+}
+
+export const useUserCorporateWalletLimitUsageInfo = () => {
+    const loading = ref(false)
+    const corporateWalletInfo = ref({} as Record<string, any>)
+    const getUserCorporateWalletLimitUsageInfo = async (id: number) => {
+        // selectedUserId.value = id
+        loading.value = true
+        const res = await users_api.$_get_user_corporate_wallet_limit_usage_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            corporateWalletInfo.value = res.data
+        }
+        loading.value = false
+    }
+    return { corporateWalletInfo, loading, getUserCorporateWalletLimitUsageInfo }
 }

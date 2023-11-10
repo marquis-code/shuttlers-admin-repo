@@ -80,5 +80,9 @@ export const users_api = {
 	$_refund_user: (id: string, payload: Record<string, any>) => {
 		const url = `user-route-schedules/${id}/refund`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_user_corporate_wallet_limit_usage_by_id: (id:number) => {
+		const url = `/users/${id}/corporate-wallet-limit-usage`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

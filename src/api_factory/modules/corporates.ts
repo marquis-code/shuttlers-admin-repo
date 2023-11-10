@@ -28,5 +28,9 @@ export const corporates_api = {
 	$_get_corporate_by_id: (id:string) => {
 		const url = `/corporates/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_company_wallet_info_by_id: (id:number) => {
+		const url = `/corporates/${id}/wallets`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
