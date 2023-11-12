@@ -1,7 +1,7 @@
 <template>
 	<section class="flex flex-col max-w-full overflow-auto z-50">
 		<slot name="header" />
-
+		<slot name="sub_header" />
 		<div class="border border-gray-200 md:rounded-b-lg">
 			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
@@ -165,10 +165,15 @@ const populateTable = (data: any) => {
 	const element = {}
 
 	props.headers.forEach((item: any) => {
-		for (const key in data) {
-			if (key === item.value) {
-				element[key] = data[key]
-			}
+		// for (const key in data) {
+		// 	if (key === item.value) {
+		// 		element[key] = data[key]
+		// 	}
+		// }
+		if (item.value in data) {
+			element[item.value] = data[item.value]
+		} else {
+			element[item.value] = ''
 		}
 	})
 

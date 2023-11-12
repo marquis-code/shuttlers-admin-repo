@@ -66,7 +66,7 @@
 				<TablePaginator
 					:current-page="page"
 					:total-pages="total"
-					:loading="loading"
+					:loading="loadingRoutePrices"
 					@move-to="moveTo($event)"
 					@next="next"
 					@prev="prev"
