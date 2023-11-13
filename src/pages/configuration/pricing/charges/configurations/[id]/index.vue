@@ -18,7 +18,7 @@
 							{{ currentChargeType.short_name }}-{{ currentChargeType.name }}
 						</p>
 						<p class="text-sm text-[#737876]">
-							{{ currentChargeType.description }}
+							{{ config.description }}
 						</p>
 					</div>
 					<div class="flex items-stretch gap-2 shrink-0">
@@ -134,11 +134,10 @@
 					{{ item.data?.route?.route_code }}
 				</p>
 				<p v-if="item.t_amount" class="text-sm text-[#313533]">
-					₦{{ item.data?.amount }}
+					{{ item.data?.userRouteSchedule?.unit_cost ? `₦${item.data.userRouteSchedule?.unit_cost}` : 'N/A' }}
 				</p>
 				<p v-if="item.c_amount" class="text-sm text-[#313533]">
-					<!-- ₦{{ item.data?.c_amount || 'N/A' }} -->
-					{{ item.data?.c_amount || 'N/A' }}
+					{{ item.data?.amount ? `₦${item.data.amount}` : 'N/A' }}
 				</p>
 				<p v-if="item.date" class="text-sm text-[#313533] font-medium">
 					{{ moment(item.data.created_at).format('D-MM-YYYY') }}

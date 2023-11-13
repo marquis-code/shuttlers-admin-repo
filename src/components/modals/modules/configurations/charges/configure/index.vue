@@ -14,7 +14,7 @@
 						Add new charge
 					</button>
 				</div>
-				<select v-model="chargeTypeId" required class="input-field">
+				<select v-model="chargeTypeId" required class="input-field disabled:cursor-not-allowed" :disabled="isEditConfigureCharge">
 					<option v-for="n in allChargeTypes" :key="n.id" :value="n.id">
 						{{ n.short_name }}
 					</option>
@@ -50,40 +50,22 @@
 
 			<div class="flex flex-col gap-2">
 				<label class="text-xs text-[#6E717C] font-medium">Select cities</label>
-				<multiselect v-model="cityIds" :placeholder="allCity ? '' : 'Search...'" :searchable="allCity ? false : true"
+				<VueMultiselect v-model="cityIds" :placeholder="allCity ? '' : 'Search...'" :searchable="allCity ? false : true"
 					label="name" track-by="id" :options="allCityNames" :multiple="true" :taggable="true"
 				>
-					<template slot="beforeList">
+					<template #beforeList>
 						<button type="button" class="bg-transparent w-full p-3 border-none border-bottom outline-none hover:!bg-[rgb(65,184,131)] hover:text-white text-left font-medium"
 							@click="selectAllCities"
 						>
 							Select all cities
 						</button>
 					</template>
-					<template v-if="allCity" slot="selection">
+					<template v-if="allCity" #selection>
 						<p class="!bg-[rgb(65,184,131)] w-fit text-white text-sm font-medium px-2 py-1 rounded">
 							All city selected
 						</p>
 					</template>
-				</multiselect>
-				<!-- <InputMultiSelect id="select_users_input"
-					v-model="cityIds" track-by="id" placeholder="Select city"
-					label="name" open-direction="bottom" :options="allCityNames" :multiple="true" :taggable="true"
-					:searchable="true" :loading="false"
-				>
-					<template slot="beforeList">
-						<button type="button" class="bg-transparent w-full p-3 border-none border-bottom outline-none hover:!bg-[rgb(65,184,131)] hover:text-white text-left font-medium"
-							@click="selectAllCities"
-						>
-							Select all cities
-						</button>
-					</template>
-					<template v-if="allCity" slot="selection">
-						<p class="!bg-[rgb(65,184,131)] w-fit text-white text-sm font-medium px-2 py-1 rounded">
-							All city selected
-						</p>
-					</template>
-				</InputMultiSelect> -->
+				</VueMultiselect>
 			</div>
 
 			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" />
@@ -95,7 +77,8 @@
 </template>
 
 <script setup lang="ts">
-import Multiselect from 'vue-multiselect'
+// import Multiselect from 'vue-multiselect'
+import VueMultiselect from 'vue-multiselect'
 import { useCreateConfigureCharge } from '@/composables/modules/configure/charges/configure/create'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 import { useChargeModal } from '@/composables/core/modals'
