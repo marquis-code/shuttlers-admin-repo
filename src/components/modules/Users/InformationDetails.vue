@@ -38,6 +38,20 @@
 				{{ selectedUser.email ?? 'N/A' }}
 			</p>
 		</div>
+		<div v-if="typeof selectedUser?.busCaptain === 'object'" class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm w-6/12">
+				BUS CAPTAIN
+			</p>
+			<div v-if="!busCaptainsLoader" class="text-sm w-6/12 space-y-3 flex justify-end items-end flex-col">
+				<div v-for="(item, idx) in busCaptainsRoutes" :key="idx" class="flex items-center gap-x-3">
+					<NuxtLink class="font-medium">
+						<span class="text-shuttlersGreen font-medium">{{ item?.route_code }}</span> {{ `${item?.source.slice(0, 10)}... ${item?.destination.slice(0, 10)}...` }}
+					</NuxtLink>
+					<span class="cursor-pointer" @click="removeBusCaptain(item)"><img src="@/assets/icons/source/red-exit.svg" alt=""></span>
+				</div>
+			</div>
+			<Skeleton v-else height="100px" />
+		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
 				COMPANY
@@ -80,11 +94,25 @@
 </template>
 
 <script setup lang="ts">
+import { useUserModal } from '@/composables/core/modals'
+import { useCreateUsers } from '@/composables/modules/users/create'
+import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useDeleteBusCaptains } from '@/composables/modules/users/id'
+const { suspendUsers, updateUserWallet, loading, setUpdateWalletActionType } = useCreateUsers()
+const { deleteBusCaptain, loading: loadingBusCaptains } = useDeleteBusCaptains()
 const props = defineProps({
     selectedUser: {
         type: Object,
         required: true
-    }
+    },
+	busCaptainsRoutes: {
+		type: Array,
+        required: true
+	},
+	busCaptainsLoader: {
+		type: Boolean,
+        required: true
+	}
 })
 
 const dropdownChildren = computed(() => [
@@ -94,11 +122,49 @@ const dropdownChildren = computed(() => [
 			useRouter().push(`/users/add/${data.id}`)
 		}
 	},
-	{ name: 'Topup User Wallet', func: () => { } },
-	{ name: 'Change Password', func: () => { } },
-	{ name: 'Add Profile Picture', func: () => { } },
-	{ name: 'Make bus captain', func: () => { } },
-	{ name: 'Debit User Wallet', func: () => { }, class: '!text-red' },
-	{ name: 'Suspend User', func: () => { }, class: '!text-red' }
+	{ name: 'Topup User Wallet', func: () => { handleWalletUpdate('credit') } },
+	{ name: 'Change Password', func: () => { handleUserPasswordUpdate() } },
+	{ name: 'Book For User', func: () => { bookTrip() } },
+	{ name: 'Add Profile Picture', func: () => { useUserModal().openChangeProfile() } },
+	{ name: 'Make bus captain', func: () => { makeBusCaptain() } },
+	{ name: 'Debit User Wallet', func: () => { handleWalletUpdate('debit') }, class: '!text-red' },
+	{ name: `${props.selectedUser.active === '1' ? 'Suspend' : 'Un-suspend'}`, func: (data) => { suspendUser(data) }, class: '!text-red' }
 ])
+
+const suspendUser = (data: any) => {
+	const actionType = props.selectedUser.active === '1' ? 'suspend' : 'un-suspend'
+    useConfirmationModal().openAlert({
+        title: 'Please Confirm',
+		type: 'NORMAL',
+        desc: `Are you sure you want to ${actionType} this user`,
+		loading,
+		call_function: () => suspendUsers(data.id, actionType)
+    })
+}
+
+const handleWalletUpdate = (actionType) => {
+	setUpdateWalletActionType(actionType)
+	useUserModal().openWalletUpdate()
+}
+const handleUserPasswordUpdate = () => {
+	useUserModal().openChangeUserPassword()
+}
+
+const bookTrip = () => {
+    useUserModal().openBookTrip()
+}
+
+const makeBusCaptain = () => {
+   useUserModal().openMakeBusCaptain()
+}
+
+const removeBusCaptain = (itm) => {
+	useConfirmationModal().openAlert({
+        title: 'Please Confirm',
+		type: 'NORMAL',
+        desc: `Are you sure you want to remove user from being a bus captain from this route ? ${itm?.route_code} - ${itm?.departure_time}`,
+		loading: loadingBusCaptains,
+		call_function: () => deleteBusCaptain(itm.id)
+    })
+}
 </script>

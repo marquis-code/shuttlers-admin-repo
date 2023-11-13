@@ -1,25 +1,27 @@
 <template>
 	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-		<div class="w-7/12 bg-white rounded-md shadow-sm p-3">
-			<ModulesUsersInformationDetails v-if="!loading" :selected-user="selectedUser" />
+		<div class="lg:w-7/12 bg-white rounded-md shadow-sm p-3">
+			<ModulesUsersInformationDetails v-if="!loading" :selected-user="selectedUser" :bus-captains-routes="busCaptainRoutes" :bus-captains-loader="loadingBusCaptains" />
 			<Skeleton v-else height="600px" />
 		</div>
-		<div class="w-5/12 bg-white rounded-md shadow-sm">
-			<ModulesUsersWallet v-if="!loadingUserWallet" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
-			<Skeleton v-else height="600px" />
+		<div class="lg:w-5/12 bg-white rounded-md shadow-sm">
+			<ModulesUsersWallet v-if="!loading" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
+			<Skeleton v-else height="300px" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useUserIdDetails, useUserCorporateWalletLimitUsageInfo } from '@/composables/modules/users/id'
+import { useUserIdDetails, useUserCorporateWalletLimitUsageInfo, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
 import { useCorporateWalletInfo } from '@/composables/modules/corporates/id'
+const { busCaptainRoutes, loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 const { getUserById, loading, selectedUser } = useUserIdDetails()
 const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletLimitUsageInfo } = useUserCorporateWalletLimitUsageInfo()
 const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletInfo } = useCorporateWalletInfo()
 const id = Number(useRoute().params.id)
 const corporate_id = Number(selectedUser?.corporate_id)
 getUserById(String(id))
+getBusCaptainRoutesById(String(id))
 
 onMounted(() => {
 	if (corporate_id) {
