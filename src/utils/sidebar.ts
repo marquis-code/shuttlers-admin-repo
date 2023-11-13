@@ -350,7 +350,7 @@ export const ADMIN_SIDEBAR_MENUS = [
         title: 'Route Price Control',
         routePath: '/configuration/pricing/pricing-control',
         oldPath: '/configuration/pricing-controls/',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Manage route pricing centrally'
       }
     ]
