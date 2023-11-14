@@ -1,7 +1,7 @@
 <template>
 	<main class="flex flex-col gap-4">
 		<div class="flex items-stretch gap-4">
-			<button class="bg-[#EFF2F7] rounded-lg py-2 px-4 text-center text-sm text-[#444854] font-medium min-w-[100px]">
+			<button class="bg-[#EFF2F7] rounded-lg py-2 px-4 text-center text-sm text-[#444854] font-medium min-w-[100px]" @click="$router.go(-1)">
 				Go back
 			</button>
 			<button class="bg-black text-white rounded-lg py-2 px-4 text-sm">
@@ -24,7 +24,7 @@
 			</transition-group>
 			<div class="border-t p-4 flex flex-col gap-y-2 gap-x-4 md:flex-row md:items-center md:justify-between">
 				<p class="text-sm text-neut9 font-medium">
-					({{selectedStaffs.length}}) of {{ totalStaffs }}
+					({{ selectedStaffs.length }}) of {{ totalStaffs }}
 					<span class="text-grey4"> Selected</span>
 				</p>
 				<div class="flex items-stretch gap-4">
@@ -50,13 +50,59 @@
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" @filter="onFilterUpdate">
 					<template #filter_others>
-						<div ref="target" class="relative">
+						<div ref="target" class="relative flex justify-end lg:max-w-[500px] xl:max-w-[800px] 2xl:max-w-full flex-wrap gap-y-3 gap-2 items-stretch">
+							<div v-if="showDays.selectBox.value" class="relative">
+								<button class="select_box" @click="showDrop('days')">
+									Select Days
+									<icon name="close" class="w-5" @click="closeFilter('days')" />
+								</button>
+								<div v-if="showDays.dropDown.value" class="dropdown_wrapper">
+									<div v-for="n in days" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+										<label :for="n" class="m-0 text-black text-sm font-medium">
+											{{ n }}
+										</label>
+										<input :id="n" type="checkbox">
+									</div>
+								</div>
+							</div>
+							<div v-if="showShift.selectBox.value" class="relative">
+								<button class="select_box" @click="showDrop('shift')">
+									Select Shifts
+									<icon name="close" class="w-5" @click="closeFilter('shift')" />
+								</button>
+								<div v-if="showShift.dropDown.value" class="dropdown_wrapper">
+									<div v-for="n in ['hello', 'hy']" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+										<label :for="n" class="m-0 text-black text-sm font-medium whitespace-nowrap">
+											08:00 AM - 05:00 PM
+										</label>
+										<input :id="n" type="checkbox">
+									</div>
+								</div>
+							</div>
+							<div v-if="showBranch.selectBox.value" class="relative">
+								<button class="select_box" @click="showDrop('branch')">
+									Select Branches
+									<icon name="close" class="w-5" @click="closeFilter('branch')" />
+								</button>
+								<div v-if="showBranch.dropDown.value" class="dropdown_wrapper">
+									<div v-for="n in ['hello', 'hy']" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+										<label :for="n" class="m-0 text-black text-sm font-medium whitespace-nowrap">
+											Mokola branch
+										</label>
+										<input :id="n" type="checkbox">
+									</div>
+								</div>
+							</div>
+							<div v-if="showSearchRoute" class="w-fit h-fit relative">
+								<input type="text" placeholder="Filter by route" class="border p-2 rounded-lg">
+								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="showSearchRoute = false" />
+							</div>
 							<button class="text-[#364152] text-sm font-medium py-2 px-3 bg-white border rounded-lg flex items-center gap-3" @click="showFilters = true">
 								<img src="@/assets/icons/source/filter.svg" alt="">
 								Filters
 							</button>
 							<div v-if="showFilters" class="absolute flex flex-col rounded-lg bg-white border right-0 top-12 min-w-[150px] z-30">
-								<button v-for="n,i in filters" :key="i" class="p-3 text-dark text-sm font-medium text-left hover:bg-[#F4F5F4]">
+								<button v-for="n,i in filters" :key="i" class="p-3 text-dark text-sm font-medium text-left hover:bg-[#F4F5F4]" @click="filterSelected(n)">
 									{{ n }}
 								</button>
 							</div>
@@ -124,6 +170,19 @@ definePageMeta({
 })
 const target = ref(null)
 const showFilters = ref(false)
+const showSearchRoute = ref(false)
+const showShift = {
+	selectBox: ref(false),
+	dropDown: ref(false)
+}
+const showBranch = {
+	selectBox: ref(false),
+	dropDown: ref(false)
+}
+const showDays = {
+	selectBox: ref(false),
+	dropDown: ref(false)
+}
 const tableFields = ref([
     { text: 'Name', value: 'name' },
 	{ text: 'Home address', value: 'home' },
@@ -136,15 +195,50 @@ const tableFields = ref([
 	// { text: '', value: 'action' }
 ])
 const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
-
-onClickOutside(target, () => showFilters.value = false)
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const convertTime = (time:string) => {
 	if (!time || !time.length) return 'N/A'
 	return moment(time, 'HH:mm:ss').format('h:mm A')
 }
 
+const closeAllDropDown = () => {
+	showShift.dropDown.value = false
+	showBranch.dropDown.value = false
+	showDays.dropDown.value = false
+	showFilters.value = false
+}
+
+const filterSelected = (n:string) => {
+	closeAllDropDown()
+	if (n === 'Route') showSearchRoute.value = true
+	if (n === 'Office branches') showBranch.selectBox.value = true
+	if (n === 'Work days') showDays.selectBox.value = true
+	if (n === 'Work shifts') showShift.selectBox.value = true
+}
+
+const showDrop = (n:'days'|'shift'|'branch') => {
+	closeAllDropDown()
+	if (n === 'days') showDays.dropDown.value = true
+	if (n === 'shift') showShift.dropDown.value = true
+	if (n === 'branch') showBranch.dropDown.value = true
+}
+
+const closeFilter = (n:'days'|'shift'|'branch') => {
+	if (n === 'days') showDays.selectBox.value = false
+	if (n === 'shift') showShift.selectBox.value = false
+	if (n === 'branch') showBranch.selectBox.value = false
+}
+
+onClickOutside(target, () => closeAllDropDown())
 selectedStaffs.value = []
 getCorporateStaff()
 </script>
 
-<style scoped></style>
+<style scoped>
+.select_box{
+	@apply text-grey6 text-sm py-2 px-3 h-full bg-white border rounded-lg flex items-center gap-3
+}
+.dropdown_wrapper{
+	@apply absolute flex flex-col rounded-lg bg-white border right-0 top-12 min-w-[150px] z-30
+}
+</style>
