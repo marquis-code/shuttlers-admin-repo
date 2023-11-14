@@ -16,6 +16,7 @@ export enum IconNames {
   'download' = 'download',
   'empty-search-state' = 'empty-search-state',
   'eye' = 'eye',
+  'filter' = 'filter',
   'greater' = 'greater',
   'info' = 'info',
   'info_2' = 'info_2',
