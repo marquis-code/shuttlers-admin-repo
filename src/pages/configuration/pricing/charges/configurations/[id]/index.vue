@@ -196,7 +196,6 @@ const computedChargeTypes = computed(() => {
 
 // const dropdownChildren = computed(() => [
 // 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-// 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
 // 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
 // ])
 
