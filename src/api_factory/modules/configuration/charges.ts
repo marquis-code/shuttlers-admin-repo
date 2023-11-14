@@ -28,11 +28,15 @@ export const charges_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
 	$_get_charge_history: (metaObject: TMetaObject, date:string[], status:string) => {
-		const url = `/additional-charges-history?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&startDate=${date[0]}&endDate=${date[1]}` : ''}&status=${status}`
+		const url = `/additional-charges-history?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_remit_charge: (id:number, payload) => {
-		const url = `/additional-charges-history/${id}`
+	$_get_total_charges: (date:string[]) => {
+		const url = `/additional-charges-history-total/fare${date[0] && date[1] ? `?start_date=${date[0]}&end_date=${date[1]}` : ''}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_remit_charge: (payload:any) => {
+		const url = '/additional-charges-history'
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
 

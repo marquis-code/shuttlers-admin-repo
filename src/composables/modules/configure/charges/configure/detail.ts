@@ -3,9 +3,11 @@ import { charges_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const loading = ref(false)
+const loading_total = ref(false)
 const chargeHistory = ref([]) as Ref<any[]>
 const date = ref([])
 const status = ref('All')
+const totalCharge = ref(null)
 
 const sample_data = [
 	{
@@ -46,10 +48,10 @@ const sample_data = [
 
 export const useDetails = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
-	const { $_get_charge_history } = charges_api
+	const { $_get_charge_history, $_get_total_charges } = charges_api
 	const fetchHistory = async () => {
 		loading.value = true
-		const res = await $_get_charge_history(metaObject, date.value, status.value) as CustomAxiosResponse
+		const res = await $_get_charge_history(metaObject, date.value, status.value.toLowerCase()) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			chargeHistory.value = res.data?.data?.length ? res.data.data : []
 			metaObject.total.value = res.data.metadata.total_pages
@@ -69,7 +71,17 @@ export const useDetails = () => {
 
 	watch([status, date], () => {
 		fetchHistory()
+		getTotalCharges()
 	})
 
-	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status }
+	const getTotalCharges = async () => {
+		loading_total.value = true
+		const res = await $_get_total_charges(date.value) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			totalCharge.value = res.data || null
+        }
+		loading_total.value = false
+	}
+
+	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status, getTotalCharges, loading_total, totalCharge }
 }

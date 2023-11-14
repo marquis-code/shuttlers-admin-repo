@@ -9,14 +9,14 @@
 				<!-- <date-picker :range="true" v-model="remit_date" valueType="format" placeholder="Filter by date"></date-picker> -->
 				<InputDateInput v-model="date" range placeholder="Filter by date" :disabled-date="()=>null" clearable />
 			</div>
-			<div class="flex items-center justify-between text-sm font-medium py-3">
+			<Skeleton v-if="loading_total" height="25px" />
+			<div v-else class="flex items-center justify-between text-sm font-medium py-3">
 				<p class="text-[#6E717C]">
 					Total VAT
 				</p>
 				<p class="text-[#313533]">
-					₦0.00
+					₦{{ totalCharge ? `${totalCharge}` : '0' }}
 				</p>
-				<!-- TODO still need total VAT from backend in plac of the above -->
 			</div>
 			<div class="flex items-start gap-2">
 				<img src="@/assets/icons/source/info_2.svg" class="shrink-0 w-[15px] mt-1" alt="">
@@ -37,8 +37,9 @@
 <script setup lang="ts">
 import { useRemitted } from '@/composables/modules/configure/charges/configure/index'
 
-const { date, closeMarkAsRemittedModal, initRemit } = useRemitted()
+const { date, closeMarkAsRemittedModal, initRemit, getTotalCharges, totalCharge, loading_total } = useRemitted()
 onBeforeUnmount(() => closeMarkAsRemittedModal())
+getTotalCharges()
 </script>
 
 <style scoped>

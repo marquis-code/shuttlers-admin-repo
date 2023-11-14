@@ -29,15 +29,12 @@
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap">
-					<template v-if="computedChargeTypes.length">
-						<span class="text-[#101211] uppercase">
-							{{ computedChargeTypes.find(el => el.id === item.data.additional_charge_type_id).short_name + ' ' }}
-						</span>
-						<span>
-							{{ computedChargeTypes.find(el => el.id === item.data.additional_charge_type_id).name }}
-						</span>
-					</template>
-					<span v-else>Loading...</span>
+					<span class="text-[#101211] uppercase">
+						{{ item.data.additionChargeType?.short_name + ' ' || '' }}
+					</span>
+					<span>
+						{{ item.data.additionChargeType?.name || '' }}
+					</span>
 				</p>
 				<p v-if="item.fees" class="text-sm text-[#737876] whitespace-nowrap">
 					<template v-if="item.data.charge_type === 'flat'">
@@ -47,19 +44,24 @@
 						{{ item.data.charge_value }}%
 					</template>
 				</p>
-				<div v-if="item.countries" class="flex flex-col gap-1 text-[#101211] font-medium">
-					<p class="text-sm">{{item.data.country_currently_active_in.name}}</p>
-					<div class="flex flex-wrap gap-2">
+				<div v-if="item.countries" class="flex flex-col gap-1 py-2 text-[#101211] font-medium">
+					<p class="text-sm">
+						{{ item.data.country_currently_active_in.name }}
+					</p>
+					<!-- <div class="flex flex-wrap gap-2">
 						<p v-for="n,i in item.data.cities_currently_active_in" :key="i"
 							class="text-[#737876] text-xs"
 						>
 							{{ n.city_name }}
 						</p>
-					</div>
+					</div> -->
+					<ModulesConfigureChargesCityList :cities="item.data?.cities_currently_active_in || []" />
 				</div>
-				<p v-if="item.desc" class="text-sm text-[#737876]">{{ item.data.description }}</p>
+				<p v-if="item.desc" class="text-sm text-[#737876]">
+					{{ item.data.description }}
+				</p>
 				<p v-if="item.configured_by" class="text-sm text-[#2C8EED] font-medium">
-					{{ item.data.updated_by_data?.fname || '' }} {{ item.data.updated_by_data?.lname || ''}}
+					{{ item.data.updated_by_data?.fname || '' }} {{ item.data.updated_by_data?.lname || '' }}
 				</p>
 				<div v-if="item.time" class="flex flex-col gap-1 text-xs text-[#313533] font-medium">
 					<p>{{ moment(item.data.created_at).format('LT') }}</p>
@@ -95,7 +97,6 @@
 import moment from 'moment'
 import { useFetchConfiguredCharges, useDeleteChargeConfiguration, useCreateConfigureCharge, useActivateConfiguration } from '@/composables/modules/configure/charges/configure/index'
 import { useChargeModal } from '@/composables/core/modals'
-import { useFetchChargeTypes } from '@/composables/modules/configure/charges/types/fetch'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 
 definePageMeta({
@@ -104,7 +105,6 @@ definePageMeta({
 })
 
 const { loading, fetchConfiguredCharges, configuredCharges, total, page, next, prev, moveTo, onFilterUpdate } = useFetchConfiguredCharges()
-const { allChargeTypes, fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
 const { fetchAllCityNames, fetchAllCountries } = useCityAndCountry()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
@@ -120,10 +120,6 @@ const tableFields = ref([
 	{ value: 'action', text: 'Action' }
 ])
 
-const computedChargeTypes = computed(() => {
-	return allChargeTypes.value
-})
-
 const dropdownChildren = computed(() => [
 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
@@ -136,7 +132,6 @@ const onRowClicked = (data) => {
 
 fetchAllCityNames()
 fetchAllCountries()
-fetchAllChargeTypesWithoutPagination()
 fetchConfiguredCharges()
 </script>
 
