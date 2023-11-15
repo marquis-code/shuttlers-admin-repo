@@ -1,34 +1,27 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="pastBookingsList">
+		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showSearchBar:true}" />
 			</template>
+			{{ bookings }}
 			<template #item="{ item }">
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span>{{ convertToCurrency(item?.data?.amount) }}</span>
+					<span> {{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
 
 				<div v-if="item.start_date">
-					<span> {{ item.data.start_date ?? 'N/A' }}</span>
+					<span> {{ item?.data?.start_date }} {{ item?.data?.trip_date ?? 'N/A' }} </span>
 				</div>
 				<div v-if="item.end_date">
-					<span> {{ item.data.end_date ?? 'N/A' }}</span>
+					<span> {{ item?.data?.end_date }}</span>
 				</div>
 				<div v-if="item.route_type">
 					<span>
-						{{
-							item?.data?.route_type?.visibility
-						}}
-					</span>
-					<br>
-					<span>
-						{{
-							item?.data?.route_type?.type ? "exclusive" : "shared"
-						}}
+						{{ item?.data?.route_type }}
 					</span>
 				</div>
 			</template>
@@ -40,13 +33,25 @@
 </template>
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useUserPastBookings } from '@/composables/modules/users/inner/past-bookings'
-const { pastBookingsList, loading, getUserPastBookings, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useUserPastBookings()
-const id = useRoute().params.id as string
+import { useUserBookings } from '@/composables/modules/users/id'
+const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, moveTo, page, total, setBookingType, bookingType } = useUserBookings()
+bookingType.value = 'cancelled'
+getBookings()
 
-filterData.status.value = 'cancelled'
-
-getUserPastBookings(id)
+const formattedBookingList = computed(() => {
+	if (!bookings.value.length) return []
+	return bookings.value.map((item, index) => {
+		return {
+			...item,
+			route_code: item?.route?.route_code ?? 'N/A',
+			start_date: item?.itinerary?.trip_time ?? 'N/A',
+			end_date: item?.end_date ?? 'N/A',
+			amount: item?.unit_cost ?? 'N/A',
+			payment_source: `${item?.payment_source} ${item?.instant_payment_provider === 'paystack' ? '' : (item?.instant_payment_provider)}`,
+		    route_type: `${item?.route?.visibility} ${item?.route?.is_exclusive ? 'exclusive' : 'shared'}`
+	    }
+	})
+})
 
 definePageMeta({
     layout: 'dashboard',
@@ -67,7 +72,7 @@ const tableFields = ref([
         value: 'start_date'
     },
     {
-        text: 'DATE CANCELLED',
+        text: 'END DATE',
         value: 'end_date'
     },
     {
@@ -83,6 +88,7 @@ const tableFields = ref([
         value: 'route_type'
     }
 ])
+
 </script>
 
 <style scoped></style>

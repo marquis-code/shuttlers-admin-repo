@@ -24,7 +24,7 @@ export const routes_api = {
 		const url = `/routes/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_itineraries_by_id: (id:number) => {
+	$_get_itineraries_by_route_id: (id:string) => {
 		const url = `/routes/${id}/itineraries?itinerary_only=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -69,5 +69,17 @@ export const routes_api = {
 	$_get_routes_busstops: (id: string) => {
 		const url = `/routes/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_routes_itineraries_vehicles_by_itinerary_id: (id: string) => {
+		const url = `/route-itineraries/${id}/vehicles`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_busstops_by_itinerary_id: (id: string) => {
+		const url = `/itineraries/${id}/busstops`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_pricing: (id: string, payload: any) => {
+		const url = `/routes/${id}/price-calculation`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

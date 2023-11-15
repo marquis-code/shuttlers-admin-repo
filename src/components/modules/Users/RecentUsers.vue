@@ -7,20 +7,21 @@
 			<div class="block w-full overflow-x-auto ">
 				<Table :headers="signupHeaders" :table-data="signupList" :loading="loadingSignups">
 					<template #item="{ item }">
-						<span v-if="item.fname" class="flex items-center gap-4">
-							<span class="text-sm">{{ item.data.fname }} {{ item.data.lname }}</span>
+						<NuxtLink v-if="item.fname" :to="`/users/${item.data.id}/user-info`" class="flex items-center gap-4 py-6 text-blue-600">
+							<Avatar :name="item.data.fname" bg="#B1C2D9" />
+							<span class="text-base">{{ item?.data?.fname }} {{ item?.data?.lname }}</span>
+						</NuxtLink>
+						<span v-if="item.email" class="flex items-center gap-4 py-6">
+							<span class="text-base">{{ item?.data?.email ?? 'N/A' }}</span>
 						</span>
-						<span v-if="item.email" class="flex items-center gap-4">
-							<span class="text-sm">{{ item.data.email }}</span>
-						</span>
-						<span v-if="item.active" class="flex items-center gap-4">
-							<span :style="{color: item.data.active !== '1' ? 'green' : 'red'}" class="text-sm">{{ item.data.active == '1' ? 'Active' : 'Inactive' }}</span>
+						<span v-if="item.active" class="flex items-center gap-4 py-6">
+							<span class="text-base">{{ item?.data?.active == '1' ? 'Active' : 'Inactive' }}</span>
 						</span>
 					</template>
 				</Table>
 			</div>
 			<div v-if="!loadingSignups" class="flex items-end justify-end py-4 pr-3">
-				<NuxtLink to="/users" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+				<NuxtLink to="/users" class="flex items-center justify-center text-blue-500 gap-x-2">
 					All Users<img class="inline" src="@/assets/icons/source/next.svg" alt="">
 				</NuxtLink>
 			</div>
