@@ -1,6 +1,6 @@
 <template>
-	<header class="w-full ">
-		<div class="flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
+	<header class="w-full">
+		<div class="flex w-full px-4 py-1 bg-white border-t border-x rounded-t-md" :class="[alignEnd ? 'justify-end' : 'justify-between']">
 			<section v-if="filterType.showSearchBar" class="relative flex items-center gap-0">
 				<MagnifyingGlassIcon class="w-4 text-gray-400" aria-hidden="true" />
 				<input v-model="filterData.search.value" type="search" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-2">
@@ -69,23 +69,27 @@ interface DefaultValueProps {
 }
 
 const props = defineProps({
-  filterType: {
-    type: Object as () => FilterTypeProps,
-    default: () => ({
-      showDatePicker: false,
-      showSearchBar: true,
-      showDownloadButton: false,
-      showStatus: false,
-      showDateRange: false,
-	  downloading: false
-    })
+	filterType: {
+		type: Object as () => FilterTypeProps,
+		default: () => ({
+			showDatePicker: false,
+			showSearchBar: true,
+			showDownloadButton: false,
+			showStatus: false,
+			showDateRange: false,
+			downloading: false
+		})
 	},
 	defaultValue: {
 		type: Object as () => DefaultValueProps,
 		    default: () => ({
 
-    })
-  }
+		})
+	},
+	alignEnd: {
+		type: Boolean,
+		required: false
+	}
 })
 
 const filterData = {

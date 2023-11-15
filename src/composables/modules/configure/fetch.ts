@@ -11,7 +11,7 @@ const tripRatingSettingsReference = ref({} as any)
 
 export const useAmenitiesList = () => {
     const loadingAmenities = ref(false)
-const amenitiesList = ref([] as Record<string, any>[])
+    const amenitiesList = ref([] as Record<string, any>[])
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_amenities } = configure_api
 
@@ -33,7 +33,7 @@ const amenitiesList = ref([] as Record<string, any>[])
 
 export const useInspectionSitesList = () => {
     const loadingInspectionSites = ref(false)
-const inspectionSiteList = ref([] as Record<string, any>[])
+    const inspectionSiteList = ref([] as Record<string, any>[])
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_inspection_sites } = configure_api
 
@@ -55,7 +55,7 @@ const inspectionSiteList = ref([] as Record<string, any>[])
 
 export const useVehicleTypesList = () => {
     const loadingVehicleTypes = ref(false)
-const vehicleTypesList = ref([] as Record<string, any>[])
+    const vehicleTypesList = ref([] as Record<string, any>[])
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_vehicle_types } = configure_api
 
@@ -77,15 +77,15 @@ const vehicleTypesList = ref([] as Record<string, any>[])
 
 export const useRoutePricesList = () => {
     const loadingRoutePrices = ref(false)
-const routePricesList = ref([] as Record<string, any>[])
+    const vehicleId = ref('')
+    const routeType = ref('')
+    const routePricesList = ref([] as Record<string, any>[])
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_route_prices } = configure_api
 
     const getRoutePricesList = async () => {
         loadingRoutePrices.value = true
-
-        const res = await $_get_route_prices(metaObject) as CustomAxiosResponse
-
+        const res = await $_get_route_prices(metaObject, vehicleId.value, routeType.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             routePricesList.value = res.data.data
             metaObject.total.value = res.data.metadata?.total_pages
@@ -93,8 +93,12 @@ const routePricesList = ref([] as Record<string, any>[])
         loadingRoutePrices.value = false
     }
     setFunction(getRoutePricesList)
+    watch([vehicleId, routeType], () => {
+        metaObject.page.value = 1
+        getRoutePricesList()
+    })
 
-    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo }
+    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType }
 }
 
 export const useGeneralPaymentOptionsList = () => {
@@ -240,4 +244,19 @@ export const useTripRatingSettingsCategories = () => {
     }
 
     return { loadingTripRatingSettingsCategories, getTripRatingSettingsCategories, tripRatingSettingsCategories }
+}
+
+const loading_all_vehicles = ref(false)
+const allVehicles = ref([] as Record<string, any>[])
+export const useAllVehicleType = () => {
+    const getAllVehicleWithoutLimit = async () => {
+        loading_all_vehicles.value = true
+        const res = await configure_api.$_get_all_vehicle_types_without_paginating() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            allVehicles.value = res.data.data?.length ? res.data.data : []
+        }
+        loading_all_vehicles.value = false
+    }
+
+    return { loading_all_vehicles, allVehicles, getAllVehicleWithoutLimit }
 }

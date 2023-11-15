@@ -26,8 +26,12 @@ export const configure_api = {
 		const url = `/vehicle-types?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_prices: (metaObject: TMetaObject) => {
-		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+	$_get_all_vehicle_types_without_paginating: () => {
+		const url = `/vehicle-types?limit=10000&page=${1}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_prices: (metaObject: TMetaObject, vehicleId:string|number, routeType:string) => {
+		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_payment_options: () => {

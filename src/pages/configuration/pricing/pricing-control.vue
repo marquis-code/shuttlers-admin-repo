@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		{{ vehicleId }} {{ routeType }}
 		<Table
 			:loading="loadingRoutePrices"
 			:has-index="true"
@@ -11,12 +12,32 @@
 			<template #header>
 				<TableFilter
 					:filter-type="{
-						showStatus: true,
-						showSearchBar: true,
+						showStatus: false,
+						showSearchBar: false,
 						showDownloadButton: true,
-						showDatePicker: true,
+						showDatePicker: false,
 					}"
-				/>
+					:align-end="true"
+				>
+					<template #filter_others>
+						<div class="flex gap-3 py-2">
+							<select v-model="routeType" class="p-2 bg-transparent border rounded-lg text-sm">
+								<option value="">All</option>
+								<option value="shared">Shared Routes</option>
+								<option value="corporate">Corporate Routes</option>
+								<option value="exclusive">Exclusive Routes</option>
+							</select>
+							<select v-model="vehicleId" class="p-2 bg-transparent border rounded-lg text-sm">
+								<option value="">
+									All
+								</option>
+								<option v-for="n in allVehicles" :key="n.id" :value="n.id">
+									{{ n.name }}
+								</option>
+							</select>
+						</div>
+					</template>
+				</TableFilter>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
@@ -78,7 +99,7 @@
 
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useRoutePricesList } from '@/composables/modules/configure/fetch'
+import { useRoutePricesList, useAllVehicleType } from '@/composables/modules/configure/fetch'
 
 const {
   getRoutePricesList,
@@ -88,9 +109,9 @@ const {
   next,
   prev,
   total,
-  page
+  page, vehicleId, routeType
 } = useRoutePricesList()
-getRoutePricesList()
+const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
 
 definePageMeta({
   layout: 'dashboard',
@@ -155,4 +176,7 @@ const tableFields = ref([
     text: 'Pricing'
   }
 ])
+
+getRoutePricesList()
+getAllVehicleWithoutLimit()
 </script>
