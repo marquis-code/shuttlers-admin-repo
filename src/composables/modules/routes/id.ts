@@ -1,10 +1,17 @@
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 
 const selectedRoute = ref({} as Record<string, any>)
 const selectedRouteId = ref('')
+const selectedItineraryId = ref('')
 // const selectedPartnerAccountSid = ref('')
 const routeId = ref<number>()
+
+const routePricingData = {
+    destination_id: ref(''),
+    pickup_id: ref('')
+}
 
 export const useRouteIdDetails = () => {
     const loading = ref(false)
@@ -184,4 +191,72 @@ export const useRouteBusstopList = () => {
         loading.value = false
     }
     return { loading, getRouteBusstopsById, busstopsList }
+}
+
+export const useItinerariesByRouteId = () => {
+    const loading = ref(false)
+    const routeItineraries = ref([] as any)
+    const getRouteItinerariesByRouteId = async (id: string) => {
+        selectedRouteId.value = id
+        loading.value = true
+        const res = await routes_api.$_get_itineraries_by_route_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            routeItineraries.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { routeItineraries, loading, getRouteItinerariesByRouteId }
+}
+
+export const useGetVehicleByItneraryId = () => {
+    const loading = ref(false)
+    const itineraryVehicles = ref([] as any)
+    const getRouteItineraryVehiclesByItineraryId = async (id: string) => {
+        selectedItineraryId.value = id
+        loading.value = true
+        const res = await routes_api.$_get_routes_itineraries_vehicles_by_itinerary_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            itineraryVehicles.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { itineraryVehicles, loading, getRouteItineraryVehiclesByItineraryId }
+}
+
+export const useBusstopsByItineraryId = () => {
+    const loading = ref(false)
+    const itineraryBusstops = ref([] as any)
+    const getBusstopsByItineraryId = async (id: string) => {
+        loading.value = true
+        const res = await routes_api.$_get_busstops_by_itinerary_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            itineraryBusstops.value = res.data.data
+        }
+        loading.value = false
+        return res.data
+    }
+    return { loading, getBusstopsByItineraryId, itineraryBusstops }
+}
+
+export const useRoutePricingByItineraryId = () => {
+    const loading = ref(false)
+    const routePricingInformation = ref({} as any)
+
+    const setRoutePricingDataForm = (data: any) => {
+		routePricingData.pickup_id.value = data.pickup_id || ''
+        routePricingData.destination_id.value = data.destination_id || ''
+	}
+
+    const getRoutePricingInformation = async (id: string) => {
+        loading.value = true
+        const res = await routes_api.$_get_route_pricing(id, convertObjWithRefToObj(routePricingData)) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            routePricingInformation.value = res.data
+        }
+        loading.value = false
+        return res.data
+    }
+    return { loading, routePricingInformation, getRoutePricingInformation, setRoutePricingDataForm }
 }

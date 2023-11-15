@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject } from '@/composables/utils/table'
 
 export const configure_api = {
@@ -45,9 +45,29 @@ export const configure_api = {
 	$_update_payment_options: (payload: any) => {
 		const url = '/bulk/general-payment-options'
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_delete_amenity: (id:string) => {
+		const url = `/vehicle-amenities/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
+	$_get_trip_ratings_settings: (serviceId: string) => {
+		const url = `/rating/settings/service-id/${serviceId}`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_get_categories_by_settings: (id: string) => {
+		const url = `/rating/settings/${id}/categories`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_create_trip_rating_catogory: (id, payload) => {
+		const url = '/rating/categories'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_create_trip_rating_options: (id, payload) => {
+		const url = '/rating/options'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_trip_rating_details: (id: string) => {
+		const url = `/rating/categories/${id}`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	}
-	// $_get_create_rating_categories: (payload:any) => {
-	// 	const url = '/general-payment-options'
-	// 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-	// }
 }

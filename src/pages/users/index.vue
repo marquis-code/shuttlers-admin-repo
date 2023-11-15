@@ -6,22 +6,26 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
-					<Avatar :name="item.data.fname" bg="#B1C2D9" />
+					<Avatar :name="item?.data?.fname" bg="#B1C2D9" />
 				</div>
-				<span v-if="item.lname" class="flex items-center gap-4">
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
+				<div v-if="item.lname" class="">
+					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">
+						<p>{{ item?.data?.fname }} {{ item?.data?.lname }}</p>
+						<p>{{ item?.data?.email ?? 'N/A' }}</p>
+						<p>{{ item?.data?.phone ?? 'N/A' }}</p>
+					</NuxtLink>
+				</div>
+				<span v-else-if="item.created_at" class="space-y-4 text-base">
+					{{ useDateFormat(item?.data?.created_at, "MMMM d, YYYY").value }}
 				</span>
-				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+				<span v-if="item.wallet" class="flex items-center gap-4 text-base">
+					<span>{{ convertToCurrency(item?.data?.wallet?.amount) }}</span>
 				</span>
-				<span v-if="item.wallet" class="flex items-center gap-4">
-					<span>{{ convertToCurrency(item.data.wallet.amount) }}</span>
+				<span v-if="item.corporate_id" class="flex items-center gap-4 text-base">
+					<span>{{ convertToCurrency(item?.data?.wallet?.credit_amount) }}</span>
 				</span>
-				<span v-if="item.corporate_id" class="flex items-center gap-4">
-					<span>{{ convertToCurrency(item.data.wallet.credit_amount) }}</span>
-				</span>
-				<span v-else-if="item.active">
-					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" />
+				<span v-else-if="item.active" class="text-base">
+					<StatusBadge :name="item?.data?.active === '1' ? 'active' : 'inactive'" />
 				</span>
 			</template>
 
