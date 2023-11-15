@@ -127,8 +127,12 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.users" class="flex flex-col gap-0 text-sm text-[#101211]">
-					<p class="font-medium">{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}</p>
-					<p class="text-[#737876]">{{item.data.user?.email || ''}}</p>
+					<p class="font-medium">
+						{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}
+					</p>
+					<p class="text-[#737876]">
+						{{ item.data.user?.email || '' }}
+					</p>
 				</div>
 				<p v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap">
 					{{ item.data?.route?.route_code }}
@@ -196,7 +200,6 @@ const computedChargeTypes = computed(() => {
 
 // const dropdownChildren = computed(() => [
 // 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-// 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
 // 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
 // ])
 

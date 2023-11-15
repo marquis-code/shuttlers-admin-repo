@@ -10,7 +10,7 @@
 					<button class="shrink-0 border-none outline-none flex items-center gap-2 font-medium justify-center bg-transparent text-[#0DAC5C]"
 						type="button" @click="useChargeModal().openCreateChargeTypes()"
 					>
-						<img src="@/assets/img/icons/plus_black.svg" alt="">
+						<!-- <img src="@/assets/img/icons/plus_black.svg" alt=""> -->
 						Add new charge
 					</button>
 				</div>

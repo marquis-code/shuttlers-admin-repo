@@ -58,9 +58,9 @@
 					</h1>
 
 					<div class="flex gap-3 flex-wrap">
-						<span class="badge">
+						<nuxt-link :to="`/trips/routes/${rentalDetails.route.id}/details/`" class="badge">
 							{{ rentalDetails.route.route_code }} - {{ rentalDetails.route.pickup }} - {{ rentalDetails.route.destination }}
-						</span>
+						</nuxt-link>
 					</div>
 				</div>
 			</section>
@@ -84,10 +84,12 @@ const { charterVehicleOrder, updateCharterOrder, loading, charterStatus } = useU
 getRentalById(id)
 
 watch(rentalDetails, () => {
+	charterVehicleOrder.value = []
 	if (!isEmptyObject(rentalDetails.value)) {
+		charterVehicleOrder.value = []
 		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
 			vehicle.price = vehicle.cost || ''
-			charterVehicleOrder.push(vehicle)
+			charterVehicleOrder.value.push(vehicle)
 		})
 	}
 })

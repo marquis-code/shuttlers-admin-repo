@@ -1,9 +1,10 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="activeBookingsList">
+		<Table :loading="loading" :headers="tableFields" :table-data="bookings">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 			</template>
+			{{ bookings }}
 			<template #item="{ item }">
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
@@ -40,10 +41,10 @@
 </template>
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useUserActiveBookings } from '@/composables/modules/users/inner/active-bookings'
-const { activeBookingsList, loading, getUserActiveBookingsById, moveTo, next, prev, total, page } = useUserActiveBookings()
-const id = useRoute().params.id as string
-getUserActiveBookingsById(id)
+import { useUserBookings } from '@/composables/modules/users/id'
+const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, moveTo, page, total, setBookingType, bookingType } = useUserBookings()
+bookingType.value = 'active'
+getBookings()
 
 definePageMeta({
     layout: 'dashboard',

@@ -80,5 +80,39 @@ export const users_api = {
 	$_refund_user: (id: string, payload: Record<string, any>) => {
 		const url = `user-route-schedules/${id}/refund`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_user_corporate_wallet_limit_usage_by_id: (id:number) => {
+		const url = `/users/${id}/corporate-wallet-limit-usage`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_user_completed_and_past_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/users/${id}/user-route-schedules?status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${queryParams}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_user_active_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/users/${id}/routes?status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${queryParams}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_change_password: (payload, id) => {
+		const url = `/users/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_wallet: (payload, userId, walletId) => {
+		const url = `/wallet/${walletId}/user/${userId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_create_bus_captain: (payload) => {
+		const url = '/bus-captains'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_load_bus_captain_routes: (id) => {
+		const url = `/bus-captains/${id}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_remove_bus_captain: (id) => {
+		const url = `/bus-captains/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }

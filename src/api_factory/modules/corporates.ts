@@ -32,6 +32,9 @@ export const corporates_api = {
 	$_get_corporate_staffs: (corporateId:number, metaObject: TMetaObject, filterData?:any) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/corporates/${corporateId}/staff?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&${queryParams}`
+	},
+	$_get_company_wallet_info_by_id: (id:number) => {
+		const url = `/corporates/${id}/wallets`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
