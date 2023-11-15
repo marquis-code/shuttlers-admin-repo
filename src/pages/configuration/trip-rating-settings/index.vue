@@ -1,51 +1,94 @@
 <template>
-	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :has-options="true" :option="onRowClicked">
+	<main class="space-y-6">
+		<div class="bg-white rounded-md border w-6/12">
+			<div class="px-6 py-5">
+				<p class="font-medium">
+					Create New Issue Category
+				</p>
+			</div>
+			<hr>
+			<div class="space-y-6 p-6 mt-5">
+				<div class="flex justify-between items-center gap-x-10">
+					<div class="w-full">
+						<label for="vehicleBrand"
+							class="text-sm font-light text-gray                                                                             ">
+							Category name</label>
+						<input v-model.trim="category.name" type="text" name="vehicleBrand"
+							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+					</div>
+				</div>
+
+				<div class="flex justify-between items-center gap-10">
+					<div class="w-full">
+						<label for="vehicleName"
+							class="text-sm font-light text-gray">Vehicle
+							Issue type (Minimum of two issues)</label>
+						<div class="flex items-center">
+							<input v-model.trim="issueType" type="text" name="vehicleName"
+								class="w-full outline-none px-3 py-2 rounded-l-md border focus:border-gray-900">
+							<button
+								class="text-white py-2 bg-black px-6 rounded-r-md"
+								:disabled="!issueType"
+								type="button"
+								@click.prevent="addIssueToList"
+							>
+								Add
+							</button>
+						</div>
+					</div>
+				</div>
+				<div
+					v-if="category.issues.length"
+					class="list-group list-unstyled"
+				>
+					<div
+						v-for="(item, index) in category.issues"
+						:key="index"
+						class="px-0 py-1 d-flex justify-content-between"
+					>
+						{{ item }}
+						<i
+							class="fe fe-x text-danger pointer"
+							@click="deleteIssueFromList(index)"
+						/>
+					</div>
+				</div>
+				<div>
+					<button class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
+						Create Category
+					</button>
+				</div>
+			</div>
+		</div>
+		<Table :loading="loadingTripRatingSettingsCategories" :headers="tableFields" :table-data="tripRatingSettingsCategories" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<h1 class="border-t bg-white rounded-t-md py-3 pl-4 font-semibold">
+					Categories List
+				</h1>
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
-					<span class="block">{{ item.data.fname }} {{ item.data.lname }}</span>
-					<span class="block">{{ item.data.email }}</span>
-					<span class="block">{{ item.data.phone }}</span>
-				</div>
-				<span v-if="item.rating" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
+				<span v-if="item.options">
+					<p v-if="item.data.options" class="space-x-3 space-y-4"><span v-for="(itm, idx) in item?.data?.options" :key="idx" class="text-white font-medium px-3 py-2 text-[10px] bg-gray-600 rounded-xl">{{ itm.name }}</span></p>
+					<p v-else>No issues available</p>
 				</span>
-				<span v-if="item.avatar" class="flex items-center gap-4">
-					<Avatar :name="item.data.fname" bg="#B1C2D9" />
-				</span>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-				</span>
-				<span v-else-if="item.active">
-					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" />
-				</span>
-			</template>
-
-			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-import { useGetDriversList } from '@/composables/modules/drivers/fetch'
-import { useDriverIdDetails } from '@/composables/modules/drivers/id'
-
-const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetDriversList()
-
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
-getDriversList()
-
+import { useTripRatingIdDetails } from '@/composables/modules/configure/id'
+import { useTripRatingSettings, useTripRatingSettingsCategories } from '@/composables/modules/configure/fetch'
+const { loadingTripRatingSettings, getTripRatingSettings, tripRatingSettingsReference } = useTripRatingSettings()
+const { loadingTripRatingSettingsCategories, getTripRatingSettingsCategories, tripRatingSettingsCategories } = useTripRatingSettingsCategories()
 const onRowClicked = (data) => {
-	const { selectedDriver } = useDriverIdDetails()
-	useRouter().push(`/drivers/${data.id}/driver-info`)
-	selectedDriver.value = data
+	const { selectedTripRating } = useTripRatingIdDetails()
+	useRouter().push(`/configuration/trip-rating-settings/${data.reference}`)
+	selectedTripRating.value = data
 }
+
+getTripRatingSettings(import.meta.env.VITE_TRIP_RATING_SERVICE_ID)
+getTripRatingSettingsCategories(tripRatingSettingsReference.value)
 
 definePageMeta({
     layout: 'dashboard',
@@ -53,25 +96,37 @@ definePageMeta({
 })
 const tableFields = ref([
     {
-        text: 'User',
-        value: 'fname'
+        text: 'CATEGORY',
+        value: 'name'
     },
     {
-        text: 'Average Rating',
-        value: 'rating'
+        text: 'ISSUE TYPES',
+        value: 'options',
+		width: '900px'
     },
     {
-        text: 'Avatar',
-        value: 'avatar'
-    },
-    {
-        text: 'Date Joined',
+        text: 'DATE CREATED',
         value: 'created_at'
-    },
-    {
-        text: 'STATUS',
-        value: 'active'
     }
 ])
+
+const category = reactive({
+        name: '',
+        issues: []
+      })
+
+	  const issueType = ref('') as any
+      const categoriesList = ref([])
+
+const addIssueToList = () => {
+      category.issues.unshift(issueType.value)
+      issueType.value = ''
+    }
+
+   const deleteIssueFromList = (indexOfItem) => {
+      category.issues = category.issues.filter(
+        (item, index) => index !== indexOfItem
+      )
+    }
 
 </script>

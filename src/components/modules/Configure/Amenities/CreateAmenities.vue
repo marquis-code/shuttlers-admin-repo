@@ -37,14 +37,16 @@ const { amenitiesForm, loading, handleCreateAmenity } = useCreateAmentiites()
 const previewUrl = ref()
 
 const onFileSelected = (e) => {
-      const fileReader = new FileReader()
-      previewUrl.value = URL.createObjectURL(e.target.files[0])
+	const file = e.target.files[0]
+	if (file) {
+		const fileReader = new FileReader()
 
-      fileReader.onload = (e) => {
-        amenitiesForm.image = e?.target?.result
+		fileReader.onload = (e) => {
+			amenitiesForm.image = e?.target?.result
       }
-
-      fileReader.readAsDataURL(e.target.files[0])
+      previewUrl.value = URL.createObjectURL(e.target.files[0])
+      fileReader.readAsDataURL(file)
+	 }
     }
 
 const isFormComplete = computed(() => {
