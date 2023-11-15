@@ -20,7 +20,6 @@ export const useUpdateCharter = () => {
             ...charterVehicleOrder.value[pos],
             ...vehicle
         }
-        console.log(charterVehicleOrder.value[pos])
         useCommuteModal().closeUpdateVehicle()
     }
 
@@ -29,7 +28,6 @@ export const useUpdateCharter = () => {
     })
 
     const updateCharterOrder = async (rentalDetails) => {
-        console.log(charterVehicleOrder.value)
         loading.value = true
 
         try {
@@ -45,7 +43,6 @@ export const useUpdateCharter = () => {
                 loading.value = false
             }
         } catch (e) {
-            console.log(e)
             loading.value = false
         }
 
