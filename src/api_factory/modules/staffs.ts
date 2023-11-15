@@ -45,5 +45,9 @@ export const staffs_api = {
 	$_feature_flag_flagged_audits: () => {
 		const url = '/feature-flag?name=get-all-audits'
 		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_update_profile_picture: (id, payload) => {
+		const url = `/admins/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
 	}
 }

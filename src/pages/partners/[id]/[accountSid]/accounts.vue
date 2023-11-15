@@ -32,8 +32,7 @@ const formattedPartnersAccountsList = computed(() => {
 	if (!partnersAccountInformation.value.length) return []
 	return partnersAccountInformation.value.map((item, index) => {
 		return {
-			...item,
-			table_index: index + 1
+			...item
 		}
 	})
 })

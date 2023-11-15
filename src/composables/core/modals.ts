@@ -9,12 +9,17 @@ import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoin
 import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
 import ChangePassword from '@/components/modals/modules/admins/ChangePassword.vue'
+import ChangeUserPassword from '@/components/modals/modules/users/ChangePassword.vue'
+import WalletUpdate from '@/components/modals/modules/users/WalletUpdate.vue'
+import ChangeProfile from '@/components/modals/modules/users/ChangeProfile.vue'
+import BookTrip from '@/components/modals/modules/users/BookTrip.vue'
+import MakeBusCaptain from '@/components/modals/modules/users/MakeBusCaptain.vue'
 import CreateChargeTypes from '@/components/modals/modules/configurations/charges/types/index.vue'
 import CreateChargeConfigurations from '@/components/modals/modules/configurations/charges/configure/index.vue'
 import RemitCharge from '@/components/modals/modules/configurations/charges/configure/remitted.vue'
 
 type AuthTypes = 'Logout'
-type UserTypes = 'UserRefund' | 'RefundLogger'
+type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier'
@@ -22,7 +27,7 @@ type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
-const UserModals = { UserRefund, RefundLogger } as Record<UserTypes, any>
+const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier } as Record<CommuteTypes, any>

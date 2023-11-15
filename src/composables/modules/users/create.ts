@@ -1,6 +1,11 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { convertObjWithRefToObj } from '@/composables/utils/formatter'
+import { convertObjWithRefToObj, convertToCurrency } from '@/composables/utils/formatter'
+import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useUserModal } from '@/composables/core/modals'
+import { useUserIdDetails, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
+const { getUserById, selectedUserId } = useUserIdDetails()
+const { loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 
 const createForm = {
 	fname: ref(''),
@@ -12,6 +17,24 @@ const createForm = {
 	dob: ref(''),
 	corporate_id: ref()
 }
+const updatePasswordForm = {
+	password: ref('')
+}
+
+const walletUpdateForm = {
+	amount: ref(''),
+    title: ref(''),
+    source: ref(''),
+	type: ref('')
+}
+
+const createBusCaptainForm = {
+	user_id: ref(''),
+    route_itinerary_id: ref(''),
+    route_vehicle_id: ref('')
+}
+
+const walletActionType = ref('')
 
 export const useCreateUsers = () => {
 	const loading = ref(false)
@@ -57,5 +80,92 @@ export const useCreateUsers = () => {
 		createForm.corporate_id.value = data.corporate_id || ''
 	}
 
-	return { createForm, loading, createUser, editUser, prePopulateForm }
+	const updateUserPassword = async (id: string) => {
+		loading.value = true
+
+        const res = (await users_api.$_change_password(
+            convertObjWithRefToObj(updatePasswordForm), id
+        )) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Password has been changed successfully'
+            })
+			useUserModal().closeChangeUserPassword()
+			getUserById(selectedUserId.value)
+        }
+        loading.value = false
+    }
+
+	const suspendUsers = async (id: string, type: string) => {
+		loading.value = true
+
+        const res = (await users_api.$_edit_users(
+            {
+				active: type === 'suspend' ? 0 : 1
+			}, id
+        )) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: `User has been ${type === 'suspend' ? 'suspened' : 'un-suspended'} successfully`
+            })
+			useConfirmationModal().closeAlert()
+			getUserById(selectedUserId.value)
+        }
+        loading.value = false
+    }
+
+	const updateUserWallet = async (id: string, walletId: string) => {
+		loading.value = true
+
+        const res = (await users_api.$_update_wallet(convertObjWithRefToObj(walletUpdateForm), id, walletId)) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: `User wallet was debited of ${convertToCurrency(Number(walletUpdateForm?.amount?.value))} successfully`
+            })
+			useUserModal().closeWalletUpdate()
+			getUserById(selectedUserId.value)
+        }
+        loading.value = false
+    }
+
+	const createBusCaptains = async () => {
+		loading.value = true
+
+        const res = (await users_api.$_create_bus_captain(convertObjWithRefToObj(createBusCaptainForm))) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'User was successfully added as a bus captain!'
+            })
+			useUserModal().closeMakeBusCaptain()
+        }
+		loading.value = false
+		getUserById(selectedUserId.value)
+		getBusCaptainRoutesById(selectedUserId.value)
+    }
+	const populateWalletUpdateForm = (data: any) => {
+		walletUpdateForm.amount.value = data.amount || ''
+		walletUpdateForm.title.value = data.title || ''
+		walletUpdateForm.source.value = data.source || ''
+		walletUpdateForm.type.value = data.type || ''
+	}
+
+	const populatePasswordUpdateForm = (data: any) => {
+		updatePasswordForm.password.value = data.password
+	}
+
+	const setUpdateWalletActionType = (data: any) => {
+		walletActionType.value = data || ''
+	}
+
+	const populateCreateBusCaptainForm = (data: any) => {
+		createBusCaptainForm.user_id.value = data.user_id || ''
+		createBusCaptainForm.route_itinerary_id.value = data.route_itinerary_id || ''
+		createBusCaptainForm.route_vehicle_id.value = data.route_vehicle_id || ''
+	}
+
+	return { createForm, loading, createUser, editUser, prePopulateForm, suspendUsers, updateUserWallet, populateWalletUpdateForm, setUpdateWalletActionType, walletActionType, updateUserPassword, populatePasswordUpdateForm, populateCreateBusCaptainForm, createBusCaptains }
 }

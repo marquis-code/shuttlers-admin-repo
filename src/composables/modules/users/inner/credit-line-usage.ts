@@ -16,16 +16,16 @@ export const useUserCreditLineUsage = () => {
       endDate: ref('')
     }
 
-    watch(selectedUser, () => {
-        getUserCreditLineUsage()
-    })
+    // watch(selectedUser, () => {
+    //     getUserCreditLineUsage()
+    // })
 
     const getUserCreditLineUsage = async () => {
         if (!selectedUser?.value?.corporate_id) {
             return
         }
         loading.value = true
-        const id = selectedUser?.value?.corporate_id
+        // const id = selectedUser?.value?.corporate_id
         const res = await corporates_api.$_get_credit_line_usage(selectedUser.value.corporate_id, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             creditLineUsageList.value = res.data
@@ -36,16 +36,16 @@ export const useUserCreditLineUsage = () => {
 
     setFunction(getUserCreditLineUsage)
 
-    watch([filterData.startDate.value, filterData.endDate.value], (val) => {
+    watch([filterData.startDate, filterData.endDate], (val) => {
         getUserCreditLineUsage()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
-            case 'startDate':
+            case 'start_date':
                 filterData.startDate.value = data.value
                 break
-            case 'endDate':
+            case 'end_date':
                 filterData.endDate.value = data.value
                 break
         }

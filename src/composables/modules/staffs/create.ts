@@ -1,8 +1,10 @@
 import { staffs_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { useAdminModal } from '@/composables/core/modals'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useAdminModal, useUserModal } from '@/composables/core/modals'
+import { useUserIdDetails } from '@/composables/modules/users/id'
+const { getUserById, selectedUserId } = useUserIdDetails()
 
 const createForm = {
 	fname: ref(''),
@@ -15,6 +17,10 @@ const createForm = {
 
 const updatePasswordForm = {
 	password: ref('')
+}
+
+const profileUpdateForm = {
+	avatar: ref('')
 }
 
 export const useCreateAdmin = () => {
@@ -85,6 +91,25 @@ export const useCreateAdmin = () => {
         loading.value = false
     }
 
+	const updateProfilePicture = async (id: string) => {
+		loading.value = true
+
+        const res = (await staffs_api.$_update_profile_picture(id, convertObjWithRefToObj(profileUpdateForm))) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Profile picture was updated successfully'
+            })
+			useUserModal().closeChangeProfile()
+			getUserById(selectedUserId.value)
+        }
+        loading.value = false
+    }
+
+	const populateUserProfileUpdateForm = (data: any) => {
+		profileUpdateForm.avatar.value = data.avatar
+	}
+
     const prePopulateForm = (data: any) => {
 		createForm.fname.value = data.fname || ''
 		createForm.lname.value = data.lname || ''
@@ -97,5 +122,5 @@ export const useCreateAdmin = () => {
 		updatePasswordForm.password.value = data.password || ''
 	}
 
-	return { createForm, loading, createAdmin, editAdmin, prePopulateForm, updateAdminPassword, updatePasswordForm, populatePasswordUpdateForm, suspendAdmin }
+	return { createForm, loading, createAdmin, editAdmin, prePopulateForm, updateAdminPassword, updatePasswordForm, populatePasswordUpdateForm, suspendAdmin, populateUserProfileUpdateForm, updateProfilePicture }
 }

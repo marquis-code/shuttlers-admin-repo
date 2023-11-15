@@ -1,32 +1,93 @@
-// import { useSosList } from './fetch'
-// import { sos_api, CustomAxiosResponse } from '@/api_factory/modules'
-// import { useCommuteModal } from '@/composables/core/modals'
-// import { useAlert } from '@/composables/core/notification'
+import { useAlert } from '@/composables/core/notification'
+import { configure_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useAmenitiesList } from '@/composables/modules/configure'
+import { useConfirmationModal } from '@/composables/core/confirmation'
+import { convertObjWithRefToObj } from '@/composables/utils/formatter'
+const amenitiesForm = {
+    name: '',
+	short_name: '',
+	image: '' as any
+}
 
-// const selectedSosTrip = ref({} as Record<string, any>)
+const tripCategoryPayload = {
+    settings_id: ref(''),
+    name: ref('')
+}
 
-// export const useNotifySos = () => {
-//     const loading = ref(false)
+const tripOptionsPayload = {
+    name: ref(''),
+    settings_id: ref(''),
+    category_id: ref('')
+}
 
-//     const sos_data = {
-//         sos_request_ids: ref([])
-//     }
+export const useCreateAmentiites = () => {
+const loading = ref(false)
+const deletingAmenity = ref(false)
+    const handleCreateAmenity = async () => {
+        loading.value = true
+        const payload = {
+            image: amenitiesForm.image,
+            name: amenitiesForm.name,
+            short_name: amenitiesForm.short_name
+        }
+        const res = await configure_api.$_create_amenity(payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'New Amenity successfully created' })
+            useAmenitiesList().getAmenitiesList()
+        }
+        loading.value = false
+    }
 
-//     const openNotifier = (data: Record<string, any>) => {
-//         selectedSosTrip.value = data
-//         useCommuteModal().openSosNotifier()
-//     }
+    const deleteAmenity = async (id) => {
+      deletingAmenity.value = true
+      const res = await configure_api.$_delete_amenity(id) as CustomAxiosResponse
+      if (res.type !== 'ERROR') {
+        useAlert().openAlert({ type: 'SUCCESS', msg: 'Amenity was successfully deleted' })
+        useAmenitiesList().getAmenitiesList()
+       useConfirmationModal().closeAlert()
+    }
+    deletingAmenity.value = false
+    }
+    return { amenitiesForm, loading, handleCreateAmenity, deletingAmenity, deleteAmenity }
+}
 
-//     const notify = async () => {
-//         loading.value = true
-//         const res = await sos_api.$_sos_provider_request({ sos_request_ids: sos_data.sos_request_ids.value.map((i: any) => i.id) }) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             useCommuteModal().closeSosNotifier()
-//             useAlert().openAlert({ type: 'SUCCESS', msg: 'Provider Notified successfully' })
-//             useSosList().getSosList()
-//         }
-//         loading.value = false
-//     }
+export const useCreateTripRating = () => {
+    const loadingTripRatingCategories = ref(false)
+    const loadingTripRatingOptions = ref(false)
+    const { $_create_trip_rating_catogory, $_create_trip_rating_options } = configure_api
 
-//     return { loading, openNotifier, sos_data, selectedSosTrip, notify }
-// }
+    const createTripRatingCategory = async (serviceId: string) => {
+        loadingTripRatingCategories.value = true
+
+        const res = await $_create_trip_rating_catogory(serviceId, convertObjWithRefToObj(tripCategoryPayload)) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'New trip rating cateegory was successfully created' })
+        }
+        loadingTripRatingCategories.value = false
+    }
+
+    const createTripRatingOption = async (serviceId: string) => {
+        loadingTripRatingOptions.value = true
+
+        const res = await $_create_trip_rating_options(serviceId, convertObjWithRefToObj(tripOptionsPayload)) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'New trip rating option was successfully created' })
+        }
+        loadingTripRatingOptions.value = false
+    }
+
+    const prefillTripCategoryForm = (data: { settings_id: string, name: string}) => {
+        tripCategoryPayload.settings_id.value = data.settings_id
+        tripCategoryPayload.name.value = data.name
+    }
+
+    const prefillTripOptionsForm = (data: { settings_id: string, category_id: string, name: string }) => {
+        tripOptionsPayload.settings_id.value = data.settings_id
+        tripOptionsPayload.category_id.value = data.category_id
+        tripOptionsPayload.name.value = data.name
+    }
+
+    return { prefillTripCategoryForm, prefillTripOptionsForm, createTripRatingOption, createTripRatingCategory, loadingTripRatingCategories, loadingTripRatingOptions }
+}

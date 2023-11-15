@@ -20,7 +20,7 @@
 					@filter="onFilterUpdate"
 				>
 					<template #filter_others>
-						<button @click="useChargeModal().openCreateChargeConfigurations()" class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]">
+						<button class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]" @click="useChargeModal().openCreateChargeConfigurations()">
 							<img src="@/assets/icons/source/plus_black.svg" alt="">
 							Configure new charge
 						</button>
@@ -48,13 +48,6 @@
 					<p class="text-sm">
 						{{ item.data.country_currently_active_in.name }}
 					</p>
-					<!-- <div class="flex flex-wrap gap-2">
-						<p v-for="n,i in item.data.cities_currently_active_in" :key="i"
-							class="text-[#737876] text-xs"
-						>
-							{{ n.city_name }}
-						</p>
-					</div> -->
 					<ModulesConfigureChargesCityList :cities="item.data?.cities_currently_active_in || []" />
 				</div>
 				<p v-if="item.desc" class="text-sm text-[#737876]">

@@ -42,7 +42,6 @@ filterData.startDate.value = '2023-04-03'
 filterData.endDate.value = '2023-04-03'
 filterData.staffId.value = id
 getUserCreditLineUsage()
-
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
