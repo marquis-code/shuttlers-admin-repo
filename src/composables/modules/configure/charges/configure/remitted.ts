@@ -9,10 +9,13 @@ const loading = ref(false)
 const date = ref([])
 const password = ref('')
 const to_mark_id = ref(null) as Ref<number|null>
+const totalCharge = ref(null)
+const loading_total = ref(false)
 
 const closeMarkAsRemittedModal = () => {
 	date.value = []
 	password.value = ''
+	totalCharge.value = null
 }
 
 export const useRemitted = () => {
@@ -29,18 +32,32 @@ export const useRemitted = () => {
 	}
 	const markAsRemitted = async () => {
 		const payload = {
-			is_remitted: true,
-			startDate: date.value[0],
-			endDate: date.value[1],
+			start_date: date.value[0],
+			end_date: date.value[1],
 			password: password.value
 		}
-		const res = await charges_api.$_remit_charge(to_mark_id.value!, payload) as CustomAxiosResponse
+		const id = useRoute().params.id as string
+		const res = await charges_api.$_remit_charge(id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Charge marked as remitted' })
-			useChargeModal().closeCreateChargeConfigurations()
+			useChargeModal().closeRemitCharge()
+			usePasswordConfirmationModal().closeAlert()
         }
 		loading.value = false
 	}
+	const getTotalCharges = async () => {
+		const id = useRoute().params.id as string
+		loading_total.value = true
+		totalCharge.value = null
+		const res = await charges_api.$_get_total_charges(Number(id), date.value) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			totalCharge.value = res.data
+        }
+		loading_total.value = false
+	}
+	watch(date, () => {
+		getTotalCharges()
+	})
 
-	return { loading, closeMarkAsRemittedModal, markAsRemitted, date, initRemit, to_mark_id }
+	return { loading, closeMarkAsRemittedModal, markAsRemitted, date, initRemit, to_mark_id, getTotalCharges, loading_total, totalCharge }
 }
