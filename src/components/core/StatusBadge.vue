@@ -45,6 +45,7 @@ const palette = {
 					selectPalette.value = palette.success
 				break
 			case 'failed':
+			case 'false':
 					selectPalette.value = palette.failed
 				break
 			case 'cancelled':
