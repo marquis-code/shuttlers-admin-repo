@@ -1,7 +1,8 @@
 import moment from 'moment'
 
 export const convertToCurrency = (value: number) => {
-   if (typeof value === 'undefined') return
+    if (!value) return
+    if (typeof value === 'undefined') return
 
   let parseAmount
   if (typeof value !== 'number') {

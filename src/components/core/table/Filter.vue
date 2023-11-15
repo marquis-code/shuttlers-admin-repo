@@ -26,12 +26,16 @@
 				</div>
 			</section>
 
-			<button v-if="filterType.showDownloadButton" class="flex items-center cursor-pointer gap-x-2" @click="onFilter({type:'download', value:null})">
-				<img src="@/assets/icons/source/download.svg" alt="" class="inline">
-				<p class="text-xs font-medium">
-					Download report
-				</p>
-			</button>
+			<section class="flex items-center flex-row-reverse gap-4">
+				<button v-if="filterType.showDownloadButton" class="flex items-center cursor-pointer gap-x-2" @click="onFilter({type:'download', value:null})">
+					<img src="@/assets/icons/source/download.svg" alt="" class="inline">
+					<p class="text-xs font-medium">
+						Download report
+					</p>
+				</button>
+
+				<slot name="filter_others" />
+			</section>
 		</div>
 	</header>
 </template>
