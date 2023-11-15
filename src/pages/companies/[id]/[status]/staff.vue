@@ -28,7 +28,7 @@
 					<span class="text-grey4"> Selected</span>
 				</p>
 				<div class="flex items-stretch gap-4">
-					<div class="border rounded-lg overflow-hidden flex items-center">
+					<!-- <div class="border rounded-lg overflow-hidden flex items-center">
 						<p class="bg-grey8 text-grey4 text-sm font-medium p-3 h-full whitespace-nowrap border-r">
 							Assign staff(s) to:
 						</p>
@@ -37,13 +37,14 @@
 								Route and Itinerary
 							</option>
 						</select>
-					</div>
-					<button class="px-3 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06">
+					</div> -->
+					<button class="px-3 py-2 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06" @click="useCompaniesModal().openAssignStaff()">
 						Assign
 					</button>
 				</div>
 			</div>
 		</div>
+
 		<Table :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs" :has-index="true"
 			@checked="selectedStaffs = ($event)"
 		>
@@ -57,11 +58,11 @@
 									<icon name="close" class="w-5" @click="closeFilter('days')" />
 								</button>
 								<div v-if="showDays.dropDown.value" class="dropdown_wrapper">
-									<div v-for="n in days" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+									<div v-for="n in days" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between" @click="handleDaysSelection(n)">
 										<label :for="n" class="m-0 text-black text-sm font-medium">
 											{{ n }}
 										</label>
-										<input :id="n" type="checkbox">
+										<input :id="n" :checked="selectedDays.includes(n)" type="checkbox">
 									</div>
 								</div>
 							</div>
@@ -71,11 +72,11 @@
 									<icon name="close" class="w-5" @click="closeFilter('shift')" />
 								</button>
 								<div v-if="showShift.dropDown.value" class="dropdown_wrapper">
-									<div v-for="n in ['hello', 'hy']" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+									<div v-for="n in shifts" :key="n.id" class="px-3 py-2 flex gap-3 items-center justify-between" @click="handleShiftSelection(n)">
 										<label :for="n" class="m-0 text-black text-sm font-medium whitespace-nowrap">
-											08:00 AM - 05:00 PM
+											{{ n.description.slice(0, -5) }}
 										</label>
-										<input :id="n" type="checkbox">
+										<input :id="n" :checked="selectedShifts.includes(n)" type="checkbox">
 									</div>
 								</div>
 							</div>
@@ -85,16 +86,16 @@
 									<icon name="close" class="w-5" @click="closeFilter('branch')" />
 								</button>
 								<div v-if="showBranch.dropDown.value" class="dropdown_wrapper">
-									<div v-for="n in ['hello', 'hy']" :key="n" class="px-3 py-2 flex gap-3 items-center justify-between">
+									<div v-for="n in branches" :key="n.id" class="px-3 py-2 flex gap-3 items-center justify-between" @click="handleBranchSelection(n)">
 										<label :for="n" class="m-0 text-black text-sm font-medium whitespace-nowrap">
-											Mokola branch
+											{{ n.name }}
 										</label>
-										<input :id="n" type="checkbox">
+										<input :id="n" :checked="selectedBranches.includes(n)" type="checkbox">
 									</div>
 								</div>
 							</div>
 							<div v-if="showSearchRoute" class="w-fit h-fit relative">
-								<input type="text" placeholder="Filter by route" class="border p-2 rounded-lg">
+								<input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg">
 								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="showSearchRoute = false" />
 							</div>
 							<button class="text-[#364152] text-sm font-medium py-2 px-3 bg-white border rounded-lg flex items-center gap-3" @click="showFilters = true">
@@ -115,19 +116,19 @@
 					<p>{{ item.data.fname }} {{ item.data.lname }}</p>
 					<p>{{ item.data.email }}</p>
 				</div>
-				<p v-if="item.home" class="text-sm text-[#6E717C]">
+				<p v-if="item.home" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.address?.address || 'N/A' }}
 				</p>
-				<p v-if="item.busstop" class="text-sm text-[#6E717C]">
+				<p v-if="item.busstop" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.address?.closestBusstop?.address || 'N/A' }}
 				</p>
 				<p v-if="item.branch" class="text-sm text-[#6E717C]">
 					{{ item.data?.workShift?.officeBranch?.address || 'N/A' }}
 				</p>
 				<p v-if="item.shift" class="text-[#101211] text-sm whitespace-nowrap">
-					{{ convertTime(item.data?.workShift?.corporate_work_shift?.start_time) }} - {{ convertTime(item.data?.workShift?.corporate_work_shift?.ends_time) }}
+					{{ convertTime(item.data?.workShift?.corporate_work_shift?.start_time) }} - {{ convertTime(item.data?.workShift?.corporate_work_shift?.end_time) }}
 				</p>
-				<div v-if="item.days" class="flex flex-wrap gap-1">
+				<div v-if="item.days" class="flex flex-wrap gap-1 min-w-[120px]">
 					<p v-for="n,i in item.data?.workShift?.work_days || []" :key="i" class="text-xs text-dark font-medium p-1 bg-[#F4F5F4] rounded">
 						{{ n.slice(0,3) }}
 					</p>
@@ -158,11 +159,16 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { useDateFormat, onClickOutside } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 import { useCorporateStaff, useSelectedStaff } from '@/composables/modules/corporates/staff/index'
+import { useCorporateBranches } from '@/composables/modules/corporates/branch'
+import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
+import { useCompaniesModal } from '@/composables/core/modals'
 
 const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs } = useCorporateStaff()
-const { handleStaffSelection, selectedStaffIds, selectedStaffs } = useSelectedStaff()
+const { handleStaffSelection, selectedStaffs, selectedDays, selectedBranches, selectedShifts, handleBranchSelection, handleDaysSelection, handleShiftSelection, searchedRoute } = useSelectedStaff()
+const { loading: loading_branches, getBranches, branches } = useCorporateBranches()
+const { loading: loading_shifts, getShifts, shifts } = useCorporateWorkShifts()
 
 definePageMeta({
     layout: 'dashboard',
@@ -196,6 +202,7 @@ const tableFields = ref([
 ])
 const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 const convertTime = (time:string) => {
 	if (!time || !time.length) return 'N/A'
 	return moment(time, 'HH:mm:ss').format('h:mm A')
@@ -232,6 +239,8 @@ const closeFilter = (n:'days'|'shift'|'branch') => {
 onClickOutside(target, () => closeAllDropDown())
 selectedStaffs.value = []
 getCorporateStaff()
+getBranches(useRoute().params.id as string)
+getShifts(useRoute().params.id as string)
 </script>
 
 <style scoped>
