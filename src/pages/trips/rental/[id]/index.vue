@@ -85,9 +85,10 @@ getRentalById(id)
 
 watch(rentalDetails, () => {
 	if (!isEmptyObject(rentalDetails.value)) {
+		charterVehicleOrder.value = []
 		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
 			vehicle.price = vehicle.cost || ''
-			charterVehicleOrder.push(vehicle)
+			charterVehicleOrder.value.push(vehicle)
 		})
 	}
 })

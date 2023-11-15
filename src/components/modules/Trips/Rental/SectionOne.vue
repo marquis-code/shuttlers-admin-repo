@@ -66,10 +66,10 @@
 			</div>
 		</section>
 
-		<h1 class="card-header mt-7">
-			Return Trip
-		</h1>
-		<section class="flex flex-col gap-3">
+		<section v-if="rentalDetails.return_date" class="flex flex-col gap-3">
+			<h1 class="card-header mt-7">
+				Return Trip
+			</h1>
 			<div class="flex justify-between text-sm">
 				<span class="labe">RETURN ADDRESS</span>
 				<span>{{ rentalDetails.return_address }}  </span>
@@ -78,9 +78,16 @@
 				<span class="labe">PICKUP DATE</span>
 				<span>{{ rentalDetails.return_date }} {{ rentalDetails.return_time }} </span>
 			</div>
+		</section>
+
+		<section class="flex flex-col gap-3 mt-7">
 			<div class="flex justify-between text-sm">
 				<span class="labe">STATUS</span>
 				<StatusBadge :name="rentalDetails.status" />
+			</div>
+			<div class="flex justify-between text-sm">
+				<span class="labe">PAYMENT STATUS</span>
+				<StatusBadge :name="rentalDetails.userRoute.booking_status || false" />
 			</div>
 		</section>
 	</section>
