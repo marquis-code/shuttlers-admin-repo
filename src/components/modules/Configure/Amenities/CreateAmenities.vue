@@ -5,7 +5,7 @@
 				New Amenities
 			</h1>
 		</div>
-		<form @submit.prevent="createAmenity" class="space-y-6 p-6">
+		<form class="space-y-6 p-6" @submit.prevent="createAmenity">
 			<div>
 				<label for="name">Name</label>
 				<input id="name" v-model="amenitiesForm.name" type="text" class="w-full py-2 rounded-md outline-none border px-3" placeholder="Enter name">

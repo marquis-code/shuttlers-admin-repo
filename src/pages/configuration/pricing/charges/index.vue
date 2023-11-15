@@ -20,7 +20,7 @@
 					@filter="onFilterUpdate"
 				>
 					<template #filter_others>
-						<button @click="useChargeModal().openCreateChargeConfigurations()" class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]">
+						<button class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]" @click="useChargeModal().openCreateChargeConfigurations()">
 							<img src="@/assets/icons/source/plus_black.svg" alt="">
 							Configure new charge
 						</button>
@@ -48,7 +48,9 @@
 					</template>
 				</p>
 				<div v-if="item.countries" class="flex flex-col gap-1 text-[#101211] font-medium">
-					<p class="text-sm">{{item.data.country_currently_active_in.name}}</p>
+					<p class="text-sm">
+						{{ item.data.country_currently_active_in.name }}
+					</p>
 					<div class="flex flex-wrap gap-2">
 						<p v-for="n,i in item.data.cities_currently_active_in" :key="i"
 							class="text-[#737876] text-xs"
@@ -57,9 +59,11 @@
 						</p>
 					</div>
 				</div>
-				<p v-if="item.desc" class="text-sm text-[#737876]">{{ item.data.description }}</p>
+				<p v-if="item.desc" class="text-sm text-[#737876]">
+					{{ item.data.description }}
+				</p>
 				<p v-if="item.configured_by" class="text-sm text-[#2C8EED] font-medium">
-					{{ item.data.updated_by_data?.fname || '' }} {{ item.data.updated_by_data?.lname || ''}}
+					{{ item.data.updated_by_data?.fname || '' }} {{ item.data.updated_by_data?.lname || '' }}
 				</p>
 				<div v-if="item.time" class="flex flex-col gap-1 text-xs text-[#313533] font-medium">
 					<p>{{ moment(item.data.created_at).format('LT') }}</p>

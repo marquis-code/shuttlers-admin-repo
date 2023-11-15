@@ -127,8 +127,12 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.users" class="flex flex-col gap-0 text-sm text-[#101211]">
-					<p class="font-medium">{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}</p>
-					<p class="text-[#737876]">{{item.data.user?.email || ''}}</p>
+					<p class="font-medium">
+						{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}
+					</p>
+					<p class="text-[#737876]">
+						{{ item.data.user?.email || '' }}
+					</p>
 				</div>
 				<p v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap">
 					{{ item.data?.route?.route_code }}
