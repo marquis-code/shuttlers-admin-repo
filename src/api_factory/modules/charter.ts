@@ -19,8 +19,8 @@ export const rental_api = {
 		const url = `/event-charters/${charter_id}/orders/${vehicle_id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, { cost })
 	},
-	$_update_rental_status: (id:string, status:string) => {
+	$_update_rental_status: (id:string, payload:any) => {
 		const url = `/event-charters/${id}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, { status })
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }
