@@ -27,10 +27,10 @@
 			</section>
 
 			<section class="flex items-center flex-row-reverse gap-4">
-				<button v-if="filterType.showDownloadButton" class="flex items-center cursor-pointer gap-x-2" @click="onFilter({type:'download', value:null})">
-					<img src="@/assets/icons/source/download.svg" alt="" class="inline">
+				<button v-if="filterType.showDownloadButton" :disabled="filterType.downloading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onFilter({type:'download', value:null})">
+					<img v-if="!filterType.downloading" src="@/assets/icons/source/download.svg" alt="" class="inline">
 					<p class="text-xs font-medium">
-						Download report
+						{{ filterType.downloading ? 'Downloading' : 'Download report' }}
 					</p>
 				</button>
 
@@ -58,6 +58,7 @@ interface FilterTypeProps {
   showDownloadButton?: boolean;
   showStatus?: boolean;
   showDateRange?: boolean;
+  downloading?: boolean;
 }
 interface DefaultValueProps {
 	search?: string;
@@ -75,7 +76,8 @@ const props = defineProps({
       showSearchBar: true,
       showDownloadButton: false,
       showStatus: false,
-      showDateRange: false
+      showDateRange: false,
+	  downloading: false
     })
 	},
 	defaultValue: {
