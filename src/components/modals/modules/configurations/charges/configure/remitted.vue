@@ -15,7 +15,7 @@
 					Total VAT
 				</p>
 				<p class="text-[#313533]">
-					₦{{ totalCharge ? `${totalCharge}` : '0' }}
+					₦{{ totalCharge }}
 				</p>
 			</div>
 			<div class="flex items-start gap-2">

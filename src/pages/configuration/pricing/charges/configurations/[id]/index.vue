@@ -97,7 +97,8 @@
 						showSearchBar: false,
 						showDownloadButton: true,
 						showDatePicker: false,
-						showDateRange: true
+						showDateRange: true,
+						downloading: downloading
 					}"
 					@filter="onFilterUpdate"
 				>
@@ -113,7 +114,7 @@
 			<template #sub_header>
 				<div class="flex flex-col gap-y-2 gap-x-[16px] bg-white border border-b-0 md:flex-row md:items-center md:justify-between py-3 px-[16px] border-bottom">
 					<p v-if="!loading_total" class="text-sm font-medium text-[#6E717C]">
-						Total VAT: <span class="text-[#000005]">{{ totalCharge ? `₦${totalCharge}` : 'N/A' }}</span>
+						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
 					</p>
 					<Skeleton v-else height="20px" width="130px" />
 					<div class="overflow-hidden flex items-stretch rounded border bg-[#F4F5F4] ">
@@ -178,7 +179,7 @@ const { loading, fetchSingleConfiguredCharges, singleConfiguredCharge: config } 
 const { loading: fetchingAllChargeTypes } = useFetchChargeTypes()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
-const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge } = useDetails()
+const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading } = useDetails()
 // const { intiActivate } = useActivateConfiguration()
 
 const tableFields = [
