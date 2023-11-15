@@ -3,22 +3,21 @@ import { usePagination } from '@/composables/utils/table'
 
 export const useGetFleets = () => {
     const loadingFleets = ref(false)
-    const fleetsList = ref([] as any)
+    const fleetsList = ref([] as any[])
     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
         search: ref(''),
         start_date_filter: ref(''),
         end_date_filter: ref(''),
-        vehicle_id: ref('')
+        vehicle_id: ref(''),
+        type: ref('')
     }
-
-    const { $_get_fleets } = fleets_api
 
     const getFleetsList = async () => {
         loadingFleets.value = true
 
-        const res = await $_get_fleets(metaObject, filterData) as CustomAxiosResponse
+        const res = await fleets_api.$_get_fleets(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             fleetsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.brand} ${item.name}`, registration_number: item.registration_number, seats: item.seats, type: item.type, drivers: item.drivers, created_at: item.created_at, rating: 'N/A', amenities: 'N/A' }))
@@ -28,7 +27,7 @@ export const useGetFleets = () => {
     }
     setFunction(getFleetsList)
 
-    watch([filterData.status, filterData.search, filterData.end_date_filter, filterData.start_date_filter], (val) => {
+    watch([filterData.status, filterData.search, filterData.type, filterData.end_date_filter, filterData.start_date_filter], (val) => {
         getFleetsList()
     })
 

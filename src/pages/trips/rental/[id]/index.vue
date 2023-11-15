@@ -31,15 +31,15 @@
 							<label for="">Vehicle {{ idx+1 }} </label>
 							<div class="grid grid-cols-2 gap-4 w-full">
 								<input id="user" type="text" name="user" :value="vehicle.charterVehicle.name" class="input-field" disabled>
-								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="updateVehicle(vehicle)">
-									{{ vehicle.price }}
+								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="rentalDetails.status === 'pending' ? updateVehicle(vehicle) : ''">
+									{{ vehicle.cost }}
 								</div>
 							</div>
 						</div>
 					</section>
 
 					<div class="flex justify-end mt-12">
-						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending'">
+						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending' || !checkMainVehicleIdExists">
 							<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 								Update request
 							</span>
@@ -81,7 +81,7 @@ const id = useRoute().params.id as string
 
 const { getRentalById, loadingRental, rentalDetails } = useGetRentalById()
 
-const { charterVehicleOrder, updateCharterOrder, loading, charterStatus, updateVehicle } = useUpdateCharter()
+const { charterVehicleOrder, updateCharterOrder, loading, charterStatus, updateVehicle, checkMainVehicleIdExists } = useUpdateCharter()
 
 getRentalById(id)
 
@@ -90,7 +90,6 @@ watch(rentalDetails, () => {
 	if (!isEmptyObject(rentalDetails.value)) {
 		charterVehicleOrder.value = []
 		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
-			vehicle.price = vehicle.cost || ''
 			charterVehicleOrder.value.push(vehicle)
 		})
 	}
