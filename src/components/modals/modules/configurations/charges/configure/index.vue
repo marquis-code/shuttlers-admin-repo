@@ -73,7 +73,7 @@
 				<p class="text-sm font-normal">
 					Users must pay this fee when making a booking
 				</p>
-				<VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" />
+				<!-- <VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" /> -->
 			</div>
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
@@ -86,7 +86,7 @@
 <script setup lang="ts">
 // import Multiselect from 'vue-multiselect'
 import VueMultiselect from 'vue-multiselect'
-import { VueToggles } from 'vue-toggles'
+
 import { useCreateConfigureCharge } from '@/composables/modules/configure/charges/configure/create'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 import { useChargeModal } from '@/composables/core/modals'
