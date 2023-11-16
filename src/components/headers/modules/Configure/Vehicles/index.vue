@@ -2,10 +2,10 @@
 	<HeadersHeaderSlot title="Vehicle" pre-title="Overview">
 		<template #actions>
 			<div class="flex items-center gap-x-3">
-				<button class="btn-primary">
+				<button @click="useVehicleConfigurationModal().openConfigureInspectionSite()" class="btn-primary">
 					New Inspection Site
 				</button>
-				<button class="btn-primary">
+				<button @click="useVehicleConfigurationModal().openConfigureVehicleCategory()" class="btn-primary">
 					New Vehicle Category
 				</button>
 			</div>
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { useVehicleConfigurationModal } from '@/composables/core/modals'
 const pageTabs = [
     {
         name: 'Category Management',
@@ -27,6 +28,7 @@ const pageTabs = [
         path: '/configuration/vehicle-category-management/inspection-sites'
     }
 ]
+
 </script>
 
 <style scoped></style>
