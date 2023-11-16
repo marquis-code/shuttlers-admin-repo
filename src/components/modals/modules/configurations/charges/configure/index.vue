@@ -16,7 +16,7 @@
 				</div>
 				<select v-model="chargeTypeId" required class="input-field disabled:cursor-not-allowed" :disabled="isEditConfigureCharge">
 					<option v-for="n in allChargeTypes" :key="n.id" :value="n.id">
-						{{ n.short_name }}
+						{{ n.short_name }} - ({{ n.name }})
 					</option>
 				</select>
 			</div>
@@ -68,7 +68,14 @@
 				</VueMultiselect>
 			</div>
 
-			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" />
+			<!-- <ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" /> -->
+			<div class="flex items-center justify-between gap-4">
+				<p class="text-sm font-normal">
+					Users must pay this fee when making a booking
+				</p>
+				<VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" />
+			</div>
+
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : `${isEditConfigureCharge ? 'Update configuration' : 'Configure new charge'}` }}
 			</button>
@@ -79,6 +86,7 @@
 <script setup lang="ts">
 // import Multiselect from 'vue-multiselect'
 import VueMultiselect from 'vue-multiselect'
+import { VueToggles } from 'vue-toggles'
 import { useCreateConfigureCharge } from '@/composables/modules/configure/charges/configure/create'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 import { useChargeModal } from '@/composables/core/modals'
@@ -86,13 +94,14 @@ import { useFetchChargeTypes } from '@/composables/modules/configure/charges/typ
 
 const { loading, isEditConfigureCharge, chargeEntityId, chargeType, chargeTypeId, chargeValue, desc, cityIds, allCity, configureCharge, enableButton, closeConfigureChargeModal, isCompulsory, updateConfigureCharge } = useCreateConfigureCharge()
 const { allCityNames, allCountries } = useCityAndCountry()
-const { allChargeTypes } = useFetchChargeTypes()
+const { allChargeTypes, fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
 
 const selectAllCities = () => {
 	cityIds.value = []
 	allCity.value = true
 }
 
+fetchAllChargeTypesWithoutPagination()
 onBeforeUnmount(() => closeConfigureChargeModal())
 </script>
 
