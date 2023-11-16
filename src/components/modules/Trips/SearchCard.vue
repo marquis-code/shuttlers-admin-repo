@@ -22,7 +22,7 @@
 					class="absolute left-0 z-[500] mt-1"
 				>
 					<div
-						class="absolute start-0 z-10 mt-2 w-80 rounded-md border border-gray-100 bg-white shadow-lg"
+						class="absolute start-0 z-10 mt-2 w-80 h-[800px] max-h-[75vh] rounded-md border border-gray-100 bg-white shadow-lg overflow-auto"
 						role="menu"
 					>
 						<div class="p-2 flex flex-col gap-5">
@@ -46,7 +46,7 @@
 									</button>
 								</div>
 							</form>
-							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto h-[500px] max-h-[75vh] pb-4">
+							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto  pb-4">
 								<div v-for="trip in fetchedData[tripTypeInput]" :key="trip.id" class="border shadow-sm rounded-md" @click="onCardClick(close, trip)">
 									<div class="p-2 cursor-pointer">
 										<RouteDescription class="text-xs" :pickup="trip?.route?.pickup" :destination="trip?.route?.destination" />
