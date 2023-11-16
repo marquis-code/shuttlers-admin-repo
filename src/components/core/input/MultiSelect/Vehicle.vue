@@ -9,15 +9,13 @@
 		:show-no-results="false" :hide-selected="true" @search-change="queryVehicle" />
 </template>
 
-<!-- :custom-label="(vehicle)=>`${vehicle.brand} - ${vehicle.name} - ${vehicle.registration_number} (${vehicle.driver?.fname} ${vehicle.driver?.lname})`" -->
-
 <script setup lang="ts">
 
 import { useQueryVehicle } from '@/composables/modules/fleets/query'
 
 const { loadingQueriedVehicle, queriedVehicle, queryVehicle } = useQueryVehicle()
 
-const vehicleId = ref({})
+const vehicleId = ref()
 
 const emits = defineEmits(['update:modelValue', 'updated', 'updated_main'])
 const props = defineProps({
@@ -45,7 +43,7 @@ const props = defineProps({
 })
 
 watch(() => props.value, (val) => {
-    if (val) {
+  if (Object.keys(val).length) {
     vehicleId.value = val
   }
 }, { immediate: true })

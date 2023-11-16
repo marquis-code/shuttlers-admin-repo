@@ -7,11 +7,6 @@
 			<div class="field relative">
 				<label for="Vehicle">Vehicle</label>
 				<InputMultiSelectVehicle :value="selected.main_vehicle" @updated="selected.main_vehicle = $event" />
-				<!-- <select id="Vehicle" v-model="selected.main_vehicle" name="" class="input-field">
-					<option v-for="vehicle in formattedVehicle" :key="vehicle" :value="vehicle">
-						{{ `${vehicle.brand} - ${vehicle.name} - ${vehicle.registration_number} (${vehicle.drivers[0]?.fname} ${vehicle.drivers[0]?.lname})` }}
-					</option>
-				</select> -->
 			</div>
 			<div class="field relative">
 				<label for="Cost">Cost</label>
