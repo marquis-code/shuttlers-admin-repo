@@ -26,7 +26,7 @@
 						role="menu"
 					>
 						<div class="p-2 flex flex-col gap-5">
-							<form class="flex flex-col gap-2" @submit.prevent="">
+							<form class="flex flex-col gap-2" @submit.prevent="applyFilter({tripType:tripTypeInput, filterData:{..._filterData}})">
 								<select id="" v-model="tripTypeInput" name="" class="input-field">
 									<option value="active">
 										active
@@ -38,8 +38,9 @@
 										completed
 									</option>
 								</select>
+								<InputDateInput v-model="_filterData.dateRange" range format="DD MMM, YY" placeholder="Filter by date" :disabled-date="()=>null" clearable />
 								<div class="flex gap-2">
-									<input v-model="searchValue" type="search" :placeholder="`search ${tripTypeInput} trips`" class="input-field">
+									<input v-model="_filterData.search" type="search" :placeholder="`search ${tripTypeInput} trips`" class="input-field">
 									<button class="btn-primary">
 										Apply
 									</button>
@@ -77,7 +78,7 @@ import { useDateFormat, useMagicKeys } from '@vueuse/core'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { useTripCardSearch } from '@/composables/modules/trips/card'
 
-const { fetchedData, loading, fetchTrips } = useTripCardSearch()
+const { fetchedData, loading, fetchTrips, applyFilter } = useTripCardSearch()
 
 const { meta, x /* keys you want to monitor */ } = useMagicKeys()
 
@@ -92,7 +93,10 @@ watchEffect(() => {
   }
 })
 
-const searchValue = ref('')
+const _filterData = ref({
+	search: '',
+	dateRange: []
+})
 const props = defineProps({
     tripType: {
         type: String,
