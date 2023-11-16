@@ -2,7 +2,6 @@
 	<Modal modal="$atts.modal" :title="`${Object.keys(selectedVehicleCategory).length ? 'Edit' : 'Configure'} Vehicle Category`" :no-close-btn="false" class="text-center">
 		<form class="flex flex-col gap-y-2  mt-4" @submit.prevent="handleCreateVehicleCategory">
 			<div>
-				{{ selectedVehicleCategory }}
 				<div v-if="form.image">
 					<label for="image" class="w-full tracking-wide  cursor-pointer">
 						<p class="flex justify-center items-center gap-x-2 text-shuttlersGreen"><img :src="form.image" alt="previewAmenity" class="h-16 w-16 rounded-full border border-gray-600 object-cover"> Edit Image</p>
@@ -102,7 +101,7 @@
 import { useVehicleConfigurationModal } from '@/composables/core/modals'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 import { useCreateVehicle } from '@/composables/modules/configure/vehicles/create'
-const { selectedVehicleCategory, editVehicleCategory, createVehicleCategory, preConfigureVehicleCategoryForm, loading: createLoading } = useCreateVehicle()
+const { selectedVehicleCategory, preConfigureVehicleCostOfSuplyForm, editVehicleCategory, createVehicleCategory, preConfigureVehicleCategoryForm, loading: createLoading } = useCreateVehicle()
 const { fetchAllCityNames, allCityNames } = useCityAndCountry()
 fetchAllCityNames()
 const route = useRoute()
@@ -120,6 +119,7 @@ const handleCreateVehicleCategory = () => {
 		preConfigureVehicleCategoryForm(form)
 	    editVehicleCategory(vehicleCategoryId)
 	} else {
+	preConfigureVehicleCostOfSuplyForm(cost_of_supply_form)
 	preConfigureVehicleCategoryForm(form)
 	createVehicleCategory()
 	}
@@ -131,11 +131,14 @@ const form = reactive({
     break_even_utilization: selectedVehicleCategory.value?.break_even_utilization || '0.0' as any,
     pricing_margin_unit: selectedVehicleCategory.value?.pricing_margin_unit || 'percent',
     pricing_margin: selectedVehicleCategory.value?.pricing_margin || 10,
-    // id: '',
-    // vehicle_type_id: '',
-    // cost_of_supply: selectedVehicleCategory.value?.cost_of_supply || '',
-    // currency: 'NGN',
     image: selectedVehicleCategory.value?.image || '' as any
+})
+
+const cost_of_supply_form = reactive({
+    id: '',
+    vehicle_type_id: '',
+    cost_of_supply: selectedVehicleCategory.value?.cost_of_supply || '',
+    currency: 'NGN'
 })
 
 const addRow = () => {

@@ -114,7 +114,7 @@ export const useCreateVehicle = () => {
 
     const preConfigureVehicleCostOfSuplyForm = (data) => {
         configureCostOfSupplyForm.id.value = data.id
-        configureCostOfSupplyForm.vehicle_type_id.value = data.vehicle_type_id
+        configureCostOfSupplyForm.vehicle_type_id.value = vehicleCategoryResult?.value?.id
         configureCostOfSupplyForm.city_id.value = data.city_id
         configureCostOfSupplyForm.cost_of_supply.value = data.cost_of_supply
         configureCostOfSupplyForm.currency.value = data.currency
