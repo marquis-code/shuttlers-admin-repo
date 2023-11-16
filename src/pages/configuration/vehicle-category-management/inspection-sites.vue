@@ -1,28 +1,27 @@
 <template>
 	<main class="">
-		<Table :loading="loadingInspectionSite" :headers="tableFields" :table-data="inspectionSiteList">
-			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
-			</template>
+		<Table :loading="loadingInspectionSites" :headers="tableFields" :table-data="inspectionSiteList">
 			<template #item="{ item }">
-				<span v-if="item.id" class="flex items-center gap-4">
-					<button class="px-3 py-1.5 text-gray-500 border rounded-md border-gray-500 bg-white ">Edit</button>
-					<button class="px-3 py-1.5 text-rose-500 border rounded-md border-rose-500 bg-white ">Delete</button>
+				<span v-if="item.id" class="flex items-center gap-4 py-3">
+					<button class="px-3 py-1.5 text-gray-500 border rounded-md border-gray-500 bg-white " @click="handleEdit(item)">Edit</button>
+					<button class="px-3 py-1.5 text-rose-500 border rounded-md border-rose-500 bg-white " @click="handleDelete(item)">Delete</button>
 				</span>
 			</template>
 
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingInspectionSites" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import { useVehicleConfigurationModal } from '@/composables/core/modals'
 import { useInspectionSitesList } from '@/composables/modules/configure/fetch'
+import { useCreateVehicle } from '@/composables/modules/configure/vehicles/create'
+const { selectedInspectionData, selectedActionType, inspectionSiteForm } = useCreateVehicle()
 
-const { getInspectionSiteList, loadingInspectionSites, inspectionSiteList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useInspectionSitesList()
+const { getInspectionSiteList, loadingInspectionSites, inspectionSiteList, moveTo, next, prev, total, page } = useInspectionSitesList()
 
 getInspectionSiteList()
 
@@ -44,5 +43,19 @@ const tableFields = ref([
         value: 'id'
     }
 ])
+
+const handleEdit = (val) => {
+	useVehicleConfigurationModal().openConfigureInspectionSite()
+	inspectionSiteForm.name.value = val.data.name
+	inspectionSiteForm.address.value = val.data.address
+	inspectionSiteForm.geo_coordinate.value = val.data.geo_coordinate
+	selectedInspectionData.value = val.data
+}
+
+const handleDelete = (val) => {
+	useVehicleConfigurationModal().openDeleteVehicleCategory()
+	selectedActionType.value = 'inspection'
+	selectedInspectionData.value = val.data
+}
 
 </script>
