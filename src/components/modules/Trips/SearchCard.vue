@@ -85,7 +85,7 @@ import { useTripCardSearch } from '@/composables/modules/trips/card'
 const { fetchedData, loading, fetchTrips } = useTripCardSearch()
 
 const loadKeyBinding = (open:any) => {
-	console.log(open)
+	// console.log(open)
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape') {
 			close()
