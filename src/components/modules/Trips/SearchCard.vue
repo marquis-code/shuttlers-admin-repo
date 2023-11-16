@@ -46,7 +46,7 @@
 									</button>
 								</div>
 							</form>
-							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto max-h-[500px] pb-4">
+							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto h-[500px] max-h-[75vh] pb-4">
 								<div v-for="trip in fetchedData[tripTypeInput]" :key="trip.id" class="border shadow-sm rounded-md" @click="onCardClick(close, trip)">
 									<div class="p-2 cursor-pointer">
 										<RouteDescription class="text-xs" :pickup="trip?.route?.pickup" :destination="trip?.route?.destination" />
