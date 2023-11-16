@@ -8,7 +8,7 @@
 		<form class="flex flex-col gap-6 mt-4" @submit.prevent="handleCreateInspectionSite">
 			<div class="field relative">
 				<label for="name">Name</label>
-				<input id="name" v-model="inspectionSiteForm.name.value" type="text" class="input-field" required>
+				<input id="name" v-model="form.name" type="text" class="input-field" required>
 			</div>
 			<div class="field relative">
 				<label for="address">Address</label>
@@ -19,6 +19,7 @@
 					name="eventLocation"
 					class="input-field"
 					placeholder=""
+					@change="selectedAddress"
 				/>
 			</div>
 			<div class="flex justify-between items-center gap-x-10">
@@ -40,19 +41,41 @@ import { useCreateVehicle } from '@/composables/modules/configure/vehicles/creat
 const { selectedInspectionData } = useCreateVehicle()
 const { preInspectionSiteForm, createInspectionSite, editInspectionSite, inspectionSiteForm, loading: createLoading } = useCreateVehicle()
 const form = ref({
-    address: inspectionSiteForm.address.value as any
+	name: selectedInspectionData.value?.name || '',
+	geo_coordinate: selectedInspectionData.value?.geo_coordinate || '',
+    address: selectedInspectionData.value?.address || '' as any
 })
-
 const isButtonEnabled = computed(() => {
-	return inspectionSiteForm.name.value.length > 0 && form.value.address.length > 0
+	return form.value.name.length > 0 && form.value.address.length > 0 && form.value.geo_coordinate.length > 0
 })
 
 const handleCreateInspectionSite = () => {
-	if (Object.keys(selectedInspectionData).length) {
-	editInspectionSite(selectedInspectionData.value.id)
+	if (Object.keys(selectedInspectionData.value).length) {
+		const inspectionId = selectedInspectionData.value?.id
+		console.log(inspectionId, 'inspection id')
+		const payload = {
+			name: form.value.name,
+            geo_coordinate: form.value.geo_coordinate,
+            address: form.value.address
+		}
+		preInspectionSiteForm(payload)
+	    editInspectionSite(inspectionId)
 	} else {
-	createInspectionSite()
+		const payload = {
+			name: form.value.name,
+            geo_coordinate: form.value.geo_coordinate,
+            address: form.value.address
+		}
+		preInspectionSiteForm(payload)
+	    createInspectionSite()
 	}
+}
+
+const selectedAddress = (val) => {
+	console.log(val, 'fghj')
+	// inspectionSiteForm.geo_coordinate.value = `${val.lat}, ${val.lng}`
+	form.value.address = val.name
+	form.value.geo_coordinate = `${val.lat},${val.lng}`
 }
 </script>
 

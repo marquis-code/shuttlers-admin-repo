@@ -13,9 +13,9 @@ export const inspection_api = {
 		const url = `/vehicle-types/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_update_inspection_sites: (id, payload:any) => {
+	$_update_inspection_sites: (id:string, payload:any) => {
 		const url = `/inspection-sites/${id}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
     $_create_vehicle_cost_of_supply: (payload:any) => {
 		const url = '/vehicle-types/cost-of-supply'

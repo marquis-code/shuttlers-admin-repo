@@ -11,24 +11,27 @@ const inspectionSiteForm = {
 const selectedActionType = ref('')
 const selectedVehicleCategory = ref({})
 const selectedInspectionData = ref({})
+const vehicleCategoryResult = ref({})
 
-const configureVehicleCategoryForm = {
+const configureVehicleTypeForm = {
     name: ref(''),
     description: ref(''),
     break_even_utilization: ref(''),
     pricing_margin_unit: ref('percent'),
     pricing_margin: ref(10),
+    image: ref('')
+}
+const configureCostOfSupplyForm = {
     id: ref(''),
-    vehicle_type_id: ref(''),
+    vehicle_type_id: ref(vehicleCategoryResult?.value?.id),
     city_id: ref(''),
     cost_of_supply: ref(''),
-    currency: ref(''),
-    image: ref('')
+    currency: ref('')
 }
 
 export const useCreateVehicle = () => {
     const loading = ref(false)
-    const { $_create_inspection_sites, $_create_vehicle_types, $_delete_vehicle_types, $_delete_inspection_site, $_create_cost_of_supply, $_update_vehicle_types, $_update_inspection_sites } = inspection_api
+    const { $_create_inspection_sites, $_create_vehicle_types, $_create_vehicle_cost_of_supply, $_delete_vehicle_types, $_delete_inspection_site, $_update_vehicle_types, $_update_inspection_sites } = inspection_api
 
     const createInspectionSite = async () => {
         loading.value = true
@@ -37,6 +40,7 @@ export const useCreateVehicle = () => {
 
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'New inspection site was successfully created' })
+            useVehicleConfigurationModal().closeConfigureInspectionSite()
         }
         loading.value = false
     }
@@ -44,10 +48,23 @@ export const useCreateVehicle = () => {
     const createVehicleCategory = async () => {
         loading.value = true
 
-        const res = await $_create_vehicle_types(convertObjWithRefToObj(configureVehicleCategoryForm)) as CustomAxiosResponse
+        const res = await $_create_vehicle_types(convertObjWithRefToObj(configureVehicleTypeForm)) as CustomAxiosResponse
+        vehicleCategoryResult.value = res.data
 
         if (res.type !== 'ERROR') {
-            useAlert().openAlert({ type: 'SUCCESS', msg: '' })
+            // useAlert().openAlert({ type: 'SUCCESS', msg: '' })
+            await createVehicleCostOfSupply()
+        }
+        loading.value = false
+    }
+
+    const createVehicleCostOfSupply = async () => {
+        loading.value = true
+
+        const res = await $_create_vehicle_cost_of_supply(convertObjWithRefToObj(configureCostOfSupplyForm)) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle Category was created successfully' })
         }
         loading.value = false
     }
@@ -66,10 +83,11 @@ export const useCreateVehicle = () => {
     const editInspectionSite = async (id) => {
         loading.value = true
 
-        const res = await $_update_inspection_sites(convertObjWithRefToObj(configureVehicleCategoryForm), id) as CustomAxiosResponse
+        const res = await $_update_inspection_sites(id, convertObjWithRefToObj(inspectionSiteForm)) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            useAlert().openAlert({ type: 'SUCCESS', msg: '' })
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Inspection site was successfully updated' })
+            useVehicleConfigurationModal().closeConfigureInspectionSite()
         }
         loading.value = false
     }
@@ -81,16 +99,25 @@ export const useCreateVehicle = () => {
     }
 
     const preConfigureVehicleCategoryForm = (data) => {
-        configureVehicleCategoryForm.name.value = data.name
-        configureVehicleCategoryForm.description.value = data.description
-        configureVehicleCategoryForm.break_even_utilization.value = data.break_even_utilization
-        configureVehicleCategoryForm.pricing_margin_unit.value = data.pricing_margin_unit
-        configureVehicleCategoryForm.pricing_margin.value = data.pricing_margin
-        configureVehicleCategoryForm.id.value = data.id
-        configureVehicleCategoryForm.vehicle_type_id.value = data.vehicle_type_id
-        configureVehicleCategoryForm.city_id.value = data.city_id
-        configureVehicleCategoryForm.cost_of_supply.value = data.cost_of_supply
-        configureVehicleCategoryForm.currency.value = data.currency
+        configureVehicleTypeForm.name.value = data.name
+        configureVehicleTypeForm.description.value = data.description
+        configureVehicleTypeForm.break_even_utilization.value = data.break_even_utilization
+        configureVehicleTypeForm.pricing_margin_unit.value = data.pricing_margin_unit
+        configureVehicleTypeForm.pricing_margin.value = data.pricing_margin
+        configureVehicleTypeForm.image.value = data.image
+        // configureVehicleCategoryForm.id.value = data.id
+        // configureVehicleCategoryForm.vehicle_type_id.value = data.vehicle_type_id
+        // configureVehicleCategoryForm.city_id.value = data.city_id
+        // configureVehicleCategoryForm.cost_of_supply.value = data.cost_of_supply
+        // configureVehicleCategoryForm.currency.value = data.currency
+    }
+
+    const preConfigureVehicleCostOfSuplyForm = (data) => {
+        configureCostOfSupplyForm.id.value = data.id
+        configureCostOfSupplyForm.vehicle_type_id.value = data.vehicle_type_id
+        configureCostOfSupplyForm.city_id.value = data.city_id
+        configureCostOfSupplyForm.cost_of_supply.value = data.cost_of_supply
+        configureCostOfSupplyForm.currency.value = data.currency
     }
 
     const deleteVehicleTypes = async (id: number) => {
@@ -117,5 +144,23 @@ export const useCreateVehicle = () => {
         loading.value = false
     }
 
-    return { preInspectionSiteForm, preConfigureVehicleCategoryForm, createVehicleCategory, createInspectionSite, configureVehicleCategoryForm, loading, deleteVehicleTypes, selectedVehicleCategory, selectedInspectionData, selectedActionType, inspectionSiteForm, deleteInspectionSite, editVehicleCategory, editInspectionSite }
+    return {
+        preInspectionSiteForm,
+        preConfigureVehicleCategoryForm,
+        createVehicleCategory,
+        createInspectionSite,
+        configureVehicleTypeForm,
+        configureCostOfSupplyForm,
+        loading,
+        deleteVehicleTypes,
+        selectedVehicleCategory,
+        selectedInspectionData,
+        selectedActionType,
+        inspectionSiteForm,
+        deleteInspectionSite,
+        editVehicleCategory,
+        editInspectionSite,
+        preConfigureVehicleCostOfSuplyForm,
+        createVehicleCostOfSupply
+     }
 }
