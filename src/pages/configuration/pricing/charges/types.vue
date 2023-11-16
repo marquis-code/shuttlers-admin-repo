@@ -20,8 +20,9 @@
 				/>
 			</template>
 			<template #item="{ item }">
-				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap"><span class="text-[#101211] uppercase">
-					{{ item.data.short_name }}</span> {{item.data.name}}
+				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap">
+					<span class="text-[#101211] uppercase">
+						{{ item.data.short_name }}</span> {{ item.data.name }}
 				</p>
 				<p v-if="item.desc" class="text-sm text-[#737876]">
 					{{ item.data.description }}

@@ -32,7 +32,7 @@
 			</div>
 		</section>
 
-		<section class="flex justify-between items-center  absolute p-3  top-[40%] z-30 inset-x-0">
+		<section class="flex justify-between items-center  absolute p-3  top-[40%] z-30 inset-x-6">
 			<button class="btn-controls" @click="$emit('prev')">
 				<Icon name="prev" class="w-7" />
 			</button>

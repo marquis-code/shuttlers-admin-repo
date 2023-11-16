@@ -31,13 +31,15 @@
 							<label for="">Vehicle {{ idx+1 }} </label>
 							<div class="grid grid-cols-2 gap-4 w-full">
 								<input id="user" type="text" name="user" :value="vehicle.charterVehicle.name" class="input-field" disabled>
-								<input id="admin" v-model="vehicle.price" type="number" name="price" placeholder="Enter price" class="input-field" required :disabled="rentalDetails.status !== 'pending'">
+								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="rentalDetails.status === 'pending' ? updateVehicle(vehicle) : ''">
+									{{ convertToCurrency(vehicle.cost||0) }} - {{ vehicle?.main_vehicle?.registration_number || vehicle?.userRouteSchedule?.vehicle?.registration_number }}
+								</div>
 							</div>
 						</div>
 					</section>
 
 					<div class="flex justify-end mt-12">
-						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending'">
+						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending' || !checkMainVehicleIdExists">
 							<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 								Update request
 							</span>
@@ -58,9 +60,9 @@
 					</h1>
 
 					<div class="flex gap-3 flex-wrap">
-						<span class="badge">
+						<nuxt-link :to="`/trips/routes/${rentalDetails.route.id}/details/`" class="badge">
 							{{ rentalDetails.route.route_code }} - {{ rentalDetails.route.pickup }} - {{ rentalDetails.route.destination }}
-						</span>
+						</nuxt-link>
 					</div>
 				</div>
 			</section>
@@ -70,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { convertToCurrency } from '../../../../composables/utils/formatter'
 import { usePageHeader } from '@/composables/utils/header'
 import { useGetRentalById } from '@/composables/modules/Rentals/id'
 import { isEmptyObject } from '@/composables/utils/basics'
@@ -79,15 +82,15 @@ const id = useRoute().params.id as string
 
 const { getRentalById, loadingRental, rentalDetails } = useGetRentalById()
 
-const { charterVehicleOrder, updateCharterOrder, loading, charterStatus } = useUpdateCharter()
+const { charterVehicleOrder, updateCharterOrder, loading, charterStatus, updateVehicle, checkMainVehicleIdExists } = useUpdateCharter()
 
 getRentalById(id)
 
 watch(rentalDetails, () => {
 	charterVehicleOrder.value = []
 	if (!isEmptyObject(rentalDetails.value)) {
+		charterVehicleOrder.value = []
 		rentalDetails.value.vehicle_orders.forEach((vehicle) => {
-			vehicle.price = vehicle.cost || ''
 			charterVehicleOrder.value.push(vehicle)
 		})
 	}

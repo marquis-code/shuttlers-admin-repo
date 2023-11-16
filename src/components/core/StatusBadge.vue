@@ -42,9 +42,12 @@ const palette = {
 				break
 			case 'success':
 			case 'accepted':
+			case 'completed':
+			case 'upcoming':
 					selectPalette.value = palette.success
 				break
 			case 'failed':
+			case 'false':
 					selectPalette.value = palette.failed
 				break
 			case 'cancelled':

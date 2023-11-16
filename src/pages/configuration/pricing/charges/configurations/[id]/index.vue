@@ -1,21 +1,21 @@
 <template>
 	<main class="flex flex-col gap-4">
-		<Skeleton v-if="loading || fetchingAllChargeTypes" height="300px" />
+		<Skeleton v-if="loading || fetchingAllChargeTypes" height="200px" />
 		<template v-else>
 			<div class="flex items-center gap-2">
 				<router-link to="/configuration/pricing/charges" class="flex items-center gap-2 text-xs font-medium text-[#ACAFAE]">
 					<span>Configure</span>
 					<img src="@/assets/icons/source/caret-right.svg" alt="">
 				</router-link>
-				<p v-if="currentChargeType" class="text-xs text-black font-medium">
-					{{ currentChargeType.name }}
+				<p class="text-xs text-black font-medium">
+					{{ config.additionChargeType?.name || '' }}
 				</p>
 			</div>
 			<div class="bg-white border rounded-lg p-[16px] flex flex-col gap-[16px]">
 				<div class="flex flex-col gap-[16px] lg:flex-row lg:items-center lg:justify-between">
-					<div class="flex flex-col gap-2">
+					<div class="flex flex-col gap-1">
 						<p class="text-lg text-[#000005] font-medium">
-							{{ currentChargeType.short_name }}-{{ currentChargeType.name }}
+							{{ config.additionChargeType?.short_name }}-{{ config.additionChargeType?.name }}
 						</p>
 						<p class="text-sm text-[#737876]">
 							{{ config.description }}
@@ -97,7 +97,8 @@
 						showSearchBar: false,
 						showDownloadButton: true,
 						showDatePicker: false,
-						showDateRange: true
+						showDateRange: true,
+						downloading: downloading
 					}"
 					@filter="onFilterUpdate"
 				>
@@ -112,9 +113,10 @@
 			</template>
 			<template #sub_header>
 				<div class="flex flex-col gap-y-2 gap-x-[16px] bg-white border border-b-0 md:flex-row md:items-center md:justify-between py-3 px-[16px] border-bottom">
-					<p class="text-sm font-medium text-[#6E717C]">
-						Total VAT: <span class="text-[#000005]">₦{{ 'N/A' }}</span>
+					<p v-if="!loading_total" class="text-sm font-medium text-[#6E717C]">
+						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
 					</p>
+					<Skeleton v-else height="20px" width="130px" />
 					<div class="overflow-hidden flex items-stretch rounded border bg-[#F4F5F4] ">
 						<button v-for="n,i in ['All', 'Remitted', 'Unremitted']" :key="i" class="py-2 px-4 border-none"
 							:class="[status == n ? 'text-[#101211] !bg-white' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
@@ -127,8 +129,12 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.users" class="flex flex-col gap-0 text-sm text-[#101211]">
-					<p class="font-medium">{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}</p>
-					<p class="text-[#737876]">{{item.data.user?.email || ''}}</p>
+					<p class="font-medium">
+						{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}
+					</p>
+					<p class="text-[#737876]">
+						{{ item.data.user?.email || '' }}
+					</p>
 				</div>
 				<p v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap">
 					{{ item.data?.route?.route_code }}
@@ -159,7 +165,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import moment from 'moment'
 import { useFetchConfiguredCharges, useDeleteChargeConfiguration, useCreateConfigureCharge, useDetails } from '@/composables/modules/configure/charges/configure/index'
 import { useChargeModal } from '@/composables/core/modals'
@@ -171,10 +176,10 @@ definePageMeta({
 })
 
 const { loading, fetchSingleConfiguredCharges, singleConfiguredCharge: config } = useFetchConfiguredCharges()
-const { loading: fetchingAllChargeTypes, allChargeTypes, fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
+const { loading: fetchingAllChargeTypes } = useFetchChargeTypes()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
-const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status } = useDetails()
+const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading } = useDetails()
 // const { intiActivate } = useActivateConfiguration()
 
 const tableFields = [
@@ -185,23 +190,9 @@ const tableFields = [
 	{ value: 'date', text: 'Date' }
 ]
 
-const currentChargeType = computed(() => {
-	if (!allChargeTypes.value.length) return null
-	return allChargeTypes.value.find((el) => el.id === config.value.additional_charge_type_id)
-})
-
-const computedChargeTypes = computed(() => {
-	return allChargeTypes.value
-})
-
-// const dropdownChildren = computed(() => [
-// 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-// 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
-// ])
-
-fetchAllChargeTypesWithoutPagination()
 fetchSingleConfiguredCharges(useRoute().params.id as string)
 fetchHistory()
+getTotalCharges()
 </script>
 
 <style scoped>

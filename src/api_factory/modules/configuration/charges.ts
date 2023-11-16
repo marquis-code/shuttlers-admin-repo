@@ -1,6 +1,7 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const charges_api = {
 	$_get_configurations: (metaObject: TMetaObject, search?: string) => {
@@ -27,11 +28,28 @@ export const charges_api = {
 		const url = `/additional-charges/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_get_charge_history: (metaObject: TMetaObject, date:string[], status:string) => {
-		const url = `/additional-charges-history?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&startDate=${date[0]}&endDate=${date[1]}` : ''}&status=${status}`
+	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string) => {
+		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_remit_charge: (id:number, payload) => {
+	$_download_charge_history: async (id:number|string, date:string[], status:string) => {
+		const url = `/additional-charges-history?id=${id}&limit=5&page=1${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-history?id=${id}&limit=${total}&page=1${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
+	},
+	$_get_total_charges: (id:number|string, date:string[]) => {
+		const url = `/additional-charges-history-total/fare/${id}${date[0] && date[1] ? `?start_date=${date[0]}&end_date=${date[1]}` : ''}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_remit_charge: (id:number|string, payload:any) => {
 		const url = `/additional-charges-history/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},

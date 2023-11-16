@@ -4,7 +4,6 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useAdminModal, useUserModal } from '@/composables/core/modals'
 import { useUserIdDetails } from '@/composables/modules/users/id'
-const { getUserById, selectedUserId } = useUserIdDetails()
 
 const createForm = {
 	fname: ref(''),
@@ -91,7 +90,8 @@ export const useCreateAdmin = () => {
         loading.value = false
     }
 
-	const updateProfilePicture = async (id: string) => {
+    const updateProfilePicture = async (id: string) => {
+        const { getUserById, selectedUserId } = useUserIdDetails()
 		loading.value = true
 
         const res = (await staffs_api.$_update_profile_picture(id, convertObjWithRefToObj(profileUpdateForm))) as CustomAxiosResponse
