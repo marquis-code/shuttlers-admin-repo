@@ -52,7 +52,6 @@ const isButtonEnabled = computed(() => {
 const handleCreateInspectionSite = () => {
 	if (Object.keys(selectedInspectionData.value).length) {
 		const inspectionId = selectedInspectionData.value?.id
-		console.log(inspectionId, 'inspection id')
 		const payload = {
 			name: form.value.name,
             geo_coordinate: form.value.geo_coordinate,
@@ -72,7 +71,6 @@ const handleCreateInspectionSite = () => {
 }
 
 const selectedAddress = (val) => {
-	console.log(val, 'fghj')
 	// inspectionSiteForm.geo_coordinate.value = `${val.lat}, ${val.lng}`
 	form.value.address = val.name
 	form.value.geo_coordinate = `${val.lat},${val.lng}`
