@@ -33,7 +33,7 @@ export const useUpdateCharter = () => {
         try {
             const payload = {
                 status: charterStatus.value,
-                vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle.drivers[0]?.id, cost_of_supply: item?.cost }))
+                vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle.driver?.id, cost_of_supply: item?.cost }))
             }
 
             const res = await rental_api.$_update_rental_status(rentalDetails.id, payload) as CustomAxiosResponse

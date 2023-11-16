@@ -19,12 +19,12 @@
 					}"
 					@filter="onFilterUpdate"
 				>
-					<template #filter_others>
+					<!-- <template #filter_others>
 						<button class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]" @click="useChargeModal().openCreateChargeConfigurations()">
 							<img src="@/assets/icons/source/plus_black.svg" alt="">
 							Configure new charge
 						</button>
-					</template>
+					</template> -->
 				</TableFilter>
 			</template>
 			<template #item="{ item }">
@@ -33,7 +33,7 @@
 						{{ item.data.additionChargeType?.short_name + ' ' || '' }}
 					</span>
 					<span>
-						{{ item.data.additionChargeType?.name || '' }}
+						({{ item.data.additionChargeType?.name || '' }})
 					</span>
 				</p>
 				<p v-if="item.fees" class="text-sm text-[#737876] whitespace-nowrap">
@@ -44,11 +44,16 @@
 						{{ item.data.charge_value }}%
 					</template>
 				</p>
+				<p v-if="item.compulsory" class="text-sm text-[#0DAC5C] font-medium whitespace-nowrap">
+					{{ item.data.is_compulsory ? 'Compulsory' : 'Not compulsory' }}
+				</p>
 				<div v-if="item.countries" class="flex flex-col gap-1 py-2 text-[#101211] font-medium">
 					<p class="text-sm">
 						{{ item.data.country_currently_active_in.name }}
 					</p>
-					<ModulesConfigureChargesCityList :cities="item.data?.cities_currently_active_in || []" />
+					<p v-if="item.data?.cities_currently_active_in.length" class="text-[#737876] text-xs">
+						{{ item.data?.cities_currently_active_in.length }} states
+					</p>
 				</div>
 				<p v-if="item.desc" class="text-sm text-[#737876]">
 					{{ item.data.description }}
@@ -68,7 +73,7 @@
 					{{ item.data.is_active ? 'Active' : 'Inactive' }}
 				</p>
 				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
+					<ButtonIconDropdown :children="sortDropdownChildren(item.data)" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
 
@@ -89,6 +94,7 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { useFetchConfiguredCharges, useDeleteChargeConfiguration, useCreateConfigureCharge, useActivateConfiguration } from '@/composables/modules/configure/charges/configure/index'
+import { useFetchChargeTypes } from '@/composables/modules/configure/charges/types/index'
 import { useChargeModal } from '@/composables/core/modals'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 
@@ -102,22 +108,35 @@ const { fetchAllCityNames, fetchAllCountries } = useCityAndCountry()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
 const { intiActivate } = useActivateConfiguration()
+const { fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
 const tableFields = ref([
 	// { value: 'sn', text: 'S/N' },
 	{ value: 'type', text: 'Charges type' },
 	{ value: 'fees', text: 'Fees' },
+	{ value: 'compulsory', text: 'Compulsory' },
 	{ value: 'countries', text: 'Countries/Cities' },
 	{ value: 'configured_by', text: 'Configured by' },
-	{ value: 'time', text: 'Time/date' },
+	{ value: 'time', text: 'Date created' },
 	{ value: 'status', text: 'Status' },
 	{ value: 'action', text: 'Action' }
 ])
 
-const dropdownChildren = computed(() => [
-	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
-	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
-])
+// const dropdownChildren = computed(() => [
+// 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
+// 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
+// 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
+// ])
+
+const sortDropdownChildren = (data:Record<string, any>) => {
+	return [
+		{
+			name: `${data.is_active ? 'Deactivate' : 'Activate'}`,
+			func: (data:any) => { intiActivate(data.id, !data.is_active) }
+		},
+		{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
+		{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
+	]
+}
 
 const onRowClicked = (data) => {
 	useRouter().push(`/configuration/pricing/charges/configurations/${data.id}`)
@@ -126,6 +145,7 @@ const onRowClicked = (data) => {
 fetchAllCityNames()
 fetchAllCountries()
 fetchConfiguredCharges()
+fetchAllChargeTypesWithoutPagination()
 </script>
 
 <style scoped>

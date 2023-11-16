@@ -41,11 +41,12 @@
 				<div class="flex items-center flex-wrap gap-6 md:gap-[16px] justify-between">
 					<div class="flex flex-col gap-1 text-sm text-[#101211] font-medium">
 						<p>{{ config.country_currently_active_in.name }}</p>
-						<div class="flex flex-wrap gap-x-2 gap-y-0 max-w-[150px]">
+						<!-- <div class="flex flex-wrap gap-x-2 gap-y-0 max-w-[150px]">
 							<p v-for="n,i in config.cities_currently_active_in" :key="i" class="text-[#737876] text-xs">
 								{{ n.city_name }}
 							</p>
-						</div>
+						</div> -->
+						<ModulesConfigureChargesCityList :cities="config.cities_currently_active_in || []" />
 					</div>
 					<p class="text-sm text-[#0DAC5C] font-medium">
 						{{ config.is_compulsory ? 'Compulsory' : 'Not compulsory' }}

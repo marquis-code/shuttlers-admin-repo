@@ -111,7 +111,7 @@ export const useDetails = () => {
 		const id = useRoute().params.id as string
 		loading_total.value = true
 		totalCharge.value = null
-		const res = await $_get_total_charges(Number(id), date.value) as CustomAxiosResponse
+		const res = await $_get_total_charges(Number(id), date.value, status.value.toLowerCase()) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			totalCharge.value = res.data
         }

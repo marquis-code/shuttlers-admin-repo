@@ -6,11 +6,12 @@
 		<form v-if="!loadingFleets" class="flex flex-col gap-6" @submit.prevent="addVehicle(selected)">
 			<div class="field relative">
 				<label for="Vehicle">Vehicle</label>
-				<select id="Vehicle" v-model="selected.main_vehicle" name="" class="input-field">
+				<InputMultiSelectVehicle :value="selected.main_vehicle" @updated="selected.main_vehicle = $event" />
+				<!-- <select id="Vehicle" v-model="selected.main_vehicle" name="" class="input-field">
 					<option v-for="vehicle in formattedVehicle" :key="vehicle" :value="vehicle">
 						{{ `${vehicle.brand} - ${vehicle.name} - ${vehicle.registration_number} (${vehicle.drivers[0]?.fname} ${vehicle.drivers[0]?.lname})` }}
 					</option>
-				</select>
+				</select> -->
 			</div>
 			<div class="field relative">
 				<label for="Cost">Cost</label>
@@ -35,9 +36,10 @@ import { useGetFleets } from '@/composables/modules/fleets/fetch'
 import { useUpdateCharter } from '@/composables/modules/Rentals/update'
 
 const { selectedVehicleRental, addVehicle } = useUpdateCharter()
+const { filterData, fleetsList, loadingFleets, page_size } = useGetFleets()
 
 const selected = reactive({
-    main_vehicle: {},
+    main_vehicle: {} as Record<string, any>,
     cost: 0
 })
 
@@ -46,16 +48,11 @@ watch(selectedVehicleRental, () => {
     selected.cost = selectedVehicleRental.value.cost || 0
 }, { immediate: true })
 
-const { filterData, fleetsList, loadingFleets, page_size } = useGetFleets()
-
 const formattedVehicle = computed(() => {
     return fleetsList.value.filter((vehicle) => {
         return vehicle.drivers.length > 0
     })
 })
-
-page_size.value = 1000
-filterData.type.value = selectedVehicleRental.value.charterVehicle.name
 
 </script>
 

@@ -22,7 +22,7 @@
 			<template #item="{ item }">
 				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap">
 					<span class="text-[#101211] uppercase">
-						{{ item.data.short_name }}</span> {{ item.data.name }}
+						{{ item.data.short_name }}</span> ({{ item.data.name }})
 				</p>
 				<p v-if="item.desc" class="text-sm text-[#737876]">
 					{{ item.data.description }}
@@ -64,7 +64,7 @@ const { initDeleteCharge } = useDeleteChargeTypes()
 const tableFields = ref([
 	{ value: 'type', text: 'Charges type' },
 	{ value: 'desc', text: 'Description' },
-	{ value: 'time', text: 'Time/Date' },
+	{ value: 'time', text: 'Date created' },
 	{ value: 'action', text: 'Action' }
 ])
 

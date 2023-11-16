@@ -49,7 +49,7 @@ export const useRemitted = () => {
 		const id = useRoute().params.id as string
 		loading_total.value = true
 		totalCharge.value = null
-		const res = await charges_api.$_get_total_charges(Number(id), date.value) as CustomAxiosResponse
+		const res = await charges_api.$_get_total_charges(Number(id), date.value, 'all') as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			totalCharge.value = res.data
         }
