@@ -87,8 +87,6 @@ watchEffect(() => {
 	const searchCard = document.getElementById('search-card')
    if (searchCard) {
        searchCard.click()
-   } else {
-       console.error('Element with id "search-card" not found')
    }
   }
 })
