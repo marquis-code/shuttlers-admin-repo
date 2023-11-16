@@ -43,10 +43,6 @@ const selected = reactive({
     cost: 0
 })
 
-watch(selected, (val) => {
-	console.log(val)
-})
-
 watch(selectedVehicleRental, () => {
     selected.main_vehicle = selectedVehicleRental.value.main_vehicle || {}
     selected.cost = selectedVehicleRental.value.cost || 0
