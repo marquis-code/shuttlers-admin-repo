@@ -28,6 +28,9 @@
 					<StatusBadge :name="item.data.status" />
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingRental" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -36,7 +39,7 @@ import { useDateFormat } from '@vueuse/core'
 
 import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
 
-const { getRentalList, loadingRental, rentalList, page, filterData } = useGetRentalList()
+const { getRentalList, loadingRental, rentalList, page, filterData, moveTo, next, prev, total } = useGetRentalList()
 
 getRentalList()
 

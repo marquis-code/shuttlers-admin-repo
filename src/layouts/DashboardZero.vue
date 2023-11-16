@@ -1,11 +1,11 @@
 <template>
-	<div class="px-0 container-fluid root-layout">
+	<div class="px-0 container-fluid root-layout overflow-hidden">
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
 		<div class="main-content">
-			<div class="dashboard-view">
-				<div class="">
+			<div class="dashboard-view overflow-hidden">
+				<div class="overflow-hidden">
 					<Headers id="header" />
 					<div>
 						<slot />

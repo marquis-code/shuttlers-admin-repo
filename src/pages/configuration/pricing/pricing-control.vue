@@ -1,6 +1,5 @@
 <template>
 	<main class="">
-		{{ vehicleId }} {{ routeType }}
 		<Table
 			:loading="loadingRoutePrices"
 			:has-index="true"

@@ -32,7 +32,7 @@
 							<div class="grid grid-cols-2 gap-4 w-full">
 								<input id="user" type="text" name="user" :value="vehicle.charterVehicle.name" class="input-field" disabled>
 								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="rentalDetails.status === 'pending' ? updateVehicle(vehicle) : ''">
-									{{ vehicle.cost }}
+									{{ convertToCurrency(vehicle.cost||0) }} - {{ vehicle?.main_vehicle?.registration_number || vehicle?.userRouteSchedule?.vehicle?.registration_number }}
 								</div>
 							</div>
 						</div>
@@ -72,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { convertToCurrency } from '../../../../composables/utils/formatter'
 import { usePageHeader } from '@/composables/utils/header'
 import { useGetRentalById } from '@/composables/modules/Rentals/id'
 import { isEmptyObject } from '@/composables/utils/basics'

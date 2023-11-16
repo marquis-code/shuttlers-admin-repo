@@ -4,8 +4,6 @@ import { convertObjWithRefToObj, convertToCurrency } from '@/composables/utils/f
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useUserModal } from '@/composables/core/modals'
 import { useUserIdDetails, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
-const { getUserById, selectedUserId } = useUserIdDetails()
-const { loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 
 const createForm = {
 	fname: ref(''),
@@ -37,6 +35,8 @@ const createBusCaptainForm = {
 const walletActionType = ref('')
 
 export const useCreateUsers = () => {
+	const { getUserById, selectedUserId } = useUserIdDetails()
+
 	const loading = ref(false)
 
 	const createUser = async () => {
@@ -132,6 +132,7 @@ export const useCreateUsers = () => {
     }
 
 	const createBusCaptains = async () => {
+		const { loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 		loading.value = true
 
         const res = (await users_api.$_create_bus_captain(convertObjWithRefToObj(createBusCaptainForm))) as CustomAxiosResponse

@@ -19,6 +19,9 @@ import CreateChargeTypes from '@/components/modals/modules/configurations/charge
 import CreateChargeConfigurations from '@/components/modals/modules/configurations/charges/configure/index.vue'
 import RemitCharge from '@/components/modals/modules/configurations/charges/configure/remitted.vue'
 import AssignStaff from '@/components/modals/modules/companies/staff/multipleRouteAssignment.vue'
+import ConfigureInspectionSite from '@/components/modals/modules/configurations/vehicle/InspectionSite.vue'
+import ConfigureVehicleCategory from '@/components/modals/modules/configurations/vehicle/vehicleCategory.vue'
+import DeleteVehicleCategory from '@/components/modals/modules/configurations/vehicle/DeleteCategoryConfirmation.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -28,6 +31,7 @@ type CommuteTypes = 'SosNotifier' | 'UpdateVehicle'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
 type CompaniesTypes = 'AssignStaff'
+type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -37,6 +41,7 @@ const CommuteModals = { SosNotifier, UpdateVehicle } as Record<CommuteTypes, any
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
 const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
+const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -48,6 +53,7 @@ const commuteModal = modal.register('Commute', CommuteModals)
 const adminModal = modal.register('Admins', AdminModals)
 const chargeModal = modal.register('Charges', ChargeModals)
 const companiesModal = modal.register('Companies', CompaniesModals)
+const vehicleModal = modal.register('VehicleConfiguration', VehicleConfigurationModals)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -57,3 +63,4 @@ export const useCommuteModal = () => commuteModal
 export const useAdminModal = () => adminModal
 export const useChargeModal = () => chargeModal
 export const useCompaniesModal = () => companiesModal
+export const useVehicleConfigurationModal = () => vehicleModal

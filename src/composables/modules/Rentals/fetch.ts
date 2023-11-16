@@ -18,6 +18,7 @@ export const useGetRentalList = () => {
 
         if (res.type !== 'ERROR') {
             rentalList.value = res.data.data
+            metaObject.total.value = res?.data?.metadata?.total_pages || 0
         }
         loadingRental.value = false
     }

@@ -62,7 +62,7 @@ const getInitials = (string1, string2) => {
 const host = useRoute()
 
 const isProd = computed(() => {
-    return environmental_url.prod === location.host
+    return location.host === 'v3.admin.shuttlers.africa'
 })
 const props = defineProps({
     data: {
