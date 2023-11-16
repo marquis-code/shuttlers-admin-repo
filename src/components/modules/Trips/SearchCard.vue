@@ -1,13 +1,12 @@
 <template>
 	<aside class="relative">
-		<Popover v-slot="{open}" class="relative">
+		<Popover class="relative">
 			<PopoverButton
 				id="search-card"
 				class="btn flex outline-none items-center  font-normal"
 
 			>
 				<img src="@/assets/icons/source/unfold.svg" alt="" class="h-7 px-0 ml-2 hover:bg-gray-100 cursor-pointer w-10 mb-3 rounded-md">
-				{{ open }}
 			</PopoverButton>
 
 			<transition
@@ -21,15 +20,11 @@
 				<PopoverPanel
 					v-slot="{ close }"
 					class="absolute left-0 z-[500] mt-1"
-					@vnode-mounted="loadKeyBinding(open)"
 				>
 					<div
 						class="absolute start-0 z-10 mt-2 w-80 rounded-md border border-gray-100 bg-white shadow-lg"
 						role="menu"
 					>
-						<button @click="open.value = false">
-							hiii
-						</button>
 						<div class="p-2 flex flex-col gap-5">
 							<form class="flex flex-col gap-2" @submit.prevent="">
 								<select id="" v-model="tripTypeInput" name="" class="input-field">
@@ -84,14 +79,18 @@ import { useTripCardSearch } from '@/composables/modules/trips/card'
 
 const { fetchedData, loading, fetchTrips } = useTripCardSearch()
 
-const loadKeyBinding = (open:any) => {
-	// console.log(open)
-	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape') {
-			close()
-		}
-	})
-}
+const { meta, x /* keys you want to monitor */ } = useMagicKeys()
+
+watchEffect(() => {
+	if (meta.value && x.value) {
+	const searchCard = document.getElementById('search-card')
+   if (searchCard) {
+       searchCard.click()
+   } else {
+       console.error('Element with id "search-card" not found')
+   }
+  }
+})
 
 const searchValue = ref('')
 const props = defineProps({
