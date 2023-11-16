@@ -1,13 +1,12 @@
 <template>
 	<aside class="relative">
-		<Popover v-slot="{open}" class="relative">
+		<Popover class="relative">
 			<PopoverButton
 				id="search-card"
 				class="btn flex outline-none items-center  font-normal"
 
 			>
 				<img src="@/assets/icons/source/unfold.svg" alt="" class="h-7 px-0 ml-2 hover:bg-gray-100 cursor-pointer w-10 mb-3 rounded-md">
-				{{ open }}
 			</PopoverButton>
 
 			<transition
@@ -21,17 +20,13 @@
 				<PopoverPanel
 					v-slot="{ close }"
 					class="absolute left-0 z-[500] mt-1"
-					@vnode-mounted="loadKeyBinding(open)"
 				>
 					<div
-						class="absolute start-0 z-10 mt-2 w-80 rounded-md border border-gray-100 bg-white shadow-lg"
+						class="absolute start-0 z-10 mt-2 w-80 h-[800px] max-h-[75vh] rounded-md border border-gray-100 bg-white shadow-lg overflow-auto"
 						role="menu"
 					>
-						<button @click="open.value = false">
-							hiii
-						</button>
 						<div class="p-2 flex flex-col gap-5">
-							<form class="flex flex-col gap-2" @submit.prevent="">
+							<form class="flex flex-col gap-2" @submit.prevent="applyFilter({tripType:tripTypeInput, filterData:{..._filterData}})">
 								<select id="" v-model="tripTypeInput" name="" class="input-field">
 									<option value="active">
 										active
@@ -43,14 +38,15 @@
 										completed
 									</option>
 								</select>
+								<InputDateInput v-model="_filterData.dateRange" range format="DD MMM, YY" placeholder="Filter by date" :disabled-date="()=>null" clearable />
 								<div class="flex gap-2">
-									<input v-model="searchValue" type="search" :placeholder="`search ${tripTypeInput} trips`" class="input-field">
+									<input v-model="_filterData.search" type="search" :placeholder="`search ${tripTypeInput} trips`" class="input-field">
 									<button class="btn-primary">
 										Apply
 									</button>
 								</div>
 							</form>
-							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto max-h-[500px] pb-4">
+							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto  pb-4">
 								<div v-for="trip in fetchedData[tripTypeInput]" :key="trip.id" class="border shadow-sm rounded-md" @click="onCardClick(close, trip)">
 									<div class="p-2 cursor-pointer">
 										<RouteDescription class="text-xs" :pickup="trip?.route?.pickup" :destination="trip?.route?.destination" />
@@ -82,17 +78,23 @@ import { useDateFormat, useMagicKeys } from '@vueuse/core'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { useTripCardSearch } from '@/composables/modules/trips/card'
 
-const { fetchedData, loading, fetchTrips } = useTripCardSearch()
+const { fetchedData, loading, fetchTrips, applyFilter } = useTripCardSearch()
 
-const loadKeyBinding = (open:any) => {
-	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape') {
-			close()
-		}
-	})
-}
+const { meta, x /* keys you want to monitor */ } = useMagicKeys()
 
-const searchValue = ref('')
+watchEffect(() => {
+	if (meta.value && x.value) {
+	const searchCard = document.getElementById('search-card')
+   if (searchCard) {
+       searchCard.click()
+   }
+  }
+})
+
+const _filterData = ref({
+	search: '',
+	dateRange: []
+})
 const props = defineProps({
     tripType: {
         type: String,

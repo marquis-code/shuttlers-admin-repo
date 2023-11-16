@@ -29,7 +29,25 @@ export const useTripCardSearch = () => {
         }
     }
 
+    const applyFilter = async ({ tripType, filterData }: { tripType: string, filterData: { search: string, dateRange: any[] } }) => {
+        switch (tripType) {
+            case 'active':
+                // active_filterData.from.value
+                // active_filterData.to.value
+                // active_filterData.search.value
+                break
+            case 'upcoming':
+                upcoming_filterData.from.value = filterData.dateRange[0]
+                upcoming_filterData.to.value = filterData.dateRange[1]
+                upcoming_filterData.search.value = filterData.search
+                break
+            case 'completed':
+                // await getCompletedTrips(filterData)
+                break
+        }
+    }
+
     return {
-        loading, fetchedData, fetchTrips
+        loading, fetchedData, fetchTrips, applyFilter
     }
  }

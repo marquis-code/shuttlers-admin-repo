@@ -18,7 +18,7 @@ const configureChargeObj = {
 
 const loading = ref(false)
 const isEditConfigureCharge = ref(false)
-const { fetchConfiguredCharges } = useFetchConfiguredCharges()
+const { fetchConfiguredCharges, fetchSingleConfiguredCharges } = useFetchConfiguredCharges()
 
 const closeConfigureChargeModal = () => {
 	isEditConfigureCharge.value = false
@@ -100,6 +100,7 @@ export const useCreateConfigureCharge = () => {
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Configuration updated successfully' })
 			fetchConfiguredCharges()
+			fetchSingleConfiguredCharges(configureChargeObj.id.value!)
 			useChargeModal().closeCreateChargeConfigurations()
         }
 		loading.value = false

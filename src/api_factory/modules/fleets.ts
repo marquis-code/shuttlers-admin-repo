@@ -4,7 +4,7 @@ import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 export const fleets_api = {
 	$_get_fleets: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-       const url = `/vehicles?limit=${meta.page_size.value}&page=${meta.page.value}&${queryParams}&metadata=true&include=trip_count&related=vehicle_type,partner,drivers`
+       const url = `/vehicles?limit=${meta.page_size.value}&page=${meta.page.value}&${queryParams}&metadata=true&include=trip_count&related=vehicle_type,partner,drivers,driver`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
     $_get_fleet_inspection_days: (meta:TMetaObject) => {
