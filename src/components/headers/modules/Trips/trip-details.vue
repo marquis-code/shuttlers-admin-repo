@@ -12,34 +12,26 @@
 
 <script setup lang="ts">
 import { usePageHeader } from '@/composables/utils/header'
-import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const { headstate } = usePageHeader()
 
 const id = useRoute().params.id
-const tripType = (useRoute().name as string).split('-')[2]
+const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
 const pageTabs = computed(() => [
     {
         name: 'Details',
-        path: `/trips/type/${tripType}/${id}/trip-details`
+        path: `/trips/type/${tripType.value}/${id}/trip-details`
     },
     {
         name: 'Passengers',
-        path: `/trips/type/${tripType}/${id}/Passengers`
+        path: `/trips/type/${tripType.value}/${id}/Passengers`
 	},
     {
         name: 'Ratings',
-        path: `/trips/type/${tripType}/${id}/Ratings`
+        path: `/trips/type/${tripType.value}/${id}/Ratings`
 	}
 
 ])
-
-const debounceTimer = ref<number>()
-
-onUnmounted(() => {
-	clearTimeout(debounceTimer.value)
-})
 
 </script>

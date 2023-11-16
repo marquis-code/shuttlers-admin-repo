@@ -1,11 +1,13 @@
 <template>
 	<aside class="relative">
-		<Popover class="relative">
+		<Popover v-slot="{open}" class="relative">
 			<PopoverButton
+				id="search-card"
 				class="btn flex outline-none items-center  font-normal"
 
 			>
 				<img src="@/assets/icons/source/unfold.svg" alt="" class="h-7 px-0 ml-2 hover:bg-gray-100 cursor-pointer w-10 mb-3 rounded-md">
+				{{ open }}
 			</PopoverButton>
 
 			<transition
@@ -17,12 +19,17 @@
 				leave-to-class="translate-y-1 opacity-0"
 			>
 				<PopoverPanel
+					v-slot="{ close }"
 					class="absolute left-0 z-[500] mt-1"
+					@vnode-mounted="loadKeyBinding(open)"
 				>
 					<div
 						class="absolute start-0 z-10 mt-2 w-80 rounded-md border border-gray-100 bg-white shadow-lg"
 						role="menu"
 					>
+						<button @click="open.value = false">
+							hiii
+						</button>
 						<div class="p-2 flex flex-col gap-5">
 							<form class="flex flex-col gap-2" @submit.prevent="">
 								<select id="" v-model="tripTypeInput" name="" class="input-field">
@@ -43,9 +50,25 @@
 									</button>
 								</div>
 							</form>
-							<section class="flex flex-col">
-								<Skeleton height="120px" radius="5px" />
+							<section v-if="!loading" class="flex flex-col gap-3 overflow-auto max-h-[500px] pb-4">
+								<div v-for="trip in fetchedData[tripTypeInput]" :key="trip.id" class="border shadow-sm rounded-md" @click="onCardClick(close, trip)">
+									<div class="p-2 cursor-pointer">
+										<RouteDescription class="text-xs" :pickup="trip?.route?.pickup" :destination="trip?.route?.destination" />
+										<div class="flex items-center gap-3 mt-2">
+											<p class="text-xs  font-medium">
+												{{ trip?.route?.route_code }}
+											</p>
+											<p class="text-xs  font-medium">
+												{{ trip?.itinerary?.trip_time }}
+											</p>
+											<p class="text-xs  font-medium">
+												{{ useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value }}
+											</p>
+										</div>
+									</div>
+								</div>
 							</section>
+							<Skeleton v-else height="120px" radius="5px" />
 						</div>
 					</div>
 				</PopoverPanel>
@@ -55,7 +78,20 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat, useMagicKeys } from '@vueuse/core'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
+import { useTripCardSearch } from '@/composables/modules/trips/card'
+
+const { fetchedData, loading, fetchTrips } = useTripCardSearch()
+
+const loadKeyBinding = (open:any) => {
+	console.log(open)
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			close()
+		}
+	})
+}
 
 const searchValue = ref('')
 const props = defineProps({
@@ -65,9 +101,16 @@ const props = defineProps({
     }
 })
 
-const tripTypeInput = computed(() => {
-	return props.tripType
-})
+const onCardClick = (close, trip) => {
+	useRouter().push(`/trips/type/${tripTypeInput.value}/${trip.id}/trip-details`)
+	close()
+}
+const tripTypeInput = ref(props.tripType)
+
+watch(tripTypeInput, (val) => {
+	fetchTrips({ tripType: val })
+}, { immediate: true })
+
 </script>
 
 <style scoped>
