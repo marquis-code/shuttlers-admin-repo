@@ -48,16 +48,8 @@ const isButtonEnabled = computed(() => {
 })
 
 const handleCreateInspectionSite = () => {
-	// const payload = {
-    //     address: form.value.address,
-    //     geo_coordinate: inspectionSiteForm.geo_coordinate.value,
-    //     name: inspectionSiteForm.name.value
-    // }
-	// preInspectionSiteForm(payload)
-	// createInspectionSite()
 	if (Object.keys(selectedInspectionData).length) {
 	editInspectionSite(selectedInspectionData.value.id)
-		console.log('Editing')
 	} else {
 	createInspectionSite()
 	}
