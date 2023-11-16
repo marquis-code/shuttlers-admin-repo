@@ -30,7 +30,6 @@ export const useTripCardSearch = () => {
     }
 
     const applyFilter = async ({ tripType, filterData }: { tripType: string, filterData: { search: string, dateRange: any[] } }) => {
-        console.log('applyFilter', tripType, filterData)
         switch (tripType) {
             case 'active':
                 // active_filterData.from.value
