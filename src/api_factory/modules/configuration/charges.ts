@@ -45,8 +45,8 @@ export const charges_api = {
 			}
         }
 	},
-	$_get_total_charges: (id:number|string, date:string[]) => {
-		const url = `/additional-charges-history-total/fare/${id}${date[0] && date[1] ? `?start_date=${date[0]}&end_date=${date[1]}` : ''}`
+	$_get_total_charges: (id:number|string, date:string[], status:string) => {
+		const url = `/additional-charges-history-total/fare/${id}?status=${status}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_remit_charge: (id:number|string, payload:any) => {
