@@ -68,13 +68,13 @@
 				</VueMultiselect>
 			</div>
 
-			<!-- <ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" /> -->
-			<div class="flex items-center justify-between gap-4">
+			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" />
+			<!-- <div class="flex items-center justify-between gap-4">
 				<p class="text-sm font-normal">
 					Users must pay this fee when making a booking
 				</p>
-				<!-- <VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" /> -->
-			</div>
+				<VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" />
+			</div> -->
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : `${isEditConfigureCharge ? 'Update configuration' : 'Configure new charge'}` }}
