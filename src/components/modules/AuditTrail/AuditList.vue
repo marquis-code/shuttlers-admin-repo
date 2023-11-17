@@ -59,8 +59,8 @@
 						<span v-if="item?.eventDate === activeActivity?.eventDate" class="block border-2 border-shuttlersGreen  my-3 ml-2" />
 						<div class="flex justify-between items-center gap-x-2  py-2 space-x-3 px-3 w-full">
 							<div class="w-2/12 flex justify-start items-start">
-								<p class="font-light text-gray-900 text-xs">
-									{{ useDateFormat(item?.eventDate, "MMMM d, YYYY, hh:mm A").value }}
+								<p class="text-gray-900 font-semibold text-xs">
+									{{ item?.eventDate }}
 								</p>
 							</div>
 							<div class="w-10/12 flex justify-start items-start">
@@ -124,12 +124,12 @@ const showColoredStroke = ref(false)
 
 const auditDateFilter = ref('')
 
-const activeActivity = ref('')
+const activeActivity = ref('') as any
 
 const setActive = (item) => {
 	activeActivity.value = item
     emit('selectedAudit', item)
- if (item.eventDate === activeActivity.value?.eventDate) {
+ if (Number(item.id) === Number(activeActivity.value?.id)) {
    showColoredStroke.value = true
  } else {
 	showColoredStroke.value = false

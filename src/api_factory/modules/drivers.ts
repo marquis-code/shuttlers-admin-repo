@@ -20,5 +20,9 @@ export const drivers_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/users/${id}/user-route-schedules?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_create_driver: (payload) => {
+		const url = '/drivers'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
