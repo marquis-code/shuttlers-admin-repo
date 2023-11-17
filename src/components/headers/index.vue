@@ -55,6 +55,7 @@ import TripRatingSettings from '@/components/headers/modules/Configure/TripRatin
 import RouteDetails from '@/components/headers/modules/Routes/route-details.vue'
 import FleetDetails from '@/components/headers/modules/Fleets/fleet-details.vue'
 import AdminInfo from '@/components/headers/modules/Admin/admin-details.vue'
+import AddDrivers from '@/components/headers/modules/Drivers/add-driver.vue'
 import TripRatingSettingsDetails from '@/components/headers/modules/Configure/TripRatings/trip-rating-details.vue'
 
 const componentRouteArray = [
@@ -76,6 +77,7 @@ const componentRouteArray = [
     { routes: ['partners-payouts'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
+    { routes: ['drivers-add'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['events-id-event-info'], component: EventDetails },

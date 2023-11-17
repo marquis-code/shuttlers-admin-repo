@@ -27,7 +27,6 @@ export const useGetStaffs = () => {
         const res = await $_get_staffs() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             staffsData.value = res.data
-            metaObject.total.value = res.data.metadata?.pageCount
         }
         loading.value = false
     }
