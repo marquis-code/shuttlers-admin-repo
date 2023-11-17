@@ -5,7 +5,6 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 const selectedRoute = ref({} as Record<string, any>)
 const selectedRouteId = ref('')
 const selectedItineraryId = ref('')
-// const selectedPartnerAccountSid = ref('')
 const routeId = ref<number>()
 
 const routePricingData = {

@@ -105,11 +105,6 @@ export const useCreateVehicle = () => {
         configureVehicleTypeForm.pricing_margin_unit.value = data.pricing_margin_unit
         configureVehicleTypeForm.pricing_margin.value = data.pricing_margin
         configureVehicleTypeForm.image.value = data.image
-        // configureVehicleCategoryForm.id.value = data.id
-        // configureVehicleCategoryForm.vehicle_type_id.value = data.vehicle_type_id
-        // configureVehicleCategoryForm.city_id.value = data.city_id
-        // configureVehicleCategoryForm.cost_of_supply.value = data.cost_of_supply
-        // configureVehicleCategoryForm.currency.value = data.currency
     }
 
     const preConfigureVehicleCostOfSuplyForm = (data) => {
