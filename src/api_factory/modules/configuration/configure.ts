@@ -73,5 +73,13 @@ export const configure_api = {
 	$_get_trip_rating_details: (id: string) => {
 		const url = `/rating/categories/${id}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_update_route_cost_of_supply: (routeVehicleId:number, payload:any) => {
+		const url = `/route-vehicle/${routeVehicleId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_route_selling_price: (itineraryId:number, payload:any) => {
+		const url = `/route-itineraries/${itineraryId}/price`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

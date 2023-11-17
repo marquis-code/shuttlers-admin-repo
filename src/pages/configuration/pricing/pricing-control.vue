@@ -34,6 +34,9 @@
 									{{ n.name }}
 								</option>
 							</select>
+							<button class="px-3 py-2 border text-sm text-dark font-medium border-dark rounded">
+								{{ isEdit ? 'Save' : 'Edit' }}
+							</button>
 						</div>
 					</template>
 				</TableFilter>
@@ -50,8 +53,14 @@
 				<span v-if="item.avatar" class="flex items-center gap-4">
 					<Avatar :name="item.data.fname" bg="#B1C2D9" />
 				</span>
+				<div v-if="item.cost_of_supply">
+					<AmountTextEditor :amount="item.data.cost_of_supply" :loading="loading_cost_of_supply" @updateVal="(val) => updateRouteCostOfSupply(val, item.data)" />
+				</div>
+				<div v-if="item.selling_price">
+					<AmountTextEditor :amount="item.data.selling_price" :loading="loading_selling_price" @updateVal="(val) => updateRouteSellingPrice(val, item.data)" />
+				</div>
 				<div v-if="item.pricing_scheme" class="border border-red-50- outline-none py-1.5 rounded-md">
-					<select v-model="form.pricing_scheme">
+					<select v-model="item.data.route_itinerary.pricing_scheme">
 						<option value="per_vehicle">
 							Per vehicle
 						</option>
@@ -61,11 +70,11 @@
 					</select>
 				</div>
 				<div v-if="item.pricing_type" class="border border-red-50- outline-none py-1.5 rounded-md">
-					<select v-model="form.pricing_type">
-						<option value="per_vehicle">
+					<select v-model="item.data.route_itinerary.pricing_type">
+						<option value="route_price_table_lookup">
 							Lookup From Pricing Table
 						</option>
-						<option value="per_seat">
+						<option value="margin_value_generated">
 							Auto Generate From Margin
 						</option>
 					</select>
@@ -101,14 +110,8 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useRoutePricesList, useAllVehicleType } from '@/composables/modules/configure/fetch'
 
 const {
-  getRoutePricesList,
-  loadingRoutePrices,
-  routePricesList,
-  moveTo,
-  next,
-  prev,
-  total,
-  page, vehicleId, routeType
+  getRoutePricesList, loadingRoutePrices, routePricesList, moveTo, next, prev, total, page,
+  vehicleId, routeType, updateRouteCostOfSupply, loading_cost_of_supply, updateRouteSellingPrice, loading_selling_price
 } = useRoutePricesList()
 const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
 
@@ -116,6 +119,8 @@ definePageMeta({
   layout: 'dashboard',
   middleware: ['is-authenticated']
 })
+
+const isEdit = ref(false)
 
 const form = reactive({
   pricing_type: '',
@@ -127,15 +132,15 @@ const formattedPartnersList = computed(() => {
   if (!routePricesList.value.length) return []
   return routePricesList.value.map((i, index) => {
     return {
-      ...i,
-      route_code: i.route.route_code,
-      route_itinerary: i.route_itinerary.trip_time,
-      vehicle_info: `${i.vehicle?.brand} ${i.vehicle?.name} (${i.vehicle?.registration_number}) - ${i.vehicle?.type}`,
-      cost_of_supply: `${convertToCurrency(i.cost_of_supply) || 'N/A'}`,
-      selling_price: `${convertToCurrency(i.max_fare) || 'N/A'}`,
-      pricing_scheme: '',
-      pricing_type: '',
-      pricing_margin: ''
+		...i,
+		route_code: i.route.route_code,
+		route_itinerary_time: i.route_itinerary.trip_time,
+		vehicle_info: `${i.vehicle?.brand} ${i.vehicle?.name} (${i.vehicle?.registration_number}) - ${i.vehicle?.type}`,
+		cost_of_supply: i.cost_of_supply,
+		selling_price: i.max_fare,
+		pricing_scheme: '',
+		pricing_type: '',
+		pricing_margin: ''
     }
   })
 })
@@ -146,7 +151,7 @@ const tableFields = ref([
     text: 'Route name'
   },
   {
-    value: 'route_itinerary',
+    value: 'route_itinerary_time',
     text: 'Itinerary'
   },
   {

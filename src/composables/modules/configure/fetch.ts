@@ -80,6 +80,8 @@ export const useRoutePricesList = () => {
     const vehicleId = ref('')
     const routeType = ref('')
     const routePricesList = ref([] as Record<string, any>[])
+    const loading_selling_price = ref(false)
+    const loading_cost_of_supply = ref(false)
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_route_prices } = configure_api
 
@@ -98,7 +100,38 @@ export const useRoutePricesList = () => {
         getRoutePricesList()
     })
 
-    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType }
+    const updateRouteCostOfSupply = async (cost_of_supply:{new:number;old:number}, data:Record<string, any>) => {
+        loading_cost_of_supply.value = true
+        const payload = {
+            driver_id: data.driver_id,
+            cost_of_supply: cost_of_supply.new,
+            vehicle_id: data.vehicle_id
+        }
+        const res = await configure_api.$_update_route_cost_of_supply(data.id, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            getRoutePricesList()
+        }
+        loading_cost_of_supply.value = false
+    }
+
+    const updateRouteSellingPrice = async (selling_price:{new:number;old:number}, data:Record<string, any>) => {
+        loading_selling_price.value = true
+        const payload = {
+            update: [
+                {
+                  id: data.active_route_price.id,
+                  fare: selling_price.new
+                }
+            ]
+        }
+        const res = await configure_api.$_update_route_selling_price(data.route_itinerary.id, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            getRoutePricesList()
+        }
+        loading_selling_price.value = false
+    }
+
+    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType, updateRouteCostOfSupply, loading_selling_price, updateRouteSellingPrice, loading_cost_of_supply }
 }
 
 export const useGeneralPaymentOptionsList = () => {
