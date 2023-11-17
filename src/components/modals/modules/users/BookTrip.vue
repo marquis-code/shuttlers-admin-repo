@@ -202,19 +202,9 @@ const isFormEmpty = computed(() => {
 	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source)
 })
 
-// const getDayOfWeek = (startDate:any) => {
-//   const date = new Date(startDate)
-//   const dayOfWeek = date.getDay()
-//   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-//   return daysOfWeek[dayOfWeek]
-// }
 function getDayOfWeek(startDate) {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-  // Create a Date object with the provided start date
   const start = new Date(startDate)
-
-  // Get the day index based on the day of the week of the start date
   const startDayIndex = start.getDay()
 
   return startDayIndex
