@@ -4,7 +4,7 @@
 			<div class="field relative">
 				<label for="route">Select Route</label>
 				<select v-if="!loadingMainRoutes" id="route" v-model="form.selectedRoute"
-					class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
+					class="border-red-500 text-sm w-10/12 border outline-none py-2.5 rounded-md px-3">
 					<option class="" disabled>
 						--- select ---
 					</option>
@@ -91,11 +91,11 @@
 			</div>
 			<div class="">
 				<div class="flex items-center gap-x-2">
-					<label class="block" for="route">Is Subscription?</label><input id="route" v-model="form.has_subscription" class="block mb-1" type="checkbox" required>
+					<label class="block" for="route">Is Subscription?</label><input id="route" v-model="form.has_subscription" class="block mb-1" type="checkbox">
 				</div>
 				<div v-if="form.has_subscription" class="mb-4">
 					<div class="space-y-4">
-						<label>Select Pickup Days {{ Object.keys(dayWithIds) }}</label>
+						<label>Select Pickup Days</label>
 						<div class="grid grid-cols-3 gap-4">
 							<div
 								v-for="(day, index) in Object.keys(dayWithIds)"
@@ -138,7 +138,7 @@
 			</div>
 			<div class="flex items-center gap-x-3">
 				<label for="route" class="block">With Luggage?</label>
-				<input id="route" v-model="form.has_luggage" type="checkbox" class="block" required>
+				<input id="route" v-model="form.has_luggage" type="checkbox" class="block">
 			</div>
 			<div v-if="form.has_luggage" class="flex justify-start items-start flex-col">
 				<div><label for="route" class="block">Luggage Quantity</label></div>
@@ -161,9 +161,9 @@
 					@click="useUserModal().closeBookTrip()">
 					Cancel
 				</button>
-				<button type="submit"
+				<button :disabled="!isFormEmpty" type="submit"
 					class="btn btn-primary py-3 text-xs w-full disabled:cursor-not-allowed disabled:opacity-25">
-					<span v-if="!createLoading" class="text-xs">Confirm and Book Ride</span>
+					<span v-if="!processingBooking" class="text-xs">Confirm and Book Ride</span>
 					<Spinner v-else />
 				</button>
 			</div>
@@ -175,7 +175,9 @@
 import { useDateFormat } from '@vueuse/core'
 import { useUserModal } from '@/composables/core/modals'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
+import { useBookUserTrip } from '@/composables/modules/users/id'
 import { useItinerariesByRouteId, useBusstopsByItineraryId, useRoutePricingByItineraryId } from '@/composables/modules/routes/id'
+const { loading: processingBooking, handleUserTripBooking } = useBookUserTrip()
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList } = useGetMainRoutes()
 const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = useBusstopsByItineraryId()
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
@@ -195,8 +197,54 @@ const form = reactive({
 	tripWeeks: 0,
 	luggage_quantity: ''
 })
-const fare = ref(null as any)
-const createLoading = ref(false)
+
+const isFormEmpty = computed(() => {
+	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source)
+})
+
+// const getDayOfWeek = (startDate:any) => {
+//   const date = new Date(startDate)
+//   const dayOfWeek = date.getDay()
+//   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+//   return daysOfWeek[dayOfWeek]
+// }
+function getDayOfWeek(startDate) {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+  // Create a Date object with the provided start date
+  const start = new Date(startDate)
+
+  // Get the day index based on the day of the week of the start date
+  const startDayIndex = start.getDay()
+
+  return startDayIndex
+}
+
+const bookTrip = () => {
+	let dayIds = [] as any
+
+		if (!form.subscriptionDays.length) {
+		const formattedStartDate = new Date(form.startDate) as any
+		dayIds.push(getDayOfWeek(formattedStartDate) + 1)
+		} else {
+		dayIds = form.subscriptionDays.map((day) => dayWithIds[day])
+		}
+	const payload = {
+    route_id: form?.selectedRoute?.id,
+    itinerary_id: form?.route_itinerary_id,
+    pickup_id: form?.pickup_point?.id,
+    destination_id: form?.drop_off_point.id,
+    days_ids: dayIds,
+    meta: JSON.stringify(form.selectedRoute),
+    start_date: form?.startDate,
+    end_date: endDate.value,
+    recurring: form?.has_subscription ? Number(1) : Number(0),
+    payment_source: form?.payment_source,
+    luggage_quantity: form?.luggage_quantity
+	}
+	handleUserTripBooking(payload)
+}
+
 const subscriptionWeeks = reactive([
 	{ label: '1 Week', value: 1 },
 	{ label: '2 Weeks', value: 2 },
@@ -281,17 +329,18 @@ watch(() => form.drop_off_point, (val) => {
 })
 
 const tripFare = computed(() => {
-	return selectedItinerary.value.default_fare
+	return selectedItinerary?.value?.default_fare || 0
 })
+
 const totalFare = computed(() => {
-	let totalFare
+	let totalFare = null as any
 	if (form.has_subscription && form.subscriptionDays.length > 0) {
-		totalFare = tripFare?.value?.fare * form?.subscriptionDays.length * form.tripWeeks
+		totalFare = tripFare?.value * form?.subscriptionDays.length * form.tripWeeks
 	} else {
 		totalFare = tripFare?.value
 	}
 	return {
-		fare: totalFare || 0,
+		fare: totalFare,
 		currency: 'NGN'
 	}
 })
@@ -315,19 +364,11 @@ const selectedItinerary = computed(() => {
 
 const endDate = computed(() => {
 	if (form.has_subscription && form.tripWeeks) {
-		const _date = addWeeks(new Date(form.startDate), form.tripWeeks)
-		return useDateFormat(subDays(_date, 1), 'YYYY-MMM-dd')
+		const _date = addWeeks(form.startDate, form.tripWeeks)
+		return useDateFormat(subDays(_date, 1), 'YYYY-MM-DD').value
 	}
 
-	return useDateFormat(form.startDate, 'yyyy-MM-dd')
+	return useDateFormat(form.startDate, 'YYYY-MM-DD').value
 })
 
-const bookTrip = () => {
-	const payload = {
-		destination_id: form?.drop_off_point,
-        pickup_id: form?.pickup_point
-	}
-	// setRoutePricingDataForm(payload)
-	// getRoutePricingInformation(form?.drop_off_point?.route_id)
-}
 </script>
