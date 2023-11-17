@@ -41,7 +41,6 @@ export const useGetMainRoutes = () => {
 
     const getMainRoutesList = async () => {
         loadingMainRoutes.value = true
-
         const res = await $_get_main_routes(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             mainRoutesList.value = res.data.data

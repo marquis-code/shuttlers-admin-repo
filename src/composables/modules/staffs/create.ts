@@ -31,7 +31,7 @@ export const useCreateAdmin = () => {
 			convertObjWithRefToObj(createForm)
 		)) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			useRouter().push('/admins')
+			useRouter().push('/admin')
 			useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Admin created successfully'
@@ -46,7 +46,7 @@ export const useCreateAdmin = () => {
             convertObjWithRefToObj(createForm, ['password']), id
         )) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            useRouter().push('/admins')
+            useRouter().push('/admin')
             useAlert().openAlert({
                 type: 'SUCCESS',
                 msg: 'Admin updated successfully'

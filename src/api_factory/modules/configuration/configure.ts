@@ -62,13 +62,13 @@ export const configure_api = {
 		const url = `/rating/settings/${id}/categories`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
-	$_create_trip_rating_catogory: (id, payload) => {
+	$_create_trip_rating_catogory: (payload: any) => {
 		const url = '/rating/categories'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
 	},
-	$_create_trip_rating_options: (id, payload) => {
+	$_create_trip_rating_options: (payload: any) => {
 		const url = '/rating/options'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
 	},
 	$_get_trip_rating_details: (id: string) => {
 		const url = `/rating/categories/${id}`

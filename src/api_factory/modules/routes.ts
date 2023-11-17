@@ -13,6 +13,7 @@ export const routes_api = {
 	},
 	$_get_main_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
+		meta.page_size.value = 100000
 		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},

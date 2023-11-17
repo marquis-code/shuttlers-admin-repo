@@ -114,5 +114,9 @@ export const users_api = {
 	$_remove_bus_captain: (id) => {
 		const url = `/bus-captains/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
+	$_book_trip: (id, payload) => {
+		const url = `/users/${id}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
