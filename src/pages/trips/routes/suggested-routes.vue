@@ -41,16 +41,6 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
-// const formattedSuggestedRoutesList = computed(() => {
-//     if (!suggestedRoutesList.value.length) return []
-//     return suggestedRoutesList.value.map((i) => {
-//          return {
-//              ...i,
-//              user: `${i.name} ${i?.email?.replace('Email:', '')} ${i?.phone?.replace('Phone:', '')}`
-//          }
-//     })
-// })
-
 const tableFields = ref([
     {
         text: 'DATE',
