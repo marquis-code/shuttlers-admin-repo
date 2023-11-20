@@ -8,6 +8,11 @@ export const users_api = {
 		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_searched_users: (payload: any, meta:TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `users/search?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
 	$_get_graph: () => {
 		const url = '/users/graph'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

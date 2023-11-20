@@ -5,7 +5,7 @@ import { useConfirmationModal } from '@/composables/core/confirmation'
 const credentials = {
     title: ref(''),
     description: ref(''),
-    sms: ref(false),
+    sms: ref(true),
     email: ref(false),
     notifyAll: ref(false)
 }

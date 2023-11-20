@@ -66,5 +66,3 @@ const tableFields = ref([
 ])
 
 </script>
-
-`
