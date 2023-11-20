@@ -4,7 +4,7 @@
 			<StatusBadge :name="tripType" />
 		</template>
 		<template #actions>
-			<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" />
+			<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
 		</template>
 
 		<template #tabs>
