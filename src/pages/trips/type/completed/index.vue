@@ -51,10 +51,13 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
+import { useTripOptions } from '@/composables/modules/trips/options'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
+
+const { initializeStartTrips, initializeEndTrips, initializeCompleteTrips } = useTripOptions()
 
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i:any, index) => {
