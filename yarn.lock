@@ -6203,11 +6203,6 @@ papaparse@5.3.2:
   resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.2.tgz#d1abed498a0ee299f103130a6109720404fbd467"
   integrity sha512-6dNZu0Ki+gyV0eBsFKJhYr+MdQYAzFUGlBMNj3GNrmHxmz1lfRa24CjFObPXtjcetlOv5Ad299MhIK0znp3afw==
 
-papaparse@^5.3.0:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.4.1.tgz#f45c0f871853578bd3a30f92d96fdcfb6ebea127"
-  integrity sha512-HipMsgJkZu8br23pW15uvo6sib6wne/4woLZPlFf3rpDyMe9ywEXUsuD7+6K9PRkJlVT51j/sCOYDKGGS3ZJrw==
-
 parchment@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/parchment/-/parchment-1.1.4.tgz#aeded7ab938fe921d4c34bc339ce1168bc2ffde5"
@@ -8391,13 +8386,6 @@ vue-multiselect@^3.0.0-beta.2:
   version "3.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-3.0.0-beta.2.tgz#dcfc1f8bc5bff78d85d516bfd71339fce49be97a"
   integrity sha512-TFVHtI/KdWoD3Opzbkso8OIqkZlZEqFF7f2jlYx1ttgC4Jv/48IGlU5zn6cBR4p2bFDFGCHF5SkLCaadLhnBPQ==
-
-vue-papa-parse@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/vue-papa-parse/-/vue-papa-parse-3.1.0.tgz#a97f8cb65273cecf58df105e0660e8283512725c"
-  integrity sha512-5YdF3Dtf49EGfaz3+IgIpUw9yYuvV3HekZkob6jrK/Ffz1aCrWjevtcQByKxrNtK7RAL39B0ca93bogKuiQQKg==
-  dependencies:
-    papaparse "^5.3.0"
 
 vue-router@^4.2.2, vue-router@^4.2.4:
   version "4.2.5"
