@@ -64,7 +64,8 @@
 				</div>
 			</form>
 		</div>
-		<Table :loading="loadingTripRatingSettingsCategories" :headers="tableFields" :table-data="tripRatingSettingsCategories" :has-options="true" :option="onRowClicked">
+
+		<Table :loading="loadingTripRatingSettingsCategories" :headers="tableFields" :table-data="tripRatingSettingsCategories" :has-options="true" :has-index="true" :option="onRowClicked">
 			<template #header>
 				<h1 class="border-t bg-white rounded-t-md py-3 pl-4 font-semibold">
 					Categories List
@@ -72,15 +73,25 @@
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.options">
-					<p v-if="item.data.options" class="space-x-3 space-y-4"><span v-for="(itm, idx) in item?.data?.options" :key="idx" class="text-white font-medium px-3 py-2 text-[10px] bg-gray-600 rounded-xl">{{ itm.name }}</span></p>
+					<div v-if="item.data.options" class="flex flex-wrap items-center gap-2 min-w-[300px] py-2">
+						<span v-for="(itm, idx) in item?.data?.options" :key="idx"
+							class="text-white font-medium py-[2px] px-2 text-[10px] bg-gray-600 rounded-xl"
+						>
+							{{ itm.name }}
+						</span>
+					</div>
 					<p v-else>No issues available</p>
 				</span>
+				<p v-if="item.created_at">
+					{{ moment(item.data.created_at).format('Do MMM, YYYY') }}
+				</p>
 			</template>
 		</Table>
 	</main>
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useConfigureTripRatings } from '@/composables/modules/configure/trip-ratings/create'
 import { useTripRatingIdDetails } from '@/composables/modules/configure/id'
 import { useTripRatingSettings, useTripRatingSettingsCategories } from '@/composables/modules/configure/fetch'
@@ -96,7 +107,7 @@ const isAddButtonDisabled = computed(() => {
 	return !!(category.issues.length && category.name)
 })
 getTripRatingSettings(import.meta.env.VITE_TRIP_RATING_SERVICE_ID)
-getTripRatingSettingsCategories(tripRatingSettingsReference.value)
+// getTripRatingSettingsCategories(tripRatingSettingsReference.value)
 
 definePageMeta({
     layout: 'dashboard',
@@ -109,8 +120,7 @@ const tableFields = ref([
     },
     {
         text: 'ISSUE TYPES',
-        value: 'options',
-		width: '900px'
+        value: 'options'
     },
     {
         text: 'DATE CREATED',
@@ -120,7 +130,7 @@ const tableFields = ref([
 
 const category = reactive({
         name: '',
-        issues: []
+        issues: [] as any[]
       })
 
 	  const issueType = ref('') as any

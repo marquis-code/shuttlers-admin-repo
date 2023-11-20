@@ -1,37 +1,41 @@
 <template>
 	<Modal modal="$atts.modal" title="Assign Staff">
-		<form class="flex flex-col gap-4">
+		<form class="flex flex-col gap-4" @submit.prevent="assignStaff">
 			<p class="text-sm text-[#313533] font-medium">
 				({{ selectedStaffs.length }}) of {{ totalStaffs }} selected
 			</p>
-			<div class="flex flex-col gap-2">
-				<label class="text-xs text-[#6E717C] font-medium">Select route</label>
-				<select required class="input-field">
-					<option v-for="n in ['hello', 'hy']" :key="n" :value="n">
-						{{ n }}
+			<RuoteSelector @selected="routeSelected" />
+			<div v-if="itineraries.length" class="flex flex-col gap-2">
+				<label class="text-xs text-[#6E717C] font-medium">Assign Itinerary</label>
+				<select v-model="itinerary_id" required class="input-field">
+					<option v-for="n in itineraries" :key="n.id" :value="n.id">
+						{{ n.trip_time }}
 					</option>
 				</select>
 			</div>
 			<div class="flex flex-col gap-2">
-				<label class="text-xs text-[#6E717C] font-medium">Assign Itinerary</label>
-				<select required class="input-field">
-					<option v-for="n in ['hello', 'hy']" :key="n" :value="n">
-						{{ n }}
-					</option>
-				</select>
+				<label class="text-xs text-[#6E717C] font-medium">Select busstop</label>
+				<LocationInput
+					id="busStop"
+					type="text"
+					name="busStop"
+					class="input-field"
+					placeholder=""
+					@change="selectedAddress"
+				/>
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="text-xs text-[#6E717C] font-medium">
 					Work days (Selecting multiple days is allowed)
 				</label>
-				<VueMultiselect v-model="sel_days" placeholder="Search..." :searchable="true"
+				<VueMultiselect v-model="work_days" placeholder="Search..." :searchable="true"
 					:options="days" :multiple="true" :taggable="true"
 				/>
 			</div>
 			<div class="grid grid-cols-2 gap-4">
 				<div class="flex flex-col gap-2">
 					<label class="text-xs text-[#6E717C] font-medium">Work branch</label>
-					<select required class="input-field">
+					<select v-model="branch_id" class="input-field">
 						<option v-for="n in branches" :key="n.id" :value="n.id">
 							{{ n.name }}
 						</option>
@@ -39,7 +43,7 @@
 				</div>
 				<div class="flex flex-col gap-2">
 					<label class="text-xs text-[#6E717C] font-medium">Work shift</label>
-					<select required class="input-field">
+					<select v-model="shift_id" class="input-field">
 						<option v-for="n in shifts" :key="n.id" :value="n.id">
 							{{ n.description }}
 						</option>
@@ -47,8 +51,8 @@
 				</div>
 			</div>
 
-			<button type="submit" :disabled="false" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
-				{{ false ? 'processing...' : 'Assign' }}
+			<button type="submit" :disabled="assigning" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
+				{{ assigning ? 'processing...' : 'Assign' }}
 			</button>
 		</form>
 	</Modal>
@@ -58,14 +62,23 @@
 import VueMultiselect from 'vue-multiselect'
 import { useCorporateBranches } from '@/composables/modules/corporates/branch'
 import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
-import { useCorporateStaff, useSelectedStaff } from '@/composables/modules/corporates/staff/index'
+import { useCorporateStaff, useSelectedStaff, useAssignStaff } from '@/composables/modules/corporates/staff/index'
 
 const { totalStaffs } = useCorporateStaff()
 const { selectedStaffs } = useSelectedStaff()
-const { loading: loading_branches, getBranches, branches } = useCorporateBranches()
-const { loading: loading_shifts, getShifts, shifts } = useCorporateWorkShifts()
+const { branches } = useCorporateBranches()
+const { shifts } = useCorporateWorkShifts()
+const { loading: assigning, assignStaff, route_id, itinerary_id, branch_id, shift_id, work_days, bus_stop, itineraries } = useAssignStaff()
+
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-const sel_days = ref([])
+
+const selectedAddress = (val: Record<string, any>) => {
+	bus_stop.value = val.name
+}
+
+const routeSelected = (val: Record<string, any>) => {
+	route_id.value = val.id
+}
 
 onBeforeUnmount(() => {})
 </script>

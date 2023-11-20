@@ -1,5 +1,7 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject } from '@/composables/utils/table'
+import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const configure_api = {
     $_get_amenities: (metaObject: TMetaObject) => {
@@ -33,6 +35,19 @@ export const configure_api = {
 	$_get_route_prices: (metaObject: TMetaObject, vehicleId:string|number, routeType:string) => {
 		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_route_pricing_control: async (vehicleId:string|number, routeType:string) => {
+		const url = `/route-prices?limit=${5}&page=${1}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/route-prices?limit=${total}&page=${1}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_get_payment_options: () => {
 		const url = '/payment-options'
@@ -80,6 +95,10 @@ export const configure_api = {
 	},
 	$_update_route_selling_price: (itineraryId:number, payload:any) => {
 		const url = `/route-itineraries/${itineraryId}/price`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_route_pricing_others: (itineraryId:number, payload:any) => {
+		const url = `/route-itineraries/${itineraryId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

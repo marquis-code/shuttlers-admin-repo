@@ -15,8 +15,10 @@
 						showSearchBar: false,
 						showDownloadButton: true,
 						showDatePicker: false,
+						downloading: downloading
 					}"
 					:align-end="true"
+					@filter="onFilterUpdate"
 				>
 					<template #filter_others>
 						<div class="flex gap-3 py-2">
@@ -34,7 +36,7 @@
 									{{ n.name }}
 								</option>
 							</select>
-							<button class="px-3 py-2 border text-sm text-dark font-medium border-dark rounded">
+							<button class="px-3 py-2 border text-sm text-dark font-medium border-dark rounded" @click="isEdit = !isEdit">
 								{{ isEdit ? 'Save' : 'Edit' }}
 							</button>
 						</div>
@@ -59,8 +61,10 @@
 				<div v-if="item.selling_price">
 					<AmountTextEditor :amount="item.data.selling_price" :loading="loading_selling_price" @updateVal="(val) => updateRouteSellingPrice(val, item.data)" />
 				</div>
-				<div v-if="item.pricing_scheme" class="border border-red-50- outline-none py-1.5 rounded-md">
-					<select v-model="item.data.route_itinerary.pricing_scheme">
+				<div v-if="item.pricing_scheme" class="">
+					<select :value="item.data.route_itinerary.pricing_scheme" :disabled="!isEdit" class="select_style min-w-[110px]"
+						@change="updateRouteOtherPricing(item.data, 'pricing_scheme', ($event.target! as any).value)"
+					>
 						<option value="per_vehicle">
 							Per vehicle
 						</option>
@@ -69,8 +73,10 @@
 						</option>
 					</select>
 				</div>
-				<div v-if="item.pricing_type" class="border border-red-50- outline-none py-1.5 rounded-md">
-					<select v-model="item.data.route_itinerary.pricing_type">
+				<div v-if="item.pricing_type" class="">
+					<select :value="item.data.route_itinerary.pricing_type" :disabled="!isEdit" class="select_style !min-w-[210px] w-full"
+						@change="updateRouteOtherPricing(item.data, 'pricing_type', ($event.target! as any).value)"
+					>
 						<option value="route_price_table_lookup">
 							Lookup From Pricing Table
 						</option>
@@ -79,8 +85,14 @@
 						</option>
 					</select>
 				</div>
-				<div v-if="item.pricing_margin" class="border border-red-50- outline-none py-1.5 rounded-md">
-					<select v-model="form.pricing_margin">
+				<div v-if="item.pricing_margin" class="flex items-center gap-2">
+					<input :value="item.data.route_itinerary.pricing_margin" :disabled="!isEdit" type="number"
+						class="text-sm border py-1 px-2 rounded-md !w-[100px] disabled:cursor-not-allowed"
+						@change="updateRouteOtherPricing(item.data, 'pricing_margin', ($event.target! as any).value)"
+					>
+					<select :value="item.data.route_itinerary.pricing_margin_unit" :disabled="!isEdit" class="select_style !w-[100px]"
+						@change="updateRouteOtherPricing(item.data, 'pricing_margin_unit', ($event.target! as any).value)"
+					>
 						<option value="percent">
 							Percent
 						</option>
@@ -110,8 +122,9 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useRoutePricesList, useAllVehicleType } from '@/composables/modules/configure/fetch'
 
 const {
-  getRoutePricesList, loadingRoutePrices, routePricesList, moveTo, next, prev, total, page,
-  vehicleId, routeType, updateRouteCostOfSupply, loading_cost_of_supply, updateRouteSellingPrice, loading_selling_price
+  getRoutePricesList, loadingRoutePrices, routePricesList, moveTo, next, prev, total, page, updateRouteOtherPricing,
+  vehicleId, routeType, updateRouteCostOfSupply, loading_cost_of_supply, updateRouteSellingPrice, loading_selling_price,
+  downloadRoutePriceControl, downloading, onFilterUpdate
 } = useRoutePricesList()
 const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
 
@@ -137,10 +150,7 @@ const formattedPartnersList = computed(() => {
 		route_itinerary_time: i.route_itinerary.trip_time,
 		vehicle_info: `${i.vehicle?.brand} ${i.vehicle?.name} (${i.vehicle?.registration_number}) - ${i.vehicle?.type}`,
 		cost_of_supply: i.cost_of_supply,
-		selling_price: i.max_fare,
-		pricing_scheme: '',
-		pricing_type: '',
-		pricing_margin: ''
+		selling_price: i.active_route_price?.fare
     }
   })
 })
@@ -184,3 +194,9 @@ const tableFields = ref([
 getRoutePricesList()
 getAllVehicleWithoutLimit()
 </script>
+
+<style scoped>
+.select_style{
+	@apply py-1 px-3 border border-dark rounded min-w-[100px] w-full outline-none disabled:cursor-not-allowed
+}
+</style>

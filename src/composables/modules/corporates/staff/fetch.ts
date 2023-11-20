@@ -35,6 +35,7 @@ export const useCorporateStaff = () => {
     }
 
 	watch([filters.search, selectedShiftIds, selectedBranchIds], () => {
+		metaObject.page.value = 1
 		getCorporateStaff()
 	})
 

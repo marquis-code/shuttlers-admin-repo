@@ -31,7 +31,7 @@ const props = defineProps({
 const showEditor = ref(false)
 
 const emitValue = () => {
-	const x:HTMLInputElement = document.querySelector('input.amount_inline_text_editor').value
+	const x = (document.querySelector('input.amount_inline_text_editor') as any).value
 	emit('updateVal', { old: props.amount, new: x })
 	showEditor.value = false
 }

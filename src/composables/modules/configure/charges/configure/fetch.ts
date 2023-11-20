@@ -29,7 +29,7 @@ export const useFetchConfiguredCharges = () => {
         }
     }
 
-	watch(search, () => {
+	watch([search], () => {
 		fetchConfiguredCharges()
 	})
 
