@@ -69,23 +69,27 @@ interface DefaultValueProps {
 }
 
 const props = defineProps({
-  filterType: {
-    type: Object as () => FilterTypeProps,
-    default: () => ({
-      showDatePicker: false,
-      showSearchBar: true,
-      showDownloadButton: false,
-      showStatus: false,
-      showDateRange: false,
-	  downloading: false
-    })
+	filterType: {
+		type: Object as () => FilterTypeProps,
+		default: () => ({
+			showDatePicker: false,
+			showSearchBar: true,
+			showDownloadButton: false,
+			showStatus: false,
+			showDateRange: false,
+			downloading: false
+		})
 	},
 	defaultValue: {
 		type: Object as () => DefaultValueProps,
 		    default: () => ({
 
-    })
-  }
+		})
+	},
+	alignEnd: {
+		type: Boolean,
+		required: false
+	}
 })
 
 const filterData = {
