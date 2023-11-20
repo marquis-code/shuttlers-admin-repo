@@ -3,17 +3,12 @@
 		<label class="w-full tracking-wide cursor-pointer">
 			<p class="flex justify-center items-center gap-x-2">
 				<img src="@/assets/icons/source/upload.svg" alt="preview icon" class="rounded-full border p-2 h-10 w-10">
-				Upload Batch booking CSV File</p>
+				{{ selectedFileName ? selectedFileName : 'Upload Batch booking CSV File' }}</p>
 			<input id="image" class="hidden" type="file" accept=".csv" @change="handleFileChange">
 		</label>
 		<div v-if="errorMessage" class="error">
 			{{ errorMessage }}
 		</div>
-		<ul>
-			<li v-for="email in userEmails" :key="email">
-				{{ email }}
-			</li>
-		</ul>
 	</div>
 </template>
 
@@ -21,6 +16,7 @@
   import { useAlert } from '@/composables/core/notification'
   const errorMessage = ref(null) as any
   const userEmails = ref([])
+  const selectedFileName = ref('')
   const handleFileChange = (event) => {
     const file = event.target.files[0]
 
@@ -34,6 +30,7 @@
       return
     }
 
+    selectedFileName.value = file.name
     validateCSV(file)
   }
 
@@ -44,20 +41,10 @@
 
     reader.onload = (e: any) => {
       const csvData = e.target.result
-      // Implement your email validation logic here
-      // For simplicity, let's check if the CSV contains an "Email" column
-      // if (csvData.includes('Email')) {
-      //   errorMessage.value = null
-      //   useAlert().openAlert({ type: 'SUCCESS', msg: 'Batch booking CSV file was uploaded successfully.' })
-      //   // You can process the CSV data or emit an event to notify the parent component
-      // } else {
-      //   errorMessage.value = 'CSV file must contain an "Email" column'
-      // }
       if (hasEmailColumn(csvData)) {
       errorMessage.value = null
       userEmails.value = extractUserEmails(csvData)
       useAlert().openAlert({ type: 'SUCCESS', msg: 'Batch booking CSV file was uploaded successfully.' })
-      // You can process the CSV data or emit an event to notify the parent component
     } else {
       errorMessage.value = 'CSV file must contain an "Email" column'
     }

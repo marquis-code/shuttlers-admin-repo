@@ -1,10 +1,7 @@
 import { ref, computed } from 'vue'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-// import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
-// import { convertObjWithRefToObj } from '@/composables/utils/formatter'
-// import { useTripsModal } from '@/composables/core/modals'
 const { moveTo: financialsMoveTo, metaObject, next, prev, setFunction } = usePagination()
 const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
 
@@ -14,11 +11,6 @@ const tripFinancialId = ref('')
 const selectedTripIndex = computed(() => {
     return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
 })
-
-// const deductionForm = {
-//     amount: ref(null) as any,
-//     description: ref('')
-// }
 
 const currentIndex = ref(1)
 export const useTripIdDetails = () => {
@@ -96,22 +88,3 @@ export const useTripFinancials = () => {
     }
     return { tripFinancials, tripFinancialId, loading, getTripFinancials, revenueStats, financialsMoveTo, ...metaObject, next, prev }
 }
-
-// export const useDeductEarning = () => {
-//     const loading = ref(false)
-//     const deductPartnerEarning = async () => {
-//         loading.value = true
-//         const res = await trips_api.$_deduct_partner_trip_earnings_by_id(tripFinancialId.value, convertObjWithRefToObj(deductionForm)) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             useAlert().openAlert({ type: 'SUCCESS', msg: 'Earning was successfully deducted' })
-//             useTripsModal().closeDeductEarning()
-//         }
-//         loading.value = false
-//     }
-
-//     const prePopulateDeductionForm = (data) => {
-//         deductionForm.amount.value = Number(data.amount)
-//         deductionForm.description.value = data.description
-//     }
-//     return { loading, deductionForm, deductPartnerEarning, prePopulateDeductionForm }
-// }

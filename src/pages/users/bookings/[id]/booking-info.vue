@@ -34,15 +34,15 @@
 				</div>
 				<div
 					v-if="
-						selectedBooking.processing_result &&
-							!selectedBooking.processing_result.success
+						selectedBooking?.processing_result &&
+							!selectedBooking?.processing_result?.success
 					"
 					class="text-white bg-red-500"
 				>
 					<p>
 						Encountered error while processing batch booking.
 					</p>
-					<p>{{ selectedBooking.processing_result.error }}</p>
+					<p>{{ selectedBooking?.processing_result?.error }}</p>
 				</div>
 				<div v-else>
 					<div v-for="(item, index) in selectedBooking?.processing_result?.data" :key="index" class="flex justify-between items-center border-b py-5 text-sm">
@@ -72,16 +72,19 @@ definePageMeta({
 	middleware: ['is-authenticated']
 })
 
-const parsedData = JSON.parse(selectedBooking.value.booking_data.meta)
+let parsedData = {}
+if (selectedBooking.value && selectedBooking.value?.booking_data) {
+	parsedData = JSON.parse(selectedBooking.value?.booking_data?.meta)
+}
 const bookingRequest = ref({
 	'created at': selectedBooking?.value.created_at,
 	'Processing Status': selectedBooking?.value?.processing_completed_at ? 'processed' : 'pending',
 	'Start Date': selectedBooking?.value?.booking_data?.start_date,
 	'End Date': selectedBooking?.value?.booking_data?.end_date,
 	'Payment Source': selectedBooking?.value?.booking_data?.payment_source,
-	Pickup: parsedData?.pickup,
-	Dropoff: parsedData?.destination,
-	'Route Code': parsedData?.route_code,
+	Pickup: parsedData?.pickup ?? 'N/A',
+	Dropoff: parsedData?.destination ?? 'N/A',
+	'Route Code': parsedData?.route_code ?? 'N/A',
 	'Route Itinerary': selectedBooking?.value?.booking_data?.itinerary_id
 })
 
