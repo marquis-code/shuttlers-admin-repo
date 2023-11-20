@@ -42,7 +42,7 @@
 		<ul class="list-group list-group-flush">
 			<li class="flex items-center justify-between">
 				<small>Wallet limit</small>
-				<small>{{ corporateWalletLimitUsageInfo?.limitInfo?.limit_type == 'trip' ? `${corporateWalletLimitUsageInfo.limitInfo.limit_value} trip(s)` : `N${corporatePayUsage.limitInfo.limit_value}.00` }} {{ corporatePayUsage.limitInfo.limit_value_unit }}</small>
+				<small>{{ corporateWalletLimitUsageInfo?.limitInfo?.limit_type == 'trip' ? `${corporateWalletLimitUsageInfo?.limitInfo?.limit_value} trip(s)` : `N${corporatePayUsage.limitInfo?.limit_value}.00` }} {{ corporatePayUsage?.limitInfo?.limit_value_unit }}</small>
 			</li>
 			<li class="
 			flex items-center justify-between

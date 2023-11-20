@@ -32,7 +32,7 @@
 			<div class="grid lg:grid-cols-2 gap-8">
 				<div class="field">
 					<label for="Date">Date of Birth</label>
-					<InputDateInput id="Date" v-model="createForm.dob.value" class="font-light" placeholder="Filter by date" />
+					<InputDateInput :disabled-date="preventDisableDate" id="Date" v-model="createForm.dob.value" class="font-light" placeholder="Filter by date" />
 				</div>
 				<div class="field">
 					<label for="Date">Gender</label>
@@ -93,6 +93,9 @@ const { createForm, createUser, editUser, loading: createLoading } = useCreateUs
 const showPassword = ref(false)
 const toggleShow = () => {
 	showPassword.value = !showPassword.value
+}
+const preventDisableDate = (date) => {
+	date < new Date().setHours(0, 0, 0, 0) || (date > new Date(new Date().getTime() + 28 * 24 * 3600 * 1000))
 }
 
 </script>

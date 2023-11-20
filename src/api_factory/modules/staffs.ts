@@ -47,7 +47,7 @@ export const staffs_api = {
 		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_update_profile_picture: (id, payload) => {
-		const url = `/admins/${id}`
+		const url = `/staffs/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
 	}
 }

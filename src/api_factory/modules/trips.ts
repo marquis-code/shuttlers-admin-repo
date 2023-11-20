@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const trips_api = {
@@ -53,5 +53,13 @@ export const trips_api = {
 	$_get_trip_rating: (id:string, metaObject: TMetaObject) => {
 		const url = `/ratings/trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_trip_financials: (id:string) => {
+		const url = `/trips/${id}/revenues`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_deduct_partner_trip_earnings_by_id: (id:string, payload) => {
+		const url = `/revenues/${id}/deductions`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
 	}
 }

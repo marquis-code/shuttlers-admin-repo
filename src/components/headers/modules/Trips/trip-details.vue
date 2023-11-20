@@ -18,7 +18,8 @@ const { headstate } = usePageHeader()
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
-const pageTabs = computed(() => [
+const pageTabs = computed(() => {
+	const headerArray = [
     {
         name: 'Details',
         path: `/trips/type/${tripType.value}/${id}/trip-details`
@@ -31,7 +32,15 @@ const pageTabs = computed(() => [
         name: 'Ratings',
         path: `/trips/type/${tripType.value}/${id}/Ratings`
 	}
+]
 
-])
+if (tripType.value === 'completed') {
+	headerArray.push({
+        name: 'Trip Financials',
+        path: `/trips/type/${tripType.value}/${id}/financials`
+    })
+}
+return headerArray
+})
 
 </script>
