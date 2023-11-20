@@ -1,10 +1,10 @@
 <template>
 	<header class="w-full ">
 		<div class="flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
-			<section v-if="filterType.showSearchBar" class="relative flex gap-3">
+			<form v-if="filterType.showSearchBar" class="relative flex gap-3" autocomplete="off" @submit.prevent="">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[15px]" aria-hidden="true" />
-				<input v-model="filterData.search.value" type="text" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
-			</section>
+				<input v-model="filterData.search.value" type="text" placeholder="search" autocomplete="false" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
+			</form>
 
 			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">
 				<div v-if="filterType.showDatePicker" class="pt-2">

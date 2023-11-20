@@ -10,6 +10,10 @@ export const trips_api = {
 		const url = '/trips'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
+	$_end_trip: (id:string, payload) => {
+		const url = `/trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
 	$_cancel_trip: (id:string, payload) => {
 		const url = `/upcoming-trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, { data: payload })

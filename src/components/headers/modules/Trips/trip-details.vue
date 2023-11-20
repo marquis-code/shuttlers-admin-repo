@@ -3,6 +3,10 @@
 		<template #title>
 			<StatusBadge :name="tripType" />
 		</template>
+		<template #actions>
+			<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" />
+		</template>
+
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
 			<ModulesTripsSearchCard :trip-type="tripType" />
@@ -12,8 +16,14 @@
 
 <script setup lang="ts">
 import { usePageHeader } from '@/composables/utils/header'
+import { useTripOptions } from '@/composables/modules/trips/options'
+import { dayIsInThePast } from '@/composables/utils/formatter'
+import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
+
+const { selectedTrip } = useUpcomingTripIdDetails()
 
 const { headstate } = usePageHeader()
+const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips } = useTripOptions()
 
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
@@ -41,6 +51,17 @@ if (tripType.value === 'completed') {
     })
 }
 return headerArray
+})
+
+const dropdownChildren = computed(() => {
+ const dropdownOptions = [
+        { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+        { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
+    ]
+    if (dayIsInThePast(selectedTrip.value.trip_date)) {
+        dropdownOptions.push({ name: 'Complete Trip', func: (data) => initializeCompleteTrips(data) })
+    }
+    return dropdownOptions
 })
 
 </script>
