@@ -14,10 +14,6 @@ const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = u
 const id = useRoute().params.id as string
 getUpcomingTripById(id)
 
-// onMounted(async () => {
-// 	listenToallPassengersLocation()
-// })
-
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
 		return `${selectedTrip.value.route.route_code} ●
