@@ -38,7 +38,7 @@
 				</p>
 				<p v-if="item.fees" class="text-sm text-[#737876] whitespace-nowrap">
 					<template v-if="item.data.charge_type === 'flat'">
-						N{{ item.data.charge_value }}
+						₦{{ item.data.charge_value }}
 					</template>
 					<template v-else>
 						{{ item.data.charge_value }}%
