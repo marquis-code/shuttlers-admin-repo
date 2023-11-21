@@ -110,7 +110,6 @@ const { initDeleteConfiguration } = useDeleteChargeConfiguration()
 const { intiActivate } = useActivateConfiguration()
 const { fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
 const tableFields = ref([
-	// { value: 'sn', text: 'S/N' },
 	{ value: 'type', text: 'Charges type' },
 	{ value: 'fees', text: 'Fees' },
 	{ value: 'compulsory', text: 'Compulsory' },
