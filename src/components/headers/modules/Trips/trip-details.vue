@@ -23,7 +23,7 @@ import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 const { selectedTrip } = useUpcomingTripIdDetails()
 
 const { headstate } = usePageHeader()
-const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips } = useTripOptions()
+const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
 
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
@@ -55,7 +55,8 @@ return headerArray
 
 const dropdownChildren = computed(() => {
  const dropdownOptions = [
-        { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+     { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
     if (dayIsInThePast(selectedTrip.value.trip_date)) {

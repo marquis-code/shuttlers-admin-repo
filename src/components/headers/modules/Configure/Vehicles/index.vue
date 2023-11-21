@@ -2,10 +2,10 @@
 	<HeadersHeaderSlot title="Vehicle" pre-title="Overview">
 		<template #actions>
 			<div class="flex items-center gap-x-3">
-				<button @click="useVehicleConfigurationModal().openConfigureInspectionSite()" class="btn-primary">
+				<button class="btn-primary" @click="useVehicleConfigurationModal().openConfigureInspectionSite()">
 					New Inspection Site
 				</button>
-				<button @click="useVehicleConfigurationModal().openConfigureVehicleCategory()" class="btn-primary">
+				<button class="btn-primary" @click="useVehicleConfigurationModal().openConfigureVehicleCategory()">
 					New Vehicle Category
 				</button>
 			</div>
