@@ -31,7 +31,6 @@ export const corporates_api = {
 	},
 	$_get_corporate_staffs: (corporateId:number, metaObject: TMetaObject, filterData:{search: any;branch_ids: any;shift_ids: any}) => {
 		const queryParams = useTableFilter(filterData)
-		// console.log(filterData)
 		const url = `/corporates/${corporateId}/staff?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${filterData.search.value}${filterData.branch_ids.value.length ? `&branch_ids=${JSON.stringify(filterData.branch_ids.value)}` : ''}${filterData.shift_ids.value.length ? `&shift_ids=${JSON.stringify(filterData.shift_ids.value)}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
