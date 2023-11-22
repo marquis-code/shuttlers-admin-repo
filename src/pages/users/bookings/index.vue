@@ -1,8 +1,8 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="batchBookingList" :option="onRowClicked" class="cursor-pointer">
+		<Table :loading="loading" :has-index="true" :page="page" :headers="tableFields" :table-data="batchBookingList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" />
+				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.pickup" class="flex items-center gap-4">
@@ -24,6 +24,9 @@
 					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY, hh:mm:ss A").value }}
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -33,7 +36,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
 import { useBatchBookingIdDetails } from '@/composables/modules/batchBooking/id'
 
-const { getBatchBookingList, loading, batchBookingList } = useGetBatchBookingList()
+const { getBatchBookingList, loading, batchBookingList, onFilterUpdate, moveTo, next, prev, total, page } = useGetBatchBookingList()
 getBatchBookingList()
 
 definePageMeta({

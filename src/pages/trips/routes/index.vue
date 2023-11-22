@@ -31,7 +31,7 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 
@@ -51,7 +51,7 @@ const onRowClicked = (data) => {
 
 const dropdownChildren = computed(() => [
 	{ name: 'Edit', func: (data) => {} },
-	{ name: 'Suspend', func: (data) => {} },
+	{ name: 'Suspend', func: (data) => { handleRouteStatus(data) } },
 	{ name: 'Duplicate', func: (data) => {} },
 	{ name: 'Delete', func: (data) => {}, class: '!text-red' }
 ])
@@ -78,6 +78,20 @@ const tableFields = ref([
 		value: 'id'
 	}
 ])
+
+const handleRouteStatus = (data: any) => {
+    useConfirmationModal().openAlert({
+        title: `Sure to ${data.status === 0 ? 'Un-suspend' : 'suspend'} route?`,
+		type: 'NORMAL',
+        desc: `Customers will ${data.status === 0 ? 'will' : 'no longer'} discover this route when searching on the mobile`,
+		loading,
+		call_function: () => suspendRoute(data.id, actionType)
+    })
+}
+
+// const suspendRoute = () => {
+
+// }
 
 </script>
 

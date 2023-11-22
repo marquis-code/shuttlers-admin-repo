@@ -225,6 +225,32 @@ export const useGetTripRatingList = () => {
     return { getTripRatings, loadingTripRatings, tripRatingList, moveTo, ...metaObject, next, prev }
 }
 
-//
-// setTrips
-// setCurrentTrip
+export const useLoadActiveTripPassengers = () => {
+    const loading = ref(false)
+    const passengersList = ref([])
+    const getActiveTripPassengers = async (id: string) => {
+        loading.value = true
+        const res = await trips_api.$_get_active_trip_passengers(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            passengersList.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { getActiveTripPassengers, loading, passengersList }
+}
+
+export const useLoadUpcomingTripPassengers = () => {
+    const loading = ref(false)
+    const passengersList = ref([])
+    const getTUpcomingripPassengers = async (id: string) => {
+        loading.value = true
+        const res = await trips_api.$_get_upcoming_trip_passengers(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            passengersList.value = res.data.data
+        }
+        loading.value = false
+    }
+
+    return { getTUpcomingripPassengers, loading, passengersList }
+}
