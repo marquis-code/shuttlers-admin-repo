@@ -65,5 +65,13 @@ export const trips_api = {
 	$_deduct_partner_trip_earnings_by_id: (id:string, payload) => {
 		const url = `/revenues/${id}/deductions`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
+	},
+	$_get_active_trip_passengers: (id:string) => {
+		const url = `trips/${id}/passengers`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_upcoming_trip_passengers: (id:string) => {
+		const url = `/trips/${id}/passengers?isUpcomingTrip=1`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

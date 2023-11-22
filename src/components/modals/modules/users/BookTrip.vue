@@ -4,7 +4,7 @@
 			<div class="field relative">
 				<label for="route">Select Route</label>
 				<select v-if="!loadingMainRoutes" id="route" v-model="form.selectedRoute"
-					class="border-red-500 text-sm w-10/12 border outline-none py-2.5 rounded-md px-3">
+					class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
 					<option class="" disabled>
 						--- select ---
 					</option>
@@ -12,7 +12,7 @@
 						{{ `${route.route_code} - From ${route.pickup} To ${route.destination}` }}
 					</option>
 				</select>
-				<Skeleton v-else height="100px" />
+				<Skeleton v-else height="50px" />
 			</div>
 			<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 				<div class="flex flex-col items-start justify-start">
@@ -45,7 +45,7 @@
 						</option>
 					</select>
 				</div>
-				<Skeleton v-else height="100px" />
+				<Skeleton v-else height="50px" />
 			</div>
 			<div class="field relative">
 				<label for="route">Select Pickup Point</label>
@@ -58,7 +58,7 @@
 						{{ busStop.name }}
 					</option>
 				</select>
-				<Skeleton v-else height="100px" />
+				<Skeleton v-else height="50px" />
 			</div>
 			<div class="field relative">
 				<label for="route">Select Drop Off Point</label>
@@ -71,7 +71,7 @@
 						{{ destination.name }}
 					</option>
 				</select>
-				<Skeleton v-else height="100px" />
+				<Skeleton v-else height="50px" />
 			</div>
 			<div class="">
 				<label for="startDate">Choose Date</label>
@@ -91,11 +91,11 @@
 			</div>
 			<div class="">
 				<div class="flex items-center gap-x-2">
-					<label class="block" for="route">Is Subscription?</label><input id="route" v-model="form.has_subscription" class="block mb-1" type="checkbox">
+					<label class="block text-sm" for="route">Is Subscription?</label><input id="route" v-model="form.has_subscription" class="block mb-1" type="checkbox">
 				</div>
 				<div v-if="form.has_subscription" class="mb-4">
 					<div class="space-y-4">
-						<label>Select Pickup Days</label>
+						<label class="text-sm">Select Pickup Days</label>
 						<div class="grid grid-cols-3 gap-4">
 							<div
 								v-for="(day, index) in Object.keys(dayWithIds)"
@@ -115,7 +115,7 @@
 							</div>
 						</div>
 						<div>
-							<label>Select Trip Weeks</label>
+							<label class="text-sm">Select Trip Weeks</label>
 							<div class="flex items-center gap-4">
 								<div
 									v-for="item in subscriptionWeeks"
@@ -137,11 +137,11 @@
 				</div>
 			</div>
 			<div class="flex items-center gap-x-3">
-				<label for="route" class="block">With Luggage?</label>
+				<label for="route" class="block text-sm">With Luggage?</label>
 				<input id="route" v-model="form.has_luggage" type="checkbox" class="block">
 			</div>
 			<div v-if="form.has_luggage" class="flex justify-start items-start flex-col">
-				<div><label for="route" class="block">Luggage Quantity</label></div>
+				<div><label for="route" class="block text-sm">Luggage Quantity</label></div>
 				<div class="w-full">
 					<input v-model="form.luggage_quantity" type="number" class="py-2 border border-gray-500 w-full rounded-md px-3 outline-none">
 				</div>
@@ -150,9 +150,9 @@
 				<div class="flex items-center gap-x-1">
 					<div><label>Fare:</label></div>
 					<div v-if="totalFare.fare" class="ml-2 font-bold">
-						₦{{ totalFare.fare }}
+						{{ convertToCurrency(totalFare.fare) }}
 					</div>
-					<span v-else>N/A</span>
+					<span v-else>₦ 0.00</span>
 				</div>
 			</div>
 
@@ -173,6 +173,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserModal } from '@/composables/core/modals'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 import { useBookUserTrip } from '@/composables/modules/users/id'
@@ -210,7 +211,7 @@ function getDayOfWeek(startDate) {
   return startDayIndex
 }
 
-const bookTrip = () => {
+const bookTrip = async () => {
 	let dayIds = [] as any
 
 		if (!form.subscriptionDays.length) {
@@ -232,7 +233,8 @@ const bookTrip = () => {
     payment_source: form?.payment_source,
     luggage_quantity: form?.luggage_quantity
 	}
-	handleUserTripBooking(payload)
+	await handleUserTripBooking(payload)
+	useUserModal().closeBookTrip()
 }
 
 const subscriptionWeeks = reactive([
