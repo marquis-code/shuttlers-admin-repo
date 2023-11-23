@@ -46,7 +46,6 @@ const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
-// const CommuteModals = { SosNotifier, UpdateVehicle, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>

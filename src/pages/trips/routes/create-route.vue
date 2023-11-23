@@ -106,24 +106,10 @@ const form = reactive({
     endDate: ''
 })
 
-// const routeVisibility = reactive({
-//     private: '',
-//     public: ''
-// })
-
-// const routeType = reactive({
-//     shared: '',
-//     exclusive: ''
-// })
-
 const selectedRouteVisibility = ref('public')
 const selectedRouteType = ref('shared')
 const selectedRouteAvailability = ref('everyday')
 
-// const routeAvailability = reactive({
-//     everyday: '',
-//     selectedDays: ''
-// })
   const addStopPoint = () => {
     form.stopPoints.push(stopPoint.value)
   }
