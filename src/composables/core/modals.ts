@@ -10,7 +10,6 @@ import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
 import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
 import UpdateDriverAndVehicle from '@/components/modals/modules/commute/trips/UpdateDriverAndVehicle.vue'
-import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
 import UpdateVehicle from '@/components/modals/modules/commute/UpdateVehicle.vue'
 import ChangePassword from '@/components/modals/modules/admins/ChangePassword.vue'
 import ChangeUserPassword from '@/components/modals/modules/users/ChangePassword.vue'
