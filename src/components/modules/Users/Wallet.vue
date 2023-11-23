@@ -47,7 +47,9 @@
 				<p v-if="Object.keys(corporateWalletLimitUsageInfo).length">
 					{{ corporateWalletLimitUsageInfo?.limitInfo?.limit_type == 'trip' ? `${corporateWalletLimitUsageInfo?.limitInfo?.limit_value} trip(s)` : `N${corporateWalletLimitUsageInfo?.limitInfo?.limit_value}.00` }} {{ corporateWalletLimitUsageInfo?.limitInfo?.limit_value_unit }}
 				</p>
-				<p v-else>N/A</p>
+				<p v-else>
+					N/A
+				</p>
 			</li>
 			<li class="
 			flex items-center justify-between
