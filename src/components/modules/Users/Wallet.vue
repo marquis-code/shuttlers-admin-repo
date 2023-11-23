@@ -39,51 +39,74 @@
 			</p>
 		</div>
 
-		<ul class="list-group list-group-flush">
+		<ul class="space-y-4 p-6">
 			<li class="flex items-center justify-between">
-				<small>Wallet limit</small>
-				<small>{{ corporateWalletLimitUsageInfo?.limitInfo?.limit_type == 'trip' ? `${corporateWalletLimitUsageInfo?.limitInfo?.limit_value} trip(s)` : `N${corporatePayUsage.limitInfo?.limit_value}.00` }} {{ corporatePayUsage?.limitInfo?.limit_value_unit }}</small>
+				<p class="text-gray-500">
+					Wallet limit
+				</p>
+				<p v-if="Object.keys(corporateWalletLimitUsageInfo).length">
+					{{ corporateWalletLimitUsageInfo?.limitInfo?.limit_type == 'trip' ? `${corporateWalletLimitUsageInfo?.limitInfo?.limit_value} trip(s)` : `N${corporateWalletLimitUsageInfo?.limitInfo?.limit_value}.00` }} {{ corporateWalletLimitUsageInfo?.limitInfo?.limit_value_unit }}
+				</p>
+				<p v-else>
+					N/A
+				</p>
 			</li>
 			<li class="
 			flex items-center justify-between
               ">
-				<small>Limit Usage</small>
-				<small>{{ corporateWalletLimitUsageInfo?.description }}</small>
+				<p class="text-gray-500">
+					Limit Usage
+				</p>
+				<p>{{ corporateWalletLimitUsageInfo?.description ?? 'N/A' }}</p>
 			</li>
 			<li class="
 			flex items-center justify-between
               ">
-				<small>Company</small>
-				<!-- <router-link :to="{name: 'ShowCompanyInfo', params: {companyId: selectedUser.corporate_id, status: 'active' }}">
-					{{ selectedUser?.company?.corporate_name }}
-				</router-link> -->
+				<p class="text-gray-500">
+					Company
+				</p>
+				<NuxtLink :to="`/companies/${selectedUser.corporate_id}/company-info`">
+					{{ selectedUser?.company?.corporate_name ?? 'N/A' }}
+				</NuxtLink>
 			</li>
 
 			<li class="
 			flex items-center justify-between
               ">
-				<small>Company wallet balance</small>
-				<small>{{
-					corporateWalletDetails?.wallet?.available_balance_formatted
-				}}</small>
+				<p class="text-gray-500">
+					Company wallet balance
+				</p>
+				<p>
+					{{
+						corporateWalletDetails?.wallet?.available_balance_formatted ?? 'N/A'
+					}}
+				</p>
 			</li>
 
 			<li class="
 			flex items-center justify-between
               ">
-				<small>Is overdraft enabled</small>
-				<small>{{
-					corporateWalletDetails?.wallet?.supports_over_draw == 1 ? 'Yes' : 'No'
-				}}</small>
+				<p class="text-gray-500">
+					Is overdraft enabled
+				</p>
+				<p>
+					{{
+						corporateWalletDetails?.wallet?.supports_over_draw == 1 ? 'Yes' : 'No'
+					}}
+				</p>
 			</li>
 
 			<li v-if="corporateWalletDetails?.wallet?.supports_over_draw == 1" class="
 			flex items-center justify-between
               ">
-				<small>Overdraft balance</small>
-				<small>{{
-					corporateWalletDetails?.wallet?.max_over_draw_value
-				}}</small>
+				<p class="text-gray-500">
+					Overdraft balance
+				</p>
+				<p>
+					{{
+						corporateWalletDetails?.wallet?.max_over_draw_value ?? 'N/A'
+					}}
+				</p>
 			</li>
 		</ul>
 	</section>

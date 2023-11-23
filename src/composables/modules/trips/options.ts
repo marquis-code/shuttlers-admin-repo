@@ -50,7 +50,7 @@ export const useTripOptions = () => {
             driver_id: selectedTrip.value.driver_id,
             route_itinerary_id: selectedTrip.value.route_itinerary_id,
             trip_date: selectedTrip.value.trip_date,
-            pickup_coordinate: selectedTrip.value.pickup_coordinate
+            pickup_coordinate: selectedTrip.value?.route?.pickup_coordinate
         }
 
         const res = await trips_api.$_start_trip(sent_data) as CustomAxiosResponse

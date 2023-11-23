@@ -20,18 +20,8 @@
 					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
 				</div>
 
-				<div class="field relative">
-					<label for="route">Select Route</label>
-					<select v-if="!loadingMainRoutes" id="route" v-model="form.selectedRoute"
-						class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
-						<option class="" disabled>
-							--- select ---
-						</option>
-						<option v-for="(route, idx) in mainRoutesList" :key="idx" :value="route">
-							{{ `${route.route_code} - From ${route.pickup} To ${route.destination}` }}
-						</option>
-					</select>
-					<Skeleton v-else height="100px" />
+				<div class="field relative w-full">
+					<RuoteSelector class="w-full" @selected="routeSelected" />
 				</div>
 				<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 					<div class="flex flex-col items-start justify-start">
@@ -220,6 +210,10 @@ const form = reactive({
 const isFormEmpty = computed(() => {
 	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers)
 })
+
+const routeSelected = (val: any) => {
+	form.selectedRoute = val
+}
 
 const handleUploadedEmails = (item: any) => {
 	const result = item.filter((itm: any) => itm !== '')

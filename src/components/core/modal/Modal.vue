@@ -8,7 +8,7 @@
 		@click.self="autoClose ? close($el) : null"
 	>
 		<transition name="modal" appear>
-			<div v-if="type == 'popup'" class="modal">
+			<div v-if="type == 'popup'" class="modal w-[800px]">
 				<header class="modal-title flex justify-between w-full items-center">
 					<span v-if="showTitle" class="text-center w-full">{{ title }}</span>
 					<icon
