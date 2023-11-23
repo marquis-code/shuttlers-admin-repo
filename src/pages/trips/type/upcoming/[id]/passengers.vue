@@ -132,7 +132,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else class="bg-white pb-14 shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-center flex-col space-y-1">
+		<div v-else class="bg-white pb-14 shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-center flex-col space-y-1 ">
 			<img src="@/assets/icons/source/empty-search-state.svg" alt="enpty state">
 			<p class="font-medium text-gray-900">
 				No bus stop or user found
