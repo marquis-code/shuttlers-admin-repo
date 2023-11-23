@@ -8,6 +8,7 @@ import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmati
 import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoints.vue'
 import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
+import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
 import UpdateDriverAndVehicle from '@/components/modals/modules/commute/trips/UpdateDriverAndVehicle.vue'
 import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
 import UpdateVehicle from '@/components/modals/modules/commute/UpdateVehicle.vue'
