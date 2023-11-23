@@ -10,7 +10,7 @@
 				{{ form?.selectedItinerary?.trip_time }}
 			</p>
 			<div>
-				<div><RuoteSelector @selected="routeSelected" /></div>
+				<div><RuoteSelector class="" @selected="routeSelected" /></div>
 				<p class="text-sm text-gray-500 mt-1">
 					Please select a route
 				</p>
@@ -19,7 +19,7 @@
 				<div v-if="!loadingItineraries" class="w-full">
 					<label for="itinerary" class="text-sm">Assign Itinerary</label>
 					<select id="itinerary" v-model="form.selectedItinerary"
-						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3">
+						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3 input-field">
 						<option value="" class="" disabled>
 							--- select ---
 						</option>
@@ -34,7 +34,7 @@
 				<div v-if="!loadingVehicles" class="w-full">
 					<label for="itinerary" class="text-sm">Selected Vehicle</label>
 					<select id="itinerary" v-model="form.selectedVehicle"
-						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3">
+						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3 input-field">
 						<option value="" class="" disabled>
 							--- select ---
 						</option>
@@ -59,11 +59,11 @@
 			<div v-if="!enableTransgerBookingForTodayOnly" class="space-y-4">
 				<div class="">
 					<label class="font-light text-sm">Start Date (Today)</label>
-					<input :value="todaysDate" class="w-full border outline-none py-2 text-xs px-3 rounded-md">
+					<input readonly :value="todaysDate" class="w-full input-field border outline-none py-2 text-xs px-3 rounded-md">
 				</div>
 				<div class="">
 					<label class="font-light text-sm">End Date</label>
-					<InputDateInput id="startDate" v-model="form.endDate" class="font-light w-full" placeholder="Filter by date" />
+					<InputDateInput id="startDate" v-model="form.endDate" class="font-light  w-full" placeholder="Filter by date" />
 				</div>
 			</div>
 			<div class="flex justify-between items-center gap-x-10 pt-6">
@@ -108,7 +108,7 @@ watch(() => form.selectedItinerary, (val) => {
 })
 
 const todaysDate = computed(() => {
-   return useDateFormat(new Date(), 'MMMM d, YYYY').value
+   return useDateFormat(new Date(), 'YYYY-MM-DD').value
 })
 
 const routeSelected = (val: any) => {
