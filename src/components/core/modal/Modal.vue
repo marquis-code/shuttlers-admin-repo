@@ -70,6 +70,11 @@ const props = defineProps({
 		default: 'popup',
 		type: String as PropType<modalTypes>,
 		required: false
+	},
+	width: {
+		default: '90%',
+		type: String,
+		required: false
 	}
 })
 

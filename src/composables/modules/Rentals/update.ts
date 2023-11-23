@@ -29,20 +29,31 @@ export const useUpdateCharter = () => {
 
     const updateCharterOrder = async (rentalDetails) => {
         loading.value = true
+        const payload = ref({} as Record<string, any>)
 
         try {
-            const payload = {
+            if (charterStatus.value === 'rejected') {
+                payload.value = {
+                    status: charterStatus.value
+                }
+            } else {
+                payload.value = {
                 status: charterStatus.value,
                 vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle.driver?.id, cost_of_supply: item?.cost }))
             }
+            }
+            if (rentalDetails.status === 'rejected' || rentalDetails.status === 'accepted') {
+                delete payload.value.status
+            }
 
-            const res = await rental_api.$_update_rental_status(rentalDetails.id, payload) as CustomAxiosResponse
+            const res = await rental_api.$_update_rental_status(rentalDetails.id, payload.value) as CustomAxiosResponse
             if (res.type !== 'ERROR') {
                 useGetRentalById().getRentalById(rentalDetails.id)
                 useAlert().openAlert({ type: 'SUCCESS', msg: 'Rental Request Updated' })
                 loading.value = false
             }
         } catch (e) {
+            useAlert().openAlert({ type: 'ERROR', msg: e.message || 'Something went wrong' })
             loading.value = false
         }
 
