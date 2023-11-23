@@ -7,11 +7,12 @@ const selectedDays = ref([]) as Ref<any[]>
 const searchedRoute = ref('')
 
 const selectedStaffIds = computed(() => {
-	const x:number[] = []
-	selectedStaffs.value.forEach((el) => {
-		x.push(el.id)
-	})
-    return x
+	// const x:number[] = []
+	// selectedStaffs.value.forEach((el) => {
+	// 	x.push(el.id)
+	// })
+    // return x
+	return selectedStaffs.value.map((el) => el.id)
 })
 const selectedBranchIds = computed(() => {
 	return selectedBranches.value.map((el) => el.id)

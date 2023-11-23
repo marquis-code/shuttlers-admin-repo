@@ -46,5 +46,9 @@ export const corporates_api = {
 	$_get_corporate_shifts: (id:number|string) => {
 		const url = `/corporates/${id}/work-shifts?limit=10000`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_bulk_staff_assignments: (payload:any) => {
+		const url = '/staff-routes-and-workshifts'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

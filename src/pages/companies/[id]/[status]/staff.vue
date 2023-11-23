@@ -95,7 +95,8 @@
 								</div>
 							</div>
 							<div v-if="showSearchRoute" class="w-fit h-fit relative">
-								<input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg">
+								<!-- <input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg"> -->
+								<RuoteSelector :show-label="false" class="max-w-[250px]" />
 								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="showSearchRoute = false" />
 							</div>
 							<button class="text-[#364152] text-sm font-medium py-2 px-3 bg-white border rounded-lg flex items-center gap-3" @click="showFilters = true">
@@ -200,7 +201,8 @@ const tableFields = ref([
 	{ text: 'Preferred routes', value: 'routes' }
 	// { text: '', value: 'action' }
 ])
-const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
+// const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
+const filters = ['Route', 'Office branches', 'Work days', 'Work shifts']
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 const convertTime = (time:string) => {

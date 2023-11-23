@@ -1,19 +1,40 @@
-import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useSelectedStaff } from './select-staff'
+import { routes_api, corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 
+const { selectedStaffIds } = useSelectedStaff()
 const obj = {
 	route_id: ref(null),
 	itinerary_id: ref(null),
 	work_days: ref([]) as Ref<any[]>,
 	shift_id: ref(null),
 	branch_id: ref(null),
-	bus_stop: ref(null)
+	pickup: ref(null),
+	dropoff: ref(null)
 }
 
 const itineraries = ref([]) as Ref<any[]>
+const busstops = ref([]) as Ref<any[]>
 const loading = ref(false)
 export const useAssignStaff = () => {
-	const assignStaff = () => {
+	const assignStaff = async () => {
+		const payload = {
+			user_ids: selectedStaffIds.value,
+			corporate_id: useRoute().params.id,
+			branch_id: obj.branch_id.value,
+			workshift_id: obj.shift_id.value,
+			work_days: obj.work_days.value,
+			itinerary_id: obj.itinerary_id.value,
+			busstops: {
+				pickup: obj.pickup.value,
+				dropoff: obj.dropoff.value
+			}
+		}
 		loading.value = true
+		const res = await corporates_api.$_bulk_staff_assignments(payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			console.log(res)
+        }
+		loading.value = false
 	}
 
 	const fetchItineraries = async () => {
@@ -25,9 +46,20 @@ export const useAssignStaff = () => {
         }
 	}
 
+	const fetchBusStops = async () => {
+		obj.pickup.value = null
+		obj.dropoff.value = null
+		busstops.value = []
+		const res = await routes_api.$_get_routes_busstops(obj.route_id.value!) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			busstops.value = res.data.data?.length ? res.data.data : []
+        }
+	}
+
 	watch(obj.route_id, () => {
 		fetchItineraries()
+		fetchBusStops()
 	})
 
-	return { ...obj, assignStaff, loading, itineraries }
+	return { ...obj, assignStaff, loading, itineraries, busstops }
 }
