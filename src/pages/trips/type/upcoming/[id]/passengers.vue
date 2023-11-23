@@ -119,7 +119,7 @@
 
 			<div v-else>
 				<div class="d-flex justify-content-between align-items-center flex-column py-3">
-					<img class="mb-2" src="@/assets/img/searchEmptyState.svg" alt="search">
+					<img class="mb-2" src="@/assets/icons/source/searchEmptyState.svg" alt="search">
 					<h3 class="pb-1 mb-1" style="font-weight: bolder">
 						No bus stop or user found
 					</h3>
