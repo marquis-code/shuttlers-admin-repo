@@ -24,6 +24,7 @@ import ConfigureVehicleCategory from '@/components/modals/modules/configurations
 import DeleteVehicleCategory from '@/components/modals/modules/configurations/vehicle/DeleteCategoryConfirmation.vue'
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
 import AddDriver from '@/components/modals/modules/Routes/Itineraries/AddDriver.vue'
+import AssignDriver from '@/components/modals/modules/Routes/Itineraries/AssignDriverFromAuction.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -35,7 +36,7 @@ type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCh
 type CompaniesTypes = 'AssignStaff'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type TripsTypes = 'DeductEarning'
-type DriverTypes = 'AddDriver'
+type DriverTypes = 'AddDriver' | 'AssignDriver'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -47,7 +48,7 @@ const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharg
 const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const TripsModals = { DeductEarning } as Record<TripsTypes, any>
-const DriverModals = { AddDriver } as Record<DriverTypes, any>
+const DriverModals = { AddDriver, AssignDriver } as Record<DriverTypes, any>
 
 export const modal = useModal(ref([] as any))
 

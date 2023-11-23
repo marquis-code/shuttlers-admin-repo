@@ -13,9 +13,9 @@
 						Associated Drivers & Vehicles
 					</h3>
 					<div class="flex items-center gap-2">
-						<button class="border border-dark p-2 text-dark text-sm rounded-lg">
+						<router-link class="border border-dark p-2 text-dark text-sm rounded-lg" :to="`/trips/routes/${$route.params.id}/itineraries/${$route.params.iti_id}/new-auction`">
 							Auction route itinerary
-						</button>
+						</router-link>
 						<button class="p-2 rounded-lg bg-dark text-white" @click="useDriverModal().openAddDriver()">
 							Add driver
 						</button>

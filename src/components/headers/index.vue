@@ -116,7 +116,7 @@ const componentRouteArray = [
     { routes: ['configuration-vehicle-category-management', 'configuration-vehicle-category-management-inspection-sites'], component: VehicleConfiguration },
     { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
     { routes: ['configuration-trip-rating-settings-id'], component: TripRatingSettingsDetails },
-    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-itineraries-iti_id', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails },
+    { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-itineraries-iti_id', 'trips-routes-id-itineraries-iti_id-new-auction', 'trips-routes-id-itineraries-iti_id-auction-details', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails },
     { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo }
 ]
 

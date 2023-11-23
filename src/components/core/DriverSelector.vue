@@ -5,22 +5,27 @@
 		</label>
 		<VueMultiselect v-model="selectedDriver" placeholder="Search route" :searchable="true" :internal-search="false"
 			:options="drivers" :multiple="false" :taggable="false" track-by="id" :loading="loading"
-			:custom-label="(data)=>`${data.pickup} - (${data.destination})`"
+			:custom-label="(data)=>`${data.fname} - (${data.lname})`"
 			@search-change="searching"
 		>
 			<template #option="{ option }">
 				<div class="flex gap-2 w-full overflow-hidden max-w-[300px]">
-					<img v-if="option.avatar" :src="option.avatar" class="w-6 h-6 rounded-full object-cover" alt="">
+					<img v-if="option.avatar" :src="option.avatar" class="w-10 h-10 rounded-full object-cover border" alt="">
+					<img v-else src="@/assets/images/avatar.png" class="w-10 h-10 rounded-full object-cover border" alt="">
 					<div class="flex flex-col gap-1">
-						<p>{{ option.fname || '' }} {{ option.lname || '' }}</p>
-						<p v-if="option.vehicle?.name">
-							{{ option.vehicle.brand }} {{ option.vehicle.name }} • {{ option.vehicle.registration_number || '' }} • {{ option.vehicle.seats }}
+						<p class="text-sm">
+							{{ option.fname || '' }} {{ option.lname || '' }}
+						</p>
+						<p v-if="option.vehicle?.name" class="text-xs">
+							{{ option.vehicle.brand }} {{ option.vehicle.name }} {{ option.vehicle.registration_number ? `• ${option.vehicle.registration_number}` : '' }} {{ option.vehicle.seats ? `• ${option.vehicle.seats} Seater` : '' }}
+						</p>
+						<p v-else class="text-xs">
+							No vehicle assigned
 						</p>
 					</div>
 				</div>
 			</template>
 		</VueMultiselect>
-		{{ selectedDriver}}
 	</div>
 </template>
 

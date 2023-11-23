@@ -26,7 +26,7 @@ export const drivers_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_drivers_for_selector_component: (search = '') => {
-		const url = `/drivers?limit=${20}&page=${1}&metadata=true&related=device&search=${search}&status=active&field=fields:id,vehicle_id,fname,lname,email,phone,avatar,vehicle`
+		const url = `/drivers?limit=${20}&page=${1}&metadata=true&related=vehicle&search=${search}&status=active&field=fields:id,vehicle_id,fname,lname,email,phone,avatar,vehicle`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
