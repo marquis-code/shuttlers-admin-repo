@@ -32,7 +32,7 @@
 			<div class="grid lg:grid-cols-2 gap-8">
 				<div class="field">
 					<label for="Date">Date of Birth</label>
-					<InputDateInput :disabled-date="preventDisableDate" id="Date" v-model="createForm.dob.value" class="font-light" placeholder="Filter by date" />
+					<InputDateInput id="Date" v-model="createForm.dob.value" :disabled-date="preventDisableDate" class="font-light" placeholder="Filter by date" />
 				</div>
 				<div class="field">
 					<label for="Date">Gender</label>

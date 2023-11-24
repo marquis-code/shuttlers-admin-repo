@@ -10,6 +10,10 @@ export const trips_api = {
 		const url = '/trips'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
+	$_end_trip: (id:string, payload) => {
+		const url = `/trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
 	$_cancel_trip: (id:string, payload) => {
 		const url = `/upcoming-trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, { data: payload })
@@ -17,6 +21,10 @@ export const trips_api = {
 	$_complete_trip: (id:string) => {
 		const url = `/upcoming-trips/${id}/trips`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+	},
+	$_update_trip: (id:string, payload) => {
+		const url = `/upcoming-trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
 	$_get_active_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
@@ -61,5 +69,13 @@ export const trips_api = {
 	$_deduct_partner_trip_earnings_by_id: (id:string, payload) => {
 		const url = `/revenues/${id}/deductions`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
+	},
+	$_get_active_trip_passengers: (id:string) => {
+		const url = `trips/${id}/passengers`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_upcoming_trip_passengers: (id:string) => {
+		const url = `/trips/${id}/passengers?isUpcomingTrip=1`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

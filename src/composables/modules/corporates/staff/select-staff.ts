@@ -3,15 +3,11 @@ import { computed } from 'vue'
 const selectedStaffs = ref([]) as Ref<any[]>
 const selectedBranches = ref([]) as Ref<any[]>
 const selectedShifts = ref([]) as Ref<any[]>
-const selectedDays = ref([]) as Ref<any[]>
-const searchedRoute = ref('')
+const selectedDays = ref([]) as Ref<string[]>
+const selectedRoute = ref({}) as Ref<Record<string, any>>
 
 const selectedStaffIds = computed(() => {
-	const x:number[] = []
-	selectedStaffs.value.forEach((el) => {
-		x.push(el.id)
-	})
-    return x
+	return selectedStaffs.value.map((el) => el.id)
 })
 const selectedBranchIds = computed(() => {
 	return selectedBranches.value.map((el) => el.id)
@@ -51,6 +47,10 @@ const handleDaysSelection = async (data:string) => {
 	}
 }
 
+const routeSelected = (data: Record<string, any>) => {
+	selectedRoute.value = data
+}
+
 export const useSelectedStaff = () => {
-	return { selectedStaffIds, selectedStaffs, handleStaffSelection, handleDaysSelection, handleShiftSelection, handleBranchSelection, selectedBranches, selectedDays, selectedShifts, searchedRoute, selectedBranchIds, selectedShiftIds }
+	return { selectedStaffIds, selectedStaffs, handleStaffSelection, handleDaysSelection, handleShiftSelection, handleBranchSelection, selectedBranches, selectedDays, selectedShifts, selectedRoute, routeSelected, selectedBranchIds, selectedShiftIds }
 }

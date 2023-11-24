@@ -37,6 +37,7 @@ import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.
 import Trips from '@/components/headers/modules/Trips/index.vue'
 import Rental from '@/components/headers/modules/Trips/rentals.vue'
 import Routes from '@/components/headers/modules/Routes/index.vue'
+import CreateRoute from '@/components/headers/modules/Routes/create-route.vue'
 import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
 import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-details.vue'
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
@@ -97,6 +98,7 @@ const componentRouteArray = [
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
+    { routes: ['trips-routes-create-route'], component: CreateRoute },
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },

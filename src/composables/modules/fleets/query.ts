@@ -6,7 +6,7 @@ export const useQueryVehicle = () => {
     const queriedVehicle = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
-        const filterData = {
+    const filterData = {
         search: ref(''),
         has_driver: ref(true)
     }
@@ -23,5 +23,15 @@ export const useQueryVehicle = () => {
         loadingQueriedVehicle.value = false
     }
 
-    return { queryVehicle, loadingQueriedVehicle, queriedVehicle }
+    const fetch = async () => {
+        loadingQueriedVehicle.value = true
+        const res = await fleets_api.$_get_fleets(metaObject, filterData) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            queriedVehicle.value = res.data.data
+        }
+        loadingQueriedVehicle.value = false
+    }
+
+    return { queryVehicle, loadingQueriedVehicle, queriedVehicle, fetch, filterData, ...metaObject }
 }
