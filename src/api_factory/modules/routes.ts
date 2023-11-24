@@ -87,11 +87,10 @@ export const routes_api = {
 		const url = `/routes?limit=20&fields[route]=id,pickup,destination,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-<<<<<<< HEAD
 	$_get_single_itinerary_details: (id:number|string) => {
 		const url = `/route-itineraries/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-=======
+	},
 	$_update_route_status: (id:number, payload:any) => {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
@@ -111,6 +110,5 @@ export const routes_api = {
 	$_duplicate_route: (payload:any) => {
 		const url = '/routes/duplicates'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
->>>>>>> 75a39ee0deb270d002698a1e6f7876473f5aa3b0
 	}
 }
