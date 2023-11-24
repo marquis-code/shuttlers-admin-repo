@@ -16,7 +16,7 @@ const permissionModules = currentUserPermission.value
 
 const topLayerMenus = ref(getSidebarMenus(TOP_LEVEL_SIDEBAR_MENUS, permissionModules, (user.value.role || 'user')))
 const featureMenus = ref(getSidebarMenus(OPS_AND_MANAGEMENT_SIDEBAR_MENUS, permissionModules, (user.value.role || 'user')))
-const adminMenus = ref(getSidebarMenus(ADMIN_SIDEBAR_MENUS, permissionModules, (user.value.role || 'user')))
+const adminMenus = ref(getSidebarMenus(ADMIN_SIDEBAR_MENUS.value, permissionModules, (user.value.role || 'user')))
 
 const SidebarData = {
   logoIcon,

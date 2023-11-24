@@ -10,6 +10,10 @@ import tagIcon from '@/assets/icons/src/tag.vue'
 import adminIcon from '@/assets/icons/src/admin.vue'
 import configureIcon from '@/assets/icons/src/configure.vue'
 
+const isProd = computed(() => {
+  return location.host === 'v3.admin.shuttlers.africa'
+})
+
 export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Dashboard',
@@ -303,59 +307,61 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   }
 ].filter((i) => !!i)
 
-export const ADMIN_SIDEBAR_MENUS = [
-  {
-    title: 'Admins',
-    routePath: '/admin',
-    description: '',
-    iconComponent: shallowRef(adminIcon),
-    children: null,
-    rootPath: '/admin',
-    oldPath: '/admin/list',
-    shouldRedirect: true,
-    modulePermission: 'STAFF',
-    requiredAdmin: true
-  },
-  {
-    title: 'Configure',
-    routePath: null,
-    description: '',
-    iconComponent: shallowRef(configureIcon),
-    rootPath: '/configuration/trip-rating-settings',
+export const ADMIN_SIDEBAR_MENUS = computed(() => {
+  return [
+    {
+      title: 'Admins',
+      routePath: '/admin',
+      description: '',
+      iconComponent: shallowRef(adminIcon),
+      children: null,
+      rootPath: '/admin',
+      oldPath: '/admin/list',
       shouldRedirect: true,
-    modulePermission: 'ADMINCONFIG',
-    children: [
-      {
-        title: 'Trip Rating Settings',
-        routePath: '/configuration/trip-rating-settings',
-        oldPath: '/configuration/customer-app/trip-rating-settings',
-          shouldRedirect: true,
-        description: 'Configure and manage trip rating parameters'
-      },
-      {
-        title: 'Vehicle Categories',
-        routePath: '/configuration/vehicle-category-management',
-        oldPath: '/configuration/vehicle/category-management',
-          shouldRedirect: true,
-        description: 'Manage vehicle categories'
-      },
-      {
-        title: 'Amenities',
-        routePath: '/configuration/vehicle-amenities',
-        oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
-          shouldRedirect: true,
-        description: 'Manage vehicle amenities'
-      },
-      {
-        title: 'Route Price Control',
-        routePath: '/configuration/pricing/pricing-control',
-        oldPath: '/configuration/pricing-controls/',
-        shouldRedirect: false,
-        description: 'Manage route pricing centrally'
-      }
-    ]
-  }
-]
+      modulePermission: 'STAFF',
+      requiredAdmin: true
+    },
+    {
+      title: 'Configure',
+      routePath: null,
+      description: '',
+      iconComponent: shallowRef(configureIcon),
+      rootPath: '/configuration/trip-rating-settings',
+        shouldRedirect: true,
+      modulePermission: 'ADMINCONFIG',
+      children: [
+        {
+          title: 'Trip Rating Settings',
+          routePath: '/configuration/trip-rating-settings',
+          oldPath: '/configuration/customer-app/trip-rating-settings',
+            shouldRedirect: true,
+          description: 'Configure and manage trip rating parameters'
+        },
+        {
+          title: 'Vehicle Categories',
+          routePath: '/configuration/vehicle-category-management',
+          oldPath: '/configuration/vehicle/category-management',
+            shouldRedirect: true,
+          description: 'Manage vehicle categories'
+        },
+        {
+          title: 'Amenities',
+          routePath: '/configuration/vehicle-amenities',
+          oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
+            shouldRedirect: true,
+          description: 'Manage vehicle amenities'
+        },
+        {
+          title: 'Route Price Control',
+          routePath: isProd.value ? '/configuration/pricing/charges' : '/configuration/pricing/pricing-control',
+          oldPath: '/configuration/pricing-controls/',
+          shouldRedirect: false,
+          description: 'Manage route pricing centrally'
+        }
+      ]
+    }
+  ]
+})
 
 export function getSidebarMenus(menus, permissionsModules, userRole) {
   return menus
