@@ -1,9 +1,11 @@
 import { useSelectedStaff } from './select-staff'
+import { useCorporateStaff } from './fetch'
 import { useAlert } from '@/composables/core/notification'
 import { routes_api, corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCompaniesModal } from '@/composables/core/modals'
 
-const { selectedStaffIds } = useSelectedStaff()
+const { selectedStaffIds, selectedStaffs } = useSelectedStaff()
+const { getCorporateStaff } = useCorporateStaff()
 const obj = {
 	route_id: ref(null),
 	itinerary_id: ref(null),
@@ -47,6 +49,8 @@ export const useAssignStaff = () => {
 			console.log(res)
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Successful' })
 			useCompaniesModal().closeAssignStaff()
+			selectedStaffs.value = []
+			getCorporateStaff()
         }
 		loading.value = false
 	}
@@ -75,5 +79,5 @@ export const useAssignStaff = () => {
 		fetchBusStops()
 	})
 
-	return { ...obj, assignStaff, loading, itineraries, busstops }
+	return { ...obj, assignStaff, loading, itineraries, busstops, clearObj }
 }

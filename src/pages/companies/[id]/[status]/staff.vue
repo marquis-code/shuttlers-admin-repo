@@ -38,7 +38,7 @@
 							</option>
 						</select>
 					</div> -->
-					<button class="px-3 py-2 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06" @click="useCompaniesModal().openAssignStaff()">
+					<button type="button" class="px-3 py-2 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06" @click="useCompaniesModal().openAssignStaff()">
 						Assign
 					</button>
 				</div>
@@ -146,7 +146,7 @@
 				<p v-if="item.busstop" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.address?.closestBusstop?.address || 'N/A' }}
 				</p>
-				<p v-if="item.branch" class="text-sm text-[#6E717C]">
+				<p v-if="item.branch" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.workShift?.officeBranch?.address || 'N/A' }}
 				</p>
 				<p v-if="item.shift" class="text-[#101211] text-sm whitespace-nowrap">

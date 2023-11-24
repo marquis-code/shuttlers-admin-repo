@@ -15,9 +15,9 @@ const filters = {
 }
 
 export const useCorporateStaff = () => {
-	const id = useRoute().params.id as string
 	const { metaObject, moveTo, next, prev, setFunction } = usePagination()
 	const getCorporateStaff = async () => {
+		const id = useRoute().params.id as string
 		loading.value = true
 		const res = await corporates_api.$_get_corporate_staffs(Number(id), metaObject, filters) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -41,7 +41,7 @@ export const useCorporateStaff = () => {
 		getCorporateStaff()
 	}, { deep: true })
 
-	setFunction(getCorporateStaff())
+	setFunction(getCorporateStaff)
 
 	return { loading, staffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate }
 }
