@@ -54,6 +54,7 @@ const chargesTab = computed(() => {
 		// {name: 'Charge Report', route: 'ChargesReport'},
 	]
 })
+
 </script>
 
 <style scoped>
