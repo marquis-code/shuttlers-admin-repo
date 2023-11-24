@@ -123,3 +123,22 @@ export const useDeleteBusCaptains = () => {
     }
     return { loading, deleteBusCaptain }
 }
+
+export const useBookUserTrip = () => {
+    const loading = ref(false)
+
+    const handleUserTripBooking = async (payload) => {
+        loading.value = true
+        const res = await users_api.$_book_trip(selectedUserId.value, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Trip was successfully booked for user'
+            })
+            useConfirmationModal().closeAlert()
+        }
+        loading.value = false
+        return res.data
+    }
+    return { loading, handleUserTripBooking }
+}

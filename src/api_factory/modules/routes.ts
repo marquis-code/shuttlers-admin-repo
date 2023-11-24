@@ -13,6 +13,7 @@ export const routes_api = {
 	},
 	$_get_main_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
+		// meta.page_size.value = 100000
 		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -20,11 +21,11 @@ export const routes_api = {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_busstops_by_id: (id:number) => {
+	$_get_route_busstops_by_id: (id:string) => {
 		const url = `/routes/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_itineraries_by_route_id: (id:string) => {
+	$_get_itineraries_by_route_id: (id:string|number) => {
 		const url = `/routes/${id}/itineraries?itinerary_only=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -80,6 +81,30 @@ export const routes_api = {
 	},
 	$_get_route_pricing: (id: string, payload: any) => {
 		const url = `/routes/${id}/price-calculation`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_routes: (search = '') => {
+		const url = `/routes?limit=20&fields[route]=id,pickup,destination,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_update_route_status: (id:number, payload:any) => {
+		const url = `/routes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_handle_route_duplication: (id:any, payload) => {
+		const url = `/routes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_route_passengers_by_route_id: (id:string) => {
+		const url = `/trips/${id}/passengers?isUpcomingTrip=true`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url)
+	},
+	$_handle_route_deletion: (id:any) => {
+		const url = `/routes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
+	$_duplicate_route: (payload:any) => {
+		const url = '/routes/duplicates'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

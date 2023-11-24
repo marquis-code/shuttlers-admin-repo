@@ -10,16 +10,19 @@
 						<Avatar :name="item.data.fname" bg="#B1C2D9" />
 					</div>
 
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
+					<span>{{ item?.data?.fname }} {{ item?.data?.lname }}</span>
 				</span>
-				<span v-else-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
-				</span>
+				<div v-else-if="item.active">
+					<StatusBadge :name="item?.data?.active === '1' ? 'active' : 'inactive'" />
+				</div>
+				<div v-else-if="item.role">
+					<span>{{ item?.data?.role.replace('_', ' ') }}</span>
+				</div>
 				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item?.data?.created_at, "DD, MMMM YYYY").value }}
 				</span>
 				<span v-else-if="item.updated_at">
-					{{ useDateFormat(item.data.updated_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item?.data?.updated_at, "DD, MMMM YYYY").value }}
 				</span>
 			</template>
 		</Table>

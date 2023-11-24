@@ -4,50 +4,6 @@ import { usePagination } from '@/composables/utils/table'
 const selectedCampaign = ref({} as Record<string, any>)
 const selectedCampaignId = ref('')
 
-// export const useCampaignWinners = () => {
-//     const loading = ref(false)
-//     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
-//     const filterData = {
-//         status: ref(''),
-//         search: ref(''),
-//         start_date: ref(''),
-//         end_date: ref('')
-//     }
-
-//     const getCampaignWinners = async (id: string) => {
-//         const { metaObject, moveTo, next, prev, setFunction } = usePagination()
-//         const winnersList = ref([] as any)
-//         loading.value = true
-//         const res = await campaigns_api.$_get_valentine_campaign_winners(selectedCampaignId.value, metaObject) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             winnersList.value = res.data.data
-//             metaObject.total.value = res.data.metadata.total_pages
-//         }
-//         loading.value = false
-//     }
-//     setFunction(getCampaignWinners)
-
-//     watch([filterData.status, filterData.search, filterData.end_date, filterData.start_date], (val) => {
-//         getCampaignWinners()
-//     })
-//     const onFilterUpdate = (data: any) => {
-//         switch (data.type) {
-//             case 'status':
-//                 filterData.status.value = data.value === '0' ? 'inactive' : 'active'
-//                 break
-//             case 'search':
-//                 filterData.search.value = data.value
-//                 break
-//             case 'dateRange':
-//                 filterData.start_date.value = data.value[0]
-//                 filterData.end_date.value = data.value[1]
-//                 break
-//         }
-//     }
-
-//     return { winnersList, loading, getCampaignWinners, moveTo, ...metaObject, next, prev, onFilterUpdate }
-// }
-
 export const useCampaignWinners = () => {
     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
     const loading = ref(false)

@@ -5,7 +5,6 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 const selectedRoute = ref({} as Record<string, any>)
 const selectedRouteId = ref('')
 const selectedItineraryId = ref('')
-// const selectedPartnerAccountSid = ref('')
 const routeId = ref<number>()
 
 const routePricingData = {
@@ -259,4 +258,34 @@ export const useRoutePricingByItineraryId = () => {
         return res.data
     }
     return { loading, routePricingInformation, getRoutePricingInformation, setRoutePricingDataForm }
+}
+
+export const useRouteBusstopsByRouteId = () => {
+    const loading = ref(false)
+    const busstops = ref([] as any)
+    const getRouteBustopsById = async (id: string) => {
+        selectedRouteId.value = id
+        loading.value = true
+        const res = await routes_api.$_get_route_busstops_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            busstops.value = res.data.data
+        }
+        loading.value = false
+    }
+    return { selectedRoute, loading, getRouteBustopsById, busstops }
+}
+
+export const useRouteUpcomingTripsPassengersByTripId = () => {
+    const loading = ref(false)
+    const passengersList = ref([] as any)
+    const getRouteTripsPassengersById = async (id: string) => {
+        selectedRouteId.value = id
+        loading.value = true
+        const res = await routes_api.$_get_route_passengers_by_route_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            passengersList.value = res.data.data
+        }
+        loading.value = false
+    }
+    return { passengersList, loading, getRouteTripsPassengersById }
 }

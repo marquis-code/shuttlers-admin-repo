@@ -1,14 +1,17 @@
 import { ref, computed } from 'vue'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
-import { useAlert } from '@/composables/core/notification'
+import { usePagination } from '@/composables/utils/table'
+const { moveTo: financialsMoveTo, metaObject, next, prev, setFunction } = usePagination()
 const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
 
 const selectedTrip = ref({} as Record<string, any>)
 const selectedTripId = ref('')
+const tripFinancialId = ref('')
 const selectedTripIndex = computed(() => {
     return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
 })
+
 const currentIndex = ref(1)
 export const useTripIdDetails = () => {
     const loading = ref(false)
@@ -22,7 +25,7 @@ export const useTripIdDetails = () => {
         }
         loading.value = false
     }
-    return { selectedTrip, loading, getTripById }
+    return { selectedTrip, loading, getTripById, selectedTripId }
 }
 
 export const useUpcomingTripIdDetails = () => {
@@ -65,4 +68,23 @@ export const useUpcomingTripIdDetails = () => {
         }
     }
     return { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev, selectedTripIndex }
+}
+
+export const useTripFinancials = () => {
+    const loading = ref(false)
+    const tripFinancials = ref([])
+    const revenueStats = ref({})
+
+    const getTripFinancials = async (id: string) => {
+        selectedTripId.value = id
+        loading.value = true
+        const res = await trips_api.$_get_trip_financials(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            tripFinancials.value = res?.data?.deductions
+            tripFinancialId.value = res?.data?.id
+            revenueStats.value = { ...res.data }
+        }
+        loading.value = false
+    }
+    return { tripFinancials, tripFinancialId, loading, getTripFinancials, revenueStats, financialsMoveTo, ...metaObject, next, prev }
 }

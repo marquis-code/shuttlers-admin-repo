@@ -1,5 +1,7 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject } from '@/composables/utils/table'
+import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const configure_api = {
     $_get_amenities: (metaObject: TMetaObject) => {
@@ -26,9 +28,26 @@ export const configure_api = {
 		const url = `/vehicle-types?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_prices: (metaObject: TMetaObject) => {
-		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+	$_get_all_vehicle_types_without_paginating: () => {
+		const url = `/vehicle-types?limit=10000&page=${1}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_prices: (metaObject: TMetaObject, vehicleId:string|number, routeType:string) => {
+		const url = `/route-prices?limit=${metaObject.page_size.value}&page=${metaObject.page.value}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_route_pricing_control: async (vehicleId:string|number, routeType:string) => {
+		const url = `/route-prices?limit=${5}&page=${1}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/route-prices?limit=${total}&page=${1}${vehicleId ? `&vehicle_type=${vehicleId}` : ''}${routeType ? `&route_type=${routeType}` : ''}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_get_payment_options: () => {
 		const url = '/payment-options'
@@ -58,16 +77,28 @@ export const configure_api = {
 		const url = `/rating/settings/${id}/categories`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
-	$_create_trip_rating_catogory: (id, payload) => {
+	$_create_trip_rating_catogory: (payload: any) => {
 		const url = '/rating/categories'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
 	},
-	$_create_trip_rating_options: (id, payload) => {
+	$_create_trip_rating_options: (payload: any) => {
 		const url = '/rating/options'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
 	},
 	$_get_trip_rating_details: (id: string) => {
 		const url = `/rating/categories/${id}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_update_route_cost_of_supply: (routeVehicleId:number, payload:any) => {
+		const url = `/route-vehicle/${routeVehicleId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_route_selling_price: (itineraryId:number, payload:any) => {
+		const url = `/route-itineraries/${itineraryId}/price`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_route_pricing_others: (itineraryId:number, payload:any) => {
+		const url = `/route-itineraries/${itineraryId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

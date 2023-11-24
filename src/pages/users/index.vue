@@ -16,7 +16,7 @@
 					</NuxtLink>
 				</div>
 				<span v-else-if="item.created_at" class="space-y-4 text-base">
-					{{ useDateFormat(item?.data?.created_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item?.data?.created_at, "DD, MMMM YYYY").value }}
 				</span>
 				<span v-if="item.wallet" class="flex items-center gap-4 text-base">
 					<span>{{ convertToCurrency(item?.data?.wallet?.amount) }}</span>

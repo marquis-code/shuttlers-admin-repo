@@ -6,7 +6,7 @@
 		class="!text-sm"
 
 	>
-		<div class="flex flex-col items-center -mt-4 w-full gap-4 ">
+		<form class="flex flex-col items-center -mt-4 w-full gap-4 " autocomplete="off" @submit="call_function()">
 			<h1 class="text-center text-lg font-medium">
 				{{ title }}
 			</h1>
@@ -23,23 +23,23 @@
 			</div>
 
 			<p class="text-start">
-				Provide your admin password in order to proceed with the refund process
+				Provide your admin password in order to proceed
 			</p>
 			<div class="field relative">
 				<label for="password" class="w-full">Enter password</label>
-				<input id="password" v-model="password" autocomplete="true" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
+				<input id="password" v-model="password" autocomplete="false" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
 				<icon name="eye" class="w-6 absolute top-[53%] right-4" @click="toggleShow" />
 			</div>
 			<div class="grid grid-cols-2 gap-4  w-full">
-				<button class="modal-btn" @click="closeAlert">
+				<button class="modal-btn" type="button" @click="closeAlert">
 					cancel
 				</button>
-				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading || password === ''" @click="call_function()">
+				<button class="modal-btn" :class="[buttonStyle]" :disabled="loading || password === ''">
 					<span v-if="!loading"> Proceed</span>
 					<Spinner v-else />
 				</button>
 			</div>
-		</div>
+		</form>
 	</Modal>
 </template>
 

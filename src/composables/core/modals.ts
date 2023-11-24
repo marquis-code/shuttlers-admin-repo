@@ -8,6 +8,8 @@ import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmati
 import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoints.vue'
 import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
+import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
+import UpdateDriverAndVehicle from '@/components/modals/modules/commute/trips/UpdateDriverAndVehicle.vue'
 import UpdateVehicle from '@/components/modals/modules/commute/UpdateVehicle.vue'
 import ChangePassword from '@/components/modals/modules/admins/ChangePassword.vue'
 import ChangeUserPassword from '@/components/modals/modules/users/ChangePassword.vue'
@@ -18,27 +20,39 @@ import MakeBusCaptain from '@/components/modals/modules/users/MakeBusCaptain.vue
 import CreateChargeTypes from '@/components/modals/modules/configurations/charges/types/index.vue'
 import CreateChargeConfigurations from '@/components/modals/modules/configurations/charges/configure/index.vue'
 import RemitCharge from '@/components/modals/modules/configurations/charges/configure/remitted.vue'
+import AssignStaff from '@/components/modals/modules/companies/staff/multipleRouteAssignment.vue'
 import ConfigureInspectionSite from '@/components/modals/modules/configurations/vehicle/InspectionSite.vue'
 import ConfigureVehicleCategory from '@/components/modals/modules/configurations/vehicle/vehicleCategory.vue'
 import DeleteVehicleCategory from '@/components/modals/modules/configurations/vehicle/DeleteCategoryConfirmation.vue'
+import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
+import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateRoutes.vue'
+import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
+import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
+import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
-type CommuteTypes = 'SosNotifier' | 'UpdateVehicle'
+type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
+type CompaniesTypes = 'AssignStaff'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
+type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers'
+type RouteTypes = 'RouteDuplicationModal'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
-const CommuteModals = { SosNotifier, UpdateVehicle } as Record<CommuteTypes, any>
+const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
+const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
+const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers } as Record<TripsTypes, any>
+const RoutesModal = { RouteDuplicationModal } as Record<RouteTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -49,7 +63,10 @@ const campaignModal = modal.register('Campaign', CampaignModals)
 const commuteModal = modal.register('Commute', CommuteModals)
 const adminModal = modal.register('Admins', AdminModals)
 const chargeModal = modal.register('Charges', ChargeModals)
+const companiesModal = modal.register('Companies', CompaniesModals)
 const vehicleModal = modal.register('VehicleConfiguration', VehicleConfigurationModals)
+const tripsModal = modal.register('Trips', TripsModals)
+const routeModal = modal.register('Routs', RoutesModal)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -58,4 +75,7 @@ export const useCampaignModal = () => campaignModal
 export const useCommuteModal = () => commuteModal
 export const useAdminModal = () => adminModal
 export const useChargeModal = () => chargeModal
+export const useCompaniesModal = () => companiesModal
 export const useVehicleConfigurationModal = () => vehicleModal
+export const useTripsModal = () => tripsModal
+export const useRouteModal = () => routeModal

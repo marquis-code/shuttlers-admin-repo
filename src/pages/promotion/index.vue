@@ -23,18 +23,10 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPromotionsList } from '@/composables/modules/promocodes/fetch'
-// import { useDriverIdDetails } from '@/composables/modules/drivers/id'
 
 const { getPromotionsList, loadingPromotions, promotionsList, moveTo, next, prev, total, page } = useGetPromotionsList()
 
-// filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getPromotionsList()
-
-// const onRowClicked = (data) => {
-// 	const { selectedDriver } = useDriverIdDetails()
-// 	useRouter().push(`/drivers/${data.id}/driver-info`)
-// 	selectedDriver.value = data
-// }
 
 definePageMeta({
     layout: 'dashboard',

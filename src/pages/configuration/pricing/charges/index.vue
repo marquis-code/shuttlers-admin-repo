@@ -38,7 +38,7 @@
 				</p>
 				<p v-if="item.fees" class="text-sm text-[#737876] whitespace-nowrap">
 					<template v-if="item.data.charge_type === 'flat'">
-						N{{ item.data.charge_value }}
+						₦{{ item.data.charge_value }}
 					</template>
 					<template v-else>
 						{{ item.data.charge_value }}%
@@ -120,12 +120,6 @@ const tableFields = ref([
 	{ value: 'status', text: 'Status' },
 	{ value: 'action', text: 'Action' }
 ])
-
-// const dropdownChildren = computed(() => [
-// 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-// 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
-// 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
-// ])
 
 const sortDropdownChildren = (data:Record<string, any>) => {
 	return [

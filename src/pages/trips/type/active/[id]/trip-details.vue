@@ -21,15 +21,6 @@ const id = useRoute().params.id as string
 getTripById(id)
 getTripPassenger(id)
 
-// watch(tripPassengerData, (val) => {
-// 	if (val.length > 0) {
-// 		val.forEach((item: any) => {
-// 			listenToSpecificPassengerLocationAndAddtoMap(item.user_id, openCard)
-// 		})
-// 	}
-// })
-// listenToallPassengersLocation()
-
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
 		return `${selectedTrip.value.route.route_code} ●
