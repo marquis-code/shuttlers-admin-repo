@@ -84,7 +84,6 @@ const tableFields = ref([
 ])
 
 const handleRouteStatus = (data: any) => {
-	console.log(typeof data.id, 'data here')
 	const actionType = data.status === 0 ? 'unsuspend' : 'suspend'
     useConfirmationModal().openAlert({
         title: `Sure to ${data.status === 0 ? 'Un-suspend' : 'suspend'} route?`,

@@ -44,7 +44,6 @@ const handleSelectedRoute = (val) => {
    routeObj.value = val
 }
 const handleSelectedItinerary = (val) => {
-	console.log(val, 'gh')
 	itineraryObj.value = val
 }
 </script>

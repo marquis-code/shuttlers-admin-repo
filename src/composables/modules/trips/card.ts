@@ -32,9 +32,9 @@ export const useTripCardSearch = () => {
     const applyFilter = async ({ tripType, filterData }: { tripType: string, filterData: { search: string, dateRange: any[] } }) => {
         switch (tripType) {
             case 'active':
-                // active_filterData.from.value
-                // active_filterData.to.value
-                // active_filterData.search.value
+                active_filterData.from.value = filterData.dateRange[0]
+                active_filterData.to.value = filterData.dateRange[1]
+                active_filterData.search.value = filterData.search
                 break
             case 'upcoming':
                 upcoming_filterData.from.value = filterData.dateRange[0]
@@ -42,7 +42,9 @@ export const useTripCardSearch = () => {
                 upcoming_filterData.search.value = filterData.search
                 break
             case 'completed':
-                // await getCompletedTrips(filterData)
+                completed_filterData.from.value = filterData.dateRange[0]
+                completed_filterData.to.value = filterData.dateRange[1]
+                completed_filterData.search.value = filterData.search
                 break
         }
     }

@@ -4,7 +4,9 @@
 			<StatusBadge :name="tripType" />
 		</template>
 		<template #actions>
-			<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
+			<div v-if="tripType !== 'completed'">
+				<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
+			</div>
 		</template>
 
 		<template #tabs>
@@ -23,7 +25,7 @@ import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 const { selectedTrip } = useUpcomingTripIdDetails()
 
 const { headstate } = usePageHeader()
-const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
+const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
 
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
@@ -54,13 +56,22 @@ return headerArray
 })
 
 const dropdownChildren = computed(() => {
- const dropdownOptions = [
-     { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
-        { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
+ const dropdownOptions = [] as Record<string, any>[]
+    const upcomingDropdownOptions = [
+         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+    { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+    { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
-    if (dayIsInThePast(selectedTrip.value.trip_date)) {
+
+    if (tripType.value === 'upcoming') {
+        dropdownOptions.push(...upcomingDropdownOptions)
+        if (dayIsInThePast(selectedTrip.value.trip_date)) {
         dropdownOptions.push({ name: 'Complete Trip', func: (data) => initializeCompleteTrips(data) })
+        }
+    }
+
+    if (tripType.value === 'active') {
+        dropdownOptions.push({ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' })
     }
     return dropdownOptions
 })
