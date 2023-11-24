@@ -101,7 +101,7 @@ export const routes_api = {
 	},
 	$_handle_route_deletion: (id:any) => {
 		const url = `/routes/${id}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url)
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
 	$_duplicate_route: (payload:any) => {
 		const url = '/routes/duplicates'
