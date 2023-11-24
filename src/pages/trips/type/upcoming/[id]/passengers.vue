@@ -14,11 +14,11 @@
 			</div>
 			<div class="flex items-center gap-x-3">
 				<div class="flex items-center gap-x-1 cursor-pointer" @click="seePickups">
-					<input id="pickup" value="pickup" name="pickup" :checked="filterType === 'pickup'" type="radio">
+					<input value="pickup" name="manifestFilter" :checked="filterType === 'pickup'" type="radio" @change="filterType = 'pickup'">
 					<label for="pickup" class="font-medium pt-2">Pick ups</label>
 				</div>
 				<div class="flex items-center gap-x-1 cursor-pointer" @click="seeDropoffs">
-					<input id="dropoff" value="dropoff" name="dropoff" :checked="filterType === 'pickup'" type="radio">
+					<input value="dropoff" name="manifestFilter" :checked="filterType === 'dropoff'" type="radio" @change="filterType = 'dropoff'">
 					<label for="dropoff" class="font-medium pt-2">Drop offs</label>
 				</div>
 			</div>
@@ -31,8 +31,45 @@
 				Transfer Booking
 			</button>
 		</div>
-
-		<div v-if="!loading">
+		<section v-for="(itm, idx) in dummy" :key="idx" class="shadow-sm border rounded-md bg-white">
+			<div class="flex justify-between items-center border-b py-3 px-6">
+				<div class="space-y-1">
+					<div class="flex items-center">
+						<img src="@/assets/icons/source/green-location.svg" alt="">
+						<p class="font-bold">
+							{{ itm.pickup }}
+						</p>
+					</div>
+					<p class="text-xs">
+						{{ dummy.length + 1 }} passenger(s)
+					</p>
+				</div>
+				<button @click="useTripsModal().openNotifyPassengers()" class="text-sm bg-black text-white px-3 py-2 rounded-md">
+					Notify Bus-Stop
+				</button>
+			</div>
+			<div class="flex justify-between items-center px-6 py-3">
+				<div class="flex items-center gap-x-2">
+					<Avatar :name="itm.name" bg="#B1C2D9" />
+					<div>
+						<p>{{ itm.name }}</p>
+						<p>{{ itm.email }}</p>
+					</div>
+				</div>
+				<div>
+					<RouteDescription class="text-xs" :pickup="itm.pickup" :destination="itm.dropoff" />
+				</div>
+				<div>{{ itm.phone }}</div>
+				<div>{{ itm.date }}</div>
+				<div class="text-xs px-3 py-1.5" :class="[itm.status === 'pending' ? 'bg-gray-500 text-white rounded-md' : '']">
+					{{ itm.status }}
+				</div>
+				<div class="cursor-pointer" @click="useTripsModal().openNotifyPassengers()">
+					<img src="@/assets/icons/source/blue-notification.svg" alt="">
+				</div>
+			</div>
+		</section>
+		<!-- <div v-if="!loading">
 			<div v-if="!isEmpty">
 				<section v-for="(users, bus_stop, index) in filteredData" :key="index" class="">
 					<h6 class="mb-0">
@@ -117,30 +154,16 @@
 				</section>
 			</div>
 
-			<div v-else>
-				<div class="d-flex justify-content-between align-items-center flex-column py-3">
-					<img class="mb-2" src="@/assets/icons/source/searchEmptyState.svg" alt="search">
-					<h3 class="pb-1 mb-1" style="font-weight: bolder">
-						No bus stop or user found
-					</h3>
-					<p class="pb-0 mb-0 text-muted">
-						Try adjusting your search
-					</p>
-					<p class="pt-0 mt-0 text-muted">
-						to find what you are looking for
-					</p>
-				</div>
+			<div v-else class="bg-white pb-14 shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-center flex-col space-y-1 ">
+				<img src="@/assets/icons/source/empty-search-state.svg" alt="enpty state">
+				<p class="font-medium text-gray-900">
+					No bus stop or user found
+				</p>
+				<p class="font-light text-gray-600">
+					Try adjusting your search to find what you are looking for
+				</p>
 			</div>
-		</div>
-		<div v-else class="bg-white pb-14 shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-center flex-col space-y-1 ">
-			<img src="@/assets/icons/source/empty-search-state.svg" alt="enpty state">
-			<p class="font-medium text-gray-900">
-				No bus stop or user found
-			</p>
-			<p class="font-light text-gray-600">
-				Try adjusting your search to find what you are looking for
-			</p>
-		</div>
+		</div> -->
 	</section>
 </template>
 
@@ -164,6 +187,27 @@ const filterType = ref('pickup')
 const form = reactive({
 	all: false
 })
+const dummy = reactive([
+	{
+		name: 'Tiffany Young',
+		email: 'fany@mailinator.com',
+		pickup: 'Super Bus Stop',
+		dropoff: 'Jibowu Bus Stop',
+		phone: '08118554713',
+		date: 'Nov 21, 2023 10:10 AM',
+		status: 'pending'
+	},
+	{
+		name: 'Tiffany Young',
+		email: 'fany@mailinator.com',
+		pickup: 'Super Bus Stop',
+		dropoff: 'Jibowu Bus Stop',
+		phone: '08118554713',
+		date: 'Nov 21, 2023 10:10 AM',
+		status: 'pending'
+	}
+])
+
 const selectedUsers = ref([])
 
 const seeDropoffs = () => {

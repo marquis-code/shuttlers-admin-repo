@@ -87,7 +87,7 @@ export const routes_api = {
 		const url = `/routes?limit=20&fields[route]=id,pickup,destination,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_update_route_status: (id:any, payload) => {
+	$_update_route_status: (id:number, payload:any) => {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
@@ -98,5 +98,13 @@ export const routes_api = {
 	$_get_route_passengers_by_route_id: (id:string) => {
 		const url = `/trips/${id}/passengers?isUpcomingTrip=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url)
+	},
+	$_handle_route_deletion: (id:any) => {
+		const url = `/routes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url)
+	},
+	$_duplicate_route: (payload:any) => {
+		const url = '/routes/duplicates'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
