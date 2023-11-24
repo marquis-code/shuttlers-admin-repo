@@ -2,14 +2,16 @@ import { useSelectedStaff } from './select-staff'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
-const { selectedBranchIds, selectedShiftIds } = useSelectedStaff()
+const { selectedBranchIds, selectedShiftIds, selectedDays, selectedRoute } = useSelectedStaff()
 const loading = ref(false)
 const staffs = ref([]) as Ref<any[]>
 const totalStaffs = ref(null) as Ref<number|null>
 const filters = {
 	search: ref(''),
 	shift_ids: computed(() => selectedShiftIds.value),
-	branch_ids: computed(() => selectedBranchIds.value)
+	branch_ids: computed(() => selectedBranchIds.value),
+	work_days: selectedDays,
+	route: selectedRoute
 }
 
 export const useCorporateStaff = () => {
@@ -34,10 +36,10 @@ export const useCorporateStaff = () => {
         }
     }
 
-	watch([filters.search, selectedShiftIds, selectedBranchIds], () => {
+	watch([filters.search, selectedShiftIds, selectedBranchIds, selectedDays, selectedRoute], () => {
 		metaObject.page.value = 1
 		getCorporateStaff()
-	})
+	}, { deep: true })
 
 	setFunction(getCorporateStaff())
 

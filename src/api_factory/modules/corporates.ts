@@ -29,10 +29,10 @@ export const corporates_api = {
 		const url = `/corporates/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_corporate_staffs: (corporateId:number, metaObject: TMetaObject, filterData:{search: any;branch_ids: any;shift_ids: any}) => {
+	$_get_corporate_staffs: (corporateId:number, metaObject: TMetaObject, filterData:{search: any;branch_ids: any;shift_ids: any, work_days: any, route: any}) => {
 		const queryParams = useTableFilter(filterData)
 		// console.log(filterData)
-		const url = `/corporates/${corporateId}/staff?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${filterData.search.value}${filterData.branch_ids.value.length ? `&branch_ids=${JSON.stringify(filterData.branch_ids.value)}` : ''}${filterData.shift_ids.value.length ? `&shift_ids=${JSON.stringify(filterData.shift_ids.value)}` : ''}`
+		const url = `/corporates/${corporateId}/staff?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${filterData.search.value}${filterData.branch_ids.value.length ? `&branch_ids=${JSON.stringify(filterData.branch_ids.value)}` : ''}${filterData.shift_ids.value.length ? `&shift_ids=${JSON.stringify(filterData.shift_ids.value)}` : ''}${filterData.work_days.value.length ? `&work_days=${JSON.stringify(filterData.work_days.value)}` : ''}${filterData.route.value.id ? `&route_ids=${JSON.stringify([filterData.route.value.id])}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_company_wallet_info_by_id: (id:number) => {

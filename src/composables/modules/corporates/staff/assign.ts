@@ -1,5 +1,7 @@
 import { useSelectedStaff } from './select-staff'
+import { useAlert } from '@/composables/core/notification'
 import { routes_api, corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useCompaniesModal } from '@/composables/core/modals'
 
 const { selectedStaffIds } = useSelectedStaff()
 const obj = {
@@ -10,6 +12,16 @@ const obj = {
 	branch_id: ref(null),
 	pickup: ref(null),
 	dropoff: ref(null)
+}
+
+const clearObj = () => {
+	obj.route_id.value = null
+	obj.itinerary_id.value = null
+	obj.work_days.value = []
+	obj.shift_id.value = null
+	obj.branch_id.value = null
+	obj.pickup.value = null
+	obj.dropoff.value = null
 }
 
 const itineraries = ref([]) as Ref<any[]>
@@ -33,6 +45,8 @@ export const useAssignStaff = () => {
 		const res = await corporates_api.$_bulk_staff_assignments(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			console.log(res)
+			useAlert().openAlert({ type: 'SUCCESS', msg: 'Successful' })
+			useCompaniesModal().closeAssignStaff()
         }
 		loading.value = false
 	}
