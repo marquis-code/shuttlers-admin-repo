@@ -51,6 +51,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
+
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
@@ -80,7 +81,7 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'View Financials', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } }
+	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } }
 ])
 
 const tableFields = ref([

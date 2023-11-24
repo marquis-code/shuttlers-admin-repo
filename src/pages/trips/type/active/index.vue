@@ -36,7 +36,7 @@
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
 				<div v-if="item.action" class="w-20">
-					<button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation">
+					<button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation(item.data)">
 						End Trip
 					</button>
 				</div>
@@ -52,8 +52,9 @@ import { useDateFormat } from '@vueuse/core'
 import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useConfirmationModal } from '@/composables/core/confirmation'
-const { call_function, closeAlert, description, title, loading, type } = useConfirmationModal()
-const router = useRouter()
+import { useTripOptions } from '@/composables/modules/trips/options'
+
+const { initializeEndTrips } = useTripOptions()
 
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
@@ -74,8 +75,8 @@ const formattedActiveTripsList = computed(() =>
     })
 )
 
-const handleTripCancellation = () => {
-	// useConfirmationModal().openAlert({ alert('Hello world'), closeAlert, description: 'BLA BAL BA;', title: 'B;a', loading, type: 'SUCCESS' })
+const handleTripCancellation = (data) => {
+	initializeEndTrips(data)
 }
 
 definePageMeta({
@@ -130,7 +131,7 @@ const tableFields = ref([
 ])
 
 const navigateToRoutePassengers = (item) => {
-	router.push(`/trips/type/active/${item.id}/passengers`)
+	useRouter().push(`/trips/type/active/${item.id}/passengers`)
 }
 </script>
 

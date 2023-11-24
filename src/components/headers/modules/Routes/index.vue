@@ -8,18 +8,20 @@
 				<NuxtLink to="/users/bookings/create-batch-booking" class="border-gray-800 text-sm text-gray-800 bg-white border rounded-md py-2.5 px-3">
 					Create batch booking
 				</NuxtLink>
-				<button class="border-gray-800 text-sm text-gray-800 bg-white border rounded-md py-2.5 px-3">
+				<button class="border-gray-800 text-sm text-gray-800 bg-white border rounded-md py-2.5 px-3" @click="handleRouteAvailabilityConfigModal">
 					Availability Config
 				</button>
-				<button class="btn-primary text-sm">
+				<NuxtLink to="/trips/routes/create-route" class="btn-primary text-sm">
 					Create route
-				</button>
+				</NuxtLink>
 			</div>
 		</template>
 	</HeadersHeaderSlot>
 </template>
 
 <script setup lang="ts">
+import { useCommuteModal } from '@/composables/core/modals'
+
 const pageTabs = [
     {
         name: 'Main Routes',
@@ -34,6 +36,10 @@ const pageTabs = [
         path: '/trips/routes/auctions'
     }
 ]
+
+const handleRouteAvailabilityConfigModal = () => {
+  useCommuteModal().openRouteAvailabilityConfig()
+}
 
 </script>
 

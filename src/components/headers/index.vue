@@ -37,6 +37,7 @@ import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.
 import Trips from '@/components/headers/modules/Trips/index.vue'
 import Rental from '@/components/headers/modules/Trips/rentals.vue'
 import Routes from '@/components/headers/modules/Routes/index.vue'
+import CreateRoute from '@/components/headers/modules/Routes/create-route.vue'
 import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
 import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-details.vue'
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
@@ -97,6 +98,7 @@ const componentRouteArray = [
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
+    { routes: ['trips-routes-create-route'], component: CreateRoute },
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
@@ -105,7 +107,7 @@ const componentRouteArray = [
     {
         routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings',
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
-            'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings'], component: TripDetails
+            'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials'], component: TripDetails
     },
     { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify'], component: GenericHeader },
     { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },

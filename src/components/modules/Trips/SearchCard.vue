@@ -6,7 +6,7 @@
 				class="btn flex outline-none items-center  font-normal"
 
 			>
-				<img src="@/assets/icons/source/unfold.svg" alt="" class="h-7 px-0 ml-2 hover:bg-gray-100 cursor-pointer w-10 mb-3 rounded-md">
+				<img src="@/assets/icons/source/unfold.svg" alt="" class="h-7 px-0 ml-2 hover:bg-gray-100 cursor-pointer w-10  rounded-md">
 			</PopoverButton>
 
 			<transition
@@ -38,10 +38,10 @@
 										completed
 									</option>
 								</select>
-								<InputDateInput v-model="_filterData.dateRange" range format="DD MMM, YY" placeholder="Filter by date" :disabled-date="()=>null" clearable />
+								<InputDateInput v-model="_filterData.dateRange" range placeholder="Filter by date" :disabled-date="()=>null" clearable />
 								<div class="flex gap-2">
 									<input v-model="_filterData.search" type="search" :placeholder="`search ${tripTypeInput} trips`" class="input-field">
-									<button class="btn-primary">
+									<button class="btn-primary" type="submit">
 										Apply
 									</button>
 								</div>

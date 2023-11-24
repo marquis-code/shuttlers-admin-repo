@@ -1,7 +1,6 @@
 import { campaigns_api } from '@/api_factory/modules/campaigns'
 import { CustomAxiosResponse } from '@/api_factory/axios.config'
 import { usePagination } from '@/composables/utils/table'
-import { useAlert } from '@/composables/core/notification'
 
 const payloads = {
     name: ref(''),
