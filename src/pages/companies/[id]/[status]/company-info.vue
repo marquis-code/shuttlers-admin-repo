@@ -102,23 +102,25 @@
 			</div>
 		</div>
 		<div class="w-6/12 space-y-6">
-			<div class="px-6 border-b py-3 rounded-md shadow-sm bg-white h-32">
-				<div class="flex justify-between items-center border-b pb-2">
-					<p class="font-medium text-sm">
-						Work branches
+			<div class="px-6 border-b py-3 rounded-md shadow-sm bg-white h-60 grid place-content-center">
+				<div class="flex justify-between items-center flex-col gap-y-2">
+					<p class="font-medium text-lg">
+						No Work branches
 					</p>
-					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">
+					<p class="text-xs font-medium text-gray-500">Add a new branch</p>
+					<button @click="useCompaniesModal().openAddWorkBranch()" class="px-3 py-2 bg-black text-white rounded-md text-xs border border-gray-700">
 						Add work branches
 					</button>
 				</div>
 			</div>
 
-			<div class="px-6 border-b py-3 rounded-md shadow-sm bg-white h-32">
-				<div class="flex justify-between items-center border-b pb-2">
-					<p class="font-medium text-sm">
-						Work branches
+			<div class="px-6 border-b py-3 rounded-md shadow-sm bg-white h-60 grid place-content-center">
+				<div class="flex justify-between items-center flex-col gap-y-2">
+					<p class="font-medium text-lg">
+						No Work shifts
 					</p>
-					<button class="px-3 py-2 rounded-md text-sm border border-gray-700">
+					<p class="text-xs font-medium text-gray-500">Add a new work shift</p>
+					<button @click="useCompaniesModal().openAddWorkShift()" class="px-3 py-2 bg-black text-white rounded-md text-xs border border-gray-700">
 						Add work shifts
 					</button>
 				</div>
@@ -128,6 +130,7 @@
 </template>
 
 <script setup lang="ts">
+import { useCompaniesModal } from '@/composables/core/modals'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 const { getCorporateById, loading, selectedCorporate } = useCorporateIdDetails()
 const id = useRoute().params.id as string

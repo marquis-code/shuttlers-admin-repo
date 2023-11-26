@@ -29,6 +29,9 @@ import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateR
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
 import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
+import AddWorkShift from '@/components/modals/modules/companies/AddWorkShift.vue'
+import AddWorkBranch from '@/components/modals/modules/companies/AddOfficeBranch.vue'
+import AddAccountManagers from '@/components/modals/modules/companies/AddAccountManager.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -37,7 +40,7 @@ type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
-type CompaniesTypes = 'AssignStaff'
+type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers'
 type RouteTypes = 'RouteDuplicationModal'
@@ -49,7 +52,7 @@ const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
-const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
+const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers } as Record<TripsTypes, any>
 const RoutesModal = { RouteDuplicationModal } as Record<RouteTypes, any>
