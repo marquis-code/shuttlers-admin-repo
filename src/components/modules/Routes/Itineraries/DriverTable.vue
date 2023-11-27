@@ -94,22 +94,43 @@
 
 <script setup lang="ts">
 import { useItineraries, useItineraryDrivers } from '@/composables/modules/routes/itineraries'
+import { useAddDriver, useDeleteDriverFromItinerary, useTransferBooking } from '@/composables/modules/routes/itineraries/driver'
 import { useDriverModal } from '@/composables/core/modals'
 
+const { singleItinerary: itinerary } = useItineraries()
 const { loading: loading_drivers, getItineraryDrivers, page, total, moveTo, next, prev, itineraryDrivers } = useItineraryDrivers()
-const tableFields = ref([
-	{ value: 'driver', text: 'Driver' },
-	{ value: 'vehicle', text: 'Vehicle' },
-	{ value: 'cost_of_supply', text: 'Cost of supply' },
-	{ value: 'utilization', text: 'Utilization' },
-	{ value: 'margin', text: 'Margin' },
-	{ value: 'fare', text: 'Fare' },
-	{ value: 'action', text: 'Action' }
-])
+const { initEdit } = useAddDriver()
+const { initDelete } = useDeleteDriverFromItinerary()
+const { initTransfer } = useTransferBooking()
+
+const tableFields = computed(() => {
+	if (itinerary.value.pricing_type === 'route_price_table_lookup') {
+		return [
+			{ value: 'driver', text: 'Driver' },
+			{ value: 'vehicle', text: 'Vehicle' },
+			{ value: 'cost_of_supply', text: 'Cost of supply' },
+			// { value: 'utilization', text: 'Utilization' },
+			// { value: 'margin', text: 'Margin' },
+			// { value: 'fare', text: 'Fare' },
+			{ value: 'action', text: 'Action' }
+		]
+	} else {
+		return [
+			{ value: 'driver', text: 'Driver' },
+			{ value: 'vehicle', text: 'Vehicle' },
+			{ value: 'cost_of_supply', text: 'Cost of supply' },
+			{ value: 'utilization', text: 'Utilization' },
+			{ value: 'margin', text: 'Margin' },
+			{ value: 'fare', text: 'Fare' },
+			{ value: 'action', text: 'Action' }
+		]
+	}
+})
 
 const dropdownChildren = computed(() => [
-	{ name: 'Update', func: (data:any) => { alert(data.id) } },
-	{ name: 'Remove', func: (data:any) => alert(data.id), class: '!text-red' }
+	{ name: 'Update', func: (data:any) => { initEdit(data) } },
+	{ name: 'Transer booking', func: (data:any) => { initTransfer(data, itineraryDrivers.value) } },
+	{ name: 'Remove', func: (data:any) => initDelete(data.driver?.id), class: '!text-red' }
 ])
 
 getItineraryDrivers()

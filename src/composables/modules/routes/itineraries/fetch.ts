@@ -1,9 +1,11 @@
+import { useUpdateItineraries } from './update'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 
+const { resetObj } = useUpdateItineraries()
 const itineraries = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
 const loading_single_iti = ref(false)
-const singleItinerary = ref({}) as Ref<Record<string, any>>
+export const singleItinerary = ref({}) as Ref<Record<string, any>>
 
 export const useItineraries = () => {
 	const getItineraries = async () => {
@@ -20,8 +22,8 @@ export const useItineraries = () => {
 		loading_single_iti.value = true
 		const res = await routes_api.$_get_single_itinerary_details(id) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			console.log(res)
-			singleItinerary.value = res.data
+			singleItinerary.value = res.data?.id ? res.data : {}
+			resetObj()
 		}
 		loading_single_iti.value = false
 	}

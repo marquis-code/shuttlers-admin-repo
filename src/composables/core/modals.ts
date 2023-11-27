@@ -5,6 +5,7 @@ import UserRefund from '@/components/modals/modules/users/Refund.vue'
 import RefundLogger from '@/components/modals/modules/users/RefundLogger.vue'
 import Confirm from '@/components/modals/modules/core/Confirmation.vue'
 import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmation.vue'
+import YesConfirm from '@/components/modals/modules/core/YesConfirmation.vue'
 import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoints.vue'
 import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
@@ -27,36 +28,38 @@ import DeleteVehicleCategory from '@/components/modals/modules/configurations/ve
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
 import AddDriver from '@/components/modals/modules/Routes/Itineraries/AddDriver.vue'
 import AssignDriver from '@/components/modals/modules/Routes/Itineraries/AssignDriverFromAuction.vue'
-import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateRoutes.vue'
+import RouteDuplicationModal from '@/components/modals/modules/Routes/DuplicateRoutes.vue'
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
 import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
+import AddItinerary from '@/components/modals/modules/Routes/Itineraries/AddItinerary.vue'
+import ItineraryTransferBooking from '@/components/modals/modules/Routes/Itineraries/TransferBooking.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
-type CoreTypes = 'Confirm' | 'PasswordConfirm'
+type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
 type CompaniesTypes = 'AssignStaff'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
-type DriverTypes = 'AddDriver' | 'AssignDriver'
+type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers'
-type RouteTypes = 'RouteDuplicationModal'
+type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
-const CoreModals = { Confirm, PasswordConfirm } as Record<CoreTypes, any>
+const CoreModals = { Confirm, PasswordConfirm, YesConfirm } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
 const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
-const DriverModals = { AddDriver, AssignDriver } as Record<DriverTypes, any>
+const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers } as Record<TripsTypes, any>
-const RoutesModal = { RouteDuplicationModal } as Record<RouteTypes, any>
+const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
 
 export const modal = useModal(ref([] as any))
 

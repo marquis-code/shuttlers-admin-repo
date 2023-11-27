@@ -4,15 +4,15 @@
 			<div v-if="!isEmptyObject(selectedRoute) || !loading" class="card">
 				<div v-for="(itm, index) in routeDetails" :key="index"
 					class="flex  gap-x-6 items-center py-4 border-b last:border-none">
-					<div class="text-xs w-1/4">
+					<p class="text-sm w-[100px] shrink-0">
 						{{ itm.name }}
-					</div>
-					<div class="text-xs w-3/4 flex items-center">
-						<button velse :class="itm.class" class="font-medium" @click="itm.func">
+					</p>
+					<div class="text-sm">
+						<button :class="itm.class" class="font-medium text-left" @click="itm.func">
 							{{ itm.value }}
 						</button>
 						<button v-if="itm.copyAction" @click="copyUrl()">
-							<img src="@/assets/icons/source/copy.svg" alt="">
+							<img src="@/assets/icons/source/copy.svg" class="w-4" alt="">
 						</button>
 					</div>
 				</div>
@@ -57,38 +57,7 @@
 			</div>
 		</section>
 		<section class="md:w-6/12 space-y-6">
-			<div class="rounded-md bg-white shadow-md">
-				<p class="border-b text-gray-500 font-medium text-sm p-4">
-					Passengers
-				</p>
-				<div class="p-3 space-y-6">
-					<div class="">
-						<label for="">Filter By Company</label>
-						<InputMultiSelectUsers v-model="selectedCorporate" />
-					</div>
-					<div>
-						<button class="bg-black text-white text-xs px-3 py-2 rounded-md">
-							Apply Filter
-						</button>
-					</div>
-					<div>
-						<Table :loading="loading" :headers="tableFields" :table-data="tableData" :has-options="true">
-							<template #header>
-								<h1 class="border bg-white py-3 text-sm pl-4">
-									Drivers on this route
-								</h1>
-							</template>
-							<template #item="{ item }">
-								<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
-									<span class="block">{{ item.data.fname }} {{ item.data.lname }}</span>
-									<span class="block">{{ item.data.email }}</span>
-									<span class="block">{{ item.data.phone }}</span>
-								</div>
-							</template>
-						</Table>
-					</div>
-				</div>
-			</div>
+			<ModulesRoutesDetailsPassengers />
 
 			<div class="rounded-md bg-white shadow-md">
 				<div class="flex justify-between items-center border-b py-3 px-6">
@@ -180,20 +149,19 @@
 import { useAlert } from '@/composables/core/notification'
 import { isEmptyObject } from '@/composables/utils/basics'
 import { useRoutePaymentOptions } from '@/composables/modules/routes/fetch'
-import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, useRoutePassengersById, useRouteDriversById, useRouteBookingsById } from '@/composables/modules/routes/id'
+import { environmental_url, getCurrentEnvironmentalUrl } from '@/composables/utils/system'
+import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, useRoutePassengersById, useRouteDriversById } from '@/composables/modules/routes/id'
 const { selectedRoute, loading, getRouteById } = useRouteIdDetails()
 const { routePaymentOptionsList, loadingSelectedRoutePaymentOptions, getRoutePaymentOptionsById } = useRoutePaymentOptionsById()
 const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripStartTimeById()
 const { loadingRoutePassengers, getRoutePassengerseById, routePassengers } = useRoutePassengersById()
 const { loadingRouteDrivers, getRouteDriversById, routeDrivers } = useRouteDriversById()
-const { loadingRouteBookings, getRouteBookingsById, routeBookings, payload, corporateId } = useRouteBookingsById()
 const { getPaymentOptions, loadingPaymentOptions, paymentOptionsList } = useRoutePaymentOptions()
 const id = useRoute().params.id as string
 getRouteById(id)
 getTripStartTimeById(id)
 getRouteDriversById(id)
 getRoutePassengerseById(id)
-getRouteBookingsById(id)
 getRoutePaymentOptionsById()
 getPaymentOptions()
 definePageMeta({
@@ -233,14 +201,14 @@ const selectedMonth = ref('')
 
 const routeDetails = computed(() => {
 	return [
-		{ name: 'Status', value: selectedRoute.value.status === 1 ? 'Active' : 'Inactive', class: `text-white px-2 py-1 rounded-md ${selectedRoute.value.status === 1 ? 'bg-shuttlersGreen' : 'bg-rose-500'}`, func: () => { } },
+		{ name: 'Status', value: selectedRoute.value.status === 1 ? 'Active' : 'Inactive', class: `text-white text-xs px-2 py-1 rounded-md ${selectedRoute.value.status === 1 ? 'bg-shuttlersGreen' : 'bg-rose-500'}`, func: () => { } },
 		{ name: 'Route Code', value: selectedRoute.value.route_code, class: 'text-gray-600', func: () => { } },
 		{ name: 'Route Description', value: selectedRoute?.value?.info?.description || 'Not Available', class: 'text-gray-600', func: () => { } },
 		{ name: 'Route landing page url', value: routeUrl.value, class: 'text-shuttlersGreen', func: (val: string) => { handleClick(val) }, copyAction: true },
 		{ name: 'Starting Point', value: selectedRoute?.value?.pickup, class: 'text-gray-600', func: () => { } },
 		{ name: 'Ending Point', value: selectedRoute?.value?.destination, class: 'text-gray-600', func: () => { } },
 		{ name: 'Capacity', value: selectedRoute?.value?.total_seats, class: 'text-gray-600', func: () => { } },
-		{ name: 'Days Available', value: selectedRoute?.value?.availableDays || 'Not Available', class: 'text-gray-600', func: () => { } },
+		{ name: 'Days Available', value: routeAvailableDays.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability Start Date', value: routeStartDate.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability End Date', value: routeEndDate.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Unavailable Dates', value: routeUnavailableDays.value, class: 'text-orange-600', func: () => { } },
@@ -274,31 +242,42 @@ const routeUnavailableDays = computed(() => {
 	return days ? Array.from(JSON.parse(days) || []).join(', ') : 'Not Available'
 })
 
+const routeAvailableDays = computed(() => {
+	const days = JSON.parse(selectedRoute.value?.route_availability_days)
+	if (!days || !days.length) return 'Not available'
+	return days.length === 7 ? 'Everyday' : days.join(', ')
+})
+
 const routeUrl = computed(() => {
 	if (selectedRoute?.value?.slug) {
-		return `${process.env.VUE_APP_URL}/routes/${selectedRoute?.value.slug}`
+		return `${getCurrentEnvironmentalUrl.value}/trips/routes/${selectedRoute?.value.slug}`
 	} else {
 		return ''
 	}
 })
 
 const computedTripStartTime = computed(() => {
-	const route = selectedRoute?.value
-	const itineraries = route?.driver?.itineraries?.length
-		? route.driver?.itineraries
-		: null
-	let tripStartTimeHrs = Infinity
-	let tripStartTimeStr = '-'
+	// const route = selectedRoute?.value
+	// const itineraries = route?.driver?.itineraries?.length
+	// 	? route.driver?.itineraries
+	// 	: null
+	// let tripStartTimeHrs = Infinity
+	// let tripStartTimeStr = '-'
 
-	if (itineraries) {
-		for (const itinerary of itineraries) {
-			if (itinerary.trip_time_in_hours < tripStartTimeHrs) {
-				tripStartTimeHrs = itinerary?.trip_time_in_hours
-				tripStartTimeStr = itinerary?.trip_time
-			}
-		}
+	// if (itineraries) {
+	// 	for (const itinerary of itineraries) {
+	// 		if (itinerary.trip_time_in_hours < tripStartTimeHrs) {
+	// 			tripStartTimeHrs = itinerary?.trip_time_in_hours
+	// 			tripStartTimeStr = itinerary?.trip_time
+	// 		}
+	// 	}
+	// }
+	// return tripStartTimeStr
+	if (itineraries.value?.length) {
+		return itineraries.value[0].trip_time
+	} else {
+		return 'N/A'
 	}
-	return tripStartTimeStr
 })
 
 const tableFields = ref([
@@ -329,7 +308,6 @@ const computedRouteDrivers = computed(() => {
 })
 
 const selectedCorporate = ref(1)
-const tableData = ref([])
 
 const handleClick = (val: any) => {
 	window.open(val.target.innerHTML, '_blank')
