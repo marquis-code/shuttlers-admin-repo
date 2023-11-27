@@ -17,6 +17,14 @@ const passwordConfirmationState = {
     password: ref('')
 }
 
+const YesConfirmationState = {
+	description: ref(''),
+    title: ref(''),
+    type: ref('Alert'),
+    call_function: ref(() => { }),
+    loading: ref(false)
+}
+
 interface AlertTypes {
 	type: 'DANGER' | 'NORMAL' | 'SUCCESS'
 	desc: string
@@ -68,4 +76,25 @@ export const usePasswordConfirmationModal = () => {
 	}
 
 	return { ...passwordConfirmationState, openAlert, closeAlert }
+}
+export const useYesConfirmationModal = () => {
+    const { openYesConfirm, closeYesConfirm } = useCoreModal()
+    const openAlert = ({ type, desc, call_function, title, loading }: AlertTypes) => {
+		YesConfirmationState.type.value = type
+        YesConfirmationState.description.value = desc
+        YesConfirmationState.title.value = title
+        YesConfirmationState.call_function.value = call_function
+        YesConfirmationState.loading = loading
+
+        openYesConfirm()
+	}
+	const closeAlert = () => {
+        YesConfirmationState.description.value = ''
+        YesConfirmationState.title.value = ''
+        YesConfirmationState.call_function.value = () => { }
+
+        closeYesConfirm()
+	}
+
+	return { ...YesConfirmationState, openAlert, closeAlert }
 }

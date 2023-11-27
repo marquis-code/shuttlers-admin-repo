@@ -169,7 +169,7 @@ export const useRouteBookingsById = () => {
     })
     const getRouteBookingsById = async (id: string) => {
         loadingRouteBookings.value = true
-        const res = await routes_api.$_get_route_bookings(id, corporateId.value, payload) as CustomAxiosResponse
+        const res = await routes_api.$_get_route_bookings(id, corporateId.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             routeBookings.value = res.data.data
         }

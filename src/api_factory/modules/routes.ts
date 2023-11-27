@@ -63,9 +63,9 @@ export const routes_api = {
         const url = `/routes/${id}/drivers`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-	$_get_route_bookings: (id:string, corporateId:string, payload) => {
+	$_get_route_bookings: (id:string|number, corporateId:string|number) => {
         const url = `/routes/${id}/bookings/${corporateId}`
-        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
 	$_get_routes_busstops: (id: string) => {
 		const url = `/routes/${id}/busstops`
@@ -87,6 +87,10 @@ export const routes_api = {
 		const url = `/routes?limit=20&fields[route]=id,pickup,destination,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_single_itinerary_details: (id:number|string) => {
+		const url = `/route-itineraries/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_update_route_status: (id:number, payload:any) => {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
@@ -105,6 +109,22 @@ export const routes_api = {
 	},
 	$_duplicate_route: (payload:any) => {
 		const url = '/routes/duplicates'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_create_itineraries: (id:string|number, payload:any) => {
+		const url = `/routes/${id}/itineraries`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_update_itineraries: (id:string|number, payload:any) => {
+		const url = `/route-itineraries/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_vehicle_cost_of_supply: (iti_id:string|number, vehicleId:number) => {
+		const url = `/route-itineraries/${iti_id}/vehicles/${vehicleId}/cost-of-supply`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_transfer_booking_within_itineraries: (payload) => {
+		const url = '/route-vehicles/transfers'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

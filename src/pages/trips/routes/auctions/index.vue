@@ -29,7 +29,8 @@ const loadingAutions = ref(false)
 const page = ref(1)
 
 const onRowClicked = (data) => {
-	useRouter().push('/trips/routes/auctions/auction-details')
+	// useRouter().push('/trips/routes/auctions/auction-details')
+    useRouter().push(`/trips/routes/${1159}/itineraries/${2}/auction-details`)
 }
 
 const tableFields = ref([
