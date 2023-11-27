@@ -1,8 +1,8 @@
 <template>
-	<section class="flex flex-col max-w-full overflow-auto z-50">
+	<section class="flex flex-col max-w-full  z-50">
 		<slot name="header" />
 		<slot name="sub_header" />
-		<div class="border border-gray-200 md:rounded-b-lg">
+		<div class="border border-gray-200 md:rounded-b-lg overflow-auto">
 			<table v-if="loading || displayTable.length > 0" class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
