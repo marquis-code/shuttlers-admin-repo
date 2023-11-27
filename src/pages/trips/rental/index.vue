@@ -22,7 +22,7 @@
 				</div>
 
 				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM D, YYYY, HH:MM A").value }}
+					{{ useDateFormat(item.data.created_at, "MMMM DD, YYYY, HH:MM A").value }}
 				</span>
 				<span v-else-if="item.status" class="flex">
 					<StatusBadge :name="item.data.status" />
