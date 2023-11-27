@@ -2,6 +2,7 @@ import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useConfirmationModal, usePasswordConfirmationModal } from '@/composables/core/confirmation'
 import { useAlert } from '@/composables/core/notification'
 import { useGetUpcomingTripsList, useGetActiveTripsList } from '@/composables/modules/trips/fetch'
+import { useCommuteModal } from '@/composables/core/modals'
 
 const selectedTrip = ref({} as any)
 
@@ -9,6 +10,10 @@ export const useTripOptions = () => {
     const loading = ref(false)
     const password = ref('')
 
+    const initializeTripUpdate = (tripObj) => {
+        selectedTrip.value = tripObj
+        useCommuteModal().openUpdateDriverAndVehicle()
+    }
     const initializeStartTrips = (tripObj) => {
         selectedTrip.value = tripObj
         useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: 'Are you sure you want to start this trip?', loading, call_function: () => startTrip() })
@@ -26,6 +31,18 @@ export const useTripOptions = () => {
         useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: 'Are you sure you want to end this trip?', loading, password, call_function: () => endTrip() })
     }
 
+    const updateTrip = async (payload) => {
+        loading.value = true
+        const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Upcoming trip updated successfully' })
+            useCommuteModal().closeUpdateDriverAndVehicle()
+            useGetUpcomingTripsList().getUpcomingTrips()
+        }
+        loading.value = false
+        useCommuteModal().closeUpdateDriverAndVehicle()
+    }
+
     const startTrip = async () => {
         loading.value = true
         const sent_data = {
@@ -33,7 +50,7 @@ export const useTripOptions = () => {
             driver_id: selectedTrip.value.driver_id,
             route_itinerary_id: selectedTrip.value.route_itinerary_id,
             trip_date: selectedTrip.value.trip_date,
-            pickup_coordinate: selectedTrip.value.pickup_coordinate
+            pickup_coordinate: selectedTrip.value?.route?.pickup_coordinate
         }
 
         const res = await trips_api.$_start_trip(sent_data) as CustomAxiosResponse
@@ -57,6 +74,7 @@ export const useTripOptions = () => {
         loading.value = false
         usePasswordConfirmationModal().closeAlert()
     }
+
     const endTrip = async () => {
         loading.value = true
         const res = await trips_api.$_end_trip(selectedTrip.value.id, {
@@ -86,5 +104,5 @@ export const useTripOptions = () => {
         useConfirmationModal().closeAlert()
     }
 
-    return { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeEndTrips, loading }
+    return { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips, selectedTrip, loading, updateTrip }
 }

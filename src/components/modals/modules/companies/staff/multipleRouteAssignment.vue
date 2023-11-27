@@ -13,16 +13,23 @@
 					</option>
 				</select>
 			</div>
-			<div class="flex flex-col gap-2">
-				<label class="text-xs text-[#6E717C] font-medium">Select busstop</label>
-				<LocationInput
-					id="busStop"
-					type="text"
-					name="busStop"
-					class="input-field"
-					placeholder=""
-					@change="selectedAddress"
-				/>
+			<div v-if="busstops.length" class="grid grid-cols-2 gap-4">
+				<div class="flex flex-col gap-2">
+					<label class="text-xs text-[#6E717C] font-medium">Pickup</label>
+					<select v-model="pickup" required class="input-field">
+						<option v-for="n in busstops" :key="n.id" :value="n.id">
+							{{ n.name }}
+						</option>
+					</select>
+				</div>
+				<div class="flex flex-col gap-2">
+					<label class="text-xs text-[#6E717C] font-medium">Drop off</label>
+					<select v-model="dropoff" required class="input-field">
+						<option v-for="n in busstops" :key="n.id" :value="n.id">
+							{{ n.name }}
+						</option>
+					</select>
+				</div>
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="text-xs text-[#6E717C] font-medium">
@@ -68,19 +75,15 @@ const { totalStaffs } = useCorporateStaff()
 const { selectedStaffs } = useSelectedStaff()
 const { branches } = useCorporateBranches()
 const { shifts } = useCorporateWorkShifts()
-const { loading: assigning, assignStaff, route_id, itinerary_id, branch_id, shift_id, work_days, bus_stop, itineraries } = useAssignStaff()
+const { loading: assigning, assignStaff, route_id, itinerary_id, branch_id, shift_id, work_days, pickup, dropoff, itineraries, busstops, clearObj } = useAssignStaff()
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-const selectedAddress = (val: Record<string, any>) => {
-	bus_stop.value = val.name
-}
 
 const routeSelected = (val: Record<string, any>) => {
 	route_id.value = val.id
 }
 
-onBeforeUnmount(() => {})
+onBeforeUnmount(() => clearObj())
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

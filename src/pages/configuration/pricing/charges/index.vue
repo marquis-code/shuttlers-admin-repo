@@ -121,12 +121,6 @@ const tableFields = ref([
 	{ value: 'action', text: 'Action' }
 ])
 
-// const dropdownChildren = computed(() => [
-// 	{ name: 'Activate', func: (data:any) => { intiActivate(data.id) } },
-// 	{ name: 'Modify', func: (data:any) => { initEditConfigure(data) } },
-// 	{ name: 'Delete', func: (data:any) => initDeleteConfiguration(data.id), class: '!text-red' }
-// ])
-
 const sortDropdownChildren = (data:Record<string, any>) => {
 	return [
 		{

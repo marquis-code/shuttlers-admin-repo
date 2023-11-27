@@ -26,12 +26,12 @@
 						<input v-else id="user" type="text" name="user" :value="rentalDetails.status" class="input-field" disabled>
 					</div>
 
-					<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
+					<section v-if="charterStatus !== 'rejected' && rentalDetails.status !== 'cancelled' " class="flex flex-col gap-4 mt-5 w-full">
 						<div v-for="(vehicle, idx) in charterVehicleOrder" :key="vehicle.id" class="field relative w-full">
 							<label for="">Vehicle {{ idx+1 }} </label>
 							<div class="grid grid-cols-2 gap-4 w-full">
 								<input id="user" type="text" name="user" :value="vehicle.charterVehicle.name" class="input-field" disabled>
-								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="rentalDetails.status === 'pending' ? updateVehicle(vehicle) : ''">
+								<div id="admin" name="price" placeholder="Enter price" class="input-field" required @click="rentalDetails?.userRoute?.booking_status !== 'active' ? updateVehicle(vehicle) : ''">
 									{{ convertToCurrency(vehicle.cost||0) }} - {{ vehicle?.main_vehicle?.registration_number || vehicle?.userRouteSchedule?.vehicle?.registration_number }}
 								</div>
 							</div>
@@ -39,7 +39,8 @@
 					</section>
 
 					<div class="flex justify-end mt-12">
-						<button class="btn-primary" :disabled="loading || rentalDetails.status !== 'pending' || !checkMainVehicleIdExists">
+						<button class="btn-primary" type="submit"
+							:disabled="loading || rentalDetails.status === 'rejected' || rentalDetails.status === 'cancelled' || rentalDetails?.userRoute?.booking_status === 'active'">
 							<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 								Update request
 							</span>
@@ -72,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { convertToCurrency } from '../../../../composables/utils/formatter'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePageHeader } from '@/composables/utils/header'
 import { useGetRentalById } from '@/composables/modules/Rentals/id'
 import { isEmptyObject } from '@/composables/utils/basics'

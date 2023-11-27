@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col gap-2">
-		<label class="text-xs text-[#6E717C] font-medium">
+		<label v-if="showLabel" class="text-xs text-[#6E717C] font-medium">
 			{{ label }}
 		</label>
 		<VueMultiselect v-model="selectedRoute" placeholder="Search route" :searchable="true" :internal-search="false"
@@ -29,7 +29,8 @@ import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 
 const emit = defineEmits(['selected'])
 const props = defineProps({
-	label: { type: String, default: 'Select Route' }
+	label: { type: String, default: 'Select Route' },
+	showLabel: { type: Boolean, default: true, required: false }
 })
 
 const loading = ref(false)

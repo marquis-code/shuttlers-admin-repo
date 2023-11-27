@@ -22,6 +22,10 @@ export const trips_api = {
 		const url = `/upcoming-trips/${id}/trips`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
 	},
+	$_update_trip: (id:string, payload) => {
+		const url = `/upcoming-trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
 	$_get_active_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/trips/active?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
@@ -65,5 +69,13 @@ export const trips_api = {
 	$_deduct_partner_trip_earnings_by_id: (id:string, payload) => {
 		const url = `/revenues/${id}/deductions`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
+	},
+	$_get_active_trip_passengers: (id:string) => {
+		const url = `trips/${id}/passengers`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_upcoming_trip_passengers: (id:string) => {
+		const url = `/trips/${id}/passengers?isUpcomingTrip=1`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

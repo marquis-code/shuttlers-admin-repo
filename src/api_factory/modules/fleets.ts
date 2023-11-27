@@ -8,7 +8,7 @@ export const fleets_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
     $_get_fleet_inspection_days: (meta:TMetaObject) => {
-		const url = `/inspection-day?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc`
+		const url = `/inspection-days?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_fleets_by_id: (id:string) => {

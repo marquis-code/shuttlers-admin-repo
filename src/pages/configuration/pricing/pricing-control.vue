@@ -23,10 +23,18 @@
 					<template #filter_others>
 						<div class="flex gap-3 py-2">
 							<select v-model="routeType" class="p-2 bg-transparent border rounded-lg text-sm">
-								<option value="">All</option>
-								<option value="shared">Shared Routes</option>
-								<option value="corporate">Corporate Routes</option>
-								<option value="exclusive">Exclusive Routes</option>
+								<option value="">
+									All
+								</option>
+								<option value="shared">
+									Shared Routes
+								</option>
+								<option value="corporate">
+									Corporate Routes
+								</option>
+								<option value="exclusive">
+									Exclusive Routes
+								</option>
 							</select>
 							<select v-model="vehicleId" class="p-2 bg-transparent border rounded-lg text-sm">
 								<option value="">

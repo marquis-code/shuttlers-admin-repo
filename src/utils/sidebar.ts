@@ -10,6 +10,10 @@ import tagIcon from '@/assets/icons/src/tag.vue'
 import adminIcon from '@/assets/icons/src/admin.vue'
 import configureIcon from '@/assets/icons/src/configure.vue'
 
+const isProd = computed(() => {
+  return location.host === 'v3.admin.shuttlers.africa'
+})
+
 export const TOP_LEVEL_SIDEBAR_MENUS = [
   {
     title: 'Dashboard',
@@ -18,7 +22,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(homeIcon),
     children: null,
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: ['ROUTES', 'CORPORATES', 'USERS', 'TRIPS', 'PARTNERS', 'DRIVERS', 'EVENTS', 'TRANSACTIONS', 'VEHICLES', 'REFERRALS', 'PROMOTIONS', 'ADMINCONFIG', 'STAFF']
   },
   {
@@ -29,7 +33,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
     iconComponent: shallowRef(routeIcon),
     rootPath: '/route-searches',
     children: null,
-      shouldRedirect: true,
+      shouldRedirect: false,
     modulePermission: 'ROUTES'
   }
 ]
@@ -47,7 +51,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Insights',
         routePath: '/companies/insights',
         oldPath: '/companies/insights',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Insights into company requests'
       },
       {
@@ -78,21 +82,21 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Insights',
         routePath: '/users/insights',
           oldPath: '/users/insights',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: 'Insights into company requests'
       },
       {
         title: 'Manage Users',
         routePath: '/users',
         oldPath: '/users/list',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       },
       {
         title: ' Batch Bookings',
         routePath: '/users/bookings',
         oldPath: '/bookings/batch/',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       },
       {
@@ -152,7 +156,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Waitlist',
         routePath: '/trips/waitlist',
         oldPath: '/waitlist',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: ''
       },
       {
@@ -234,7 +238,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Transactions',
     routePath: '/transactions',
     oldPath: '/transactions',
-    shouldRedirect: true,
+    shouldRedirect: false,
     description: '',
     iconComponent: shallowRef(transactionIcon),
     children: null,
@@ -257,7 +261,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(tagIcon),
     children: null,
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS'
   },
   {
@@ -266,7 +270,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     oldPath: '/promo-codes',
     description: '',
     iconComponent: shallowRef(tagIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS',
     children: null
   },
@@ -276,14 +280,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(partnerIcon),
     rootPath: '/campaigns',
-      shouldRedirect: true,
+      shouldRedirect: false,
     modulePermission: 'CAMPAIGNS',
     children: [
       {
         title: 'Valentine',
         routePath: '/campaigns/valentine',
         oldPath: '/games&campaigns/valentine',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Valentine management'
       },
       {
@@ -296,66 +300,68 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'CMS Banners',
         routePath: '/campaigns/promotions/banner',
         oldPath: '/games&campaigns/banner',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'CMS promotional banner'
       }
     ]
   }
 ].filter((i) => !!i)
 
-export const ADMIN_SIDEBAR_MENUS = [
-  {
-    title: 'Admins',
-    routePath: '/admin',
-    description: '',
-    iconComponent: shallowRef(adminIcon),
-    children: null,
-    rootPath: '/admin',
-    oldPath: '/admin/list',
-    shouldRedirect: true,
-    modulePermission: 'STAFF',
-    requiredAdmin: true
-  },
-  {
-    title: 'Configure',
-    routePath: null,
-    description: '',
-    iconComponent: shallowRef(configureIcon),
-    rootPath: '/configuration/trip-rating-settings',
-      shouldRedirect: true,
-    modulePermission: 'ADMINCONFIG',
-    children: [
-      {
-        title: 'Trip Rating Settings',
-        routePath: '/configuration/trip-rating-settings',
-        oldPath: '/configuration/customer-app/trip-rating-settings',
-          shouldRedirect: true,
-        description: 'Configure and manage trip rating parameters'
-      },
-      {
-        title: 'Vehicle Categories',
-        routePath: '/configuration/vehicle-category-management',
-        oldPath: '/configuration/vehicle/category-management',
-          shouldRedirect: true,
-        description: 'Manage vehicle categories'
-      },
-      {
-        title: 'Amenities',
-        routePath: '/configuration/vehicle-amenities',
-        oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
-          shouldRedirect: true,
-        description: 'Manage vehicle amenities'
-      },
-      {
-        title: 'Route Price Control',
-        routePath: '/configuration/pricing/pricing-control',
-        oldPath: '/configuration/pricing-controls/',
+export const ADMIN_SIDEBAR_MENUS = computed(() => {
+  return [
+    {
+      title: 'Admins',
+      routePath: '/admin',
+      description: '',
+      iconComponent: shallowRef(adminIcon),
+      children: null,
+      rootPath: '/admin',
+      oldPath: '/admin/list',
+      shouldRedirect: false,
+      modulePermission: 'STAFF',
+      requiredAdmin: true
+    },
+    {
+      title: 'Configure',
+      routePath: null,
+      description: '',
+      iconComponent: shallowRef(configureIcon),
+      rootPath: '/configuration/trip-rating-settings',
         shouldRedirect: false,
-        description: 'Manage route pricing centrally'
-      }
-    ]
-  }
-]
+      modulePermission: 'ADMINCONFIG',
+      children: [
+        {
+          title: 'Trip Rating Settings',
+          routePath: '/configuration/trip-rating-settings',
+          oldPath: '/configuration/customer-app/trip-rating-settings',
+            shouldRedirect: false,
+          description: 'Configure and manage trip rating parameters'
+        },
+        {
+          title: 'Vehicle Categories',
+          routePath: '/configuration/vehicle-category-management',
+          oldPath: '/configuration/vehicle/category-management',
+            shouldRedirect: false,
+          description: 'Manage vehicle categories'
+        },
+        {
+          title: 'Amenities',
+          routePath: '/configuration/vehicle-amenities',
+          oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
+            shouldRedirect: false,
+          description: 'Manage vehicle amenities'
+        },
+        {
+          title: 'Route Price Control',
+          routePath: isProd.value ? '/configuration/pricing/payment-option' : '/configuration/pricing/pricing-control',
+          oldPath: '/configuration/pricing-controls/',
+          shouldRedirect: false,
+          description: 'Manage route pricing centrally'
+        }
+      ]
+    }
+  ]
+})
 
 export function getSidebarMenus(menus, permissionsModules, userRole) {
   return menus

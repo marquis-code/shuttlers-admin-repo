@@ -53,7 +53,7 @@ import { dayIsInThePast } from '@/composables/utils/formatter'
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()
 
-const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips } = useTripOptions()
+const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
 
 const formattedUpcomingTripsList = computed(() =>
 upcomingTripsList.value.map((i:any, index) => {
@@ -79,6 +79,7 @@ definePageMeta({
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
     if (dayIsInThePast(main_data.trip_date)) {

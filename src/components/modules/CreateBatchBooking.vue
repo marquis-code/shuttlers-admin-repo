@@ -2,14 +2,14 @@
 	<main>
 		<ButtonGoBack class="mb-6" />
 
-		<div class="bg-white rounded-md border w-11/12 lg:w-6/12">
+		<div class="bg-white rounded-md border w-full lg:w-6/12">
 			<div class="px-6 py-5">
 				<p class="font-medium">
 					Batch book a trip
 				</p>
 			</div>
 			<hr>
-			<form class="space-y-6 p-6 mt-5">
+			<form class="space-y-6 p-6 mt-5" @submit.prevent="bookTrip">
 				<div class="flex items-center gap-x-2">
 					<label class="form-label">Upload Customer emails (csv only)</label>
 					<button :disabled="downloading" class="font-medium text-xs text-white px-3 py-2 bg-black rounded-md" @click.prevent="downloadCsv">
@@ -17,21 +17,11 @@
 					</button>
 				</div>
 				<div>
-					<ModulesUsersBatchBookingCsvFileUploadInput />
+					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
 				</div>
 
-				<div class="field relative">
-					<label for="route">Select Route</label>
-					<select v-if="!loadingMainRoutes" id="route" v-model="form.selectedRoute"
-						class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
-						<option class="" disabled>
-							--- select ---
-						</option>
-						<option v-for="(route, idx) in mainRoutesList" :key="idx" :value="route">
-							{{ `${route.route_code} - From ${route.pickup} To ${route.destination}` }}
-						</option>
-					</select>
-					<Skeleton v-else height="100px" />
+				<div class="field relative w-full">
+					<RuoteSelector class="w-full" @selected="routeSelected" />
 				</div>
 				<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 					<div class="flex flex-col items-start justify-start">
@@ -170,15 +160,15 @@
 					<div class="flex items-center gap-x-1">
 						<div><label>Fare:</label></div>
 						<div v-if="totalFare.fare" class="ml-2 font-bold">
-							₦{{ totalFare.fare }}
+							{{ convertToCurrency(totalFare.fare) }}
 						</div>
-						<span v-else>N/A</span>
+						<span v-else>₦ 0.00</span>
 					</div>
 				</div>
 				<div>
 					<button :disabled="!isFormEmpty" type="submit"
 						class="btn btn-primary py-3 text-xs w-full disabled:cursor-not-allowed disabled:opacity-25">
-						<span v-if="!processingBooking" class="text-xs">Confirm and Book Ride</span>
+						<span v-if="!loading" class="text-xs">Confirm and Book Ride</span>
 						<Spinner v-else />
 					</button>
 				</div>
@@ -188,20 +178,18 @@
 </template>
 
 <script setup lang="ts">
-// import Papa from 'papaparse'
 import { useDateFormat } from '@vueuse/core'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import useCsvDownload from '@/composables/core/useCsvDownload'
-// import { saveToDisk } from '@/composables/core/save-to-disk'
-// import { useUserModal } from '@/composables/core/modals'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
-import { useBookUserTrip } from '@/composables/modules/users/id'
+import { useCreateBatchBooking } from '@/composables/modules/batchBooking/create'
 import { useItinerariesByRouteId, useBusstopsByItineraryId, useRoutePricingByItineraryId } from '@/composables/modules/routes/id'
-const { loading: processingBooking, handleUserTripBooking } = useBookUserTrip()
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList } = useGetMainRoutes()
 const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = useBusstopsByItineraryId()
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
 const { loading: loadingPricing, setRoutePricingDataForm, getRoutePricingInformation, routePricingInformation } = useRoutePricingByItineraryId()
 const { downloadCsv, downloading } = useCsvDownload()
+const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult } = useCreateBatchBooking()
 getMainRoutesList()
 const form = reactive({
 	selectedRoute: {},
@@ -215,12 +203,22 @@ const form = reactive({
 	has_luggage: false,
 	subscriptionDays: [],
 	tripWeeks: 0,
-	luggage_quantity: ''
+	luggage_quantity: '',
+	uploadedUsers: []
 })
 
 const isFormEmpty = computed(() => {
-	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source)
+	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers)
 })
+
+const routeSelected = (val: any) => {
+	form.selectedRoute = val
+}
+
+const handleUploadedEmails = (item: any) => {
+	const result = item.filter((itm: any) => itm !== '')
+	form.uploadedUsers = result
+}
 
 function getDayOfWeek(startDate) {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -230,7 +228,7 @@ function getDayOfWeek(startDate) {
   return startDayIndex
 }
 
-const bookTrip = () => {
+const bookTrip = async () => {
 	let dayIds = [] as any
 
 		if (!form.subscriptionDays.length) {
@@ -240,19 +238,24 @@ const bookTrip = () => {
 		dayIds = form.subscriptionDays.map((day) => dayWithIds[day])
 		}
 	const payload = {
-    route_id: form?.selectedRoute?.id,
-    itinerary_id: form?.route_itinerary_id,
-    pickup_id: form?.pickup_point?.id,
-    destination_id: form?.drop_off_point.id,
-    days_ids: dayIds,
-    meta: JSON.stringify(form.selectedRoute),
-    start_date: form?.startDate,
-    end_date: endDate.value,
-    recurring: form?.has_subscription ? Number(1) : Number(0),
-    payment_source: form?.payment_source,
-    luggage_quantity: form?.luggage_quantity
+        booking: {
+			route_id: form?.selectedRoute?.id,
+			itinerary_id: form?.route_itinerary_id,
+			pickup_id: form?.pickup_point?.id,
+			destination_id: form?.drop_off_point.id,
+			days_ids: dayIds,
+			meta: JSON.stringify(form.selectedRoute),
+			start_date: form?.startDate,
+			end_date: endDate.value,
+			recurring: form?.has_subscription ? Number(1) : Number(0),
+			payment_source: form?.payment_source,
+			luggage_quantity: form?.luggage_quantity
+		 },
+	   users: form.uploadedUsers
 	}
-	handleUserTripBooking(payload)
+	populateBatchBookingForm(payload)
+	await createBatchBooking()
+	useRouter().push(`/users/bookings/${batchBookingResult.value.id}/booking-info`)
 }
 
 const subscriptionWeeks = reactive([
