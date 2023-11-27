@@ -26,7 +26,7 @@
 						<input v-else id="user" type="text" name="user" :value="rentalDetails.status" class="input-field" disabled>
 					</div>
 
-					<section v-if="charterStatus !== 'rejected'" class="flex flex-col gap-4 mt-5 w-full">
+					<section v-if="charterStatus !== 'rejected' && rentalDetails.status !== 'cancelled' " class="flex flex-col gap-4 mt-5 w-full">
 						<div v-for="(vehicle, idx) in charterVehicleOrder" :key="vehicle.id" class="field relative w-full">
 							<label for="">Vehicle {{ idx+1 }} </label>
 							<div class="grid grid-cols-2 gap-4 w-full">
@@ -40,7 +40,7 @@
 
 					<div class="flex justify-end mt-12">
 						<button class="btn-primary" type="submit"
-							:disabled="loading || rentalDetails.status === 'rejected' || rentalDetails?.userRoute?.booking_status === 'active'">
+							:disabled="loading || rentalDetails.status === 'rejected' || rentalDetails.status === 'cancelled' || rentalDetails?.userRoute?.booking_status === 'active'">
 							<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 								Update request
 							</span>
