@@ -38,7 +38,7 @@
 							</option>
 						</select>
 					</div> -->
-					<button class="px-3 py-2 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06" @click="useCompaniesModal().openAssignStaff()">
+					<button type="button" class="px-3 py-2 text-sm text-dark rounded-lg font-medium bg-[#20E682] border-green06" @click="useCompaniesModal().openAssignStaff()">
 						Assign
 					</button>
 				</div>
@@ -51,10 +51,16 @@
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" @filter="onFilterUpdate">
 					<template #filter_others>
-						<div ref="target" class="relative flex justify-end lg:max-w-[500px] xl:max-w-[800px] 2xl:max-w-full flex-wrap gap-y-3 gap-2 items-stretch">
+						<div ref="target" class="relative flex justify-end lg:max-w-[500px] xl:max-w-[800px] 2xl:max-w-full flex-wrap gap-y-3 gap-2 items-center">
 							<div v-if="showDays.selectBox.value" class="relative">
 								<button class="select_box" @click="showDrop('days')">
-									Select Days
+									<span v-if="!selectedDays.length">Select Days</span>
+									<div v-else class="flex items-center gap-0 text-dark font-medium">
+										<span v-for="n in selectedDays.length > 2 ? selectedDays.slice(0,2) : selectedDays" :key="n">
+											{{ n.slice(0,3) }},
+										</span>
+										<span v-if="selectedDays.length > 2">...</span>
+									</div>
 									<icon name="close" class="w-5" @click="closeFilter('days')" />
 								</button>
 								<div v-if="showDays.dropDown.value" class="dropdown_wrapper">
@@ -68,7 +74,17 @@
 							</div>
 							<div v-if="showShift.selectBox.value" class="relative">
 								<button class="select_box" @click="showDrop('shift')">
-									Select Shifts
+									<!-- Select Shifts -->
+									<span v-if="!selectedShifts.length">Select Shifts</span>
+									<!-- <div v-else class="flex items-center gap-0 text-dark font-medium">
+										<span v-for="n in selectedShifts.length > 2 ? selectedDays.slice(0,2) : selectedDays" :key="n">
+											{{ n.slice(0,3) }},
+										</span>
+										<span v-if="selectedDays.length > 2">...</span>
+									</div> -->
+									<span v-else class="text-dark font-medium">
+										{{ selectedShifts[0].description }}
+									</span>
 									<icon name="close" class="w-5" @click="closeFilter('shift')" />
 								</button>
 								<div v-if="showShift.dropDown.value" class="dropdown_wrapper">
@@ -82,7 +98,14 @@
 							</div>
 							<div v-if="showBranch.selectBox.value" class="relative">
 								<button class="select_box" @click="showDrop('branch')">
-									Select Branches
+									<!-- Select Branches -->
+									<span v-if="!selectedBranches.length">Select Branches</span>
+									<div v-else class="flex items-center gap-0 text-dark font-medium">
+										<span v-for="n in selectedBranches.length > 2 ? selectedBranches.slice(0,2) : selectedBranches" :key="n">
+											{{ n.name.slice(0,3) }},
+										</span>
+										<span v-if="selectedBranches.length > 2">...</span>
+									</div>
 									<icon name="close" class="w-5" @click="closeFilter('branch')" />
 								</button>
 								<div v-if="showBranch.dropDown.value" class="dropdown_wrapper">
@@ -95,8 +118,9 @@
 								</div>
 							</div>
 							<div v-if="showSearchRoute" class="w-fit h-fit relative">
-								<input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg">
-								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="showSearchRoute = false" />
+								<!-- <input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg"> -->
+								<RuoteSelector :show-label="false" class="max-w-[250px]" @selected="routeSelected" />
+								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="clearAndCloseRouteSearch()" />
 							</div>
 							<button class="text-[#364152] text-sm font-medium py-2 px-3 bg-white border rounded-lg flex items-center gap-3" @click="showFilters = true">
 								<img src="@/assets/icons/source/filter.svg" alt="">
@@ -122,7 +146,7 @@
 				<p v-if="item.busstop" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.address?.closestBusstop?.address || 'N/A' }}
 				</p>
-				<p v-if="item.branch" class="text-sm text-[#6E717C]">
+				<p v-if="item.branch" class="text-sm text-[#6E717C] min-w-[100px]">
 					{{ item.data?.workShift?.officeBranch?.address || 'N/A' }}
 				</p>
 				<p v-if="item.shift" class="text-[#101211] text-sm whitespace-nowrap">
@@ -137,7 +161,7 @@
 					₦{{ item.data?.wallet?.credit_amount || '0' }}
 				</p>
 				<p v-if="item.routes" class="text-[#101211] text-sm">
-					{{ 'N/A' }}
+					{{ item.data?.preferredRoutes?.length || 'N/A' }}
 				</p>
 				<!-- <span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
@@ -166,7 +190,7 @@ import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
 import { useCompaniesModal } from '@/composables/core/modals'
 
 const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs } = useCorporateStaff()
-const { handleStaffSelection, selectedStaffs, selectedDays, selectedBranches, selectedShifts, handleBranchSelection, handleDaysSelection, handleShiftSelection, searchedRoute } = useSelectedStaff()
+const { handleStaffSelection, selectedStaffs, selectedDays, selectedBranches, selectedShifts, handleBranchSelection, handleDaysSelection, handleShiftSelection, selectedRoute, routeSelected } = useSelectedStaff()
 const { loading: loading_branches, getBranches, branches } = useCorporateBranches()
 const { loading: loading_shifts, getShifts, shifts } = useCorporateWorkShifts()
 
@@ -198,10 +222,10 @@ const tableFields = ref([
 	{ text: 'work days', value: 'days' },
 	{ text: 'Credit balance', value: 'balance' },
 	{ text: 'Preferred routes', value: 'routes' }
-	// { text: '', value: 'action' }
 ])
-const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+// const filters = ['Route', 'Itinerary', 'Office branches', 'Work days', 'Work shifts']
+const filters = ['Route', 'Office branches', 'Work days', 'Work shifts']
+const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 const convertTime = (time:string) => {
 	if (!time || !time.length) return 'N/A'
@@ -231,9 +255,14 @@ const showDrop = (n:'days'|'shift'|'branch') => {
 }
 
 const closeFilter = (n:'days'|'shift'|'branch') => {
-	if (n === 'days') showDays.selectBox.value = false
-	if (n === 'shift') showShift.selectBox.value = false
-	if (n === 'branch') showBranch.selectBox.value = false
+	if (n === 'days') showDays.selectBox.value = false; selectedDays.value = []
+	if (n === 'shift') showShift.selectBox.value = false; selectedShifts.value = []
+	if (n === 'branch') showBranch.selectBox.value = false; selectedBranches.value = []
+}
+
+const clearAndCloseRouteSearch = () => {
+	selectedRoute.value = {}
+	showSearchRoute.value = false
 }
 
 onClickOutside(target, () => closeAllDropDown())
@@ -245,7 +274,7 @@ getShifts(useRoute().params.id as string)
 
 <style scoped>
 .select_box{
-	@apply text-grey6 text-sm py-2 px-3 h-full bg-white border rounded-lg flex items-center gap-3
+	@apply text-grey6 text-sm py-2 px-3 h-full bg-white border rounded-lg flex items-center gap-3 min-w-[100px] justify-between
 }
 .dropdown_wrapper{
 	@apply absolute flex flex-col rounded-lg bg-white border right-0 top-12 min-w-[150px] z-30

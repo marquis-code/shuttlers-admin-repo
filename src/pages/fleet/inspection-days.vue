@@ -1,9 +1,9 @@
 <template>
 	<main class="">
 		<Table :loading="loadingInspectionDays" :headers="tableFields" :table-data="fleetInspectionDaysList">
-			<template #header>
+			<!-- <template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
-			</template>
+			</template> -->
 			<template #item="{ item }">
 				<div v-if="item.vehicle">
 					<span class="text-blue-500">{{ item.data.vehicle }}</span>
@@ -29,17 +29,27 @@
 					<span class="text-blue-500">{{ item.data.partner }}</span>
 				</div>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+					{{ moment(item.data?.created_at).format('LL') }}
 				</span>
+			</template>
+			<template #footer>
+				<TablePaginator
+					:current-page="page"
+					:total-pages="total"
+					:loading="loadingInspectionDays"
+					@move-to="moveTo($event)"
+					@next="next"
+					@prev="prev"
+				/>
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import moment from 'moment'
 import { useGetFleetInspectionDays } from '@/composables/modules/fleets/fetch'
 
-const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList } = useGetFleetInspectionDays()
+const { getFleetsInspectionDaysList, loadingInspectionDays, fleetInspectionDaysList, moveTo, next, prev, total, page } = useGetFleetInspectionDays()
 getFleetsInspectionDaysList()
 
 definePageMeta({
@@ -48,34 +58,13 @@ definePageMeta({
 })
 
 const tableFields = ref([
-    {
-        text: 'VEHICLE',
-        value: 'vehicle'
-    },
-    {
-        text: 'PLATE NUMBER',
-        value: 'registrationNumber'
-    },
-    {
-        text: 'CAPACITY',
-        value: 'seats'
-    },
-    {
-        text: 'INSPECTION SITE',
-        value: 'inspectionSite'
-    },
-    {
-        text: 'INSPECTION DATE AND TIME',
-        value: 'inspectionDateAndTime'
-    },
-	{
-        text: 'PARTNER',
-        value: 'partner'
-    },
-    {
-        text: 'CREATED AT',
-        value: 'created_at'
-    }
+    { text: 'VEHICLE', value: 'vehicle' },
+    { text: 'PLATE NUMBER', value: 'registrationNumber' },
+    { text: 'CAPACITY', value: 'seats' },
+    { text: 'INSPECTION SITE', value: 'inspectionSite' },
+	{ text: 'PARTNER', value: 'partner' },
+    { text: 'DATE SUBMITTED', value: 'created_at' },
+    { text: 'INSPECTION DATE AND TIME', value: 'inspectionDateAndTime' }
 ])
 
 </script>
