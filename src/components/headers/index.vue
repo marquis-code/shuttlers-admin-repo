@@ -32,6 +32,7 @@ import sos from '@/components/headers/modules/commute/sos.vue'
 import UserDetails from '@/components/headers/modules/Users/user-details.vue'
 import CompanyDetails from '@/components/headers/modules/Companies/company-details.vue'
 import AddCompany from '@/components/headers/modules/Companies/add-company.vue'
+import EditCompany from '@/components/headers/modules/Companies/edit-company.vue'
 import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking/batch-booking-details.vue'
 import PartnerDetails from '@/components/headers/modules/Partners/partner-details.vue'
 import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.vue'
@@ -59,12 +60,15 @@ import FleetDetails from '@/components/headers/modules/Fleets/fleet-details.vue'
 import AdminInfo from '@/components/headers/modules/Admin/admin-details.vue'
 import AddDrivers from '@/components/headers/modules/Drivers/add-driver.vue'
 import TripRatingSettingsDetails from '@/components/headers/modules/Configure/TripRatings/trip-rating-details.vue'
+import CreateCreditLineUsage from '@/components/headers/modules/Companies/create-credit-line.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
     { routes: ['companies', 'companies-demo-requests'], component: Companies },
     { routes: ['companies-add-company'], component: AddCompany },
+    { routes: ['companies-id-edit'], component: EditCompany },
+    { routes: ['companies-id-status-credit-line-create'], component: CreateCreditLineUsage },
     { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration'], component: CompanyDetails },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },

@@ -46,7 +46,6 @@ export const useAssignStaff = () => {
 		loading.value = true
 		const res = await corporates_api.$_bulk_staff_assignments(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-			console.log(res)
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Successful' })
 			useCompaniesModal().closeAssignStaff()
 			selectedStaffs.value = []

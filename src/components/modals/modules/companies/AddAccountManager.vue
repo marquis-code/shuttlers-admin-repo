@@ -1,19 +1,17 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Add Work Shift"
+		title="Assign Account Manager to Business"
 	>
-		<form class="flex flex-col gap-6" @submit.prevent="createWorkBranch">
+		<form class="flex flex-col gap-6 space-y-7" @submit.prevent="createWorkBranch">
 			<div class="field relative">
-				<label for="start_time">Start time</label>
-				<input id="start_time" v-model="form.start_time" type="text" class="input-field">
+				<label for="start_time">Select Staff</label>
+				<InputMultiSelectCompanies />
 			</div>
-			<div class="field relative">
-				<label for="end_time">End time</label>
-				<input v-model="form.end_time" for="end_time" type="text" class="input-field">
-			</div>
-
-			<div class="flex">
+			<div class="flex space-x-6">
+				<button @click="useCompaniesModal().closeAddAccountManagers()" class="bg-gray-500 text-white p-3 rounded-md w-full">
+					Cancel
+				</button>
 				<button class="btn-primary w-full" :disabled="isFormEmpty">
 					<span class="flex justify-center items-center gap-2.5">
 						Assign
@@ -25,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+import { useCompaniesModal } from '@/composables/core/modals'
 
 const form = reactive({
  start_time: '',
