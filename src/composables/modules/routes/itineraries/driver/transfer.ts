@@ -48,7 +48,6 @@ export const useTransferBooking = () => {
 		loading.value = true
 		const res = await routes_api.$_transfer_booking_within_itineraries(payload) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			console.log(res)
 			useDriverModal().closeItineraryTransferBooking()
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Booking transferred successfully' })
 			useItineraryDrivers().getItineraryDrivers()
