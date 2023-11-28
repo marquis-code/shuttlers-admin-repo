@@ -40,6 +40,12 @@ export const environmental_url = {
   prod: 'https://admin.shuttlers.africa'
 }
 
+export const getCurrentEnvironmentalUrl = computed(() => {
+  if (window.location.href.includes('test') || window.location.href.includes('localhost')) return environmental_url.test
+  if (window.location.href.includes('qa')) return environmental_url.staging
+  return environmental_url.prod
+})
+
 export const openAsExternalUrl = (url) => {
   const tokenValue = token.value
   switch (import.meta.env.VITE_ENV_ALIAS) {

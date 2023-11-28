@@ -24,5 +24,21 @@ export const drivers_api = {
 	$_create_driver: (payload) => {
 		const url = '/drivers'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_drivers_for_selector_component: (search = '') => {
+		const url = `/drivers?limit=${20}&page=${1}&metadata=true&related=vehicle&search=${search}&status=active&field=fields:id,vehicle_id,fname,lname,email,phone,avatar,vehicle`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_assign_driver_to_route: (driverId:number, payload:any) => {
+		const url = `/drivers/${driverId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_update_assigned_driver_to_route: (id:number, payload:any) => {
+		const url = `/route-vehicle/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_delete_driver_from_itinerary: (driverId:number, payload) => {
+		const url = `/drivers/${driverId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
 	}
 }
