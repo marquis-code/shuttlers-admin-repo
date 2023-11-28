@@ -133,7 +133,9 @@
 			</div>
 		</div>
 		<div class="space-y-3">
-			<h2 class="font-bold text-gray-800">Business account managers</h2>
+			<h2 class="font-bold text-gray-800">
+				Business account managers
+			</h2>
 			<ModulesCorporatesBusinessAccountManagers />
 		</div>
 	</main>

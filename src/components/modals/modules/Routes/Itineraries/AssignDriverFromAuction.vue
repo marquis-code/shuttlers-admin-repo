@@ -6,16 +6,26 @@
 		<form class="flex flex-col gap-4 w-full">
 			<div class="bg-[#F9FBFD] p-4 rounded-lg flex flex-col gap-4">
 				<div class="flex items-center gap-4 justify-between">
-					<p class="text-sm font-medium text-[#101211]">Samuel Olubi</p>
+					<p class="text-sm font-medium text-[#101211]">
+						Samuel Olubi
+					</p>
 					<div class="flex flex-col gap-1 text-right">
-						<p class="text-sm font-medium text-[#6E717C]">Daniel Yusuf</p>
-						<p class="text-sm font-medium text-[#6E717C]">Sienna (AKD 748 HB) - 24 seats</p>
+						<p class="text-sm font-medium text-[#6E717C]">
+							Daniel Yusuf
+						</p>
+						<p class="text-sm font-medium text-[#6E717C]">
+							Sienna (AKD 748 HB) - 24 seats
+						</p>
 					</div>
 				</div>
 				<div class="w-full border" />
 				<div class="flex items-center gap-4 justify-between">
-					<p class="text-xs font-medium text-[#6E717C]">Cost of Supply</p>
-					<p class="text-base font-medium text-[#101211]">₦20,500</p>
+					<p class="text-xs font-medium text-[#6E717C]">
+						Cost of Supply
+					</p>
+					<p class="text-base font-medium text-[#101211]">
+						₦20,500
+					</p>
 				</div>
 			</div>
 			<div class="grid grid-cols-2 gap-4">

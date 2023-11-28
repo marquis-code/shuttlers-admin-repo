@@ -4,7 +4,7 @@
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 				<div class="flex justify-end items-end border-x bg-white py-3 pr-3">
-					<button @click="useCompaniesModal().openCorporateVehicleCapacityConfig()" class="bg-black p-3 rounded-md text-sm text-white">
+					<button class="bg-black p-3 rounded-md text-sm text-white" @click="useCompaniesModal().openCorporateVehicleCapacityConfig()">
 						New Configuration
 					</button>
 				</div>

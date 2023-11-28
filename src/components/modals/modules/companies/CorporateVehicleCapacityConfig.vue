@@ -18,7 +18,7 @@
 			</div>
 
 			<div class="flex space-x-6">
-				<button @click="useCompaniesModal().closeCorporateVehicleCapacityConfig()" class="bg-gray-800 rounded-md text-white w-full py-3">
+				<button class="bg-gray-800 rounded-md text-white w-full py-3" @click="useCompaniesModal().closeCorporateVehicleCapacityConfig()">
 					Cancel
 				</button>
 				<button class="btn-primary w-full" :disabled="isFormEmpty">

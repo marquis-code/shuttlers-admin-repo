@@ -5,27 +5,33 @@
 		</router-link>
 		<div class="w-full flex-grow border bg-white rounded-lg p-[16px] flex flex-col gap-5 xl:max-w-[700px]">
 			<div class="flex flex-col gap-[6px] border-b pb-3">
-				<h3 class="m-0 text-lg text-[#444854] font-medium ">Auction route itinerary</h3>
-				<p class="text-xs font-medium text-[#313533]">{{'ABR110'}} • {{'24-10-2023'}} • {{'5:45 AM'}}</p>
+				<h3 class="m-0 text-lg text-[#444854] font-medium ">
+					Auction route itinerary
+				</h3>
+				<p class="text-xs font-medium text-[#313533]">
+					{{ 'ABR110' }} • {{ '24-10-2023' }} • {{ '5:45 AM' }}
+				</p>
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div class="flex flex-col gap-[6px]">
 					<label class="text-[#6E717C] text-xs font-medium m-0">Bidding start date</label>
-					<!-- <date-picker class="!w-full" v-model="date" valueType="format" :disabled-date="startFromTomorrow"></date-picker> -->
 					<InputDateInput class="font-light" placeholder="Filter by date" :disabled-date="startFromTomorrow" />
 				</div>
 				<div class="flex flex-col gap-[6px]">
 					<label class="text-[#6E717C] text-xs font-medium m-0">Bidding start time</label>
-					<!-- <date-picker class="!w-full" v-model="time" valueType="format" format="hh:mm a" type="time" placeholder="hh:mm a"></date-picker> -->
 					<InputDateInput class="font-light" value-type="format" format="hh:mm a" type="time" placeholder="hh:mm a" />
 				</div>
 			</div>
 
 			<div class="flex flex-col gap-[12px] md:flex-row md:justify-between">
 				<div class="head_box">
-					<p class="head">Duration</p>
-					<p class="sub">How long should this auction run?</p>
+					<p class="head">
+						Duration
+					</p>
+					<p class="sub">
+						How long should this auction run?
+					</p>
 				</div>
 				<div class="flex items-center gap-4">
 					<div class="flex flex-col gap-2">
@@ -50,32 +56,34 @@
 
 			<div class="flex flex-col items-start gap-3 lg:flex-row lg:justify-between">
 				<div class="head_box">
-					<p class="head">Winning bids</p>
-					<p class="sub">Please provide the number of winning bids to be assigned for this route itinerary.</p>
+					<p class="head">
+						Winning bids
+					</p>
+					<p class="sub">
+						Please provide the number of winning bids to be assigned for this route itinerary.
+					</p>
 				</div>
 				<div class="w-full max-w-[250px] grid grid-cols-3 rounded-lg border overflow-hidden">
-					<button class="border-none text-lg bg-transparent h-[50px] disabled:cursor-not-allowed" :disabled="no_of_bids <= 1" @click="no_of_bids--">-</button>
-					<p class="flex items-center justify-center text-sm text-dark font-medium border-left border-right h-full">{{ no_of_bids }}</p>
-					<button class="border-none text-lg bg-transparent h-[50px]" @click="no_of_bids++">+</button>
+					<button class="border-none text-lg bg-transparent h-[50px] disabled:cursor-not-allowed" :disabled="no_of_bids <= 1" @click="no_of_bids--">
+						-
+					</button>
+					<p class="flex items-center justify-center text-sm text-dark font-medium border-left border-right h-full">
+						{{ no_of_bids }}
+					</p>
+					<button class="border-none text-lg bg-transparent h-[50px]" @click="no_of_bids++">
+						+
+					</button>
 				</div>
 			</div>
-
-			<!-- <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-				<div class="head_box">
-					<p class="head">Trip details</p>
-					<p class="sub">Please provide the date this route would start operating.</p>
-				</div>
-				<div class="flex flex-col gap-[6px]">
-					<label class="text-[#6E717C] text-xs font-medium m-0">Trip start date</label>
-					<date-picker class="!w-full" v-model="date" valueType="format" :disabled-date="startFromTomorrow"></date-picker>
-				</div>
-			</div> -->
-
 			<div class="w-full border" />
 
 			<div class="head_box">
-				<p class="head">Preferred vehicle details</p>
-				<p class="sub">Please provide the details of the vehicle preferred for this route. Note that this would not stop vehicle partner from providing other type of vehicles.</p>
+				<p class="head">
+					Preferred vehicle details
+				</p>
+				<p class="sub">
+					Please provide the details of the vehicle preferred for this route. Note that this would not stop vehicle partner from providing other type of vehicles.
+				</p>
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">

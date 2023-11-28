@@ -9,7 +9,7 @@
 				<InputMultiSelectCompanies />
 			</div>
 			<div class="flex space-x-6">
-				<button @click="useCompaniesModal().closeAddAccountManagers()" class="bg-gray-500 text-white p-3 rounded-md w-full">
+				<button class="bg-gray-500 text-white p-3 rounded-md w-full" @click="useCompaniesModal().closeAddAccountManagers()">
 					Cancel
 				</button>
 				<button class="btn-primary w-full" :disabled="isFormEmpty">

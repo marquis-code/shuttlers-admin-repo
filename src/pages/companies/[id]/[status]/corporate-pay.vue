@@ -132,7 +132,9 @@
 								<input type="number" class="w-full border outline-none py-2 rounded-md px-3">
 							</div>
 							<div class="flex items-center gap-x-3">
-								<p class="text-sm font-medium text-gray-800">per</p>
+								<p class="text-sm font-medium text-gray-800">
+									per
+								</p>
 								<div class="w-full">
 									<select class="border input-field w-full py-2 text-sm px-6">
 										<option value="day">

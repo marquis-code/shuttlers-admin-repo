@@ -20,7 +20,7 @@
 			</div>
 
 			<div v-if="bookingTransferActiveStep === '2'">
-				<ModulesTripsBookingTransferSectionTwo @go-back="bookingTransferActiveStep = '1'" :table-data="tableData" :loading="loading" />
+				<ModulesTripsBookingTransferSectionTwo :table-data="tableData" :loading="loading" @go-back="bookingTransferActiveStep = '1'" />
 			</div>
 		</section>
 	</Modal>
