@@ -45,17 +45,6 @@
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
-
-			<!-- <template #footer>
-				<TablePaginator
-					:current-page="page"
-					:total-pages="total"
-					:loading="loading"
-					@move-to="moveTo($event)"
-					@next="next"
-					@prev="prev"
-				/>
-			</template> -->
 		</Table>
 		<div class="p-2 flex flex-col gap-3">
 			<div class="p-4 bg-[#FAFAFA] rounded border flex flex-col gap-2">
@@ -65,25 +54,49 @@
 				<div class="w-full overflow-auto">
 					<div class="min-w-[500px] flex flex-col gap-3">
 						<div class="w-full grid grid-cols-5 gap-4">
-							<p class="text-xs font-medium text-[#6E717C]">Preferred vehicle</p>
-							<p class="text-xs font-medium text-[#6E717C]">Trip start time</p>
-							<p class="text-xs font-medium text-[#6E717C]">Auction start time</p>
-							<p class="text-xs font-medium text-[#6E717C]">Status</p>
-							<p class="text-xs font-medium text-[#6E717C]">Bids</p>
+							<p class="text-xs font-medium text-[#6E717C]">
+								Preferred vehicle
+							</p>
+							<p class="text-xs font-medium text-[#6E717C]">
+								Trip start time
+							</p>
+							<p class="text-xs font-medium text-[#6E717C]">
+								Auction start time
+							</p>
+							<p class="text-xs font-medium text-[#6E717C]">
+								Status
+							</p>
+							<p class="text-xs font-medium text-[#6E717C]">
+								Bids
+							</p>
 						</div>
 
 						<div class="w-full grid grid-cols-5 gap-4 items-start">
 							<div class="flex flex-col gap-1">
-								<p class="text-[13px] text-[#313533] font-medium">Toyota Sedan 2022</p>
-								<p class="text-[13px] text-[#313533] font-medium">(24 seats)</p>
+								<p class="text-[13px] text-[#313533] font-medium">
+									Toyota Sedan 2022
+								</p>
+								<p class="text-[13px] text-[#313533] font-medium">
+									(24 seats)
+								</p>
 							</div>
-							<p class="text-[13px] text-[#313533] font-medium">Wed Oct 29 2023</p>
+							<p class="text-[13px] text-[#313533] font-medium">
+								Wed Oct 29 2023
+							</p>
 							<div class="flex flex-col gap-1">
-								<p class="text-[13px] text-[#313533] font-medium">11:00 AM</p>
-								<p class="text-[13px] text-[#313533] font-medium">Wed Oct 29 2023</p>
+								<p class="text-[13px] text-[#313533] font-medium">
+									11:00 AM
+								</p>
+								<p class="text-[13px] text-[#313533] font-medium">
+									Wed Oct 29 2023
+								</p>
 							</div>
-							<p class="text-xs bg-[#FFFCEB] !border !border-[#FFDF18] rounded p-2 w-fit text-[#313533] font-medium">Pending</p>
-							<button class="text-sm font-bold text-[#313533] w-fit bg-transparent border-none">...</button>
+							<p class="text-xs bg-[#FFFCEB] !border !border-[#FFDF18] rounded p-2 w-fit text-[#313533] font-medium">
+								Pending
+							</p>
+							<button class="text-sm font-bold text-[#313533] w-fit bg-transparent border-none">
+								...
+							</button>
 						</div>
 					</div>
 				</div>
