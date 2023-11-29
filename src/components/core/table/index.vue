@@ -36,7 +36,7 @@
 						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
 							:data-label="headers[value]">
-							<slot name="item" :item="({ [key]: key, data } as any)">
+							<slot name="item" :item="({ [key]: key, data, index: index } as any)">
 								<span>{{ value }}</span>
 							</slot>
 						</td>

@@ -73,7 +73,7 @@
 					{{ item.data.is_active ? 'Active' : 'Inactive' }}
 				</p>
 				<span v-if="item.action">
-					<ButtonIconDropdown :children="sortDropdownChildren(item.data)" :data="item.data" class-name="w-40" />
+					<ButtonIconDropdown :index="item.index" :children="sortDropdownChildren(item.data)" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
 

@@ -18,7 +18,7 @@
 				</svg>
 
 				<span>
-					Please be sure you want to proceed with this action
+					{{ description.length ? description : 'Please be sure you want to proceed with this action' }}
 				</span>
 			</div>
 

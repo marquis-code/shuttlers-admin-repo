@@ -171,6 +171,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         oldPath: '/trips/sos',
         shouldRedirect: false,
         description: 'Handle shuttlers sos requests'
+      },
+      {
+        title: 'Trip issues',
+        routePath: '/trip-issues',
+        oldPath: '/trips-issues',
+        shouldRedirect: false,
+        description: 'Handle shuttlers trip issues'
       }
     ]
   },
