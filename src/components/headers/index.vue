@@ -58,6 +58,7 @@ import FleetDetails from '@/components/headers/modules/Fleets/fleet-details.vue'
 import AdminInfo from '@/components/headers/modules/Admin/admin-details.vue'
 import AddDrivers from '@/components/headers/modules/Drivers/add-driver.vue'
 import TripRatingSettingsDetails from '@/components/headers/modules/Configure/TripRatings/trip-rating-details.vue'
+import TripIssues from '@/components/headers/modules/Trip-issues/index.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -119,7 +120,8 @@ const componentRouteArray = [
     { routes: ['configuration-trip-rating-settings'], component: TripRatingSettings },
     { routes: ['configuration-trip-rating-settings-id'], component: TripRatingSettingsDetails },
     { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-itineraries-iti_id', 'trips-routes-id-itineraries-iti_id-new-auction', 'trips-routes-id-itineraries-iti_id-auction-details', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails },
-    { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo }
+    { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo },
+    { routes: ['trip-issues', 'trip-issues-resolved'], component: TripIssues }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

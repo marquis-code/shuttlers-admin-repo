@@ -34,6 +34,9 @@ import TransferBooking from '@/components/modals/modules/trips/TransferBooking.v
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
 import AddItinerary from '@/components/modals/modules/Routes/Itineraries/AddItinerary.vue'
 import ItineraryTransferBooking from '@/components/modals/modules/Routes/Itineraries/TransferBooking.vue'
+import LogIssues from '@/components/modals/modules/trips/Issues/LogTripIssue.vue'
+import CreateIssues from '@/components/modals/modules/trips/Issues/CreateIssue.vue'
+import ResolveIssues from '@/components/modals/modules/trips/issues/Resolve.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -45,7 +48,7 @@ type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCh
 type CompaniesTypes = 'AssignStaff'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking'
-type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers'
+type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
@@ -58,7 +61,7 @@ const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharg
 const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking } as Record<DriverTypes, any>
-const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers } as Record<TripsTypes, any>
+const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>
 const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
 
 export const modal = useModal(ref([] as any))
