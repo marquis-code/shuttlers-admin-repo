@@ -46,8 +46,42 @@ export const corporates_api = {
 		const url = `/corporates/${id}/work-shifts?limit=10000`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_bulk_staff_assignments: (payload:any) => {
-		const url = '/staff-routes-and-workshifts'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-	}
+	$_create_corporate: (payload: any) => {
+		const url = '/corporates'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+},
+$_bulk_staff_assignments: (payload:any) => {
+	const url = '/staff-routes-and-workshifts'
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update_corporate_status: (id:string, payload:any) => {
+	const url = `/corporates/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_get_accout_managers: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/managers`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_trip_report: (corporateId:number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+	const queryParams = useTableFilter(filterData)
+	const url = `/corporates/${corporateId}/trip-reports?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_trips_groups: (corporateId:number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+	const queryParams = useTableFilter(filterData)
+	const url = `/corporates/${corporateId}/groups?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_credit_system: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/credit-system`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_create_company_domain: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}/settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_get_corperate_settings: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+}
 }

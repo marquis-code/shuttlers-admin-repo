@@ -28,10 +28,18 @@ import DeleteVehicleCategory from '@/components/modals/modules/configurations/ve
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
 import AddDriver from '@/components/modals/modules/Routes/Itineraries/AddDriver.vue'
 import AssignDriver from '@/components/modals/modules/Routes/Itineraries/AssignDriverFromAuction.vue'
-import RouteDuplicationModal from '@/components/modals/modules/Routes/DuplicateRoutes.vue'
+import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateRoutes.vue'
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
 import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
+import AddWorkShift from '@/components/modals/modules/companies/AddWorkShift.vue'
+import AddWorkBranch from '@/components/modals/modules/companies/AddOfficeBranch.vue'
+import AddAccountManagers from '@/components/modals/modules/companies/AddAccountManager.vue'
+import CorporateWalletOptions from '@/components/modals/modules/companies/CorporateWalletOptions.vue'
+import CorporateManifestExport from '@/components/modals/modules/companies/CorporateManifestExport.vue'
+import CorporateBookingCancellation from '@/components/modals/modules/companies/CorporateBookingCancellation.vue'
+import CreateCorporateGroup from '@/components/modals/modules/companies/CreateCorporateGroup.vue'
+import CorporateVehicleCapacityConfig from '@/components/modals/modules/companies/CorporateVehicleCapacityConfig.vue'
 import AddItinerary from '@/components/modals/modules/Routes/Itineraries/AddItinerary.vue'
 import ItineraryTransferBooking from '@/components/modals/modules/Routes/Itineraries/TransferBooking.vue'
 import LogIssues from '@/components/modals/modules/trips/Issues/LogTripIssue.vue'
@@ -45,7 +53,7 @@ type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
-type CompaniesTypes = 'AssignStaff'
+type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
@@ -58,7 +66,7 @@ const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
-const CompaniesModals = { AssignStaff } as Record<CompaniesTypes, any>
+const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>

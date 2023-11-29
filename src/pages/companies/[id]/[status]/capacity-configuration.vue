@@ -1,62 +1,55 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs">
+		<Table :loading="loading" :headers="tableFields" :table-data="corporateTripReport" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
+				<div class="flex justify-end items-end border-x bg-white py-3 pr-3">
+					<button class="bg-black p-3 rounded-md text-sm text-white" @click="useCompaniesModal().openCorporateVehicleCapacityConfig()">
+						New Configuration
+					</button>
+				</div>
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
-				</span>
-				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-				</span>
-				<span v-else-if="item.updated_at">
-					{{ useDateFormat(item.data.updated_at, "MMMM d, YYYY").value }}
-				</span>
+				<div v-if="item.created_at">
+					<span>{{ useDateFormat(item.data.created_at, "hh:mm A, MMMM d, YYYY").value }}</span>
+				</div>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
-
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useCompaniesModal } from '@/composables/core/modals'
+import { useCorporateTripReport } from '@/composables/modules/corporates/id'
+const { corporateTripReport, loading, getCorporateTripReport, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useCorporateTripReport()
+const id = useRoute().params.id as string
+getCorporateTripReport()
 
-const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate } = useGetStaffs()
-getStaffs()
+const onRowClicked = (data) => {
+	useRouter().push(`/transactions/${data.id}`)
+}
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
 const tableFields = ref([
     {
-        text: 'Phone',
-        value: 'phone'
+        text: 'VEHICLE TYPE',
+        value: 'vehicle_type'
     },
     {
-        text: 'Email',
-        value: 'email'
+        text: 'SEATS',
+        value: 'seats'
     },
     {
-        text: 'Status',
-        value: 'active'
-    },
-    {
-        text: 'Role',
-        value: 'role'
-    },
-    {
-        text: 'Created At',
-        value: 'created_at'
-    },
-    {
-        text: 'Updated At',
-        value: 'updated_at'
+        text: 'ACTIONS',
+        value: ''
     }
 ])
 
 </script>
-
-<style scoped></style>

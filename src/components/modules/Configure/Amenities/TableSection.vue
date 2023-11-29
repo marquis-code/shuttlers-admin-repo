@@ -54,37 +54,6 @@ const tableFields = ref([
     }
 ])
 
-// const props = defineProps({
-//     amenitiesList: {
-//         type: Array,
-//         required: true
-//     },
-//     loadingAmenities: {
-//         type: Boolean,
-//         required: true
-//     },
-//     page: {
-//         type: Number,
-//         required: true
-//     },
-//     total: {
-//         type: Number,
-//         required: true
-//     },
-//     moveTo: {
-//         type: Function,
-//         required: true
-//     },
-//     next: {
-//         type: Function,
-//         required: true
-//     },
-//     prev: {
-//         type: Function,
-//         required: true
-//     }
-// })
-
 const deleteAmentity = (data: any) => {
     useConfirmationModal().openAlert({
         title: 'You’re about to delete an amenity ?',

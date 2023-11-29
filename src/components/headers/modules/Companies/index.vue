@@ -6,7 +6,7 @@
 
 		<template #actions>
 			<div class="flex items-center space-x-2">
-				<button class="px-4 py-2 text-gray-800 bg-white border-2 rounded-lg border-gray-950">
+				<button class="px-4 py-2 bg-black text-white text-sm border-2 rounded-lg border-gray-950" @click="navigateToCreateCompany">
 					Add Company
 				</button>
 			</div>
@@ -25,6 +25,15 @@ const pageTabs = [
         path: '/companies/demo-requests'
     }
 ]
+
+const navigateToCreateCompany = () => {
+	navigateTo({
+        path: '/companies/add-company',
+        query: {
+            tab: 'company-information'
+        }
+    })
+}
 </script>
 
 <style scoped></style>
