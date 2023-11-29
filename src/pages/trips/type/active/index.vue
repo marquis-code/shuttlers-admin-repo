@@ -49,13 +49,12 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useTripIdDetails } from '@/composables/modules/trips/id'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
-import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useTripOptions } from '@/composables/modules/trips/options'
+import { useDownloadReport } from '@/composables/utils/csv'
 
 const { initializeEndTrips } = useTripOptions()
-
+const { set_csvData } = useDownloadReport()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
@@ -74,6 +73,29 @@ const formattedActiveTripsList = computed(() =>
          }
     })
 )
+
+const csvData = computed(() => {
+	return activeTripsList.value.map((trip) => {
+		return {
+			date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
+            time: useDateFormat(trip.trip_start_time, 'hh:mm A').value,
+            routeCode: trip.route.route_code,
+            pickup: trip.route.pickup || 'N/A',
+            destination: trip.route.destination,
+            partnerName: trip.vehicle?.partner?.company_name,
+            driverName: trip.driver ? `${trip.driver.fname} ${trip.driver.lname}` : trip.route.driver ? `${trip.route.driver.fname} ${trip.route.driver.lname}` : 'N/A',
+            driverPhone: trip?.driver?.phone || 'N/A',
+            passengersCount: trip.passengers_count || 0,
+            seats: trip?.vehicle?.seats || 0,
+            vehicleName: trip?.vehicle?.name || 'N/A',
+            vehicleBrand: trip?.vehicle?.brand || 'N/A',
+            vehicleRegNum: trip?.vehicle?.registration_number || 'N/A',
+            costOfSupply: trip.cost_of_supply || 0
+		}
+	})
+})
+
+set_csvData(csvData, 'Active Trip Report')
 
 const handleTripCancellation = (data) => {
 	initializeEndTrips(data)
