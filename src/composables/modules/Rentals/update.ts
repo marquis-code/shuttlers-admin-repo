@@ -26,6 +26,9 @@ export const useUpdateCharter = () => {
     const checkMainVehicleIdExists = computed(() => {
         return charterVehicleOrder.value.every((item) => item.main_vehicle?.id)
     })
+    const checkMainVehicleDriverExists = computed(() => {
+        return charterVehicleOrder.value.every((item) => item.main_vehicle?.driver?.id)
+    })
 
     const updateCharterOrder = async (rentalDetails) => {
         loading.value = true
@@ -36,11 +39,15 @@ export const useUpdateCharter = () => {
                 payload.value = {
                     status: charterStatus.value
                 }
-            } else {
-                payload.value = {
+            } else if (checkMainVehicleDriverExists) {
+                        payload.value = {
                 status: charterStatus.value,
-                vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle.driver?.id, cost_of_supply: item?.cost }))
-            }
+                vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle?.driver?.id, cost_of_supply: item?.cost }))
+                }
+                } else {
+                    useAlert().openAlert({ type: 'ERROR', msg: 'Please select driver for all vehicles' })
+                    loading.value = false
+                    return
             }
             if (rentalDetails.status === 'rejected' || rentalDetails.status === 'accepted') {
                 delete payload.value.status
