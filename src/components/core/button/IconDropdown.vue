@@ -20,13 +20,10 @@
 				leave-from-class="translate-y-0 opacity-100"
 				leave-to-class="translate-y-1 opacity-0"
 			>
-				<PopoverPanel
-					class="absolute right-0 z-10 mt-1 "
-				>
+				<PopoverPanel class="absolute right-0 z-10 mt-1">
 					<div
 						class="absolute end-0 z-10 mt-2  rounded-md border border-gray-100 bg-white shadow-lg"
-						:class="className"
-						role="menu"
+						:class="[className, index > 1 ? 'bottom-8' : '']" role="menu"
 					>
 						<div class="p-2 w-full">
 							<div class="p-2 flex flex-col items-start w-full">
@@ -66,7 +63,12 @@ defineProps({
     children: {
         type: Array,
         default: () => []
-    }
+    },
+	index: {
+		type: Number,
+		default: 0,
+		required: false
+	}
 })
 </script>
 

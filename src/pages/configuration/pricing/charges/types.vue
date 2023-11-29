@@ -32,7 +32,7 @@
 					<p>{{ moment(item.data.created_at).format('Do MMMM, YYYY') }}</p>
 				</div>
 				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
+					<ButtonIconDropdown :index="item.index" :children="dropdownChildren" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
 
