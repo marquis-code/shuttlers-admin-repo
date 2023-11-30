@@ -2,8 +2,8 @@ import { GATEWAY_ENDPOINT_WITH_AUTH, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH } from '@/
 import { TMetaObject } from '@/composables/utils/table'
 
 export const staffs_api = {
-	$_get_staffs: () => {
-		const url = '/staff'
+	$_get_staffs: (metaObject: TMetaObject) => {
+		const url = `/staff?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_staff_details_by_id: (id:string) => {

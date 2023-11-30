@@ -24,7 +24,6 @@ const clearObj = () => {
 
 export const useCreateIssues = () => {
 	const initLogIssues = (data:Record<string, any>) => {
-		console.log(data)
 		obj.route_code.value = data.route_code
 		obj.trip_start_time.value = moment.utc(data.trip_start_time).format('hh:mm A')
 		useTripsModal().openLogIssues()

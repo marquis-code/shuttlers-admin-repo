@@ -1,16 +1,168 @@
 <template>
-	<div>
-		corporate wallet
-	</div>
+	<section class="lg:flex justify-between gap-x-10 space-y-6 lg:space-y-0">
+		<div class="lg:w-8/12 space-y-8">
+			<div class="h-48 rounded-lg bg-indigo-100 p-6">
+				<div class="flex justify-between">
+					<div class="space-y-4">
+						<div class="flex items-center gap-x-3">
+							<p class="text-lg font-light">
+								Wallet balance
+							</p>
+							<img src="@/assets/icons/source/eye.svg" alt="">
+						</div>
+						<h1 class="text-3xl font-bold">
+							NGN 0.00
+						</h1>
+						<div class="w-full">
+							<button class="text-white text-sm bg-black px-3 py-2.5 w-full rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
+								<span class="rounded-full bg-white p-1">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg>
+								</span>
+								Fund wallet
+							</button>
+						</div>
+					</div>
+					<div class="">
+						<select class="w-full font-medium outline-none px-6 bg-indigo-300 border rounded-md py-2.5 border-indigo-400">
+							<option>NGN Wallet</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="space-y-4">
+				<h1 class="font-bold text-lg">
+					Wallet History
+				</h1>
+				<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
+					<template #header>
+						<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+					</template>
+					<template #item="{ item }">
+						<div v-if="item.description" class="flex items-center gap-x-2">
+							<div>
+								<span class="rounded-full p-2 border border-gray-700">
+									<img v-if="item.data.direction === 'credit'" src="@/assets/icons/source/inflow.svg" alt="">
+									<img v-if="item.data.direction === 'debit'" src="@/assets/icons/source/outflow.svg" alt="">
+								</span>
+							</div>
+							<div>
+								<p>{{ item.data.description }}</p>
+								<p>{{ item.data.updated_at }}</p>
+							</div>
+						</div>
+					</template>
+
+					<template #footer>
+						<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+					</template>
+				</Table>
+			</div>
+		</div>
+		<div class="lg:w-4/12 space-y-10">
+			<div class="card space-y-4 p-6">
+				<div class="space-y-6">
+					<div class="flex items-center justify-between">
+						<p class="text-gray-500">
+							Bank Name
+						</p>
+						<p class="text-xl font-bold">
+							WEMA BANK
+						</p>
+					</div>
+					<div class="flex items-center justify-between">
+						<p class="text-gray-500">
+							Account Number
+						</p>
+						<p class="text-xl font-bold flex items-center gap-x-3">
+							<span class="cursor-pointer">8540972345</span> <img src="@/assets/icons/source/copy.svg" alt="">
+						</p>
+					</div>
+					<div class="flex items-center justify-between">
+						<p class="text-gray-500">
+							Account Name
+						</p>
+						<p class="text-lg font-bold">
+							Shuttlers
+						</p>
+					</div>
+					<div class="flex items-center justify-between">
+						<p class="text-gray-500">
+							Service Provider
+						</p>
+						<p class="text-sm font-bold">
+							FlutterwaveNubanProvider
+						</p>
+					</div>
+				</div>
+				<p class="leading-relaxed tracking-wide text-gray-400">
+					Transfer money to the bank account above to fund your wallet, your wallet will be credited automatically once payment is verified.
+				</p>
+				<div class="w-full flex justify-center items-center">
+					<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
+						Add Nuban
+					</button>
+				</div>
+			</div>
+			<div class="card space-y-6">
+				<h1 class="font-bold text-xl">
+					Overdraw settings
+				</h1>
+				<div class="flex items-center gap-x-2">
+					<input id="overdraft" type="checkbox">
+					<label for="overdraft" class="pt-2">Support overdraft</label>
+				</div>
+				<div class="space-y-3">
+					<p class="text-gray-800 font-medium">
+						Maximum overdraft
+					</p>
+					<input type="text" class="py-2.5 w-full border outline-none rounded-md px-6">
+				</div>
+				<div>
+					<button class="bg-black text-white px-3 py-2 rounded-md">
+						Update
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
+import { useCorporateWalletHistory, useCorporateWallet } from '@/composables/modules/corporates/wallet'
+import { useCompaniesModal } from '@/composables/core/modals'
+import { convertToCurrency } from '@/composables/utils/formatter'
+const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
+const { getCorporateWalletInfo, loading: loadingCorporateWalletInfo, coprorateWalletObj } = useCorporateWallet()
+
 definePageMeta({
-	layout: 'dashboard',
-	middleware: ['is-authenticated']
+    layout: 'dashboard',
+    middleware: ['is-authenticated']
 })
+getCorporateWalletHistory()
+getCorporateWalletInfo()
+
+const tableFields = ref([
+    {
+        text: 'TRANSACTION',
+        value: 'description'
+    },
+    {
+        text: 'TYPE',
+        value: 'direction'
+    },
+    {
+        text: 'AMOUNT',
+        value: 'amount_formatted'
+    },
+    {
+        text: 'BALANCE BEFORE',
+        value: 'ledger_balance_before_formatted'
+    },
+    {
+        text: 'STATUS',
+        value: 'status'
+    }
+])
+
 </script>
-
-<style scoped>
-
-</style>

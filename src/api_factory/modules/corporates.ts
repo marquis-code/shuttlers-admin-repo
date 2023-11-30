@@ -83,5 +83,69 @@ $_create_company_domain: (corporateId:number, payload: any) => {
 $_get_corperate_settings: (corporateId:number) => {
 	const url = `/corporates/${corporateId}/settings`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_create_work_branch: (corporateId:number, payload:any) => {
+	const url = `/corporates/${corporateId}/office-branches`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update_work_branch: (corporateId:number, payload:any, id:number) => {
+	const url = `/corporates/${corporateId}/office-branches/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_delete_work_branch: (corporateId:number, id:number) => {
+	const url = `/corporates/${corporateId}/office-branches/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+},
+$_create_work_shift: (corporateId:number, payload:any) => {
+	const url = `/corporates/${corporateId}/work-shifts`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update_work_shift: (corporateId:number, payload:any, id:number) => {
+	const url = `/corporates/${corporateId}/work-shifts/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_delete_work_shift: (corporateId:number, id:number) => {
+	const url = `/corporates/${corporateId}/work-shifts/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+},
+$_get_work_branches: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/office-branches`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_work_shifts: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/work-shifts`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_assign_bussiness_account_manager: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}/managers`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_get_corporate_wallet_transaction_history: (walletId:number, metaObject: TMetaObject) => {
+	const url = `/corporate-wallets/${walletId}/transactions?metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&filters[type]=all`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_corporate_wallet_info: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/wallets`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+},
+$_activate_corporate_wallet: (corporateId:number, payload: any) => {
+	const url = `/ledger-accounts/${corporateId}/nuban-addresses`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_payment_funding_reference: (wallet_ledger_id:number, payload: any) => {
+	const url = `/ledger-accounts/${wallet_ledger_id}/funding-references`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_configure_corporate_wallet_options: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_configure_booking_cancellation: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_corporate_route_manifest: (corporateId:number, payload: any) => {
+	const url = `/corporates-report/${corporateId}/route-manifest`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 }
 }

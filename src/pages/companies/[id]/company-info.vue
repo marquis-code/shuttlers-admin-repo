@@ -1,6 +1,6 @@
 <template>
 	<div v-if="!loading" class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-		<div class="w-8/12 bg-white rounded-md shadow-sm p-3">
+		<div class="lg:w-8/12 bg-white rounded-md shadow-sm p-3">
 			<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 				<div class="font-medium">
 					User Information
@@ -78,7 +78,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="w-4/12 bg-white rounded-md shadow-sm">
+		<div class="lg:w-4/12 bg-white rounded-md shadow-sm">
 			<div class="px-6 border-b py-3">
 				<p class="font-medium">
 					User Wallet
