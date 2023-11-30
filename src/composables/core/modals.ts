@@ -46,7 +46,7 @@ import FundWallet from '@/components/modals/modules/companies/FundWallet.vue'
 import ActivateWallet from '@/components/modals/modules/companies/ActivateWallet.vue'
 import LogIssues from '@/components/modals/modules/trips/Issues/LogTripIssue.vue'
 import CreateIssues from '@/components/modals/modules/trips/Issues/CreateIssue.vue'
-import ResolveIssues from '@/components/modals/modules/trips/issues/Resolve.vue'
+import ResolveIssues from '@/components/modals/modules/trips/Issues/Resolve.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
