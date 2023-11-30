@@ -26,13 +26,13 @@
 				</p>
 			</div>
 			<div class="w-9/12 space-y-3">
-				<div v-for="(itm, idx) in walletOptions" :key="idx">
-					<div class="flex justify-between items-center py-4 rounded-md  bg-white border px-6">
+				<div v-for="(itm, idx) in walletOptions" :key="idx" class="cursor-pointer focus-within:shadow-lg focus-within:bg-emerald-600">
+					<label :for="itm.name" class="flex justify-between items-center py-4 rounded-md  bg-white border px-6">
 						<p class="text-sm text-gray-700">
 							{{ itm.name }}
 						</p>
-						<div> <input type="checkbox"></div>
-					</div>
+						<div> <input :id="itm.name" type="checkbox"></div>
+					</label>
 				</div>
 			</div>
 		</div>

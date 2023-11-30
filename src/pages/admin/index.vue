@@ -25,6 +25,9 @@
 					{{ useDateFormat(item?.data?.updated_at, "DD, MMMM YYYY").value }}
 				</span>
 			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
@@ -33,7 +36,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 
-const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate } = useGetStaffs()
+const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate, total, moveTo, next, prev, page } = useGetStaffs()
 getStaffs()
 
 definePageMeta({
