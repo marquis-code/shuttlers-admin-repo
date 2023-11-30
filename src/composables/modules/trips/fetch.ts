@@ -59,6 +59,7 @@ const filterData = {
 const onFilterUpdate = (data: any) => {
     switch (data.type) {
         case 'download':
+
             useDownloadReport().download()
             break
         case 'search':
