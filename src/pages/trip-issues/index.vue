@@ -45,7 +45,7 @@
 					{{ moment(item.data?.check_up_date).format('ll') }} ({{ moment.utc(item.data?.check_up_date).format('LT') }})
 				</p>
 				<p v-if="item.logged_by" class="text-sm whitespace-nowrap">
-					{{ item.data?.staff?.fname || '' }} {{ item.data?.staff?.lname || ''}}
+					{{ item.data?.staff?.fname || '' }} {{ item.data?.staff?.lname || '' }}
 				</p>
 				<span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />

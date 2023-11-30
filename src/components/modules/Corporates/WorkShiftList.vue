@@ -3,8 +3,8 @@
 		<div v-for="(itm, idx) in workShifts" :key="idx" class="flex justify-between border items-center px-6 py-3 rounded-md">
 			<div>{{ itm.description }}</div>
 			<div class="flex items-center gap-x-3">
-				<img @click="editShift(itm)" class="cursor-pointer" src="@/assets/icons/source/edit-pen.svg" alt="">
-				<img @click="deleteShift(itm)" class="cursor-pointer" src="@/assets/icons/source/delete-basket.svg" alt="">
+				<img class="cursor-pointer" src="@/assets/icons/source/edit-pen.svg" alt="" @click="editShift(itm)">
+				<img class="cursor-pointer" src="@/assets/icons/source/delete-basket.svg" alt="" @click="deleteShift(itm)">
 			</div>
 		</div>
 	</section>
