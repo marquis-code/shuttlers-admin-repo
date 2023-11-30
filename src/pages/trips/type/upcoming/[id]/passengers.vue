@@ -242,7 +242,6 @@ const notifySelectedUsers = () => {
 	useTripsModal().openNotifyPassengers()
 }
 const toggleSelection = (e, val) => {
-	console.log(e.target.value, 'ghj')
 	form.all = true
 	selectedCheckboxes.value.push(val.user_id)
 }
