@@ -54,7 +54,6 @@ const validateBVN = (bvn:any) => {
     validateBVN(val)
   })
   const handleBVNInput = () => {
-    // console.log(form.bvn, 'ghj')
     validateBVN(form.bvn)
   }
 

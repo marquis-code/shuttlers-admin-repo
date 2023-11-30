@@ -35,7 +35,6 @@ export const useCorporateWallet = () => {
 }
 
 export const useCorporateWalletHistory = () => {
-  // console.log(selectedCorporate, 'ghjk')
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
   const loading = ref(false)
   const coprorateWalletHistory = ref([])
