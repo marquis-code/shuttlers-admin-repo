@@ -2,7 +2,8 @@
 	<section class="mx-10 mt-14 space-y-6">
 		<div class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 			<div class="flex justify-end items-end">
-				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md" @click="useTripsModal().openAddPassengersToTrips()">
+				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md"
+					@click="useTripsModal().openAddPassengersToTrips()">
 					Add passengers
 				</button>
 			</div>
@@ -15,46 +16,59 @@
 				</div>
 				<div class="flex items-center gap-x-3">
 					<div class="flex items-center gap-x-1 cursor-pointer" @click="seePickups">
-						<input value="pickup" name="manifestFilter" :checked="filterType === 'pickup'" type="radio" @change="filterType = 'pickup'">
+						<input value="pickup" name="manifestFilter" :checked="filterType === 'pickup'" type="radio"
+							@change="filterType = 'pickup'">
 						<label for="pickup" class="font-medium pt-2">Pick ups</label>
 					</div>
 					<div class="flex items-center gap-x-1 cursor-pointer" @click="seeDropoffs">
-						<input value="dropoff" name="manifestFilter" :checked="filterType === 'dropoff'" type="radio" @change="filterType = 'dropoff'">
+						<input value="dropoff" name="manifestFilter" :checked="filterType === 'dropoff'" type="radio"
+							@change="filterType = 'dropoff'">
 						<label for="dropoff" class="font-medium pt-2">Drop offs</label>
 					</div>
 				</div>
 			</div>
 			<div v-if="form.all" class="flex justify-between items-center">
-				<button class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="handleNotification(routePassengers,'bulk')">
+				<button v-if="!hasCheckboxSelected"
+					class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md"
+					@click="handleNotification(routePassengers, 'bulk')">
 					Notify Selected
 				</button>
-				<button class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="useTripsModal().openTransferBooking()">
+				<button v-else class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md"
+					@click="notifySelectedUsers">
+					Notify Selected
+				</button>
+				<button class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md"
+					@click="useTripsModal().openTransferBooking()">
 					Transfer Booking
 				</button>
 			</div>
-			<div v-if="filterType === 'pickup'">
-				<section v-for="(val, key, idx) in groupByPickup(routePassengers)" :key="idx" class="shadow-sm border rounded-md bg-white">
+			<div v-if="filterType === 'pickup'" class="space-y-6">
+				<section v-for="(val, key, idx) in groupByPickup(routePassengers)" :key="idx"
+					class="shadow-sm border rounded-md bg-white">
 					<div class="flex justify-between items-center border-b py-3 px-6">
-						<div class="space-y-1">
+						<div class="space-y-2">
 							<div class="flex items-center">
 								<img src="@/assets/icons/source/green-location.svg" alt="">
 								<p class="font-bold">
 									{{ val.busstopname }}
 								</p>
 							</div>
-							<p class="text-xs">
+							<p class="text-xs font-medium">
 								{{ val.passengers.length }} passenger(s)
 							</p>
 						</div>
-						<button class="text-sm bg-black text-white px-3 py-2 rounded-md" @click="handleNotification(val.passengers, 'bulk')">
+						<button class="text-sm bg-black text-white px-3 py-2 rounded-md"
+							@click="handleNotification(val.passengers, 'bulk')">
 							Notify Bus-Stop
 						</button>
 					</div>
-					<div v-for="(itm, idx) in val.passengers" :key="idx" class="flex justify-between items-center px-6 py-3">
-						<!-- <div>
-							<input v-if="shouldShowTransfer" type="checkbox" name="checked_all" :checked="selectedUsers.find((user) => user.id === passenger?.id) || selected_all
-							" @input="() => {selectUser(passenger); selected_all = false}">
-						</div> -->
+					<div v-for="(itm, idx) in val.passengers" :key="idx"
+						class="flex justify-between items-center px-6 py-3">
+						<div>
+							<label :for="itm.id">
+								<input :id="itm.id" :checked="isChecked" type="checkbox" name="checked_all" @change="toggleSelection($event, itm)">
+							</label>
+						</div>
 						<div class="flex items-center gap-x-2">
 							<Avatar :name="itm.user.fname" bg="#B1C2D9" />
 							<div>
@@ -63,11 +77,13 @@
 							</div>
 						</div>
 						<div>
-							<RouteDescription class="text-xs" :pickup="itm?.pickup?.location" :destination="itm?.destination?.location" />
+							<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
+								:destination="itm?.destination?.location" />
 						</div>
 						<div>{{ itm?.user?.phone }}</div>
 						<div>{{ itm?.created_at }}</div>
-						<div class="text-xs px-3 py-1.5" :class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
+						<div class="text-xs px-3 py-1.5"
+							:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
 							{{ itm?.check_in_status }}
 						</div>
 						<div class="cursor-pointer" @click="handleNotification(itm, 'single')">
@@ -77,29 +93,34 @@
 				</section>
 			</div>
 
-			<div v-if="filterType === 'dropoff'">
-				<section v-for="(val, key, idx) in groupByDestination(routePassengers)" :key="idx" class="shadow-sm border rounded-md bg-white">
+			<div v-if="filterType === 'dropoff'" class="space-y-6">
+				<section v-for="(val, key, idx) in groupByDestination(routePassengers)" :key="idx"
+					class="shadow-sm border rounded-md bg-white">
 					<div class="flex justify-between items-center border-b py-3 px-6">
-						<div class="space-y-1">
+						<div class="space-y-2">
 							<div class="flex items-center">
 								<img src="@/assets/icons/source/green-location.svg" alt="">
 								<p class="font-bold">
 									{{ val.busstopname }}
 								</p>
 							</div>
-							<p class="text-xs">
+							<p class="text-xs font-medium">
 								{{ val.passengers.length }} passenger(s)
 							</p>
 						</div>
-						<button class="text-sm bg-black text-white px-3 py-2 rounded-md" @click="handleNotification(val.passengers, 'bulk')">
+						<button class="text-sm bg-black text-white px-3 py-2 rounded-md"
+							@click="handleNotification(val.passengers, 'bulk')">
 							Notify Bus-Stop
 						</button>
 					</div>
-					<div v-for="(itm, idx) in val.passengers" :key="idx" class="flex justify-between items-center px-6 py-3">
-						<!-- <div>
-						<input v-if="shouldShowTransfer" type="checkbox" name="checked_all" :checked="selectedUsers.find((user) => user.id === passenger?.id) || selected_all
-						" @input="() => {selectUser(passenger); selected_all = false}">
-					</div> -->
+					<div v-for="(itm, idx) in val.passengers" :key="idx"
+						class="flex justify-between items-center px-6 py-3">
+						<div>
+							<label :for="itm.id">
+								<input :id="itm.id" :checked="isChecked" type="checkbox" name="checked_all"
+									@change="toggleSelection($event, itm)">
+							</label>
+						</div>
 						<div class="flex items-center gap-x-2">
 							<Avatar :name="itm.user.fname" bg="#B1C2D9" />
 							<div>
@@ -108,11 +129,13 @@
 							</div>
 						</div>
 						<div>
-							<RouteDescription class="text-xs" :pickup="itm?.pickup?.location" :destination="itm?.destination?.location" />
+							<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
+								:destination="itm?.destination?.location" />
 						</div>
 						<div>{{ itm?.user?.phone }}</div>
 						<div>{{ itm?.created_at }}</div>
-						<div class="text-xs px-3 py-1.5" :class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
+						<div class="text-xs px-3 py-1.5"
+							:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
 							{{ itm?.check_in_status }}
 						</div>
 						<div class="cursor-pointer" @click="handleNotification(itm, 'single')">
@@ -143,52 +166,52 @@ definePageMeta({
 
 const isChecked = ref(false)
 
-    const groupByPickup = (objectsArray) => {
-      const groupedObject = objectsArray.reduce((accumulator, currentObject) => {
-        const pickupKey = currentObject?.pickupRouteBusStop?.id || currentObject?.pickup.location
+const groupByPickup = (objectsArray) => {
+	const groupedObject = objectsArray.reduce((accumulator, currentObject) => {
+		const pickupKey = currentObject?.pickupRouteBusStop?.id || currentObject?.pickup.location
 		const busstopname = currentObject?.pickupRouteBusStop?.name || currentObject?.pickup.location
 
-        if (!accumulator[pickupKey]) {
-          accumulator[pickupKey] = { busstopname, passengers: [] }
-        }
+		if (!accumulator[pickupKey]) {
+			accumulator[pickupKey] = { busstopname, passengers: [] }
+		}
 
-	  accumulator[pickupKey].passengers.push(currentObject)
+		accumulator[pickupKey].passengers.push(currentObject)
 
-        return accumulator
-      }, {})
+		return accumulator
+	}, {})
 
-      return groupedObject
-    }
+	return groupedObject
+}
 
-	const groupByDestination = (objectsArray) => {
-      const groupedObject = objectsArray.reduce((accumulator, currentObject) => {
-        const destinationKey = currentObject?.destinationRouteBusStop?.id || currentObject?.destination.location
+const groupByDestination = (objectsArray) => {
+	const groupedObject = objectsArray.reduce((accumulator, currentObject) => {
+		const destinationKey = currentObject?.destinationRouteBusStop?.id || currentObject?.destination.location
 		const busstopname = currentObject?.destinationRouteBusStop?.name || currentObject?.destination.location
 
-        if (!accumulator[destinationKey]) {
-          accumulator[destinationKey] = { busstopname, passengers: [] }
-        }
+		if (!accumulator[destinationKey]) {
+			accumulator[destinationKey] = { busstopname, passengers: [] }
+		}
 
-	  accumulator[destinationKey].passengers.push(currentObject)
+		accumulator[destinationKey].passengers.push(currentObject)
 
-        return accumulator
-      }, {})
+		return accumulator
+	}, {})
 
-      return groupedObject
-    }
-
-	onMounted(() => {
+	return groupedObject
+}
+const hasCheckboxSelected = ref(false)
+onMounted(() => {
 	const days = ref([] as Record<string, any>)
 	days.value.push(selectedTrip.value.trip_date)
 	const payload = {
 		booking_days: days.value,
-       driver_id: selectedTrip.value.driver.id
+		driver_id: selectedTrip.value.driver.id
 	}
 	populateRoutePassengers(payload)
 	getRoutePassengers(selectedTrip.value.route.id)
 })
 
-const handleNotification = (itm:any, type: string) => {
+const handleNotification = (itm: any, type: string) => {
 	if (type === 'bulk') {
 		busstopUsersIds.value = itm.map((passenger) => passenger.user_id)
 	}
@@ -212,8 +235,17 @@ const seeDropoffs = () => {
 const seePickups = () => {
 	filterType.value = 'pickup'
 }
+const selectedCheckboxes = ref([]) as any
+
+const toggleSelection = (e, val) => {
+	form.all = true
+	selectedCheckboxes.value.push(val.user_id)
+}
+
+const notifySelectedUsers = () => {
+	busstopUsersIds.value = selectedCheckboxes.value
+	useTripsModal().openNotifyPassengers()
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
