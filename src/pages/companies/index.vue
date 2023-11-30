@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList" :has-index="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="corporatesList" :has-index="true" :option="onRowClicked" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="onFilterUpdate" />
 			</template>

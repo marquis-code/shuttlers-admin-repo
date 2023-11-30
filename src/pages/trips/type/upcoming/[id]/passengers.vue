@@ -237,14 +237,14 @@ const seePickups = () => {
 }
 const selectedCheckboxes = ref([]) as any
 
-const toggleSelection = (e, val) => {
-	form.all = true
-	selectedCheckboxes.value.push(val.user_id)
-}
-
 const notifySelectedUsers = () => {
 	busstopUsersIds.value = selectedCheckboxes.value
 	useTripsModal().openNotifyPassengers()
+}
+const toggleSelection = (e, val) => {
+	console.log(e.target.value, 'ghj')
+	form.all = true
+	selectedCheckboxes.value.push(val.user_id)
 }
 </script>
 

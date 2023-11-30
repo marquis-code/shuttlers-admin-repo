@@ -16,6 +16,7 @@ export function exportAsCsv(data: any[], fileName: string) {
 const loading = ref(false)
 const _title = ref('')
 let _csvData = ref()
+
 export const useDownloadReport = () => {
 	const csvConfig = mkConfig({ useKeysAsHeaders: true })
 	const download = () => {
