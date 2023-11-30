@@ -27,10 +27,10 @@
 			</section>
 
 			<section class="flex items-center flex-row-reverse gap-4">
-				<button v-if="filterType.showDownloadButton" :disabled="filterType.downloading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onFilter({type:'download', value:null})">
-					<img v-if="!filterType.downloading" src="@/assets/icons/source/download.svg" alt="" class="inline">
+				<button v-if="filterType.showDownloadButton" :disabled="loading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onFilter({type:'download', value:null})">
+					<img v-if="!loading" src="@/assets/icons/source/download.svg" alt="" class="inline">
 					<p class="text-xs font-medium">
-						{{ filterType.downloading ? 'Downloading' : 'Download report' }}
+						{{ loading ? 'Downloading...' : 'Download report' }}
 					</p>
 				</button>
 
@@ -44,8 +44,11 @@
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { watchDebounced } from '@vueuse/core'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
+import { useDownloadReport } from '@/composables/utils/csv'
 
 const emit = defineEmits(['filter'])
+
+const { loading } = useDownloadReport()
 
 type FilterKeys = 'type' | 'value'
 const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
@@ -76,8 +79,9 @@ const props = defineProps({
 			showSearchBar: true,
 			showDownloadButton: false,
 			showStatus: false,
-			showDateRange: false,
-			downloading: false
+			showDateRange: false
+			// Sherif rewrite this, why is filter type downloading here?
+			// downloading: false
 		})
 	},
 	defaultValue: {

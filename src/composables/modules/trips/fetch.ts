@@ -1,5 +1,6 @@
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { useDownloadReport } from '@/composables/utils/csv'
 
 const requestQueue: (() => Promise<void>)[] = [] // Array to store the API request functions
 let isQueueRunning = false // Flag to track the loading status
@@ -57,6 +58,9 @@ const filterData = {
 
 const onFilterUpdate = (data: any) => {
     switch (data.type) {
+        case 'download':
+            useDownloadReport().download()
+            break
         case 'search':
             filterData.search.value = data.value
             break

@@ -46,14 +46,19 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
+import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { useDownloadReport } from '@/composables/utils/csv'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 getUpcomingTrips()
 
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
+const { initLogIssues } = useCreateIssues()
+const { set_csvData } = useDownloadReport()
 
 const formattedUpcomingTripsList = computed(() =>
 upcomingTripsList.value.map((i:any, index) => {
@@ -71,6 +76,29 @@ upcomingTripsList.value.map((i:any, index) => {
     })
 )
 
+const csvData = computed(() => {
+	return upcomingTripsList.value.map((trip) => {
+		return {
+			date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
+            time: useDateFormat(trip.trip_start_time, 'hh:mm A').value,
+            routeCode: trip.route.route_code,
+            pickup: trip.route.pickup || 'N/A',
+            destination: trip.route.destination,
+            partnerName: trip.vehicle?.partner?.company_name,
+            driverName: trip.driver ? `${trip.driver.fname} ${trip.driver.lname}` : trip.route.driver ? `${trip.route.driver.fname} ${trip.route.driver.lname}` : 'N/A',
+            driverPhone: trip?.driver?.phone || 'N/A',
+            passengersCount: trip.passengers_count || 0,
+            seats: trip?.vehicle?.seats || 0,
+            vehicleName: trip?.vehicle?.name || 'N/A',
+            vehicleBrand: trip?.vehicle?.brand || 'N/A',
+            vehicleRegNum: trip?.vehicle?.registration_number || 'N/A',
+            costOfSupply: trip.cost_of_supply || 0
+		}
+	})
+})
+
+set_csvData(csvData, 'Upcoming Trip Report')
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -80,6 +108,7 @@ const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
         { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+		{ name: 'Log Issue', func: (data) => initLogIssues(data) },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
     if (dayIsInThePast(main_data.trip_date)) {

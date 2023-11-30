@@ -4012,6 +4012,11 @@ execa@^7.1.1:
     signal-exit "^3.0.7"
     strip-final-newline "^3.0.0"
 
+export-to-csv@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.2.1.tgz#42c3cb74040ce960a2a0bff6e4c54427c808ebc6"
+  integrity sha512-Q16f4RAu99VcBy3ZVXWAdJ4N+6GIijLI/7Uw5rQ4Mi1WeiAK+s6i11AN/wdYTS+hK14wM6xlSrVhnLyEVEvMFQ==
+
 extend@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
