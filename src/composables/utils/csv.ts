@@ -13,7 +13,6 @@ export function exportAsCsv(data: any[], fileName: string) {
 	link.click()
 	document.body.removeChild(link)
 }
-
 const loading = ref(false)
 const _title = ref('')
 let _csvData = ref()
