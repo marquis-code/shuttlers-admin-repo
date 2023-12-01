@@ -77,5 +77,9 @@ export const trips_api = {
 	$_get_upcoming_trip_passengers: (id:string) => {
 		const url = `/trips/${id}/passengers?isUpcomingTrip=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_notify_trip_passenger: (payload:any) => {
+		const url = '/notifications'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

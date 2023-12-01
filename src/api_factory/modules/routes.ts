@@ -126,5 +126,9 @@ export const routes_api = {
 	$_transfer_booking_within_itineraries: (payload) => {
 		const url = '/route-vehicles/transfers'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-	}
+	},
+	$_get_route_bookings_passengers: (route_id:string|number, payload) => {
+        const url = `/routes/${route_id}/bookings/null`
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    }
 }

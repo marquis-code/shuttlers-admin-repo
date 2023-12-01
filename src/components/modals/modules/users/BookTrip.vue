@@ -3,17 +3,6 @@
 		<form class="flex flex-col gap-6 mt-4" @submit.prevent="bookTrip">
 			<div class="field relative w-full">
 				<RuoteSelector class="w-full" @selected="routeSelected" />
-				<!-- <label for="route">Select Route</label>
-				<select v-if="!loadingMainRoutes" id="route" v-model="form.selectedRoute"
-					class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
-					<option class="" disabled>
-						--- select ---
-					</option>
-					<option v-for="(route, idx) in mainRoutesList" :key="idx" :value="route">
-						{{ `${route.route_code} - From ${route.pickup} To ${route.destination}` }}
-					</option>
-				</select>
-				<Skeleton v-else height="50px" /> -->
 			</div>
 			<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 				<div class="flex flex-col items-start justify-start">

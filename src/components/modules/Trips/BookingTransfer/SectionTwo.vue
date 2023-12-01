@@ -29,8 +29,12 @@
 			</template>
 		</Table>
 		<div class="flex justify-between items-center gap-x-6 mt-10">
-			<button @click="goBack" class="bg-gray-500 rounded-md w-full text-white py-2.5">Back</button>
-			<button class="bg-black rounded-md text-white w-full py-2.5">Transfer</button>
+			<button class="bg-gray-500 rounded-md w-full text-white py-2.5" @click="goBack">
+				Back
+			</button>
+			<button class="bg-black rounded-md text-white w-full py-2.5">
+				Transfer
+			</button>
 		</div>
 	</main>
 </template>
