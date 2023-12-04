@@ -39,7 +39,7 @@ export const useCorporateWalletHistory = () => {
   const loading = ref(false)
   const coprorateWalletHistory = ref([])
 	const getCorporateWalletHistory = async () => {
-        const res = (await corporates_api.$_get_corporate_wallet_transaction_history(Number(selectedCorporate.value.id), metaObject)) as CustomAxiosResponse
+        const res = (await corporates_api.$_get_corporate_wallet_transaction_history(Number(selectedCorporate.value?.wallet?.id), metaObject)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             coprorateWalletHistory.value = res.data.data
             metaObject.total.value = res.data.pagination?.pageCount

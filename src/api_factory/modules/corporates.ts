@@ -125,8 +125,8 @@ $_get_corporate_wallet_transaction_history: (walletId:number, metaObject: TMetaO
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
 $_get_corporate_wallet_info: (corporateId:number) => {
-	const url = `/corporates/${corporateId}/wallets`
-	return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+	const url = `/corporates/${Number(corporateId)}/wallets`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
 $_activate_corporate_wallet: (corporateId:number, payload: any) => {
 	const url = `/ledger-accounts/${corporateId}/nuban-addresses`
