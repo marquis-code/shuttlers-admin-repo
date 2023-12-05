@@ -80,7 +80,7 @@ const csvData = computed(() => {
 	return upcomingTripsList.value.map((trip) => {
 		return {
 			date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
-            time: useDateFormat(trip.trip_start_time, 'hh:mm A').value,
+            time: trip?.itinerary?.trip_time ?? 'N/A',
             routeCode: trip.route.route_code,
             pickup: trip.route.pickup || 'N/A',
             destination: trip.route.destination,
