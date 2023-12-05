@@ -4,7 +4,7 @@
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDateRange:true }" @filter="onFilterUpdate" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
 				</section>
 			</template>
 			<template #item="{ item }">
@@ -51,11 +51,9 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
-import { useDownloadReport } from '@/composables/utils/csv'
 
 const { initializeEndTrips } = useTripOptions()
-const { set_csvData } = useDownloadReport()
-const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
+const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
  activeTripsList.value.map((i:any, index) => {
@@ -74,29 +72,6 @@ const formattedActiveTripsList = computed(() =>
     })
 )
 
-const csvData = computed(() => {
-	return activeTripsList.value.map((trip) => {
-		return {
-			date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
-            time: useDateFormat(trip.trip_start_time, 'hh:mm A').value,
-            routeCode: trip.route.route_code,
-            pickup: trip.route.pickup || 'N/A',
-            destination: trip.route.destination,
-            partnerName: trip.vehicle?.partner?.company_name,
-            driverName: trip.driver ? `${trip.driver.fname} ${trip.driver.lname}` : trip.route.driver ? `${trip.route.driver.fname} ${trip.route.driver.lname}` : 'N/A',
-            driverPhone: trip?.driver?.phone || 'N/A',
-            passengersCount: trip.passengers_count || 0,
-            seats: trip?.vehicle?.seats || 0,
-            vehicleName: trip?.vehicle?.name || 'N/A',
-            vehicleBrand: trip?.vehicle?.brand || 'N/A',
-            vehicleRegNum: trip?.vehicle?.registration_number || 'N/A',
-            costOfSupply: trip.cost_of_supply || 0
-		}
-	})
-})
-
-set_csvData(csvData, 'Active Trip Report')
-
 const handleTripCancellation = (data) => {
 	initializeEndTrips(data)
 }
@@ -105,12 +80,6 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-
-const dropdownChildren = computed(() => [
-	{ name: 'Start Trip', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Cancel Trip', func: (data) => {}, class: '!text-red' },
-	{ name: 'Complete Trip', func: (data) => {}, class: '!text-red' }
-])
 
 const tableFields = ref([
 	{
