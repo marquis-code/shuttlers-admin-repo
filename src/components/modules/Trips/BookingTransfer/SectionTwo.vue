@@ -42,7 +42,8 @@
 <script setup lang="ts">
     const props = defineProps({
 		tableData: {
-			type: Array
+			type: Array,
+			required: true
 		},
 		loading: {
 			type: Boolean

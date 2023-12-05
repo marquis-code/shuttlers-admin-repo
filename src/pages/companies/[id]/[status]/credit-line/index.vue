@@ -19,24 +19,30 @@
 							<button class="py-2.5 text-xs px-4 text-white bg-black rounded-md">
 								Edit Credit System
 							</button>
-							<button @click="handleCreditSystemApplication" class="py-2.5 text-xs px-4 text-white bg-black rounded-md">
+							<button class="py-2.5 text-xs px-4 text-white bg-black rounded-md" @click="handleCreditSystemApplication">
 								Apply Credit System
 							</button>
 							<ButtonDropdown :children="dropdownChildren" :data="creditSystem" bg-color="#000" />
 						</div>
 					</div>
 					<div class="flex justify-between items-center border-b-[0.4px] py-6">
-						<p class="text-gray-500">Status</p>
+						<p class="text-gray-500">
+							Status
+						</p>
 						<p class="text-white rounded-md text-sm" :class="[creditSystem.is_active === 1 ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
 							{{ creditSystem?.is_active === 1 ? 'Active' : 'In active' }}
 						</p>
 					</div>
 					<div class="flex justify-between items-center border-b-[0.4px] py-6">
-						<p class="text-gray-500">Amount</p>
+						<p class="text-gray-500">
+							Amount
+						</p>
 						<p>{{ creditSystem?.amount ?? 'N/A' }}</p>
 					</div>
 					<div class="flex justify-between items-center py-6">
-						<p class="text-gray-500">Applicable Employees</p>
+						<p class="text-gray-500">
+							Applicable Employees
+						</p>
 						<p>{{ getApplicableEmployeeNarration(creditSystem?.applicable_employee_kind) }}</p>
 					</div>
 				</div>
@@ -64,10 +70,14 @@
 
 							<div v-if="item.execution_status">
 								<div v-if="item.data.execution_status === null" class="space-y-3">
-									<div>Scheduled for {{useDateFormat(item.data.scheduled_for, 'DD MMMM YYYY, hh:mm A').value}} </div>
-									<button class="bg-black text-white text-xs px-3 py-2 rounded-md" @click="cancelSchedule(item)">Cancel</button>
+									<div>Scheduled for {{ useDateFormat(item.data.scheduled_for, 'DD MMMM YYYY, hh:mm A').value }} </div>
+									<button class="bg-black text-white text-xs px-3 py-2 rounded-md" @click="cancelSchedule(item)">
+										Cancel
+									</button>
 								</div>
-								<div v-else>{{item.data?.execution_status}}</div>
+								<div v-else>
+									{{ item.data?.execution_status }}
+								</div>
 							</div>
 						</template>
 

@@ -24,7 +24,9 @@
 			<div v-if="activeStep === 'confirmation'" class="space-y-6">
 				<div class="flex items-center gap-x-3 bg-indigo-300 rounded-2xl py-3 px-6">
 					<img src="@/assets/icons/source/caution.svg" class="h-6 w-6" alt="">
-					<p class="text-white text-sm">Are you sure you want to save this changes ?</p>
+					<p class="text-white text-sm">
+						Are you sure you want to save this changes ?
+					</p>
 				</div>
 				<div class="field relative">
 					<label for="confirmation_password">Please enter your password to save your changes</label>

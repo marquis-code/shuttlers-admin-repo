@@ -11,7 +11,9 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.url">
-					<button class="font-medium text-shuttlersGreen" @click="downloadReport(item)">Download</button>
+					<button class="font-medium text-shuttlersGreen" @click="downloadReport(item)">
+						Download
+					</button>
 				</div>
 			</template>
 			<template #footer>

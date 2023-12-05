@@ -6,10 +6,6 @@
 		<form class="flex flex-col gap-6" @submit.prevent="processEnablingBookingCancellation">
 			<div v-if="activeStep === 'walletOptions'" class="space-y-6">
 				<div class="field relative space-y-6">
-					<!-- <label for="enableCancelBooking">
-						<input id="enableCancelBooking" v-model="form.restrict_admin_bookings_cancellation" :checked="cancellationOptions?.restrict_admin_bookings_cancellation" type="checkbox" class="">
-						Enable booking cancellation on admin
-					</label> -->
 					<label v-for="(val, key) in cancellationOptions" :key="key" :for="key">
 						<input :id="key" v-model="checkedItems[key]" :checked="val" type="checkbox" class=" pr-4">
 						{{ key.replace('_', ' ') }}
@@ -27,7 +23,9 @@
 			<div v-if="activeStep === 'confirmation'" class="space-y-6">
 				<div class="flex items-center gap-x-3 bg-indigo-300 rounded-2xl py-3 px-6">
 					<img src="@/assets/icons/source/caution.svg" class="h-6 w-6" alt="">
-					<p class="text-white text-sm">Are you sure you want to save this changes ?</p>
+					<p class="text-white text-sm">
+						Are you sure you want to save this changes ?
+					</p>
 				</div>
 				<div class="field relative">
 					<label for="confirmation_password">Please enter your password to save your changes</label>
@@ -80,7 +78,3 @@ const processEnablingBookingCancellation = () => {
 	configureBookingCancellationOption()
 }
 </script>
-
-<style>
-
-</style>
