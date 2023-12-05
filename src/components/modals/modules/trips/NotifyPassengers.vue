@@ -49,8 +49,8 @@ const isFormEmpty = computed(() => {
 })
 
 const form = reactive({
-    sms: '',
-    email: '',
+    sms: false,
+    email: false,
     title: '',
     description: ''
 })

@@ -5,8 +5,8 @@
 				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.group_name" class="flex items-center gap-4">
-					<span>{{ item.group_name }}</span>
+				<span v-if="item.created_at" class="flex items-center gap-4">
+					<span>{{ useDateFormat(item?.data?.created_at, "DD, MMMM YYYY").value }}</span>
 				</span>
 			</template>
 			<template #footer>
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import { useCorporateGroups } from '@/composables/modules/corporates/id'
 const { corporateGroupList, loading, getCorporateGroups, filterData, onFilterUpdate, next, prev, moveTo, total, page } = useCorporateGroups()
 getCorporateGroups()
@@ -27,15 +28,15 @@ definePageMeta({
 const tableFields = ref([
     {
         text: 'GROUP NAME',
-        value: 'group_name'
+        value: 'name'
     },
     {
         text: 'NUMBER OF STAFFS',
-        value: 'number_of_staffs'
+        value: 'staff_count'
     },
     {
         text: 'DATE CREATED',
-        value: 'createdAt'
+        value: 'created_at'
     }
 ])
 

@@ -132,7 +132,7 @@ export const useCreateUsers = () => {
     }
 
 	const createBusCaptains = async () => {
-		const { loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
+		const { getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 		loading.value = true
 
         const res = (await users_api.$_create_bus_captain(convertObjWithRefToObj(createBusCaptainForm))) as CustomAxiosResponse
