@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 import moment from 'moment'
 import { trip_issues_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useTripsModal } from '@/composables/core/modals'

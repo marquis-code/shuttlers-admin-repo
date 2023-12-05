@@ -43,8 +43,8 @@ export const useGetCorporateList = () => {
 
         const res = await $_get_list(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            corporatesList.value = res.data.models
-            metaObject.total.value = res.data.pagination?.pageCount
+            corporatesList.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
         }
         loading.value = false
     }

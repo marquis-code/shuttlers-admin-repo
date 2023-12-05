@@ -18,18 +18,18 @@ export const useCorporateIdDetails = () => {
     return { selectedCorporate, loading, getCorporateById }
 }
 
-export const useCorporateWalletInfo = () => {
+export const useCorporateWalletDetails = () => {
     const loading = ref(false)
     const corporateWalletDetails = ref({} as any)
-    const getCorporateWalletInfo = async (id:number) => {
+    const getCorporateWalletObject = async () => {
         loading.value = true
-        const res = await corporates_api.$_get_company_wallet_info_by_id(id) as CustomAxiosResponse
+        const res = await corporates_api.$_get_company_wallet_info_by_id(Number(selectedCorporate.value.id)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporateWalletDetails.value = res.data.data[0]
         }
         loading.value = false
     }
-    return { corporateWalletDetails, loading, getCorporateWalletInfo }
+    return { corporateWalletDetails, loading, getCorporateWalletObject }
 }
 
 export const useCorporateAccountManagers = () => {
@@ -61,7 +61,7 @@ export const useCorporateTripReport = () => {
         loading.value = true
         const res = await corporates_api.$_get_trip_report(Number(selectedCorporateId.value), metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            corporateTripReport.value = res.data.data
+            corporateTripReport.value = res.data
             metaObject.total.value = res.data.pagination?.pageCount
         }
         loading.value = false
