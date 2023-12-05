@@ -61,7 +61,7 @@ export const useCorporateTripReport = () => {
         loading.value = true
         const res = await corporates_api.$_get_trip_report(Number(selectedCorporateId.value), metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            corporateTripReport.value = res.data.data
+            corporateTripReport.value = res.data
             metaObject.total.value = res.data.pagination?.pageCount
         }
         loading.value = false

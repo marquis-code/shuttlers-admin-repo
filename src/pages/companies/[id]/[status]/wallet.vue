@@ -1,21 +1,24 @@
 <template>
 	<section class="lg:flex justify-between gap-x-10 space-y-6 lg:space-y-0">
 		<div class="lg:w-8/12 space-y-8">
-			{{ corporateWalletDetails }}
 			<div v-if="!loadingCorporateWallet" class="h-48 rounded-lg bg-indigo-100 p-6">
 				<div class="flex justify-between">
 					<div class="space-y-4">
 						<div class="flex items-center gap-x-3">
-							<p class="text-lg font-light">
+							<p class="text-lg font-medium">
 								Wallet balance
 							</p>
-							<img src="@/assets/icons/source/eye.svg" alt="">
+							<img v-if="hideBalance" src="@/assets/icons/source/eye-close.svg" class="h-6 w-6 cursor-pointer" alt="" @click="hideBalance = !hideBalance">
+							<img v-else src="@/assets/icons/source/eye.svg" alt="" class="cursor-pointer " @click="hideBalance = !hideBalance">
 						</div>
-						<h1 class="text-3xl font-bold">
+						<h1 v-if="!hideBalance" class="text-3xl font-bold">
 							{{ corporateWalletDetails?.wallet?.ledger_account?.available_balance_formatted || 'NGN 0.00' }}
 						</h1>
+						<p v-else class="text-3xl text-gray-900 font-extrabold">
+							****
+						</p>
 						<div class="w-full">
-							<button class="text-white text-sm bg-black px-3 py-2.5 w-full rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
+							<button class="text-white text-sm bg-black px-3 py-2.5 w-11/12 rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
 								<span class="rounded-full bg-white p-1">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg>
 								</span>
@@ -37,20 +40,27 @@
 				</h1>
 				<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
 					<template #header>
-						<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+						<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
 					</template>
 					<template #item="{ item }">
-						<div v-if="item.description" class="flex items-center gap-x-2">
-							<div>
-								<span class="rounded-full p-2 border border-gray-700">
-									<img v-if="item.data.direction === 'credit'" src="@/assets/icons/source/inflow.svg" alt="">
-									<img v-if="item.data.direction === 'debit'" src="@/assets/icons/source/outflow.svg" alt="">
-								</span>
+						<div v-if="item.description" class="flex items-center gap-x-4 w-[200px]">
+							<div class="border rounded-md p-2 bg-white shadow-md">
+								<div><img v-if="item.data.direction === 'credit'" class="w-32" src="@/assets/icons/source/inflow.svg" alt=""></div>
+								<div><img v-if="item.data.direction === 'debit'" class="w-20" src="@/assets/icons/source/outflow.svg" alt=""></div>
 							</div>
-							<div>
-								<p>{{ item.data.description }}</p>
-								<p>{{ item.data.updated_at }}</p>
+							<div class="space-y-4">
+								<p class="font-medium text-gray-600">
+									{{ item.data.description }}
+								</p>
+								<p class="font-medium text-gray-600">
+									{{ item.data.updated_at.split(' ')[1] }}
+								</p>
 							</div>
+						</div>
+						<div v-if="item.status">
+							<p class="text-shuttlersGreen text-sm">
+								{{ item.data.status === 'posted' ? 'Successful' : '' }}
+							</p>
 						</div>
 					</template>
 
@@ -61,7 +71,7 @@
 			</div>
 		</div>
 		<div v-if="!loadingCorporateWallet" class="lg:w-4/12 space-y-10">
-			<div v-if="corporateWalletDetails.wallet.nuban_addresses" class="card space-y-4 p-6">
+			<div v-if="corporateWalletDetails.wallet.length" class="card space-y-4 p-6">
 				<div v-for="(itm, idx) in corporateWalletDetails.wallet.nuban_addresses" :key="idx" class="space-y-6">
 					<div class="flex items-center justify-between">
 						<p class="text-gray-500">
@@ -105,19 +115,63 @@
 					</button>
 				</div>
 			</div>
+			<div v-else class="h-60 relative z-0">
+				<div class="card space-y-4 p-6 backdrop-blur-sm bg-white/30">
+					<div class="space-y-6">
+						<div class="flex items-center justify-between">
+							<p class="text-gray-500">
+								Bank Name
+							</p>
+							<p class="text-xl font-bold">
+								N/A
+							</p>
+						</div>
+						<div class="flex items-center justify-between">
+							<p class="text-gray-500">
+								Account Number
+							</p>
+							<p class="text-xl font-bold flex items-center gap-x-3">
+								<span class="cursor-pointer">N/A</span> <img src="@/assets/icons/source/copy.svg" alt="">
+							</p>
+						</div>
+						<div class="flex items-center justify-between">
+							<p class="text-gray-500">
+								Account Name
+							</p>
+							<p class="text-lg font-bold">
+								N/A
+							</p>
+						</div>
+						<div class="flex items-center justify-between">
+							<p class="text-gray-500">
+								Service Provider
+							</p>
+							<p class="text-sm font-bold">
+								N/A
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="inset-0 bg-gray/50 absolute backdrop-blur-sm bg-white/30" />
+				<div class="w-full flex justify-center items-center blur-none absolute top-20 rounded-md z-50">
+					<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
+						Activate wallet
+					</button>
+				</div>
+			</div>
 			<div class="card space-y-6">
 				<h1 class="font-bold text-xl">
 					Overdraw settings
 				</h1>
 				<div class="flex items-center gap-x-2">
-					<input id="overdraft" v-model="overDraftForm.supports_over_draw" :readonly="!isUpdatingOverdraft" type="checkbox">
+					<input id="overdraft" v-model="computedOverdraft.supports_over_draw" :disabled="!isUpdatingOverdraft" type="checkbox">
 					<label for="overdraft" class="pt-2">Support overdraft</label>
 				</div>
 				<div class="space-y-3">
 					<p class="text-gray-800 font-medium">
 						Maximum overdraft
 					</p>
-					<input v-model="overDraftForm.max_over_draw_value" type="text" :readonly="!isUpdatingOverdraft" class="py-2.5 text-2xl font-bold w-full border outline-none rounded-md px-6">
+					<input v-model="computedOverdraft.max_over_draw_value" type="text" :readonly="!isUpdatingOverdraft" class="py-2.5 text-2xl font-bold w-full border outline-none rounded-md px-6">
 				</div>
 				<div v-if="!isUpdatingOverdraft">
 					<button class="bg-black text-white px-3 py-2 rounded-md" @click="handleUpdate">
@@ -125,11 +179,12 @@
 					</button>
 				</div>
 				<div v-else class="flex items-center space-x-3">
-					<button class="w-full bg-white rounded-md py-3 text-gray-900 text-sm border border-gray-950" @click="isUpdatingOverdraft = false">
+					<button class="w-full bg-white rounded-md py-3 text-gray-900 text-sm border font-semibold border-gray-950" @click="isUpdatingOverdraft = false">
 						Cancel
 					</button>
-					<button class="w-full bg-shuttlersGreen rounded-md py-3 text-sm text-white" @click="handleOverdraftUpdate">
-						Save
+					<button class="auth-form-btn font-[700] w-full py-3 text-white bg-shuttlersGreen" @click="handleOverdraftUpdate">
+						<span v-if="!updating" class="flex justify-center items-center gap-2.5">Save</span>
+						<Spinner v-else />
 					</button>
 				</div>
 			</div>
@@ -139,22 +194,28 @@
 </template>
 
 <script setup lang="ts">
-import { useCorporateWalletHistory } from '@/composables/modules/corporates/wallet'
+import { useDateFormat } from '@vueuse/core'
+import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/composables/modules/corporates/wallet'
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
 const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
+const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+const hideBalance = ref(true)
+const eyeToggle = computed(() => {
+	return hideBalance.value ? '@/assets/icons/source/eye.svg' : '@/assets/icons/source/eye-close.svg'
+})
 const isOverDrawSupported = computed(() => {
 	return corporateWalletDetails?.value?.wallet?.supports_over_draw === 1
 })
 const maximumOverDraftAmount = computed(() => {
-	return convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value) || '0.00'
+	return convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value)
 })
 const isUpdatingOverdraft = ref(false)
 getCorporateWalletHistory()
@@ -162,14 +223,23 @@ getCorporateWalletObject()
 const handleUpdate = () => {
 	isUpdatingOverdraft.value = !isUpdatingOverdraft.value
 }
-const handleOverdraftUpdate = () => {
 
-}
-
-const overDraftForm = reactive({
-	max_over_draw_value: convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value),
+const computedOverdraft = computed(() => {
+	return {
+	max_over_draw_value: convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value) as string,
 	supports_over_draw: isOverDrawSupported.value || false
+}
 })
+const handleOverdraftUpdate = async () => {
+  const numericValue = parseFloat(computedOverdraft?.value?.max_over_draw_value.replace(/₦|,/g, ''))
+  const payload = {
+	max_over_draw_value: numericValue,
+	supports_over_draw: computedOverdraft.value.supports_over_draw
+  }
+  populateOverdraftForm(payload)
+  await updateCorporateWalletOverdraft()
+  isUpdatingOverdraft.value = false
+}
 
 const tableFields = ref([
     {

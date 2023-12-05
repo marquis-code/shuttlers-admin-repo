@@ -1,5 +1,5 @@
 <template>
-	<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+	<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 		<div v-for="(item, index) in Object.keys(statsData)" :key="index" class="card">
 			<h6 class="text-[11px] text-gray-400 leading-loose uppercase">
 				{{ statsData[item].name }}
