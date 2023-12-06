@@ -13,7 +13,7 @@
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="navigateToRoutePassengers(item.data)">
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/active/${item.data.id}/passengers`)">
 						View
 					</button>
 				</div>
@@ -75,7 +75,7 @@ const formattedActiveTripsList = computed(() =>
 const handleTripCancellation = (data) => {
 	initializeEndTrips(data)
 }
-
+const router = useRouter()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -120,10 +120,6 @@ const tableFields = ref([
 		value: 'action'
 	}
 ])
-
-const navigateToRoutePassengers = (item) => {
-	useRouter().push(`/trips/type/active/${item.id}/passengers`)
-}
 </script>
 
 <style scoped></style>

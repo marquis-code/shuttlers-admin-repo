@@ -30,7 +30,6 @@ export const useGetActiveTripsList = () => {
         const request = async () => {
             downloadMetaObject.page_size.value = metaObject.total.value * metaObject.page_size.value
             const res = await trips_api.$_get_active_trips(filterData, downloadMetaObject) as CustomAxiosResponse
-            console.log(res)
             if (res.type !== 'ERROR') {
                 const csvData = formattedCSVData(res.data.data)
                 download(csvData, 'Active Trip Report')
@@ -72,7 +71,6 @@ export const useGetUpcomingTripsList = () => {
         const request = async () => {
             downloadMetaObject.page_size.value = metaObject.total.value * metaObject.page_size.value
             const res = await trips_api.$_get_upcoming_trips(filterData, downloadMetaObject) as CustomAxiosResponse
-            console.log(res)
             if (res.type !== 'ERROR') {
                 const csvData = formattedCSVData(res.data.data)
                 download(csvData, 'Upcoming Trip Report')
@@ -113,7 +111,6 @@ export const useGetCompletedTripsList = () => {
         const request = async () => {
             downloadMetaObject.page_size.value = metaObject.total.value * metaObject.page_size.value
             const res = await trips_api.$_get_completed_trips(filterData, downloadMetaObject) as CustomAxiosResponse
-            console.log(res)
             if (res.type !== 'ERROR') {
                 const csvData = formattedCSVData(res.data.data)
                 download(csvData, 'Completed Trip Report')

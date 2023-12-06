@@ -28,7 +28,7 @@
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full">
+					<button @click.stop="router.push(`/trips/type/upcoming/${item.data.id}/passengers`)" class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full">
 						View
 					</button>
 				</div>
@@ -56,7 +56,7 @@ getUpcomingTrips()
 
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
 const { initLogIssues } = useCreateIssues()
-
+const router = useRouter()
 const formattedUpcomingTripsList = computed(() =>
 upcomingTripsList.value.map((i:any, index) => {
          return {

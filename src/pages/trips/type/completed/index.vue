@@ -31,7 +31,7 @@
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full">
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/completed/${item.data.id}/passengers`)">
 						View
 					</button>
 				</div>
@@ -54,7 +54,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
 getCompletedTrips()
-
+const router = useRouter()
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i:any, index) => {
          return {

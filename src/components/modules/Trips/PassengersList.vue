@@ -112,11 +112,18 @@
 								@change="toggleSelection($event, itm)">
 						</label>
 					</div>
-					<div class="flex items-center gap-x-2">
-						<Avatar :name="itm.user.fname" bg="#B1C2D9" />
+					<div class="space-y-2">
+						<div class="flex items-center gap-x-2">
+							<Avatar :name="itm.user.fname" bg="#B1C2D9" />
+							<div>
+								<p>{{ itm?.user?.fname }} {{ itm?.user?.lname }}</p>
+								<p>{{ itm?.user?.email }}</p>
+							</div>
+						</div>
 						<div>
-							<p>{{ itm?.user?.fname }} {{ itm?.user?.lname }}</p>
-							<p>{{ itm?.user?.email }}</p>
+							<span class="bg-shuttlersGreen text-white text-xs rounded-md px-3 py-1.5">
+								{{ itm?.is_first_booking ? 'New' : '' }}
+							</span>
 						</div>
 					</div>
 					<div>
@@ -125,8 +132,8 @@
 					</div>
 					<div>{{ itm?.user?.phone }}</div>
 					<div>{{ itm?.created_at }}</div>
-					<div class="text-xs px-3 py-1.5"
-						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
+					<div class="text-xs px-3 py-1.5 text-white"
+						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 rounded-md' : itm?.check_in_status === 'no-show' ? 'bg-rose-600' : 'bg-shuttlersGreen']">
 						{{ itm?.check_in_status }}
 					</div>
 					<div class="cursor-pointer" @click="handleNotification(itm, 'single')">
