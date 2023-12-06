@@ -119,7 +119,7 @@
 							</div>
 							<div v-if="showSearchRoute" class="w-fit h-fit relative">
 								<!-- <input v-model.trim="searchedRoute" type="text" placeholder="Filter by route" class="border p-2 rounded-lg"> -->
-								<RuoteSelector :show-label="false" class="max-w-[250px]" @selected="routeSelected" />
+								<RouteSelector :show-label="false" class="max-w-[250px]" @selected="routeSelected" />
 								<icon name="close" class="w-5 absolute top-1/2 -translate-y-1/2 right-2 cursor-pointer" @click="clearAndCloseRouteSearch()" />
 							</div>
 							<button class="text-[#364152] text-sm font-medium py-2 px-3 bg-white border rounded-lg flex items-center gap-3" @click="showFilters = true">

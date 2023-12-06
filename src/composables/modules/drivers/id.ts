@@ -2,6 +2,9 @@ import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 
 const selectedDriver = ref({} as Record<string, any>)
 const selectedDriverId = ref('')
+const documents = computed(() => {
+    return selectedDriver.value?.documents.length ? selectedDriver.value.documents : []
+})
 
 export const useDriverIdDetails = () => {
     const loading = ref(false)
@@ -15,5 +18,5 @@ export const useDriverIdDetails = () => {
         }
         loading.value = false
     }
-    return { selectedDriver, loading, getDriverById }
+    return { selectedDriver, loading, getDriverById, documents }
 }

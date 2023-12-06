@@ -78,7 +78,6 @@ const searching = (val:string) => {
 const selectedDriver = ref(props.modelValue) as Ref<any>
 
 const handleSelection = (val:any) => {
-	// selectedDriver.value = val
 	emit('update:modelValue', val)
 }
 

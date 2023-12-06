@@ -45,9 +45,19 @@ interface Datum {
 }
 
 export function getYearlyBarChartData(data: Datum[]): any {
-  if (!data || isEmptyObject(data as any)) return {}
-
   const labels = months({ count: 12 })
+  if (!data || isEmptyObject(data as any)) {
+    return {
+      labels,
+      datasets: [
+        {
+          backgroundColor: '#00e069',
+          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          barThickness: 22
+        }
+      ]
+    }
+  }
 
   const mappedData: number[] = []
 

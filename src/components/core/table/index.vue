@@ -29,7 +29,7 @@
 						@click.stop="option(data)"
 					>
 						<td v-if="checkbox" class="pl-4">
-							<input v-model="checkedArray" :value="data" type="checkbox" @change="$emit('checked', checkedArray)">
+							<input v-model="checkedArray" :value="data" type="checkbox" @click.stop @change="$emit('checked', checkedArray)">
 						</td>
 						<td v-if="hasIndex" class="pl-4">
 							{{ (page - 1) * 10 + index + 1 }}
