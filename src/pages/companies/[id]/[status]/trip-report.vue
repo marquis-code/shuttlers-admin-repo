@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="corporateTripReport" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="corporateTripReport" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 				<div class="flex justify-end items-end border-x bg-white py-3 pr-3">
@@ -10,8 +10,10 @@
 				</div>
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.created_at">
-					<span>{{ useDateFormat(item.data.created_at, "hh:mm A, MMMM d, YYYY").value }}</span>
+				<div v-if="item.url">
+					<button class="font-medium text-shuttlersGreen" @click="downloadReport(item)">
+						Download
+					</button>
 				</div>
 			</template>
 			<template #footer>
@@ -21,15 +23,12 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import { useFileDownloadFromUrl } from '@/composables/utils/downloadFile'
 import { useCorporateTripReport } from '@/composables/modules/corporates/id'
 const { corporateTripReport, loading, getCorporateTripReport, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useCorporateTripReport()
+const { downloadFile } = useFileDownloadFromUrl()
 const id = useRoute().params.id as string
 getCorporateTripReport()
-
-const onRowClicked = (data) => {
-	useRouter().push(`/transactions/${data.id}`)
-}
 
 definePageMeta({
     layout: 'dashboard',
@@ -46,5 +45,9 @@ const tableFields = ref([
         value: 'url'
     }
 ])
+
+const downloadReport = (itm) => {
+	downloadFile(itm.data.url, `Trip report for ${itm.data.name}`)
+}
 
 </script>

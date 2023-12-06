@@ -56,7 +56,7 @@ $_bulk_staff_assignments: (payload:any) => {
 },
 $_update_corporate_status: (id:string, payload:any) => {
 	const url = `/corporates/${id}`
-	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 },
 $_get_accout_managers: (corporateId:number) => {
 	const url = `/corporates/${corporateId}/managers`
@@ -125,27 +125,43 @@ $_get_corporate_wallet_transaction_history: (walletId:number, metaObject: TMetaO
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
 $_get_corporate_wallet_info: (corporateId:number) => {
-	const url = `/corporates/${corporateId}/wallets`
-	return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+	const url = `/corporates/${Number(corporateId)}/wallets`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
-$_activate_corporate_wallet: (corporateId:number, payload: any) => {
-	const url = `/ledger-accounts/${corporateId}/nuban-addresses`
+$_activate_corporate_wallet: (walletId:number, payload: any) => {
+	const url = `/ledger-accounts/${walletId}/nuban-addresses`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 },
 $_payment_funding_reference: (wallet_ledger_id:number, payload: any) => {
 	const url = `/ledger-accounts/${wallet_ledger_id}/funding-references`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 },
-$_configure_corporate_wallet_options: (corporateId:number, payload: any) => {
-	const url = `/corporates/${corporateId}`
-	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
-},
-$_configure_booking_cancellation: (corporateId:number, payload: any) => {
+$_configure_corporate_options: (corporateId:number, payload: any) => {
 	const url = `/corporates/${corporateId}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 },
 $_corporate_route_manifest: (corporateId:number, payload: any) => {
 	const url = `/corporates-report/${corporateId}/route-manifest`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update_corporate_overdraft: (corporateId:number, payload: any) => {
+	const url = `/corporate-wallets/${corporateId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_get_credit_system_exectutions: (creditLineId:number, metaObject: TMetaObject) => {
+	const url = `/credit-systems/${creditLineId}/executions?query=&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&ascending=1&byColumn=0`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_apply_credit_system: (creditLineId:number) => {
+	const url = `/credit-systems/${creditLineId}/executions`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+},
+$_schedule_credit_system: (creditLineId:number, payload:any) => {
+	const url = `/credit-systems/${creditLineId}/executions`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_cancel_credit_system: (executionId:number) => {
+	const url = `/credit-systems-executions/${executionId}/`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 }
 }

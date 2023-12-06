@@ -11,7 +11,7 @@ export const usePagination = () => {
     const metaObject = {
 		page: ref(1),
 		page_size: ref(PAGINATION_LIMIT),
-		total: ref(0)
+		total: ref(1)
         }
 
     const showLoadMore = computed(() => {
@@ -44,6 +44,11 @@ export const usePagination = () => {
     const setFunction = (data:any) => {
         fetchFunc = data
     }
+
+    watch(metaObject.page_size, () => {
+        metaObject.page.value = 1
+        fetchFunc(false)
+    })
 
     return { metaObject, showLoadMore, loadMore, setFunction, next, prev, moveTo }
 }

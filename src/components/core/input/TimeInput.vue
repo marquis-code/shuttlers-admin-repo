@@ -1,5 +1,5 @@
 <template>
-	<DatePicker :value="time" :value-type="valueType" :format="format" type="time" :placeholder="placeholder" @change="handleTime" />
+	<DatePicker :value="time" :value-type="valueType" :format="format" :type="dateType" :placeholder="placeholder" @change="handleTime" />
 </template>
 
 <script setup lang="ts">
@@ -25,6 +25,11 @@ const propsValue = defineProps({
         type: String,
         required: false,
         default: 'format'
+    },
+    dateType: {
+        type: String,
+        required: false,
+        default: 'time'
     }
 })
 const time = ref(propsValue.modelValue)

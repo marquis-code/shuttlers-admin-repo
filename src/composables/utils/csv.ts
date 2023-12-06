@@ -14,15 +14,14 @@ export function exportAsCsv(data: any[], fileName: string) {
 	document.body.removeChild(link)
 }
 const loading = ref(false)
-const _title = ref('')
-let _csvData = ref()
 
 export const useDownloadReport = () => {
 	const csvConfig = mkConfig({ useKeysAsHeaders: true })
-	const download = () => {
+
+	const download = (csvData: Record<string, any>[], title) => {
 		loading.value = true
-		const csv = generateCsv(csvConfig)(_csvData.value)
-		const filename = `${_title.value}.csv`
+		const csv = generateCsv(csvConfig)(csvData)
+		const filename = `${title}.csv`
 		// @ts-ignore
 		const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
 		const url = URL.createObjectURL(blob)
@@ -36,10 +35,5 @@ export const useDownloadReport = () => {
 		loading.value = false
 	}
 
-	const set_csvData = (csvData: Ref<Record<string, any>>, title) => {
-		_csvData = csvData
-		_title.value = title
-	}
-
-	return { download, loading, set_csvData }
+	return { download, loading }
 }

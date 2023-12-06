@@ -2,6 +2,9 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
+import { useCompaniesModal } from '@/composables/core/modals'
+import { useFileDownloadFromUrl } from '@/composables/utils/downloadFile'
+const { downloadFile } = useFileDownloadFromUrl()
 const { selectedCorporate } = useCorporateIdDetails()
 
 const corporateRouteManifestExportForm = {
@@ -20,6 +23,8 @@ const exportCorporateRouteManifest = async () => {
             type: 'SUCCESS',
             msg: 'Corporate route manifest was exported successfully'
           })
+          useCompaniesModal().closeCorporateManifestExport()
+          downloadFile(res.data.url, 'Corporate Manifest')
     }
     loading.value = false
 }

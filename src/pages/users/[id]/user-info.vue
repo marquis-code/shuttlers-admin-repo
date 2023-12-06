@@ -13,11 +13,11 @@
 
 <script setup lang="ts">
 import { useUserIdDetails, useUserCorporateWalletLimitUsageInfo, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
-import { useCorporateWalletInfo } from '@/composables/modules/corporates/id'
+import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 const { busCaptainRoutes, loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
 const { getUserById, loading, selectedUser } = useUserIdDetails()
 const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletLimitUsageInfo } = useUserCorporateWalletLimitUsageInfo()
-const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletInfo } = useCorporateWalletInfo()
+const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
 const id = Number(useRoute().params.id)
 const corporate_id = Number(selectedUser?.corporate_id)
 getUserById(String(id))
@@ -25,7 +25,7 @@ getBusCaptainRoutesById(String(id))
 
 onMounted(() => {
 	if (corporate_id) {
-	 getCorporateWalletInfo(corporate_id)
+		getCorporateWalletObject()
      getUserCorporateWalletLimitUsageInfo(id)
 	}
 })

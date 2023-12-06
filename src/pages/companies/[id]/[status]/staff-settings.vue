@@ -51,7 +51,7 @@
 				<ModulesCorporatesStaffFieldsConfigurationTable :corporate-settings="corporateSettings.staff_details_config"
 					:loading="loadingCorporateSettings" class="p-6" />
 				<div v-if="isUpdate === false"
-					class="inset-0 absolute bg-black/40 backdrop-brightness-75 cursor-not-allowed rounded-md" />
+					class="inset-0 absolute bg-black/10 blur-sm backdrop-brightness-75 cursor-not-allowed rounded-md" />
 			</div>
 			<div class="flex justify-between items-center">
 				<div>
