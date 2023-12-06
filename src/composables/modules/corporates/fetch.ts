@@ -104,7 +104,7 @@ export const useGetShuttleRequests = () => {
 
     const loadShuttleRequest = async () => {
       loading.value = true
-      const res = await $_get_shuttle_request() as CustomAxiosResponse
+      const res = await $_get_shuttle_request(metaObject, filterData) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         shuttleRequestsList.value = res.data.data
         metaObject.total.value = res.data.pagination?.pageCount
