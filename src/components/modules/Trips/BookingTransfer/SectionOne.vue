@@ -1,7 +1,7 @@
 <template>
 	<main class="space-y-6">
 		<div>
-			<div><RuoteSelector class="" @selected="routeSelected" /></div>
+			<div><RouteSelector class="" @selected="routeSelected" /></div>
 			<p class="text-sm text-gray-500 mt-1">
 				Please select a route
 			</p>
