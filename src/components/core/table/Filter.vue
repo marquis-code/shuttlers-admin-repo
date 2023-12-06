@@ -56,12 +56,12 @@ const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
 }
 
 interface FilterTypeProps {
-  showSearchBar?: boolean;
-  showDatePicker?: boolean;
-  showDownloadButton?: boolean;
-  showStatus?: boolean;
-  showDateRange?: boolean;
-  downloading?: boolean;
+	showSearchBar?: boolean;
+	showDatePicker?: boolean;
+	showDownloadButton?: boolean;
+	showStatus?: boolean;
+	showDateRange?: boolean;
+	downloading?: boolean;
 }
 interface DefaultValueProps {
 	search?: string;

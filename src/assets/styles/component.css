@@ -12,6 +12,9 @@
     .input-field-search {
         @apply w-full bg-transparent font-medium pr-4 py-[13px] outline-none text-sm relative !text-start;
     }
+    .btn-disabled {
+        @apply disabled:cursor-not-allowed disabled:bg-grey2
+    }
     .btn {
         @apply font-bold rounded-md cursor-pointer disabled:bg-grey2 center disabled:text-dark disabled:cursor-not-allowed;
     }

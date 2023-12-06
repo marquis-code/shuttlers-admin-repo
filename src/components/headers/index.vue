@@ -85,7 +85,7 @@ const componentRouteArray = [
     { routes: ['partners-payouts'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
-    { routes: ['drivers-add'], component: AddDrivers },
+    { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['events-id-event-info'], component: EventDetails },

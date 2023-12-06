@@ -2,7 +2,7 @@
 	<Modal modal="$atts.modal" title="Book a trip" :no-close-btn="false" class="text-center w-[500px]">
 		<form class="flex flex-col gap-6 mt-4" @submit.prevent="bookTrip">
 			<div class="field relative w-full">
-				<RuoteSelector class="w-full" @selected="routeSelected" />
+				<RouteSelector class="w-full" @selected="routeSelected" />
 			</div>
 			<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 				<div class="flex flex-col items-start justify-start">

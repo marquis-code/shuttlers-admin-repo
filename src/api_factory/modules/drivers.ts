@@ -29,9 +29,13 @@ export const drivers_api = {
 		const url = `/drivers?limit=${20}&page=${1}&metadata=true&related=vehicle&search=${search}&status=active&field=fields:id,vehicle_id,fname,lname,email,phone,avatar,vehicle`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_assign_driver_to_route: (driverId:number, payload:any) => {
+	$_assign_driver_to_route: (driverId:number|string, payload:any) => {
 		const url = `/drivers/${driverId}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_unassign_driver_to_route: (driverId:number|string, payload:any) => {
+		const url = `/drivers/${driverId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
 	},
 	$_update_assigned_driver_to_route: (id:number, payload:any) => {
 		const url = `/route-vehicle/${id}`
@@ -40,5 +44,38 @@ export const drivers_api = {
 	$_delete_driver_from_itinerary: (driverId:number, payload) => {
 		const url = `/drivers/${driverId}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
+	},
+	$_deactivate_driver: (payload) => {
+		const url = '/drivers/update-availability'
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_notify_driver: (payload) => {
+		const url = '/drivers-notifications'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_graph: (driverId:number|string) => {
+		const url = `/drivers/${driverId}/trips/graph`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_driver_ratings: (driverId:number|string, meta:TMetaObject, filterData?: Record<string, any>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/ratings/drivers/${driverId}?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_update_driver: (driverId:number|string, payload: Record<string, any>) => {
+		const url = `/drivers/${driverId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_driver_active_trips: (driverId:number|string) => {
+		const url = `/drivers/${driverId}/active-trips`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_driver_routes: (driverId:number|string) => {
+		const url = `/drivers/${driverId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_delete_driver: (driverId:number|string) => {
+		const url = `/drivers/${driverId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }

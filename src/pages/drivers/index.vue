@@ -1,8 +1,24 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="filterData.status.value === 'active'"
+			:has-options="true" :selected="selected_drivers" :option="onRowClicked" @checked="selected_drivers = ($event)"
+		>
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<TableFilter
+					:filter-type="{
+						showStatus:true,
+						showSearchBar:true,
+						showDownloadButton: true,
+						showDatePicker: false,
+						showDateRange: true
+					}"
+					@filter="onFilterUpdate">
+					<template #filter_others>
+						<button v-if="selected_drivers.length" class="p-2 px-3 bg-dark text-light text-sm rounded-md" @click="initDeactivate">
+							Deactivate
+						</button>
+					</template>
+				</TableFilter>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
@@ -11,13 +27,16 @@
 					<span class="block">{{ item.data.phone }}</span>
 				</div>
 				<span v-if="item.rating" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
+					<div class="flex items-center gap-1">
+						<img src="@/assets/icons/source/star.svg" alt="">
+						<p>{{ item.data?.average || 0 }} ({{ item.data?.trip_count || 0 }} trips)</p>
+					</div>
 				</span>
 				<span v-if="item.avatar" class="flex items-center gap-4">
-					<Avatar :name="item.data.fname" bg="#B1C2D9" />
+					<Avatar :src="item.data?.avatar" :name="item.data?.fname" bg="#B1C2D9" />
 				</span>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+					{{ moment(item.data.created_at).format('ll') }}
 				</span>
 				<span v-else-if="item.active">
 					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" />
@@ -32,13 +51,13 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
-import { useGetDriversList } from '@/composables/modules/drivers/fetch'
-import { useDriverIdDetails } from '@/composables/modules/drivers/id'
+import { useGetDriversList, useDriverIdDetails, useDeactivateDriver } from '@/composables/modules/drivers'
 
 const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetDriversList()
+const { loading: deactivating, selected_drivers, initDeactivate } = useDeactivateDriver()
 
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getDriversList()
 
 const onRowClicked = (data) => {
@@ -73,5 +92,5 @@ const tableFields = ref([
         value: 'active'
     }
 ])
-
+selected_drivers.value = []
 </script>

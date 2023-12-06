@@ -55,7 +55,7 @@
 			</div>
 			<div v-if="selectedRoute === 'selected'" class="field relative">
 				<label for="email">Select Route</label>
-				<RuoteSelector />
+				<RouteSelector />
 			</div>
 			<div class="w-full">
 				<label>Unavailability period</label>

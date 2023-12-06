@@ -9,10 +9,8 @@ const createForm = {
 	email: ref(''),
     password: ref('')
 }
-
+const loading = ref(false)
 export const useCreateDriver = () => {
-	const loading = ref(false)
-
 	const createDriver = async () => {
 		loading.value = true
 		const res = (await drivers_api.$_create_driver(
