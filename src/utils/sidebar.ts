@@ -382,7 +382,6 @@ export function getSidebarMenus(menus, permissionsModules, userRole) {
 
         if (userRole === 'user' && menu?.requiredAdmin === true) return false
         for (const permission of permissionsModules) {
-          console.log(menu.title, 'inside persmissio', permission, menu.modulePermission)
           if (whiteListRoles.includes(userRole)) {
             return true
           }

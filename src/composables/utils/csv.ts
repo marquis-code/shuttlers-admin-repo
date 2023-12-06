@@ -1,7 +1,7 @@
 import Papa from 'papaparse/papaparse.js'
 import { generateCsv, mkConfig } from 'export-to-csv'
 
-export function exportAsCsv(data: any[], fileName: string) {
+export function exportAsCsv(data: Record<string, any>[], fileName: string) {
 	const csv = Papa.unparse(data)
 	const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
 	const url = URL.createObjectURL(blob)

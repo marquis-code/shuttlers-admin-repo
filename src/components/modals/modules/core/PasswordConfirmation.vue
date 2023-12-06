@@ -6,7 +6,7 @@
 		class="!text-sm"
 
 	>
-		<form class="flex flex-col items-center -mt-4 w-full gap-4 " autocomplete="off" @submit="call_function()">
+		<form class="flex flex-col items-center -mt-4 w-full gap-4 " autocomplete="off" @submit.prevent="call_function()">
 			<h1 class="text-center text-lg font-medium">
 				{{ title }}
 			</h1>
