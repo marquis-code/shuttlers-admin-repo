@@ -2,7 +2,11 @@ import { useStorage } from '@vueuse/core'
 import { useUser } from '../auth/user'
 import { auth_api } from '@/api_factory/modules/auth'
 
-export const currentUserPermission = useStorage('permissions', [] as any)
+ const currentUserPermission = useStorage('permissions', [] as any)
+
+const currentUserPermissionModuleCode = computed(() => {
+    return currentUserPermission.value.map((permission: any) => permission.module_code)
+})
 
 export const useUserPermission = () => {
     const fetchUserPermission = async() => {
@@ -14,5 +18,5 @@ export const useUserPermission = () => {
         }
     }
 
-    return { fetchUserPermission, currentUserPermission }
+    return { fetchUserPermission, currentUserPermission, currentUserPermissionModuleCode }
 }

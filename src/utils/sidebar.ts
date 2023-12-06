@@ -335,7 +335,7 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       iconComponent: shallowRef(configureIcon),
       rootPath: '/configuration/trip-rating-settings',
       shouldRedirect: false,
-      modulePermission: ['ADMINCONFIG'],
+      modulePermission: ['ADMINCONFIG', 'ADDITIONALCHARGES'],
       children: [
         {
           title: 'Trip Rating Settings',
