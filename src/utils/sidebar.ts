@@ -334,8 +334,8 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       description: '',
       iconComponent: shallowRef(configureIcon),
       rootPath: '/configuration/trip-rating-settings',
-        shouldRedirect: false,
-      modulePermission: 'ADMINCONFIG',
+      shouldRedirect: false,
+      modulePermission: ['ADMINCONFIG'],
       children: [
         {
           title: 'Trip Rating Settings',
@@ -365,7 +365,8 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
           shouldRedirect: false,
           description: 'Manage route pricing centrally'
         }
-      ]
+      ],
+      requiredAdmin: false
     }
   ]
 })
@@ -381,6 +382,7 @@ export function getSidebarMenus(menus, permissionsModules, userRole) {
 
         if (userRole === 'user' && menu?.requiredAdmin === true) return false
         for (const permission of permissionsModules) {
+          console.log(menu.title, 'inside persmissio', permission, menu.modulePermission)
           if (whiteListRoles.includes(userRole)) {
             return true
           }
