@@ -10,7 +10,7 @@
 				<div class="w-full">
 					<textarea v-model.trim="desc" class="w-full p-4 border rounded-md outline-none" cols="10" rows="6" placeholder="Start a notification..." />
 				</div>
-				<button class="text-gray-700 rounded-md border bg-white px-3 py-2.5 text-sm w-fit">
+				<button class="text-gray-700 rounded-md border bg-white px-3 py-2.5 text-sm w-fit" @click="all_drivers = true">
 					Select All Drivers
 				</button>
 			</div>
@@ -27,7 +27,11 @@
 				</div>
 				<hr>
 				<div v-if="!selected_drivers.length" class="flex items-center justify-center p-4 h-[150px]">
-					<p class="text-sm w-full text-center text-gray-600">
+					<p v-if="all_drivers" class="flex items-center gap-1 p-1 rounded whitespace-nowrap text-xs bg-[rgb(237,242,249)] text-[rgb(18,38,63)]">
+						<span>All drivers selected</span>
+						<Icon name="close" class="w-4 cursor-pointer" @click="all_drivers = false" />
+					</p>
+					<p v-else class="text-sm w-full text-center text-gray-600">
 						Selected drivers will show here
 					</p>
 				</div>
@@ -43,7 +47,7 @@
 		<div>
 			<!-- <Table :show-search-bar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" /> -->
 			<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="true"
-				:selected="selected_drivers" @checked="selected_drivers = ($event)"
+				:selected="selected_drivers" @checked="selected_drivers = ($event); all_drivers = false"
 			>
 				<template #header>
 					<TableFilter
@@ -75,7 +79,7 @@
 import { useGetDriversList, useNotifyDriver } from '@/composables/modules/drivers'
 
 const { getDriversList, loading, driversList, moveTo, onFilterUpdate, next, prev, total, page } = useGetDriversList()
-const { title, desc, selected_drivers, initNotify, enableButton, clearObj } = useNotifyDriver()
+const { title, desc, selected_drivers, initNotify, enableButton, clearObj, all_drivers } = useNotifyDriver()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -90,6 +94,11 @@ const tableFields = ref([
 
 const removeSelectedDriver = (data: Record<string, any>) => {
 	selected_drivers.value = selected_drivers.value.filter((el) => el.id !== data.id)
+}
+
+const onSelected = (data) => {
+	all_drivers.value = false
+	selected_drivers.value = data
 }
 
 clearObj()

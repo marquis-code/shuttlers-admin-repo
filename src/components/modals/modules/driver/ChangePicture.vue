@@ -6,13 +6,13 @@
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="changePicture">
 			<div class="flex flex-col gap-1">
 				<label class="label">Upload Image</label>
-				<CustomImageFileInput
+				<!-- <CustomImageFileInput
 					v-model="imageUri"
 					:label="'Select an image to upload'"
 					:value="bannerURL"
 					@update:value="setBannerUrl"
 					@file-selected="setCropperImage"
-				/>
+				/> -->
 			</div>
 			{{ imageUri }}
 

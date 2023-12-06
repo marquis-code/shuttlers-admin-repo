@@ -176,7 +176,6 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useDriverIdDetails, useDriverGraph, useAssignBus, useControlTrips, useSuspendDriver, useDeleteDriver } from '@/composables/modules/drivers'
-import { useGetTripsGraph } from '@/composables/modules/trips/fetch'
 import { getYearlyBarChartData } from '@/composables/utils/charts'
 import { useDriverModal } from '@/composables/core/modals'
 import { useAllVehicles, useEditVehicles } from '@/composables/modules/fleets/vehicles/index'

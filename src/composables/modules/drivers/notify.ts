@@ -7,7 +7,8 @@ const { getDriversList } = useGetDriversList()
 const obj = {
 	title: ref(''),
 	desc: ref(''),
-	selected_drivers: ref([]) as Ref<Record<string, any>[]>
+	selected_drivers: ref([]) as Ref<Record<string, any>[]>,
+	all_drivers: ref(false)
 }
 const loading = ref(false)
 const selected_drivers_ids = computed(() => {
@@ -15,14 +16,19 @@ const selected_drivers_ids = computed(() => {
 })
 
 const enableButton = computed(() => {
-	return !!(obj.title.value && obj.desc.value && obj.selected_drivers.value.length)
+	return !!(obj.title.value && obj.desc.value && (obj.selected_drivers.value.length || obj.all_drivers.value))
 })
 
 const clearObj = () => {
 	obj.title.value = ''
 	obj.desc.value = ''
 	obj.selected_drivers.value = []
+	obj.all_drivers.value = false
 }
+
+watch(obj.all_drivers, () => {
+	if (obj.all_drivers) obj.selected_drivers.value = []
+})
 
 export const useNotifyDriver = () => {
 	const initNotify = () => {
@@ -38,7 +44,7 @@ export const useNotifyDriver = () => {
 		const payload = {
 			title: obj.title.value,
 			description: obj.desc.value,
-			driver_ids: selected_drivers_ids.value
+			driver_ids: obj.all_drivers.value ? 'all' : selected_drivers_ids.value
 		}
 		loading.value = true
 		const res = await drivers_api.$_notify_driver(payload) as CustomAxiosResponse
