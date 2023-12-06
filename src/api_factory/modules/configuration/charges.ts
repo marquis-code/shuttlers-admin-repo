@@ -28,8 +28,8 @@ export const charges_api = {
 		const url = `/additional-charges/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string) => {
-		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
+	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string, cityId:string[]) => {
+		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_download_charge_history: async (id:number|string, date:string[], status:string) => {
@@ -71,7 +71,7 @@ export const charges_api = {
 		const url = `/additional-charges-types?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${search}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_all_charge_types_without_pagination: async () => {
+	$_get_all_charge_types_without_pagination: async (configured_types = true) => {
 		const url = '/additional-charges-types?limit=10&page=1'
 		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {

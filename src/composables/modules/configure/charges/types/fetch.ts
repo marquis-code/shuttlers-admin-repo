@@ -6,6 +6,7 @@ const loading = ref(false)
 const chargeTypes = ref([]) as Ref<any[]>
 const search = ref('')
 const allChargeTypes = ref([]) as Ref<any[]>
+const allUnconfiguredTypes = ref([]) as Ref<any[]>
 
 export const useFetchChargeTypes = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
@@ -44,5 +45,12 @@ export const useFetchChargeTypes = () => {
 		loading.value = false
 	}
 
-	return { loading, chargeTypes, fetchChargeTypes, search, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, fetchAllChargeTypesWithoutPagination, allChargeTypes }
+	const fetchAllUnconfiguredChargeTypes = async () => {
+		const res = await $_get_all_charge_types_without_pagination(false) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			allUnconfiguredTypes.value = res.data.data.length ? res.data.data : []
+        }
+	}
+
+	return { loading, chargeTypes, fetchChargeTypes, search, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, fetchAllChargeTypesWithoutPagination, allChargeTypes, fetchAllUnconfiguredChargeTypes, allUnconfiguredTypes }
 }
