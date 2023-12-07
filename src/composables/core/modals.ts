@@ -54,10 +54,11 @@ import ControlTrip from '@/components/modals/modules/driver/ControlTrip.vue'
 import ChangeDriverPassword from '@/components/modals/modules/driver/ChangePassword.vue'
 import ChangeDriverPicture from '@/components/modals/modules/driver/ChangePicture.vue'
 import ScheduledCreditLine from '@/components/modals/modules/companies/ScheduledCreditLine.vue'
+import ImageCropper from '@/components/modals/modules/core/ImageCropper.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
-type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm'
+type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
@@ -71,7 +72,7 @@ type VehicleTypes = 'EditBus'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
-const CoreModals = { Confirm, PasswordConfirm, YesConfirm } as Record<CoreTypes, any>
+const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>

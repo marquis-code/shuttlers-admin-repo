@@ -15,7 +15,7 @@
 					</button>
 				</div>
 				<select v-model="chargeTypeId" required class="input-field disabled:cursor-not-allowed" :disabled="isEditConfigureCharge">
-					<option v-for="n in allUnconfiguredTypes" :key="n.id" :value="n.id">
+					<option v-for="n in chargeList" :key="n.id" :value="n.id">
 						{{ n.short_name }} - ({{ n.name }})
 					</option>
 				</select>
@@ -88,14 +88,18 @@ import { useFetchChargeTypes } from '@/composables/modules/configure/charges/typ
 
 const { loading, isEditConfigureCharge, chargeEntityId, chargeType, chargeTypeId, chargeValue, desc, cityIds, allCity, configureCharge, enableButton, closeConfigureChargeModal, isCompulsory, updateConfigureCharge } = useCreateConfigureCharge()
 const { allCityNames, allCountries } = useCityAndCountry()
-const { allUnconfiguredTypes, fetchAllUnconfiguredChargeTypes } = useFetchChargeTypes()
+const { allUnconfiguredTypes, fetchAllUnconfiguredChargeTypes, fetchAllChargeTypesWithoutPagination, allChargeTypes } = useFetchChargeTypes()
 
 const selectAllCities = () => {
 	cityIds.value = []
 	allCity.value = true
 }
 
-fetchAllUnconfiguredChargeTypes()
+const chargeList = computed(() => {
+	return isEditConfigureCharge.value ? allChargeTypes.value : allUnconfiguredTypes.value
+})
+
+isEditConfigureCharge.value ? fetchAllChargeTypesWithoutPagination() : fetchAllUnconfiguredChargeTypes()
 onBeforeUnmount(() => closeConfigureChargeModal())
 </script>
 

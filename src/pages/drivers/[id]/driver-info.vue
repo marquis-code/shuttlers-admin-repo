@@ -22,7 +22,7 @@
 						AVATAR
 					</p>
 					<p>
-						<Avatar :name="selectedDriver.fname" bg="#B1C2D9" />
+						<Avatar :name="selectedDriver.fname" :src="selectedDriver?.avatar" bg="#B1C2D9" />
 					</p>
 				</div>
 				<div class="flex justify-between items-center border-b py-4 px-3">

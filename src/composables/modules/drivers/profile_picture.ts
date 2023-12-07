@@ -1,4 +1,5 @@
-import { drivers_api, trips_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useDriverIdDetails } from './id'
+import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useDriverModal } from '@/composables/core/modals'
 
@@ -9,6 +10,7 @@ const loading = ref(false)
 const clearObj = () => {
 	obj.imageUri.value = ''
 }
+const { getDriverById } = useDriverIdDetails()
 
 export const useDriverPicture = () => {
 	const changePicture = async () => {
@@ -23,7 +25,8 @@ export const useDriverPicture = () => {
 				type: 'SUCCESS',
 				msg: 'Driver profile picture was changed successfully'
 			})
-			// useDriverModal().closeChangeDriverPassword()
+			getDriverById(id)
+			useDriverModal().closeChangeDriverPassword()
         }
         loading.value = false
 	}

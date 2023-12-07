@@ -75,7 +75,7 @@
 				/>
 			</div>
 			<button class="p-4 bg-gray-100 rounded-full grey" :class="{ hidden: !valueProps, block: valueProps }" type="button" @click.prevent="clearBanner">
-				<icon name="cancel" class="w-2" alt="cancel" />
+				<icon name="close" class="w-5" alt="cancel" />
 			</button>
 		</div>
 	</div>
@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { useAlert } from '@/composables/core/notification'
 import { use_image_upload } from '@/composables/core/upload'
+import { useCoreModal } from '@/composables/core/modals'
 
 const props = defineProps({
     modelValue: {
@@ -125,8 +126,8 @@ const onChange = (e: any) => {
 			height: image.height,
 			width: image.width
 		})
-		// useAlert().openAlert({ type: 'Alert', msg: 'Please edit banner image.' })
-		// useDashboardModal().openImageCropper()
+		useAlert().openAlert({ type: 'Alert', msg: 'Please edit banner image.' })
+		useCoreModal().openImageCropper()
 	})
 
     reader.addEventListener('load', () => {
