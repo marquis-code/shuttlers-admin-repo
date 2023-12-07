@@ -95,7 +95,7 @@
 				<TableFilter
 					:filter-type="{
 						showStatus: false,
-						showSearchBar: false,
+						showSearchBar: true,
 						showDownloadButton: true,
 						showDatePicker: false,
 						showDateRange: true,
