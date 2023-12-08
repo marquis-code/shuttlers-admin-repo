@@ -24,7 +24,7 @@
 	</main>
 </template>
 <script setup lang="ts">
-import VueGoogleMaps from '@fawmi/vue-google-maps'
+
 import { useRouteBusstopList } from '@/composables/modules/routes/id'
 const { loading, getRouteBusstopsById, busstopsList } = useRouteBusstopList()
 const id = useRoute().params.id as string
