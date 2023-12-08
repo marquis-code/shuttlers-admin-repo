@@ -192,9 +192,10 @@ export const useRouteBusstopList = () => {
     return { loading, getRouteBusstopsById, busstopsList }
 }
 
+const routeItineraries = ref([] as any)
 export const useItinerariesByRouteId = () => {
     const loading = ref(false)
-    const routeItineraries = ref([] as any)
+
     const getRouteItinerariesByRouteId = async (id: string) => {
         selectedRouteId.value = id
         loading.value = true

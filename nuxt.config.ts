@@ -29,10 +29,11 @@ export default {
 		'@/components',
 		{ path: '@/components/core', extensions: ['vue'] }
 	],
-	modules: ['@nuxtjs/tailwindcss'],
 	plugins: [
 		'@/plugins/vue-google-maps.js'
 	],
+	modules: ['@nuxtjs/tailwindcss', 'floating-vue/nuxt'],
+
 	build: {
 		// transpile: ['@fawmi/vue-google-maps'],
 		postcss: {

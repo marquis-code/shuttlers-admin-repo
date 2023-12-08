@@ -140,10 +140,12 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useEditVehicles } from '@/composables/modules/fleets/vehicles/update'
 import { useDecommissionVehicle } from '@/composables/modules/fleets/decommision'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useVehicleModal } from '@/composables/core/modals'
 import { useVehicleIdDetails, useGetVehicleEarnings, useGetFleetTripHistory } from '@/composables/modules/fleets/id'
+const { openEditBus } = useEditVehicles()
 const base_url = import.meta.env.VITE_BASE_URL
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFleetTripHistory()
 const { selectedVehicle, loading, getVehicleById } = useVehicleIdDetails()
@@ -162,9 +164,9 @@ definePageMeta({
 const dropdownChildren = computed(() => [
 	{ name: 'Change Driver', func: () => { useVehicleModal().openChangeVehicleDriver() } },
 	{ name: 'Update Tracking Details', func: () => { useVehicleModal().openUpdateVehicleTracking() } },
-	{ name: 'Edit Bus', func: () => { useVehicleModal().openEditBus() } },
-	{ name: 'Export QR Code', func: () => { } },
-	{ name: 'De-Commission Vehicle', func: (data) => { handleDecomission(data) }, class: '!text-red' }
+	{ name: 'Edit Bus', func: (data) => { editVehicle(data) } },
+	{ name: 'Export QR Code', func: (data) => { exportQrCode(data) } },
+	{ name: `${selectedVehicle.value.status === 'active' ? 'De-commission' : 'Commision'} Vehicle`, func: (data) => { handleDecomission(data) }, class: '!text-red' }
 ])
 
 const vehicleEarning = computed(() => {
@@ -211,6 +213,16 @@ const qrCodeImageUrl = computed(() => {
 		loading: processing_decommision,
 		call_function: () => handleDecommisionVehicle(itm.id)
     })
+		}
+
+		const editVehicle = (data) => {
+			openEditBus(data)
+			useVehicleModal().openEditBus()
+		}
+
+		const exportQrCode = (data) => {
+			const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${data.id}/qrimage.png`
+			window.open(link, '_blank')
 		}
 </script>
 
