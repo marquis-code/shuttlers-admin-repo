@@ -102,7 +102,6 @@ const submitForm = () => {
 	scheduled_for: convertDateFormat(form.application_date),
     only_selected_staff: form.selected_employee || null
 }
-console.log(payload, 'payload here')
 }
 </script>
 

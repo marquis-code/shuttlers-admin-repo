@@ -139,9 +139,10 @@
 </template>
 
 <script setup lang="ts">
-import { useDecommissionVehicle } from '@/composables/modules/fleets/decommision'
 import { useDateFormat } from '@vueuse/core'
+import { useDecommissionVehicle } from '@/composables/modules/fleets/decommision'
 import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useVehicleModal } from '@/composables/core/modals'
 import { useVehicleIdDetails, useGetVehicleEarnings, useGetFleetTripHistory } from '@/composables/modules/fleets/id'
 const base_url = import.meta.env.VITE_BASE_URL
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFleetTripHistory()
@@ -159,9 +160,9 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Change Driver', func: () => { } },
-	{ name: 'Update Tracking Details', func: () => { } },
-	{ name: 'Edit Bus', func: () => { } },
+	{ name: 'Change Driver', func: () => { useVehicleModal().openChangeVehicleDriver() } },
+	{ name: 'Update Tracking Details', func: () => { useVehicleModal().openUpdateVehicleTracking() } },
+	{ name: 'Edit Bus', func: () => { useVehicleModal().openEditBus() } },
 	{ name: 'Export QR Code', func: () => { } },
 	{ name: 'De-Commission Vehicle', func: (data) => { handleDecomission(data) }, class: '!text-red' }
 ])

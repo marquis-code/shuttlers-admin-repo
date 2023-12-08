@@ -35,6 +35,14 @@ export const fleets_api = {
 	},
 	$_decomission_vehicle: (id:string) => {
 		const url = `vehicles/${id}`
-		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.delete(url)
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
+	$_update_tracking: (id:string, payload:any) => {
+		const url = `vehicles/${id}/tracking`
+		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
+	},
+	$_update_vehicle: (id:string, payload:any) => {
+		const url = `vehicles/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }
