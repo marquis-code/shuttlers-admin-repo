@@ -30,8 +30,11 @@ export default {
 		{ path: '@/components/core', extensions: ['vue'] }
 	],
 	modules: ['@nuxtjs/tailwindcss'],
-
+	plugins: [
+		'@/plugins/vue-google-maps.js'
+	],
 	build: {
+		// transpile: ['@fawmi/vue-google-maps'],
 		postcss: {
 			postcssOptions: require('./postcss.config.js')
 		}
