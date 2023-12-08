@@ -29,7 +29,7 @@ export default {
 		'@/components',
 		{ path: '@/components/core', extensions: ['vue'] }
 	],
-	modules: ['@nuxtjs/tailwindcss'],
+	modules: ['@nuxtjs/tailwindcss', 'floating-vue/nuxt'],
 
 	build: {
 		postcss: {

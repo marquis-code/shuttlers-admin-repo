@@ -165,6 +165,35 @@
 						<span v-else>₦ 0.00</span>
 					</div>
 				</div>
+
+				<div v-if="!selectedRoute_charges_loading" class="flex flex-col">
+					<h1 v-if="selectedRoute_charges.length" class="font-medium pt-4 mt-5 text-sm border-t border-grey10">
+						Additional Charge
+					</h1>
+					<div v-if="selectedRoute_charges.length" class="flex flex-col">
+						<div v-for="charge in selectedRoute_charges" :key="charge.id" class="list mt-2">
+							<div class="flex gap-2 items-center">
+								<div class="flex gap-2">
+									<span class="text-grey5 text-sm"> {{ charge.name }}  </span>
+									<VTooltip>
+										<a class="cursor-pointer">
+											<Icon name="help" class="w-4" />
+										</a>
+
+										<template #popper>
+											{{ charge.description }}
+										</template>
+									</VTooltip>
+								</div>
+
+								<ToggleButtonSmall v-if="!charge.is_compulsory" v-model="charge.selected" :name="charge.name" label="" class="m-0 p-0" />
+							</div>
+
+							<span class="text-dark font-medium"> {{ convertToCurrency(charge.total) }}</span>
+						</div>
+					</div>
+				</div>
+
 				<div>
 					<button :disabled="!isFormEmpty" type="submit"
 						class="btn btn-primary py-3 text-xs w-full disabled:cursor-not-allowed disabled:opacity-25">
@@ -178,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+
 import { convertToCurrency } from '@/composables/utils/formatter'
 import useCsvDownload from '@/composables/core/useCsvDownload'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
@@ -189,36 +218,8 @@ const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = u
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
 const { loading: loadingPricing, setRoutePricingDataForm, getRoutePricingInformation, routePricingInformation } = useRoutePricingByItineraryId()
 const { downloadCsv, downloading } = useCsvDownload()
-const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult } = useCreateBatchBooking()
+const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, selectedRoute_charges, selectedRoute_charges_loading } = useCreateBatchBooking()
 getMainRoutesList()
-const form = reactive({
-	selectedRoute: {},
-	route_id: '',
-	route_itinerary_id: null as any,
-	pickup_point: null as any,
-	drop_off_point: null as any,
-	startDate: '',
-	payment_source: 'main_balance',
-	has_subscription: false,
-	has_luggage: false,
-	subscriptionDays: [],
-	tripWeeks: 0,
-	luggage_quantity: '',
-	uploadedUsers: []
-})
-
-const isFormEmpty = computed(() => {
-	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers)
-})
-
-const routeSelected = (val: any) => {
-	form.selectedRoute = val
-}
-
-const handleUploadedEmails = (item: any) => {
-	const result = item.filter((itm: any) => itm !== '')
-	form.uploadedUsers = result
-}
 
 function getDayOfWeek(startDate) {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -274,7 +275,7 @@ const dayWithIds = reactive({
         friday: 6,
         saturday: 7
       })
-const destinationPoints = ref([])
+const destinationPoints = ref([] as any[])
 const payment_source = reactive([
 	{
 		id: 'main_balance',
@@ -358,30 +359,10 @@ const totalFare = computed(() => {
 	}
 })
 
-const addWeeks = (startDate, numberOfWeeks) => {
-	const newDate = new Date(startDate)
-	const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000
-	const resultDate = new Date(newDate.getTime() + numberOfWeeks * millisecondsInWeek)
-	return resultDate
-}
-
-function subDays(inputDate, numberOfDays) {
-	const newDate = new Date(inputDate)
-	const resultDate = new Date(newDate.getTime() - numberOfDays * 24 * 60 * 60 * 1000)
-	return resultDate
-}
-
-const selectedItinerary = computed(() => {
-	return routeItineraries.value.find((itinerary) => itinerary.id === form.route_itinerary_id)
-})
-
-const endDate = computed(() => {
-	if (form.has_subscription && form.tripWeeks) {
-		const _date = addWeeks(form.startDate, form.tripWeeks)
-		return useDateFormat(subDays(_date, 1), 'YYYY-MM-DD').value
-	}
-
-	return useDateFormat(form.startDate, 'YYYY-MM-DD').value
-})
-
 </script>
+
+<style scoped>
+.list{
+    @apply flex justify-between items-center
+}
+</style>
