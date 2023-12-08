@@ -25,7 +25,7 @@ export const useDetails = () => {
 	const fetchHistory = async () => {
 		loading.value = true
 		const id = useRoute().params.id as string
-		const res = await $_get_charge_history(id, metaObject, date.value, status.value.toLowerCase(), getCitiesId.value) as CustomAxiosResponse
+		const res = await $_get_charge_history(id, metaObject, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			chargeHistory.value = res.data?.data?.length ? res.data.data : []
 			metaObject.total.value = res.data.metadata.total_pages
@@ -37,7 +37,7 @@ export const useDetails = () => {
 		downloading.value = true
 		const name = ref(`${status.value}-charge-history`)
 		const id = useRoute().params.id as string
-		const res = await charges_api.$_download_charge_history(id, date.value, status.value.toLowerCase()) as CustomAxiosResponse
+		const res = await charges_api.$_download_charge_history(id, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
         if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
 			const newArr:any[] = []
