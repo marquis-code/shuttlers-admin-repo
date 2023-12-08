@@ -139,11 +139,14 @@
 </template>
 
 <script setup lang="ts">
+import { useDecommissionVehicle } from '@/composables/modules/fleets/decommision'
 import { useDateFormat } from '@vueuse/core'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useVehicleIdDetails, useGetVehicleEarnings, useGetFleetTripHistory } from '@/composables/modules/fleets/id'
 const base_url = import.meta.env.VITE_BASE_URL
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFleetTripHistory()
 const { selectedVehicle, loading, getVehicleById } = useVehicleIdDetails()
+const { handleDecommisionVehicle, loading: processing_decommision } = useDecommissionVehicle()
 const { getVehicleEarnings, loadingEarnings, fleetEarnings } = useGetVehicleEarnings()
 getFleetsTripHistory()
 const id = useRoute().params.id as string
@@ -160,7 +163,7 @@ const dropdownChildren = computed(() => [
 	{ name: 'Update Tracking Details', func: () => { } },
 	{ name: 'Edit Bus', func: () => { } },
 	{ name: 'Export QR Code', func: () => { } },
-	{ name: 'De-Commission Vehicle', func: () => { }, class: '!text-red' }
+	{ name: 'De-Commission Vehicle', func: (data) => { handleDecomission(data) }, class: '!text-red' }
 ])
 
 const vehicleEarning = computed(() => {
@@ -197,6 +200,16 @@ const qrCodeImageUrl = computed(() => {
 		const showAllQrCode = () => {
 			const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
 			window.open(link, '_blank')
+		}
+
+		const handleDecomission = (itm) => {
+			useConfirmationModal().openAlert({
+        title: 'Please Confirm',
+		type: 'NORMAL',
+        desc: 'Are you sure you want to delete this vehicle?',
+		loading: processing_decommision,
+		call_function: () => handleDecommisionVehicle(itm.id)
+    })
 		}
 </script>
 

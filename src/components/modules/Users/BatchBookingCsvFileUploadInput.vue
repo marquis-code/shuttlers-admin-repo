@@ -3,7 +3,7 @@
 		<label class="w-full tracking-wide cursor-pointer">
 			<p class="flex justify-center items-center gap-x-2">
 				<img src="@/assets/icons/source/upload.svg" alt="preview icon" class="rounded-full border p-2 h-10 w-10">
-				{{ selectedFileName ? selectedFileName : 'Upload Batch booking CSV File' }}</p>
+				{{ selectedFileName ? selectedFileName : '' }}</p>
 			<input id="image" class="hidden" type="file" accept=".csv" @change="handleFileChange">
 		</label>
 		<div v-if="errorMessage" class="error">
