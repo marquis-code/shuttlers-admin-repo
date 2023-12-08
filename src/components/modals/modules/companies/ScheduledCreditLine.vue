@@ -28,8 +28,10 @@
 import { useScheduleCreditSystem } from '@/composables/modules/corporates/creditLineExecutions'
 import { useGetCreditSystem } from '@/composables/modules/corporates/creditLine'
 import { useCorporateWalletActivation } from '@/composables/modules/corporates/wallet'
+import { useConvertDate } from '@/composables/core/useDateConverter'
 const { populateCreditSystemScheduleForm, scheduleCreditSystem, loading: processingCreditSystemSchedule } = useScheduleCreditSystem()
 const { creditSystem, getCorporatesCreditSystem } = useGetCreditSystem()
+const { convertDateFormat } = useConvertDate()
 const { populateWalletActivationForm, activateCorporateWallet, loading } = useCorporateWalletActivation()
 const form = reactive({
     scheduled_for: '',
@@ -39,18 +41,6 @@ getCorporatesCreditSystem()
   const isFormEmpty = computed(() => {
     return !!(form.narration && form.scheduled_for)
 })
-
-const convertDateFormat = (inputDateString) => {
-  const inputDate = new Date(inputDateString)
-
-  if (isNaN(inputDate.getTime())) {
-    return 'Invalid date'
-  }
-
-  const outputDateString = inputDate.toISOString()
-
-  return outputDateString
-}
 
 const proceedToFundWallet = () => {
     const payload = {

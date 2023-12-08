@@ -13,6 +13,21 @@ const creditSystemScheduleForm = {
     narration: ref('')
 }
 
+const payload = {
+    narration: ref(''),
+    amount: ref(),
+    increment_credit_wallet: 0,
+    is_topup: true,
+    selected_employee: null,
+    scheduled: true,
+    scheduled_for: '2023-12-25T15:40:00.000Z',
+    only_selected_staff: [
+        49463,
+        48937,
+        48871
+    ]
+}
+
 export const useGetCreditLineExecutions = () => {
     const loadingExecutions = ref(false)
     const creditLineExecutions = ref([])
@@ -102,4 +117,24 @@ export const useDeleteCreditSystemSchedule = () => {
     }
 
     return { deleteCreditSystemSchedule, loading }
+}
+
+export const ussCreditSystemForSelectedUsers = () => {
+    const loading = ref(false)
+
+    const { $_handle_selected_users_credit_line } = corporates_api
+
+    const handleCreditSystemForSelectedUsers = async (executionId:number, payload) => {
+        loading.value = true
+        const res = await $_handle_selected_users_credit_line(executionId, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Credit system for selected users was set successfully'
+              })
+        }
+        loading.value = false
+    }
+
+    return { handleCreditSystemForSelectedUsers, loading }
 }

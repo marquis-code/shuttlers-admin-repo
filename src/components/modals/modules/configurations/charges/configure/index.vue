@@ -15,7 +15,7 @@
 					</button>
 				</div>
 				<select v-model="chargeTypeId" required class="input-field disabled:cursor-not-allowed" :disabled="isEditConfigureCharge">
-					<option v-for="n in allChargeTypes" :key="n.id" :value="n.id">
+					<option v-for="n in chargeList" :key="n.id" :value="n.id">
 						{{ n.short_name }} - ({{ n.name }})
 					</option>
 				</select>
@@ -69,12 +69,6 @@
 			</div>
 
 			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" />
-			<!-- <div class="flex items-center justify-between gap-4">
-				<p class="text-sm font-normal">
-					Users must pay this fee when making a booking
-				</p>
-				<VueToggles v-model="isCompulsory" :width="50" checked-bg="#48bb78" />
-			</div> -->
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : `${isEditConfigureCharge ? 'Update configuration' : 'Configure new charge'}` }}
@@ -94,14 +88,18 @@ import { useFetchChargeTypes } from '@/composables/modules/configure/charges/typ
 
 const { loading, isEditConfigureCharge, chargeEntityId, chargeType, chargeTypeId, chargeValue, desc, cityIds, allCity, configureCharge, enableButton, closeConfigureChargeModal, isCompulsory, updateConfigureCharge } = useCreateConfigureCharge()
 const { allCityNames, allCountries } = useCityAndCountry()
-const { allChargeTypes, fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
+const { allUnconfiguredTypes, fetchAllUnconfiguredChargeTypes, fetchAllChargeTypesWithoutPagination, allChargeTypes } = useFetchChargeTypes()
 
 const selectAllCities = () => {
 	cityIds.value = []
 	allCity.value = true
 }
 
-fetchAllChargeTypesWithoutPagination()
+const chargeList = computed(() => {
+	return isEditConfigureCharge.value ? allChargeTypes.value : allUnconfiguredTypes.value
+})
+
+isEditConfigureCharge.value ? fetchAllChargeTypesWithoutPagination() : fetchAllUnconfiguredChargeTypes()
 onBeforeUnmount(() => closeConfigureChargeModal())
 </script>
 

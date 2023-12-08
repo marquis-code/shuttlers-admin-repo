@@ -28,17 +28,17 @@ export const charges_api = {
 		const url = `/additional-charges/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string) => {
-		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
+	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string, cityId:string[], search = '') => {
+		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_download_charge_history: async (id:number|string, date:string[], status:string) => {
-		const url = `/additional-charges-history?id=${id}&limit=5&page=1${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`
+	$_download_charge_history: async (id:number|string, date:string[], status:string, cityId:string[], search = '') => {
+		const url = `/additional-charges-history?id=${id}&limit=5&page=1&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`
 		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			if (res.data?.data?.length) {
 				const total = res.data.metadata.total
-				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-history?id=${id}&limit=${total}&page=1${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}`)
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-history?id=${id}&limit=${total}&page=1&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`)
 			} else {
 				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
 				return null
@@ -71,12 +71,12 @@ export const charges_api = {
 		const url = `/additional-charges-types?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${search}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_all_charge_types_without_pagination: async () => {
-		const url = '/additional-charges-types?limit=10&page=1'
+	$_get_all_charge_types_without_pagination: async (configured_types = true) => {
+		const url = `/additional-charges-types?limit=10&page=1${!configured_types ? '&configured=0' : ''}`
 		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			const total = res.data.metadata.total
-			return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-types?limit=${total}&page=1`)
+			return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-types?limit=${total}&page=1${!configured_types ? '&configured=0' : ''}`)
         }
 	},
 	$_get_all_cities: () => {
