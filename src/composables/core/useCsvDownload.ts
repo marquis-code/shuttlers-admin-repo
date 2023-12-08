@@ -1,6 +1,7 @@
 import { useAlert } from '@/composables/core/notification'
 export default function useCsvDownload() {
   const downloading = ref(false)
+  const templateName = ref('')
 
   const downloadCsv = () => {
     if (downloading.value) {
@@ -15,10 +16,10 @@ export default function useCsvDownload() {
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', 'batch-booking-users.csv')
+      link.setAttribute('download', templateName.value || 'batch-booking-users.csv')
       document.body.appendChild(link)
       link.click()
-      useAlert().openAlert({ type: 'Alert', msg: 'Batch booking template was downloaded successfully.' })
+      useAlert().openAlert({ type: 'Alert', msg: 'Template was downloaded successfully.' })
     } catch (error) {
       useAlert().openAlert({ type: 'Alert', msg: `'Error downloading CSV:', ${error}` })
     } finally {
@@ -26,5 +27,5 @@ export default function useCsvDownload() {
     }
   }
 
-  return { downloadCsv, downloading }
+  return { downloadCsv, downloading, templateName }
 }

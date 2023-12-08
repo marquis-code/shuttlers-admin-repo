@@ -56,6 +56,10 @@ import ChangeDriverPicture from '@/components/modals/modules/driver/ChangePictur
 import ScheduledCreditLine from '@/components/modals/modules/companies/ScheduledCreditLine.vue'
 import ImageCropper from '@/components/modals/modules/core/ImageCropper.vue'
 
+import UpdateVehicleTracking from '@/components/modals/modules/fleets/UpdateTrackingDetails.vue'
+import ChangeVehicleDriver from '@/components/modals/modules/fleets/ChangeDriver.vue'
+import EditVehicleBus from '@/components/modals/modules/fleets/EditBus.vue'
+
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
@@ -68,7 +72,7 @@ type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCatego
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
-type VehicleTypes = 'EditBus'
+type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeVehicleDriver' | 'EditVehicleBus'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -82,7 +86,7 @@ const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCa
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>
 const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
-const VehicleModals = { EditBus } as Record<VehicleTypes, any>
+const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeVehicleDriver, EditVehicleBus } as Record<VehicleTypes, any>
 
 export const modal = useModal(ref([] as any))
 

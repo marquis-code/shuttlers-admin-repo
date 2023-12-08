@@ -163,5 +163,18 @@ $_schedule_credit_system: (creditLineId:number, payload:any) => {
 $_cancel_credit_system: (executionId:number) => {
 	const url = `/credit-systems-executions/${executionId}/`
 	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+},
+$_get_corporate_shuttle_request: (corporate_id: number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+	const queryParams = useTableFilter(filterData)
+	const url = `/shuttle-requests?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&corporate_id=${corporate_id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_corporate_shuttle_request_by_id: (request_id: number) => {
+	const url = `/shuttle-requests/${request_id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_handle_selected_users_credit_line: (executionId: number, payload: any) => {
+	const url = `/credit-systems-executions/${executionId}/`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 }
 }

@@ -5,6 +5,7 @@
 				class=" flex outline-none items-center px-3 py-2.5 font-normal"
 
 			>
+				<h1>{{ buttonText }}</h1>
 				<EllipsisVerticalIcon
 					:class="open ? '' : 'text-opacity-70'"
 					class="ml-2 h-5 w-5"
@@ -67,6 +68,11 @@ defineProps({
 	index: {
 		type: Number,
 		default: 0,
+		required: false
+	},
+	buttonText: {
+		type: String,
+		default: '',
 		required: false
 	}
 })
