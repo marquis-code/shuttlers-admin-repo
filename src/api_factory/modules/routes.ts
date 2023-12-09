@@ -130,5 +130,9 @@ export const routes_api = {
 	$_get_route_bookings_passengers: (route_id:string|number, payload) => {
         const url = `/routes/${route_id}/bookings/null`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	    $_get_routes_charges: (id: string, payload:Record<string, any>) => {
+         const url = `/additional-charges/routes/${id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     }
 }

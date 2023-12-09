@@ -100,17 +100,8 @@
 						Vehicle inventory Type </label>
 					<select v-model="createForm.inventory_type.value" name="vehicleType"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-						<opion default selected>
-							Select a vehicele type
-						</opion>
-						<option value="regular">
-							Regular
-						</option>
-						<option value="charter">
-							Charter
-						</option>
-						<option value="one_off">
-							One-Off
+						<option v-for="(itm, idx) in inventortTypes" :key="idx" :value="itm.value">
+							{{ itm.text }}
 						</option>
 					</select>
 				</div>
@@ -146,8 +137,8 @@
 				</div>
 
 				<div>
-					<button :disabled="!isFormEmpty" type="submit" class="btn-primary w-full">
-						<span v-if="!processing" class="flex disabled:opacity-25 disabled:cursor-not-allowed justify-center text-sm items-center gap-2.5">
+					<button :disabled="!isFormEmpty" type="submit" class="btn-primary w-full disabled:opacity-25 disabled:cursor-not-allowed bg-black">
+						<span v-if="!loading" class="flex  justify-center text-sm items-center gap-2.5">
 							Add vehicle
 						</span>
 						<Spinner v-else />
@@ -162,7 +153,7 @@
 import { useGetVehicleTypes } from '@/composables/modules/fleets/vehicle-types'
 import { useCreateVehicle } from '@/composables/modules/fleets/create'
 const { getFleetTypes, loading: loadingVehicleTypes, vehicleTypeslist } = useGetVehicleTypes()
-const { createForm, loading: processing, trackingForm, createVehicle, prePopulateForm, populateTrackingForm, addtrackingDetails } = useCreateVehicle()
+const { createForm, loading, trackingForm, createVehicle, addtrackingDetails } = useCreateVehicle()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -180,6 +171,21 @@ const showToolTip = ref(false)
 const handleCreateVehicle = () => {
 	createVehicle()
 }
+
+const inventortTypes = reactive([
+	{
+		text: 'Regular',
+		value: 'regular'
+	},
+	{
+		text: 'Charter',
+		value: 'charter'
+	},
+	{
+		text: 'One-Off',
+		value: 'one_off'
+	}
+])
 </script>
 
 <style></style>

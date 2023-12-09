@@ -1,9 +1,9 @@
 <template>
 	<div class="space-y-6">
-		<BreadCrums v-if="!loadingStaffs" class="text-sm" title="Admin" :content="breadcrum" />
+		<BreadCrums v-if="!loading" class="text-sm" title="Admin" :content="breadcrumb" />
 		<ButtonGoBack class="mb-6" />
 		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-			<div v-if="!loadingStaffs" class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
+			<div v-if="!loading" class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 					<div class="font-medium">
 						Admin User Information
@@ -54,16 +54,13 @@ import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useAdminModal } from '@/composables/core/modals'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
+import { useAdminIdDetails } from '@/composables/modules/staffs/id'
 
-const { getStaffs, loading: loadingStaffs, staffsData } = useGetStaffs()
+const { getAdminById, loading, selectedAdmin } = useAdminIdDetails()
 const { suspendAdmin } = useCreateAdmin()
 const id = useRoute().params.id as string
-getStaffs()
 
-const selectedAdmin = computed(() => {
-	if (loadingStaffs.value) return
-	return staffsData.value.find((staff) => staff.id === Number(id))
-})
+getAdminById(id)
 
 definePageMeta({
 	layout: 'dashboard',
@@ -75,7 +72,7 @@ const dropdownChildren = computed(() => [
 	{ name: `${selectedAdmin?.value?.active === '0' ? 'Un-suspend Admin' : 'Suspend Admin'}`, func: () => handleAdminSuspension(), class: '!text-red' }
 ])
 
-const breadcrum = computed(() => {
+const breadcrumb = computed(() => {
 		return [
             {
                 name: 'Admin',

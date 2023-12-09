@@ -3,7 +3,7 @@
 		<h1 class="font-bold">
 			Fund Credit Wallet For Select Staff
 		</h1>
-		<form @submit.prevent="submitForm" class="space-y-6">
+		<form class="space-y-6" @submit.prevent="submitForm">
 			<div>
 				<label class="text-gray-700">How much credit do you want to apply?</label>
 				<input v-model="form.credit_amount" class="w-full rounded-md py-2.5 px-4 outline-none border" type="number">

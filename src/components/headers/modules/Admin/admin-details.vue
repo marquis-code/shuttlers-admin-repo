@@ -1,5 +1,5 @@
 <template>
-	<HeadersHeaderSlot :title="`${selectedAdmin?.fname} ${selectedAdmin?.lname}`" pre-title="Overview" :loading="loadingStaffs">
+	<HeadersHeaderSlot :title="`${selectedAdmin?.fname} ${selectedAdmin?.lname}`" pre-title="Overview" :loading="loading">
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
@@ -7,16 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useAdminIdDetails } from '@/composables/modules/staffs/id'
 
-const { getStaffs, loading: loadingStaffs, staffsData } = useGetStaffs()
-const id = useRoute().params.id as string
-getStaffs()
-
-const selectedAdmin = computed(() => {
-	if (loadingStaffs.value) return
-	return staffsData.value.find((staff) => staff.id === Number(id))
-})
+const { selectedAdmin, loading } = useAdminIdDetails()
 
 const pageTabs = computed(() => [
     {

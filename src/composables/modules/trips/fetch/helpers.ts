@@ -5,22 +5,22 @@ let isQueueRunning = false // Flag to track the loading status
 
 // Function to add API request functions to the queue
 const addToQueue = (request: () => Promise<void>) => {
-  requestQueue.push(request)
-  if (!isQueueRunning) {
-    runQueue()
-  }
+    requestQueue.push(request)
+    if (!isQueueRunning) {
+        runQueue()
+    }
 }
 
 // Function to run the API request queue
 const runQueue = async () => {
-  isQueueRunning = true
-  while (requestQueue.length > 0) {
-    const request = requestQueue.shift()
-    if (request) {
-      await request()
+    isQueueRunning = true
+    while (requestQueue.length > 0) {
+        const request = requestQueue.shift()
+        if (request) {
+            await request()
+        }
     }
-  }
-  isQueueRunning = false
+    isQueueRunning = false
 }
 
 const filterData = {
@@ -67,25 +67,27 @@ const onFilterUpdate = (data: any) => {
     }
 }
 const watchArray = [filterData.search, filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
-    filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list
+filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list
     // filterData.occupancy_rate_from, filterData.occupancy_rate_to
 ]
 
 const formattedCSVData = (data: any[]) => {
     return data.map((trip) => {
         return {
-            date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
-            time: trip?.itinerary?.trip_time ?? 'N/A',
-            routeCode: trip.route.route_code,
-            pickup: trip.route.pickup || 'N/A',
-            destination: trip.route.destination,
-            partnerName: trip.vehicle?.partner?.company_name,
-            vehicle: trip.vehicle?.vehicle_name,
-            vehicleType: trip.vehicle?.vehicle_category?.category_name,
-            occupancy: trip.vehicle?.occupancy,
-            routeVisibility: trip.route?.route_visibility === '1' ? 'Public' : 'Private',
-            routeType: trip.route?.route_type === '1' ? 'Fixed' : 'Flexible',
-            status: trip.status === '1' ? 'Active' : trip.status === '2' ? 'Cancelled' : 'Completed'
+            Date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
+            Time: trip?.itinerary?.trip_time ?? 'N/A',
+            'Route Code': trip.route.route_code,
+            Pickup: trip.route.pickup || 'N/A',
+            Destination: trip.route.destination,
+            'Partner Name': trip.vehicle?.partner?.company_name,
+            'Driver Name': trip.driver ? `${trip.driver.fname} ${trip.driver.lname}` : trip.route.driver ? `${trip.route.driver.fname} ${trip.route.driver.lname}` : 'N/A',
+            'Driver Phone': trip?.driver?.phone || 'N/A',
+            'Passengers Count': trip.passengers_count || 0,
+            Seats: trip?.vehicle?.seats || 0,
+            'Vehicle Name': trip?.vehicle?.name || 'N/A',
+            'Vehicle Brand': trip?.vehicle?.brand || 'N/A',
+            'Vehicle Registration Number': trip?.vehicle?.registration_number || 'N/A',
+            'Cost of Supply': trip.cost_of_supply || 0
         }
     })
 }

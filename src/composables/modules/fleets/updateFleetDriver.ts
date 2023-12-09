@@ -7,13 +7,13 @@ const { selectedVehicle } = useVehicleIdDetails()
 export const useUpdateVehicle = () => {
 	const selectedDriver = ref({}) as any
 	const loading = ref(false)
-	const updateVehicleDriver = async () => {
+	const updateVehicleDriver = async (driverId:string|number) => {
 		loading.value = true
 		const id = useRoute().params.id as string
 		const payload = {
 			vehicle_id: selectedVehicle.value?.id
 		}
-		const res = await drivers_api.$_update_driver(selectedVehicle.value.driver.id, payload) as CustomAxiosResponse
+		const res = await drivers_api.$_update_driver(driverId, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle driver was updated successfully' })
             useVehicleModal().closeChangeFleetDriver()

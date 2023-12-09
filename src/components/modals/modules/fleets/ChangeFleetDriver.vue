@@ -25,6 +25,7 @@ const { loading, updateVehicleDriver } = useUpdateVehicle()
 const driver = ref('') as any
 
 const handleUpdateDriver = () => {
+	updateVehicleDriver(driver.value.id)
 }
 </script>
 

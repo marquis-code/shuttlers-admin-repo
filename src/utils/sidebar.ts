@@ -58,14 +58,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Companies',
         routePath: '/companies',
         oldPath: '/companies/active',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       },
       {
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       }
     ]
@@ -127,7 +127,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Track Vehicle',
         routePath: '/trips/vehicle',
         oldPath: '/trips/track-vehicle',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       },
       {
@@ -149,7 +149,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Suggested routes',
         routePath: '/trips/routes/suggested-routes',
         oldPath: '/routes/suggested-routes',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: ''
       },
       {
@@ -193,14 +193,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Partners List',
         routePath: '/partners',
         oldPath: '/partners/list',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Vehicles Partners List'
       },
       {
         title: 'Payout',
         routePath: '/partners/payouts',
         oldPath: '/partners/payout/pending',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Vehicles Partners payout'
       },
       {
@@ -217,14 +217,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'DRIVERS',
     children: [
           {
         title: 'Manage ',
         routePath: '/drivers',
         oldPath: '/drivers/list',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Manage Drivers'
       }
       ]
@@ -237,7 +237,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
-    shouldRedirect: true,
+    shouldRedirect: false,
     children: null,
     modulePermission: 'EVENTS'
   },
