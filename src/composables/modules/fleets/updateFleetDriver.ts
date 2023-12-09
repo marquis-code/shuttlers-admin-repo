@@ -4,9 +4,9 @@ import { useAlert } from '@/composables/core/notification'
 import { useVehicleModal } from '@/composables/core/modals'
 const { selectedVehicle } = useVehicleIdDetails()
 
-const loading = ref(false)
-
 export const useUpdateVehicle = () => {
+	const selectedDriver = ref({}) as any
+	const loading = ref(false)
 	const updateVehicleDriver = async () => {
 		loading.value = true
 		const id = useRoute().params.id as string
@@ -16,10 +16,10 @@ export const useUpdateVehicle = () => {
 		const res = await drivers_api.$_update_driver(selectedVehicle.value.driver.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle driver was updated successfully' })
-            useVehicleModal().closeChangeVehicleDriver()
+            useVehicleModal().closeChangeFleetDriver()
         }
 		loading.value = false
 	}
 
-	return { selectedVehicle, loading, updateVehicleDriver }
+	return { selectedVehicle, loading, updateVehicleDriver, selectedDriver }
 }

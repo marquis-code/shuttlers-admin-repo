@@ -15,6 +15,17 @@ const createForm = {
     code: ref(''),
     inventory_type: ref('regular')
 }
+const emptyForm = () => {
+	    createForm.brand.value = ''
+		createForm.name.value = ''
+		createForm.type.value = ''
+		createForm.seats.value = ''
+		createForm.registration_number.value = ''
+		createForm.amenities.value = ''
+		createForm.code.value = ''
+		createForm.partner.value = ''
+		createForm.inventory_type.value = ''
+}
 const addtrackingDetails = ref(false)
 const trackingForm = {
     tracking_id: '',
@@ -39,11 +50,13 @@ export const useCreateVehicle = () => {
 				msg: 'Vehicle created successfully'
 			})
 			router.push('/fleet')
+			emptyForm()
 		   } else {
 			useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Vehicle created successfully'
 			})
+			emptyForm()
 			router.push('/fleet')
 		   }
 		}

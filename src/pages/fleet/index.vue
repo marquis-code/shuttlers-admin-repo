@@ -50,7 +50,7 @@
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)"
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingFleets" @move-to="moveTo($event)"
 					@next="next" @prev="prev" />
 			</template>
 		</Table>
