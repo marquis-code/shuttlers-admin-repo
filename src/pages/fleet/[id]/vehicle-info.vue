@@ -162,7 +162,7 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Change Driver', func: () => { useVehicleModal().openChangeVehicleDriver() } },
+	{ name: 'Change Driver', func: () => { useVehicleModal().openChangeFleetDriver() } },
 	{ name: 'Update Tracking Details', func: () => { useVehicleModal().openUpdateVehicleTracking() } },
 	{ name: 'Edit Bus', func: (data) => { editVehicle(data) } },
 	{ name: 'Export QR Code', func: (data) => { exportQrCode(data) } },

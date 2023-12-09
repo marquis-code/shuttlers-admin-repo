@@ -44,5 +44,9 @@ export const fleets_api = {
 	$_update_vehicle: (id:string, payload:any) => {
 		const url = `vehicles/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_vehicle_types: () => {
+		const url = '/vehicle-types'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

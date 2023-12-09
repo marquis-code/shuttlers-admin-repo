@@ -3,14 +3,14 @@
 		modal="$atts.modal"
 		title="Change driver"
 	>
-		<form class="flex flex-col gap-4 w-full" @submit.prevent="updateVehicleDriver">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="handleUpdateDriver">
 			<div class="">
 				<div class="w-full">
 					<DriverSelector v-model="driver" class="w-full" />
 				</div>
 			</div>
 			<button type="submit" :disabled="loading"
-				class="mt-10 bg-black p-[16px] text-white text-center w-full border-none outline-none rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]"
+				class="mt-10 bg-black py-2.5 text-white text-center w-full border-none outline-none rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]"
 			>
 				{{ loading ? 'processing...' : 'update driver' }}
 			</button>
@@ -22,7 +22,10 @@
 import { useUpdateVehicle } from '@/composables/modules/fleets/updateFleetDriver'
 
 const { loading, updateVehicleDriver } = useUpdateVehicle()
+const driver = ref('') as any
 
+const handleUpdateDriver = () => {
+}
 </script>
 
 <style scoped>
