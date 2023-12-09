@@ -243,9 +243,13 @@ const routeUnavailableDays = computed(() => {
 })
 
 const routeAvailableDays = computed(() => {
-	const days = JSON.parse(selectedRoute.value?.route_availability_days)
+	if (selectedRoute.value?.route_availability_days) {
+			const days = JSON.parse(selectedRoute.value?.route_availability_days)
 	if (!days || !days.length) return 'Not available'
 	return days.length === 7 ? 'Everyday' : days.join(', ')
+	} else {
+		return 'Not available'
+	}
 })
 
 const routeUrl = computed(() => {

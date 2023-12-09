@@ -5,19 +5,19 @@ export default {
 	ssr: false,
 	target: 'static',
 	app: {
-	head: {
-		title: 'Shuttlers Admin',
-		script: [
-			{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/' }
-		  ],
-		htmlAttrs: { lang: 'en' },
-		meta: [
-			{ charset: 'utf-8' },
-			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{ name: 'format-detection', content: 'telephone=no' }
-		],
-		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
-	}
+		head: {
+			title: 'Shuttlers Admin',
+			script: [
+				{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/' }
+			],
+			htmlAttrs: { lang: 'en' },
+			meta: [
+				{ charset: 'utf-8' },
+				{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
+				{ name: 'format-detection', content: 'telephone=no' }
+			],
+			link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.svg' }]
+		}
 	},
 
 	alias: {
@@ -29,9 +29,13 @@ export default {
 		'@/components',
 		{ path: '@/components/core', extensions: ['vue'] }
 	],
-	modules: ['@nuxtjs/tailwindcss'],
+	plugins: [
+		'./src/plugins/vue-google-maps'
+	],
+	modules: ['@nuxtjs/tailwindcss', 'floating-vue/nuxt'],
 
 	build: {
+		transpile: ['vue-google-maps-community-fork', '@googlemaps/markercluster'],
 		postcss: {
 			postcssOptions: require('./postcss.config.js')
 		}
@@ -45,11 +49,14 @@ export default {
 		cssPath: '@/assets/css/main.css'
 	},
 	vite: {
+		optimizeDeps: {
+			include: [
+				'fast-deep-equal'
+			]
+		},
 		plugins: [
 			eslintPlugin({ useEslintrc: true })
 		],
-			optimizeDeps: {
-		},
 		server: {
 			watch: {
 				usePolling: true

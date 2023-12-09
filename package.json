@@ -42,6 +42,7 @@
 		"vite-plugin-eslint": "^1.7.0"
 	},
 	"dependencies": {
+		"@fawmi/vue-google-maps": "^0.9.79",
 		"@googlemaps/js-api-loader": "^1.16.2",
 		"@headlessui/vue": "^1.7.16",
 		"@heroicons/vue": "^2.0.18",
@@ -56,6 +57,7 @@
 		"chart.js": "^4.3.3",
 		"date-fns": "^2.30.0",
 		"export-to-csv": "^1.2.1",
+		"floating-vue": "^2.0.0-beta.24",
 		"flutterwave-vue3": "^0.0.2",
 		"gsap": "^3.12.2",
 		"jwt-decode": "^3.1.2",
@@ -67,6 +69,7 @@
 		"vue-advanced-cropper": "^2.8.8",
 		"vue-chartjs": "^5.2.0",
 		"vue-datepicker-next": "^1.0.3",
+		"vue-google-maps-community-fork": "^0.3.1",
 		"vue-multiselect": "^3.0.0-beta.2",
 		"vue3-google-map": "^0.18.0",
 		"vue3-otp-input": "^0.4.1",

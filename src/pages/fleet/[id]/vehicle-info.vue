@@ -151,7 +151,7 @@ const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory } = useGetFlee
 const { selectedVehicle, loading, getVehicleById } = useVehicleIdDetails()
 const { handleDecommisionVehicle, loading: processing_decommision } = useDecommissionVehicle()
 const { getVehicleEarnings, loadingEarnings, fleetEarnings } = useGetVehicleEarnings()
-getFleetsTripHistory()
+
 const id = useRoute().params.id as string
 getVehicleById(Number(id))
 getVehicleEarnings()
