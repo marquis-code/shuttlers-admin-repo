@@ -176,5 +176,9 @@ $_get_corporate_shuttle_request_by_id: (request_id: number) => {
 $_handle_selected_users_credit_line: (executionId: number, payload: any) => {
 	const url = `/credit-systems-executions/${executionId}/`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update_credit_system: (creditSystemId:number, payload:any) => {
+	const url = `/credit-systems/${creditSystemId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 }
 }

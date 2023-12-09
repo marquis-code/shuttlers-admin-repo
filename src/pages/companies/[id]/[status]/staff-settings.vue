@@ -1,6 +1,6 @@
 <template>
-	<div class="flex justify-between">
-		<div class="w-5/12 space-y-10 rounded-lg bg-white p-6 border">
+	<div class="lg:flex justify-between space-y-10 lg:space-y-0u">
+		<div class="lg:w-6/12 space-y-10 rounded-lg bg-white p-6 border">
 			<div class="space-y-2">
 				<h1 class="text-lg font-medium text-gray-900">
 					Staff settings
