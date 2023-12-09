@@ -2,6 +2,7 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
+import { useCompaniesModal } from '@/composables/core/modals'
 const { selectedCorporate } = useCorporateIdDetails()
 
 const corporateBookingCancellationForm = {
@@ -13,13 +14,14 @@ export const useCoporateBookingCancellationOptions = () => {
 const loading = ref(false)
 const configureBookingCancellationOption = async () => {
     loading.value = true
-    const res = (await corporates_api.$_configure_booking_cancellation(
+    const res = (await corporates_api.$_configure_corporate_options(
         Number(selectedCorporate.value.id), convertObjWithRefToObj(corporateBookingCancellationForm))) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
         useAlert().openAlert({
             type: 'SUCCESS',
             msg: 'Booking configuration option was successfully updated'
           })
+          useCompaniesModal().closeCorporateBookingCancellation()
     }
     loading.value = false
 }

@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="field relative w-full">
-					<RuoteSelector class="w-full" @selected="routeSelected" />
+					<RouteSelector class="w-full" @selected="routeSelected" />
 				</div>
 				<div v-if="Object.keys(form.selectedRoute).length" class="flex justify-between items-center">
 					<div class="flex flex-col items-start justify-start">

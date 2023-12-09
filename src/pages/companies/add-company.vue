@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<section class="card px-0 w-6/12 space-y-4">
+		<section class="card px-0 lg:w-6/12 space-y-4">
 			<h1 class="font-bold border-b px-6 pb-4">
 				Add a New Company
 			</h1>

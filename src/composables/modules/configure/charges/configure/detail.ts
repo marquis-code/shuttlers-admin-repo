@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import moment from 'moment'
 import { charges_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
-import { exportAsCsv } from '@/composables/utils/csv'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 
 const loading = ref(false)
 const loading_total = ref(false)
@@ -10,44 +10,13 @@ const chargeHistory = ref([]) as Ref<any[]>
 const date = ref([])
 const status = ref('All')
 const totalCharge = ref(null)
-const downloading = ref(false)
+const cities = ref([]) as Ref<any[]>
+const search = ref('')
+const { loading: downloading, download } = useDownloadReport()
 
-const sample_data = [
-	{
-		id: 1,
-		user_id: 6,
-		additional_charge_id: 2,
-		user_route_schedule_id: 29,
-		is_remitted: 0,
-		amount: '2',
-		payment_reference: null,
-		created_at: '2023-11-19 15:54:34',
-		updated_at: '2023-11-19 15:54:34',
-		user: { fname: 'Sherif', lname: 'Abubakrri', email: 'saykeed@gmail.com' },
-		additionalCharge: {},
-		userRouteSchedule: {},
-		route: {
-			route_code: 'SG-code'
-		}
-	},
-	{
-		id: 2,
-		user_id: 7,
-		additional_charge_id: 2,
-		user_route_schedule_id: 29,
-		is_remitted: 0,
-		amount: '2',
-		payment_reference: null,
-		created_at: '2023-11-09 15:54:34',
-		updated_at: '2023-11-09 15:54:34',
-		user: { fname: 'Ope', lname: 'Yemi', email: 'opeyemi@gmail.com' },
-		additionalCharge: {},
-		userRouteSchedule: {},
-		route: {
-			route_code: 'SG-code'
-		}
-	}
-]
+const getCitiesId = computed(() => {
+	return cities.value.map((el) => { return el.value })
+})
 
 export const useDetails = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
@@ -56,7 +25,7 @@ export const useDetails = () => {
 	const fetchHistory = async () => {
 		loading.value = true
 		const id = useRoute().params.id as string
-		const res = await $_get_charge_history(id, metaObject, date.value, status.value.toLowerCase()) as CustomAxiosResponse
+		const res = await $_get_charge_history(id, metaObject, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			chargeHistory.value = res.data?.data?.length ? res.data.data : []
 			metaObject.total.value = res.data.metadata.total_pages
@@ -68,7 +37,7 @@ export const useDetails = () => {
 		downloading.value = true
 		const name = ref(`${status.value}-charge-history`)
 		const id = useRoute().params.id as string
-		const res = await charges_api.$_download_charge_history(id, date.value, status.value.toLowerCase()) as CustomAxiosResponse
+		const res = await charges_api.$_download_charge_history(id, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
         if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
 			const newArr:any[] = []
@@ -94,6 +63,9 @@ export const useDetails = () => {
             case 'dateRange':
 				date.value = data.value
                 break
+			case 'search':
+				search.value = data.value
+				break
 			case 'download':
 				downloadHistory()
 				break
@@ -102,7 +74,7 @@ export const useDetails = () => {
 
 	setFunction(fetchHistory)
 
-	watch([status, date], () => {
+	watch([status, date, search, cities], () => {
 		fetchHistory()
 		getTotalCharges()
 	})
@@ -118,5 +90,42 @@ export const useDetails = () => {
 		loading_total.value = false
 	}
 
-	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status, getTotalCharges, loading_total, totalCharge, downloading }
+	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status, getTotalCharges, loading_total, totalCharge, downloading, cities, downloadHistory }
 }
+
+// const sample_data = [
+// 	{
+// 		id: 1,
+// 		user_id: 6,
+// 		additional_charge_id: 2,
+// 		user_route_schedule_id: 29,
+// 		is_remitted: 0,
+// 		amount: '2',
+// 		payment_reference: null,
+// 		created_at: '2023-11-19 15:54:34',
+// 		updated_at: '2023-11-19 15:54:34',
+// 		user: { fname: 'Sherif', lname: 'Abubakrri', email: 'saykeed@gmail.com' },
+// 		additionalCharge: {},
+// 		userRouteSchedule: {},
+// 		route: {
+// 			route_code: 'SG-code'
+// 		}
+// 	},
+// 	{
+// 		id: 2,
+// 		user_id: 7,
+// 		additional_charge_id: 2,
+// 		user_route_schedule_id: 29,
+// 		is_remitted: 0,
+// 		amount: '2',
+// 		payment_reference: null,
+// 		created_at: '2023-11-09 15:54:34',
+// 		updated_at: '2023-11-09 15:54:34',
+// 		user: { fname: 'Ope', lname: 'Yemi', email: 'opeyemi@gmail.com' },
+// 		additionalCharge: {},
+// 		userRouteSchedule: {},
+// 		route: {
+// 			route_code: 'SG-code'
+// 		}
+// 	}
+// ]

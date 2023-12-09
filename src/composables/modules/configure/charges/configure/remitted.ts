@@ -24,7 +24,7 @@ export const useRemitted = () => {
 		usePasswordConfirmationModal().openAlert({
 			call_function: markAsRemitted,
 			desc: 'The selected period would be permanently marked as remitted after confirming this action.',
-			title: 'Are you sure you want to Remit charges for the selected month?',
+			title: 'Are you sure you want to Remit charges for the selected period?',
 			loading,
 			type: 'NORMAL',
 			password

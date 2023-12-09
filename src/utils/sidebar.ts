@@ -334,8 +334,8 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       description: '',
       iconComponent: shallowRef(configureIcon),
       rootPath: '/configuration/trip-rating-settings',
-        shouldRedirect: false,
-      modulePermission: 'ADMINCONFIG',
+      shouldRedirect: false,
+      modulePermission: ['ADMINCONFIG', 'ADDITIONALCHARGES'],
       children: [
         {
           title: 'Trip Rating Settings',
@@ -365,7 +365,8 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
           shouldRedirect: false,
           description: 'Manage route pricing centrally'
         }
-      ]
+      ],
+      requiredAdmin: false
     }
   ]
 })

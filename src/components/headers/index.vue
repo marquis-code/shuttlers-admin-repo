@@ -62,6 +62,7 @@ import AddDrivers from '@/components/headers/modules/Drivers/add-driver.vue'
 import TripRatingSettingsDetails from '@/components/headers/modules/Configure/TripRatings/trip-rating-details.vue'
 import TripIssues from '@/components/headers/modules/Trip-issues/index.vue'
 import CreateCreditLineUsage from '@/components/headers/modules/Companies/create-credit-line.vue'
+import ShuttleRequestDetails from '@/components/headers/modules/Companies/shuttle-request-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -70,9 +71,10 @@ const componentRouteArray = [
     { routes: ['companies-add-company'], component: AddCompany },
     { routes: ['companies-id-edit'], component: EditCompany },
     { routes: ['companies-id-status-credit-line-create'], component: CreateCreditLineUsage },
-    { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration'], component: CompanyDetails },
+    { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration', 'companies-id-status-credit-line-fund', 'companies-id-status-credit-line-edit'], component: CompanyDetails },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
+    { routes: ['companies-shuttle-requests-id-info', 'companies-shuttle-requests-id-staff-list'], component: ShuttleRequestDetails },
     { routes: ['users'], component: Users },
     { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
     { routes: ['users-notify'], component: NotifyUsers },
@@ -85,7 +87,7 @@ const componentRouteArray = [
     { routes: ['partners-payouts'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
-    { routes: ['drivers-add'], component: AddDrivers },
+    { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
     { routes: ['events-id-event-info'], component: EventDetails },

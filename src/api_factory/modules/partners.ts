@@ -56,5 +56,9 @@ export const partners_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `earnings?${queryParams}&isApproved=false&status=pending-payout,failed,pending-settlement&${meta.page.value}&limit=${meta.page_size.value}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_get_partners_for_selector_component: (search = '') => {
+		const url = `/partners?limit=${20}&page=${1}&metadata=true&search=${search}&related=owner`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

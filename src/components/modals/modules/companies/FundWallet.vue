@@ -20,7 +20,7 @@
 				</div>
 			</div>
 			<div v-if="selected === 'transfer'" class="space-y-6">
-				<div class="p-6 bg-gray-50 rounded-md space-y-6">
+				<div v-if="corporateWalletDetails.wallet.length" class="p-6 bg-gray-50 rounded-md space-y-6">
 					<h1 class="text-sm font-medium">
 						ACCOUNT DETAILS
 					</h1>
@@ -48,17 +48,63 @@
 							Shuttlers <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="copy">
 						</h1>
 					</div>
+					<div class="flex items-center gap-x-10">
+						<img src="@/assets/icons/source/info.svg" class="h-7 w-7" alt="info">
+						<p class="text-sm text-gray-500">
+							Your wallet will be automatically funded once payment is received. Funding via bank transfer takes 5 - 10 minutes.
+						</p>
+					</div>
 				</div>
-				<div class="flex items-center gap-x-10">
-					<img src="@/assets/icons/source/info.svg" class="h-7 w-7" alt="info">
-					<p class="text-sm text-gray-500">
-						Your wallet will be automatically funded once payment is received. Funding via bank transfer takes 5 - 10 minutes.
-					</p>
+				<div v-else class="h-60 relative z-0">
+					<div class="card space-y-4 p-6 backdrop-blur-sm bg-white/30">
+						<div class="space-y-6">
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Bank Name
+								</p>
+								<p class="text-xl font-bold">
+									N/A
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Account Number
+								</p>
+								<p class="text-xl font-bold flex items-center gap-x-3">
+									<span class="cursor-pointer">N/A</span> <img src="@/assets/icons/source/copy.svg" alt="">
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Account Name
+								</p>
+								<p class="text-lg font-bold">
+									N/A
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Service Provider
+								</p>
+								<p class="text-sm font-bold">
+									N/A
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="inset-0 bg-gray/50 absolute backdrop-blur-sm bg-white/30" />
+					<div class="w-full flex justify-center items-center blur-none absolute top-20 rounded-md z-50">
+						<div class="text-white text-center cursor-pointer bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
+							Activate wallet
+						</div>
+					</div>
 				</div>
 				<div class="flex justify-between items-center px-3 py-2.5 rounded-md bg-gray-50 border cursor-pointer" @click="selected = 'default'">
 					<div class="flex items-center gap-x-2">
 						<span class="bg-white p-2 rounded-full flex justify-center items-center"> <img src="@/assets/icons/source/card.svg" class="h-10 w-10 p-1 rounded-full border border-gray-600" alt="card"></span>
-						<p class="font-medium">Other funding options</p>
+						<p class="font-medium">
+							Other funding options
+						</p>
 					</div>
 					<div>
 						<img src="@/assets/icons/source/greater.svg" alt="more">
@@ -94,8 +140,12 @@
 </template>
 
 <script setup lang="ts">
+import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
+import { useCompaniesModal } from '@/composables/core/modals'
 import { useFlutterWave } from '@/composables/modules/corporates/wallet'
+const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { makePayment, amount, desc, loading } = useFlutterWave()
+getCorporateWalletObject()
  const fundingOptions = reactive([
     {
         title: 'Fund With Transfer',

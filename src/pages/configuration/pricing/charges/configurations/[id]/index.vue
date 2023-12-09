@@ -95,13 +95,14 @@
 				<TableFilter
 					:filter-type="{
 						showStatus: false,
-						showSearchBar: false,
+						showSearchBar: true,
 						showDownloadButton: true,
 						showDatePicker: false,
 						showDateRange: true,
 						downloading: downloading
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadHistory"
 				>
 					<template #filter_others>
 						<button class="shrink-0 font-medium py-2 px-4 bg-black text-sm text-white rounded-lg border self-center"
@@ -118,6 +119,7 @@
 						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
 					</p>
 					<Skeleton v-else height="20px" width="130px" />
+					<ButtonMultiSelectDropdown v-model="cities" :children="citiesList" title="Route type:" />
 					<div class="overflow-hidden flex items-stretch rounded border bg-[#F4F5F4] ">
 						<button v-for="n,i in ['All', 'Remitted', 'Unremitted']" :key="i" class="py-2 px-4 border-none"
 							:class="[status == n ? 'text-[#101211] !bg-white' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
@@ -170,6 +172,7 @@ import moment from 'moment'
 import { useFetchConfiguredCharges, useDeleteChargeConfiguration, useCreateConfigureCharge, useDetails } from '@/composables/modules/configure/charges/configure/index'
 import { useChargeModal } from '@/composables/core/modals'
 import { useFetchChargeTypes } from '@/composables/modules/configure/charges/types/fetch'
+import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 
 definePageMeta({
     layout: 'dashboard',
@@ -180,7 +183,8 @@ const { loading, fetchSingleConfiguredCharges, singleConfiguredCharge: config } 
 const { loading: fetchingAllChargeTypes } = useFetchChargeTypes()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
-const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading } = useDetails()
+const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading, cities, downloadHistory } = useDetails()
+const { allCityNames, fetchAllCityNames } = useCityAndCountry()
 // const { intiActivate } = useActivateConfiguration()
 
 const tableFields = [
@@ -191,9 +195,18 @@ const tableFields = [
 	{ value: 'date', text: 'Date' }
 ]
 
+// const citiesList = ref([
+// 	{ name: 'Exclusive', value: 'exclusive' },
+// 	{ name: 'Shared', value: 'shared' }
+// ])
+const citiesList = computed(() => {
+	return allCityNames.value.map((el) => { return { name: el.name, value: el.id } })
+})
+
 fetchSingleConfiguredCharges(useRoute().params.id as string)
 fetchHistory()
 getTotalCharges()
+fetchAllCityNames()
 </script>
 
 <style scoped>

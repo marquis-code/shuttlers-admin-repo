@@ -5,13 +5,13 @@
 		</label>
 		<VueMultiselect v-model="selectedRoute" placeholder="Search route" :searchable="true" :internal-search="false"
 			:options="routes" :multiple="false" :taggable="false" track-by="id" :loading="loading"
-			:custom-label="(data)=>`${data.pickup} - (${data.destination})`"
+			:custom-label="(data)=>`${data.route_code} - ${data.pickup} - (${data.destination})`"
 			@search-change="searching"
 		>
 			<template #option="{ option }">
 				<div class="flex flex-col gap-2 w-full overflow-hidden max-w-[300px]">
 					<p class="w-full text-sm whitespace-normal">
-						{{ option.pickup }}
+						{{ option.route_code }} - {{ option.pickup }}
 					</p>
 					<p class="w-full text-sm whitespace-normal">
 						{{ option.destination }}

@@ -1,6 +1,6 @@
 <template>
-	<div class="flex justify-between">
-		<div class="w-5/12 space-y-10 rounded-lg bg-white p-6 border">
+	<div class="lg:flex justify-between space-y-10 lg:space-y-0u">
+		<div class="lg:w-6/12 space-y-10 rounded-lg bg-white p-6 border">
 			<div class="space-y-2">
 				<h1 class="text-lg font-medium text-gray-900">
 					Staff settings
@@ -51,7 +51,7 @@
 				<ModulesCorporatesStaffFieldsConfigurationTable :corporate-settings="corporateSettings.staff_details_config"
 					:loading="loadingCorporateSettings" class="p-6" />
 				<div v-if="isUpdate === false"
-					class="inset-0 absolute bg-black/40 backdrop-brightness-75 cursor-not-allowed rounded-md" />
+					class="inset-0 absolute bg-black/10 blur-sm backdrop-brightness-75 cursor-not-allowed rounded-md" />
 			</div>
 			<div class="flex justify-between items-center">
 				<div>

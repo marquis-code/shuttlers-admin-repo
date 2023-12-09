@@ -47,32 +47,47 @@ import ActivateWallet from '@/components/modals/modules/companies/ActivateWallet
 import LogIssues from '@/components/modals/modules/trips/Issues/LogTripIssue.vue'
 import CreateIssues from '@/components/modals/modules/trips/Issues/CreateIssue.vue'
 import ResolveIssues from '@/components/modals/modules/trips/Issues/Resolve.vue'
+import AssignBus from '@/components/modals/modules/driver/AssignBus.vue'
+import EditBus from '@/components/modals/modules/driver/EditBus.vue'
+import AssignRoute from '@/components/modals/modules/driver/AssignRoute.vue'
+import ControlTrip from '@/components/modals/modules/driver/ControlTrip.vue'
+import ChangeDriverPassword from '@/components/modals/modules/driver/ChangePassword.vue'
+import ChangeDriverPicture from '@/components/modals/modules/driver/ChangePicture.vue'
+import ScheduledCreditLine from '@/components/modals/modules/companies/ScheduledCreditLine.vue'
+import ImageCropper from '@/components/modals/modules/core/ImageCropper.vue'
+
+import UpdateVehicleTracking from '@/components/modals/modules/fleets/UpdateTrackingDetails.vue'
+import ChangeVehicleDriver from '@/components/modals/modules/fleets/ChangeDriver.vue'
+import EditVehicleBus from '@/components/modals/modules/fleets/EditBus.vue'
+import EmployeeExemption from '@/components/modals/modules/companies/EmployeeExemption.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
-type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm'
+type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
-type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet'
+type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet' | 'ScheduledCreditLine' | 'EmployeeExemption'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
-type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking'
+type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
+type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeVehicleDriver' | 'EditVehicleBus'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
-const CoreModals = { Confirm, PasswordConfirm, YesConfirm } as Record<CoreTypes, any>
+const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
-const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet } as Record<CompaniesTypes, any>
+const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet, ScheduledCreditLine, EmployeeExemption } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
-const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking } as Record<DriverTypes, any>
+const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>
 const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
+const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeVehicleDriver, EditVehicleBus } as Record<VehicleTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -84,10 +99,11 @@ const commuteModal = modal.register('Commute', CommuteModals)
 const adminModal = modal.register('Admins', AdminModals)
 const chargeModal = modal.register('Charges', ChargeModals)
 const companiesModal = modal.register('Companies', CompaniesModals)
-const vehicleModal = modal.register('VehicleConfiguration', VehicleConfigurationModals)
+const vehicleConfigurationModal = modal.register('VehicleConfiguration', VehicleConfigurationModals)
 const tripsModal = modal.register('Trips', TripsModals)
 const driverModal = modal.register('Driver', DriverModals)
-const routeModal = modal.register('Routs', RoutesModal)
+const routeModal = modal.register('Routes', RoutesModal)
+const vehicleModal = modal.register('Vehicles', VehicleModals)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -97,7 +113,8 @@ export const useCommuteModal = () => commuteModal
 export const useAdminModal = () => adminModal
 export const useChargeModal = () => chargeModal
 export const useCompaniesModal = () => companiesModal
-export const useVehicleConfigurationModal = () => vehicleModal
+export const useVehicleConfigurationModal = () => vehicleConfigurationModal
 export const useTripsModal = () => tripsModal
 export const useDriverModal = () => driverModal
 export const useRouteModal = () => routeModal
+export const useVehicleModal = () => vehicleModal

@@ -27,7 +27,7 @@
 			</section>
 
 			<section class="flex items-center flex-row-reverse gap-4">
-				<button v-if="filterType.showDownloadButton" :disabled="loading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onFilter({type:'download', value:null})">
+				<button v-if="filterType.showDownloadButton" :disabled="loading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onDownload">
 					<img v-if="!loading" src="@/assets/icons/source/download.svg" alt="" class="inline">
 					<p class="text-xs font-medium">
 						{{ loading ? 'Downloading...' : 'Download report' }}
@@ -46,9 +46,13 @@ import { watchDebounced } from '@vueuse/core'
 import { appendObjectToCurrentURL } from '@/composables/utils/system'
 import { useDownloadReport } from '@/composables/utils/csv'
 
-const emit = defineEmits(['filter'])
-
+const emit = defineEmits(['filter', 'download'])
 const { loading } = useDownloadReport()
+
+const onDownload = () => {
+	loading.value = true
+	emit('download')
+}
 
 type FilterKeys = 'type' | 'value'
 const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
@@ -56,12 +60,12 @@ const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
 }
 
 interface FilterTypeProps {
-  showSearchBar?: boolean;
-  showDatePicker?: boolean;
-  showDownloadButton?: boolean;
-  showStatus?: boolean;
-  showDateRange?: boolean;
-  downloading?: boolean;
+	showSearchBar?: boolean;
+	showDatePicker?: boolean;
+	showDownloadButton?: boolean;
+	showStatus?: boolean;
+	showDateRange?: boolean;
+	downloading?: boolean;
 }
 interface DefaultValueProps {
 	search?: string;
@@ -80,8 +84,7 @@ const props = defineProps({
 			showDownloadButton: false,
 			showStatus: false,
 			showDateRange: false
-			// Sherif rewrite this, why is filter type downloading here?
-			// downloading: false
+
 		})
 	},
 	defaultValue: {

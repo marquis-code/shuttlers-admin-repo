@@ -4,7 +4,7 @@
 			<p class="text-sm text-[#313533] font-medium">
 				({{ selectedStaffs.length }}) of {{ totalStaffs }} selected
 			</p>
-			<RuoteSelector @selected="routeSelected" />
+			<RouteSelector @selected="routeSelected" />
 			<div v-if="itineraries.length" class="flex flex-col gap-2">
 				<label class="text-xs text-[#6E717C] font-medium">Assign Itinerary</label>
 				<select v-model="itinerary_id" required class="input-field">

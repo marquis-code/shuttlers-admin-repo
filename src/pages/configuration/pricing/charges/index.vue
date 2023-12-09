@@ -44,8 +44,8 @@
 						{{ item.data.charge_value }}%
 					</template>
 				</p>
-				<p v-if="item.compulsory" class="text-sm text-[#0DAC5C] font-medium whitespace-nowrap">
-					{{ item.data.is_compulsory ? 'Compulsory' : 'Not compulsory' }}
+				<p v-if="item.compulsory" class="text-sm font-medium whitespace-nowrap" :class="item.data.is_compulsory ? 'text-[orange]' : 'text-[#0DAC5C]'">
+					{{ item.data.is_compulsory ? 'Compulsory' : 'Optional' }}
 				</p>
 				<div v-if="item.countries" class="flex flex-col gap-1 py-2 text-[#101211] font-medium">
 					<p class="text-sm">
