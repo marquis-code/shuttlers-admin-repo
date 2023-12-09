@@ -2,12 +2,12 @@ import { fleets_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const selectedVehicle = ref({} as Record<string, any>)
-const selectedVehicleId = ref('')
+const selectedVehicleId = ref('') as any | number
 
 export const useVehicleIdDetails = () => {
     const loading = ref(false)
 
-    const getVehicleById = async (id: string) => {
+    const getVehicleById = async (id: number) => {
         selectedVehicleId.value = id
         loading.value = true
         const res = await fleets_api.$_get_fleets_by_id(id) as CustomAxiosResponse
