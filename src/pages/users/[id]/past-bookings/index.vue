@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList">
+		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList" :has-options="true" :option="(data)=>$router.push(`/users/${id}/past-bookings/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 			</template>
@@ -38,6 +38,7 @@ const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, 
 bookingType.value = 'completed'
 getBookings()
 
+const id = useRoute().params.id
 const formattedBookingList = computed(() => {
 	if (!bookings.value.length) return []
 	return bookings.value.map((item, index) => {

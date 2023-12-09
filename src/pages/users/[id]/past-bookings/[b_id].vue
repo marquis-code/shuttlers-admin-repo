@@ -90,7 +90,7 @@
 				</button>
 			</div>
 
-			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" />
+			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" :props-loading="loading" />
 		</section>
 		<Skeleton v-else height="500px" radius="10px" />
 	</main>
