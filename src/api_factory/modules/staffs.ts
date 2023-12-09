@@ -6,10 +6,7 @@ export const staffs_api = {
 		const url = `/staff?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_staff_details_by_id: (id:string) => {
-		const url = `/staff/${id}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-	},
+
 	$_get_permisions: (metaObject: TMetaObject) => {
 		const url = `v1/super-admin/access-modules?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

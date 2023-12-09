@@ -1,5 +1,5 @@
 <template>
-	<main v-if="!loadingStaffs" class="card p-0 max-w-3xl">
+	<main v-if="!loading" class="card p-0 max-w-3xl">
 		<h1 class="card-header text-sm px-6 py-5 border-b">
 			Update Admin User
 		</h1>
@@ -56,15 +56,11 @@
 <script lang="ts" setup>
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
+import { useAdminIdDetails } from '@/composables/modules/staffs/id'
+
+const { selectedAdmin, loading } = useAdminIdDetails()
 const { createForm, loading: createLoading, editAdmin, prePopulateForm } = useCreateAdmin()
 const id = useRoute().params.id as string
-
-const { getStaffs, loading: loadingStaffs, staffsData } = useGetStaffs()
-getStaffs()
-const selectedAdmin = computed(() => {
-	if (loadingStaffs.value) return
-	return staffsData.value.find((staff) => staff.id === Number(id))
-})
 
 watch(() => selectedAdmin, (val) => {
 	const payload = {

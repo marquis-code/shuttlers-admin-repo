@@ -15,7 +15,7 @@ const featureForm = {
 
 export const useGetStaffs = () => {
     const loading = ref(false)
-    const staffsData = ref([] as any)
+    const staffsData = ref([] as any[])
     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
     const filterKeys = {
         search: ref(''),
@@ -127,7 +127,7 @@ export const useHandleFeatureFlaggedAudits = () => {
         loading.value = true
         const res = await staffs_api.$_feature_flag_audits(featureForm) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            useAlert().openAlert({ type: 'SUCCESS', msg: `staff audits only status has been ${featureForm?.active?.value ? 'activated' : 'deactivated'}` })
+            useAlert().openAlert({ type: 'SUCCESS', msg: `staff audits only status has been ${featureForm?.active ? 'activated' : 'deactivated'}` })
         }
         loading.value = false
     }
