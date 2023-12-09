@@ -49,6 +49,7 @@ export const useCreateVehicle = () => {
 				type: 'SUCCESS',
 				msg: 'Vehicle created successfully'
 			})
+			loading.value = false
 			router.push('/fleet')
 			emptyForm()
 		   } else {
@@ -56,6 +57,7 @@ export const useCreateVehicle = () => {
 				type: 'SUCCESS',
 				msg: 'Vehicle created successfully'
 			})
+			loading.value = false
 			emptyForm()
 			router.push('/fleet')
 		   }
@@ -74,6 +76,10 @@ export const useCreateVehicle = () => {
 		createForm.partner.value = data.partner || ''
 		createForm.inventory_type.value = data.inventory_type || ''
 	}
+
+	onUnmounted(() => {
+		emptyForm()
+	})
 
 	return { createForm, loading, trackingForm, createVehicle, prePopulateForm, populateTrackingForm, addtrackingDetails }
 }

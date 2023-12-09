@@ -11,7 +11,7 @@ export const fleets_api = {
 		const url = `/inspection-days?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_fleets_by_id: (id:string) => {
+	$_get_fleets_by_id: (id:number) => {
 		const url = `/vehicles/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},

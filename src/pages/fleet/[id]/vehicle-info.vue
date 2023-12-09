@@ -153,7 +153,7 @@ const { handleDecommisionVehicle, loading: processing_decommision } = useDecommi
 const { getVehicleEarnings, loadingEarnings, fleetEarnings } = useGetVehicleEarnings()
 getFleetsTripHistory()
 const id = useRoute().params.id as string
-getVehicleById(id)
+getVehicleById(Number(id))
 getVehicleEarnings()
 
 definePageMeta({
