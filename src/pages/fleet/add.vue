@@ -61,26 +61,16 @@
 					</div>
 					<div class="w-full">
 						<label for="vehicleType"
-							class="text-sm font-light text-gray                                                                             ">
+							class="text-sm font-light text-gray">
 							Vehicle Type</label>
-						<select v-model="createForm.type.value" name="vehicleType"
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-							<opion default selected>
-								Select a vehicele type
-							</opion>
-							<option value="sedan">
-								Sedan
-							</option>
-							<option value="mini_van">
-								Mini Van
-							</option>
-							<option value="mini_bus">
-								Mini Bus
-							</option>
-							<option value="bus">
-								Bus
-							</option>
-						</select>
+						<div v-if="!loadingVehicleTypes">
+							<select v-model="createForm.type.value" class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+								<option v-for="(itm, idx) in vehicleTypeslist" :key="idx" :value="itm.name">
+									{{ itm.name }}
+								</option>
+							</select>
+						</div>
+						<Skeleton v-else height="46px" />
 					</div>
 				</div>
 
@@ -169,9 +159,9 @@
 </template>
 
 <script setup lang="ts">
-import { useGetPartnersList } from '@/composables/modules/partners/fetch'
+import { useGetVehicleTypes } from '@/composables/modules/fleets/vehicle-types'
 import { useCreateVehicle } from '@/composables/modules/fleets/create'
-const { getPartnersList, loading: loadingPartners, partnersList } = useGetPartnersList()
+const { getFleetTypes, loading: loadingVehicleTypes, vehicleTypeslist } = useGetVehicleTypes()
 const { createForm, loading: processing, trackingForm, createVehicle, prePopulateForm, populateTrackingForm, addtrackingDetails } = useCreateVehicle()
 definePageMeta({
     layout: 'dashboard',
@@ -183,7 +173,7 @@ const isFormEmpty = computed(() => {
 })
 
 onMounted(() => {
-	getPartnersList()
+	getFleetTypes()
 })
 const showToolTip = ref(false)
 
