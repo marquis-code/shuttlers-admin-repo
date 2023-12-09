@@ -17,7 +17,7 @@
 
 			<div class="field relative">
 				<label for="providerDescription">Provider Description</label>
-				<textarea id="providerDescription" v-model="updateForm.provider_description.value" rows="6" cols="6" class="input-field" required />
+				<textarea id="providerDescription" v-model="updateForm.provider_description.value" rows="4" cols="4" class="input-field resize-none" required />
 			</div>
 
 			<div class="flex justify-between items-center gap-x-10">
