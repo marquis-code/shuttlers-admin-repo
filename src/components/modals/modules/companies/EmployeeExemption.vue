@@ -89,17 +89,6 @@ const toggleSelected = (itm) => {
 
 const handleSelectAll = () => {
 	selectAll.value = !selectAll.value
-	console.log(computedUsersList.value, 'vbnm,')
-	console.log(selectAll.value, 'valuye gfhjkljhgjk.lkjh')
-	// computedUsersList.value.forEach((item) => {
-    //   item.selected = selectAll.value
-    // })
-	// if (selectAll.value) {
-	// 	const concatenated = [].concat(...creditSystem.value.applicable_employee)
-    //     selectedUsers.value = concatenated
-    //   } else {
-    //     selectedUsers.value = []
-    //   }
 }
 </script>
 

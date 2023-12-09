@@ -2,20 +2,20 @@
 	<main>
 		<ButtonGoBack class="mb-6" />
 
-		<div class="bg-white rounded-md border w-8/12">
+		<div class="bg-white rounded-md border lg:w-6/12">
 			<div class="px-6 py-5">
 				<p class="font-medium">
 					Add a New Vehicle
 				</p>
 			</div>
 			<hr>
-			<div class="space-y-6 p-6 mt-5">
+			<form class="space-y-6 p-6 mt-5" @submit.prevent="handleCreateVehicle">
 				<div class="flex justify-between items-center gap-x-10">
 					<div class="w-full">
 						<label for="vehicleBrand"
 							class="text-sm font-light text-gray                                                                             ">
 							Vehicle Brand</label>
-						<input v-model="form.vehicleBrand" type="text" name="vehicleBrand"
+						<input v-model="createForm.brand.value" type="text" name="vehicleBrand"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 				</div>
@@ -23,39 +23,52 @@
 				<div class="flex justify-between items-center gap-10">
 					<div class="w-full">
 						<label for="vehicleName"
-							class="text-sm font-light text-gray                                                                             ">Vehicle
+							class="text-sm font-light text-gray">Vehicle
 							Name</label>
-						<input v-model="form.vehicleName" type="text" name="vehicleName"
+						<input v-model="createForm.name.value" type="text" name="vehicleName"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 				</div>
 
 				<div class="w-full">
-					<label for="plateNumber"
-						class="text-sm font-light text-gray                                                                             ">Vehicle
-						Plate Number </label>
-					<input v-model="form.plateNumber" type="text" name="plateNumber"
+					<div class="relative">
+						<div class="flex items-center gap-x-2 pb-2">
+							<div>
+								<label for="plateNumber"
+									class="text-sm font-light text-gray">Vehicle
+									Plate Number </label>
+							</div>
+							<div>
+								<img src="@/assets/icons/source/info.svg" class="cursor-pointer h-5 w-5" alt="" @mouseover="showToolTip = true"
+									@mouseout="showToolTip = false">
+							</div>
+						</div>
+						<p v-if="showToolTip" class="absolute -top-2 bg-gray-50 text-sm left-[170px] shadow-sm text-gray-800 rounded-md px-3 py-2.5">
+							example: ABC-123XY
+						</p>
+					</div>
+					<input v-model="createForm.registration_number.value" pattern="[A-Za-z]{3}-\d{3}[A-Za-z]{2}" title="Plate number must be in the format ABC-123XY" required type="text" name="plateNumber"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 				</div>
 
 				<div class="flex justify-between items-center gap-x-10">
 					<div class="w-full">
 						<label for="vehicleCapacity"
-							class="text-sm font-light text-gray                                                                             ">
+							class="text-sm font-light text-gray">
 							Vehicle Capacity</label>
-						<input v-model="form.vehicleCapacity" type="number" name="vehicleCapacity"
+						<input v-model="createForm.seats.value" type="number" name="vehicleCapacity"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 					<div class="w-full">
 						<label for="vehicleType"
 							class="text-sm font-light text-gray                                                                             ">
 							Vehicle Type</label>
-						<select v-model="form.vehicleType" name="vehicleType"
+						<select v-model="createForm.type.value" name="vehicleType"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 							<opion default selected>
 								Select a vehicele type
 							</opion>
-							<option value="seda">
+							<option value="sedan">
 								Sedan
 							</option>
 							<option value="mini_van">
@@ -71,24 +84,16 @@
 					</div>
 				</div>
 
-				<div class="flex justify-between items-center gap-x-10">
+				<div class="lg:flex justify-between items-center gap-x-10 space-y-6 lg:space-y-0">
 					<div class="w-full">
 						<label for="vehicleCode"
 							class="text-sm font-light text-gray                                                                             ">
 							Vehicle Code</label>
-						<input v-model="form.vehicleCode" type="text" name="vehicleCode"
+						<input v-model="createForm.code.value" type="text" name="vehicleCode"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 					<div class="w-full">
-						<label for="vehiclePartner"
-							class="text-sm font-light text-gray                                                                             ">
-							Vehicle Partner</label>
-						<select v-model="form.vehiclePartner" name="vehiclePartner"
-							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-							<opion default selected>
-								Select a partner
-							</opion>
-						</select>
+						<PartnerSelector v-model="createForm.partner.value" />
 					</div>
 				</div>
 
@@ -96,77 +101,94 @@
 					<label for="amenities"
 						class="text-sm font-light text-gray                                                                             ">
 						Vehicle Amenities </label>
-					<input v-model="form.amenities" type="text" name="amenities"
+					<input v-model="createForm.amenities.value" type="text" name="amenities"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+				</div>
+				<div class="w-full">
+					<label for="amenities"
+						class="text-sm font-light text-gray                                                                             ">
+						Vehicle inventory Type </label>
+					<select v-model="createForm.inventory_type.value" name="vehicleType"
+						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<opion default selected>
+							Select a vehicele type
+						</opion>
+						<option value="regular">
+							Regular
+						</option>
+						<option value="charter">
+							Charter
+						</option>
+						<option value="one_off">
+							One-Off
+						</option>
+					</select>
 				</div>
 				<hr>
 				<div class="">
-					<input v-model="isChecked" type="checkbox" class="inline" @change="handleChange"> <label
+					<input v-model="addtrackingDetails" :checked="addtrackingDetails" type="checkbox" class="inline"> <label
 						class="inline">Add Tracking details</label>
 				</div>
 
-				<div v-if="isChecked" class="spacefull">
+				<div v-if="addtrackingDetails" class="space-y-4">
 					<div class="w-full">
 						<label for="trackingId"
-							class="text-sm font-light text-gray                                                                             ">Vehicle
+							class="text-sm font-light text-gray">Vehicle
 							Tracking ID </label>
-						<input v-model="form.trackingID" type="text" name="trackingId"
-							class="w-6/12 outline-none px-3 py-2 rounded-md border focus:border-gray-900">
+						<input v-model="trackingForm.tracking_id" type="text" name="trackingId"
+							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 
 					<div class="w-full">
 						<label for="providerName"
-							class="text-sm font-light text-gray                                                                             ">Vehicle
+							class="text-sm font-light text-gray">Vehicle
 							Provides Name </label>
-						<input v-model="form.providerName" type="text" name="providerName"
+						<input v-model="trackingForm.provider_name" type="text" name="providerName"
 							class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
 					</div>
 
 					<div class="w-full">
 						<label for="providerDescription"
-							class="text-sm font-light text-gray                                                                             ">Vehicle
+							class="text-sm font-light text-gray">Vehicle
 							Provider Description </label>
-						<textarea v-model="form.providerDescription" rows="6" cols="6" name="providerDescription" />
+						<textarea v-model="trackingForm.provider_description" rows="4" class="w-full px-3 outline-none border border-gray-300 resize-none rounded-md" cols="4" name="providerDescription" />
 					</div>
 				</div>
 
 				<div>
-					<button class="text-white bg-black rounded-md px-6 py-2.5 text-xm">
-						Add Vehicle
+					<button :disabled="!isFormEmpty" type="submit" class="btn-primary w-full">
+						<span v-if="!processing" class="flex disabled:opacity-25 disabled:cursor-not-allowed justify-center text-sm items-center gap-2.5">
+							Add vehicle
+						</span>
+						<Spinner v-else />
 					</button>
 				</div>
-			</div>
+			</form>
 		</div>
 	</main>
 </template>
 
 <script setup lang="ts">
+import { useGetPartnersList } from '@/composables/modules/partners/fetch'
+import { useCreateVehicle } from '@/composables/modules/fleets/create'
+const { getPartnersList, loading: loadingPartners, partnersList } = useGetPartnersList()
+const { createForm, loading: processing, trackingForm, createVehicle, prePopulateForm, populateTrackingForm, addtrackingDetails } = useCreateVehicle()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
 
-const isChecked = ref(false)
-
-const form = ref({
-    vehicleBrand: '',
-    vehicleName: '',
-    plateNumber: '',
-    vehicleCapacity: '',
-    vehicleType: '',
-    vehicleCode: '',
-    vehiclePartner: '',
-    amenities: '',
-    trackingID: '',
-    providerName: '',
-    providerDescription: ''
-
+const isFormEmpty = computed(() => {
+	return !!(createForm.brand.value && createForm.name.value && createForm.type.value && createForm.seats.value && createForm.registration_number.value)
 })
 
-const handleChange = (val) => {
-    if (val.target.checked) {
-        isChecked.value = !isChecked.value
-    }
+onMounted(() => {
+	getPartnersList()
+})
+const showToolTip = ref(false)
+
+const handleCreateVehicle = () => {
+	createVehicle()
 }
 </script>
 

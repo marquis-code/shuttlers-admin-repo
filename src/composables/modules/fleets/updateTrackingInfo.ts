@@ -29,5 +29,11 @@ export const useUpdateTrackingInfo = () => {
 		loading.value = false
 	}
 
-	return { updateForm, loading, updateVehicleTrackingInfo }
+    const populateTrackingForm = (data) => {
+        updateForm.tracking_id.value = data.tracking_id
+        updateForm.provider_name.value = data.provider_name
+        updateForm.provider_description.value = data.provider_description
+    }
+
+	return { updateForm, loading, updateVehicleTrackingInfo, populateTrackingForm }
 }
