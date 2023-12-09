@@ -31,8 +31,10 @@ export const useGetFleetTripHistory = () => {
 
     const { $_get_fleet_history_by_id } = fleets_api
 
-    const getFleetsTripHistory = async () => {
+    const getFleetsTripHistory = async (id?:string) => {
         loadingTripHistory.value = true
+
+        if (!selectedVehicleId.value && id) selectedVehicleId.value = id
 
         const res = await $_get_fleet_history_by_id(selectedVehicleId.value, metaObject) as CustomAxiosResponse
 
