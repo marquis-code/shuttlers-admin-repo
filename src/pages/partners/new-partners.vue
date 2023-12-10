@@ -1,8 +1,10 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList">
+		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList" :has-index="true" :page="page">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDateRange: true, showDownloadButton: true }"
+					@filter="onFilterUpdate" @download="downloadNewPartners"
+				/>
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
@@ -14,7 +16,8 @@
 					</p>
 				</div>
 				<span v-if="item.date_created">
-					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }}
+					<!-- {{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }} -->
+					{{ moment(item.data.date_created).format('LL') }}
 				</span>
 				<span v-if="item.id">
 					{{ item.data.id }}
@@ -28,11 +31,12 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useGetNewPartnersList } from '@/composables/modules/partners/fetch'
 
-const { getNewPartnersList, loading, newPartnersList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetNewPartnersList()
-getNewPartnersList()
+const { getNewPartnersList, loading, newPartnersList, onFilterUpdate, moveTo, total, page, next, prev, downloadNewPartners } = useGetNewPartnersList()
+// getNewPartnersList()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -53,11 +57,6 @@ const formatedRefundList = computed(() => {
 	})
 })
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'id',
-		width: '10%'
-	},
 	{
 		text: 'Name',
 		value: 'name'

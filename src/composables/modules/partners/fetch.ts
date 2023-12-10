@@ -1,5 +1,9 @@
+import moment from 'moment'
 import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
+
+const { loading: downloading } = useDownloadReport()
 
 export const useGetPartnersList = () => {
     const loading = ref(false)
@@ -7,10 +11,12 @@ export const useGetPartnersList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
-        search: ref('')
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
     }
 
-    const { $_get_all_partners } = partners_api
+    const { $_get_all_partners, $_download_all_partners } = partners_api
 
     const getPartnersList = async () => {
         loading.value = true
@@ -19,13 +25,14 @@ export const useGetPartnersList = () => {
 
         if (res.type !== 'ERROR') {
             partnersList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loading.value = false
     }
     setFunction(getPartnersList)
 
-    watch([filterData.status, filterData.search], (val) => {
+    watch([filterData.status, filterData.search, filterData.end_date], (val) => {
+        metaObject.page.value = 1
         getPartnersList()
     })
 
@@ -37,10 +44,35 @@ export const useGetPartnersList = () => {
             case 'search':
                 filterData.search.value = data.value
                 break
+            case 'dateRange':
+                filterData.start_date.value = data.value[0] ? data.value[0] : ''
+                filterData.end_date.value = data.value[1] ? data.value[1] : ''
+                break
         }
     }
 
-    return { getPartnersList, loading, partnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    const downloadAllPartners = async () => {
+		downloading.value = true
+		const name = ref(`all-${filterData.status.value}-partners`)
+		const res = await $_download_all_partners(filterData) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    Name: `${el.owner?.fname || ''} ${el.owner?.lname || ''}`,
+					Email: el?.owner?.email || 'N/A',
+					No_of_vehicles: el?.vehicles_count || 'N/A',
+					Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A',
+                    Status: el.status
+                }
+            })
+			if (filterData.start_date.value && filterData.end_date.value) name.value = `${name.value}-from-${filterData.start_date.value}-to-${filterData.end_date.value}`
+			exportAsCsv(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
+    return { getPartnersList, loading, partnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadAllPartners }
 }
 
 export const useGetNewPartnersList = () => {
@@ -49,10 +81,12 @@ export const useGetNewPartnersList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
-        search: ref('')
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
     }
 
-    const { $_get_new_partners } = partners_api
+    const { $_get_new_partners, $_download_new_partners } = partners_api
 
     const getNewPartnersList = async () => {
         loading.value = true
@@ -61,28 +95,56 @@ export const useGetNewPartnersList = () => {
 
         if (res.type !== 'ERROR') {
             newPartnersList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loading.value = false
     }
     setFunction(getNewPartnersList)
 
-    watch([filterData.status, filterData.search], (val) => {
+    watch([filterData.status, filterData.search, filterData.end_date], (val) => {
+        metaObject.page.value = 1
         getNewPartnersList()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'status':
-                filterData.status.value = data.value
+                // filterData.status.value = data.value
+                filterData.status.value = data.value === '1' ? 'active' : data.value === '0' ? 'inactive' : ''
                 break
             case 'search':
                 filterData.search.value = data.value
                 break
+            case 'dateRange':
+                filterData.start_date.value = data.value[0] ? data.value[0] : ''
+                filterData.end_date.value = data.value[1] ? data.value[1] : ''
+                break
         }
     }
 
-    return { getNewPartnersList, loading, newPartnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    const downloadNewPartners = async () => {
+		downloading.value = true
+		const name = ref(`new-${filterData.status.value}-partners`)
+		const res = await $_download_new_partners(filterData) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    Name: `${el.owner?.fname || ''} ${el.owner?.lname || ''}`,
+                    Company_name: el?.company_name || 'N/A',
+					Email: el?.owner?.email || 'N/A',
+					No_of_vehicles: el?.vehicles_count || 'N/A',
+					Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A',
+                    Status: el.status
+                }
+            })
+			if (filterData.start_date.value && filterData.end_date.value) name.value = `${name.value}-from-${filterData.start_date.value}-to-${filterData.end_date.value}`
+			exportAsCsv(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
+    return { getNewPartnersList, loading, newPartnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadNewPartners }
 }
 
 export const useGetInterestedPartnersList = () => {
@@ -91,10 +153,12 @@ export const useGetInterestedPartnersList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref(''),
-        search: ref('')
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
     }
 
-    const { $_get_interested_partners } = partners_api
+    const { $_get_interested_partners, $_download_interested_partners } = partners_api
 
     const getInterestedPartnersList = async () => {
         loading.value = true
@@ -103,13 +167,14 @@ export const useGetInterestedPartnersList = () => {
 
         if (res.type !== 'ERROR') {
             interestedPartnersList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loading.value = false
     }
     setFunction(getInterestedPartnersList)
 
-    watch([filterData.status, filterData.search], (val) => {
+    watch([filterData.status, filterData.search, filterData.end_date], (val) => {
+        metaObject.page.value = 1
         getInterestedPartnersList()
     })
 
@@ -121,10 +186,37 @@ export const useGetInterestedPartnersList = () => {
             case 'search':
                 filterData.search.value = data.value
                 break
+            case 'dateRange':
+                filterData.start_date.value = data.value[0] ? data.value[0] : ''
+                filterData.end_date.value = data.value[1] ? data.value[1] : ''
+                break
         }
     }
 
-    return { getInterestedPartnersList, loading, interestedPartnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    const downloadInterestedPartners = async () => {
+		downloading.value = true
+		const name = ref('interested-partners')
+		const res = await $_download_interested_partners(filterData) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    Name: `${el?.fname || ''} ${el?.lname || ''}`,
+                    Company_name: el?.company_name || 'N/A',
+					Email: el?.email || 'N/A',
+                    Phone: el?.phone || 'N/A',
+					// No_of_vehicles: el?.vehicles_count || 'N/A',
+					Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A'
+                    // Status: el.status
+                }
+            })
+			if (filterData.start_date.value && filterData.end_date.value) name.value = `${name.value}-from-${filterData.start_date.value}-to-${filterData.end_date.value}`
+			exportAsCsv(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
+    return { getInterestedPartnersList, loading, interestedPartnersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadInterestedPartners }
 }
 
 export const useGetPartnerPayoutList = () => {

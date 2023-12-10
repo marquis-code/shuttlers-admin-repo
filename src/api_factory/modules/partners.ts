@@ -1,11 +1,27 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const partners_api = {
 	$_get_all_partners: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
         const url = `/partners?${queryParams}&metadata=true&limit=${meta.page_size.value}&page=${meta.page.value}&related=owner`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_all_partners: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+        const url = `/partners?${queryParams}&metadata=true&limit=${10}&page=${1}&related=owner`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/partners?${queryParams}&metadata=true&limit=${total}&page=${1}&related=owner`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_create_notification: (payload) => {
 		const url = '/partner-notifications'
@@ -16,10 +32,38 @@ export const partners_api = {
         const url = `/partners?${queryParams}&metadata=true&limit=${meta.page_size.value}&page=${meta.page.value}&new_signup=1&related=owner`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_download_new_partners: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+        const url = `/partners?${queryParams}&metadata=true&limit=${10}&page=${1}&new_signup=1&related=owner`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/partners?${queryParams}&metadata=true&limit=${total}&page=${1}&new_signup=1&related=owner`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
+	},
     $_get_interested_partners: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
         const url = `/partner-interests?${queryParams}&sort[created_at]=desc&metadata=true&limit=${meta.page_size.value}&page=${meta.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_interested_partners: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+        const url = `/partner-interests?${queryParams}&sort[created_at]=desc&metadata=true&limit=${10}&page=${1}`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/partner-interests?${queryParams}&sort[created_at]=desc&metadata=true&limit=${total}&page=${1}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_get_partner_by_id: (id:string) => {
 		const url = `/partners/${id}`
