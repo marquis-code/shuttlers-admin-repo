@@ -1,8 +1,10 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList">
+		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList" :has-index="true" :page="page">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showSearchBar: true, showDateRange: true, showDownloadButton: true }"
+					@filter="onFilterUpdate" @download="downloadInterestedPartners"
+				/>
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'active' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
@@ -13,9 +15,9 @@
 						{{ item.data.name }}
 					</p>
 				</div>
-				<span v-if="item.date_created">
-					{{ useDateFormat(item.data.date_created, "MMMM d, YYYY").value }}
-				</span>
+				<!-- <span v-if="item.date_created">
+					{{ moment(item.data.date_created).format('LL') }}
+				</span> -->
 				<span v-if="item.id">
 					{{ item.data.id }}
 				</span>
@@ -28,11 +30,12 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useGetInterestedPartnersList } from '@/composables/modules/partners/fetch'
 
-const { getInterestedPartnersList, loading, interestedPartnersList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetInterestedPartnersList()
-getInterestedPartnersList()
+const { getInterestedPartnersList, loading, interestedPartnersList, onFilterUpdate, moveTo, total, page, next, prev, downloadInterestedPartners } = useGetInterestedPartnersList()
+// getInterestedPartnersList()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -46,16 +49,11 @@ const formatedRefundList = computed(() => {
 			email: `${item.email}` ?? 'N/A',
 			company_name: `${item.company_name}` ?? 'N/A',
 			phone: item.phone ?? 'N/A',
-			id: index + 1
+			date_created: moment(item.created_at).format('LL')
 		}
 	})
 })
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'id',
-		width: '10%'
-	},
 	{
 		text: 'Name',
 		value: 'name'
@@ -71,6 +69,10 @@ const tableFields = ref([
 	{
 		text: 'Phone',
 		value: 'phone'
+	},
+	{
+		text: 'Date created',
+		value: 'date_created'
 	}
 ])
 

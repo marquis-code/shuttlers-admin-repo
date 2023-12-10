@@ -1,12 +1,12 @@
 <template>
-	<HeadersHeaderSlot title="Vehicle Partners" pre-title="Overview">
+	<HeadersHeaderSlot :title="$route.fullPath.includes('partners/create') ? 'Create Partner' : 'Vehicle Partners'" pre-title="Overview">
 		<template #actions>
-			<button class="btn-primary">
+			<NuxtLink v-if="!$route.fullPath.includes('partners/create')" to="/partners/create" class="btn-primary">
 				Add Partner
-			</button>
+			</NuxtLink>
 		</template>
 		<template #tabs>
-			<RouterTabs :tabs="pageTabs" />
+			<RouterTabs v-if="!$route.fullPath.includes('partners/create')" :tabs="pageTabs" />
 		</template>
 	</HeadersHeaderSlot>
 </template>
