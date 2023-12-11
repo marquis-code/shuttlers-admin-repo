@@ -178,20 +178,6 @@ export const useRouteBookingsById = () => {
     return { selectedRoute, loadingRouteBookings, getRouteBookingsById, routeBookings, payload, corporateId }
 }
 
-export const useRouteBusstopList = () => {
-    const loading = ref(false)
-    const busstopsList = ref([] as any)
-    const getRouteBusstopsById = async (id: string) => {
-        loading.value = true
-        const res = await routes_api.$_get_routes_busstops(id) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            busstopsList.value = res.data.data
-        }
-        loading.value = false
-    }
-    return { loading, getRouteBusstopsById, busstopsList }
-}
-
 const routeItineraries = ref([] as any)
 export const useItinerariesByRouteId = () => {
     const loading = ref(false)
