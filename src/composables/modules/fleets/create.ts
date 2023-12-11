@@ -4,6 +4,8 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useUpdateTrackingInfo } from '@/composables/modules/fleets/updateTrackingInfo'
 const { updateForm, loading, updateVehicleTrackingInfo, populateTrackingForm } = useUpdateTrackingInfo()
 const router = useRouter()
+const random = Math.floor(100000 + Math.random() * 900000).toString().substring(0, 4)
+const result = parseInt(random)
 const createForm = {
     brand: ref(''),
     name: ref(''),
@@ -12,9 +14,10 @@ const createForm = {
 	partner: ref('') as any,
     registration_number: ref(''),
     amenities: ref(''),
-    code: ref(''),
+    code: ref(result) as any,
     inventory_type: ref('regular')
 }
+
 const emptyForm = () => {
 	    createForm.brand.value = ''
 		createForm.name.value = ''
@@ -22,7 +25,7 @@ const emptyForm = () => {
 		createForm.seats.value = ''
 		createForm.registration_number.value = ''
 		createForm.amenities.value = ''
-		createForm.code.value = ''
+		createForm.code.value = result
 		createForm.partner.value = ''
 		createForm.inventory_type.value = ''
 }
@@ -72,7 +75,7 @@ export const useCreateVehicle = () => {
 		createForm.seats.value = data.seats || ''
 		createForm.registration_number.value = data.registration_number || ''
 		createForm.amenities.value = data.amenities || ''
-		createForm.code.value = data.code || ''
+		createForm.code.value = data.code || result
 		createForm.partner.value = data.partner || ''
 		createForm.inventory_type.value = data.inventory_type || ''
 	}
