@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useGetCorporateShuttleRequests } from '@/composables/modules/corporates/shuttleRequest'
 import { useGetCorporateShuttleRequestsDetails } from '@/composables/modules/corporates/shuttleRequestDetails'
 const { getCorporateShuttleRequestDetails } = useGetCorporateShuttleRequestsDetails()
