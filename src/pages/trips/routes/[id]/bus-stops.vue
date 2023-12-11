@@ -1,56 +1,74 @@
 <template>
-	<main class="relative h-[600px] border-2 border-red">
-		<section class="w-3/12 space-y-3 absolute -top-8 -left-9 z-50 bg-gray-100">
+	<main class="relative h-[calc(100vh-150px)]">
+		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white text-sm px-2 py-1 rounded absolute top-1 left-[220px] z-40"
+			@click="can_click = !can_click"
+		>
+			{{ can_click ? 'Adding' : 'Add' }} Busstop
+		</button>
+		<section class="w-[220px] h-[calc(100vh-170px)] space-y-3 absolute -top-8 -left-9 z-50 bg-gray-100">
 			<div class="w-full">
-				<input class="border py-3 rounded-md w-full pl-3 text-sm outline-none" placeholder="Filter Bus Stop in route">
+				<input v-model="search" class="border py-3 rounded-md w-full pl-3 text-sm outline-none" placeholder="Filter Bus Stop in route">
 			</div>
-			<div v-if="!loading" class="h-full overflow-auto bg-white">
-				<div v-for="(itm, idx) in busstopsList" :key="idx" class="flex focus:bg-black items-center justify-between px-3 py-3.5 border-b cursor-pointer hover:bg-gray-200" @click="handleSelected(itm)">
+			<div v-if="!fetching_busstops" class="h-full overflow-auto bg-white">
+				<div v-for="(itm, idx) in filteredBusstop" :key="idx" class="flex items-center justify-between px-3 py-3.5 border-b cursor-pointer hover:bg-gray-200"
+					:class="[toShowIndex.includes(itm.id) ? 'bg-dark' : 'bg-transparent']" @click="handleMarkerClicked(itm.id)"
+				>
 					<p class="text-xs text-blue-500">
 						{{ itm.name }}
 					</p>
-					<p><img src="@/assets/icons/source/dark-more.svg" alt=""></p>
+					<ButtonIconDropdown class-name="w-fit min-w-[120px]" :children="dropdownChildren" :data="itm" />
 				</div>
 			</div>
 			<Skeleton v-else height="500px" />
 		</section>
 		<!-- <MapDisplay height="670px" class="" /> -->
-		<!-- <GMapMap
-			:center="{lat: 51.093048, lng: 6.842120}"
-			:zoom="7"
-			map-type-id="terrain"
-			style="width: 100vw; height: 900px"
-		/> -->
-		<GMapMap
-			:center="center"
-			:zoom="13"
-			map-type-id="terrain"
-			style="width: 100vw; height: 600px;"
+		<GMapMap v-if="!loading_path && !fetching_busstops" ref="myMapRef" map-type-id="terrain" class="h-[calc(100vh-150px)]"
+			:options="{
+				zoomControl: true,
+				mapTypeControl: false,
+				scaleControl: true,
+				streetViewControl: false,
+				rotateControl: false,
+				fullscreenControl: false
+			}"
+			:center="center" :zoom="13" @click="handleMapClick"
 		>
 			<GMapPolyline ref="polyline" :path="path" />
+			<GMapInfoWindow v-if="open_new_busstop_window" :options="infoWindowOptions" :opened="open_new_busstop_window"
+				:position="{
+					lat: new_busstop_position.lat,
+					lng: new_busstop_position.lng
+				}"
+				@closeclick="open_new_busstop_window = false"
+			>
+				<div class="flex flex-col gap-2">
+					<p class="text-sm">New bus stop</p>
+					<ModulesRoutesBusstopNewBusStopInMap :position="new_busstop_position" />
+				</div>
+			</GMapInfoWindow>
 			<GMapMarker v-for="(n, index) in busstopsList" :key="index"
 				:position="{
 					lat: n.geometry.y,
 					lng: n.geometry.x,
 				}"
 				:clickable="true"
-				@click="handleMarkerClicked(index)"
+				@click="handleMarkerClicked(n.id)"
 			>
-				<GMapInfoWindow v-if="index === 0" :options="infoWindowOptions" :opened="toShowIndex.includes(index)" @closeclick="closeInfoWindow(index)">
+				<GMapInfoWindow v-if="index === 0" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div>
 						<h4 class="text-base font-bold text-dark">Starting Point</h4>
 						<p class="text-sm mb-2">{{ routeDetails.pickup }}</p>
-						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
+						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
 					</div>
 				</GMapInfoWindow>
-				<GMapInfoWindow v-if="index === busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(index)" @closeclick="closeInfoWindow(index)">
+				<GMapInfoWindow v-if="index === busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div>
 						<h4>Ending Point</h4>
 						<p class="text-sm mb-2">{{ routeDetails.destination }}</p>
-						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
+						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
 					</div>
 				</GMapInfoWindow>
-				<GMapInfoWindow v-if="index !== 0 && index !== busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(index)" @closeclick="closeInfoWindow(index)">
+				<GMapInfoWindow v-if="index !== 0 && index !== busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div class="flex flex-col gap-2">
 						<p class="text-sm">{{ n.name }}</p>
 						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
@@ -61,38 +79,29 @@
 	</main>
 </template>
 <script setup lang="ts">
-
-import { useRouteBusstopList } from '@/composables/modules/routes/id'
 import { useRouteBustopMap } from '@/composables/modules/routes/bus-stop'
-const { loading, getRouteBusstopsById, busstopsList } = useRouteBusstopList()
-const { loading: loading_path, path, getRouteGeometry, center, routeDetails } = useRouteBustopMap()
+
+const { fetching_busstops, busstopsList, getRouteBusstopsById, loading: loading_path, path, getRouteGeometry, center, routeDetails, initDeleteBusstop, new_busstop_position, open_new_busstop_window, can_click } = useRouteBustopMap()
 const id = useRoute().params.id as string
 getRouteGeometry(id)
 getRouteBusstopsById(id)
 
-const selected_start_point = ref({})
-const selected_end_point = ref({})
-const showPickupInfo = ref(false)
-const showDestinationInfo = ref(false)
 const toShowIndex = ref([]) as Ref<number[]>
+const search = ref('')
+const myMapRef = ref()
 
-const handleSelected = (itm) => {
-	selected_start_point.value = itm?.geometry
+const handleMarkerClicked = (id: number) => {
+	toShowIndex.value.push(id)
 }
 
-const handleMarkerClicked = (index: number) => {
-	toShowIndex.value.push(index)
-	// if (index === 0) {
-	// 	showPickupInfo.value = !showPickupInfo.value
-	// } else if (index === busstopsList.value.length - 1) {
-	// 	showDestinationInfo.value = !showDestinationInfo.value
-	// }
-}
-
-const closeInfoWindow = (index: number) => {
-	const idx = toShowIndex.value.indexOf(index)
+const closeInfoWindow = (id: number) => {
+	const idx = toShowIndex.value.indexOf(id)
 	toShowIndex.value.splice(idx, 1)
 }
+
+const filteredBusstop = computed(() => {
+	return busstopsList.value.filter((el) => el.name.toLowerCase().includes(search.value.toLowerCase()))
+})
 
 const infoWindowOptions = {
 	// pixelOffset: {
@@ -101,6 +110,22 @@ const infoWindowOptions = {
 	// },
 	maxWidth: 320
 	// maxHeight: 320
+}
+
+const editItem = (data: Record<string, any>) => {
+	toShowIndex.value = []
+	toShowIndex.value.push(data.id)
+}
+
+const dropdownChildren = computed(() => [
+	{ name: 'Edit', func: (data:any) => { editItem(data) } },
+	{ name: 'Delete', func: (data:any) => initDeleteBusstop(data), class: '!text-red' }
+])
+
+const handleMapClick = (event: any) => {
+	if (!can_click.value) return
+	new_busstop_position.value = { lat: event.latLng.lat(), lng: event.latLng.lng() }
+	open_new_busstop_window.value = true
 }
 
 definePageMeta({
