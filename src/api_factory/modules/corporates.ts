@@ -180,5 +180,17 @@ $_handle_selected_users_credit_line: (executionId: number, payload: any) => {
 $_update_credit_system: (creditSystemId:number, payload:any) => {
 	const url = `/credit-systems/${creditSystemId}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_create_corporate_vehicle_capacity: (corporateId:number, payload:any) => {
+	const url = `/corporates/${corporateId}/vehicle-capacities`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_get_corporate_vehicle_capacity: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/vehicle-capacities?metadata=true`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_delete_corporate_vehicle_capacity: (capacityId:number| string) => {
+	const url = `/corporates-vehicle-capacities/${capacityId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 }
 }
