@@ -100,7 +100,7 @@
 						Vehicle inventory Type </label>
 					<select v-model="createForm.inventory_type.value" name="vehicleType"
 						class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900">
-						<option v-for="(itm, idx) in inventortTypes" :key="idx" :value="itm.value">
+						<option v-for="(itm, idx) in inventoryTypes" :key="idx" :value="itm.value">
 							{{ itm.text }}
 						</option>
 					</select>
@@ -172,7 +172,7 @@ const handleCreateVehicle = () => {
 	createVehicle()
 }
 
-const inventortTypes = reactive([
+const inventoryTypes = reactive([
 	{
 		text: 'Regular',
 		value: 'regular'
