@@ -19,9 +19,6 @@
 				<span v-if="item.status">
 					<StatusBadge :name="item.data.status === 0 ? 'Inactive' : 'Active'" />
 				</span>
-				<span v-if="item.id">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
-				</span>
 			</template>
 
 			<template #footer>
@@ -39,8 +36,12 @@ import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/u
 import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/delete'
 const { updateRoute, loading } = useUpdateRouteStatus()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
-const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
-getMainRoutesList()
+const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page, corporateId: selectedCorporateId, setCorporateId } = useGetMainRoutes()
+const corporateId = useRoute().params.id
+onMounted(() => {
+	setCorporateId(corporateId)
+	getMainRoutesList()
+})
 
 definePageMeta({
     layout: 'dashboard',
@@ -76,11 +77,7 @@ const tableFields = ref([
 	{
         text: 'STATUS',
         value: 'status'
-    },
-	{
-		text: 'ACTIONS',
-		value: 'id'
-	}
+    }
 ])
 
 const handleRouteStatus = (data: any) => {

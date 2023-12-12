@@ -60,6 +60,7 @@ import UpdateVehicleTracking from '@/components/modals/modules/fleets/UpdateTrac
 import EditVehicleBus from '@/components/modals/modules/fleets/EditBus.vue'
 import EmployeeExemption from '@/components/modals/modules/companies/EmployeeExemption.vue'
 import ChangeFleetDriver from '@/components/modals/modules/fleets/ChangeFleetDriver.vue'
+import RejectShuttleRequest from '@/components/modals/modules/companies/RejectShuttleRequest.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -68,7 +69,7 @@ type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
-type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet' | 'ScheduledCreditLine' | 'EmployeeExemption'
+type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet' | 'ScheduledCreditLine' | 'EmployeeExemption' | 'RejectShuttleRequest'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
@@ -82,7 +83,7 @@ const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
-const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet, ScheduledCreditLine, EmployeeExemption } as Record<CompaniesTypes, any>
+const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet, ScheduledCreditLine, EmployeeExemption, RejectShuttleRequest } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>

@@ -18,11 +18,15 @@ export const useCreateCapacityConfiguration = () => {
     const { $_create_corporate_vehicle_capacity } = corporates_api
     const createCapacityConfiguration = async () => {
         loading.value = true
+        let createConfigurationForm = {}
         if (actionType.value === 'create') {
-            const name = 'id'
-            delete configurationForm[name]
+            const { id, ...createConfigurationPayload } = configurationForm
+            createConfigurationForm = createConfigurationPayload
+            // const name = 'id'
+            // delete configurationForm[name]
         }
-        const res = await $_create_corporate_vehicle_capacity(selectedCorporate.value.id, convertObjWithRefToObj(configurationForm)) as CustomAxiosResponse
+        const payload = actionType.value === 'edit' ? configurationForm : createConfigurationForm
+        const res = await $_create_corporate_vehicle_capacity(selectedCorporate.value.id, convertObjWithRefToObj(payload)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',

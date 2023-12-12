@@ -11,10 +11,10 @@ export const routes_api = {
 		const url = `/routes/booking-suspensions?limit=${meta.page_size.value}&page=${meta.page.value}&sort[created_at]=desc&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_main_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
+	$_get_main_routes: (meta:TMetaObject, filterData?: Record<string, Ref>, corporateId?: number) => {
 		const queryParams = useTableFilter(filterData)
 		// meta.page_size.value = 100000
-		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
+		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true${queryParams}${corporateId ? `&corporate_id=${corporateId}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_route_by_id: (id:string) => {
@@ -134,5 +134,11 @@ export const routes_api = {
 	    $_get_routes_charges: (id: string, payload:Record<string, any>) => {
          const url = `/additional-charges/routes/${id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-    }
+    },
+	$_get_corporates_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		// meta.page_size.value = 100000
+		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	}
 }

@@ -192,5 +192,9 @@ $_get_corporate_vehicle_capacity: (corporateId:number) => {
 $_delete_corporate_vehicle_capacity: (capacityId:number| string) => {
 	const url = `/corporates-vehicle-capacities/${capacityId}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+},
+$_update_shuttle_request_status: (requestId: number, payload:any) => {
+	const url = `/shuttle-requests/${requestId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 }
 }
