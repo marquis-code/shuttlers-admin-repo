@@ -55,29 +55,29 @@
 				</div>
 				<div v-for="(itm, idx) in val.passengers" :key="idx"
 					class="flex justify-between items-center px-6 py-3">
-					<div>
+					<div class="w-1/12">
 						<label :for="itm.id">
 							<input :id="itm.id" :checked="isChecked" type="checkbox" name="checked_all" @change="toggleSelection($event, itm)">
 						</label>
 					</div>
-					<div class="flex items-center gap-x-2">
+					<div class="flex items-center gap-x-2 w-3/12">
 						<Avatar :name="itm.user.fname" bg="#B1C2D9" />
 						<div>
 							<p>{{ itm?.user?.fname }} {{ itm?.user?.lname }}</p>
 							<p>{{ itm?.user?.email }}</p>
 						</div>
 					</div>
-					<div>
+					<div class="w-3/12">
 						<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
 							:destination="itm?.destination?.location" />
 					</div>
-					<div>{{ itm?.user?.phone }}</div>
-					<div>{{ itm?.created_at }}</div>
-					<div class="text-xs px-3 py-1.5"
-						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 text-white rounded-md' : '']">
+					<div class="w-2/12">{{ itm?.user?.phone }}</div>
+					<div class="w-2/12">{{ itm?.created_at }}</div>
+					<div class="text-xs px-3 py-1.5 text-white rounded-full w-1/12 text-center"
+						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 rounded-md' : itm?.check_in_status === 'no-show' ? 'bg-rose-600' : 'bg-shuttlersGreen']">
 						{{ itm?.check_in_status }}
 					</div>
-					<div class="cursor-pointer" @click="handleNotification(itm, 'single')">
+					<div class="cursor-pointer w-1/12 ml-6" @click="handleNotification(itm, 'single')">
 						<img src="@/assets/icons/source/blue-notification.svg" alt="">
 					</div>
 				</div>
@@ -106,13 +106,13 @@
 				</div>
 				<div v-for="(itm, idx) in val.passengers" :key="idx"
 					class="flex justify-between items-center px-6 py-3">
-					<div>
+					<div class="w-1/12">
 						<label :for="itm.id">
 							<input :id="itm.id" :checked="isChecked" type="checkbox" name="checked_all"
 								@change="toggleSelection($event, itm)">
 						</label>
 					</div>
-					<div class="space-y-2">
+					<div class="space-y-2 w-3/12">
 						<div class="flex items-center gap-x-2">
 							<Avatar :name="itm.user.fname" bg="#B1C2D9" />
 							<div>
@@ -121,22 +121,22 @@
 							</div>
 						</div>
 						<div>
-							<span class="bg-shuttlersGreen text-white text-xs rounded-md px-3 py-1.5">
+							<span v-if="itm?.is_first_booking" class="bg-shuttlersGreen text-white text-xs rounded-md px-3 py-1.5">
 								{{ itm?.is_first_booking ? 'New' : '' }}
 							</span>
 						</div>
 					</div>
-					<div>
+					<div class="w-3/12">
 						<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
 							:destination="itm?.destination?.location" />
 					</div>
-					<div>{{ itm?.user?.phone }}</div>
-					<div>{{ itm?.created_at }}</div>
-					<div class="text-xs px-3 py-1.5 text-white"
+					<div class="w-2/12">{{ itm?.user?.phone }}</div>
+					<div class="w-2/12">{{ itm?.created_at }}</div>
+					<div class="text-xs px-3 py-1.5 text-white rounded-full w-1/12 text-center"
 						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 rounded-md' : itm?.check_in_status === 'no-show' ? 'bg-rose-600' : 'bg-shuttlersGreen']">
 						{{ itm?.check_in_status }}
 					</div>
-					<div class="cursor-pointer" @click="handleNotification(itm, 'single')">
+					<div class="cursor-pointer w-1/12 ml-3" @click="handleNotification(itm, 'single')">
 						<img src="@/assets/icons/source/blue-notification.svg" alt="">
 					</div>
 				</div>

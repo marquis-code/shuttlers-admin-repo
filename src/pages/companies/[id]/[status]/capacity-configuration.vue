@@ -11,10 +11,10 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.id" class="flex items-center gap-x-3">
-					<button class="border rounded-md text-gray-900 text-sm border-gray-800 px-3 py-2.5" @click="editConfiguration(item.data)">
+					<button class="border text-xs rounded-md text-gray-900 border-gray-800 px-3 py-2.5" @click="editConfiguration(item.data)">
 						Edit
 					</button>
-					<button class="border rounded-md text-gray-900 text-sm border-gray-800 px-3 py-2.5" @click="deleteConfiguration(item.data)">
+					<button class="border text-xs rounded-md text-gray-900 border-gray-800 px-3 py-2.5" @click="deleteConfiguration(item.data)">
 						Delete
 					</button>
 				</div>

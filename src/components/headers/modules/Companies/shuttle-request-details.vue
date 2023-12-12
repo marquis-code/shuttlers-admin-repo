@@ -15,8 +15,11 @@
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useGetCorporateShuttleRequests } from '@/composables/modules/corporates/shuttleRequest'
 import { useGetCorporateShuttleRequestsDetails } from '@/composables/modules/corporates/shuttleRequestDetails'
+import { useCompaniesModal } from '@/composables/core/modals'
+import { useAcceptShuttleRequest } from '@/composables/modules/corporates/acceptShttleRequest'
 const { getCorporateShuttleRequestDetails } = useGetCorporateShuttleRequestsDetails()
 const { selectedRequest } = useGetCorporateShuttleRequests()
+const { acceptShuttleRequest, loading } = useAcceptShuttleRequest()
 
 if (Object.keys(selectedRequest.value).length === 0) {
     const id = useRoute().params.id as string
@@ -35,30 +38,21 @@ const pageTabs = computed(() => [
 ])
 
 const dropdownChildren = computed(() => [
-	{ name: 'Accept', func: (data) => { acceptShuttleRequest } },
-	{ name: 'Shuttle cost', func: (data) => { handleShuttleCost } },
-    { name: 'Reject', func: (data) => { rejectShuttleRequest } }
+	{
+ name: 'Accept', func: (itm) => {
+ useConfirmationModal().openAlert({
+        title: 'Modify request??',
+		type: 'NORMAL',
+        desc: 'Are you sure you want to accept this shuttle request?',
+		loading,
+		call_function: () => acceptShuttleRequest(itm.id)
+    })
+}
+},
+	{ name: 'Shuttle cost', func: () => { handleShuttleCost } },
+    { name: 'Reject', func: () => useCompaniesModal().openRejectShuttleRequest() }
 ])
-
-const acceptShuttleRequest = () => {
-    useConfirmationModal().openAlert({
-        title: 'You’re about to delete an amenity ?',
-		type: 'NORMAL',
-        desc: 'You’re about to delete this vehicle amenity, if this is action was not intentional please cancel ?',
-		loading,
-		call_function: () => deleteAmenity(data.id)
-    })
-}
 const handleShuttleCost = () => { }
-const rejectShuttleRequest = () => {
-    useConfirmationModal().openAlert({
-        title: 'You’re about to delete an amenity ?',
-		type: 'NORMAL',
-        desc: 'You’re about to delete this vehicle amenity, if this is action was not intentional please cancel ?',
-		loading,
-		call_function: () => deleteAmenity(data.id)
-    })
-}
 </script>
 
 <style scoped>

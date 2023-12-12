@@ -53,8 +53,8 @@ definePageMeta({
 })
 
 const onRowClicked = (data) => {
+    selectedRequest.value = data
 	useRouter().push(`/companies/shuttle-requests/${data.id}/info`)
-	selectedRequest.value = data
 }
 
 const formattedShuttleRequest = computed(() =>

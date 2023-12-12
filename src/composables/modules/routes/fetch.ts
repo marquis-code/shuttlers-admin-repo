@@ -1,6 +1,6 @@
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
-
+const corporateId = ref('') as any
 export const useGetRecentRoutesList = () => {
     const loadingRoutes = ref(false)
     const routesList = ref([] as any)
@@ -41,13 +41,20 @@ export const useGetMainRoutes = () => {
 
     const getMainRoutesList = async () => {
         loadingMainRoutes.value = true
-        const res = await $_get_main_routes(metaObject, filterData) as CustomAxiosResponse
+        const res = await $_get_main_routes(metaObject, filterData, corporateId.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             mainRoutesList.value = res.data.data
             metaObject.total.value = res.data.metadata?.total_pages
         }
         loadingMainRoutes.value = false
     }
+    const setCorporateId = (id) => {
+      corporateId.value = id
+    }
+
+    onMounted(() => {
+        setCorporateId(corporateId.value)
+    })
 
     setFunction(getMainRoutesList)
 
@@ -68,7 +75,7 @@ export const useGetMainRoutes = () => {
         }
     }
 
-    return { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+    return { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, corporateId, setCorporateId }
 }
 
 export const useGetSuspendedRoutes = () => {

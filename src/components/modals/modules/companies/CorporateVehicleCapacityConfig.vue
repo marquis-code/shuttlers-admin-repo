@@ -50,9 +50,9 @@ const isFormEmpty = computed(() => {
     return !!(configurationForm.vehicle_type.value && configurationForm.seats.value)
 })
 
-const configureVehicleCapacity = () => {
-
-}
+onUnmounted(() => {
+	actionType.value = 'create'
+})
 
 </script>
 

@@ -3,6 +3,7 @@
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
+		{{ selectedCorporate }}
 		<template #actions>
 			<div class="flex items-center space-x-2">
 				<ButtonIconDropdown button-text="Actions" :children="dropdownChildren" :data="selectedCorporate" class="px-4 bg-black text-white border-2 rounded-lg border-gray-950" />
@@ -29,53 +30,66 @@ const status = ref(selectedCorporate.value.active === 1 ? 'active' : 'inactive')
 const pageTabs = computed(() => [
     {
         name: 'Company Info',
+        visibility: 'both',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/company-info`
     },
     {
         name: 'Stats',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/stats`
     },
     {
         name: 'Staff',
+        visibility: 'both',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/staff`
     },
     {
         name: 'Wallet',
+        visibility: 'both',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/wallet`
     },
     {
         name: 'Trip report',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/trip-report`
     },
     {
         name: 'Groups',
+        visibility: 'both',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/company-groups`
     },
     {
         name: 'Credit Line',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/credit-line`
     },
     {
         name: 'Capacity Configuration',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/capacity-configuration`
     },
     {
         name: 'Routes',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/routes`
     },
     {
         name: 'Requests',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/requests`
     },
     {
         name: 'Corporate Pay',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/corporate-pay`
     },
     {
         name: 'Staff Settings',
+        visibility: 'active',
         path: `/companies/${selectedCorporate.value.id}/${status.value}/staff-settings`
     }
 ])
+
 const router = useRouter()
 const route = useRoute()
 const dropdownChildren = computed(() => [
@@ -107,7 +121,3 @@ const editCompany = (data) => {
     })
 }
 </script>
-
-<style scoped>
-
-</style>
