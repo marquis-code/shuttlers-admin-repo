@@ -131,14 +131,20 @@ export const routes_api = {
         const url = `/routes/${route_id}/bookings/null`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	    $_get_routes_charges: (id: string, payload:Record<string, any>) => {
-         const url = `/additional-charges/routes/${id}`
+	$_get_routes_charges: (id: string, payload:Record<string, any>) => {
+        const url = `/additional-charges/routes/${id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     },
-	$_get_corporates_routes: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
-		const queryParams = useTableFilter(filterData)
-		// meta.page_size.value = 100000
-		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&${queryParams}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	$_edit_busstop: (busstop_id: string|number, payload:Record<string, any>) => {
+        const url = `/route-busstops/${busstop_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+    },
+	$_delete_busstop: (busstop_id: string|number) => {
+        const url = `/route-busstops/${busstop_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+    },
+	$_create_busstop: (routeId:string|number, payload: Record<string, any>) => {
+		const url = `/routes/${routeId}/busstops`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
