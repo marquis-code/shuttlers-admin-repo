@@ -14,6 +14,14 @@ const selectedTripIndex = computed(() => {
     return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
 })
 
+const activeSelectedTripIndex = computed(() => {
+    return activeTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
+
+const completedSelectedTripIndex = computed(() => {
+    return completedTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
+
 const currentIndex = ref(1)
 export const useTripIdDetails = () => {
     const loading = ref(false)
@@ -93,11 +101,11 @@ export const useActiveTripIdDetails = () => {
     }
 
     const handleNext = async () => {
-        if (selectedTripIndex.value < activeTripsList.value.length - 1) {
-            const nextTripId = activeTripsList.value[selectedTripIndex.value + 1].id
+        if (activeSelectedTripIndex.value < activeTripsList.value.length - 1) {
+            const nextTripId = activeTripsList.value[activeSelectedTripIndex.value + 1].id
             await getActiveTripById(nextTripId)
         }
-        if (selectedTripIndex.value === activeTripsList.value.length - 1) {
+        if (activeSelectedTripIndex.value === activeTripsList.value.length - 1) {
             currentIndex.value++
             loading.value = true
             await activeMoveTo(currentIndex.value)
@@ -105,18 +113,18 @@ export const useActiveTripIdDetails = () => {
         }
     }
     const handlePrev = async () => {
-        if (selectedTripIndex.value > 0) {
-            const prevTripId = activeTripsList.value[selectedTripIndex.value - 1].id
+        if (activeSelectedTripIndex.value > 0) {
+            const prevTripId = activeTripsList.value[activeSelectedTripIndex.value - 1].id
             await getActiveTripById(prevTripId)
         }
-        if (selectedTripIndex.value === 0) {
+        if (activeSelectedTripIndex.value === 0) {
             if (currentIndex.value !== 1) {
                 currentIndex.value -= 1
                await activeMoveTo(currentIndex.value)
             }
         }
     }
-    return { selectedTrip, loading, getActiveTripById, handleNext, handlePrev, selectedTripIndex }
+    return { selectedTrip, loading, getActiveTripById, handleNext, handlePrev, activeSelectedTripIndex }
 }
 
 export const useCompletedTripIdDetails = () => {
@@ -135,11 +143,11 @@ export const useCompletedTripIdDetails = () => {
     }
 
     const handleNext = async () => {
-        if (selectedTripIndex.value < completedTripsList.value.length - 1) {
-            const nextTripId = completedTripsList.value[selectedTripIndex.value + 1].id
+        if (completedSelectedTripIndex.value < completedTripsList.value.length - 1) {
+            const nextTripId = completedTripsList.value[completedSelectedTripIndex.value + 1].id
             await getCompletedTripById(nextTripId)
         }
-        if (selectedTripIndex.value === completedTripsList.value.length - 1) {
+        if (completedSelectedTripIndex.value === completedTripsList.value.length - 1) {
             currentIndex.value++
             loading.value = true
             await completedMoveTo(currentIndex.value)
@@ -147,18 +155,18 @@ export const useCompletedTripIdDetails = () => {
         }
     }
     const handlePrev = async () => {
-        if (selectedTripIndex.value > 0) {
-            const prevTripId = completedTripsList.value[selectedTripIndex.value - 1].id
+        if (completedSelectedTripIndex.value > 0) {
+            const prevTripId = completedTripsList.value[completedSelectedTripIndex.value - 1].id
             await getCompletedTripById(prevTripId)
         }
-        if (selectedTripIndex.value === 0) {
+        if (completedSelectedTripIndex.value === 0) {
             if (currentIndex.value !== 1) {
                 currentIndex.value -= 1
                await completedMoveTo(currentIndex.value)
             }
         }
     }
-    return { selectedTrip, loading, getCompletedTripById, handleNext, handlePrev, selectedTripIndex }
+    return { selectedTrip, loading, getCompletedTripById, handleNext, handlePrev, completedSelectedTripIndex }
 }
 export const useTripFinancials = () => {
     const loading = ref(false)
