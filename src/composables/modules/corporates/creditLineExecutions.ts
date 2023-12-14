@@ -112,6 +112,7 @@ export const useDeleteCreditSystemSchedule = () => {
                 type: 'SUCCESS',
                 msg: 'Credit system has been deleted successfully'
               })
+              useConfirmationModal().closeAlert()
         }
         loading.value = false
     }
