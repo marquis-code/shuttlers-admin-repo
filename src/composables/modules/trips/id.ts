@@ -56,7 +56,10 @@ export const useUpcomingTripIdDetails = () => {
         }
     }
     const handlePrev = async () => {
+        console.log('called')
+        console.log(selectedTripIndex.value)
         if (selectedTripIndex.value > 0) {
+            console.log('ds')
             const prevTripId = upcomingTripsList.value[selectedTripIndex.value - 1].id
             await getUpcomingTripById(prevTripId)
         }
@@ -66,6 +69,11 @@ export const useUpcomingTripIdDetails = () => {
                await moveTo(currentIndex.value)
             }
         }
+
+        // if (selectedTripIndex.value === -1) {
+        //     currentIndex.value = 1
+        //     await moveTo(currentIndex.value)
+        // }
     }
     return { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev, selectedTripIndex }
 }
