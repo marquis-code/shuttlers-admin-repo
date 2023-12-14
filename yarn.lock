@@ -8637,6 +8637,11 @@ vue-template-compiler@^2.7.14:
     de-indent "^1.0.2"
     he "^1.2.0"
 
+vue-toggles@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue-toggles/-/vue-toggles-2.1.0.tgz#a9ac99915f5619aa807ba7587c5efa8c4b26274c"
+  integrity sha512-pvn/0YxRyP+BR/7nfm7t20RX6G5bv2BuC4so+bZn5bs4846Ar/Gv90mJxMsxBsVVZZzuXZblShpfs/i3uS1QJA==
+
 vue-tsc@^1.8.20:
   version "1.8.25"
   resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-1.8.25.tgz#90cd03e71d28c5c4a8068167b232eb97cc96b77f"

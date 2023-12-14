@@ -42,7 +42,9 @@
 				@closeclick="open_new_busstop_window = false"
 			>
 				<div class="flex flex-col gap-2">
-					<p class="text-sm">New bus stop</p>
+					<p class="text-sm">
+						New bus stop
+					</p>
 					<ModulesRoutesBusstopNewBusStopInMap :position="new_busstop_position" />
 				</div>
 			</GMapInfoWindow>
@@ -56,21 +58,29 @@
 			>
 				<GMapInfoWindow v-if="index === 0" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div>
-						<h4 class="text-base font-bold text-dark">Starting Point</h4>
-						<p class="text-sm mb-2">{{ routeDetails.pickup }}</p>
+						<h4 class="text-base font-bold text-dark">
+							Starting Point
+						</h4>
+						<p class="text-sm mb-2">
+							{{ routeDetails.pickup }}
+						</p>
 						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
 					</div>
 				</GMapInfoWindow>
 				<GMapInfoWindow v-if="index === busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div>
 						<h4>Ending Point</h4>
-						<p class="text-sm mb-2">{{ routeDetails.destination }}</p>
+						<p class="text-sm mb-2">
+							{{ routeDetails.destination }}
+						</p>
 						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
 					</div>
 				</GMapInfoWindow>
 				<GMapInfoWindow v-if="index !== 0 && index !== busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
 					<div class="flex flex-col gap-2">
-						<p class="text-sm">{{ n.name }}</p>
+						<p class="text-sm">
+							{{ n.name }}
+						</p>
 						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
 					</div>
 				</GMapInfoWindow>

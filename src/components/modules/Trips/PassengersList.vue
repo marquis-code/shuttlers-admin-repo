@@ -71,8 +71,12 @@
 						<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
 							:destination="itm?.destination?.location" />
 					</div>
-					<div class="w-2/12">{{ itm?.user?.phone }}</div>
-					<div class="w-2/12">{{ itm?.created_at }}</div>
+					<div class="w-2/12">
+						{{ itm?.user?.phone }}
+					</div>
+					<div class="w-2/12">
+						{{ itm?.created_at }}
+					</div>
 					<div class="text-xs px-3 py-1.5 text-white rounded-full w-1/12 text-center"
 						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 rounded-md' : itm?.check_in_status === 'no-show' ? 'bg-rose-600' : 'bg-shuttlersGreen']">
 						{{ itm?.check_in_status }}
@@ -130,8 +134,12 @@
 						<RouteDescription class="text-xs" :pickup="itm?.pickup?.location"
 							:destination="itm?.destination?.location" />
 					</div>
-					<div class="w-2/12">{{ itm?.user?.phone }}</div>
-					<div class="w-2/12">{{ itm?.created_at }}</div>
+					<div class="w-2/12">
+						{{ itm?.user?.phone }}
+					</div>
+					<div class="w-2/12">
+						{{ itm?.created_at }}
+					</div>
 					<div class="text-xs px-3 py-1.5 text-white rounded-full w-1/12 text-center"
 						:class="[itm?.check_in_status === 'pending' ? 'bg-gray-600 rounded-md' : itm?.check_in_status === 'no-show' ? 'bg-rose-600' : 'bg-shuttlersGreen']">
 						{{ itm?.check_in_status }}
@@ -228,7 +236,3 @@ const selectedCheckboxes = ref([]) as any
 const hasCheckboxSelected = ref(false)
 const isChecked = ref(false)
 </script>
-
-<style>
-
-</style>

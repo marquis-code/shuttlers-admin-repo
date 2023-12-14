@@ -11,12 +11,20 @@
 		</div>
 
 		<div v-if="!isEdit" class="flex items-center gap-4 justify-end mt-3">
-			<button class="py-1 px-2 text-red font-medium text-xs" @click="initDeleteBusstop(busStop)">Delete</button>
-			<button class="py-1 px-2 text-light bg-dark text-xs rounded" @click="isEdit = true">Edit</button>
+			<button class="py-1 px-2 text-red font-medium text-xs" @click="initDeleteBusstop(busStop)">
+				Delete
+			</button>
+			<button class="py-1 px-2 text-light bg-dark text-xs rounded" @click="isEdit = true">
+				Edit
+			</button>
 		</div>
 		<div v-else class="flex items-center gap-4 justify-end mt-3">
-			<button class="py-1 px-2 text-dark font-medium text-xs" :disabled="editing_busstop" @click="onCancel">Cancel</button>
-			<button class="py-1 px-2 text-light bg-dark text-xs rounded" :disabled="editing_busstop" @click="onSave">{{ editing_busstop ? 'Saving' : 'Save' }}</button>
+			<button class="py-1 px-2 text-dark font-medium text-xs" :disabled="editing_busstop" @click="onCancel">
+				Cancel
+			</button>
+			<button class="py-1 px-2 text-light bg-dark text-xs rounded" :disabled="editing_busstop" @click="onSave">
+				{{ editing_busstop ? 'Saving' : 'Save' }}
+			</button>
 		</div>
 	</div>
 </template>

@@ -196,5 +196,21 @@ $_delete_corporate_vehicle_capacity: (capacityId:number| string) => {
 $_update_shuttle_request_status: (requestId: number, payload:any) => {
 	const url = `/shuttle-requests/${requestId}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_update_corporate_payment_settings: (corporateId: number, payload:any) => {
+	const url = `/corporates/${corporateId}/payment-settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_fetch_corporate_payment_settings: (corporateId: number) => {
+	const url = `/corporates/${corporateId}/payment-settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_delete_corporate_payment_exemption: (exemptionId: number) => {
+	const url = `/corporate-payment-limitations/${exemptionId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+},
+$_get_corporate_groups: (corporateId:number) => {
+	const url = `/corporates/${corporateId}/groups`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 }
 }

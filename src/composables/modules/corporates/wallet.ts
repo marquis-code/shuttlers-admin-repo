@@ -113,7 +113,7 @@ export const useFlutterWave = () => {
         },
         payment_options: 'card, banktransfer, ussd',
         public_key: import.meta.env.VUE_APP_FLW_PUBLIC_KEY,
-        redirect_url: `${process.env.VUE_APP_FLW_REDIRECT_URL}${company.id}/active/wallet`,
+        redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
         tx_ref: res.data.reference
       })
       // window.FlutterwaveCheckout({
