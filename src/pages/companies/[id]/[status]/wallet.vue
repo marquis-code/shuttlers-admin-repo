@@ -44,9 +44,9 @@
 					</template>
 					<template #item="{ item }">
 						<div v-if="item.description" class="flex items-center gap-x-4 w-[200px]">
-							<div class="border rounded-md p-2 bg-white shadow-md">
-								<div><img v-if="item.data.direction === 'credit'" class="w-32" src="@/assets/icons/source/inflow.svg" alt=""></div>
-								<div><img v-if="item.data.direction === 'debit'" class="w-20" src="@/assets/icons/source/outflow.svg" alt=""></div>
+							<div class="border rounded-md p-2 bg-white">
+								<div><img v-if="item.data.direction === 'credit'" class="max-w-xl max-h-28" src="@/assets/icons/source/inflow.svg" alt=""></div>
+								<div><img v-if="item.data.direction === 'debit'" class="max-w-xl max-h-28" src="@/assets/icons/source/outflow.svg" alt=""></div>
 							</div>
 							<div class="space-y-4">
 								<p class="font-medium text-gray-600">
@@ -70,8 +70,9 @@
 				</Table>
 			</div>
 		</div>
+		<!-- {{ corporateWalletDetails.wallet }} -->
 		<div v-if="!loadingCorporateWallet" class="lg:w-4/12 space-y-10">
-			<div v-if="corporateWalletDetails.wallet.length" class="card space-y-4 p-6">
+			<div v-if="Object.keys(corporateWalletDetails.wallet).length" class="card space-y-10 p-6">
 				<div v-for="(itm, idx) in corporateWalletDetails.wallet.nuban_addresses" :key="idx" class="space-y-6">
 					<div class="flex items-center justify-between">
 						<p class="text-gray-500">
@@ -86,7 +87,7 @@
 							Account Number
 						</p>
 						<p class="text-xl font-bold flex items-center gap-x-3">
-							<span class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" alt="">
+							<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" alt="" @click="copyToClipboard">
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
@@ -195,6 +196,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useClipboard } from '@/composables/core/useClipboard'
 import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/composables/modules/corporates/wallet'
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
@@ -263,5 +265,16 @@ const tableFields = ref([
         value: 'status'
     }
 ])
+
+const copyToClipboard = () => {
+      const textarea = document.getElementById('accountNumber')
+	  console.log(textarea.value, 'here')
+    //   textarea.value = this.textToCopy
+    //   document.body.appendChild(textarea)
+    //   textarea.select()
+    //   document.execCommand('copy')
+    //   document.body.removeChild(textarea)
+    //   alert('Text copied to clipboard!')
+    }
 
 </script>
