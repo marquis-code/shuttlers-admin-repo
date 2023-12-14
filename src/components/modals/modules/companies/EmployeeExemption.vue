@@ -22,7 +22,7 @@
 					<input type="search" placeholder="search staff.." class="py-2 w-full rounded-md border px-3 outline-none">
 				</div>
 				<label v-for="user in computedUsersList" :key="user.id" class="flex items-center gap-x-3">
-					<input :id="user.id" v-model="user.selected" :value="user.id" @change="toggleSelected(user)" type="checkbox" :name="user.id">
+					<input :id="user.id" v-model="user.selected" :value="user.id" type="checkbox" :name="user.id" @change="toggleSelected(user)">
 					{{ user?.fname }} {{ user?.lname }}
 				</label>
 			</div>

@@ -66,6 +66,11 @@ export const useUpcomingTripIdDetails = () => {
                await moveTo(currentIndex.value)
             }
         }
+
+        // if (selectedTripIndex.value === -1) {
+        //     currentIndex.value = 1
+        //     await moveTo(currentIndex.value)
+        // }
     }
     return { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev, selectedTripIndex }
 }
