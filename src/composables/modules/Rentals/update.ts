@@ -42,7 +42,8 @@ export const useUpdateCharter = () => {
             } else if (checkMainVehicleDriverExists) {
                         payload.value = {
                 status: charterStatus.value,
-                vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle?.driver?.id, cost_of_supply: item?.cost }))
+                            vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle?.driver?.id, cost_of_supply: item?.cost }))
+                                .filter((item: any) => item.vehicle_id && item.driver_id)
                 }
                 } else {
                     useAlert().openAlert({ type: 'ERROR', msg: 'Please select driver for all vehicles' })
