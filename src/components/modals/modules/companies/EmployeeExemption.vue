@@ -3,11 +3,10 @@
 		modal="$atts.modal"
 		:title="`Employees to exempt (${creditSystem?.applicable_employee_value?.length})`"
 	>
-		<form class="space-y-3 mb-2" @submit.prevent="saveChanges">
+		<form class="space-y-3 mb-2">
 			<div class="flex justify-between items-center">
 				<div>
 					<label class="flex items-center gap-x-3 text-sm font-bold">
-						<!-- <input type="checkbox" @change="handleSelectAll"> -->
 						<input v-model="selectAll" type="checkbox" @change="handleSelectAll">
 						Select All
 					</label>
@@ -22,7 +21,7 @@
 					<input type="search" placeholder="search staff.." class="py-2 w-full rounded-md border px-3 outline-none">
 				</div>
 				<label v-for="user in computedUsersList" :key="user.id" class="flex items-center gap-x-3">
-					<input :id="user.id" v-model="user.selected" :value="user.id" type="checkbox" :name="user.id" @change="toggleSelected(user)">
+					<input v-model="user.selected" type="checkbox" @change="toggleSelected(user)">
 					{{ user?.fname }} {{ user?.lname }}
 				</label>
 			</div>
@@ -62,15 +61,11 @@ const { getCorporatesCreditSystem, loading, creditSystem } = useGetCreditSystem(
 const usersList = ref([]) as any
 onMounted(() => {
 	getCorporatesCreditSystem()
-	// if (!loading.value) {
-	// 	usersList.value = creditSystem?.value.applicable_employee?.map((itm) => {
-    //   return { ...itm, selected: false }
-	// })
-	// }
 })
+const defaultSelect = ref(false)
 const computedUsersList = computed(() => {
 	return creditSystem?.value.applicable_employee?.map((itm) => {
-      return { ...itm, selected: false }
+      return { ...itm, selected: defaultSelect.value }
 	})
 })
 
@@ -79,16 +74,15 @@ const form = reactive({
 })
 const selectAll = ref(false)
 const selectedUsers = ref([])
-const saveChanges = () => {
-
-}
 
 const toggleSelected = (itm) => {
 	itm.selected = !itm.selected
 }
 
 const handleSelectAll = () => {
-	selectAll.value = !selectAll.value
+	computedUsersList?.value?.map((itm) => {
+      return { ...itm, selected: true }
+	})
 }
 </script>
 

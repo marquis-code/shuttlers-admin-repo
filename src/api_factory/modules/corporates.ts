@@ -212,5 +212,9 @@ $_delete_corporate_payment_exemption: (exemptionId: number) => {
 $_get_corporate_groups: (corporateId:number) => {
 	const url = `/corporates/${corporateId}/groups`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_create_corporate_group: (corporateId:number, payload:any) => {
+	const url = `/corporates/${corporateId}/groups`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 }
 }

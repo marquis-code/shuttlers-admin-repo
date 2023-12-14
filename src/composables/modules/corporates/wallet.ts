@@ -1,9 +1,9 @@
-import { useFlutterwave } from 'flutterwave-vue3'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
+import { useCompaniesModal } from '@/composables/core/modals'
 const { selectedCorporate, loading, getCorporateById } = useCorporateIdDetails()
 
 const walletActivationForm = {
@@ -87,10 +87,14 @@ export const useFlutterWave = () => {
     const res = (await corporates_api.$_payment_funding_reference(Number(selectedCorporate.value?.wallet.ledger_account_id), payload)) as CustomAxiosResponse
     if (res.type !== 'ERROR' && res.data.reference) {
       loading.value = false
-      useFlutterwave({
+      window.FlutterwaveCheckout({
         amount: Number(amount.value),
         callback(data: any): void {
-          //  TODO: handle callbacks
+          useAlert().openAlert({
+            type: 'SUCCESS',
+            msg: data
+          })
+          useCompaniesModal().closeFundWallet()
         },
         country: 'NG',
         currency: 'NGN',
@@ -109,35 +113,17 @@ export const useFlutterWave = () => {
           selectedCorporate.value?.wallet.ledger_account_id
         },
         onclose(): void {
-
+          useAlert().openAlert({
+            type: 'SUCCESS',
+            msg: 'Payment has been cancelled.'
+          })
+          useCompaniesModal().closeFundWallet()
         },
         payment_options: 'card, banktransfer, ussd',
-        public_key: import.meta.env.VUE_APP_FLW_PUBLIC_KEY,
+        public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
         redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
         tx_ref: res.data.reference
       })
-      // window.FlutterwaveCheckout({
-      //   public_key: import.meta.env.VUE_APP_FLW_PUBLIC_KEY,
-      //   tx_ref: res.data.reference,
-      //   amount: Number(amount.value),
-      //   currency: 'NGN',
-      //   payment_options: 'card, banktransfer, ussd',
-      //   redirect_url: `${process.env.VUE_APP_FLW_REDIRECT_URL}${company.id}/active/wallet`,
-      //   meta: {
-      //     ledger_account_reference:
-      //     selectedCorporate.value?.wallet.ledger_account_id
-      //   },
-      //   customer: {
-      //     email: company.email,
-      //     phone_number: company.corporate_phone,
-      //     name: `${company.fname} ${company.lname}`
-      //   },
-      //   customizations: {
-      //     title: company.corporate_name,
-      //     description: desc.value,
-      //     logo: company.avatar ? company.avatar : ''
-      //   }
-      // })
   } else {
     useAlert().openAlert({ type: 'Alert', msg: 'An error occured' })
   }

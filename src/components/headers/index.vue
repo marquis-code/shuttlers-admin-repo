@@ -71,7 +71,7 @@ const componentRouteArray = [
     { routes: ['companies-add-company'], component: AddCompany },
     { routes: ['companies-id-edit'], component: EditCompany },
     { routes: ['companies-id-status-credit-line-create'], component: CreateCreditLineUsage },
-    { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration', 'companies-id-status-credit-line-fund', 'companies-id-status-credit-line-edit'], component: CompanyDetails },
+    { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration', 'companies-id-status-credit-line-fund'], component: CompanyDetails },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
     { routes: ['companies-shuttle-requests-id-info', 'companies-shuttle-requests-id-staff-list'], component: ShuttleRequestDetails },

@@ -70,12 +70,11 @@
 				</Table>
 			</div>
 		</div>
-		<!-- {{ corporateWalletDetails.wallet }} -->
 		<div v-if="!loadingCorporateWallet" class="lg:w-4/12 space-y-10">
-			<div v-if="Object.keys(corporateWalletDetails.wallet).length" class="card space-y-10 p-6">
-				<div v-for="(itm, idx) in corporateWalletDetails.wallet.nuban_addresses" :key="idx" class="space-y-6">
+			<div v-if="corporateWalletDetails?.wallet?.nuban_addresses?.length" class="card space-y-10 p-6">
+				<div v-for="(itm, idx) in corporateWalletDetails?.wallet?.nuban_addresses" :key="idx" class="space-y-3">
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Bank Name
 						</p>
 						<p class="text-xl font-bold">
@@ -83,15 +82,15 @@
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Account Number
 						</p>
 						<p class="text-xl font-bold flex items-center gap-x-3">
-							<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" alt="" @click="copyToClipboard">
+							<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="" @click="copyToClipboard(itm?.account_number)">
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Account Name
 						</p>
 						<p class="text-lg font-bold">
@@ -99,7 +98,7 @@
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Service Provider
 						</p>
 						<p class="text-sm font-bold">
@@ -204,7 +203,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
-
+const { copyToClipboard } = useClipboard()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -265,15 +264,4 @@ const tableFields = ref([
         value: 'status'
     }
 ])
-
-const copyToClipboard = () => {
-      const textarea = document.getElementById('accountNumber')
-    //   textarea.value = this.textToCopy
-    //   document.body.appendChild(textarea)
-    //   textarea.select()
-    //   document.execCommand('copy')
-    //   document.body.removeChild(textarea)
-    //   alert('Text copied to clipboard!')
-    }
-
 </script>
