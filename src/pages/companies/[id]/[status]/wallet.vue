@@ -268,7 +268,6 @@ const tableFields = ref([
 
 const copyToClipboard = () => {
       const textarea = document.getElementById('accountNumber')
-	  console.log(textarea.value, 'here')
     //   textarea.value = this.textToCopy
     //   document.body.appendChild(textarea)
     //   textarea.select()

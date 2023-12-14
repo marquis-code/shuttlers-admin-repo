@@ -7,7 +7,7 @@
 				</button>
 			</div>
 		</div>
-		<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" />
+		<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev" />
 		<Skeleton v-else height="300px" />
 	</section>
 </template>
@@ -17,12 +17,14 @@ import { useDateFormat } from '@vueuse/core'
 import { useRoutePassengers } from '@/composables/modules/routes/booking-passengers'
 import { useTripsModal } from '@/composables/core/modals'
 import { usePageHeader } from '@/composables/utils/header'
-import { useTripIdDetails } from '@/composables/modules/trips/id'
-const { selectedTrip, loading, getTripById } = useTripIdDetails()
+import { useTripIdDetails, useActiveTripIdDetails } from '@/composables/modules/trips/id'
+// const { selectedTrip, loading, getTripById } = useTripIdDetails()
 const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
+const { selectedTrip, loading, getActiveTripById, handleNext, handlePrev } = useActiveTripIdDetails()
 
 const id = useRoute().params.id as string
-getTripById(id)
+// getTripById(id)
+getActiveTripById(id)
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
@@ -55,6 +57,7 @@ definePageMeta({
 	layout: 'dashboard-zero',
 	middleware: ['is-authenticated']
 })
+
 </script>
 
 <style scoped>
