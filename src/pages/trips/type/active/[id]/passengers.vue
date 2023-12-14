@@ -3,7 +3,7 @@
 		<div class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 			<div class="flex justify-end items-end">
 				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md" @click="useTripsModal().openAddPassengersToTrips()">
-					Add passengers
+					Add passengers {{ computedTitle }}
 				</button>
 			</div>
 		</div>
@@ -17,13 +17,11 @@ import { useDateFormat } from '@vueuse/core'
 import { useRoutePassengers } from '@/composables/modules/routes/booking-passengers'
 import { useTripsModal } from '@/composables/core/modals'
 import { usePageHeader } from '@/composables/utils/header'
-import { useTripIdDetails, useActiveTripIdDetails } from '@/composables/modules/trips/id'
-// const { selectedTrip, loading, getTripById } = useTripIdDetails()
+import { useActiveTripIdDetails } from '@/composables/modules/trips/id'
 const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
 const { selectedTrip, loading, getActiveTripById, handleNext, handlePrev } = useActiveTripIdDetails()
 
 const id = useRoute().params.id as string
-// getTripById(id)
 getActiveTripById(id)
 
 const computedTitle = computed(() => {
