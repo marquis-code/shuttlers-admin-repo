@@ -4,7 +4,7 @@
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
 				</section>
 			</template>
 			<template #item="{ item }">

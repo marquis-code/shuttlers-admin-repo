@@ -71,7 +71,7 @@ const dropdownChildren = computed(() => {
     }
 
     if (tripType.value === 'active') {
-        dropdownOptions.push({ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' })
+        dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data) }])
     }
     return dropdownOptions
 })
