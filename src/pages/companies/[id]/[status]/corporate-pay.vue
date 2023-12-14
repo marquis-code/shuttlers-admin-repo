@@ -251,11 +251,11 @@
 													<div class="flex items-center gap-3">
 														<button class="bg-transparent border-none"
 															@click="editExemption(n)">
-															<img src="@/assets/img/icons/corporatePay/edit.svg" alt="">
+															<img src="@/assets/icons/source/edit.svg" alt="">
 														</button>
 														<button class="bg-transparent border-none"
 															@click="onDeleteExemption(n.id)">
-															<img src="@/assets/img/icons/corporatePay/trash.svg" alt="">
+															<img src="@/assets/icons/source/edit.svg" alt="">
 														</button>
 													</div>
 												</td>
