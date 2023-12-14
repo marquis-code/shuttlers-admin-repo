@@ -1,6 +1,7 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useAlert } from '@/composables/core/notification'
 const { selectedCorporate } = useCorporateIdDetails()
 const corporatePaySettings = {
@@ -88,6 +89,7 @@ export const useCorporatePaySetting = () => {
 				msg: 'Settings saved successfully.'
 			})
             fetchCorporatePaySetting()
+            useConfirmationModal().closeAlert()
         }
         loading.value = false
     }
@@ -113,6 +115,7 @@ export const useCorporatePaySetting = () => {
 				msg: 'Settings saved successfully'
 			})
             fetchCorporatePaySetting()
+            useConfirmationModal().closeAlert()
         }
         loading.value = false
     }
