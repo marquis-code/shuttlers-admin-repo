@@ -122,14 +122,28 @@
 								Do you want the staffs of this company to see their limit usage?
 							</p>
 						</div>
-						<VueToggles width="50" checked-bg="#15CD70"
+						<!-- <VueToggles width="50" checked-bg="#15CD70"
 							:value="corporatePaySettings.staff_can_view_wallet_limit_usage.value"
-							@click="toggleStaffsAbilityToViewCorporatePayUsage" />
+							@click="toggleStaffsAbilityToViewCorporatePayUsage" /> -->
+						<label
+							for="AcceptConditions"
+							class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
+						>
+							<input id="AcceptConditions" :value="corporatePaySettings.staff_can_view_wallet_limit_usage.value"
+								type="checkbox" class="peer sr-only" @change="toggleStaffsAbilityToViewCorporatePayUsage">
+
+							<span
+								class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
+							/>
+
+							<span
+								class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
+							/>
+						</label>
 					</div>
 
 					<!-- exemptions -->
-
-					<div v-if="default_corporate_payment_limit.limit_value.value"
+					<div v-if="default_corporate_payment_limit.limit_value"
 						class="self-stretch justify-start items-start gap-[32px] flex flex-col xl:flex-row pt-[20px]">
 						<div class="w-full xl:max-w-[280px] flex flex-col justify-start items-start flex-shrink-0">
 							<div class="self-stretch text-sm font-medium leading-tight text-slate-700">
@@ -145,7 +159,7 @@
 								<span>Create new exemption for your staff</span>
 								<div class="flex items-center gap-4">
 									<div v-if="isEditingExemption" class="flex items-center gap-4">
-										<button class="btn border bg-transparent !text-black border-black rounded px-3 py-2"
+										<button class="btn border bg-transparent !text-white border-black rounded px-3 py-2"
 											@click="() => { isEditingExemption = false; clear_exemption_obj() }">
 											Cancel
 										</button>
@@ -161,7 +175,6 @@
 									</button>
 								</div>
 							</header>
-
 							<div v-if="isEditingExemption" class="flex flex-col gap-3">
 								<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
 									<div class="flex items-center gap-4">
@@ -179,7 +192,7 @@
 								</div>
 
 								<div v-if="exemption_obj.subject_type.value === 'user'" class="max-w-[400px]">
-									<v-select v-model="exemption_obj.subject_ids.value" :filterable="false"
+									<!-- <v-select v-model="exemption_obj.subject_ids.value" :filterable="false"
 										:options="filteredStaff" label="fname" placeholder="Select staff"
 										:reduce="(option) => option.id" @search="searchUser">
 										<template #option="option">
@@ -188,23 +201,39 @@
 										<template #selected-option="{ fname, lname }">
 											<span> {{ fname }} {{ lname }}</span>
 										</template>
-									</v-select>
+									</v-select> -->
+									<select v-model="exemption_obj.subject_ids.value" class="outline-none border border-gray-400 py-2.5 px-4 rounded-md w-full">
+										<option value="" disabled>
+											Please select
+										</option>
+										<option v-for="(option, idx) in filteredStaff" :key="idx" :value="option.id">
+											{{ option.fname }} {{ option.lname }}
+										</option>
+									</select>
 								</div>
 								<div v-if="exemption_obj.subject_type.value === 'group'" class="max-w-[400px]">
-									<v-select v-model="exemption_obj.subject_ids.value" :options="groups" label="name"
-										placeholder="Select group" :reduce="(option) => option.id" />
+									<!-- <v-select v-model="exemption_obj.subject_ids.value" :options="groups" label="name"
+										placeholder="Select group" :reduce="(option) => option.id" /> -->
+									<select v-model="exemption_obj.subject_ids.value" class="outline-none border border-gray-400 py-2.5 px-4 rounded-md w-full">
+										<option value="" disabled>
+											Please select
+										</option>
+										<option v-for="(option, idx) in groups" :key="idx" :value="option.id">
+											{{ option.name }}
+										</option>
+									</select>
 								</div>
 								<div class="flex flex-col gap-2">
 									<p class="text-xs font-bold text-gray7">
 										Configuration
 									</p>
-									<configComp type="amount" :active="exemption_obj.type.value == 'amount'"
+									<ModulesCorporatesCorporatePayConfigComp type="amount" :active="exemption_obj.type.value == 'amount'"
 										:book_or_amount_limit="exemption_obj.book_or_amount_limit.value"
 										:select_period="exemption_obj.select_period.value" :show_example="true"
 										@clicked="() => { exemption_obj.type.value = 'amount'; clearExemptLimitAndPeriod() }"
 										@update:book_or_amount_limit="(val) => exemption_obj.book_or_amount_limit.value = val"
 										@update:select_period="(val) => exemption_obj.select_period.value = val" />
-									<configComp type="trip" :active="exemption_obj.type.value == 'trip'"
+									<ModulesCorporatesCorporatePayConfigComp type="trip" :active="exemption_obj.type.value == 'trip'"
 										:book_or_amount_limit="exemption_obj.book_or_amount_limit.value"
 										:select_period="exemption_obj.select_period.value" :show_example="true"
 										@clicked="() => { exemption_obj.type.value = 'trip'; clearExemptLimitAndPeriod() }"
@@ -280,10 +309,6 @@ import { useGroup } from '@/composables/modules/corporates/corporateGroup'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 const { selectedCorporate } = useCorporateIdDetails()
 const { loading: loadingCorporateStaffs, staffs, getCorporateStaff } = useCorporateStaff()
-// const { corporatePaySettings, loading, fetchCorporatePaySetting, saveCorporatePaySettings,
-// 		isEditingExemption, exemption_obj, clear_exemption_obj, getExemptionLimitWriteUp,
-// 		updateExemptions, deleteExemption, editExemption, toggleStaffsAbilityToViewCorporatePayUsage
-// } = useCorporatePaySetting()
 const search = ref('')
 const { groups, fetchGroup } = useGroup()
 onMounted(() => {
