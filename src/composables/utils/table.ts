@@ -57,6 +57,7 @@ export const useTableFilter = (filterData?: Record<string, Ref>) => {
     if (!filterData) return ''
     return Object.keys(filterData)
         .filter((key) => filterData[key].value !== '')
-        .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)
+        .map((key) => `${encodeURIComponent(key)}=${filterData[key].value}`)
         .join('&')
 }
+// .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(filterData[key].value)}`)

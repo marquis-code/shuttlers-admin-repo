@@ -28,9 +28,6 @@
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item.data.approvalsCount || 0 }}/2
 				</p>
-				<span v-if="item.action">
-					<ButtonIconDropdown :index="item.index" :children="dropdownChildren" :data="item.data" class-name="w-40" />
-				</span>
 			</template>
 
 			<template #footer>
@@ -49,20 +46,15 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { usePendingPayouts } from '@/composables/modules/partners/payouts/pending'
+import { useFailedPayouts } from '@/composables/modules/partners/payouts/failed'
 
-const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
-fetchPendingPayouts()
+const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchFailedPayouts } = useFailedPayouts()
+fetchFailedPayouts()
 
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
-
-const dropdownChildren = computed(() => [
-	{ name: 'Mark as paid', func: (data) => { alert(data.id) } },
-	{ name: 'Deduct', func: (data) => { alert(data.id) }, class: '!text-red' }
-])
 
 const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
@@ -70,8 +62,7 @@ const tableFields = ref([
 	{ text: 'COMPANY NAME', value: 'company_name', width: '50%' },
 	{ text: 'EMAIL', value: 'company_email' },
 	{ text: 'AMOUNT (₦)', value: 'amount' },
-	{ text: 'APPROVAL', value: 'approval' },
-	{ text: 'ACTIONS', value: 'action' }
+	{ text: 'APPROVAL', value: 'approval' }
 ])
 
 const onRowClicked = (data:Record<string, any>) => {

@@ -41,6 +41,7 @@
 							</slot>
 						</td>
 					</tr>
+					<div class="h-16" />
 				</tbody>
 				<tbody v-else>
 					<tr v-for="n in 3" :key="n" class="border-t border-gray50 py-8 font-normal  text-sm h-[52px]">
