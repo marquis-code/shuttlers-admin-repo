@@ -5,7 +5,8 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-
+const router = useRouter()
+const route = useRoute()
 const creditSystemScheduleForm = {
     scheduled: ref(),
     scheduled_for: ref(''),
@@ -13,19 +14,15 @@ const creditSystemScheduleForm = {
     narration: ref('')
 }
 
-const payload = {
+const batchCreditSystemScheduleForm = {
     narration: ref(''),
     amount: ref(),
-    increment_credit_wallet: 0,
-    is_topup: true,
-    selected_employee: null,
-    scheduled: true,
-    scheduled_for: '2023-12-25T15:40:00.000Z',
-    only_selected_staff: [
-        49463,
-        48937,
-        48871
-    ]
+    increment_credit_wallet: ref(),
+    is_topup: ref(),
+    selected_employee: ref(null),
+    scheduled: ref(),
+    scheduled_for: ref(),
+    only_selected_staff: ref(null)
 }
 
 export const useGetCreditLineExecutions = () => {
@@ -96,7 +93,38 @@ export const useScheduleCreditSystem = () => {
         creditSystemScheduleForm.scheduled.value = data.scheduled
     }
 
-    return { populateCreditSystemScheduleForm, scheduleCreditSystem, loading }
+    return { populateCreditSystemScheduleForm, scheduleCreditSystem, loading, creditSystemScheduleForm }
+}
+
+export const useBatchScheduleCreditSystem = () => {
+    const loading = ref(false)
+
+    const { $_schedule_credit_system } = corporates_api
+    const scheduleBatchCreditSystem = async (creditLineId:number) => {
+        loading.value = true
+        const res = await $_schedule_credit_system(Number(creditLineId), convertObjWithRefToObj(batchCreditSystemScheduleForm)) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'Credit system has been scheduled successfully'
+              })
+             router.push(`/companies/${route.params.id}/${route.params.status}/credit-line`)
+        }
+        loading.value = false
+    }
+
+    const populateBatchCreditSystemScheduleForm = (data:any) => {
+        batchCreditSystemScheduleForm.narration.value = data.narration
+        batchCreditSystemScheduleForm.amount.value = data.amount
+        batchCreditSystemScheduleForm.increment_credit_wallet.value = data.increment_credit_wallet
+        batchCreditSystemScheduleForm.is_topup.value = data.is_topup
+        batchCreditSystemScheduleForm.selected_employee.value = data.selected_employee
+        batchCreditSystemScheduleForm.scheduled.value = data.scheduled
+        batchCreditSystemScheduleForm.scheduled_for.value = data.scheduled_for
+        batchCreditSystemScheduleForm.only_selected_staff.value = data.only_selected_staff
+    }
+
+    return { batchCreditSystemScheduleForm, populateBatchCreditSystemScheduleForm, loading, scheduleBatchCreditSystem }
 }
 
 export const useDeleteCreditSystemSchedule = () => {

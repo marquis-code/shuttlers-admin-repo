@@ -106,7 +106,7 @@
 			<ModulesCorporatesEditCreditLine />
 		</section>
 		<section v-if="route.query.tab === 'fund'">
-			<ModulesCorporatesEditCreditLine />
+			<ModulesCorporatesFundCreditLine />
 		</section>
 	</main>
 </template>

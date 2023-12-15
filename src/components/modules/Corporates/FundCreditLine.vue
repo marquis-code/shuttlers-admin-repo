@@ -6,11 +6,11 @@
 		<form class="space-y-6" @submit.prevent="submitForm">
 			<div>
 				<label class="text-gray-700">How much credit do you want to apply?</label>
-				<input v-model="form.credit_amount" class="w-full rounded-md py-2.5 px-4 outline-none border" type="number">
+				<input v-model="form.credit_amount" class="w-full rounded-md py-2.5 px-4 bg-gray-50 outline-none border" type="number">
 			</div>
 			<div>
 				<label class="text-gray-700">Narration for this credit</label>
-				<textarea v-model="form.credit_narration" class="w-full rounded-md py-2.5 px-4 resize-none outline-none border" rows="4" cols="4" />
+				<textarea v-model="form.credit_narration" class="w-full rounded-md bg-gray-50 py-2.5 px-4 resize-none outline-none border" rows="4" cols="4" />
 			</div>
 			<div>
 				<label>Which employees do you want to give this credit to?</label>
@@ -56,8 +56,11 @@
 						Clear previous balance</label>
 				</label>
 			</div>
-			<button class="text-white bg-black rounded-md py-3 px-6">
-				Fund Credit Wallet
+			<button :disabled="!isFormEmpty" class="text-white bg-black rounded-md py-3 px-6 disabled:opacity-25 disabled:cursor-not-allowed">
+				<span v-if="!loading" class="flex justify-center items-center gap-2.5">
+					Fund Credit Wallet
+				</span>
+				<Spinner v-else />
 			</button>
 		</form>
 	</main>
@@ -66,22 +69,33 @@
 <script setup lang="ts">
 import useCsvDownload from '@/composables/core/useCsvDownload'
 import { useConvertDate } from '@/composables/core/useDateConverter'
+import { useGetCreditSystem } from '@/composables/modules/corporates/creditLine'
+import { useBatchScheduleCreditSystem } from '@/composables/modules/corporates/creditLineExecutions'
+const { populateBatchCreditSystemScheduleForm, loading, scheduleBatchCreditSystem } = useBatchScheduleCreditSystem()
 const { convertDateFormat } = useConvertDate()
+const { creditSystem, getCorporatesCreditSystem } = useGetCreditSystem()
 const { downloadCsv, downloading, templateName } = useCsvDownload()
 templateName.value = 'users.csv'
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+onMounted(() => {
+	getCorporatesCreditSystem()
+})
 
 const is_schedule_later_application = ref(false)
 
 const form = reactive({
-	selected_employee: [] as any,
+	selected_employee: [],
 	application_date: '',
 	credit_amount: '',
 	credit_narration: '',
-	uploadedUsers: [] as any
+	uploadedUsers: []
+})
+
+const isFormEmpty = computed(() => {
+    return !!(form.selected_employee && form.credit_amount && form.credit_narration && form.uploadedUsers)
 })
 
 const employeeCreditOption = ref('select_from_dropdown')
@@ -92,19 +106,19 @@ const handleUploadedEmails = (item: any) => {
 }
 
 const submitForm = () => {
+	const staffArray = [] as any
+	staffArray.push(form.selected_employee.id)
 	const payload = {
     narration: form.credit_narration,
     amount: form.credit_amount,
     increment_credit_wallet: 0,
     is_topup: true,
-    selected_employee: form.uploadedUsers,
+    selected_employee: null,
     scheduled: is_schedule_later_application.value,
 	scheduled_for: convertDateFormat(form.application_date),
-    only_selected_staff: form.selected_employee || null
+    only_selected_staff: staffArray || null
 }
+populateBatchCreditSystemScheduleForm(payload)
+scheduleBatchCreditSystem(creditSystem.value.id)
 }
 </script>
-
-<style>
-
-</style>
