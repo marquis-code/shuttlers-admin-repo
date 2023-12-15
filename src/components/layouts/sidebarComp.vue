@@ -26,7 +26,7 @@
 		<div class="sidebar-footer hidden md:block">
 			<div v-if="currentUser" id="sidebarUser" class="user-box">
 				<div class="avatar avatar-sm w-auto">
-					<router-link class="flex items-center" to="/profile" title="View your profile">
+					<router-link class="flex items-center" :to="`/admin/${currentUser.id}/info`" title="View your profile">
 						<div class="w-10 h-10 flex-1 ">
 							<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-full">
 							<div v-else class="avatar-title rounded-full w-10 h-10">

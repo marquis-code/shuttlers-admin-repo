@@ -1,11 +1,11 @@
 <template>
-	<main class="relative h-[calc(100vh-150px)]">
-		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white text-sm px-2 py-1 rounded absolute top-1 left-[220px] z-40"
+	<main class="relative">
+		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-4 left-[240px] z-40"
 			@click="can_click = !can_click"
 		>
 			{{ can_click ? 'Adding' : 'Add' }} Busstop
 		</button>
-		<section class="w-[220px] h-[calc(100vh-170px)] space-y-3 absolute -top-8 -left-9 z-50 bg-gray-100">
+		<section class="w-[220px] h-screen space-y-3 absolute   z-50 bg-gray-100">
 			<div class="w-full">
 				<input v-model="search" class="border py-3 rounded-md w-full pl-3 text-sm outline-none" placeholder="Filter Bus Stop in route">
 			</div>
@@ -22,7 +22,7 @@
 			<Skeleton v-else height="500px" />
 		</section>
 		<!-- <MapDisplay height="670px" class="" /> -->
-		<GMapMap v-if="!loading_path && !fetching_busstops" ref="myMapRef" map-type-id="terrain" class="h-[calc(100vh-150px)]"
+		<GMapMap v-if="!loading_path && !fetching_busstops" ref="myMapRef" map-type-id="terrain" class="h-screen"
 			:options="{
 				zoomControl: true,
 				mapTypeControl: false,
@@ -139,7 +139,7 @@ const handleMapClick = (event: any) => {
 }
 
 definePageMeta({
-    layout: 'dashboard',
+    layout: 'dashboard-zero',
     middleware: ['is-authenticated']
 })
 </script>

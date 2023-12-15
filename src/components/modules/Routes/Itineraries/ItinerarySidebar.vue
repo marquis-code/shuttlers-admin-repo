@@ -7,14 +7,13 @@
 			<Skeleton v-for="n in 3" :key="n" height="45px" radius="10px" />
 		</div>
 		<template v-if="itineraries.length && !loading">
-			<div v-for="n in itineraries" :key="n.id" class="relative w-full h-[50px] border rounded-md overflow-hidden">
-				<router-link :to="`/trips/routes/${$route.params.id}/itineraries/${n.id}`" class="w-full h-full block p-2" active-class="bg-dark text-white">
-					{{ n.trip_time }}
-				</router-link>
+			<router-link v-for="n in itineraries" :key="n.id" class="relative w-full h-[50px] border rounded-md flex items-center pl-3" :to="`/trips/routes/${$route.params.id}/itineraries/${n.id}`" active-class="bg-dark text-white">
+				{{ n.trip_time }}
+
 				<button class="text-sm absolute bottom-1 right-2 font-medium" :class="[Number($route.params.iti_id) === n.id ? '!text-light' : 'text-dark']">
 					Delete
 				</button>
-			</div>
+			</router-link>
 		</template>
 	</div>
 </template>
