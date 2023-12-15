@@ -9,6 +9,9 @@ export default {
 			title: 'Shuttlers Admin',
 			script: [
 				{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/' }
+				// {
+				// 	src: 'https://checkout.flutterwave.com/v3.js'
+				// }
 			],
 			htmlAttrs: { lang: 'en' },
 			meta: [

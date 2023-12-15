@@ -44,9 +44,9 @@
 					</template>
 					<template #item="{ item }">
 						<div v-if="item.description" class="flex items-center gap-x-4 w-[200px]">
-							<div class="border rounded-md p-2 bg-white shadow-md">
-								<div><img v-if="item.data.direction === 'credit'" class="w-32" src="@/assets/icons/source/inflow.svg" alt=""></div>
-								<div><img v-if="item.data.direction === 'debit'" class="w-20" src="@/assets/icons/source/outflow.svg" alt=""></div>
+							<div class="border rounded-md p-2 bg-white">
+								<div><img v-if="item.data.direction === 'credit'" class="max-w-xl max-h-28" src="@/assets/icons/source/inflow.svg" alt=""></div>
+								<div><img v-if="item.data.direction === 'debit'" class="max-w-xl max-h-28" src="@/assets/icons/source/outflow.svg" alt=""></div>
 							</div>
 							<div class="space-y-4">
 								<p class="font-medium text-gray-600">
@@ -71,10 +71,10 @@
 			</div>
 		</div>
 		<div v-if="!loadingCorporateWallet" class="lg:w-4/12 space-y-10">
-			<div v-if="corporateWalletDetails.wallet.length" class="card space-y-4 p-6">
-				<div v-for="(itm, idx) in corporateWalletDetails.wallet.nuban_addresses" :key="idx" class="space-y-6">
+			<div v-if="corporateWalletDetails?.wallet?.nuban_addresses?.length" class="card space-y-10 p-6">
+				<div v-for="(itm, idx) in corporateWalletDetails?.wallet?.nuban_addresses" :key="idx" class="space-y-3">
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Bank Name
 						</p>
 						<p class="text-xl font-bold">
@@ -82,15 +82,15 @@
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Account Number
 						</p>
 						<p class="text-xl font-bold flex items-center gap-x-3">
-							<span class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" alt="">
+							<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="" @click="copyToClipboard(itm?.account_number)">
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Account Name
 						</p>
 						<p class="text-lg font-bold">
@@ -98,7 +98,7 @@
 						</p>
 					</div>
 					<div class="flex items-center justify-between">
-						<p class="text-gray-500">
+						<p class="text-gray-500 text-sm">
 							Service Provider
 						</p>
 						<p class="text-sm font-bold">
@@ -195,6 +195,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useClipboard } from '@/composables/core/useClipboard'
 import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/composables/modules/corporates/wallet'
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
@@ -202,7 +203,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
-
+const { copyToClipboard } = useClipboard()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -263,5 +264,4 @@ const tableFields = ref([
         value: 'status'
     }
 ])
-
 </script>

@@ -20,8 +20,34 @@
 				</div>
 			</div>
 			<div v-if="selected === 'transfer'" class="space-y-6">
-				<div v-if="corporateWalletDetails.wallet.length" class="p-6 bg-gray-50 rounded-md space-y-6">
-					<h1 class="text-sm font-medium">
+				<div v-if="Object.keys(corporateWalletDetails.wallet).length" class="p-6 bg-gray-50 rounded-md space-y-6">
+					<div class="space-y-6">
+						<div class="flex justify-between flex-col">
+							<p class="text-gray-500 text-sm">
+								Bank Name
+							</p>
+							<p class="text-sm font-bold">
+								{{ corporateWalletDetails.wallet.nuban_addresses[0].bank_name ?? 'N/A' }}
+							</p>
+						</div>
+						<div class="flex justify-between flex-col">
+							<p class="text-gray-500 text-sm">
+								Account Number
+							</p>
+							<p class="text-sm font-bold flex items-center gap-x-3">
+								<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ corporateWalletDetails.wallet.nuban_addresses[0].account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" class="cursor-pointer h-6 w-6" alt="" @click="copyToClipboard(itm?.account_number)">
+							</p>
+						</div>
+						<div class="flex justify-between flex-col">
+							<p class="text-gray-500 text-sm">
+								Account Name
+							</p>
+							<p class="text-sm font-bold">
+								{{ corporateWalletDetails.wallet.nuban_addresses[0].account_name ?? 'N/A' }}
+							</p>
+						</div>
+					</div>
+					<!-- <h1 class="text-sm font-medium">
 						ACCOUNT DETAILS
 					</h1>
 					<div class="">
@@ -47,7 +73,7 @@
 						<h1 class="font-bold text-gray-900 text-lg flex items-center gap-x-2">
 							Shuttlers <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="copy">
 						</h1>
-					</div>
+					</div> -->
 					<div class="flex items-center gap-x-10">
 						<img src="@/assets/icons/source/info.svg" class="h-7 w-7" alt="info">
 						<p class="text-sm text-gray-500">
@@ -140,11 +166,13 @@
 </template>
 
 <script setup lang="ts">
+import { useClipboard } from '@/composables/core/useClipboard'
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useFlutterWave } from '@/composables/modules/corporates/wallet'
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { makePayment, amount, desc, loading } = useFlutterWave()
+const { copyToClipboard } = useClipboard()
 getCorporateWalletObject()
  const fundingOptions = reactive([
     {

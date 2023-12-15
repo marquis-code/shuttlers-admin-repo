@@ -46,6 +46,17 @@
 							</p>
 							<p>{{ getApplicableEmployeeNarration(creditSystem?.applicable_employee_kind) }}</p>
 						</div>
+						<div v-if="creditSystem?.applicable_employee_value?.length" class="flex justify-between items-center border-b-[0.4px] py-6">
+							<p class="text-gray-500">
+								Selected Employees
+							</p>
+							<div class="flex items-center gap-x-3">
+								<p>{{ creditSystem?.applicable_employee_value?.length }}</p>
+								<button class=" text-shuttlersGreen font-semibold text-sm" @click="useCompaniesModal().openEmployeeExemption()">
+									View/Edit
+								</button>
+							</div>
+						</div>
 					</div>
 					<div>
 						<Table :has-index="true" :page="page" :loading="loadingExecutions" :headers="tableFields" :table-data="creditLineExecutions">
@@ -95,7 +106,7 @@
 			<ModulesCorporatesEditCreditLine />
 		</section>
 		<section v-if="route.query.tab === 'fund'">
-			<ModulesCorporatesEditCreditLine />
+			<ModulesCorporatesFundCreditLine />
 		</section>
 	</main>
 </template>

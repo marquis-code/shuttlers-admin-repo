@@ -3,11 +3,10 @@
 		modal="$atts.modal"
 		:title="`Employees to exempt (${creditSystem?.applicable_employee_value?.length})`"
 	>
-		<form class="space-y-3 mb-2" @submit.prevent="saveChanges">
+		<form class="space-y-3 mb-2">
 			<div class="flex justify-between items-center">
 				<div>
 					<label class="flex items-center gap-x-3 text-sm font-bold">
-						<!-- <input type="checkbox" @change="handleSelectAll"> -->
 						<input v-model="selectAll" type="checkbox" @change="handleSelectAll">
 						Select All
 					</label>
@@ -16,15 +15,16 @@
 					Remove selected ({{ selectedUsers.length }})
 				</p>
 			</div>
-			<!-- {{ computedUsersList }} -->
 			<div v-if="!loading" class="card space-y-4">
 				<div class="w-full">
-					<input type="search" placeholder="search staff.." class="py-2 w-full rounded-md border px-3 outline-none">
+					<input v-model="search" type="search" placeholder="search staff.." class="py-2 w-full rounded-md border px-3 outline-none">
 				</div>
-				<label v-for="user in computedUsersList" :key="user.id" class="flex items-center gap-x-3">
-					<input :id="user.id" v-model="user.selected" :value="user.id" @change="toggleSelected(user)" type="checkbox" :name="user.id">
-					{{ user?.fname }} {{ user?.lname }}
-				</label>
+				<div class="h-[300px] overflow-y-auto">
+					<label v-for="user in mapArray" :key="user.id" class="flex items-center gap-x-3">
+						<input v-model="user.selected" :value="user.id" type="checkbox" @change="toggleSelected(user)">
+						{{ user?.fname }} {{ user?.lname }}
+					</label>
+				</div>
 			</div>
 			<div v-else>
 				<Skeleton height="300px" />
@@ -62,16 +62,25 @@ const { getCorporatesCreditSystem, loading, creditSystem } = useGetCreditSystem(
 const usersList = ref([]) as any
 onMounted(() => {
 	getCorporatesCreditSystem()
-	// if (!loading.value) {
-	// 	usersList.value = creditSystem?.value.applicable_employee?.map((itm) => {
-    //   return { ...itm, selected: false }
-	// })
-	// }
 })
 const computedUsersList = computed(() => {
 	return creditSystem?.value.applicable_employee?.map((itm) => {
-      return { ...itm, selected: false }
+      return { ...itm, selected: !!selectAll.value }
 	})
+})
+
+const search = ref('')
+
+const filteredData = computed(() => {
+	const searchTerm = search.value.toLowerCase()
+	return creditSystem?.value.applicable_employee?.filter((itm) => {
+		return (itm.fname.toLowerCase().includes(searchTerm) ||
+        itm.lname.toLowerCase().includes(searchTerm))
+	})
+})
+
+const mapArray = computed(() => {
+	return search.value.length ? filteredData.value : computedUsersList.value
 })
 
 const form = reactive({
@@ -79,19 +88,15 @@ const form = reactive({
 })
 const selectAll = ref(false)
 const selectedUsers = ref([])
-const saveChanges = () => {
-
-}
 
 const toggleSelected = (itm) => {
 	itm.selected = !itm.selected
 }
 
 const handleSelectAll = () => {
-	selectAll.value = !selectAll.value
+	computedUsersList?.value?.map((itm) => {
+      return { ...itm, selected: true }
+	})
 }
+
 </script>
-
-<style>
-
-</style>

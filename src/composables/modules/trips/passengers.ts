@@ -30,7 +30,7 @@ const notificationObject = {
     sms: ref(false),
     email: ref(false)
 }
-const busstopUsersIds = ref([])
+const busstopUsersIds = ref([] as Record<string, any>[])
 
 export const useShowTripPassengersCard = () => {
     const { getUserById, selectedUser } = useUserIdDetails()
