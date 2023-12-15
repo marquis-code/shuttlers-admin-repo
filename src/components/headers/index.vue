@@ -84,7 +84,7 @@ const componentRouteArray = [
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners', 'partners-create'], component: Partners },
-    { routes: ['partners-payouts'], component: PartnerPayout },
+    { routes: ['partners-payouts', 'partners-payouts-completed', 'partners-payouts-failed'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },

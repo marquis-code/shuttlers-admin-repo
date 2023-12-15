@@ -27,6 +27,10 @@ export const partners_api = {
 		const url = '/partner-notifications'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
+	$_create_partner: (payload) => {
+		const url = '/partners'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
 	$_get_new_partners: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
         const url = `/partners?${queryParams}&metadata=true&limit=${meta.page_size.value}&page=${meta.page.value}&new_signup=1&related=owner`
