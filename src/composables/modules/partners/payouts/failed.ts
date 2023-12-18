@@ -3,7 +3,7 @@ import { usePagination } from '@/composables/utils/table'
 
 const payouts = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
-export const filterData = {
+const filterData = {
     status: ref('failed'),
     startDate: ref(''),
     endDate: ref(''),
@@ -42,5 +42,5 @@ export const useFailedPayouts = () => {
         }
     }
 
-	return { loading, payouts, fetchFailedPayouts, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+	return { loading, payouts, fetchFailedPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }

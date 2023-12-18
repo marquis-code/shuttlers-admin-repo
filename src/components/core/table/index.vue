@@ -174,7 +174,7 @@ const populateTable = (data: any) => {
 		if (item.value in data) {
 			element[item.value] = data[item.value]
 		} else {
-			element[item.value] = ''
+			element[item.value] = 'N/A'
 		}
 	})
 

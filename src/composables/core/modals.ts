@@ -61,6 +61,8 @@ import EditVehicleBus from '@/components/modals/modules/fleets/EditBus.vue'
 import EmployeeExemption from '@/components/modals/modules/companies/EmployeeExemption.vue'
 import ChangeFleetDriver from '@/components/modals/modules/fleets/ChangeFleetDriver.vue'
 import RejectShuttleRequest from '@/components/modals/modules/companies/RejectShuttleRequest.vue'
+import DeductPayout from '@/components/modals/modules/partners/payouts/Deduct.vue'
+import MarkMultipleAsPaid from '@/components/modals/modules/partners/payouts/Mark_multiple.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -75,6 +77,7 @@ type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | '
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
+type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -89,6 +92,7 @@ const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, Assign
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>
 const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
+const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -105,6 +109,7 @@ const tripsModal = modal.register('Trips', TripsModals)
 const driverModal = modal.register('Driver', DriverModals)
 const routeModal = modal.register('Routes', RoutesModal)
 const vehicleModal = modal.register('Vehicles', VehicleModals)
+const payoutModal = modal.register('Payout', PayoutModals)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -119,3 +124,4 @@ export const useTripsModal = () => tripsModal
 export const useDriverModal = () => driverModal
 export const useRouteModal = () => routeModal
 export const useVehicleModal = () => vehicleModal
+export const usePayoutModal = () => payoutModal
