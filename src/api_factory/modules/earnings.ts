@@ -31,5 +31,13 @@ export const earnings_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/partners/${partnerSid}/revenues?${queryParams}&earningId=${earningId}&page=${meta.page.value}&perPage=${meta.page_size.value}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_approve_revenue: (partnerSid: string, earningId: string, payload: Record<string, any>) => {
+		const url = `/partners/${partnerSid}/earnings/${earningId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_retry_approve_revenue: (partnerSid: string, earningId: string, payload: Record<string, any>) => {
+		const url = `/partners/${partnerSid}/earnings/${earningId}/retry`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

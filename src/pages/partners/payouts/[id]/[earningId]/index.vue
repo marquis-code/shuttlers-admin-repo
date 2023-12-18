@@ -160,7 +160,7 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid } from '@/composables/modules/partners/payouts/details'
+import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove } from '@/composables/modules/partners/payouts/details'
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 
@@ -168,6 +168,7 @@ const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, 
 const { loading, revenues, onFilterUpdate, moveTo, page, total, next, prev } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
+
 fetchParnersInfo()
 fetchEarningInfo()
 fetchDeductions()
