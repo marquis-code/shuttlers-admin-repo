@@ -76,7 +76,15 @@ $_get_credit_system: (corporateId:number) => {
 	const url = `/corporates/${corporateId}/credit-system`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
+$_create_company_settings: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}/settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
 $_create_company_domain: (corporateId:number, payload: any) => {
+	const url = `/corporates/${corporateId}/settings`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_create_company_email: (corporateId:number, payload: any) => {
 	const url = `/corporates/${corporateId}/settings`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 },
@@ -216,5 +224,9 @@ $_get_corporate_groups: (corporateId:number) => {
 $_create_corporate_group: (corporateId:number, payload:any) => {
 	const url = `/corporates/${corporateId}/groups`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_update__applicable_employee: (corporateId:number, payload:any) => {
+	const url = `/credit-systems/${corporateId}/applicable-employees`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 }
 }

@@ -17,9 +17,9 @@
 				<p class="text-sm font-medium text-gray-600">
 					Share this link to your staff whenever you need them to update their profiles
 				</p>
-				<div class="flex items-center relative">
+				<div class="flex items-center relative min-w-0">
 					<div class="w-full">
-						<input :value="inviteUrl" readonly class="input-field">
+						<input :value="inviteUrl" readonly class="input-field truncate">
 					</div>
 					<button class="text-shuttlersGreen absolute right-4 top-3 font-bold" @click="copyUrl">
 						Copy Link
@@ -40,7 +40,10 @@
 						Cancel
 					</button>
 					<button class="text-xs text-white px-3 py-2 rounded-md bg-shuttlersGreen" @click="updateStaffConfig">
-						Proceed
+						<span v-if="!processingCorporateSettings" class="flex justify-center items-center gap-2.5">
+							update
+						</span>
+						<Spinner v-else />
 					</button>
 				</div>
 				<button v-else class="bg-black text-white text-xs px-3 py-2 rounded-md" @click="isUpdate = true">
@@ -114,6 +117,8 @@
 import { useUpdateStaffAdditionByDomainStatus } from '@/composables/modules/corporates/toggleStaffAddition'
 import { useCorporateSetting } from '@/composables/modules/corporates/id'
 import { useAlert } from '@/composables/core/notification'
+import { useUserSetting } from '@/composables/modules/corporates/corporateSettings'
+const { loading: processingCorporateSettings, setStaffDetailsConfig, populateConfig } = useUserSetting()
 const { corporateSettings, loading: loadingCorporateSettings, getCorporateSettings } = useCorporateSetting()
 const { updateStaffAdditionStatus, loading, populateDomainForm, populateRouteVisibilityForm } = useUpdateStaffAdditionByDomainStatus()
 getCorporateSettings()
@@ -123,7 +128,7 @@ definePageMeta({
 })
 const url = ref(`https://business.shuttlers.africa/business/invitation?corporate_id=${useRoute().params.id}&mode=update`)
 const inviteUrl = computed(() => {
-	return `${url.value.slice(0, 60)}...`
+	return `${url.value.slice(0, 40)}...`
 })
 const copyUrl = async () => {
 	try {
@@ -167,11 +172,12 @@ const handleVisibilityOptionChange = () => {
 }
 
 const isUpdate = ref(false)
-const updateStaffConfig = () => {
-	useAlert().openAlert({
-		type: 'SUCCESS',
-		msg: 'Staff config successfully updated'
-	})
+const updateStaffConfig = async () => {
+	const payload = {
+		staff_details_config: corporateSettings.value.staff_details_config
+	}
+	populateConfig(payload)
+	await setStaffDetailsConfig()
 	isUpdate.value = false
 }
 </script>
