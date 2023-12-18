@@ -44,7 +44,7 @@
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="labe">PICKUP DATE</span>
-				<span>{{ rentalDetails.pickup_date }} </span>
+				<span>{{ rentalDetails.pickup_date }},  {{ rentalDetails.pickup_time }}</span>
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="labe">DROP OFF</span>
