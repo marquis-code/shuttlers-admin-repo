@@ -10,10 +10,10 @@
 				<button class="text-sm text-dark p-2 px-4 border border-dark rounded font-medium" @click="markAsPaid()">
 					Mark as paid
 				</button>
-				<button v-if="canApprove" class="text-sm bg-dark text-light p-2 px-4 rounded font-medium">
+				<button v-if="canApprove" class="text-sm bg-dark text-light p-2 px-4 rounded font-medium" @click="initApprove()">
 					Approve
 				</button>
-				<button v-if="canRetry" class="text-sm bg-dark text-light p-2 px-4 rounded font-medium">
+				<button v-if="canRetry" class="text-sm bg-dark text-light p-2 px-4 rounded font-medium" @click="initRetry()">
 					Retry
 				</button>
 			</div>
@@ -23,11 +23,13 @@
 
 <script setup lang="ts">
 import { useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
-import { usePayoutDetails } from '@/composables/modules/partners/payouts/details'
+import { usePayoutDetails, useApprove, useRetry } from '@/composables/modules/partners/payouts/details'
 
 const { loading_partners, partnerInfo, earningInfo } = usePayoutDetails()
 const { initDeduct } = useDeductPayout()
 const { initMarkAsPaid } = useMarkAsPaid()
+const { initApprove } = useApprove()
+const { initRetry } = useRetry()
 
 const deduct = () => {
 	const data = {
