@@ -36,6 +36,7 @@ import EditCompany from '@/components/headers/modules/Companies/edit-company.vue
 import BatchBookingDetails from '@/components/headers/modules/Users/BatchBooking/batch-booking-details.vue'
 import PartnerDetails from '@/components/headers/modules/Partners/partner-details.vue'
 import PartnerPayout from '@/components/headers/modules/Partners/partner-payout.vue'
+import PayoutDetails from '@/components/headers/modules/Partners/payout_details.vue'
 import Trips from '@/components/headers/modules/Trips/index.vue'
 import Rental from '@/components/headers/modules/Trips/rentals.vue'
 import Routes from '@/components/headers/modules/Routes/index.vue'
@@ -86,6 +87,7 @@ const componentRouteArray = [
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners', 'partners-create'], component: Partners },
     { routes: ['partners-payouts', 'partners-payouts-completed', 'partners-payouts-failed'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
+    { routes: ['partners-payouts-id-earningId'], component: PayoutDetails },
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },

@@ -80,6 +80,6 @@ defineProps({
 
 <style scoped>
 .item{
-    @apply block rounded-lg px-1 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 w-full text-start
+    @apply block rounded-lg px-1 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700 w-full text-start whitespace-nowrap
 }
 </style>

@@ -49,9 +49,11 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { usePendingPayouts } from '@/composables/modules/partners/payouts/pending'
+import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
 const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
+const { initMarkAsPaid } = useMarkAsPaid()
+const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
 
 definePageMeta({
@@ -60,8 +62,8 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Mark as paid', func: (data) => { alert(data.id) } },
-	{ name: 'Deduct', func: (data) => { alert(data.id) }, class: '!text-red' }
+	{ name: 'Mark as paid', func: (data) => { initMarkAsPaid(data) } },
+	{ name: 'Deduct', func: (data) => { initDeduct(data) }, class: '!text-red' }
 ])
 
 const tableFields = ref([
