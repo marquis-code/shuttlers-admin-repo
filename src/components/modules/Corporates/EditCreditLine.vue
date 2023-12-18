@@ -11,7 +11,7 @@
 				</p>
 			</div>
 
-			<form class="flex flex-col gap-4 px-6 py-6" @submit.prevent="createCreditLine">
+			<div class="flex flex-col gap-4 px-6 py-6">
 				<div class=" space-y-6">
 					<div class="field relative">
 						<label for="First">How much credit line do you want to give each employee?</label>
@@ -42,13 +42,21 @@
 						</label>
 					</div>
 				</div>
-				<div>
-					<button type="submit" class="btn-primary ml-auto mt-12" :disabled="createLoading">
-						<span v-if="!createLoading">Activate Credit Line</span>
-						<Spinner v-else />
-					</button>
+				<div class="flex items-end gap-x-4 justify-end">
+					<div>
+						<button type="submit" class="btn-primary ml-auto mt-12" @click="handleUpdateUsersList">
+							<span v-if="!updatingApplicableEmployee">Update User List</span>
+							<Spinner v-else />
+						</button>
+					</div>
+					<div>
+						<button type="submit" class="bg-white py-3 px-6 rounded-md ml-auto mt-12 text-rose-600 border-2 border-rose-600" :disabled="createLoading" @click="handleCreditLineUpdate">
+							<span v-if="!createLoading" class="">Update Credit Line</span>
+							<Spinner v-else />
+						</button>
+					</div>
 				</div>
-			</form>
+			</div>
 		</div>
 		<div v-else>
 			<Skeleton height="600px" width="800px" />
@@ -57,9 +65,14 @@
 </template>
 
 <script lang="ts" setup>
+import { useEditCreditSystem } from '@/composables/modules/corporates/editCreditLine'
+import { useUpdateApplicableEmployee } from '@/composables/modules/corporates/updateApplicableEmployee'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useGetCreditSystem } from '@/composables/modules/corporates/creditLine'
 const { getCorporatesCreditSystem, creditSystem, loading } = useGetCreditSystem()
+const { populateEmployeeList, loading: updatingApplicableEmployee, updateApplicableEmployee } = useUpdateApplicableEmployee()
+const { editCorporatesCreditSystem, creditSystemForm, loading: updating, populateCreditSystemForm } = useEditCreditSystem()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
@@ -97,7 +110,35 @@ const reasonForCreditLine = ref([
 
 const createCreditLine = () => {}
 
+const handleCreditLineUpdate = () => {
+	useConfirmationModal().openAlert({
+        title: 'Please Confirm',
+		type: 'NORMAL',
+        desc: 'Are you sure you want to update this credit line to the applicable staff of this company?',
+		loading: updating,
+		call_function: () => handleCreditSystemUpdate()
+    })
+}
+
 const showEmployeeList = computed(() => {
     return !!(form.option === 'all_employees_except_some' || form.option === 'only_some_select_employees')
 })
+
+const handleCreditSystemUpdate = () => {
+	const payload = {
+		applicable_employee_kind: creditSystem.value.applicable_employee_kind,
+    is_automatic: creditSystem.value.is_automatic,
+    amount: creditSystem.value.amount,
+    applicable_employee_value: creditSystem?.value.applicable_employee_value
+	}
+	populateCreditSystemForm(payload)
+	editCorporatesCreditSystem(creditSystem.value.id)
+}
+const handleUpdateUsersList = () => {
+	const payload = {
+		applicable_employee_value: creditSystem?.value.applicable_employee_value
+	}
+	populateEmployeeList(payload)
+	updateApplicableEmployee(creditSystem.value.id)
+}
 </script>

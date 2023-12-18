@@ -1,10 +1,11 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-
+import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
+const { selectedCorporate } = useCorporateIdDetails()
 const shifts = ref([]) as Ref<any[]>
 const loading = ref(false)
 
 export const useCorporateWorkShifts = () => {
-	const getShifts = async (id:string|number) => {
+	const getShifts = async (id: number) => {
 		loading.value = true
 		const res = await corporates_api.$_get_corporate_shifts(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
