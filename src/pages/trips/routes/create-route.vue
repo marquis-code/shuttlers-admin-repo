@@ -166,7 +166,6 @@ const selectedEndAddress = (val) => {
 }
 
 const selectedAdditionalEndPoint = (val) => {
-	console.log(val, 'val here')
 	form.addedStopLocation = val.name
 	form.added_stop_geo_cordinate = `${val.lat},${val.lng}`
 }
