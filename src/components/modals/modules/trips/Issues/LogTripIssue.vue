@@ -41,7 +41,6 @@
 				<div class="flex flex-col gap-2">
 					<label class="label">Check-up time</label>
 					<InputTimeInput id="check-up-time" v-model="check_up_time" />
-					{{ check_up_time }}
 				</div>
 			</div>
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
