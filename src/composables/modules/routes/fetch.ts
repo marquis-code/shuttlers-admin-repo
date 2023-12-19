@@ -101,7 +101,7 @@ export const useGetSuspendedRoutes = () => {
 
         if (res.type !== 'ERROR') {
             suspendedRoutesList.value = res.data.data
-            metaObject.total.value = res.data.pagination?.pageCount
+            metaObject.total.value = res.data.metadata.total_pages
         }
         loadingSuspendedRoutes.value = false
     }
