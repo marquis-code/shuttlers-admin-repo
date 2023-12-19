@@ -174,8 +174,8 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       },
       {
         title: 'Trip issues',
-        routePath: '/trip-issues',
-        oldPath: '/trips-issues',
+        routePath: '/trips/trip-issues',
+        oldPath: '/trips/trips-issues',
         shouldRedirect: false,
         description: 'Handle shuttlers trip issues'
       }

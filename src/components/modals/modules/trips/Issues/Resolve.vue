@@ -43,8 +43,13 @@
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="label">Resolution</label>
-				<select v-model="resolution" required class="input-field">
-					<option v-for="n in ['Buffer', 'Pilot warned', 'Others']" :key="n" :value="n">
+				<Skeleton v-if="fetching_resolution" height="45px" />
+				<select v-else v-model="resolution" required class="input-field">
+					<option v-for="n in resolution_types" :key="n.id" :value="n.name">
+						{{ n.name }}
+					</option>
+					<!-- ['Buffer', 'Pilot warned', 'Others'] -->
+					<option v-for="n in ['Others']" :key="n" :value="n">
 						{{ n }}
 					</option>
 				</select>
@@ -63,16 +68,19 @@
 
 <script setup lang="ts">
 import { useResolveIssues } from '@/composables/modules/trips/issues'
+import { useFetchResolutionTypes } from '@/composables/modules/trips/issues/types/resulution_types'
 
 const { route_code, start_time, desc, incident, loading, resolveIssue, clearObj, resolution_desc, resolution } = useResolveIssues()
+const { fetchResolutionTypes, resolution_types, loading: fetching_resolution } = useFetchResolutionTypes()
 
 const enableButton = computed(() => {
-	return !!(resolution.value === 'Others' && resolution_desc.value.length)
+	return !!(resolution.value.length || (resolution.value === 'Others' && resolution_desc.value.length))
 })
 watch(resolution, () => {
 	if (resolution.value === 'Others') resolution_desc.value = ''
 })
 
+fetchResolutionTypes()
 onBeforeUnmount(() => clearObj())
 </script>
 
