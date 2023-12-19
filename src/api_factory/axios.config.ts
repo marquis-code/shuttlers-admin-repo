@@ -61,7 +61,7 @@ instanceArray.forEach((instance) => {
 	instance.interceptors.request.use(
 		(config) => {
 			if (token.value) {
-				config.headers.Authorization = `Bearer ${token.value}`
+				// config.headers.Authorization = `Bearer ${token.value}`
 			}
 			return config
 		}

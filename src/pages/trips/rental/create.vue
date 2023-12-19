@@ -1,6 +1,6 @@
 <template>
-	<main class="flex w-full h-[calc(100vh-150px)] m-0 p-0">
-		<section class="flex flex-col lg:w-6/12 xl:w-7/12 w-full pb-0">
+	<main class="flex gap-6 w-full h-[90vh] p-6 pb-0 relative">
+		<section class="flex flex-col lg:w-6/12 xl:w-7/12 w-full">
 			<h1 class="text-2xl font-bold">
 				Rent a Vehicle
 			</h1>
@@ -11,10 +11,10 @@
 				<ModulesTripsRentalVehicleList />
 			</div>
 		</section>
-		<section v-if="step<3 && shouldShowOnSmallScreen" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12  !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light">
+		<section v-if="step<3 && shouldShowOnSmallScreen" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12  !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light p-5">
 			<ModulesTripsRentalSelectedVehicle v-if="Object.keys(selectedVehicle).length" />
 			<ModulesTripsRentalSelectedVehicleList v-else-if="Object.keys(selectedVehicle).length === 0 && selectedVehiclessList.length" />
-			<div v-else id="emptyState" class="lg:flex flex-col items-center text-center my-auto hidden">
+			<div v-else id="emptyState" class="lg:flex flex-col items-center text-center my-auto hidden ">
 				<!-- <Icon name="bus" class="w-20 text-neut3 mb-4" /> -->
 				<img src="@/assets/icons/source/bus.svg" class="w-20 mx-auto">
 				<p class="text-lg">
@@ -50,7 +50,7 @@ onMounted(() => {
 })
 
 definePageMeta({
-    layout: 'dashboard',
+    layout: 'dashboard-zero',
     middleware: ['is-authenticated']
 })
 </script>
