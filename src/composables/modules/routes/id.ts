@@ -1,7 +1,9 @@
+import { filterData } from '../drivers'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
-
+import { useDateFormatter } from '@/composables/core/dateFormatter'
+const { formatDateToYYYYMMDD } = useDateFormatter(new Date())
 const selectedRoute = ref({} as Record<string, any>)
 const selectedRouteId = ref('')
 const selectedItineraryId = ref('')
@@ -63,8 +65,8 @@ export const useRouteTrips = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const filterData = {
-        startDate: ref(''),
-        endDate: ref(''),
+        startDate: ref('') ?? new Date(),
+        endDate: ref('') ?? new Date(),
         tripStatus: ref(''),
         itineraryId: ref('')
     }
@@ -88,8 +90,8 @@ export const useRouteTrips = () => {
     const onFilterUpdate = (data) => {
         switch (data.type) {
             case 'dateRange':
-                filterData.startDate.value = data.value[0]
-                filterData.endDate.value = data.value[1]
+                filterData.startDate.value = data.value[0] || formatDateToYYYYMMDD()
+                filterData.endDate.value = data.value[1] || formatDateToYYYYMMDD()
                 break
                 case 'tripStatus':
                     filterData.tripStatus.value = data.value

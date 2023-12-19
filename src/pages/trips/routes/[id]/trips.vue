@@ -2,7 +2,30 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="computedRoutesTrips" :has-options="true">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
+				<div class="flex items-end justify-end">
+					<TableFilter :filter-type="{showDateRange: true}" @filter="onFilterUpdate" />
+					<div class="bg-white border-[0.4px] py-2 w-full pr-4">
+						<div class="flex items-end justify-end gap-x-3">
+							<div>
+								<select v-model="filterData.itineraryId.value" class="border outline-none w-full border-gray-600 px-3 py-2.5 rounded-md">
+									<option value="all">
+										All itineraries
+									</option>
+									<option v-for="(itm, idx) in itineraries" :key="idx" :value="itm.id">
+										{{ itm.trip_time }}
+									</option>
+								</select>
+							</div>
+							<div>
+								<select v-model="filterData.tripStatus.value" class="border outline-none w-full border-gray-600 px-3 py-2.5 rounded-md">
+									<option v-for="(item, idx) in tripType" :key="idx" :value="item.value">
+										{{ item.name }}
+									</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.status" class="w-[100px]">
@@ -32,9 +55,12 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useItineraries } from '@/composables/modules/routes/itineraries'
 import { useRouteTrips } from '@/composables/modules/routes/id'
 
 const { tripsList, loading, getRouteTrips, filterData, onFilterUpdate, page, total, prev, next, moveTo } = useRouteTrips()
+const { loading_single_iti, itineraries, singleItinerary, getItineraries } = useItineraries()
+getItineraries()
 getRouteTrips()
 
 definePageMeta({
@@ -95,6 +121,28 @@ const tableFields = ref([
         value: ''
     }
 ])
+
+const tripType = reactive([
+	{
+		name: 'All Trips',
+		value: 'all_trips'
+	},
+	{
+		name: 'Active Trips',
+		value: 'active'
+	},
+	{
+		name: 'Upcoming Trips',
+		value: 'upcoming'
+	},
+	{
+		name: 'Completed Trips',
+		value: 'completed'
+	}
+])
+
+const selectedTrip = ref('')
+const selectedItineraries = ref('')
 
 </script>
 

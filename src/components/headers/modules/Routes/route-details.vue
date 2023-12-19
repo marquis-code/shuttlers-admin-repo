@@ -4,14 +4,20 @@
 			<RouterTabs :tabs="pageTabs" />
 		</template>
 		<template #actions>
-			<HeaderActionOptions :header-options="headerOptions" />
+			<ButtonIconDropdown class="bg-black font-medium text-white px-3 py-1 rounded-lg" button-text="Actions" :children="dropdownChildren" :data="selectedRoute" class-name="w-56" />
 		</template>
 	</HeadersHeaderSlot>
 </template>
 
 <script setup lang="ts">
+import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useRouteModal } from '@/composables/core/modals'
+import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/delete'
+import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/update'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
+const { updateRoute, loading } = useUpdateRouteStatus()
 const { selectedRoute, getRouteById } = useRouteIdDetails()
+const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
 const router = useRouter()
 
 if (Object.keys(selectedRoute.value).length === 0) {
@@ -38,32 +44,35 @@ const pageTabs = computed(() => [
     }
 ])
 
-const headerOptions = computed(() => {
-    return [
-        {
-            name: 'Edit',
-            func: () => editRoute(),
-            class: 'text-gray-600'
-        },
-        {
-            name: 'Suspend',
-            func: () => {},
-            class: 'text-gray-600'
-        },
-        {
-            name: 'Duplicate',
-            func: () => {},
-            class: 'text-gray-600'
-        },
-        {
-            name: 'Delete',
-            func: () => {},
-            class: 'text-rose-500'
-        }
-    ]
-})
+const dropdownChildren = computed(() => [
+	{ name: 'Edit', func: (data) => {} },
+	{ name: 'suspend', func: (data) => { handleRouteStatus(data) } },
+	{ name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
+	{ name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }
+])
 
 const editRoute = () => {
     router.push(`/trips/routes/${selectedRoute.value.id}/edit`)
+}
+
+const handleRouteStatus = (data: any) => {
+	const actionType = data.status === 0 ? 'unsuspend' : 'suspend'
+    useConfirmationModal().openAlert({
+        title: `Sure to ${data.status === 0 ? 'Un-suspend' : 'suspend'} route?`,
+		type: 'NORMAL',
+        desc: `Customers will ${data.status === 0 ? 'will' : 'no longer'} discover this route when searching on the mobile`,
+		loading,
+		call_function: () => updateRoute(data.id, actionType)
+    })
+}
+
+const handleRouteDelete = (data: any) => {
+    useConfirmationModal().openAlert({
+        title: 'Sure to delete route?',
+		type: 'NORMAL',
+        desc: 'Customers will no longer discover this route when searching on the mobile',
+		loading: deletingRoute,
+		call_function: () => deleteRoute(data.id)
+    })
 }
 </script>
