@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { isObject } from '@vue/shared'
-import { initedLoader } from '@/composables/core/map'
+import { InitedLoader } from '@/composables/core/map'
 
 const props = defineProps({
   modelValue: { type: Object, default: () => {} },
@@ -38,7 +38,7 @@ const modelValueProp = toRef(props, 'modelValue')
 
 onMounted(() => {
 	const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-	const loader = new initedLoader({
+	const loader = new InitedLoader({
 		apiKey: GOOGLE_MAPS_API_KEY as string,
 		libraries: ['places']
 	})

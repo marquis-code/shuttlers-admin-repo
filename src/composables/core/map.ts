@@ -8,7 +8,7 @@ export const loader = new Loader({
     version: 'beta'
 })
 
-export const initedLoader = Loader
+export const InitedLoader = Loader
 
 let map: google.maps.Map
 
