@@ -8,13 +8,26 @@ export const trip_issues_api = {
 		const url = `/trip-issues?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_all_resolved_issues: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/trip-issues?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_all_issues_types: () => {
 		const url = '/trip-issue-types'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_all_resolution_types: () => {
+		const url = '/trip-issue-resolution-types'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_issues: (payload: any) => {
 		const url = '/trip-issues'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_update_issues: (id:number, payload: any) => {
+		const url = `/trip-issues/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
 	$_resolve_issues: (issue_id:number, payload: any) => {
 		const url = `/trip-issues/${issue_id}/resolve`
