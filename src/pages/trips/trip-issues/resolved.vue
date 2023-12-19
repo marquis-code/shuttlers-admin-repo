@@ -4,7 +4,7 @@
 			:loading="loading"
 			:has-index="true"
 			:headers="tableFields"
-			:table-data="issues"
+			:table-data="resolved_issues"
 			:has-options="false"
 			:had-index="true"
 			:page="page"
@@ -15,21 +15,37 @@
 						showStatus: false,
 						showSearchBar: true,
 						showDownloadButton: true,
-						showDatePicker: true,
+						showDateRange: true,
 					}"
 					@filter="onFilterUpdate"
 				>
-					<template #filter_others>
+					<!-- <template #filter_others>
 						<div class="flex items-stretch gap-2">
-							<ButtonMultiSelectDropdown :children="filterChildren" title="Resolution" />
-							<select class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
+							<ButtonMultiSelectDropdown v-model="selected_resolution_type" :children="filterChildren" title="Resolution" />
+							<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
 								<option value="all">
 									All
 								</option>
+								<option v-for="n in issues_types" :key="n.id" :value="n.name">
+									{{ n.name }}
+								</option>
 							</select>
 						</div>
-					</template>
+					</template> -->
 				</TableFilter>
+			</template>
+			<template #sub_header>
+				<div class="flex items-stretch justify-end gap-4 p-2 w-full border border-b-0">
+					<ButtonMultiSelectDropdown v-model="selected_resolution_type" :children="filterChildren" title="Resolution" />
+					<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
+						<option value="">
+							All
+						</option>
+						<option v-for="n in issues_types" :key="n.id" :value="n.name">
+							{{ n.name }}
+						</option>
+					</select>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.route_code" class="text-sm text-[#7493CB] font-medium whitespace-nowrap">
@@ -69,10 +85,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import moment from 'moment'
-import { useFetchIssues, useResolveIssues } from '@/composables/modules/trips/issues'
+import { useFetchResolved, useResolveIssues } from '@/composables/modules/trips/issues'
+import { useFetchIssueTypes, useFetchResolutionTypes } from '@/composables/modules/trips/issues/types'
 
-const { loading, issues, fetchIssues, prev, page, total, next, moveTo, onFilterUpdate } = useFetchIssues()
+const { loading, resolved_issues, selected_resolution_type, resolution_type, incident, fetchResolved, prev, page, total, next, moveTo, onFilterUpdate } = useFetchResolved()
 const { initResolveIssues } = useResolveIssues()
+const { issues_types, fetchIssuesTypes } = useFetchIssueTypes()
+const { fetchResolutionTypes, resolution_types, loading: fetching_resolution } = useFetchResolutionTypes()
+
 const tableFields = ref([
 	{ value: 'route_code', text: 'Route code' },
 	{ value: 'pilot', text: 'Pilot' },
@@ -82,17 +102,24 @@ const tableFields = ref([
 	{ value: 'logged_by', text: 'Logged by' }
 ])
 
-const filterChildren = [
-	{ name: 'Buffer', value: 'exclusive' },
-	{ name: 'Pilot warned', value: 'shared' },
-	{ name: 'Others', value: 'others' }
-]
+const filterChildren = computed(() => {
+	return [
+		...resolution_types.value.map((el) => {
+			return { name: el.name, value: el.name }
+		}),
+		// { name: 'Buffer', value: 'exclusive' },
+		// { name: 'Pilot warned', value: 'shared' },
+		{ name: 'Others', value: 'others' }
+	]
+})
 
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
-fetchIssues()
+fetchIssuesTypes()
+fetchResolutionTypes()
+fetchResolved()
 </script>
 
 <style scoped>

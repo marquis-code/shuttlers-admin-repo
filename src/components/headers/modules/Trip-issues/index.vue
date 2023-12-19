@@ -4,9 +4,9 @@
 			<RouterTabs :tabs="pageTabs" />
 		</template>
 		<template #actions>
-			<button class="p-2 rounded-md text-sm text-light bg-dark px-4" @click="useTripsModal().openCreateIssues()">
+			<!-- <button class="p-2 rounded-md text-sm text-light bg-dark px-4" @click="useTripsModal().openCreateIssues()">
 				Log Issues
-			</button>
+			</button> -->
 		</template>
 	</HeadersHeaderSlot>
 </template>
@@ -15,8 +15,8 @@
 import { useTripsModal } from '@/composables/core/modals'
 
 const pageTabs = [
-    { name: 'Follow up', path: '/trip-issues' },
-    { name: 'Resolved', path: '/trip-issues/resolved' }
+    { name: 'Follow up', path: '/trips/trip-issues' },
+    { name: 'Resolved', path: '/trips/trip-issues/resolved' }
 ]
 </script>
 

@@ -1,68 +1,30 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		:title="!isEdit ? 'Create Issue' : 'Update Issue'"
+		title=""
 	>
-		<form class="flex flex-col gap-4 w-full">
-			<div class="grid grid-cols-2 gap-4">
-				<div class="flex flex-col gap-2">
-					<label class="label">Route code</label>
-					<input v-model.trim="route_code" required disabled type="text" class="input-field">
-				</div>
-				<div class="flex flex-col gap-2">
-					<label class="label">Trip start time</label>
-					<Skeleton v-if="false" height="45px" radius="10px" />
-					<select v-else v-model="trip_start_time" required class="input-field">
-						<option v-for="n in 3" :key="n" :value="n">
-							{{ n }}
-						</option>
-					</select>
-				</div>
-			</div>
+		<div class="flex flex-col items-center gap-8">
+			<img src="@/assets/icons/source/success_check.svg" alt="">
 			<div class="flex flex-col gap-2">
-				<label class="label">Incident</label>
-				<Skeleton v-if="fetching_types" height="45px" radius="10px" />
-				<select v-else v-model="incident" required class="input-field">
-					<option v-for="n in issues_types" :key="n.id" :value="n.id">
-						{{ n.name }}
-					</option>
-				</select>
+				<h3 class="text-base font-medium text-dark text-center">Successful</h3>
+				<p class="text-grey5 text-center font-medium">
+					You have successfully logged an issue, go to
+					<NuxtLink to="/trips/trip-issues" class="text-green7" @click="useTripsModal().closeCreateIssues()">
+						Issues
+					</NuxtLink>
+					to see all logged issues.
+				</p>
+				<button type="button" class="text-sm bg-dark p-3 text-light text-center rounded" @click="useTripsModal().closeCreateIssues()">
+					Dismiss
+				</button>
 			</div>
-			<div class="flex flex-col gap-2">
-				<label class="label">Description</label>
-				<textarea v-model.trim="desc" required placeholder="Write a short description about this issue"
-					class="input-field max-h-[100px]" cols="30" rows="10"
-				/>
-			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<div class="flex flex-col gap-2 w-full">
-					<label class="label">Check-up date</label>
-					<InputDateInput id="check-up-date" v-model="check_up_date" class="font-light !min-w-[100px]" placeholder="Filter by date" />
-				</div>
-				<div class="flex flex-col gap-2">
-					<label class="label">Check-up time</label>
-					<InputTimeInput id="check-up-time" v-model="check_up_time" />
-				</div>
-			</div>
-			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
-				{{ loading ? 'processing...' : `${isEdit ? 'Update issue' : 'Log issue'}` }}
-			</button>
-		</form>
+		</div>
 	</Modal>
 </template>
 
 <script setup lang="ts">
-import { useCreateIssues } from '@/composables/modules/trips/issues'
-import { useFetchIssueTypes } from '@/composables/modules/trips/issues/types/fetch'
+import { useTripsModal } from '@/composables/core/modals'
 
-const { route_code, isEdit, clearObj, trip_start_time, check_up_date, incident, desc, check_up_time, loading } = useCreateIssues()
-const { loading: fetching_types, issues_types, fetchIssuesTypes } = useFetchIssueTypes()
-const enableButton = computed(() => {
-	return !!(check_up_date.value && check_up_time.value && trip_start_time.value)
-})
-
-fetchIssuesTypes()
-onBeforeUnmount(() => clearObj())
 </script>
 
 <style scoped>

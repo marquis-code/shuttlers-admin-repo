@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const rental_api = {
@@ -29,6 +29,6 @@ export const rental_api = {
 	},
 	$_request_charter: (payload: Record<string, any>) => {
         const url = '/event-charters'
-        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+        return GATEWAY_ENDPOINT.post(url, payload)
     }
 }

@@ -15,14 +15,17 @@
 						showStatus: false,
 						showSearchBar: true,
 						showDownloadButton: true,
-						showDatePicker: true,
+						showDateRange: true,
 					}"
 					@filter="onFilterUpdate"
 				>
 					<template #filter_others>
-						<select class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
-							<option value="all">
+						<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
+							<option value="">
 								All
+							</option>
+							<option v-for="n in issues_types" :key="n.id" :value="n.name">
+								{{ n.name }}
 							</option>
 						</select>
 					</template>
@@ -42,7 +45,7 @@
 					{{ moment(item.data?.routeday?.trip_date).format('ll') }} ({{ item.data.routeday?.itinerary?.trip_time || 'N/A' }})
 				</p>
 				<p v-if="item.check_up_date" class="text-sm whitespace-nowrap">
-					{{ moment(item.data?.check_up_date).format('ll') }} ({{ moment.utc(item.data?.check_up_date).format('LT') }})
+					{{ moment(item.data?.checkup_date_time).format('ll') }} ({{ moment.utc(item.data?.checkup_date_time).format('LT') }})
 				</p>
 				<p v-if="item.logged_by" class="text-sm whitespace-nowrap">
 					{{ item.data?.staff?.fname || '' }} {{ item.data?.staff?.lname || '' }}
@@ -69,10 +72,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import moment from 'moment'
-import { useFetchIssues, useResolveIssues } from '@/composables/modules/trips/issues'
+import { useFetchIssues, useResolveIssues, useCreateIssues } from '@/composables/modules/trips/issues'
+import { useFetchIssueTypes } from '@/composables/modules/trips/issues/types/fetch'
 
-const { loading, issues, fetchIssues, prev, page, total, next, moveTo, onFilterUpdate } = useFetchIssues()
+const { loading, issues, fetchIssues, prev, page, total, next, moveTo, onFilterUpdate, incident } = useFetchIssues()
+const { issues_types, fetchIssuesTypes } = useFetchIssueTypes()
 const { initResolveIssues } = useResolveIssues()
+const { initUpdateIssues } = useCreateIssues()
 const tableFields = ref([
 	{ value: 'route_code', text: 'Route code' },
 	{ value: 'pilot', text: 'Pilot' },
@@ -85,13 +91,14 @@ const tableFields = ref([
 
 const dropdownChildren = computed(() => [
 	{ name: 'Resolve issue', func: (data:any) => { initResolveIssues(data) } },
-	{ name: 'Edit', func: (data:any) => { alert(data.id) } }
+	{ name: 'Edit', func: (data:any) => { initUpdateIssues(data) } }
 ])
 
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+fetchIssuesTypes()
 fetchIssues()
 </script>
 

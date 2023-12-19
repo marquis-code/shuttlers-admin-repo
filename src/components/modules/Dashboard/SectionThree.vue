@@ -132,8 +132,8 @@ const form = reactive({
 })
 const isFilterUpdated = ref(false)
 
-payload.from.value = useDateFormat(form.rate[0], 'MMMM d, YYYY').value
-payload.to.value = useDateFormat(form.rate[1], 'MMMM d, YYYY').value
+payload.from.value = useDateFormat(form.rate[0], 'YYYY-MM-D').value
+payload.to.value = useDateFormat(form.rate[1], 'YYYY-MM-D').value
 
 watch(
   () => form,
