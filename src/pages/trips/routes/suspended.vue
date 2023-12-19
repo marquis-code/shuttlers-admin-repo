@@ -5,52 +5,36 @@
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.action">
-					<button v-if="data.item.status == 'active'"
-						class="btn bg-transparent text-black text-xs rounded outline-none border-black"
-						@click="openRestoreModal(data.item)">
-						Cancel
-					</button>
-					<p v-else class="m-0 text-sm whitespace-nowrap w-fit">
-						{{ useDateFormat(data.item.updated_at, "MMMM Do YYYY").value }}
-					</p>
+				<div v-if="item.route_type">
+					<span class="font-medium" :class="[item?.data?.route_type === 'shared' ? 'text-yellow-600' : 'text-indigo-600']">{{ item?.data?.route_type }}</span>
 				</div>
-				<div v-if="item.route_codes">
-					{{ item?.data?.route_codes }}
+				<div v-if="item.route_visibility">
+					{{ item?.data?.route_visibility }}
 				</div>
-				<div v-if="item.user">
-					<p class="whitespace-nowrap">
-						{{ data?.item?.user }}
-					</p>
-				</div>
-				<!-- <div v-if="item.staff">
-					<p class="whitespace-nowrap">
-						{{ data.item.staff.fname }} {{ data.item.staff.lname }} <br> {{
-							data.item.staff.email }}
-					</p>
-				</div> -->
-				<!-- <div v-if="item.staff_id">
-					<p class="whitespace-nowrap">
-						{{ data.item.staff.fname }} {{ data.item.staff.lname }} <br> {{
-							data.item.staff.email }}
-					</p>
-				</div> -->
-				<!-- <div v-if="item.suspension_dates">
+				<div v-if="item.suspension_data">
 					<span v-for="n in data.value" :key="n" class="block whitespace-nowrap">
-						{{ useDateFormat(n, "dddd, MMMM Do YYYY").value }}
+						{{ n }}
 					</span>
-				</div> -->
-				<!-- <div v-if="item.suspension_data">
-					{{ !data.item.suspension_data?.routes?.length ? 'All' : data.item.suspension_data.routes.map((route) =>
-						route.route_code ?? 'N/A').join(', ') }}
-				</div> -->
+				</div>
+				<div v-if="item.staff">
+					<p class="whitespace-nowrap">
+						{{ item.data.staff.fname }} {{ item.data.staff.lname }} <br> {{
+							item.data.staff.email }}
+					</p>
+				</div>
 				<div v-if="item.suspension_dates">
-					<span v-for="n in data.value" :key="n" class="block whitespace-nowrap">
-						{{ useDateFormat(n, "dddd, MMMM Do YYYY").value }}
+					<span v-for="n in item.data.suspension_dates" :key="n" class="block whitespace-nowrap">
+						{{ useDateFormat(n, "MMMM d, YYYY").value }}
 					</span>
+				</div>
+				<span v-if="item.updated_at">
+					{{ useDateFormat(item?.data?.updated_at, "MMMM d, YYYY").value }}
+				</span>
+				<div v-if="item.status">
+					<span class="text-white px-2 text-sm py-1 rounded-lg" :class="[item.data.status === 'completed' ? 'bg-indigo-600' : 'bg-yellow-500']">{{ item?.data?.status }}</span>
 				</div>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item?.data?.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+					{{ useDateFormat(item?.data?.created_at, "MMMM d, YYYY").value }}
 				</span>
 			</template>
 
@@ -79,7 +63,6 @@ suspendedRoutesList.value.map((i) => {
              route_codes: !i.suspension_data?.routes?.length ? 'All' : i.suspension_data.routes.map((route) => route.route_code ?? 'N/A').join(', '),
 			 action: '',
 			 user: `${i.staff.fname} ${i.staff.lname}`
-			//  staff_email: i.staff.email
          }
     })
 )
@@ -99,11 +82,11 @@ const tableFields = ref([
     },
     {
         text: 'PERIOD',
-        value: 'period'
+        value: 'suspension_dates'
     },
     {
         text: 'ADMIN',
-        value: 'user'
+        value: 'staff'
     },
 	{
         text: 'DATE PERFORMED',
@@ -119,7 +102,7 @@ const tableFields = ref([
     },
 	{
         text: 'ACTION',
-        value: 'action'
+        value: 'updated_at'
     }
 ])
 

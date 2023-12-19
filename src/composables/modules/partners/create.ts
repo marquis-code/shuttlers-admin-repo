@@ -112,7 +112,6 @@ export const useCreatePartner = () => {
 			const res = await users_api.$_create_users(user_payload) as CustomAxiosResponse
 			if (res.type !== 'ERROR') {
 				new_partner_id.value = res.data?.id ? res.data.id : null
-				console.log(new_partner_id.value)
 				setTimeout(() => {
 					addPartner()
 				}, 500)
