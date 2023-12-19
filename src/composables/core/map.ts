@@ -1,5 +1,5 @@
 import { Loader } from '@googlemaps/js-api-loader'
-import { insertScriptTag } from '../utils/system'
+// import { insertScriptTag } from '../utils/system'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 export const loader = new Loader({
@@ -95,11 +95,11 @@ export const loadExternalDataMarkers = async (
 }
 
 const rotateImage = (rotation) => {
-  const img = document.querySelector('img[src="/bus.svg"]')
-  const imgHolder = document.querySelector('img[src="https://maps.gstatic.com/mapfiles/transparent.png"]')
+  const img = document.querySelector('img[src="/bus.svg"]') as any
+  const imgHolder = document.querySelector('img[src="https://maps.gstatic.com/mapfiles/transparent.png"]') as any
   if (img) {
     img.style.transform = `rotate(${rotation}deg)`
-    imgHolder.style.transform = `rotate(${rotation}deg)`
+    imgHolder!.style.transform = `rotate(${rotation}deg)`
   }
 }
 
