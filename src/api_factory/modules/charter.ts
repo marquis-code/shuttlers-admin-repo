@@ -22,5 +22,13 @@ export const rental_api = {
 	$_update_rental_status: (id:string, payload:any) => {
 		const url = `/event-charters/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
-	}
+	},
+	$_fetch_charter_vehicle: () => {
+		const url = '/charter-vehicles'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_request_charter: (payload: Record<string, any>) => {
+        const url = '/event-charters'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    }
 }

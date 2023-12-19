@@ -1,7 +1,12 @@
 <template>
-	<HeadersHeaderSlot title="Rental Request" pre-title="Overview">
-		<template #tabs>
+	<HeadersHeaderSlot :title="$route.fullPath.includes('create') ? 'Create Rental' : 'Rental Request'" pre-title="Overview">
+		<template v-if="!$route.fullPath.includes('create')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
+		</template>
+		<template v-if="!$route.fullPath.includes('create')" #actions>
+			<NuxtLink to="/trips/rental/create" class="p-2 rounded-md text-sm text-light bg-dark px-4">
+				Create Rentals
+			</NuxtLink>
 		</template>
 	</HeadersHeaderSlot>
 </template>
