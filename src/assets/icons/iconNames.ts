@@ -6,6 +6,7 @@ export enum IconNames {
   'add' = 'add',
   'arrowForward' = 'arrowForward',
   'breadcrum' = 'breadcrum',
+  'bus' = 'bus',
   'bus_placeholder' = 'bus_placeholder',
   'check' = 'check',
   'close' = 'close',
