@@ -146,5 +146,9 @@ export const routes_api = {
 	$_create_busstop: (routeId:string|number, payload: Record<string, any>) => {
 		const url = `/routes/${routeId}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_create_route: (payload:any) => {
+		const url = '/routes'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
