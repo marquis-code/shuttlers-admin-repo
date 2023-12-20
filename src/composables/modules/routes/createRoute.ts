@@ -11,9 +11,9 @@ const createForm = {
     is_future_route: false,
     is_exclusive: ref(),
     route_code: ref(''),
-    // info: {
-    //     description: ref('')
-    // },
+    info: {
+        description: ref('')
+    },
     // route_preview: {
     //     type: 'LineString',
     //     coordinates: [
@@ -1521,14 +1521,8 @@ const createForm = {
     // distance_value: 34088,
     // duration: '60 mins',
     // distance: '34.09 km',
-    start_location: {
-        lat: ref(),
-        lng: ref()
-    },
-    end_location: {
-        lat: ref(),
-        lng: ref()
-    },
+    start_location: ref({}),
+    end_location: ref({}),
     itineraries: [
         {
             id: 1,
