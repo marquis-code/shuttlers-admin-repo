@@ -2,7 +2,9 @@
 	<main class="flex flex-col gap-6">
 		<Skeleton v-if="loading_partners || loading_earnings" height="45px" radius="10px" />
 		<div v-else class="flex items-center gap-2">
-			<NuxtLink to="/partners/payouts" class="text-sm text-grey4">Payout</NuxtLink>
+			<NuxtLink to="/partners/payouts" class="text-sm text-grey4">
+				Payout
+			</NuxtLink>
 			<img src="@/assets/icons/source/caret-greater-than.svg" alt="">
 			<p>{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}</p>
 		</div>
@@ -78,7 +80,9 @@
 				:page="1"
 			>
 				<template #header>
-					<p class="p-2 text-base text-dark">Deductions on earnings</p>
+					<p class="p-2 text-base text-dark">
+						Deductions on earnings
+					</p>
 				</template>
 				<template #item="{ item }">
 					<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
@@ -93,7 +97,9 @@
 
 		<div class="flex flex-col gap-4">
 			<div class="flex items-center justify-end gap-4">
-				<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded">Resync Revenues</button>
+				<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded">
+					Resync Revenues
+				</button>
 				<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded" @click="markMultiple">
 					Mark multiple revenues as paid
 				</button>
