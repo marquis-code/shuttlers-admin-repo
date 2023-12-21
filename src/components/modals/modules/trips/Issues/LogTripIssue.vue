@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		:title="!isEdit ? 'Log Issue' : 'Update Issue'"
 	>
-		<form class="flex flex-col gap-4 w-full">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="isEdit ? updateIssue() : logIssue()">
 			<div class="grid grid-cols-2 gap-4">
 				<div class="flex flex-col gap-2">
 					<label class="label">Route code</label>
@@ -19,7 +19,10 @@
 				<label class="label">Incident</label>
 				<Skeleton v-if="fetching_types" height="45px" radius="10px" />
 				<select v-else v-model="incident" required class="input-field">
-					<option v-for="n in issues_types" :key="n.id" :value="n.id">
+					<option value="test issue type">
+						Sample issue
+					</option>
+					<option v-for="n in issues_types" :key="n.id" :value="n.name">
 						{{ n.name }}
 					</option>
 				</select>
@@ -33,7 +36,7 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div class="flex flex-col gap-2 w-full">
 					<label class="label">Check-up date</label>
-					<InputDateInput id="check-up-date" v-model="check_up_date" class="font-light !min-w-[100px]" placeholder="Filter by date" />
+					<InputDateInput id="check-up-date" v-model="check_up_date" class="font-light !min-w-[100px]" placeholder="Filter by date" :disabled-date="() => null" />
 				</div>
 				<div class="flex flex-col gap-2">
 					<label class="label">Check-up time</label>
@@ -51,7 +54,7 @@
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useFetchIssueTypes } from '@/composables/modules/trips/issues/types/fetch'
 
-const { route_code, isEdit, clearObj, trip_start_time, check_up_date, incident, desc, check_up_time, loading } = useCreateIssues()
+const { route_code, isEdit, clearObj, trip_start_time, check_up_date, incident, desc, check_up_time, loading, logIssue, updateIssue } = useCreateIssues()
 const { loading: fetching_types, issues_types, fetchIssuesTypes } = useFetchIssueTypes()
 const enableButton = computed(() => {
 	return !!(check_up_date.value && check_up_time.value && trip_start_time.value)

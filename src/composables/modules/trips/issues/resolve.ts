@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { useFetchIssues } from './fetch'
 import { trip_issues_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useTripsModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
@@ -8,7 +9,7 @@ const obj = {
 	start_time: ref(''),
 	incident: ref(''),
 	desc: ref(''),
-	resolution: ref('Buffer') as Ref<'Buffer'|'Others'|'Pilot warned'>,
+	resolution: ref('') as Ref<'Others'|string>,
 	resolution_desc: ref(''),
 	id: ref(null) as Ref<null|number>
 }
@@ -19,7 +20,7 @@ const clearObj = () => {
 	obj.start_time.value = ''
 	obj.incident.value = ''
 	obj.desc.value = ''
-	obj.resolution.value = 'Buffer'
+	obj.resolution.value = ''
 	obj.resolution_desc.value = ''
 	obj.id.value = null
 }
@@ -35,15 +36,18 @@ export const useResolveIssues = () => {
 	}
 
 	const resolveIssue = async () => {
-		const payload = {
-			resolution_type: obj.resolution.value,
-			resolution_description: obj.resolution.value === 'Others' ? obj.resolution_desc.value : ''
+		const payload: Record<string, any> = {
+			resolution_type: obj.resolution.value
+		}
+		if (obj.resolution.value === 'Others') {
+			payload.resolution_description = obj.resolution_desc.value || ''
 		}
 		loading.value = true
 		const res = await trip_issues_api.$_resolve_issues(obj.id.value!, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'You have successfully logged a resolution to an issue.' })
 			useTripsModal().closeResolveIssues()
+			useFetchIssues().fetchIssues()
         }
 		loading.value = false
 	}
