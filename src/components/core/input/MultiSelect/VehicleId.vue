@@ -5,9 +5,9 @@
 		:custom-label="(vehicle)=>`${vehicle.brand} - ${vehicle.name} - ${vehicle.registration_number} (${vehicle.driver?.fname} ${vehicle.driver?.lname})`"
 		open-direction="bottom" :options="queriedVehicle" :multiple="false"
 		:searchable="true" :loading="loadingQueriedVehicle"
-		:internal-search="false" :options-limit="300"
+		:internal-search="true" :options-limit="300"
 		:limit="10"
-		:show-no-results="false" :hide-selected="true" @search-change="queryVehicle" />
+		:show-no-results="false" :hide-selected="true" />
 	<Skeleton v-else height="46px" />
 </template>
 

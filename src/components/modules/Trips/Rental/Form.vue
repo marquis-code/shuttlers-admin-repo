@@ -37,51 +37,9 @@
 				</div>
 			</div>
 
-			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
-				<div class="field relative">
-					<label for="email">First Name</label>
-					<input
-						id="fname"
-						v-model="credentials.fname.value"
-						autocomplete="off"
-						type="text"
-						class="input-field"
-						required
-					>
-				</div>
-				<div class="field relative">
-					<label for="email">Last Name</label>
-					<input
-						id="fname"
-						v-model="credentials.lname.value"
-						autocomplete="off"
-						type="text"
-						class="input-field"
-						required
-					>
-				</div>
-				<div class="field relative">
-					<label for="email">Email</label>
-					<input
-						id="fname"
-						v-model="credentials.email.value"
-						autocomplete="off"
-						type="text"
-						class="input-field"
-						required
-					>
-				</div>
-				<div class="field relative">
-					<label for="email">Phone</label>
-					<input
-						id="fname"
-						v-model="credentials.phone.value"
-						autocomplete="off"
-						type="text"
-						class="input-field"
-						required
-					>
-				</div>
+			<div class="field relative">
+				<label for="email">Select user</label>
+				<InputMultiSelectUsers v-model="selectedUser" />
 			</div>
 			<div class="w-full relative pr-4 px-5">
 				<!-- <DashboardCharterSearchBox /> -->
@@ -161,7 +119,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 // import { useUser } from '@/composables/apis/user'
 
 // const { isLoggedIn } = useUser()
-const { charter, loading, disabled, credentials } = use_post_charter()
+const { charter, loading, disabled, credentials, selectedUser } = use_post_charter()
 const { selectedVehiclessList, step } = useCharterVehicleUsage()
 
 const combineVehicleInfo = computed(() => {

@@ -6,8 +6,8 @@ const user = ref({}) as Ref<Record<string, any>>
 
 const { selectedVehiclessList, selectedVehicle, step } = useCharterVehicleUsage()
 
+const selectedUser = ref()
 const credentials = {
-    driver_id: ref(''),
     from: ref({} as any),
     id: ref(),
     passengers: ref(1),
@@ -33,7 +33,6 @@ const reset_form = () => {
     inputs.forEach((input) => {
         input.value = ''
     })
-    credentials.driver_id.value = ''
     credentials.from.value = {}
     credentials.id.value = ''
     credentials.passengers.value = 1
@@ -78,8 +77,7 @@ export const use_post_charter = () => {
         loading.value = true
 
         const sent_data = {
-                // created_at: new Date().toISOString(),
-                // driver_id: null,
+            user_id: selectedUser.value?.id,
                 pickup_address: credentials.from.value.name,
                 pickup_date: credentials.pickup_date.value,
                 pickup_geometry: `${credentials.from.value.lat}, ${credentials.from.value.lng}`,
@@ -114,5 +112,5 @@ export const use_post_charter = () => {
             loading.value = false
         }
     }
-    return { loading, charter, disabled, credentials }
+    return { loading, charter, disabled, credentials, selectedUser }
 }

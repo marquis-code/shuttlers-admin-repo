@@ -3,8 +3,12 @@ import { useConfirmationModal, usePasswordConfirmationModal } from '@/composable
 import { useAlert } from '@/composables/core/notification'
 import { useGetUpcomingTripsList, useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useCommuteModal } from '@/composables/core/modals'
+import { useTripIdDetails, useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const selectedTrip = ref({} as any)
+
+const { getTripById } = useTripIdDetails()
+const { getUpcomingTripById } = useUpcomingTripIdDetails()
 
 export const useTripOptions = () => {
     const loading = ref(false)
@@ -35,6 +39,8 @@ export const useTripOptions = () => {
         loading.value = true
         const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
+            getTripById(selectedTrip.value.id)
+            getUpcomingTripById(selectedTrip.value.id)
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Upcoming trip updated successfully' })
             useCommuteModal().closeUpdateDriverAndVehicle()
             useGetUpcomingTripsList().getUpcomingTrips()
@@ -98,7 +104,7 @@ export const useTripOptions = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip has been marked as completed' })
             useConfirmationModal().closeAlert()
-             useGetUpcomingTripsList().getUpcomingTrips()
+            useGetUpcomingTripsList().getUpcomingTrips()
         }
         loading.value = false
         useConfirmationModal().closeAlert()

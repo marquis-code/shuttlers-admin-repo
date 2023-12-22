@@ -5,9 +5,9 @@
 		:custom-label="(driver)=>`${driver.fname} - ${driver.lname} `"
 		open-direction="bottom" :options="queriedDriver" :multiple="false"
 		:searchable="true" :loading="loadingQueriedDriver"
-		:internal-search="false" :options-limit="300"
+		:internal-search="true" :options-limit="300"
 		:limit="10"
-		:show-no-results="false" :hide-selected="true" @search-change="queryDriver" />
+		:show-no-results="false" :hide-selected="true" />
 	<Skeleton v-else height="46px" />
 </template>
 
