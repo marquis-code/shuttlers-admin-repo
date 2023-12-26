@@ -6,10 +6,12 @@ const routePassengersPayload = {
     driver_id: ref()
 }
 
+const loadingRoutePassengers = ref(false)
+const routePassengers = ref([] as any)
+
 export const useRoutePassengers = () => {
-    const loadingRoutePassengers = ref(false)
-    const routePassengers = ref([] as any)
     const getRoutePassengers = async (id: string) => {
+        if (!id) return
         loadingRoutePassengers.value = true
         const res = await routes_api.$_get_route_bookings_passengers(id, convertObjWithRefToObj(routePassengersPayload)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
