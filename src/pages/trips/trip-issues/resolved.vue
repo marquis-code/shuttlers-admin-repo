@@ -18,26 +18,13 @@
 						showDateRange: true,
 					}"
 					@filter="onFilterUpdate"
-				>
-					<!-- <template #filter_others>
-						<div class="flex items-stretch gap-2">
-							<ButtonMultiSelectDropdown v-model="selected_resolution_type" :children="filterChildren" title="Resolution" />
-							<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
-								<option value="all">
-									All
-								</option>
-								<option v-for="n in issues_types" :key="n.id" :value="n.name">
-									{{ n.name }}
-								</option>
-							</select>
-						</div>
-					</template> -->
-				</TableFilter>
+					@download="downloadAllResolvedIssues"
+				/>
 			</template>
 			<template #sub_header>
 				<div class="flex items-stretch justify-end gap-4 p-2 w-full border border-b-0">
 					<ButtonMultiSelectDropdown v-model="selected_resolution_type" :children="filterChildren" title="Resolution" />
-					<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
+					<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none bg-light">
 						<option value="">
 							All
 						</option>
@@ -88,7 +75,7 @@ import moment from 'moment'
 import { useFetchResolved, useResolveIssues } from '@/composables/modules/trips/issues'
 import { useFetchIssueTypes, useFetchResolutionTypes } from '@/composables/modules/trips/issues/types'
 
-const { loading, resolved_issues, selected_resolution_type, resolution_type, incident, fetchResolved, prev, page, total, next, moveTo, onFilterUpdate } = useFetchResolved()
+const { loading, resolved_issues, selected_resolution_type, incident, fetchResolved, prev, page, total, next, moveTo, onFilterUpdate, downloadAllResolvedIssues } = useFetchResolved()
 const { initResolveIssues } = useResolveIssues()
 const { issues_types, fetchIssuesTypes } = useFetchIssueTypes()
 const { fetchResolutionTypes, resolution_types, loading: fetching_resolution } = useFetchResolutionTypes()
@@ -98,7 +85,7 @@ const tableFields = ref([
 	{ value: 'pilot', text: 'Pilot' },
 	{ value: 'start_date', text: 'Start date/time' },
 	{ value: 'incident_type', text: 'Incident' },
-	{ value: 'resolution', text: 'Resolution' },
+	{ value: 'resolution_type', text: 'Resolution' },
 	{ value: 'logged_by', text: 'Logged by' }
 ])
 

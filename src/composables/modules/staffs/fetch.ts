@@ -87,15 +87,15 @@ export const useGetPermissions = () => {
 
 export const useGetAudits = () => {
     const loading = ref(false)
-    const auditList = ref([] as any)
+    const auditList = ref([]) as Ref<Record<string, any>[]>
     const { metaObject, moveTo, next, prev } = usePagination()
 
     const getAudits = async () => {
         loading.value = true
         const res = await staffs_api.$_get_audits(metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            auditList.value = res.data.result
-            metaObject.total.value = res.data.metadata?.pageCount
+            auditList.value = res.data?.result?.length ? res.data.result : []
+            metaObject.total.value = res.data.metadata?.pages
         }
         loading.value = false
     }

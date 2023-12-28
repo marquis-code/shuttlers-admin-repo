@@ -7,20 +7,16 @@ import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 const { loading: downloading } = useDownloadReport()
 const issues = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
-const incident = ref('')
 const filterData = {
-    // startDate: ref(''),
-	// endDate: ref(''),
-	checkup_start: ref(''),
-	checkup_end: ref(''),
-    search: ref(''),
-	'filter[incident_type]': computed(() => incident.value)
+	'filter[route_day_id]': computed(() => useRoute().params.id as string),
+    search: ref('')
 }
 
-export const useFetchIssues = () => {
+export const useUpcomingTripIssues = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
 
-	const fetchIssues = async () => {
+	const fetchUpcomingTripIssues = async () => {
+		// const routeday_id = useRoute().params.id as string
 		loading.value = true
 		const res = await trip_issues_api.$_get_all_issues(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -30,9 +26,9 @@ export const useFetchIssues = () => {
 		loading.value = false
 	}
 
-	const downloadAllIssues = async () => {
+	const downloadUpcomingTripIssues = async () => {
 		downloading.value = true
-		const name = ref(`all-${incident.value ? `-${incident.value}-` : ''}issues`)
+		const name = ref(`all-${useRoute().params.id as string}-upcoming-trip-issues`)
 		const res = await trip_issues_api.$_download_all_issues(filterData) as CustomAxiosResponse
         if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
@@ -46,7 +42,6 @@ export const useFetchIssues = () => {
                     Logged_by: `${el?.staff?.fname || ''} ${el?.staff?.lname || ''}`
                 }
             })
-			if (filterData.checkup_start.value && filterData.checkup_end.value) name.value = `${name.value}-from-${filterData.checkup_start.value}-to-${filterData.checkup_end.value}`
 			exportAsCsv(newArr, name.value)
         }
 		downloading.value = false
@@ -57,19 +52,15 @@ export const useFetchIssues = () => {
             case 'search':
 				filterData.search.value = data.value
                 break
-			case 'dateRange':
-				filterData.checkup_start.value = data.value[0] ? data.value[0] : ''
-				filterData.checkup_end.value = data.value[1] ? data.value[1] : ''
-				break
         }
     }
 
-	watch([filterData.search, incident, filterData.checkup_end], (val) => {
+	watch([filterData.search], (val) => {
 		metaObject.page.value = 1
-        fetchIssues()
+        fetchUpcomingTripIssues()
     })
 
-	setFunction(fetchIssues)
+	setFunction(fetchUpcomingTripIssues)
 
-	return { loading, issues, fetchIssues, prev, ...metaObject, next, moveTo, onFilterUpdate, ...filterData, incident, downloadAllIssues }
+	return { loading, issues, fetchUpcomingTripIssues, prev, ...metaObject, next, moveTo, onFilterUpdate, ...filterData, downloadUpcomingTripIssues }
 }

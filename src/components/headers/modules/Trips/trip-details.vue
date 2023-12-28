@@ -52,6 +52,12 @@ if (tripType.value === 'completed') {
         path: `/trips/type/${tripType.value}/${id}/financials`
     })
 }
+if (tripType.value === 'upcoming') {
+	headerArray.push({
+        name: 'Issues',
+        path: `/trips/type/${tripType.value}/${id}/issues`
+    })
+}
 return headerArray
 })
 

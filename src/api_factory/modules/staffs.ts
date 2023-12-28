@@ -1,5 +1,5 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
-import { TMetaObject } from '@/composables/utils/table'
+import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const staffs_api = {
 	$_get_staffs: (metaObject: TMetaObject) => {
@@ -31,8 +31,9 @@ export const staffs_api = {
 		const url = `/staff/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_get_audits: (metaObject: TMetaObject) => {
-		const url = `/audits?metadata=true&page=${metaObject.page.value}&perPage=${metaObject.page_size.value}`
+	$_get_audits: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/audits?${queryParams}&metadata=true&page=${metaObject.page.value}&perPage=${metaObject.page_size.value}`
 		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_feature_flag_audits: (payload) => {
