@@ -63,6 +63,7 @@ import ChangeFleetDriver from '@/components/modals/modules/fleets/ChangeFleetDri
 import RejectShuttleRequest from '@/components/modals/modules/companies/RejectShuttleRequest.vue'
 import DeductPayout from '@/components/modals/modules/partners/payouts/Deduct.vue'
 import MarkMultipleAsPaid from '@/components/modals/modules/partners/payouts/Mark_multiple.vue'
+import PairReturnTrip from '@/components/modals/modules/Routes/Itineraries/PairReturnTrip.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -75,7 +76,7 @@ type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAcc
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues'
-type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary'
+type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 
@@ -90,7 +91,7 @@ const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountMa
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues } as Record<TripsTypes, any>
-const RoutesModal = { RouteDuplicationModal, AddItinerary } as Record<RouteTypes, any>
+const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
 

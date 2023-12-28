@@ -5,7 +5,7 @@
 		</label>
 		<!-- :custom-label="customLabel" label="fname" -->
 		<VueMultiselect v-model="selectedDriver" placeholder="Search driver" :searchable="true" :internal-search="false"
-			:options="drivers" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" "
+			:options="drivers" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" " select-label=""
 			@search-change="searching" @select="handleSelection" @open="is_droped_down = true" @close="is_droped_down = false"
 		>
 			<template v-if="selectedDriver?.id && !is_droped_down" #selection="">

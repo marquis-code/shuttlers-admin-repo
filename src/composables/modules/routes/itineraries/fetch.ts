@@ -6,6 +6,7 @@ const itineraries = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
 const loading_single_iti = ref(false)
 export const singleItinerary = ref({}) as Ref<Record<string, any>>
+const returnTripItinerary = ref({}) as Ref<Record<string, any>>
 
 export const useItineraries = () => {
 	const getItineraries = async () => {
@@ -18,15 +19,24 @@ export const useItineraries = () => {
 		loading.value = false
 	}
 
-	const getSingleItinerary = async (id:number|string) => {
+	const getReturnTripItinerary = async (itinerary_id: number) => {
+		const res = await routes_api.$_get_single_itinerary_details(itinerary_id) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			returnTripItinerary.value = res.data?.id ? res.data : {}
+		}
+	}
+
+	const getSingleItinerary = async (itinerary_id:number|string) => {
+		returnTripItinerary.value = {}
 		loading_single_iti.value = true
-		const res = await routes_api.$_get_single_itinerary_details(id) as CustomAxiosResponse
+		const res = await routes_api.$_get_single_itinerary_details(itinerary_id) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			singleItinerary.value = res.data?.id ? res.data : {}
+			if (singleItinerary.value?.itinerary_pair_id) getReturnTripItinerary(singleItinerary.value.itinerary_pair_id)
 			resetObj()
 		}
 		loading_single_iti.value = false
 	}
 
-	return { loading, itineraries, getItineraries, loading_single_iti, singleItinerary, getSingleItinerary }
+	return { loading, itineraries, getItineraries, loading_single_iti, singleItinerary, getSingleItinerary, returnTripItinerary }
 }

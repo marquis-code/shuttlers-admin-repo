@@ -4,7 +4,7 @@
 			{{ label }}
 		</label>
 		<VueMultiselect v-model="selectedRoute" placeholder="Search route" :searchable="true" :internal-search="false"
-			:options="routes" :multiple="false" :taggable="false" track-by="id" :loading="loading"
+			:options="routes" :multiple="false" :taggable="false" track-by="id" select-label="" :loading="loading"
 			:custom-label="(data)=>`${data.route_code} - ${data.pickup} - (${data.destination})`"
 			@search-change="searching"
 		>

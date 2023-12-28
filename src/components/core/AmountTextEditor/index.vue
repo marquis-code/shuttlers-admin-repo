@@ -2,7 +2,7 @@
 	<div>
 		<Skeleton v-if="loading" height="20px" radius="3px" />
 		<template v-else>
-			<p v-if="!showEditor" class="whitespace-nowrap" @click="showEditor = true">
+			<p v-if="!showEditor" class="whitespace-nowrap" :class="disabled ? 'cursor-not-allowed' : 'cursor-pointer'" @click="disabled ? null : showEditor = true">
 				{{ amount ? convertToCurrency(amount) : 'Enter amount' }}
 			</p>
 			<div v-else class="flex flex-col gap-1">
@@ -26,7 +26,8 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 const emit = defineEmits(['updateVal'])
 const props = defineProps({
 	amount: { type: Number, default: 0 },
-	loading: { type: Boolean, default: false, required: false }
+	loading: { type: Boolean, default: false, required: false },
+	disabled: { type: Boolean, default: false }
 })
 const showEditor = ref(false)
 

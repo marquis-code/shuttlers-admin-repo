@@ -5,7 +5,7 @@
 		</p>
 		<div class="flex items-center justify-between p-3 bg-[#f9fbfd] gap-4">
 			<p class="text-sm text-[#12263f]">
-				Starting Time {{ time }}
+				Starting Time
 			</p>
 			<div class="flex items-center gap-2">
 				<div v-if="editTime" class="flex flex-col gap-2">
@@ -70,6 +70,35 @@
 			</p>
 		</div>
 	</div>
+	<div class="bg-light border rounded-lg p-4 flex flex-col">
+		<div class="pb-4 flex items-center justify-between">
+			<p class="text-sm text-dark font-medium">Return Trip Time</p>
+			<button class="text-sm bg-dark p-2 text-light rounded-md" @click="useRouteModal().openPairReturnTrip()">
+				Set return trip
+			</button>
+		</div>
+		<p v-if="!itinerary.itinerary_pair_id" class="test-base text-dark text-center py-3 font-medium">
+			No return trip for this route
+		</p>
+		<template v-else>
+			<div class="flex items-center justify-between p-3 bg-[#f9fbfd] gap-4">
+				<p class="text-sm text-[#12263f]">
+					Starting Time
+				</p>
+				<p class="text-sm text-[#12263f]">
+					{{ returnTripItinerary.trip_time }}
+				</p>
+			</div>
+			<div class="flex items-center justify-between p-3">
+				<p class="text-sm text-[#12263f]">
+					Default Fare
+				</p>
+				<p class="text-sm text-[#12263f]">
+					{{ returnTripItinerary?.default_fare ? `₦${returnTripItinerary.default_fare}` : 'N/A' }}
+				</p>
+			</div>
+		</template>
+	</div>
 	<div class="w-full flex flex-col gap-4">
 		<div class="bg-light border rounded-lg p-4 flex flex-col">
 			<div class="flex items-center gap-4 justify-between pb-4">
@@ -128,9 +157,10 @@
 
 <script setup lang="ts">
 import { useItineraries, useUpdateItineraries, useCreateItinerary } from '@/composables/modules/routes/itineraries'
+import { useRouteModal } from '@/composables/core/modals'
 
 const { loading_busstop, busStops, getRouteBusstops } = useCreateItinerary()
-const { singleItinerary: itinerary } = useItineraries()
+const { singleItinerary: itinerary, returnTripItinerary } = useItineraries()
 const { time, resetObj, busstop_id, loading: updating, updateItineraries, default_fare, pricing_type, pricing_margin, pricing_scheme, pricing_margin_unit } = useUpdateItineraries()
 const editTime = ref(false)
 const editBusStop = ref(false)
