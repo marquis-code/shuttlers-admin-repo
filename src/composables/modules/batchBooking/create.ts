@@ -24,6 +24,8 @@ const batchBookingForm = {
         additional_charges_id: [] as any[]
     }
 }
+const returnTripItinerary = ref({}) as Record<string, any>
+const returnTripLoading = ref(false)
 
 const selectedItinerary = computed(() => {
 	return routeItineraries.value.find((itinerary) => itinerary.id === form.route_itinerary_id)
@@ -42,8 +44,19 @@ const form = reactive({
 	subscriptionDays: [],
 	tripWeeks: 0,
 	luggage_quantity: '',
-	uploadedUsers: []
+	uploadedUsers: [],
+    has_return: false
 })
+
+const clearObj = () => {
+    form.selectedRoute = {}
+    form.route_itinerary_id = null
+    form.pickup_point = null
+    form.drop_off_point = null
+    form.has_subscription = false
+    form.has_luggage = false
+    form.has_return = false
+}
 
 watch([selectedItinerary, form], async (val) => {
     if (val[0]?.route_id) {
@@ -67,12 +80,37 @@ watch([selectedItinerary, form], async (val) => {
     }
 })
 
+watch([() => form.selectedRoute, () => form.route_itinerary_id], () => {
+    form.has_return = false
+})
+
+watch(() => form.has_return, () => {
+    if (form.has_return) {
+        returnTripItinerary.value = {}
+        if (selectedItinerary.value?.itinerary_pair_id) {
+            getReturnTripDetails(selectedItinerary.value.itinerary_pair_id)
+        } else {
+            useAlert().openAlert({ type: 'ERROR', msg: 'This trip doesnt have a return trip paired' })
+            form.has_return = false
+        }
+    }
+})
+
 const isFormEmpty = computed(() => {
 	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers)
 })
 
 const routeSelected = (val: any) => {
 	form.selectedRoute = val
+}
+
+const getReturnTripDetails = async (itinerary_id: number) => {
+    returnTripLoading.value = true
+    const res = await routes_api.$_get_single_itinerary_details(itinerary_id) as CustomAxiosResponse
+    if (res.type !== 'ERROR') {
+        returnTripItinerary.value = res.data?.id ? res.data : {}
+    }
+    returnTripLoading.value = false
 }
 
 const handleUploadedEmails = (item: any) => {
@@ -109,6 +147,7 @@ export const useCreateBatchBooking = () => {
     const createBatchBooking = async () => {
         loading.value = true
         batchBookingForm.booking.additional_charges_id = selectedRoute_charges.value.filter((i) => i.selected).map((item: any) => item.id)
+        batchBookingForm.should_book_return_trip = form.has_return
 
         const res = await $_create_batch_booking(batchBookingForm) as CustomAxiosResponse
 
@@ -134,5 +173,5 @@ export const useCreateBatchBooking = () => {
         batchBookingForm.booking.luggage_quantity = data?.booking?.luggage_quantity
     }
 
-    return { selectedRoute_charges, selectedRoute_charges_loading, createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary }
+    return { selectedRoute_charges, selectedRoute_charges_loading, createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, returnTripItinerary, returnTripLoading, clearObj }
 }

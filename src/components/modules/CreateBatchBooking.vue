@@ -83,6 +83,24 @@
 					</select>
 					<Skeleton v-else height="100px" />
 				</div>
+				<div class="flex flex-col gap-2">
+					<div class="flex items-center gap-3">
+						<label for="return" class="m-0">Enable return</label>
+						<input id="return" v-model="form.has_return" type="checkbox">
+					</div>
+					<template v-if="form.has_return">
+						<Skeleton v-if="returnTripLoading" height="100px" />
+						<div v-if="returnTripItinerary.id && !returnTripLoading" class="flex flex-col gap-2">
+							<p class="underline text-xs">Return trip details</p>
+							<div class="flex items-center justify-between">
+								<p class="text-sm">Time:</p>
+								<p class="text-dark font-medium text-sm">
+									{{ returnTripItinerary.trip_time }}
+								</p>
+							</div>
+						</div>
+					</template>
+				</div>
 				<div class="">
 					<label for="startDate">Choose Date</label>
 					<InputDateInput id="startDate" v-model="form.startDate" class="font-light" placeholder="Filter by date" />
@@ -218,7 +236,7 @@ const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = u
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
 const { loading: loadingPricing, setRoutePricingDataForm, getRoutePricingInformation, routePricingInformation } = useRoutePricingByItineraryId()
 const { downloadCsv, downloading } = useCsvDownload()
-const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, selectedRoute_charges, selectedRoute_charges_loading } = useCreateBatchBooking()
+const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, selectedRoute_charges, selectedRoute_charges_loading, returnTripItinerary, returnTripLoading, clearObj } = useCreateBatchBooking()
 getMainRoutesList()
 
 function getDayOfWeek(startDate) {
@@ -358,6 +376,8 @@ const totalFare = computed(() => {
 		currency: 'NGN'
 	}
 })
+
+onBeforeUnmount(() => clearObj())
 
 </script>
 

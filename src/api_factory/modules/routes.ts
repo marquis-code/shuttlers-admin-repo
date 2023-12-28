@@ -115,8 +115,8 @@ export const routes_api = {
 		const url = `/routes/${id}/itineraries`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_update_itineraries: (id:string|number, payload:any) => {
-		const url = `/route-itineraries/${id}`
+	$_update_itineraries: (itinerary_id:string|number, payload:any) => {
+		const url = `/route-itineraries/${itinerary_id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
 	$_get_vehicle_cost_of_supply: (iti_id:string|number, vehicleId:number) => {
