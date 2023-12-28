@@ -18,6 +18,7 @@
 						showDateRange: true,
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadAllIssues"
 				>
 					<template #filter_others>
 						<select v-model="incident" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none">
@@ -75,7 +76,7 @@ import moment from 'moment'
 import { useFetchIssues, useResolveIssues, useCreateIssues } from '@/composables/modules/trips/issues'
 import { useFetchIssueTypes } from '@/composables/modules/trips/issues/types/fetch'
 
-const { loading, issues, fetchIssues, prev, page, total, next, moveTo, onFilterUpdate, incident } = useFetchIssues()
+const { loading, issues, fetchIssues, prev, page, total, next, moveTo, onFilterUpdate, incident, downloadAllIssues } = useFetchIssues()
 const { issues_types, fetchIssuesTypes } = useFetchIssueTypes()
 const { initResolveIssues } = useResolveIssues()
 const { initUpdateIssues } = useCreateIssues()

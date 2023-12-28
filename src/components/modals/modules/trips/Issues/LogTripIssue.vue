@@ -19,7 +19,7 @@
 				<label class="label">Incident</label>
 				<Skeleton v-if="fetching_types" height="45px" radius="10px" />
 				<select v-else v-model="incident" required class="input-field">
-					<option value="test issue type">
+					<option value="sample issue">
 						Sample issue
 					</option>
 					<option v-for="n in issues_types" :key="n.id" :value="n.name">

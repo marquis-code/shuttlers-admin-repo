@@ -116,7 +116,7 @@ const componentRouteArray = [
     { routes: ['trips-vehicle'], component: TripTracking },
     { routes: ['trips-rental', 'trips-rental-upcoming', 'trips-rental-create'], component: Rental },
     {
-        routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings',
+        routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings', 'trips-type-upcoming-id-issues',
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings',
             'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials'], component: TripDetails
     },
