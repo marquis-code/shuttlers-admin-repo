@@ -23,10 +23,10 @@
 				leave-to-class="translate-y-1 opacity-0"
 			>
 				<PopoverPanel
-					class="absolute right-0 z-10 mt-1"
+					class="absolute right-0 z-30 mt-1"
 				>
 					<div
-						class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
+						class="absolute end-0 z-30 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
 						role="menu"
 					>
 						<div class="p-2">

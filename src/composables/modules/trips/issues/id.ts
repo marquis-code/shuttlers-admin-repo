@@ -7,16 +7,18 @@ import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 const { loading: downloading } = useDownloadReport()
 const issues = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
+const routeDay = ref('')
 const filterData = {
-	'filter[route_day_id]': computed(() => useRoute().params.id as string),
+	'filter[route_day_id]': computed(() => routeDay.value),
     search: ref('')
 }
 
 export const useUpcomingTripIssues = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
 
-	const fetchUpcomingTripIssues = async () => {
+	const fetchParticularTripIssue = async () => {
 		// const routeday_id = useRoute().params.id as string
+		routeDay.value = useRoute().params.id as string
 		loading.value = true
 		const res = await trip_issues_api.$_get_all_issues(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -26,9 +28,10 @@ export const useUpcomingTripIssues = () => {
 		loading.value = false
 	}
 
-	const downloadUpcomingTripIssues = async () => {
+	const downloadParticularTripIssues = async () => {
+		routeDay.value = useRoute().params.id as string
 		downloading.value = true
-		const name = ref(`all-${useRoute().params.id as string}-upcoming-trip-issues`)
+		const name = ref(`all-${routeDay.value}-upcoming-trip-issues`)
 		const res = await trip_issues_api.$_download_all_issues(filterData) as CustomAxiosResponse
         if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
@@ -57,10 +60,10 @@ export const useUpcomingTripIssues = () => {
 
 	watch([filterData.search], (val) => {
 		metaObject.page.value = 1
-        fetchUpcomingTripIssues()
+        fetchParticularTripIssue()
     })
 
-	setFunction(fetchUpcomingTripIssues)
+	setFunction(fetchParticularTripIssue)
 
-	return { loading, issues, fetchUpcomingTripIssues, prev, ...metaObject, next, moveTo, onFilterUpdate, ...filterData, downloadUpcomingTripIssues }
+	return { loading, issues, fetchParticularTripIssue, prev, ...metaObject, next, moveTo, onFilterUpdate, ...filterData, downloadParticularTripIssues }
 }

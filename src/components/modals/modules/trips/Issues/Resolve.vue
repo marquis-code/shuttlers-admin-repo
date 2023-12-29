@@ -55,7 +55,7 @@
 				</select>
 			</div>
 			<div v-if="resolution === 'Others'" class="flex flex-col gap-2">
-				<textarea v-model.trim="resolution_desc" required placeholder="Write was the resolution?"
+				<textarea v-model.trim="resolution_desc" required placeholder="What was the resolution?"
 					class="input-field max-h-[80px]" cols="30" rows="10"
 				/>
 			</div>

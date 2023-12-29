@@ -10,7 +10,7 @@ const obj = {
 	route_day_id: ref(null) as Ref<null | number>,
 	incident: ref(''),
 	desc: ref(''),
-	check_up_date: ref(''),
+	check_up_date: ref(moment().format('YYYY-MM-DD')),
 	check_up_time: ref(''),
 	driver_id: ref(null) as Ref<null | number>,
 	vehicle_id: ref(null) as Ref<null | number>,
@@ -25,7 +25,7 @@ const clearObj = () => {
 	obj.route_day_id.value = null
 	obj.incident.value = ''
 	obj.desc.value = ''
-	obj.check_up_date.value = ''
+	obj.check_up_date.value = moment().format('YYYY-MM-DD')
 	obj.check_up_time.value = ''
 	obj.driver_id.value = null
 	obj.vehicle_id.value = null
@@ -36,7 +36,8 @@ const clearObj = () => {
 export const useCreateIssues = () => {
 	const initLogIssues = (data:Record<string, any>) => {
 		obj.route_code.value = data.route_code
-		obj.trip_start_time.value = moment.utc(data.trip_start_time).format('hh:mm A')
+		// obj.trip_start_time.value = moment.utc(data.trip_start_time).format('hh:mm A')
+		obj.trip_start_time.value = data?.itinerary?.trip_time
 		obj.route_day_id.value = data.id
 		obj.driver_id.value = data.driver_id
 		obj.vehicle_id.value = data.vehicle_id

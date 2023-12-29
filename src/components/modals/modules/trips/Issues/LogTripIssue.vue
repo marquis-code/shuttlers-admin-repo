@@ -57,7 +57,7 @@ import { useFetchIssueTypes } from '@/composables/modules/trips/issues/types/fet
 const { route_code, isEdit, clearObj, trip_start_time, check_up_date, incident, desc, check_up_time, loading, logIssue, updateIssue } = useCreateIssues()
 const { loading: fetching_types, issues_types, fetchIssuesTypes } = useFetchIssueTypes()
 const enableButton = computed(() => {
-	return !!(check_up_date.value && check_up_time.value && trip_start_time.value)
+	return !!(check_up_date.value && check_up_time.value && incident.value && desc.value)
 })
 
 fetchIssuesTypes()
