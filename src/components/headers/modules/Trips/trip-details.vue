@@ -21,9 +21,10 @@ import { usePageHeader } from '@/composables/utils/header'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
+import { useCreateIssues } from '@/composables/modules/trips/issues'
 
 const { selectedTrip } = useUpcomingTripIdDetails()
-
+const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
 
@@ -43,7 +44,11 @@ const pageTabs = computed(() => {
     {
         name: 'Ratings',
         path: `/trips/type/${tripType.value}/${id}/Ratings`
-	}
+	},
+    {
+        name: 'Issues',
+        path: `/trips/type/${tripType.value}/${id}/issues`
+    }
 ]
 
 if (tripType.value === 'completed') {
@@ -52,20 +57,30 @@ if (tripType.value === 'completed') {
         path: `/trips/type/${tripType.value}/${id}/financials`
     })
 }
-if (tripType.value === 'upcoming') {
-	headerArray.push({
-        name: 'Issues',
-        path: `/trips/type/${tripType.value}/${id}/issues`
-    })
-}
+// if (tripType.value === 'upcoming') {
+// 	headerArray.push({
+//         name: 'Issues',
+//         path: `/trips/type/${tripType.value}/${id}/issues`
+//     })
+// }
 return headerArray
 })
+
+const setDataForLoggingIssue = (data: Record<string, any>) => {
+    const trip_data = {
+        ...data,
+        trip_start_time: data?.trip_start_time,
+        route_code: data.route?.route_code
+    }
+    initLogIssues(trip_data)
+}
 
 const dropdownChildren = computed(() => {
  const dropdownOptions = [] as Record<string, any>[]
     const upcomingDropdownOptions = [
          { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
     { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+    { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data) },
     { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
 

@@ -11,6 +11,9 @@
 				<span v-if="item.idx">
 					{{ item.data.idx }}
 				</span>
+				<p v-if="item.route_code">
+					{{ item.data.route?.route_code }} ({{ moment.utc(item.data.trip_start_time).format('LT') }})
+				</p>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
 					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/active/${item.data.id}/passengers`)">
@@ -36,9 +39,10 @@
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
 				<div v-if="item.action" class="w-20">
-					<button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation(item.data)">
+					<!-- <button style="backgroundColor: #ff4500" class="text-white border px-2 py-1.5 rounded-lg" @click.stop="handleTripCancellation(item.data)">
 						End Trip
-					</button>
+					</button> -->
+					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</div>
 			</template>
 			<template #footer>
@@ -49,9 +53,12 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import moment from 'moment'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
+import { useCreateIssues } from '@/composables/modules/trips/issues'
 
+const { initLogIssues } = useCreateIssues()
 const { initializeEndTrips } = useTripOptions()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
 getActiveTrips()
@@ -59,7 +66,7 @@ const formattedActiveTripsList = computed(() =>
  activeTripsList.value.map((i:any, index) => {
          return {
              ...i,
-             route_code: `${i?.route?.route_code} (${useDateFormat(i?.start_trip, 'h:mm A').value})`,
+             route_code: `${i?.route?.route_code}`,
 			 pickup: i?.route?.pickup,
 			 destination: i?.route?.destination,
 			 partner: i?.partner ?? 'N/A',
@@ -120,6 +127,13 @@ const tableFields = ref([
 		value: 'action'
 	}
 ])
+
+const dropdownChildren = computed(() => {
+	return [
+		{ name: 'Log Issue', func: (data) => initLogIssues(data) },
+        { name: 'End Trip', func: (data) => handleTripCancellation(data), class: '!text-red' }
+    ]
+})
 </script>
 
 <style scoped></style>

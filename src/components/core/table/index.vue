@@ -1,5 +1,5 @@
 <template>
-	<section class="flex flex-col max-w-full  z-50">
+	<section class="flex flex-col max-w-full  z-10">
 		<slot name="header" />
 		<slot name="sub_header" />
 		<div class="border border-gray-200 md:rounded-b-lg overflow-auto">
