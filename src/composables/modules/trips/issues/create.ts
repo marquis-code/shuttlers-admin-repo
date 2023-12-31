@@ -37,7 +37,7 @@ export const useCreateIssues = () => {
 	const initLogIssues = (data:Record<string, any>) => {
 		obj.route_code.value = data.route_code
 		// obj.trip_start_time.value = moment.utc(data.trip_start_time).format('hh:mm A')
-		obj.trip_start_time.value = data?.itinerary?.trip_time
+		obj.trip_start_time.value = data?.itinerary?.trip_time || data?.route_itinerary?.trip_time
 		obj.route_day_id.value = data.id
 		obj.driver_id.value = data.driver_id
 		obj.vehicle_id.value = data.vehicle_id

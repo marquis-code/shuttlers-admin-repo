@@ -1,12 +1,17 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
+import { CustomAxiosResponse } from '@/api_factory/modules'
 
 export const staffs_api = {
 	$_get_staffs: (metaObject: TMetaObject) => {
 		const url = `/staff?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-
+	$_get_all_staffs: () => {
+		const url = `/staff?page=${1}&limit=${10000}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_permisions: (metaObject: TMetaObject) => {
 		const url = `v1/super-admin/access-modules?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
@@ -35,6 +40,21 @@ export const staffs_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/audits?${queryParams}&metadata=true&page=${metaObject.page.value}&perPage=${metaObject.page_size.value}`
 		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_all_audits: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+        // const url = `/partners?${queryParams}&metadata=true&limit=${10}&page=${1}&related=owner`
+		const url = `/audits?${queryParams}&metadata=true&page=${1}&perPage=${10}`
+		const res = await AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.result?.length) {
+				const total = res.data.metadata.total
+				return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(`/audits?${queryParams}&metadata=true&page=${1}&perPage=${total}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_feature_flag_audits: (payload) => {
 		const url = '/feature-flag'
