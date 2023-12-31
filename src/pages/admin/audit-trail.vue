@@ -1,9 +1,9 @@
 <template>
 	<main class="lg:flex justify-between items-start lg:gap-x-6 space-y-6 lg:space-y-0">
 		<!-- {{ formattedAuditList }} -->
-		<ModulesAuditTrailAuditList @selectedAudit="handleSelectedAudit" />
+		<ModulesAuditTrailAuditList />
 		<!-- <Skeleton v-else height="300px" width="700px" /> -->
-		<ModulesAuditTrailAuditDetail :audit-details="auditDetails " />
+		<ModulesAuditTrailAuditDetail />
 	</main>
 </template>
 

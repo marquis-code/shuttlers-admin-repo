@@ -76,18 +76,19 @@ const setDataForLoggingIssue = (data: Record<string, any>) => {
 }
 
 const dropdownChildren = computed(() => {
- const dropdownOptions = [] as Record<string, any>[]
+    const dropdownOptions = [
+        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data) }
+    ] as Record<string, any>[]
     const upcomingDropdownOptions = [
-         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-    { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
-    { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data) },
-    { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
+        { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+        { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
 
     if (tripType.value === 'upcoming') {
         dropdownOptions.push(...upcomingDropdownOptions)
         if (dayIsInThePast(selectedTrip.value.trip_date)) {
-        dropdownOptions.push({ name: 'Complete Trip', func: (data) => initializeCompleteTrips(data) })
+            dropdownOptions.push({ name: 'Complete Trip', func: (data) => initializeCompleteTrips(data) })
         }
     }
 
