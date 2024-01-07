@@ -8,7 +8,7 @@ const { routeItineraries } = useItinerariesByRouteId()
 
 const selectedRoute_charges = ref([] as Record<string, any>[])
 const selectedRoute_charges_loading = ref(false)
-const batchBookingForm = {
+const batchBookingForm: Record<string, any> = {
     users: [],
     booking: {
         route_id: '',
