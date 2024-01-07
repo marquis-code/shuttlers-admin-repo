@@ -8,7 +8,7 @@ const loadingState = {
 const openAlertArray = ref([] as Record<string, any>[])
 
 interface AlertTypes {
-	type: 'Alert' | 'ERROR' | 'SUCCESS'
+	type: 'Alert' | 'ERROR' | 'SUCCESS' | 'WARNING'
 	msg: string
 }
 

@@ -1534,6 +1534,7 @@ const createForm = {
     route_availability_start_date: ref(''),
     blacklisted_availability_days: ref([])
 }
+const polyLine = ref([])
 const loading = ref(false)
 export const useCreateRoute = () => {
 	const createRoute = async () => {
@@ -1547,5 +1548,14 @@ export const useCreateRoute = () => {
 		}
 		loading.value = false
 	}
-	return { loading, createForm, createRoute }
+
+    const getRouteDirection = async (payload: Record<string, any>) => {
+        const res = await routes_api.$_get_route_direction(payload) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+            console.log(res.data?.data)
+            const arr = JSON.parse(res.data?.data?.routes[0]?.overview_geojson)
+            console.log(arr)
+		}
+    }
+	return { loading, createForm, createRoute, getRouteDirection }
 }

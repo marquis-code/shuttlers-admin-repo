@@ -1,5 +1,7 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const routes_api = {
 	$_recent_routes: () => {
@@ -13,9 +15,23 @@ export const routes_api = {
 	},
 	$_get_main_routes: (meta:TMetaObject, filterData?: Record<string, Ref>, corporateId?: number) => {
 		const queryParams = useTableFilter(filterData)
-		// meta.page_size.value = 100000
-		const url = `/routes?fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true${queryParams}${corporateId ? `&corporate_id=${corporateId}` : ''}`
+		const url = `/routes?${queryParams}&fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true${corporateId ? `&corporate_id=${corporateId}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_main_routes: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		// const url = `/trip-issues?${queryParams}&limit=${10}&page=${1}&metadata=true&sort[created_at]=desc&`
+		const url = `/routes?${queryParams}&fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${10}&page=${1}&metadata=true`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data?.metadata?.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/routes?${queryParams}&fields[route]=id,pickup,destination,status,route_code,corporate_id,is_exclusive,visibility&sort[pickup]=asc&related=&limit=${total}&page=${1}&metadata=true`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_get_route_by_id: (id:string) => {
 		const url = `/routes/${id}`
@@ -24,6 +40,10 @@ export const routes_api = {
 	$_get_route_busstops_by_id: (id:string) => {
 		const url = `/routes/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_direction: (payload:Record<string, any>) => {
+		const url = '/routes/direction'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_itineraries_by_route_id: (id:string|number) => {
 		const url = `/routes/${id}/itineraries?itinerary_only=1`

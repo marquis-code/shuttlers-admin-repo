@@ -2,7 +2,24 @@
 	<main class="">
 		<Table :loading="loadingMainRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="mainRoutesList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDateRange: false}"
+					@filter="onFilterUpdate"
+					@download="downloadMainRoutes"
+				/>
+			</template>
+			<template #sub_header>
+				<div class="flex items-stretch justify-end gap-4 border border-b-0 p-2">
+					<ButtonMultiSelectDropdown v-model="type" :children="typeChildren" title="Type" />
+					<ButtonMultiSelectDropdown v-model="visibility" :children="visibilityChildren" title="Visibility" />
+					<select v-model="city" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none bg-light">
+						<option value="">
+							All
+						</option>
+						<option v-for="n in allCityNames" :key="n.id" :value="n.id">
+							{{ n.name }}
+						</option>
+					</select>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.pickup">
@@ -37,15 +54,29 @@ import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/update'
 import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/delete'
+import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
+
+const { allCityNames, fetchAllCityNames } = useCityAndCountry()
 const { updateRoute, loading } = useUpdateRouteStatus()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
-const { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetMainRoutes()
-getMainRoutesList()
+const { getMainRoutesList, loadingMainRoutes, mainRoutesList, type, visibility, city, onFilterUpdate, moveTo, next, prev, total, page, downloadMainRoutes } = useGetMainRoutes()
 
+getMainRoutesList()
+fetchAllCityNames()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const typeChildren = [
+	{ name: 'Shared', value: 0 },
+	{ name: 'Exclusive', value: 1 }
+]
+
+const visibilityChildren = [
+	{ name: 'Private', value: 'private' },
+	{ name: 'Public', value: 'public' }
+]
 
 const onRowClicked = (data) => {
 	const { selectedRoute } = useRouteIdDetails()

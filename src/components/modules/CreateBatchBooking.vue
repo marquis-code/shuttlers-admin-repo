@@ -91,11 +91,17 @@
 					<template v-if="form.has_return">
 						<Skeleton v-if="returnTripLoading" height="100px" />
 						<div v-if="returnTripItinerary.id && !returnTripLoading" class="flex flex-col gap-2">
-							<p class="underline text-xs">Return trip details</p>
+							<p class="text-sm font-bold">Return trip details</p>
 							<div class="flex items-center justify-between">
 								<p class="text-sm">Time:</p>
 								<p class="text-dark font-medium text-sm">
 									{{ returnTripItinerary.trip_time }}
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-sm">Route code:</p>
+								<p class="text-dark font-medium text-sm">
+									{{ returnTripItinerary?.route?.route_code || 'N/A' }}
 								</p>
 							</div>
 						</div>
@@ -225,12 +231,12 @@
 </template>
 
 <script setup lang="ts">
-
 import { convertToCurrency } from '@/composables/utils/formatter'
 import useCsvDownload from '@/composables/core/useCsvDownload'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 import { useCreateBatchBooking } from '@/composables/modules/batchBooking/create'
 import { useItinerariesByRouteId, useBusstopsByItineraryId, useRoutePricingByItineraryId } from '@/composables/modules/routes/id'
+
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList } = useGetMainRoutes()
 const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = useBusstopsByItineraryId()
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
@@ -256,7 +262,7 @@ const bookTrip = async () => {
 		} else {
 		dayIds = form.subscriptionDays.map((day) => dayWithIds[day])
 		}
-	const payload = {
+	const payload:Record<string, any> = {
         booking: {
 			route_id: form?.selectedRoute?.id,
 			itinerary_id: form?.route_itinerary_id,
@@ -269,7 +275,7 @@ const bookTrip = async () => {
 			recurring: form?.has_subscription ? Number(1) : Number(0),
 			payment_source: form?.payment_source,
 			luggage_quantity: form?.luggage_quantity
-		 },
+		},
 	   users: form.uploadedUsers
 	}
 	populateBatchBookingForm(payload)
@@ -300,8 +306,12 @@ const payment_source = reactive([
 		name: 'Main Balance'
 	},
 	{
-		id: 'company_balance',
+		id: 'credit_balance',
 		name: 'Company Balance'
+	},
+	{
+		id: 'instant_payment',
+		name: 'Charge my company'
 	}
 ])
 

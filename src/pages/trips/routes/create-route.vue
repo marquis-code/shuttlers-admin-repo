@@ -266,12 +266,33 @@
 				</div>
 			</div>
 			<div class="w-8/12">
-				<MapDisplay
-					:start-point="form.startLocation"
-					:end-point="form.endLocation"
+				<!-- <MapDisplay
+					:start-point="form.startLocation || { y: 51.093048, x: 6.84212 }"
+					:end-point="form.endLocation || { y: 51.093048, x: 6.84212 }"
 					:stops="form.stopPoints"
-					:props-loading="loading"
-				/>
+					:props-loading="false"
+				/> -->
+				<GMapMap v-if="true" ref="myMapRef" map-type-id="terrain" class="h-full"
+					:options="{
+						zoomControl: true,
+						mapTypeControl: false,
+						scaleControl: true,
+						streetViewControl: false,
+						rotateControl: false,
+						fullscreenControl: false
+					}"
+					:center="center" :zoom="11"
+				>
+					<GMapPolyline ref="polyline" :path="[]" />
+					<template v-if="form.startLocation?.lat && form.endLocation?.lat">
+						<GMapMarker v-for="(n, index) in [form.startLocation, form.endLocation]" :key="index"
+							:position="{
+								lat: n.lat,
+								lng: n.lng
+							}"
+						/>
+					</template>
+				</GMapMap>
 			</div>
 		</div>
 	</div>
@@ -280,18 +301,26 @@
 <script setup lang="ts">
 import { useCreateRoute } from '@/composables/modules/routes/createRoute'
 import { useAlert } from '@/composables/core/notification'
-const { loading, createForm, createRoute } = useCreateRoute()
+
+const { loading, createForm, createRoute, getRouteDirection } = useCreateRoute()
+const center = computed(() => {
+	if (form.startLocation?.lat && form.endLocation?.lat) {
+		return { lat: form.startLocation.lat, lng: form.startLocation.lng }
+	} else {
+		return { lat: 51.093048, lng: 6.84212 }
+	}
+})
 const form = reactive({
-  stopPoints: [],
-  startLocation: {},
-  addedStopLocation: {} as any,
+  stopPoints: [] as any[],
+  startLocation: {} as Record<string, any>,
+  addedStopLocation: {} as Record<string, any>,
   added_stop_geo_cordinate: '',
   start_geo_coordinate: '',
-  endLocation: {},
+  endLocation: {} as Record<string, any>,
   end_geo_coordinate: '',
   startDate: '',
   endDate: '',
-  corporate: {},
+  corporate: {} as Record<string, any>,
   itineraryTime: '',
   route_availability_days: [],
   selected_date: '',
@@ -302,7 +331,6 @@ const toggleDatePicker = () => {
   showDatePicker.value = !showDatePicker.value
 }
 const routeAvailability = ref(true)
-
 const selectedRouteVisibility = ref('public')
 const selectedRouteType = ref('shared')
 const selectedRouteAvailability = ref('everyday')
@@ -317,6 +345,20 @@ const addStopPoint = () => {
     })
   }
 }
+
+watch([() => form.startLocation, () => form.endLocation], () => {
+  if (form.startLocation?.lat && form.endLocation?.lat) {
+	const payload = {
+		startPoint: `${form.startLocation?.lat},${form.startLocation?.lng}`,
+		endPoint: `${form.endLocation?.lat},${form.endLocation?.lng}`
+		// waypoints: [
+		// 	"6.5532932,3.3370028",
+		// 	"6.529884999999998,3.353477"
+		// ]
+	}
+	getRouteDirection(payload)
+  }
+})
 
 if (selectedRouteVisibility.value === 'everyday') {
   createForm.day_of_week.value = 'MON-FRI'
