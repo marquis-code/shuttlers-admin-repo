@@ -16,7 +16,7 @@ import { isObject } from '@vue/shared'
 import { loader } from '@/composables/core/map'
 
 const props = defineProps({
-  modelValue: { type: Object, default: () => {} },
+  modelValue: { type: [Object, String], default: () => {} },
   placeholder: { type: String, default: '' },
   id: { type: String, default: 'autocomplete' },
   inputClass: { type: String, default: 'relative' },
@@ -37,6 +37,7 @@ const isEmpty = () => {
 const modelValueProp = toRef(props, 'modelValue')
 
 onMounted(() => {
+	console.log(modelValueProp.value)
 	const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
     const fillInAddress = () => {
