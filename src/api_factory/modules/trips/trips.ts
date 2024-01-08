@@ -81,5 +81,9 @@ export const trips_api = {
 	$_notify_trip_passenger: (payload:any) => {
 		const url = '/notifications'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_remove_bus_captain: (id) => {
+		const url = `/bus-captains/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }
