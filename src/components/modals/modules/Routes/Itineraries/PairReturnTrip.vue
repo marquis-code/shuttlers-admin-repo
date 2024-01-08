@@ -13,10 +13,10 @@
 					</option>
 				</select>
 			</div>
-			<div class="flex flex-col gap-2">
+			<!-- <div class="flex flex-col gap-2">
 				<label class="label">Default fare</label>
 				<input v-model="return_fare" required type="number" step="0.01" class="input-field">
-			</div>
+			</div> -->
 
 			<button type="submit" :disabled="loading || !enableButton"
 				class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]"
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { usePairReturnTrip } from '@/composables/modules/routes/itineraries'
 
-const { loading, enableButton, clearObj, routes, itineraries, selectedItineraries, selectedRoutes, return_fare, pairReturnTrip } = usePairReturnTrip()
+const { loading, enableButton, clearObj, routes, itineraries, selectedItineraries, selectedRoutes, pairReturnTrip } = usePairReturnTrip()
 const routeSelected = (val: Record<string, any>) => {
 	selectedRoutes.value = val
 }

@@ -33,7 +33,7 @@ export const routes_api = {
 			}
         }
 	},
-	$_get_route_by_id: (id:string) => {
+	$_get_route_by_id: (id:string|number) => {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -167,8 +167,12 @@ export const routes_api = {
 		const url = `/routes/${routeId}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_create_route: (payload:any) => {
+	$_create_route: (payload:Record<string, any>) => {
 		const url = '/routes'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_update_route: (routeId:number|string, payload:Record<string, any>) => {
+		const url = `/routes/${routeId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

@@ -1,4 +1,4 @@
-import { useItineraries } from './fetch'
+import { useItineraries, singleItinerary } from './fetch'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useRouteModal } from '@/composables/core/modals'
@@ -10,18 +10,16 @@ const loading = ref(false)
 const loading_itineraries = ref(false)
 const obj = {
 	selectedRoutes: ref(null) as Ref<any>,
-	selectedItineraries: ref(null) as Ref<any>,
-	return_fare: ref(1000)
+	selectedItineraries: ref(null) as Ref<any>
 }
 
 const clearObj = () => {
 	obj.selectedItineraries.value = null
 	obj.selectedRoutes.value = null
-	obj.return_fare.value = 1000
 }
 
 const enableButton = computed(() => {
-  return !!(obj.selectedItineraries.value && obj.return_fare.value)
+  return !!(obj.selectedItineraries.value)
 })
 
 export const usePairReturnTrip = () => {
@@ -37,7 +35,7 @@ export const usePairReturnTrip = () => {
 
 	const pairReturnTrip = async () => {
 		const payload = {
-			default_fare: obj.return_fare.value,
+			default_fare: singleItinerary.value?.default_fare || 0,
 			itinerary_pair_id: obj.selectedItineraries.value || null
 		}
 		const itinerary_id = useRoute().params.iti_id as string
@@ -62,7 +60,7 @@ export const usePairReturnTrip = () => {
 
 	const removePairedTrip = async () => {
 		const payload = {
-			// default_fare: obj.return_fare.value,
+			default_fare: singleItinerary.value?.default_fare || 0,
 			itinerary_pair_id: null
 		}
 		const itinerary_id = useRoute().params.iti_id as string
