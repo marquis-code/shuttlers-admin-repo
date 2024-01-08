@@ -8,10 +8,11 @@
 					</h3>
 				</div>
 				<div class="flex justify-end items-end">
-					<date-picker
-						v-model:value="form.rate"
-						range
-						style="width: 100%"
+					<InputDateInput
+						id="startDate"
+						v-model="form.rate"
+						:disabled-date="() => {}"
+						:range="true"
 						class="font-light"
 						placeholder="Filter by date"
 					/>
