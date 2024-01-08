@@ -3,6 +3,7 @@ import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
+import { useRouteModal } from '@/composables/core/modals'
 const { getRouteById } = useRouteIdDetails()
 const selectedRouteId = ref('')
 
@@ -21,12 +22,13 @@ export const useDuplicateRoute = () => {
 			convertObjWithRefToObj(routeDuplicateForm)
 		)) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			useRouter().push(`/trips/routes/${res.data.route.id}/details`)
 			useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Route has been duplicated successfully.'
 			})
-            getRouteById(selectedRouteId.value)
+			useRouteModal().closeRouteDuplicationModal()
+			useRouter().push(`/trips/routes/${res.data.route.id}/details`)
+            getRouteById(res.data.route.id)
 		}
 		loading.value = false
     }
