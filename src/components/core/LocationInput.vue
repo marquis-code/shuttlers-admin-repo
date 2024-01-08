@@ -37,7 +37,6 @@ const isEmpty = () => {
 const modelValueProp = toRef(props, 'modelValue')
 
 onMounted(() => {
-	console.log(modelValueProp.value)
 	const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
 
     const fillInAddress = () => {
