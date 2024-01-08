@@ -60,6 +60,7 @@ export const useUpdateCharter = () => {
                 useAlert().openAlert({ type: 'SUCCESS', msg: 'Rental Request Updated' })
                 loading.value = false
             }
+            loading.value = false
         } catch (e) {
             useAlert().openAlert({ type: 'ERROR', msg: e.message || 'Something went wrong' })
             loading.value = false
