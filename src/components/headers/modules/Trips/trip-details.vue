@@ -22,7 +22,9 @@ import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { useTransferTrip } from '@/composables/modules/trips/transfer'
 
+const { initTransfer } = useTransferTrip()
 const { selectedTrip } = useUpcomingTripIdDetails()
 const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
@@ -94,6 +96,10 @@ const dropdownChildren = computed(() => {
 
     if (tripType.value === 'active') {
         dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data) }])
+    }
+
+    if (tripType.value === 'completed') {
+        dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
     }
     return dropdownOptions
 })

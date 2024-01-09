@@ -10,7 +10,9 @@
 				<Skeleton v-if="loading_vehicles" height="45px" radius="10px" />
 				<select v-else v-model="vehicle_id" required class="input-field">
 					<option v-for="n in vehicles" :key="n.id" :value="n.id">
-						{{ n?.brand || '' }} {{ n?.name || '' }} ({{ n?.seats }} seats)
+						<span>
+							{{ n?.driver?.fname || '' }} {{ n?.driver?.lname || '' }} - {{ n?.brand || '' }} {{ n?.name || '' }} ({{ n?.seats }} seats) - {{ n?.registration_number || '' }}
+						</span>
 					</option>
 				</select>
 			</div>

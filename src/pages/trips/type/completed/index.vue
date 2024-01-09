@@ -86,7 +86,7 @@ definePageMeta({
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
 	{ name: 'Log Issue', func: (data) => initLogIssues(data) },
-	{ name: 'Transfer trip', func: (data) => { initTransfer(data.id) } }
+	{ name: 'Transfer trip', func: (data) => { initTransfer(data) } }
 ])
 
 const tableFields = ref([
