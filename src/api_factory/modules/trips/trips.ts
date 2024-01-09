@@ -85,5 +85,9 @@ export const trips_api = {
 	$_transfer_trip: (payload:Record<string, any>) => {
 		const url = '/trip-revenues/trips-vehicle'
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_remove_bus_captain: (id) => {
+		const url = `/bus-captains/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }

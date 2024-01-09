@@ -174,5 +174,13 @@ export const routes_api = {
 	$_update_route: (routeId:number|string, payload:Record<string, any>) => {
 		const url = `/routes/${routeId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
-	}
+	},
+	$_generate_business_booking_report: (routeId: number, start_date:string, end_date:string) => {
+		const url = `routes/${routeId}/bookings/start_date/${start_date}/end_date/${end_date}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_passengers_bookings: (routeId:string|number, corporateId:string|number, booking_days: any) => {
+        const url = `/routes/${routeId}/bookings/${corporateId}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, booking_days)
+    }
 }

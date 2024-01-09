@@ -6,8 +6,7 @@
 		</p>
 		<div class="p-3 space-y-6">
 			<div class="">
-				<label for="">Filter By Company</label>
-				<InputMultiSelectUsers />
+				<CompanySelector v-model="corporate" class="" />
 			</div>
 			<div>
 				<button class="bg-black text-white text-xs px-3 py-2 rounded-md">
@@ -15,10 +14,15 @@
 				</button>
 			</div>
 			<div>
-				<Table :loading="loadingRouteBookings" :headers="tableFields" :table-data="routeBookings" :has-index="true">
+				<Table
+					:loading="processing"
+					:headers="tableFields"
+					:table-data="bookingResult"
+					:has-index="true"
+				>
 					<template #item="{ item }">
 						<p v-if="item.route_day" class="">
-							{{ moment(item.data.date).format('ddd') }}
+							{{ moment(item.data.date).format("ddd") }}
 						</p>
 					</template>
 				</Table>
@@ -29,15 +33,38 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { useRouteBookingsById } from '@/composables/modules/routes/id'
-
+import { useGetRoutePassengersBookings } from '@/composables/modules/routes/getRoutesPassengersBookings'
+import { useDaysInMonth } from '@/composables/core/useMonthDays'
+const daysInMonth = useDaysInMonth()
+const corporate = ref('') as any
+const currentPage = ref(1)
 const id = useRoute().params.id as string
-const { loadingRouteBookings, getRouteBookingsById, routeBookings, corporateId } = useRouteBookingsById()
+const {
+  processing,
+  setBookingPassengersPayload,
+  getRoutePassengersBookings,
+  bookingResult
+} = useGetRoutePassengersBookings()
 const tableFields = [
-	{ text: 'Route day', value: 'route_day' },
-	{ text: 'Total Passengers', value: 'passengers' },
-	{ text: 'Date', value: 'date' }
+  { text: 'Route day', value: 'route_day' },
+  { text: 'Total Passengers', value: 'passengers' },
+  { text: 'Date', value: 'date' }
 ]
 
-getRouteBookingsById(id)
+const loadRoutePassengers = () => {
+  const requestPayload = {
+    routeId: useRoute().params.id,
+    corporateId: corporate.value.id,
+    booking_days: daysInMonth
+  }
+  setBookingPassengersPayload(requestPayload)
+  getRoutePassengersBookings()
+}
+
+loadRoutePassengers()
+watch(corporate,
+  () => {
+    loadRoutePassengers()
+  }
+)
 </script>

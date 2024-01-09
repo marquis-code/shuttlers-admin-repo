@@ -84,20 +84,19 @@ const onRowClicked = (data) => {
 	selectedRoute.value = data
 }
 
-// const dropdownChildren = computed(() => [
-// 	{ name: 'Edit', func: (data) => { useRouter().push(`/trips/routes/${data.id}/edit`) } },
-// 	{ name: 'suspend', func: (data) => { handleRouteStatus(data) } },
-// 	{ name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
-// 	{ name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }
-// ])
-
 const dropDownChildren = (data: Record<string, any>) => {
 	return [
 		{ name: 'Edit', func: (data) => { useRouter().push(`/trips/routes/${data.id}/edit`) } },
 		{ name: data.status === 1 ? 'Suspend' : 'Unsuspend', func: (data) => { handleRouteStatus(data) } },
-		{ name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
+		{ name: 'Duplicate', func: (data) => { handleRouteDuplication(data) } },
 		{ name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }
 	]
+}
+
+const handleRouteDuplication = (data) => {
+	const { selectedRoute } = useRouteIdDetails()
+	selectedRoute.value = data
+	useRouteModal().openRouteDuplicationModal()
 }
 
 const tableFields = ref([

@@ -24,9 +24,15 @@
 				<span v-else-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM DD, YYYY, HH:MM A").value }}
 				</span>
+				<span v-else-if="item.userRoute">
+					<StatusBadge :name=" item.data?.userRoute?.booking_status || 'false'" />
+				</span>
 				<span v-else-if="item.status" class="flex">
 					<StatusBadge :name="item.data.status" />
 				</span>
+			</template>
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingRental" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -36,7 +42,7 @@ import { useDateFormat } from '@vueuse/core'
 
 import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
 
-const { getRentalList, loadingRental, rentalList, page, filterData } = useGetRentalList()
+const { getRentalList, loadingRental, rentalList, page, filterData, moveTo, next, prev, total } = useGetRentalList()
 
 filterData.status.value = 'accepted'
 getRentalList()
@@ -74,6 +80,10 @@ const tableFields = ref([
     {
         text: 'TRIPS DATE',
         value: 'pickup_date'
+    },
+    {
+        text: 'PAYMENT STATUS',
+        value: 'userRoute'
     },
     {
         text: 'STATUS',
