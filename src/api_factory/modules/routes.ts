@@ -182,5 +182,9 @@ export const routes_api = {
 	$_get_route_passengers_bookings: (routeId:string|number, corporateId:string|number, booking_days: any) => {
         const url = `/routes/${routeId}/bookings/${corporateId}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, booking_days)
-    }
+    },
+	$_update_payment_options: (payload: any) => {
+		const url = '/bulk/route-payment-options'
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	}
 }
