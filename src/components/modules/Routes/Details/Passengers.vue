@@ -4,9 +4,11 @@
 			Passengers
 		</p>
 		<div class="p-3 space-y-6">
-			<div class="">
-				<label for="">Filter By Company</label>
-				<InputMultiSelectUsers />
+			<div class="flex justify-between items-center">
+				<div class="w-6/12">
+					<label for="">Filter By Company</label>
+				</div>
+				<CompanySelector v-model="corporate" class="w-6/12" />
 			</div>
 			<div>
 				<button class="bg-black text-white text-xs px-3 py-2 rounded-md">
@@ -29,7 +31,7 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { useRouteBookingsById } from '@/composables/modules/routes/id'
-
+const corporate = ref('') as any
 const id = useRoute().params.id as string
 const { loadingRouteBookings, getRouteBookingsById, routeBookings, corporateId } = useRouteBookingsById()
 const tableFields = [
