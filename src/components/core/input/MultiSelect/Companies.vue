@@ -19,7 +19,7 @@ const company = ref()
 const emits = defineEmits(['update:modelValue', 'updated'])
 const props = defineProps({
   modelValue: {
-    type: Number,
+    type: [Number, Object],
     required: false,
     default: 0
     },

@@ -1,9 +1,11 @@
 <template>
-	<HeadersHeaderSlot class="text-xs leading-relaxed font-light" :title="`${selectedRoute?.route_code} ${selectedRoute?.pickup}-${selectedRoute?.destination}`" pre-title="ROUTES" :loading="Object.keys(selectedRoute).length === 0">
-		<template #tabs>
+	<HeadersHeaderSlot class="text-xs leading-relaxed font-light" :title="`${selectedRoute?.route_code} ${selectedRoute?.pickup}-${selectedRoute?.destination}`"
+		pre-title="ROUTES" :loading="loading_route_details"
+	>
+		<template v-if="!$route.fullPath.includes('edit')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
-		<template #actions>
+		<template v-if="!$route.fullPath.includes('edit')" #actions>
 			<ButtonIconDropdown class="bg-black font-medium text-white px-3 py-1 rounded-lg" button-text="Actions" :children="dropdownChildren" :data="selectedRoute" class-name="w-56" />
 		</template>
 	</HeadersHeaderSlot>
@@ -16,14 +18,14 @@ import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/dele
 import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/update'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 const { updateRoute, loading } = useUpdateRouteStatus()
-const { selectedRoute, getRouteById } = useRouteIdDetails()
+const { selectedRoute, getRouteById, loading: loading_route_details } = useRouteIdDetails()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
 const router = useRouter()
 
-if (Object.keys(selectedRoute.value).length === 0) {
-    const id = useRoute().params.id as string
-    getRouteById(id)
-}
+// if (Object.keys(selectedRoute.value).length === 0) {
+const id = useRoute().params.id as string
+getRouteById(id)
+// }
 
 const pageTabs = computed(() => [
     {
@@ -45,7 +47,7 @@ const pageTabs = computed(() => [
 ])
 
 const dropdownChildren = computed(() => [
-	{ name: 'Edit', func: (data) => {} },
+	{ name: 'Edit', func: (data) => editRoute() },
 	{ name: 'suspend', func: (data) => { handleRouteStatus(data) } },
 	{ name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
 	{ name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }

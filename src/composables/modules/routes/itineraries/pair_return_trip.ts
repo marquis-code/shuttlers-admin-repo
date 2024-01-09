@@ -1,7 +1,8 @@
-import { useItineraries } from './fetch'
+import { useItineraries, singleItinerary } from './fetch'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useRouteModal } from '@/composables/core/modals'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 
 const routes = ref([]) as Ref<Record<string, any>[]>
 const itineraries = ref([]) as Ref<Record<string, any>[]>
@@ -9,18 +10,16 @@ const loading = ref(false)
 const loading_itineraries = ref(false)
 const obj = {
 	selectedRoutes: ref(null) as Ref<any>,
-	selectedItineraries: ref(null) as Ref<any>,
-	return_fare: ref(1000)
+	selectedItineraries: ref(null) as Ref<any>
 }
 
 const clearObj = () => {
 	obj.selectedItineraries.value = null
 	obj.selectedRoutes.value = null
-	obj.return_fare.value = 1000
 }
 
 const enableButton = computed(() => {
-  return !!(obj.selectedItineraries.value && obj.return_fare.value)
+  return !!(obj.selectedItineraries.value)
 })
 
 export const usePairReturnTrip = () => {
@@ -36,7 +35,7 @@ export const usePairReturnTrip = () => {
 
 	const pairReturnTrip = async () => {
 		const payload = {
-			default_fare: obj.return_fare.value,
+			default_fare: singleItinerary.value?.default_fare || 0,
 			itinerary_pair_id: obj.selectedItineraries.value || null
 		}
 		const itinerary_id = useRoute().params.iti_id as string
@@ -53,7 +52,27 @@ export const usePairReturnTrip = () => {
 	watch(obj.selectedRoutes, () => {
 		obj.selectedItineraries.value = null
 		if (obj.selectedRoutes.value?.id) fetchItineraries()
-	  })
+	})
 
-	return { ...obj, routes, itineraries, clearObj, loading, fetchItineraries, enableButton, pairReturnTrip }
+	const initRemovePairedTrip = () => {
+		useConfirmationModal().openAlert({ call_function: removePairedTrip, desc: 'Are you sure you want to unpair this trip?', title: 'Unpair return trip', loading, type: 'DANGER' })
+	}
+
+	const removePairedTrip = async () => {
+		const payload = {
+			default_fare: singleItinerary.value?.default_fare || 0,
+			itinerary_pair_id: null
+		}
+		const itinerary_id = useRoute().params.iti_id as string
+		loading.value = true
+		const res = await routes_api.$_update_itineraries(itinerary_id, payload) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			useAlert().openAlert({ type: 'SUCCESS', msg: 'Return trip un-paired successfully' })
+			useItineraries().getSingleItinerary(itinerary_id)
+			useConfirmationModal().closeAlert()
+		}
+		loading.value = false
+	}
+
+	return { ...obj, routes, itineraries, clearObj, loading, fetchItineraries, enableButton, pairReturnTrip, initRemovePairedTrip }
 }

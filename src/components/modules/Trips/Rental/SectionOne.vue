@@ -48,7 +48,7 @@
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="labe">DROP OFF</span>
-				<span>{{ rentalDetails.return_address }} </span>
+				<span>{{ rentalDetails.dropoff_address }} </span>
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="labe">NUMBER OF STOPS</span>

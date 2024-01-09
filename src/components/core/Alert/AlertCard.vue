@@ -70,6 +70,8 @@ const ICON = computed({
 				return 'info'
 			case 'SUCCESS':
 				return 'check'
+			case 'WARNING':
+				return 'info'
 			default:
 				return 'info'
 		}
@@ -84,6 +86,8 @@ const BG = computed({
 					return 'bg-red'
 				case 'SUCCESS':
 					return 'bg-green-700'
+				case 'WARNING':
+					return 'bg-orange-500'
 				default:
 					return 'bg-black'
 			}
@@ -98,6 +102,8 @@ const TEXT = computed({
 				return 'text-red'
 			case 'SUCCESS':
 				return 'text-green-700'
+			case 'WARNING':
+				return 'text-orange-500'
 			default:
 				return 'text-dark'
 		}

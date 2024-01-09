@@ -72,12 +72,17 @@
 	</div>
 	<div class="bg-light border rounded-lg p-4 flex flex-col">
 		<div class="pb-4 flex items-center justify-between">
-			<p class="text-sm text-dark font-medium">Return Trip Time</p>
-			<button class="text-sm bg-dark p-2 text-light rounded-md" @click="useRouteModal().openPairReturnTrip()">
-				Set return trip
-			</button>
+			<p class="text-sm text-dark font-medium">Return Trip</p>
+			<div class="flex items-stretch gap-2">
+				<button v-if="itinerary?.itinerary_pair_id" class="text-sm p-2 text-light bg-red rounded-md" @click="initRemovePairedTrip">
+					Delete
+				</button>
+				<button class="text-sm bg-dark p-2 text-light rounded-md" @click="useRouteModal().openPairReturnTrip()">
+					{{ itinerary?.itinerary_pair_id ? 'Change' : 'Set' }} return trip
+				</button>
+			</div>
 		</div>
-		<p v-if="!itinerary.itinerary_pair_id" class="test-base text-dark text-center py-3 font-medium">
+		<p v-if="!itinerary?.itinerary_pair_id" class="test-base text-dark text-center py-3 font-medium">
 			No return trip for this route
 		</p>
 		<template v-else>
@@ -85,16 +90,29 @@
 				<p class="text-sm text-[#12263f]">
 					Starting Time
 				</p>
-				<p class="text-sm text-[#12263f]">
-					{{ returnTripItinerary.trip_time }}
-				</p>
+				<div class="flex items-center gap-2">
+					<p class="text-sm text-[#12263f]">
+						{{ returnTripItinerary.trip_time }}
+					</p>
+					<NuxtLink class="text-sm font-medium text-green underline" :to="`/trips/routes/${returnTripItinerary?.route_id}/details`">
+						View details
+					</NuxtLink>
+				</div>
 			</div>
-			<div class="flex items-center justify-between p-3">
+			<!-- <div class="flex items-center justify-between p-3">
 				<p class="text-sm text-[#12263f]">
 					Default Fare
 				</p>
 				<p class="text-sm text-[#12263f]">
 					{{ returnTripItinerary?.default_fare ? `₦${returnTripItinerary.default_fare}` : 'N/A' }}
+				</p>
+			</div> -->
+			<div class="flex items-center justify-between p-3 bg-[#f9fbfd] gap-4">
+				<p class="text-sm text-[#12263f]">
+					Route code
+				</p>
+				<p class="text-sm text-[#12263f]">
+					{{ returnTripItinerary?.route?.route_code || 'N/A' }}
 				</p>
 			</div>
 		</template>
@@ -156,9 +174,10 @@
 </template>
 
 <script setup lang="ts">
-import { useItineraries, useUpdateItineraries, useCreateItinerary } from '@/composables/modules/routes/itineraries'
+import { useItineraries, useUpdateItineraries, useCreateItinerary, usePairReturnTrip } from '@/composables/modules/routes/itineraries'
 import { useRouteModal } from '@/composables/core/modals'
 
+const { initRemovePairedTrip } = usePairReturnTrip()
 const { loading_busstop, busStops, getRouteBusstops } = useCreateItinerary()
 const { singleItinerary: itinerary, returnTripItinerary } = useItineraries()
 const { time, resetObj, busstop_id, loading: updating, updateItineraries, default_fare, pricing_type, pricing_margin, pricing_scheme, pricing_margin_unit } = useUpdateItineraries()

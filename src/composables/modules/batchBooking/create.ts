@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { useDateFormat } from '@vueuse/core'
 import { batch_booking_api, routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
@@ -7,7 +8,7 @@ const { routeItineraries } = useItinerariesByRouteId()
 
 const selectedRoute_charges = ref([] as Record<string, any>[])
 const selectedRoute_charges_loading = ref(false)
-const batchBookingForm = {
+const batchBookingForm: Record<string, any> = {
     users: [],
     booking: {
         route_id: '',
@@ -90,7 +91,7 @@ watch(() => form.has_return, () => {
         if (selectedItinerary.value?.itinerary_pair_id) {
             getReturnTripDetails(selectedItinerary.value.itinerary_pair_id)
         } else {
-            useAlert().openAlert({ type: 'ERROR', msg: 'This trip doesnt have a return trip paired' })
+            useAlert().openAlert({ type: 'WARNING', msg: 'This trip doesnt have a return trip paired' })
             form.has_return = false
         }
     }
@@ -171,6 +172,10 @@ export const useCreateBatchBooking = () => {
         batchBookingForm.booking.recurring = data?.booking?.recurring
         batchBookingForm.booking.payment_source = data?.booking?.payment_source
         batchBookingForm.booking.luggage_quantity = data?.booking?.luggage_quantity
+        if (batchBookingForm.booking.payment_source === 'instant_payment') {
+            batchBookingForm.booking.payment_reference = uuidv4()
+            batchBookingForm.booking.instant_payment_provider = 'corporate_pay'
+        }
     }
 
     return { selectedRoute_charges, selectedRoute_charges_loading, createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, returnTripItinerary, returnTripLoading, clearObj }

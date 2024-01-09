@@ -1,5 +1,9 @@
+import moment from 'moment'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
+
+const { loading: downloading } = useDownloadReport()
 const corporateId = ref('') as any
 export const useGetRecentRoutesList = () => {
     const loadingRoutes = ref(false)
@@ -27,15 +31,28 @@ export const useGetMainRoutes = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_main_routes } = routes_api
+    const type = ref([]) as Ref<Record<string, any>[]>
+    const visibility = ref([]) as Ref<Record<string, any>[]>
+    const city = ref('')
 
+    const computedType = computed(() => {
+        if (type.value.length === 1) return type.value[0].value
+        return ''
+    })
+
+    const computedVisibility = computed(() => {
+        if (visibility.value.length === 1) return visibility.value[0].value
+        return ''
+    })
     const filterData = {
-        status: ref(''),
-        is_exclusive: ref(''),
-        visibility: ref(''),
-        city_id: ref('')
+        search: ref(''),
+        status: ref(1),
+        is_exclusive: computedType,
+        visibility: computedVisibility,
+        city_id: computed(() => city.value)
     }
 
-    watch([filterData.status, filterData.is_exclusive, filterData.visibility, filterData.city_id], (val) => {
+    watch([filterData.status, type, visibility, city, filterData.search], (val) => {
         getMainRoutesList()
     })
 
@@ -63,19 +80,34 @@ export const useGetMainRoutes = () => {
             case 'status':
                 filterData.status.value = data.value
                 break
-            case 'is_exclusive':
-                filterData.is_exclusive.value = data.value
-                break
-            case 'visibility':
-                    filterData.visibility.value = data.value
-                break
-            case 'city_id':
-                    filterData.city_id.value = data.value
+            case 'search':
+                filterData.search.value = data.value
                 break
         }
     }
 
-    return { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, corporateId, setCorporateId }
+    const downloadMainRoutes = async () => {
+		downloading.value = true
+		const name = ref(`all-${computedVisibility.value}-main-routes`)
+		const res = await routes_api.$_download_main_routes(filterData) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    Pickup: el?.pickup || 'N/A',
+                    Dropoff: el?.destination || 'N/A',
+                    Route_code: el?.route_code || 'N/A',
+					Type: `${el?.is_exclusive ? 'Exclusive' : 'Shared'}`,
+					Visibility: el?.visibility || 'N/A',
+					Status: `${el?.status ? 'Active' : 'Inactive'}`
+                }
+            })
+			exportAsCsv(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
+    return { getMainRoutesList, loadingMainRoutes, mainRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, corporateId, setCorporateId, type, visibility, city, downloadMainRoutes }
 }
 
 export const useGetSuspendedRoutes = () => {

@@ -1,8 +1,8 @@
 <template>
 	<div class="">
-		<div class="flex">
+		<div class="flex h-[calc(100vh-90px)]">
 			<div
-				class="w-4/12 bg-white border-r p-6 space-y-6 sticky top-4 h-[1000px] overflow-y-auto"
+				class="w-4/12 bg-white border-r p-6 space-y-6 sticky top-4 h-full overflow-y-auto"
 			>
 				<h1 class="text-lg font-semibold text-gray-900 py-0">
 					New Route
@@ -18,9 +18,9 @@
 								@change="selectedStartAddress"
 							/>
 						</div>
-						<div v-if="form.stopPoints.length" class="space-y-3">
+						<!-- <div v-if="otherStopNumber" class="space-y-3">
 							<div
-								v-for="(itm, idx) in form.stopPoints"
+								v-for="(itm, idx) in otherStopNumber"
 								:key="idx"
 								class="flex items-center w-full h-full rounded-md border"
 							>
@@ -38,12 +38,11 @@
 										src="@/assets/icons/source/close.svg"
 										alt="close"
 										class="h-full p-1"
-										@click="removeRow(itm)"
 									>
 								</div>
 							</div>
-						</div>
-						<button
+						</div> -->
+						<!-- <button
 							class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
 							@click="addStopPoint"
 						>
@@ -52,7 +51,7 @@
 								class="h-3 w-3"
 								alt="plus"
 							>Add Stop
-						</button>
+						</button> -->
 					</div>
 					<div>
 						<LocationInput
@@ -69,7 +68,7 @@
 					<div class="w-full">
 						<label class="">Route Code</label>
 						<input
-							v-model="createForm.route_code.value"
+							v-model="route_code"
 							type="text"
 							placeholder="e.g S300"
 							class="py-3 rounded-md px-3 border w-full outline-none"
@@ -78,7 +77,7 @@
 					<div class="w-full">
 						<label class="">Route Description</label>
 						<textarea
-							v-model="createForm.info.description.value"
+							v-model="desc"
 							placeholder="Route Description (Max . 500 characters)"
 							class="w-full border outline-none resize-none rounded-md p-4"
 							rows="6"
@@ -91,7 +90,7 @@
 					<div class="flex items-center gap-x-3">
 						<input
 							id="public"
-							v-model="createForm.visibility.value"
+							v-model="visibility"
 							value="public"
 							name="public"
 							type="radio"
@@ -101,7 +100,7 @@
 					<div class="flex items-center gap-x-3">
 						<input
 							id="private"
-							v-model="createForm.visibility.value"
+							v-model="visibility"
 							value="private"
 							name="private"
 							type="radio"
@@ -114,7 +113,7 @@
 					<div class="flex items-center gap-x-2">
 						<input
 							id="shared"
-							v-model="createForm.is_exclusive.value"
+							v-model="is_exclusive"
 							value="shared"
 							name="shared"
 							type="radio"
@@ -124,7 +123,7 @@
 					<div class="flex items-center gap-x-2">
 						<input
 							id="exclusive"
-							v-model="createForm.is_exclusive.value"
+							v-model="is_exclusive"
 							value="exclusive"
 							name="exclusive"
 							type="radio"
@@ -132,16 +131,16 @@
 						<label for="exclusive" class="mt-2">Exclusive</label>
 					</div>
 				</div>
-				<div v-if="selectedRouteVisibility === 'private'">
+				<div v-if="visibility === 'private'">
 					<label>Select Corporate that owns this private route</label>
-					<CorporateSelector v-model="createForm.corporate_id.value" />
+					<InputMultiSelectCompanies v-model="corporate" />
 				</div>
 				<div>
 					<label>Route Availability</label>
 					<div class="flex items-center gap-x-2">
 						<input
 							id="everyday"
-							v-model="selectedRouteAvailability"
+							v-model="route_availability"
 							value="everyday"
 							name="everyday"
 							type="radio"
@@ -151,7 +150,7 @@
 					<div class="flex items-center gap-x-2">
 						<input
 							id="selected_days"
-							v-model="selectedRouteAvailability"
+							v-model="route_availability"
 							value="selected_days"
 							name="selected_days"
 							type="radio"
@@ -163,7 +162,7 @@
 					<label>Availability Start Date</label>
 					<InputDateInput
 						id="startDate"
-						v-model="createForm.route_availability_start_date.value"
+						v-model="avail_start_date"
 						class="font-light"
 						placeholder="Filter by date"
 					/>
@@ -172,7 +171,7 @@
 					<label>Availability End Date</label>
 					<InputDateInput
 						id="startDate"
-						v-model="createForm.route_availability_end_date.value"
+						v-model="avail_end_date"
 						class="font-light"
 						placeholder="Filter by date"
 					/>
@@ -181,25 +180,21 @@
 					<p class="font-medium">
 						Unavailable Dates
 					</p>
-					<div class="flex items-center flex-wrap gap-x-3">
+					<div class="flex items-center flex-wrap gap-2">
 						<div
-							v-for="item in form.selected_dates"
+							v-for="item in unavailable_days"
 							:key="item"
-							class="flex px-3 py-2 items-center gap-x-2 rounded-lg bg-blue-100 border-blue-700"
+							class="flex p-2 py-1 items-center gap-2 rounded-lg bg-blue-100 border-blue-700"
 						>
 							<p class="text-gray-900 text-sm">
 								{{ item }}
 							</p>
-							<span
-								class="cursor-pointer text-rose-500 font-medium"
-								@click="removeSelected(item)"
-							>X</span
-							>
+							<span class="cursor-pointer text-rose-500 text-sm font-medium" @click="removeUnavailableDay(item)">X</span>
 						</div>
 					</div>
 					<button
 						class="flex items-center gap-x-2 bg-black text-white text-sm px-3 py-2 rounded-md"
-						@click="toggleDatePicker"
+						@click="showDatePicker = !showDatePicker"
 					>
 						<img src="@/assets/icons/source/white-plus.svg" alt="plus">Add
 						Date
@@ -207,71 +202,70 @@
 					<div v-if="showDatePicker">
 						<InputDateInput
 							id="startDate"
-							v-model="form.selected_date"
 							class="font-light"
 							placeholder="Filter by date"
-							@update:model-value="handleSelectedDate"
+							@update:model-value="handleUnavailableDate"
 						/>
 					</div>
 				</div>
 				<div
-					v-if="selectedRouteAvailability === 'selected_days'"
-					class="flex items-center flex-wrap gap-x-3"
+					v-if="route_availability === 'selected_days'"
+					class="flex items-center flex-wrap gap-2"
 				>
-					<div v-for="itm in daysOfWeek" :key="itm.id">
-						<input
-							:id="itm.short"
-							type="checkbox"
-							:name="itm.short"
-							:value="itm.value"
-							class="peer hidden"
-							:checked="itm.selected"
-							@change="handleSelectedDay($event)"
-						>
-
-						<label
-							:for="itm.short"
-							class="flex cursor-pointer items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-100 peer-checked:text-gray-900"
-						>
-							<p class="text-sm font-medium">{{ itm.short }}</p>
-						</label>
-					</div>
+					<button v-for="n in all_days" :key="n" class="py-1 px-2 border rounded text-sm font-medium"
+						:class="[route_availability_days.includes(n) ? 'border-blue-500 bg-blue-100 text-gray-900' : 'border-gray-200']" @click="handleSelectedDay(n)"
+					>
+						{{ Capitalize(n).slice(0,3) }}
+					</button>
 				</div>
 				<div class="space-y-3">
 					<div>
 						<label>Route Itinerary</label>
 						<div>
 							<label>Time</label>
-							<div><InputTimeInput v-model="createForm.itineraries[0].time.value" /></div>
+							<div>
+								<InputTimeInput v-model="itinerary_time" />
+							</div>
 						</div>
 					</div>
 					<div>
 						<div>
 							<label>Fare</label>
-							<div>
-								<input
-									v-model="createForm.itineraries[0].fare.value"
-									class="border w-full py-3 outline-none rounded-md input-field px-3"
-									type="number"
-								>
-							</div>
+							<input v-model="fare" type="number"
+								class="border w-full py-3 outline-none rounded-md input-field px-3"
+							>
 						</div>
 					</div>
 				</div>
 				<div>
-					<button class="bg-black text-white w-full py-3 rounded-md">
+					<button type="button" class="bg-black text-white w-full py-3 rounded-md flex items-center justify-center" @click="createRoute">
 						<span v-if="!loading">Create route</span>
 						<Spinner v-else />
 					</button>
 				</div>
 			</div>
 			<div class="w-8/12">
-				<MapDisplay
-					:start-point="form.startLocation"
-					:end-point="form.endLocation"
-					:stops="form.stopPoints"
-					:props-loading="loading"
-				/>
+				<GMapMap map-type-id="terrain" class="h-screen"
+					:options="{
+						zoomControl: true,
+						mapTypeControl: false,
+						scaleControl: true,
+						streetViewControl: false,
+						rotateControl: false,
+						fullscreenControl: false
+					}"
+					:center="center" :zoom="12"
+				>
+					<GMapPolyline v-if="polyLine" ref="polyline" :path="polyLine" />
+					<template v-if="startLocation?.lat && endLocation?.lat">
+						<GMapMarker v-for="(n, index) in [startLocation, endLocation]" :key="index"
+							:position="{
+								lat: n.lat,
+								lng: n.lng
+							}"
+						/>
+					</template>
+				</GMapMap>
 			</div>
 		</div>
 	</div>
@@ -279,121 +273,14 @@
 
 <script setup lang="ts">
 import { useCreateRoute } from '@/composables/modules/routes/createRoute'
-import { useAlert } from '@/composables/core/notification'
-const { loading, createForm, createRoute } = useCreateRoute()
-const form = reactive({
-  stopPoints: [],
-  startLocation: {},
-  addedStopLocation: {} as any,
-  added_stop_geo_cordinate: '',
-  start_geo_coordinate: '',
-  endLocation: {},
-  end_geo_coordinate: '',
-  startDate: '',
-  endDate: '',
-  corporate: {},
-  itineraryTime: '',
-  route_availability_days: [],
-  selected_date: '',
-  selected_dates: []
-})
-const showDatePicker = ref(false)
-const toggleDatePicker = () => {
-  showDatePicker.value = !showDatePicker.value
-}
-const routeAvailability = ref(true)
+import { Capitalize } from '@/composables/utils/formatter'
 
-const selectedRouteVisibility = ref('public')
-const selectedRouteType = ref('shared')
-const selectedRouteAvailability = ref('everyday')
-
-const addStopPoint = () => {
-  if (Object.keys(form.startLocation).length > 0) {
-    form.stopPoints.push(form.addedStopLocation.name)
-  } else {
-    useAlert().openAlert({
-      type: 'ERROR',
-      msg: 'You need to add a start point before adding a stop point.'
-    })
-  }
-}
-
-if (selectedRouteVisibility.value === 'everyday') {
-  createForm.day_of_week.value = 'MON-FRI'
-}
-
-const removeRow = (item: string) => {
-  form.stopPoints = form.stopPoints.filter((itm) => itm !== item)
-}
+const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, itinerary_time, fare, createRoute, polyLine, clearObj, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay } = useCreateRoute()
 
 definePageMeta({
   layout: 'dashboard-zero',
   middleware: ['is-authenticated']
 })
 
-const selectedStartAddress = (val) => {
-  form.startLocation = val
-  createForm.pickup.value = val.name
-  createForm.start_location.value = {
-    lat: val.lat,
-    lng: val.lng
-  }
-}
-
-const selectedEndAddress = (val) => {
-  form.endLocation = val
-  createForm.destination.value = val.name
-  createForm.end_location.value = {
-    lat: val.lat,
-    lng: val.lng
-  }
-}
-
-const selectedAdditionalEndPoint = (val) => {
-  form.stopPoints.push(val.name)
-  form.addedStopLocation = val
-  form.added_stop_geo_cordinate = `${val.lat},${val.lng}`
-}
-
-const handleSelectedDay = ($event: any) => {
-  createForm.route_availability_days.value.push($event.target.value)
-  if (createForm.route_availability_days.value.length === 7) {
-    selectedRouteAvailability.value = 'everyday'
-  }
-}
-
-const handleSelectedDate = (val: string) => {
-  if (!form.selected_dates.includes(val)) {
-    form.selected_dates.push(val)
-    showDatePicker.value = !showDatePicker.value
-    form.selected_date = ''
-  } else {
-    useAlert().openAlert({
-      type: 'ERROR',
-      msg: `${val} has already been added.`
-    })
-  }
-}
-
-// createForm.itineraries.value.push(
-// 	{
-// 	id: 1,
-// 	time: '',
-// 	fare: ''
-// }
-// )
-
-const daysOfWeek = reactive([
-  { id: 1, value: 'sunday', short: 'Sun', selected: false },
-  { id: 2, value: 'monday', short: 'Mon', selected: false },
-  { id: 3, value: 'tuesday', short: 'Tue', selected: false },
-  { id: 4, value: 'wednesday', short: 'Wed', selected: false },
-  { id: 5, value: 'thursday', short: 'Thu', selected: false },
-  { id: 6, value: 'friday', short: 'Fri', selected: false },
-  { id: 7, value: 'saturday', short: 'Sat', selected: false }
-])
-
-const removeSelected = (itm: string) => {
-  form.selected_dates = form.selected_dates.filter((d) => d !== itm)
-}
+clearObj()
 </script>

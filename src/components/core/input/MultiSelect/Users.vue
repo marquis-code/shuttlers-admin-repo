@@ -4,7 +4,7 @@
 		:custom-label="(data)=>`${data.fname} ${data.lname} - (${data.email})`" open-direction="bottom" :options="queriedUsers" :multiple="false"
 		:searchable="true" :loading="loadingQueriedUsers"
 		:internal-search="false" :options-limit="300"
-		:limit="10"
+		:limit="20"
 		:show-no-results="false" :hide-selected="true" @search-change="queryUsers" />
 </template>
 
@@ -17,7 +17,7 @@ const user = ref()
 const emits = defineEmits(['update:modelValue', 'updated'])
 const props = defineProps({
   modelValue: {
-    type: Number,
+    type: [Number, Object],
     required: false,
     default: 0
     },

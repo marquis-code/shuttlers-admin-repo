@@ -108,5 +108,9 @@ export const partners_api = {
 	$_get_partners_for_selector_component: (search = '') => {
 		const url = `/partners?limit=${20}&page=${1}&metadata=true&search=${search}&related=owner`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_all_partner_vehicle_by_id: (partnerId:number) => {
+		const url = `/partner/${partnerId}/vehicles?metadata=false`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

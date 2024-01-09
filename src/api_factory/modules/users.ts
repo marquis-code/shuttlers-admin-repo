@@ -26,7 +26,7 @@ export const users_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
 	$_query_users: (query: string) => {
-		const url = '/users/search?limit=10'
+		const url = '/users/search?limit=10&status=active'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, { user: query })
 	},
 	$_create_notification: (payload) => {

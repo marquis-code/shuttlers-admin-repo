@@ -1,7 +1,7 @@
 <template>
 	<main class="flex gap-x-6">
 		<section class="md:w-6/12 space-y-6">
-			<div v-if="!isEmptyObject(selectedRoute) || !loading" class="card">
+			<div v-if="!loading" class="card">
 				<div v-for="(itm, index) in routeDetails" :key="index"
 					class="flex  gap-x-6 items-center py-4 border-b last:border-none">
 					<p class="text-sm w-[100px] shrink-0">
@@ -66,47 +66,17 @@
 							Reports
 						</p>
 					</div>
-					<div class="relative">
-						<div class="cursor-pointer flex items-center gap-x-2" @click="downloadReport">
-							<button class="">
-								<span class="sr-only">Menu</span>
-								<img src="@/assets/icons/source/download.svg" class="h-4 w-4" alt="download icon">
-							</button>
-							<p
-								class="border-e px-4 py-2 text-xs text-gray-900 font-semibold">
-								Download
-							</p>
-
-							<button class="h-full">
-								<span class="sr-only">Menu</span>
-								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
-									fill="currentColor">
-									<path fill-rule="evenodd"
-										d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-										clip-rule="evenodd" />
-								</svg>
-							</button>
-						</div>
-
-						<div v-if="showDownloadOptions" class="absolute end-0 z-10 mt-2 w-56 rounded-md border border-gray-100 bg-white shadow-lg"
-							role="menu">
-							<div class="p-2">
-								<button v-for="(itm, idx) in downloadOptions" :key="idx" href="#"
-									class="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:text-gray-700"
-									role="menuitem" @click="itm.func">
-									{{ itm.name }}
-								</button>
-							</div>
-						</div>
+					<div class="flex items-center">
+						<img src="@/assets/icons/source/download.svg" class="h-4 w-4" alt="download icon">
+						<ButtonIconDropdown class="" button-text="Download" :children="dropdownChildren" :data="selectedRoute" class-name="w-56" />
 					</div>
 				</div>
-				<div class="p-6 space-y-6">
+				<form class="p-6 space-y-6" @submit.prevent="proceedToGenerate">
 					<p class="font-medium text-sm">
 						Business Booking Report
 					</p>
 					<div class="">
-						<label for="" class="text-xs">Company</label>
-						<InputMultiSelectUsers v-model="selectedCorporate" />
+						<CompanySelector v-model="corporate" class="w-full" />
 					</div>
 					<div>
 						<label for="month" class="text-xs">Month</label>
@@ -119,10 +89,13 @@
 							</option>
 						</select>
 					</div>
-					<button class="bg-black text-white px-3 py-2 text-xs rounded-md">
-						Generate
+					<button :disabled="!isFormEmpty" type="submit" class="bg-black text-white px-3 py-2 text-xs rounded-md">
+						<span v-if="!processing" class="flex justify-center items-center gap-2.5">
+							Generate
+						</span>
+						<Spinner v-else />
 					</button>
-				</div>
+				</form>
 			</div>
 
 			<div class="rounded-md bg-white shadow-md">
@@ -148,7 +121,13 @@
 <script setup lang="ts">
 import { useAlert } from '@/composables/core/notification'
 import { isEmptyObject } from '@/composables/utils/basics'
+import { useCompaniesModal } from '@/composables/core/modals'
+import { useWeekBounds } from '@/composables/core/useWeekBounds'
+import { useMonthBounds } from '@/composables/core/useMonthBound'
+import { useDownloadBookingReport } from '@/composables/modules/routes/generateReport'
 import { useRoutePaymentOptions } from '@/composables/modules/routes/fetch'
+import { useExportCorporateRouteManifest } from '@/composables/modules/corporates/exportManifest'
+import { useGenerateBusinessBookingReport } from '@/composables/modules/corporates/generateCorporateReport'
 import { environmental_url, getCurrentEnvironmentalUrl } from '@/composables/utils/system'
 import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, useRoutePassengersById, useRouteDriversById } from '@/composables/modules/routes/id'
 const { selectedRoute, loading, getRouteById } = useRouteIdDetails()
@@ -157,7 +136,13 @@ const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripSt
 const { loadingRoutePassengers, getRoutePassengerseById, routePassengers } = useRoutePassengersById()
 const { loadingRouteDrivers, getRouteDriversById, routeDrivers } = useRouteDriversById()
 const { getPaymentOptions, loadingPaymentOptions, paymentOptionsList } = useRoutePaymentOptions()
+const { processing: downloading, setPayload, downloadBookingReport } = useDownloadBookingReport()
+const { processing, generateBusinessBookingReport, setRequestPayload } = useGenerateBusinessBookingReport()
+const { manifestExportType } = useExportCorporateRouteManifest()
+const { firstDayOfWeek, lastDayOfWeek } = useWeekBounds()
+const { firstDayOfMonth, lastDayOfMonth } = useMonthBounds()
 const id = useRoute().params.id as string
+const corporate = ref('') as any
 getRouteById(id)
 getTripStartTimeById(id)
 getRouteDriversById(id)
@@ -207,7 +192,7 @@ const routeDetails = computed(() => {
 		{ name: 'Route landing page url', value: routeUrl.value, class: 'text-shuttlersGreen', func: (val: string) => { handleClick(val) }, copyAction: true },
 		{ name: 'Starting Point', value: selectedRoute?.value?.pickup, class: 'text-gray-600', func: () => { } },
 		{ name: 'Ending Point', value: selectedRoute?.value?.destination, class: 'text-gray-600', func: () => { } },
-		{ name: 'Capacity', value: selectedRoute?.value?.total_seats, class: 'text-gray-600', func: () => { } },
+		{ name: 'Capacity', value: selectedRoute?.value?.total_seats ?? 'N/A', class: 'text-gray-600', func: () => { } },
 		{ name: 'Days Available', value: routeAvailableDays.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability Start Date', value: routeStartDate.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability End Date', value: routeEndDate.value, class: 'text-gray-600', func: () => { } },
@@ -378,6 +363,51 @@ const copyUrl = async () => {
 		(e)
 	}
 }
+
+const dropdownChildren = computed(() => [
+	{ name: 'This Week', func: (data) => handleWeeklyReportDownload() },
+	{ name: 'This Month', func: (data) => handleMonthlyReportDownload() },
+	{ name: 'Custom', func: (data) => handleCustomReportExport() }
+])
+
+const proceedToGenerate = () => {
+	const payload = {
+		corporateId: corporate.value.id,
+		monthId: selectedMonth.value
+	}
+	setRequestPayload(payload)
+	generateBusinessBookingReport()
+}
+
+const isFormEmpty = computed(() => {
+    return !!(corporate.value.id && selectedMonth.value)
+})
+
+const handleWeeklyReportDownload = () => {
+	const payload = {
+		start_date: firstDayOfWeek,
+		routeId: useRoute().params.id,
+		end_date: lastDayOfWeek
+	}
+	setPayload(payload)
+	downloadBookingReport()
+}
+
+const handleMonthlyReportDownload = () => {
+	const payload = {
+		start_date: firstDayOfMonth,
+		routeId: useRoute().params.id,
+		end_date: lastDayOfMonth
+	}
+	setPayload(payload)
+	downloadBookingReport()
+}
+
+const handleCustomReportExport = () => {
+	manifestExportType.value = 'businessRoutes'
+	useCompaniesModal().openCorporateManifestExport()
+}
+
 </script>
 
 <style scoped></style>
