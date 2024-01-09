@@ -1,7 +1,7 @@
 <template>
 	<main class="flex gap-x-6">
 		<section class="md:w-6/12 space-y-6">
-			<div v-if="!isEmptyObject(selectedRoute) || !loading" class="card">
+			<div v-if="!loading" class="card">
 				<div v-for="(itm, index) in routeDetails" :key="index"
 					class="flex  gap-x-6 items-center py-4 border-b last:border-none">
 					<p class="text-sm w-[100px] shrink-0">

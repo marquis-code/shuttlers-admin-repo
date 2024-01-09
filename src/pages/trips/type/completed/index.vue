@@ -52,11 +52,14 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { useTransferTrip } from '@/composables/modules/trips/transfer'
 
 const { initLogIssues } = useCreateIssues()
+const { initTransfer } = useTransferTrip()
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
 getCompletedTrips()
 const router = useRouter()
+
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i:any, index) => {
          return {
@@ -82,7 +85,8 @@ definePageMeta({
 
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
-	{ name: 'Log Issue', func: (data) => initLogIssues(data) }
+	{ name: 'Log Issue', func: (data) => initLogIssues(data) },
+	{ name: 'Transfer trip', func: (data) => { initTransfer(data.id) } }
 ])
 
 const tableFields = ref([
