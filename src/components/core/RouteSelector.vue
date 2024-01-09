@@ -4,7 +4,7 @@
 			{{ label }}
 		</label>
 		<VueMultiselect v-model="selectedRoute" placeholder="Search route" :searchable="true" :internal-search="false"
-			:options="routes" :multiple="false" :taggable="false" track-by="id" select-label="" :loading="loading"
+			:options="routes" :multiple="multiple" :taggable="false" track-by="id" select-label="" :loading="loading"
 			:custom-label="(data)=>`${data.route_code} - ${data.pickup} - (${data.destination})`"
 			@search-change="searching"
 		>
@@ -30,6 +30,7 @@ import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 const emit = defineEmits(['selected'])
 const props = defineProps({
 	label: { type: String, default: 'Select Route' },
+	multiple: { type: Boolean, default: false },
 	showLabel: { type: Boolean, default: true, required: false }
 })
 
