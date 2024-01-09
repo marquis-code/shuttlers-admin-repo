@@ -7,6 +7,9 @@
 			<div v-if="tripType !== 'completed'">
 				<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
 			</div>
+			<button v-if="tripType === 'completed'" class="bg-dark text-light text-sm p-2 rounded-md px-4" @click="initTransfer(selectedTrip)">
+				Transfer Trip
+			</button>
 		</template>
 
 		<template #tabs>
