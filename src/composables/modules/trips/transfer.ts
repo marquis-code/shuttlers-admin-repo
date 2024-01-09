@@ -2,10 +2,11 @@ import { useGetCompletedTripsList } from './fetch'
 import { useTripsModal } from '@/composables/core/modals'
 import { trips_api, partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { useYesConfirmationModal } from '@/composables/core/confirmation'
 
 const { getCompletedTrips } = useGetCompletedTripsList()
 const obj = {
-	trip_id: ref(null) as Ref<number|null>,
+	trip: ref({}) as Ref<Record<string, any>>,
 	partner: ref({}) as Ref<Record<string, any>>,
 	vehicle_id: ref(null) as Ref<number|null>
 }
@@ -14,7 +15,7 @@ const loading = ref(false)
 const loading_vehicles = ref(false)
 
 const clearObj = () => {
-	obj.trip_id.value = null
+	obj.trip.value = {}
 	obj.partner.value = {}
 	obj.vehicle_id.value = null
 }
@@ -24,15 +25,19 @@ const enableButton = computed(() => {
 })
 
 export const useTransferTrip = () => {
-	const initTransfer = (tripId: number) => {
-		if (!tripId) useAlert().openAlert({ type: 'ERROR', msg: 'You need trip id to proceed' })
-		obj.trip_id.value = tripId
+	const initTransfer = (trip: Record<string, any>) => {
+		if (!trip?.id) useAlert().openAlert({ type: 'ERROR', msg: 'You need trip id to proceed' })
+		obj.trip.value = trip
 		useTripsModal().openTransferTrip()
 	}
 
-	const transferTrip = async () => {
+	const transferTrip = () => {
+		useYesConfirmationModal().openAlert({ call_function: proceedToTransferTrip, desc: `Are you sure you want to transfer trip ${obj.trip.value?.route?.route_code} for ${moment(obj.trip.value?.trip_start_time).format('LL')} from ${obj.trip.value?.vehicle?.partner?.owner?.fname || ''} ${obj.trip.value?.vehicle?.partner?.owner?.lname || ''} to ${obj.partner.value?.owner?.fname || ''} ${obj.partner.value?.owner?.lname || ''}`, title: 'Transfer Trip', loading, type: 'DANGER' })
+	}
+
+	const proceedToTransferTrip = async () => {
 		const payload = {
-			trip_ids: [obj.trip_id.value],
+			trip_ids: [obj.trip.value?.id],
 			vehicle_id: obj.vehicle_id.value
 		}
 		loading.value = true
