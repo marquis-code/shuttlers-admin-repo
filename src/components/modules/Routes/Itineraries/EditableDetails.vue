@@ -72,13 +72,13 @@
 	</div>
 	<div class="bg-light border rounded-lg p-4 flex flex-col">
 		<div class="pb-4 flex items-center justify-between">
-			<p class="text-sm text-dark font-medium">Return Trip Time</p>
+			<p class="text-sm text-dark font-medium">Return Trip</p>
 			<div class="flex items-stretch gap-2">
 				<button v-if="itinerary?.itinerary_pair_id" class="text-sm p-2 text-light bg-red rounded-md" @click="initRemovePairedTrip">
 					Delete
 				</button>
 				<button class="text-sm bg-dark p-2 text-light rounded-md" @click="useRouteModal().openPairReturnTrip()">
-					{{ itinerary?.itinerary_pair_id ? 'Update' : 'Set' }} return trip
+					{{ itinerary?.itinerary_pair_id ? 'Change' : 'Set' }} return trip
 				</button>
 			</div>
 		</div>
@@ -99,14 +99,14 @@
 					</NuxtLink>
 				</div>
 			</div>
-			<div class="flex items-center justify-between p-3">
+			<!-- <div class="flex items-center justify-between p-3">
 				<p class="text-sm text-[#12263f]">
 					Default Fare
 				</p>
 				<p class="text-sm text-[#12263f]">
 					{{ returnTripItinerary?.default_fare ? `₦${returnTripItinerary.default_fare}` : 'N/A' }}
 				</p>
-			</div>
+			</div> -->
 			<div class="flex items-center justify-between p-3 bg-[#f9fbfd] gap-4">
 				<p class="text-sm text-[#12263f]">
 					Route code

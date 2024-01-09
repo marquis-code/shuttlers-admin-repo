@@ -81,5 +81,9 @@ export const trips_api = {
 	$_notify_trip_passenger: (payload:any) => {
 		const url = '/notifications'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_transfer_trip: (payload:Record<string, any>) => {
+		const url = '/trip-revenues/trips-vehicle'
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

@@ -1,5 +1,6 @@
 <template>
-	<div class="rounded-md bg-white shadow-md">
+	<Skeleton v-if="loadingRouteBookings" height="300px" />
+	<div v-else class="rounded-md bg-white shadow-md">
 		<p class="border-b text-gray-500 font-medium text-sm p-4">
 			Passengers
 		</p>

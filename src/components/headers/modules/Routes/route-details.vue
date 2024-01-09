@@ -1,5 +1,7 @@
 <template>
-	<HeadersHeaderSlot class="text-xs leading-relaxed font-light" :title="`${selectedRoute?.route_code} ${selectedRoute?.pickup}-${selectedRoute?.destination}`" pre-title="ROUTES" :loading="Object.keys(selectedRoute).length === 0">
+	<HeadersHeaderSlot class="text-xs leading-relaxed font-light" :title="`${selectedRoute?.route_code} ${selectedRoute?.pickup}-${selectedRoute?.destination}`"
+		pre-title="ROUTES" :loading="loading_route_details"
+	>
 		<template v-if="!$route.fullPath.includes('edit')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
@@ -16,7 +18,7 @@ import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/dele
 import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/update'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 const { updateRoute, loading } = useUpdateRouteStatus()
-const { selectedRoute, getRouteById } = useRouteIdDetails()
+const { selectedRoute, getRouteById, loading: loading_route_details } = useRouteIdDetails()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
 const router = useRouter()
 
