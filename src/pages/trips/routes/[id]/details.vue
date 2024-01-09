@@ -122,7 +122,11 @@
 import { useAlert } from '@/composables/core/notification'
 import { isEmptyObject } from '@/composables/utils/basics'
 import { useCompaniesModal } from '@/composables/core/modals'
+import { useWeekBounds } from '@/composables/core/useWeekBounds'
+import { useMonthBounds } from '@/composables/core/useMonthBound'
+import { useDownloadBookingReport } from '@/composables/modules/routes/generateReport'
 import { useRoutePaymentOptions } from '@/composables/modules/routes/fetch'
+import { useExportCorporateRouteManifest } from '@/composables/modules/corporates/exportManifest'
 import { useGenerateBusinessBookingReport } from '@/composables/modules/corporates/generateCorporateReport'
 import { environmental_url, getCurrentEnvironmentalUrl } from '@/composables/utils/system'
 import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, useRoutePassengersById, useRouteDriversById } from '@/composables/modules/routes/id'
@@ -132,7 +136,11 @@ const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripSt
 const { loadingRoutePassengers, getRoutePassengerseById, routePassengers } = useRoutePassengersById()
 const { loadingRouteDrivers, getRouteDriversById, routeDrivers } = useRouteDriversById()
 const { getPaymentOptions, loadingPaymentOptions, paymentOptionsList } = useRoutePaymentOptions()
+const { processing: downloading, setPayload, downloadBookingReport } = useDownloadBookingReport()
 const { processing, generateBusinessBookingReport, setRequestPayload } = useGenerateBusinessBookingReport()
+const { manifestExportType } = useExportCorporateRouteManifest()
+const { firstDayOfWeek, lastDayOfWeek } = useWeekBounds()
+const { firstDayOfMonth, lastDayOfMonth } = useMonthBounds()
 const id = useRoute().params.id as string
 const corporate = ref('') as any
 getRouteById(id)
@@ -357,9 +365,9 @@ const copyUrl = async () => {
 }
 
 const dropdownChildren = computed(() => [
-	{ name: 'This Week', func: (data) => {} },
-	{ name: 'This Month', func: (data) => { } },
-	{ name: 'Custom', func: (data) => useCompaniesModal().openCorporateManifestExport() }
+	{ name: 'This Week', func: (data) => handleWeeklyReportDownload() },
+	{ name: 'This Month', func: (data) => handleMonthlyReportDownload() },
+	{ name: 'Custom', func: (data) => handleCustomReportExport() }
 ])
 
 const proceedToGenerate = () => {
@@ -374,6 +382,31 @@ const proceedToGenerate = () => {
 const isFormEmpty = computed(() => {
     return !!(corporate.value.id && selectedMonth.value)
 })
+
+const handleWeeklyReportDownload = () => {
+	const payload = {
+		start_date: firstDayOfWeek,
+		routeId: useRoute().params.id,
+		end_date: lastDayOfWeek
+	}
+	setPayload(payload)
+	downloadBookingReport()
+}
+
+const handleMonthlyReportDownload = () => {
+	const payload = {
+		start_date: firstDayOfMonth,
+		routeId: useRoute().params.id,
+		end_date: lastDayOfMonth
+	}
+	setPayload(payload)
+	downloadBookingReport()
+}
+
+const handleCustomReportExport = () => {
+	manifestExportType.value = 'businessRoutes'
+	useCompaniesModal().openCorporateManifestExport()
+}
 
 </script>
 
