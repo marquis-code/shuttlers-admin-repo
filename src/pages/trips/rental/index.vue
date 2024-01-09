@@ -42,7 +42,7 @@ import { useDateFormat } from '@vueuse/core'
 
 import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
 
-const { getRentalList, loadingRental, rentalList, page, filterData, moveTo, next, prev, total } = useGetRentalList()
+const { getRentalList, loadingRental, rentalList, page, moveTo, next, prev, total } = useGetRentalList()
 
 getRentalList()
 
