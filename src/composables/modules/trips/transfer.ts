@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { useGetCompletedTripsList } from './fetch'
 import { useTripsModal } from '@/composables/core/modals'
 import { trips_api, partners_api, CustomAxiosResponse } from '@/api_factory/modules'
@@ -26,13 +27,16 @@ const enableButton = computed(() => {
 
 export const useTransferTrip = () => {
 	const initTransfer = (trip: Record<string, any>) => {
-		if (!trip?.id) useAlert().openAlert({ type: 'ERROR', msg: 'You need trip id to proceed' })
+		if (!trip?.id) {
+			useAlert().openAlert({ type: 'ERROR', msg: 'You need trip id to proceed' })
+			return
+		}
 		obj.trip.value = trip
 		useTripsModal().openTransferTrip()
 	}
 
 	const transferTrip = () => {
-		useYesConfirmationModal().openAlert({ call_function: proceedToTransferTrip, desc: `Are you sure you want to transfer trip ${obj.trip.value?.route?.route_code} for ${moment(obj.trip.value?.trip_start_time).format('LL')} from ${obj.trip.value?.vehicle?.partner?.owner?.fname || ''} ${obj.trip.value?.vehicle?.partner?.owner?.lname || ''} to ${obj.partner.value?.owner?.fname || ''} ${obj.partner.value?.owner?.lname || ''}`, title: 'Transfer Trip', loading, type: 'DANGER' })
+		useYesConfirmationModal().openAlert({ call_function: proceedToTransferTrip, desc: `Are you sure you want to transfer trip ${obj.trip.value?.route?.route_code} for ${moment(obj.trip.value?.trip_start_time).format('LL')} from ${obj.trip.value?.vehicle?.partner?.company_name || obj.trip.value?.partner} to ${obj.partner.value?.company_name || ''}`, title: 'Transfer Trip', loading, type: 'DANGER' })
 	}
 
 	const proceedToTransferTrip = async () => {
