@@ -42,3 +42,7 @@ export const dayIsInThePast = (trip_date: string) => {
 			const differenceInDays = formatted.diff(today, 'days')
 			return differenceInDays < 0
 }
+
+export const Capitalize = (str:string) => {
+	return str.charAt(0).toUpperCase() + str.slice(1)
+}

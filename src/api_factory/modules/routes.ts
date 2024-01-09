@@ -33,7 +33,7 @@ export const routes_api = {
 			}
         }
 	},
-	$_get_route_by_id: (id:string) => {
+	$_get_route_by_id: (id:string|number) => {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -167,8 +167,20 @@ export const routes_api = {
 		const url = `/routes/${routeId}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_create_route: (payload:any) => {
+	$_create_route: (payload:Record<string, any>) => {
 		const url = '/routes'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-	}
+	},
+	$_update_route: (routeId:number|string, payload:Record<string, any>) => {
+		const url = `/routes/${routeId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_generate_business_booking_report: (routeId: number, start_date:string, end_date:string) => {
+		const url = `routes/${routeId}/bookings/start_date/${start_date}/end_date/${end_date}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_route_passengers_bookings: (routeId:string|number, corporateId:string|number, booking_days: any) => {
+        const url = `/routes/${routeId}/bookings/${corporateId}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, booking_days)
+    }
 }

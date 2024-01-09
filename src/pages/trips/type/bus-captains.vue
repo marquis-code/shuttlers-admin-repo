@@ -40,8 +40,10 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { useRemoveBusCaptain } from '@/composables/modules/trips/buscaptain'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useGetBusCaptainsList } from '@/composables/modules/trips/fetch'
-
+const { removeBusCaptain, loading } = useRemoveBusCaptain()
 const { getBusCaptains, loadingBusCaptains, busCaptainsList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetBusCaptainsList()
 getBusCaptains()
 
@@ -66,8 +68,18 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'Remove as captain', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) }, class: '!text-red' }
+	{ name: 'Remove as captain', func: (data) => { handleRemoveBusCaptain(data) }, class: '!text-red' }
 ])
+
+const handleRemoveBusCaptain = (data: any) => {
+    useConfirmationModal().openAlert({
+        title: 'Please Confirm',
+		type: 'NORMAL',
+        desc: `Are you sure you want to remove ${data.user} as bus captain?`,
+		loading,
+		call_function: () => removeBusCaptain(data.id)
+    })
+}
 
 const tableFields = ref([
     {
