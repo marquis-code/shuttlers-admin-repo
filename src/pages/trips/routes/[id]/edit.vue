@@ -251,9 +251,15 @@
 				<div class="flex flex-col">
 					<label>Route Owner Type</label>
 					<select v-model="route_owner_type" class="p-2 border rounded-md bg-transparent" @change="who_pays = '';route_owner = {}">
-						<option value="corporate">Corporate</option>
-						<option value="user">User</option>
-						<option value="system">Shuttlers Owned</option>
+						<option value="corporate">
+							Corporate
+						</option>
+						<option value="user">
+							User
+						</option>
+						<option value="system">
+							Shuttlers Owned
+						</option>
 					</select>
 				</div>
 				<div v-if="route_owner_type === 'user' || route_owner_type === 'corporate'" class="flex flex-col">
@@ -264,7 +270,9 @@
 				<div class="flex flex-col">
 					<label>Who is paying for the bookings on this route?</label>
 					<select v-model="who_pays" class="p-2 border rounded-md bg-transparent">
-						<option value="passenger">Passenger</option>
+						<option value="passenger">
+							Passenger
+						</option>
 						<option v-if="route_owner_type == 'corporate' || route_owner_type == 'user'" value="owner">
 							Route Owner
 						</option>
@@ -273,8 +281,12 @@
 				<div class="flex flex-col">
 					<label>When is booking payment happening?</label>
 					<select v-model="payment_mode" class="p-2 border rounded-md bg-transparent">
-						<option value="pre-trip">Before Trip Starts</option>
-						<option value="post-trip">After Trip Ends</option>
+						<option value="pre-trip">
+							Before Trip Starts
+						</option>
+						<option value="post-trip">
+							After Trip Ends
+						</option>
 					</select>
 				</div>
 
