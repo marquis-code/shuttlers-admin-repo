@@ -21,6 +21,9 @@
 					{{ item.data.user.phone }}
 				</div>
 
+				<span v-else-if="item.userRoute">
+					<StatusBadge :name=" item.data?.userRoute?.booking_status || 'false'" />
+				</span>
 				<span v-else-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM DD, YYYY, HH:MM A").value }}
 				</span>
@@ -76,6 +79,10 @@ const tableFields = ref([
     {
         text: 'TRIPS DATE',
         value: 'pickup_date'
+    },
+    {
+        text: 'PAYMENT STATUS',
+        value: 'userRoute'
     },
     {
         text: 'STATUS',
