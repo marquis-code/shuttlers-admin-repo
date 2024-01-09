@@ -232,5 +232,9 @@ $_create_corporate_group: (corporateId:number, payload:any) => {
 $_update__applicable_employee: (corporateId:number, payload:any) => {
 	const url = `/credit-systems/${corporateId}/applicable-employees`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_generate_business_booking_report: (corporateId, routeId, monthId) => {
+	const url = `/corporates/${corporateId}/bookings/route/${routeId}/duration/${monthId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 }
 }
