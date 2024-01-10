@@ -186,5 +186,9 @@ export const routes_api = {
 	$_update_payment_options: (payload: any) => {
 		const url = '/bulk/route-payment-options'
         return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_set_availability_configuration: (payload: any) => {
+		const url = '/routes/booking-suspensions'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
