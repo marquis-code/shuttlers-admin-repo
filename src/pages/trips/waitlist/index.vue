@@ -1,8 +1,28 @@
 <template>
 	<main class="">
-		<Table :loading="loadingWaitlist" :headers="tableFields" :table-data="waitlistList" :option="onRowClicked">
+		<Table :loading="loadingWaitlist" :headers="tableFields" :table-data="waitlistList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" />
+				<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+				<div class="bg-white border-x border-gray-200">
+					<div class="flex justify-end items-end pr-3 pb-2">
+						<div class="flex items-center gap-x-2">
+							<p class="font-medium text-sm">
+								Sort:
+							</p>
+							<select v-model="filterData.sort.value" class="outline-none px-3 text-sm font-medium py-3 rounded-md border pr-6">
+								<option value="" disabled>
+									Sort by
+								</option>
+								<option value="ascending">
+									Ascending
+								</option>
+								<option value="descending">
+									Descending
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.date">
@@ -11,7 +31,7 @@
 			</template>
 
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingWaitlist" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -21,7 +41,10 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetwaitlistList } from '@/composables/modules/waitlist/fetch'
 import { useWaitlistIdDetails } from '@/composables/modules/waitlist/id'
 
-const { getWaitlist, loadingWaitlist, waitlistList } = useGetwaitlistList()
+const {
+ getWaitlist, loadingWaitlist, waitlistList, next, filterData,
+    prev, page, total, moveTo, onFilterUpdate
+} = useGetwaitlistList()
 getWaitlist()
 
 definePageMeta({
@@ -30,9 +53,9 @@ definePageMeta({
 })
 
 const onRowClicked = (data) => {
-	const { selectedWaitlist } = useWaitlistIdDetails()
-	useRouter().push(`/waitlist/${data.id}/waitlist-info`)
-	selectedWaitlist.value = data
+	const { selectedWaitlistObject } = useWaitlistIdDetails()
+	selectedWaitlistObject.value = data
+	useRouter().push(`/trips/waitlist/${data.date}/details`)
 }
 
 const tableFields = ref([
@@ -51,5 +74,3 @@ const tableFields = ref([
 ])
 
 </script>
-
-<style scoped></style>
