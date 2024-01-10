@@ -20,8 +20,8 @@
 					<label for="new" class="label">New User</label>
 				</div>
 			</div>
-
-			<InputMultiSelectUsers v-if="type === 'existing'" v-model="selected_user" />
+			<UserSelector v-if="type === 'existing'" v-model="selected_user" />
+			<!-- <InputMultiSelectUsers v-if="type === 'existing'" v-model="selected_user" /> Updated implementation to show a few list of users before searching-->
 			<div v-else class="grid grid-cols-1 gap-4">
 				<div class="flex flex-col gap-1">
 					<label class="label">First Name</label>
