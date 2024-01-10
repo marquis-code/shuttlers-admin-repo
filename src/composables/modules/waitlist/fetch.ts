@@ -36,8 +36,8 @@ export const useGetwaitlistList = () => {
         filterData.sort.value = data.value
         break
       case 'dateRange':
-        filterData.fromdate.value = data.value[0]
-        filterData.todate.value = data.value[1]
+        filterData.fromdate.value = data.value[0] || ''
+        filterData.todate.value = data.value[1] || ''
         break
     }
   }
