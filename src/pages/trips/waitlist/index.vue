@@ -9,6 +9,10 @@
 					{{ useDateFormat(item.data.date, "MMMM d, YYYY, HH:MM A").value }}
 				</span>
 			</template>
+
+			<template #footer>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+			</template>
 		</Table>
 	</main>
 </template>
