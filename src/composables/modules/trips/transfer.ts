@@ -28,10 +28,7 @@ const clearObj = () => {
 }
 
 const enableButton = computed(() => {
-	// return !!(obj.vehicle.value?.id)
-	if (obj.vehicle.value?.id) return true
-	if (obj.select_driver.value && obj.driver_id.value) return true
-	return false
+	return !!(obj.vehicle.value?.id)
 })
 
 export const useTransferTrip = () => {
@@ -71,6 +68,8 @@ export const useTransferTrip = () => {
 
 	watch(obj.partner, () => {
 		vehicles.value = []
+		drivers.value = []
+		obj.driver_id.value = null
 		obj.vehicle.value = {}
 		if (obj.partner.value?.id) getVehicles()
 	})

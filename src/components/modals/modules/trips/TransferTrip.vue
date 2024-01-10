@@ -21,11 +21,11 @@
 				<label for="select_driver" class="text-sm">Select driver</label>
 			</div>
 			<template v-if="select_driver">
-				<p v-if="vehicle?.driver?.id" class="text-sm">
+				<!-- <p v-if="vehicle?.driver?.id" class="text-sm">
 					<span>Driver name: </span>
 					<span class="text-dark font-medium">{{ vehicle?.driver?.fname || '' }} {{ vehicle?.driver?.lname || '' }}</span>
-				</p>
-				<div v-else class="flex flex-col gap-2">
+				</p> -->
+				<div class="flex flex-col gap-2">
 					<label class="label">Select Driver</label>
 					<Skeleton v-if="loading_drivers" height="45px" radius="10px" />
 					<select v-else v-model="driver_id" required class="input-field">
