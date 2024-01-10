@@ -7,7 +7,7 @@
 			<div v-if="tripType !== 'completed'">
 				<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
 			</div>
-			<button v-if="tripType === 'completed'" class="bg-dark text-light text-sm p-2 rounded-md px-4" @click="initTransfer(selectedTrip)">
+			<button v-if="tripType === 'completed' && user.role === 'super_admin'" class="bg-dark text-light text-sm p-2 rounded-md px-4" @click="initTransfer(selectedTrip)">
 				Transfer Trip
 			</button>
 		</template>
@@ -26,7 +26,9 @@ import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
+import { useUser } from '@/composables/auth/user'
 
+const { user } = useUser()
 const { initTransfer } = useTransferTrip()
 const { selectedTrip } = useUpcomingTripIdDetails()
 const { initLogIssues } = useCreateIssues()
