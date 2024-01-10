@@ -85,7 +85,6 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
-
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
 	{ name: 'Log Issue', func: (data) => initLogIssues(data) },
