@@ -9,20 +9,29 @@ const { getCompletedTrips } = useGetCompletedTripsList()
 const obj = {
 	trip: ref({}) as Ref<Record<string, any>>,
 	partner: ref({}) as Ref<Record<string, any>>,
-	vehicle_id: ref(null) as Ref<number|null>
+	vehicle: ref({}) as Ref<Record<string, any>>,
+	driver_id: ref(null) as Ref<null|number>,
+	select_driver: ref(false)
 }
 const vehicles = ref([]) as Ref<Record<string, any>[]>
+const drivers = ref([]) as Ref<Record<string, any>[]>
 const loading = ref(false)
 const loading_vehicles = ref(false)
+const loading_drivers = ref(false)
 
 const clearObj = () => {
 	obj.trip.value = {}
 	obj.partner.value = {}
-	obj.vehicle_id.value = null
+	obj.vehicle.value = {}
+	obj.driver_id.value = null
+	obj.select_driver.value = false
 }
 
 const enableButton = computed(() => {
-	return !!(obj.vehicle_id.value)
+	// return !!(obj.vehicle.value?.id)
+	if (obj.vehicle.value?.id) return true
+	if (obj.select_driver.value && obj.driver_id.value) return true
+	return false
 })
 
 export const useTransferTrip = () => {
@@ -36,14 +45,18 @@ export const useTransferTrip = () => {
 	}
 
 	const transferTrip = () => {
+		if (obj.select_driver.value && !obj.driver_id.value) {
+			useAlert().openAlert({ type: 'ERROR', msg: 'Driver not found' })
+		}
 		useYesConfirmationModal().openAlert({ call_function: proceedToTransferTrip, desc: `Are you sure you want to transfer trip ${obj.trip.value?.route?.route_code} for ${moment(obj.trip.value?.trip_start_time).format('LL')} from ${obj.trip.value?.vehicle?.partner?.company_name || obj.trip.value?.partner} to ${obj.partner.value?.company_name || ''}`, title: 'Transfer Trip', loading, type: 'DANGER' })
 	}
 
 	const proceedToTransferTrip = async () => {
-		const payload = {
+		const payload:Record<string, any> = {
 			trip_ids: [obj.trip.value?.id],
-			vehicle_id: obj.vehicle_id.value
+			vehicle_id: obj.vehicle.value?.id
 		}
+		if (obj.select_driver.value) payload.driver_id = obj.driver_id.value
 		loading.value = true
 		const res = await trips_api.$_transfer_trip(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -58,7 +71,7 @@ export const useTransferTrip = () => {
 
 	watch(obj.partner, () => {
 		vehicles.value = []
-		obj.vehicle_id.value = null
+		obj.vehicle.value = {}
 		if (obj.partner.value?.id) getVehicles()
 	})
 
@@ -71,5 +84,24 @@ export const useTransferTrip = () => {
 		loading_vehicles.value = false
 	}
 
-	return { ...obj, loading, loading_vehicles, initTransfer, transferTrip, vehicles, clearObj, enableButton }
+	watch(obj.select_driver, () => {
+		if (obj.select_driver.value) getDrivers()
+	})
+
+	watch(obj.vehicle, () => {
+		if (obj.vehicle.value?.id) {
+			obj.driver_id.value = obj.vehicle?.value?.driver?.id || null
+		}
+	})
+
+	const getDrivers = async () => {
+		loading_drivers.value = true
+		const res = await partners_api.$_get_all_partner_drivers_by_id(obj.partner.value?.account_sid) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            drivers.value = res.data?.data?.length ? res.data.data : []
+        }
+		loading_drivers.value = false
+	}
+
+	return { ...obj, loading, loading_vehicles, initTransfer, transferTrip, vehicles, clearObj, enableButton, loading_drivers, drivers }
 }

@@ -112,5 +112,9 @@ export const partners_api = {
 	$_get_all_partner_vehicle_by_id: (partnerId:number) => {
 		const url = `/partner/${partnerId}/vehicles?metadata=false&related=driver&status=active`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_all_partner_drivers_by_id: (partnerSid:number) => {
+		const url = `/partners/${partnerSid}/drivers?metadata=false&status=active`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
