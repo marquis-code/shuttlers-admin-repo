@@ -1,39 +1,36 @@
 <template>
 	<main class="">
-		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="fleetsList" :has-options="true"
-			:option="onRowClicked">
+		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="fleetsList" :has-options="true">
 			<template #header>
 				<TableFilter
 					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDatePicker: true }" />
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle" class="flex items-center gap-x-3 mr-20">
-					<!-- <core-image-zoom style-class="avatar-sm mr-1"> -->
-					<img :src="generateQRCodeImageUrl(item)" alt="QR Code" class="avatar avatar-sm h-10 w-10">
-					<!-- </core-image-zoom> -->
-					<img src="@/assets/icons/source/default-bus.png" class="avatar-img h-10 w-10" alt="Bus">
+				<div v-if="item.vehicle" class="flex items-center gap-x-3">
+					<div><FullscreenImage :src="generateQRCodeImageUrl(item)" class="h-10 w-10" alt="QR Code" /></div>
+					<div><img src="@/assets/icons/source/default-bus.png" alt="QR Code"></div>
 					<span class="text-blue-600">{{ item.data.vehicle }}</span>
 				</div>
 				<div v-if="item.registration_number" class="">
-					<p class="text-blue-600">
+					<p class="text-blue-600 cursor-pointer" @click="onRowClicked(item.data)">
 						{{ item.data.registration_number }}
 					</p>
 				</div>
 				<div v-if="item.seats">
-					<p>
+					<p class="cursor-pointer" @click="onRowClicked(item.data)">
 						{{ item.data.seats }}
 					</p>
 				</div>
 				<div v-if="item.type">
-					<span>{{ item.data.type }}</span>
+					<span class="cursor-pointer" @click="onRowClicked(item.data)">{{ item.data.type }}</span>
 				</div>
 
 				<div v-if="item.rating">
-					<span>{{ item.data.rating }}</span>
+					<span class="cursor-pointer" @click="onRowClicked(item.data)">{{ item.data.rating }}</span>
 				</div>
 				<div>
 					<div v-if="item.amenities">
-						<p>
+						<p  class="cursor-pointer" @click="onRowClicked(item.data)">
 							{{ item.data.amenities }}
 						</p>
 					</div>
@@ -45,7 +42,7 @@
 						</p>
 					</div>
 				</div>
-				<span v-if="item.created_at">
+				<span v-if="item.created_at"  class="cursor-pointer" @click="onRowClicked(item.data)">
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
 				</span>
 			</template>
