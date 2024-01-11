@@ -20,7 +20,8 @@ export const useGetFleets = () => {
         const res = await fleets_api.$_get_fleets(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            fleetsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.brand} ${item.name}`, registration_number: item.registration_number, seats: item.seats, type: item.type, drivers: item.drivers, created_at: item.created_at, rating: 'N/A', amenities: 'N/A' }))
+            fleetsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.brand} ${item.name}`, registration_number: item.registration_number, seats: item.seats, type: item.type, drivers: item.drivers, created_at: item.created_at }))
+            // fleetsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.brand} ${item.name}`, registration_number: item.registration_number, seats: item.seats, type: item.type, drivers: item.drivers, created_at: item.created_at, rating: 'N/A', amenities: 'N/A' }))
             metaObject.total.value = res.data.metadata.total_pages
         }
         loadingFleets.value = false

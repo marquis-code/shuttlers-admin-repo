@@ -9,5 +9,9 @@ export const referrals_api = {
 	$_get_referrals_by_id: (id:string) => {
 		const url = `/promo-codes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+    $_create_referral_code: (payload: any) => {
+		const url = '/promo-codes/'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }
