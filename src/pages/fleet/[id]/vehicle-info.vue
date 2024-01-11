@@ -17,7 +17,7 @@
 				<div class="flex justify-between items-center border-b py-4 px-3">
 					<div class="flex items-center gap-4 list-group-item">
 						<div class="w-28 rounded-md bg-white border">
-							<img :src="qrCodeImageUrl" alt="QR Code" class="border avatar avatar-xxl">
+							<div><FullscreenImage :src="qrCodeImageUrl" alt="QR Code" /></div>
 						</div>
 						<span class="cursor-pointer text-sm" @click="showAllQrCode">Export QR code</span>
 					</div>
