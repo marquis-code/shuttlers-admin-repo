@@ -55,15 +55,16 @@ export const useGetUsersList = () => {
 
     const getUsersList = async () => {
         loading.value = true
-        let res = ref(null) as any
+        // let res = ref(null) as any
+        let res: CustomAxiosResponse
         const payload = {
             user: filterData.search.value
         }
-         if (filterData.search) {
+        if (filterData.search.value) {
             res = await $_get_searched_users(payload, metaObject, filterData) as CustomAxiosResponse
-         } else {
-             res = await $_get_users(metaObject, filterData) as CustomAxiosResponse
-         }
+        } else {
+            res = await $_get_users(metaObject, filterData) as CustomAxiosResponse
+        }
 
         if (res.type !== 'ERROR') {
             usersList.value = res.data.data

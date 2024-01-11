@@ -1,8 +1,9 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const batch_booking_api = {
-	$_get_batch_bookings: () => {
-		const url = '/batch-bookings?limit=10&page=1&metadata=true'
+	$_get_batch_bookings: (metaObject:TMetaObject) => {
+		const url = `/batch-bookings?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
     $_create_batch_booking: (payload: any) => {

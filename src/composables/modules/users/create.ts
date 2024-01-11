@@ -108,7 +108,7 @@ export const useCreateUsers = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
                 type: 'SUCCESS',
-                msg: `User has been ${type === 'suspend' ? 'suspened' : 'un-suspended'} successfully`
+                msg: `User has been ${type === 'suspend' ? 'suspended' : 'un-suspended'} successfully`
             })
 			useConfirmationModal().closeAlert()
 			getUserById(selectedUserId.value)
@@ -168,5 +168,19 @@ export const useCreateUsers = () => {
 		createBusCaptainForm.route_vehicle_id.value = data.route_vehicle_id || ''
 	}
 
-	return { createForm, loading, createUser, editUser, prePopulateForm, suspendUsers, updateUserWallet, populateWalletUpdateForm, setUpdateWalletActionType, walletActionType, updateUserPassword, populatePasswordUpdateForm, populateCreateBusCaptainForm, createBusCaptains }
+	const updateUserAvatar = async (payload:Record<string, any>) => {
+		loading.value = true
+		const userId = useRoute().params.id as string
+        const res = await users_api.$_upload_user_avatar(userId, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({
+                type: 'SUCCESS',
+                msg: 'User avatar was uploaded successfully'
+            })
+			useUserModal().closeChangeProfile()
+        }
+        loading.value = false
+	}
+
+	return { createForm, loading, createUser, editUser, prePopulateForm, suspendUsers, updateUserWallet, populateWalletUpdateForm, setUpdateWalletActionType, walletActionType, updateUserPassword, populatePasswordUpdateForm, populateCreateBusCaptainForm, createBusCaptains, updateUserAvatar }
 }

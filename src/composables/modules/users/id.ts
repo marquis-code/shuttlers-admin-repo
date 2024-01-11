@@ -44,15 +44,15 @@ export const useUserBookings = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         search: ref(''),
-        start_date: ref(''),
-        end_date: ref('')
+        from: ref(''),
+        to: ref('')
     }
 
     const setBookingType = (itm: string) => {
         bookingType.value = itm
     }
 
-    watch([filterData.search, filterData.start_date, filterData.end_date], (val) => {
+    watch([filterData.search, filterData.to], (val) => {
         getBookings()
     })
 
@@ -69,7 +69,7 @@ export const useUserBookings = () => {
 
         if (res.type !== 'ERROR') {
             bookings.value = res.data
-            metaObject.total.value = res.data?.length
+            metaObject.total.value = res.data?.metadata?.pages || 1
         }
         loading.value = false
     }
@@ -77,12 +77,12 @@ export const useUserBookings = () => {
 
     const onFilterUpdate = (data) => {
         switch (data.type) {
-            case 'status':
+            case 'search':
                 filterData.search.value = data.value
                 break
             case 'dateRange':
-                filterData.start_date.value = data.value
-                filterData.end_date.value = data.value
+                filterData.from.value = data.value[0] ? data.value[0] : ''
+                filterData.to.value = data.value[1] ? data.value[1] : ''
                 break
         }
     }

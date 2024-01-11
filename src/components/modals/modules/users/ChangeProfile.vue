@@ -30,7 +30,7 @@
 					Cancel
 				</button>
 				<button type="submit" class="btn btn-primary py-3 text-xs w-full disabled:cursor-not-allowed disabled:opacity-25" :disabled="!isButtonEnabled">
-					<span v-if="!createLoading" class="text-sm">Upload</span>
+					<span v-if="!loading" class="text-sm">Upload</span>
 					<Spinner v-else />
 				</button>
 			</div>
@@ -41,7 +41,10 @@
 <script setup lang="ts">
 import { useUserModal } from '@/composables/core/modals'
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
-const { populateUserProfileUpdateForm, loading: createLoading, updateProfilePicture } = useCreateAdmin()
+// const { populateUserProfileUpdateForm, loading: createLoading, updateProfilePicture } = useCreateAdmin()
+import { useCreateUsers } from '@/composables/modules/users/create'
+
+const { updateUserAvatar, loading } = useCreateUsers()
 const form = ref({
     imgUrl: '' as any
 })
@@ -52,16 +55,16 @@ const previewUrl = ref(null) as any
 
 const onFileSelected = (e) => {
 	const file = e.target.files[0]
-	 if (file) {
+	if (file) {
 		const fileReader = new FileReader()
 
 		fileReader.onload = (e) => {
-         form.value.imgUrl = e?.target?.result
-      }
-      previewUrl.value = URL.createObjectURL(e.target.files[0])
-      fileReader.readAsDataURL(file)
-	 }
-    }
+			form.value.imgUrl = e?.target?.result
+		}
+		previewUrl.value = URL.createObjectURL(e.target.files[0])
+		fileReader.readAsDataURL(file)
+	}
+}
 
 const isButtonEnabled = computed(() => {
 	return form.value.imgUrl
@@ -71,8 +74,9 @@ const changeProfile = () => {
 	const payload = {
         avatar: form.value.imgUrl
     }
-	populateUserProfileUpdateForm(payload)
-	updateProfilePicture(id)
+	// populateUserProfileUpdateForm(payload)
+	// updateProfilePicture(id)'
+	updateUserAvatar(payload)
 }
 </script>
 

@@ -1,13 +1,6 @@
 <template>
 	<div class="space-y-6">
-		<button
-			v-if="!loading"
-			class="text-xs bg-gray-200 rounded-md px-3 py-1.5 font-medium"
-			@click="router.go(-1)"
-		>
-			Go back
-		</button
-		>
+		<ButtonGoBack url="/users/bookings" />
 		<div>
 			<div v-if="!loading" class="lg:flex justify-between items-start space-y-10 lg:space-y-0 lg:gap-x-10">
 				<div class="lg:w-6/12 rounded-md bg-white border p-6">
