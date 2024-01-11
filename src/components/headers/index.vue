@@ -111,7 +111,7 @@ const componentRouteArray = [
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
     { routes: ['trips-routes-create-route'], component: CreateRoute },
     { routes: ['trips-waitlist'], component: Waitlist },
-    { routes: ['trips-waitlist-id-waitlist-info'], component: WaitlistDetails },
+    { routes: ['trips-waitlist-id-details'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
     { routes: ['trips-vehicle'], component: TripTracking },
     { routes: ['trips-rental', 'trips-rental-upcoming', 'trips-rental-create'], component: Rental },

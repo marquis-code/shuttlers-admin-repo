@@ -20,13 +20,13 @@
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
-					{{ item.data.owner.fname || '' }} {{ item.data.owner.lname || '' }}
+					{{ item?.data?.owner?.fname || '' }} {{ item?.data?.owner?.lname || '' }}
 				</p>
 				<p v-if="item.payout_month" class="text-sm whitespace-nowrap">
-					{{ item.data.referenceTime ? moment(item.data.referenceTime).format('MMMM, YYYY') : 'N/A' }}
+					{{ item?.data?.referenceTime ? moment(item?.data?.referenceTime).format('MMMM, YYYY') : 'N/A' }}
 				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
-					{{ item.data.approvalsCount || 0 }}/2
+					{{ item?.data?.approvalsCount || 0 }}/2
 				</p>
 			</template>
 

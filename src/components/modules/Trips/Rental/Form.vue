@@ -154,6 +154,8 @@ const disabledDate = computed(() => (date:any) => {
         }
 	  return new Date(credentials.pickup_date.value) > date
 })
+
+selectedUser.value = null
 </script>
 
 <style scoped>

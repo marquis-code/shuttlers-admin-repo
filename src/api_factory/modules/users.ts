@@ -132,5 +132,14 @@ export const users_api = {
 	$_get_user_trip_graph: (userId:number|string) => {
 		const url = `/users/${userId}/trips/graph`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_users_for_selector_component: (search = '', payload?: any) => {
+		const defaultUrl = `/users?limit=${20}&page=${1}&metadata=true&sort[id]&related=wallet`
+		const searchUrl = `/users/search?limit=${20}&page=${1}&metadata=true&sort[id]=desc&related=wallet&status=active`
+		if (search === '') {
+			return GATEWAY_ENDPOINT_WITH_AUTH.get(defaultUrl)
+		} else {
+			return GATEWAY_ENDPOINT_WITH_AUTH.post(searchUrl, payload)
+		}
 	}
 }

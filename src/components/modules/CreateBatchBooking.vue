@@ -91,15 +91,21 @@
 					<template v-if="form.has_return">
 						<Skeleton v-if="returnTripLoading" height="100px" />
 						<div v-if="returnTripItinerary.id && !returnTripLoading" class="flex flex-col gap-2">
-							<p class="text-sm font-bold">Return trip details</p>
+							<p class="text-sm font-bold">
+								Return trip details
+							</p>
 							<div class="flex items-center justify-between">
-								<p class="text-sm">Time:</p>
+								<p class="text-sm">
+									Time:
+								</p>
 								<p class="text-dark font-medium text-sm">
 									{{ returnTripItinerary.trip_time }}
 								</p>
 							</div>
 							<div class="flex items-center justify-between">
-								<p class="text-sm">Route code:</p>
+								<p class="text-sm">
+									Route code:
+								</p>
 								<p class="text-dark font-medium text-sm">
 									{{ returnTripItinerary?.route?.route_code || 'N/A' }}
 								</p>
