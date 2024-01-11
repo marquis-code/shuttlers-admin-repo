@@ -50,6 +50,11 @@ export const useUpdateCharter = () => {
                     loading.value = false
                     return
             }
+            if (payload.value?.vehicle_orders?.length === 0 && rentalDetails.status === 'accepted') {
+                useAlert().openAlert({ type: 'ERROR', msg: 'No change has been made to the Vehicle or price by you' })
+                loading.value = false
+                return
+            }
             if (rentalDetails.status === 'rejected' || rentalDetails.status === 'accepted') {
                 delete payload.value.status
             }

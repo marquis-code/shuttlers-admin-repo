@@ -2,7 +2,13 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter
+					:filter-type="{
+						showSearchBar: true,
+						showDateRange: true
+					}"
+					@filter="onFilterUpdate"
+				/>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.created_at">
@@ -30,9 +36,9 @@
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserTransactions } from '@/composables/modules/users/inner/transactions'
-const { transactionsList, loading, getUserTransactionsById, moveTo, next, prev, total, page } = useUserTransactions()
-const id = useRoute().params.id as string
-getUserTransactionsById(id)
+const { transactionsList, loading, getUserTransactionsById, moveTo, next, prev, total, page, onFilterUpdate } = useUserTransactions()
+
+getUserTransactionsById()
 
 const onRowClicked = (data) => {
 	useRouter().push(`/transactions/${data.id}`)

@@ -9,17 +9,20 @@
 			</p>
 		</header>
 		<div class="p-5">
-			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(tripsGraphData)" />
+			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(graph)" />
 		</div>
 	</section>
 </template>
 
 <script setup lang="ts">
 import { useGetTripsGraph } from '@/composables/modules/trips/fetch'
+import { useUserRidesGraph } from '@/composables/modules/users/rides_graph'
 import { getYearlyBarChartData } from '@/composables/utils/charts'
 
-const { getTripsGraph, loading, tripsGraphData } = useGetTripsGraph()
-getTripsGraph()
+// const { getTripsGraph, loading, tripsGraphData } = useGetTripsGraph()
+const { loading, graph, fetchUserRidesGraph } = useUserRidesGraph()
+fetchUserRidesGraph()
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']

@@ -72,7 +72,9 @@
 	</div>
 	<div class="bg-light border rounded-lg p-4 flex flex-col">
 		<div class="pb-4 flex items-center justify-between">
-			<p class="text-sm text-dark font-medium">Return Trip</p>
+			<p class="text-sm text-dark font-medium">
+				Return Trip
+			</p>
 			<div class="flex items-stretch gap-2">
 				<button v-if="itinerary?.itinerary_pair_id" class="text-sm p-2 text-light bg-red rounded-md" @click="initRemovePairedTrip">
 					Delete
