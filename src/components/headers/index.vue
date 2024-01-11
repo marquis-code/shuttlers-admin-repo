@@ -98,7 +98,7 @@ const componentRouteArray = [
     { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },
     { routes: ['fleet-add'], component: AddFleets },
     { routes: ['fleet-id-vehicle-info', 'fleet-id-vehicle-documents', 'fleet-id-trips', 'fleet-id-customer-ratings'], component: FleetDetails },
-    { routes: ['referral', 'referral-id'], component: Referral },
+    { routes: ['referral', 'referral-id', 'referral-new'], component: Referral },
     { routes: ['promotion', 'promotion-id'], component: Promotion },
     { routes: ['admin', 'admin-audit-trail'], component: Admin },
     { routes: ['admin-add'], component: CreateAdmin },

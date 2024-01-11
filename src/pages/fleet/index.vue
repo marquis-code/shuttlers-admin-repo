@@ -1,9 +1,23 @@
 <template>
 	<main class="">
-		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="fleetsList" :has-options="true">
+		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="useMergeArrays(fleetsList, tripRatingData)" :has-options="true">
 			<template #header>
 				<TableFilter
-					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDatePicker: true }" />
+					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDateRange: true }" @filter="onFilterUpdate" />
+				<div class="bg-white border-y  border-x border-gray-300">
+					<div class="px-3 py-3 w-full">
+						<div class="flex justify-end items-center gap-x-3">
+							<p class="font-bold text-gray-900">Filter:</p>
+							<select v-if="!loading" v-model="filterData.type.value" class="border outline-none rounded-md border-gray-300 px-10 py-2.5">
+								<option value="" disabled>Filter by vehicle Type</option>
+								<option v-for="(itm, idx) in vehicleTypeslist" :key="idx" :value="itm.name">
+									{{ itm.name }}
+								</option>
+							</select>
+							<div><button v-if="filterData?.type?.value?.length" @click="filterData.type.value = ''" class="bg-black text-white text-sm px-3 py-2.5 rounded-md">Clear Filter</button></div>
+						</div>
+					</div>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.vehicle" class="flex items-center gap-x-3">
@@ -26,23 +40,26 @@
 				</div>
 
 				<div v-if="item.rating">
-					<span class="cursor-pointer" @click="onRowClicked(item.data)">{{ item.data.rating }}</span>
+					<AverageRating :rating="item?.data?.rating || 0" :total-trips="item?.data?.trip_count || 0" @click="onRowClicked(item.data)" />
 				</div>
 				<div>
 					<div v-if="item.amenities">
-						<p  class="cursor-pointer" @click="onRowClicked(item.data)">
+						<p class="cursor-pointer" @click="onRowClicked(item.data)">
 							{{ item.data.amenities }}
 						</p>
 					</div>
 				</div>
-				<div>
-					<div v-if="item.drivers">
-						<p v-for="(i, index) in item.data.drivers" :key="index" class="text-blue-600">
+				<div v-if="item.drivers">
+					<div v-if="item?.data?.drivers?.length">
+						<NuxtLink v-for="(i, index) in item.data.drivers" :key="index" :to="`/drivers/${i.id}/driver-info`" class="text-blue-600">
 							{{ i?.fname ?? 'N/A' }} {{ i?.lname ?? 'N/A' }}
-						</p>
+						</NuxtLink>
 					</div>
+					<p v-else class="text-sm text-gray-500">
+						No driver assigned
+					</p>
 				</div>
-				<span v-if="item.created_at"  class="cursor-pointer" @click="onRowClicked(item.data)">
+				<span v-if="item.created_at" class="cursor-pointer" @click="onRowClicked(item.data)">
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
 				</span>
 			</template>
@@ -55,11 +72,17 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useGetVehicleTypes } from '@/composables/modules/fleets/vehicle-types'
+import { useMergeArrays } from '@/composables/core/JoinWithRatingData'
+import { useGetTripRatingData } from '@/composables/modules/trips/tripRating'
 import { useGetFleets } from '@/composables/modules/fleets/fetch'
 import { useVehicleIdDetails } from '@/composables/modules/fleets/id'
-
 const { getFleetsList, loadingFleets, fleetsList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetFleets()
+const { tripRatingData, loadingRatingData, getRatingData } = useGetTripRatingData()
+const { getFleetTypes, loading, vehicleTypeslist } = useGetVehicleTypes()
 getFleetsList()
+getRatingData()
+getFleetTypes()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -70,6 +93,12 @@ const onRowClicked = (data) => {
 	const { selectedVehicle } = useVehicleIdDetails()
 	useRouter().push(`/fleet/${data.id}/vehicle-info`)
 	selectedVehicle.value = data
+}
+
+const tableData = ref()
+if (!loadingRatingData) {
+	const mergedArray = useMergeArrays(fleetsList.value, tripRatingData.value)
+	tableData.value = mergedArray
 }
 
 const tableFields = ref([
