@@ -19,7 +19,7 @@ const { getUserById, loading, selectedUser } = useUserIdDetails()
 const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletLimitUsageInfo } = useUserCorporateWalletLimitUsageInfo()
 const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
 const id = Number(useRoute().params.id)
-const corporate_id = Number(selectedUser?.corporate_id)
+const corporate_id = Number(selectedUser?.value.corporate_id)
 getUserById(String(id))
 getBusCaptainRoutesById(String(id))
 

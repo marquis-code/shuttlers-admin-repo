@@ -14,7 +14,7 @@ export const useGetBatchBookingList = () => {
     const getBatchBookingList = async () => {
         loading.value = true
 
-        const res = await $_get_batch_bookings() as CustomAxiosResponse
+        const res = await $_get_batch_bookings(metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             metaObject.total.value = res?.data.metadata?.total_pages || 0
            batchBookingList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, pickup: JSON.parse(item?.booking_data?.meta)?.pickup, dropoff: JSON.parse(item?.booking_data?.meta)?.destination, routeCode: JSON.parse(item?.booking_data?.meta)?.route_code, userCount: item?.users.length, status: item?.processing_completed_at ? 'processed' : 'pending', created_at: item?.created_at }))

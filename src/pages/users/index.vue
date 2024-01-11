@@ -6,7 +6,7 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
-					<Avatar :name="item?.data?.fname" bg="#B1C2D9" />
+					<Avatar :src="item?.data?.avatar" :name="item?.data?.fname" bg="#B1C2D9" />
 				</div>
 				<div v-if="item.lname" class="">
 					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">

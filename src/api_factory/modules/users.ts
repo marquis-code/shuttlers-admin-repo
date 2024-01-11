@@ -65,8 +65,9 @@ export const users_api = {
 		const url = `/refund-logs/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_get_wallet_transactions: (id:string, metaObject: TMetaObject) => {
-		const url = `/users/${id}/wallet?limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+	$_get_wallet_transactions: (id:string, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/users/${id}/wallet?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_active_booking: (id:string, metaObject: TMetaObject) => {
@@ -92,12 +93,12 @@ export const users_api = {
 	},
 	$_get_user_completed_and_past_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/user-route-schedules?status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${queryParams}`
+		const url = `/users/${id}/user-route-schedules?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_user_active_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/routes?status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}${queryParams}`
+		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_change_password: (payload, id) => {
@@ -123,5 +124,13 @@ export const users_api = {
 	$_book_trip: (id, payload) => {
 		const url = `/users/${id}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_upload_user_avatar: (userId:number|string, payload: Record<string, any>) => {
+		const url = `/user/avatar/${userId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_user_trip_graph: (userId:number|string) => {
+		const url = `/users/${userId}/trips/graph`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

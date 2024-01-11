@@ -28,9 +28,9 @@
 					<option value="main_balance">
 						Main Balance
 					</option>
-					<option value="company_balance">
+					<!-- <option value="company_balance">
 						Company Balance
-					</option>
+					</option> -->
 				</select>
 			</div>
 			<div class="flex justify-between items-center gap-x-10">
