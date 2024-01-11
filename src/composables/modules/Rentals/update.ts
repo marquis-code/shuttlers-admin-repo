@@ -54,6 +54,12 @@ export const useUpdateCharter = () => {
                 delete payload.value.status
             }
 
+            if (payload.value.vehicle_orders.length === 0 && rentalDetails.status === 'accepted') {
+                useAlert().openAlert({ type: 'ERROR', msg: 'No change has been made to the Vehicle or price by you' })
+                loading.value = false
+                return
+            }
+
             const res = await rental_api.$_update_rental_status(rentalDetails.id, payload.value) as CustomAxiosResponse
             if (res.type !== 'ERROR') {
                 useGetRentalById().getRentalById(rentalDetails.id)
