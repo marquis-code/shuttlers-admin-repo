@@ -51,7 +51,10 @@ module.exports = {
 			},
 			maxWidth: {
 
-			}
+			},
+			cursor: {
+				zoom: 'url("/assets/icons/source/zoom-cursor.svg"), pointer'
+			  }
 		}
   },
 	plugins: [
