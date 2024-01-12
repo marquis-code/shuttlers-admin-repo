@@ -6,15 +6,17 @@ import { useAlert } from '@/composables/core/notification'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 
 const { loading: downloading } = useDownloadReport()
-const { selectedAdminIds, computedSelectedType } = useAuditFilter()
+const { selectedAdminIds, computedSelectedType, computedSelectedOperationType } = useAuditFilter()
 const loading = ref(false)
 const auditList = ref([]) as Ref<Record<string, any>[]>
+export const auditOperationTypes = ref([]) as Ref<string[]>
 export const allAdmins = ref([]) as Ref<Record<string, any>[]>
 const filterData = {
 	startDate: ref(''),
 	endDate: ref(''),
 	levelOfImportance: computedSelectedType,
-	actors: computed(() => selectedAdminIds.value.join(','))
+	actors: computed(() => selectedAdminIds.value.join(',')),
+	operationType: computedSelectedOperationType
 }
 
 export const useAudits = () => {
@@ -37,9 +39,16 @@ export const useAudits = () => {
         }
 	}
 
+	const getAuditOperationType = async () => {
+		const res = await staffs_api.$_get_audit_operation_type() as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            auditOperationTypes.value = res.data?.length ? res.data : []
+        }
+	}
+
 	setFunction(getAudits)
 
-    watch([filterData.endDate, selectedAdminIds, computedSelectedType], () => {
+    watch([filterData.endDate, selectedAdminIds, computedSelectedType, computedSelectedOperationType], () => {
 		metaObject.page.value = 1
         getAudits()
     })
@@ -75,5 +84,5 @@ export const useAudits = () => {
 		}
 	}
 
-	return { getAudits, getAllAdmins, allAdmins, downloadAllAudits, onFilterUpdate, auditList, loading, ...metaObject, moveTo, next, prev, ...filterData }
+	return { getAudits, getAllAdmins, allAdmins, auditOperationTypes, downloadAllAudits, onFilterUpdate, getAuditOperationType, auditList, loading, ...metaObject, moveTo, next, prev, ...filterData }
 }

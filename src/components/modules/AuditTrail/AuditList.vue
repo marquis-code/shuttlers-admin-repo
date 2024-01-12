@@ -43,6 +43,13 @@
 				</p>
 			</div>
 
+			<div v-if="selectedOperationType.length" class="flex gap-2 flex-wrap">
+				<p v-for="n, index in selectedOperationType" :key="index" class="flex bg-[#EFF2F7] gap-2 items-center rounded py-1 px-2 text-xs">
+					{{ Capitalize(cleanString(n)) }}
+					<Icon name="closed" class="w-4 text-red cursor-pointer" @click="adjustOperationTypeFilter(n)" />
+				</p>
+			</div>
+
 			<div ref="target">
 				<div v-if="filter" class="absolute filter_pos bg-light p-2 border rounded flex flex-col">
 					<button class="filter text-left bg-transparent p-2 border-0" @click="openTypeFilter">
@@ -50,6 +57,9 @@
 					</button>
 					<button class="filter text-left bg-transparent p-2 border-t" @click="openActorFilter">
 						Actor
+					</button>
+					<button class="filter text-left bg-transparent p-2 border-t" @click="openOperationTypeFilter">
+						Operation type
 					</button>
 				</div>
 
@@ -63,52 +73,26 @@
 					<div class="p-3 border-bottom ">
 						<input v-model="searchText" type="text" class="w-full border-0 outline-none" placeholder="Search...">
 					</div>
-					<div class="p-3 bg-light">
-						<template v-for="n, index in filteredAdmin">
-							<div v-if="index < 7" :key="index" class="flex items-center p-2 gap-2">
-								<input :id="n.id" :checked="selectedAdminIds.includes(n.id)" type="checkbox" @change="adjustActorFilter(n)">
-								<label :for="n.id" class="text-sm m-0 text-dark cursor-pointer">{{ `${n.fname} ${n.lname}` }}</label>
-							</div>
-						</template>
+					<div class="p-3 bg-light overflow-auto max-h-[200px]">
+						<div v-for="n, index in filteredAdmin" :key="index" class="flex items-center p-2 gap-2">
+							<input :id="n.id" :checked="selectedAdminIds.includes(n.id)" type="checkbox" @change="adjustActorFilter(n)">
+							<label :for="n.id" class="text-sm m-0 text-dark cursor-pointer">{{ `${n.fname} ${n.lname}` }}</label>
+						</div>
+					</div>
+				</div>
+				<div v-if="operationTypeStatus" class="bg-light absolute type_pos border rounded d-flex flex-column ">
+					<div class="p-3 border-bottom ">
+						<input v-model="operationTypeSearch" type="text" class="w-full border-0 outline-none" placeholder="Search...">
+					</div>
+					<div class="p-3 bg-light overflow-auto max-h-[200px]">
+						<div v-for="n, index in filteredOperationTypes" :key="index" class="flex items-center p-2 gap-2">
+							<input :id="n" :checked="selectedOperationType.includes(n)" type="checkbox" @change="adjustOperationTypeFilter(n)">
+							<label :for="n" class="text-sm m-0 text-dark cursor-pointer">{{ cleanString(n) }}</label>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- <div class="border rounded-md bg-white">
-			<div class="border-b">
-				<div class="flex items-center py-3 px-3 gap-x-20">
-					<p class="text-gray-600 font-medium">
-						Time
-					</p>
-					<p class="text-gray-600 font-medium">
-						Activity
-					</p>
-				</div>
-			</div>
-			<div>
-				<div v-for="(item, index) in props.auditsList" :key="index" class="gap-x-3 cursor-pointer" @click="setActive(item)">
-					<div class="flex w-full" :class="[item?.description === activeActivity ? 'h-16' : 'h-16']">
-						<span v-if="item?.id === activeActivity?.id" class="block border-2 border-shuttlersGreen  my-3 ml-2" />
-						<div class="flex justify-between items-center gap-x-2  py-2 space-x-3 px-3 w-full">
-							<div class="w-2/12 flex justify-start items-start">
-								<p class="text-gray-900 font-semibold text-xs">
-									{{ item?.eventDate }}
-								</p>
-							</div>
-							<div class="w-10/12 flex justify-start items-start">
-								<p class="text-gray-600 text-sm ">
-									{{ item?.description }}
-								</p>
-							</div>
-							<div>
-								<img src="@/assets/icons/source/greater.svg" alt="" class="">
-							</div>
-						</div>
-					</div>
-					<div class="w-full border-[0.4px]" />
-				</div>
-			</div>
-		</div> -->
 		<Table
 			:loading="loading_audits"
 			:has-index="true"
@@ -168,11 +152,12 @@ import moment from 'moment'
 import { onClickOutside } from '@vueuse/core'
 import { useHandleFeatureFlaggedAudits, useFeatureFlaggedAudits } from '@/composables/modules/staffs/fetch'
 import { useAudits, useAuditFilter, useViewAuditDetails } from '@/composables/modules/audits'
+import { Capitalize } from '@/composables/utils/formatter'
 
 const { featureFlagAudits, loading, prePopulateFeatureForm } = useHandleFeatureFlaggedAudits()
 const { getFeatureFlaggedAudits, loading: loadingAuditStatus, featureFlaggedAuditStatus } = useFeatureFlaggedAudits()
-const { getAudits, loading: loading_audits, auditList, next, prev, moveTo, page, total, getAllAdmins, downloadAllAudits, onFilterUpdate } = useAudits()
-const { filter, typeStatus, actorStatus, allTypes, selectedType, selectedAdmin, selectedAdminIds, searchText, closeAllFilterBox, openTypeFilter, openActorFilter, adjustTypeFilter, adjustActorFilter, filteredAdmin } = useAuditFilter()
+const { getAudits, loading: loading_audits, auditList, next, prev, moveTo, page, total, getAllAdmins, downloadAllAudits, onFilterUpdate, getAuditOperationType, auditOperationTypes } = useAudits()
+const { filter, typeStatus, actorStatus, allTypes, selectedType, selectedAdmin, selectedAdminIds, searchText, closeAllFilterBox, openTypeFilter, openActorFilter, adjustTypeFilter, adjustActorFilter, filteredAdmin, operationTypeSearch, operationTypeStatus, openOperationTypeFilter, adjustOperationTypeFilter, filteredOperationTypes, selectedOperationType, cleanString } = useAuditFilter()
 const { showDataDetails, details } = useViewAuditDetails()
 
 const emit = defineEmits(['filter', 'selectedAudit'])
@@ -201,6 +186,7 @@ const onRowClicked = (item) => {
 getAudits()
 getFeatureFlaggedAudits()
 getAllAdmins()
+getAuditOperationType()
 onMounted(() => {
 	auditStatus.value = featureFlaggedAuditStatus.value
 })
