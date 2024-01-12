@@ -13,8 +13,8 @@
 								class="space-y-6"
 								@submit.prevent="handleCreateReferralCode"
 							>
-								<div class="form-group">
-									<label for="" class="form-label">Name of Campaign</label>
+								<div class="">
+									<label for="" class="">Name of Campaign</label>
 									<input
 										v-model.trim="newPromoCode.name"
 										type="text"
@@ -22,8 +22,8 @@
 										placeholder=""
 									>
 								</div>
-								<div class="form-group">
-									<label for="" class="form-label">Promo code</label>
+								<div class="">
+									<label for="" class="">Promo code</label>
 									<input
 										v-model.trim="newPromoCode.promo_code"
 										type="text"
@@ -31,8 +31,8 @@
 										placeholder="Enter a custom prefix (optional)"
 									>
 								</div>
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>Description of Promo Code Campaign</label
 									>
 									<textarea
@@ -42,21 +42,21 @@
 									/>
 								</div>
 
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>How many times should the Promo Code generated for this
 										campaign be used?</label
 									>
 									<div>
 										<div>
-											<label for="" class="form-label"
+											<label for="" class=""
 											><input
 													id="selected_period"
 													name="promo_code_usages"
 													type="radio"
 													:checked="newPromoCode.max_number_of_uses > 0"
 												>
-												<div class="d-inline-block ml-2">
+												<div class=" ml-2">
 													<div class="flex items-center gap-x-2">
 														<input
 															v-model.number="newPromoCode.max_number_of_uses"
@@ -65,7 +65,7 @@
 															class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900"
 															placeholder="e.g 2"
 														>
-														<div class="input-group-append">
+														<div class="">
 															<span class="text-lg">times</span>
 														</div>
 													</div>
@@ -75,7 +75,7 @@
 										<div>
 											<label
 												for="promo_code_usages_unlimited"
-												class="form-label"
+												class=""
 											><input
 												id="promo_code_usages_unlimited"
 												v-model.number="newPromoCode.max_number_of_uses"
@@ -89,8 +89,8 @@
 									</div>
 								</div>
 
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>How do you want to reward the customers that use this Promo
 										Code?</label
 									>
@@ -111,8 +111,8 @@
 									</select>
 								</div>
 
-								<div class="form-group">
-									<label for="" class="form-label">{{
+								<div class="">
+									<label for="" class="">{{
 										rewardAmountLabel
 									}}</label>
 									<div class="flex items-center">
@@ -131,8 +131,8 @@
 									</div>
 								</div>
 
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>Which customers can use this Promo Code?</label
 									>
 									<select
@@ -157,37 +157,29 @@
 
 								<div
 									v-if="newPromoCode.customer_constraint == 'select_corporates'"
-									class="form-group"
+									class=""
 								>
 									<label for=""
 									>Select corporates that promo code applies to</label
 									>
-									<CompanySelector
-										v-model="selectedCorporate"
-										:multiple="true"
-										@update:model-value="handleSelectedCorporate"
-									/>
+									<CorporatesMultiSelect label="" @update:model-value="handleSelectedCorporate" />
 								</div>
 
 								<div
 									v-if="newPromoCode.customer_constraint == 'select_users'"
-									class="form-group"
+									class=""
 								>
 									<label for="">Select users that promo code applies to</label>
-									<UserSelector
-										v-model="selectedUser"
-										:multiple="true"
-										@update:model-value="handleSelectedUsers"
-									/>
+									<UserMultiSelect label="" @update:model-value="handleSelectedUsers" />
 								</div>
 
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>When should this Promo Code expire?</label
 									>
 									<div>
 										<div>
-											<label for="" class="form-label"
+											<label for="" class=""
 											><input
 													id="should_expire_yes"
 													type="radio"
@@ -195,7 +187,7 @@
 													:checked="newPromoCode.expires_at"
 													name="should_expire"
 												>
-												<div class="d-inline-block ml-2">
+												<div class=" ml-2">
 													<InputDateInput
 														v-model="newPromoCode.expires_at"
 														class="font-light"
@@ -205,7 +197,7 @@
 											</label>
 										</div>
 										<div>
-											<label for="should_expire_no" class="form-label"
+											<label for="should_expire_no" class=""
 											><input
 												id="should_expire_no"
 												type="radio"
@@ -219,8 +211,8 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="" class="form-label"
+								<div class="">
+									<label for="" class=""
 									>Apply promo code to beneficiaries immediately after
 										creating?</label
 									>
@@ -229,7 +221,7 @@
 											<div>
 												<label
 													for="should_apply_immediately_to_beneficiaries_yes"
-													class="form-label"
+													class=""
 												><input
 													id="should_apply_immediately_to_beneficiaries_yes"
 													type="radio"
@@ -249,7 +241,7 @@
 											<div>
 												<label
 													for="should_apply_immediately_to_beneficiaries_no"
-													class="form-label"
+													class=""
 												><input
 													id="should_apply_immediately_to_beneficiaries_no"
 													type="radio"
@@ -269,7 +261,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="">
 									<button
 										type="submit"
 										:disabled="sendingRequest"
@@ -307,16 +299,16 @@ const { user } = useUser()
 const selectedUser = ref({}) as any
 const selectedCorporate = ref({}) as any
 
-const handleSelectedUsers = () => {
-  if (Object.keys(selectedUser).length) {
-    newPromoCode.value.customer_constraint_options.push(selectedUser.value)
+const handleSelectedUsers = (val:any) => {
+  if (Object.keys(val).length) {
+	newPromoCode.value.customer_constraint_options.push(val)
   }
 }
 
-const handleSelectedCorporate = () => {
-  if (Object.keys(selectedCorporate).length) {
+const handleSelectedCorporate = (val) => {
+  if (Object.keys(val).length) {
     newPromoCode.value.customer_constraint_options.push(
-      selectedCorporate.value
+      val
     )
   }
 }
