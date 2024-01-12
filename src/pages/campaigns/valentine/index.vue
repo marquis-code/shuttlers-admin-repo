@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading_campaigns" :headers="tableFields" :table-data="campaignsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :checkbox="true" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{ showSearchBar:true }" :checkbox="true" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.created_at">

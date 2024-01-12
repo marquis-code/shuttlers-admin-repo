@@ -19,7 +19,7 @@ export const useCampaignWinners = () => {
     const getCampaignWinners = async () => {
         loading.value = true
 
-        const res = await $_get_valentine_campaign_winners(selectedCampaignId.value, metaObject) as CustomAxiosResponse
+        const res = await $_get_valentine_campaign_winners(selectedCampaignId.value, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             campaignWinners.value = res.data.data
             metaObject.total.value = res.data.metadata.total_pages
@@ -38,8 +38,8 @@ export const useCampaignWinners = () => {
                 filterData.search.value = data.value
                 break
                 case 'dateRange':
-                    filterData.start_date.value = data.value[0]
-                    filterData.end_date.value = data.value[1]
+                    filterData.start_date.value = data.value[0] || ''
+                    filterData.end_date.value = data.value[1] || ''
                 break
         }
     }
