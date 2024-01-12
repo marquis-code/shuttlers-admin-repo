@@ -1,7 +1,7 @@
 <template>
 	<form class="space-y-6" @submit.prevent="handleCreateReferralCode">
-		<div class="form-group">
-			<label for="" class="form-label">Name of Campaign</label>
+		<div class="">
+			<label for="" class="">Name of Campaign</label>
 			<input
 				v-model.trim="newPromoCode.name"
 				type="text"
@@ -9,8 +9,8 @@
 				placeholder=""
 			>
 		</div>
-		<div class="form-group">
-			<label for="" class="form-label">Promo code prefix</label>
+		<div class="">
+			<label for="" class="">Promo code prefix</label>
 			<input
 				v-model.trim="newPromoCode.promo_code_prefix"
 				type="text"
@@ -18,8 +18,8 @@
 				placeholder="Enter a custom prefix (optional)"
 			>
 		</div>
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>Description of referral code Campaign</label
 			>
 			<textarea
@@ -29,21 +29,21 @@
 			/>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>How many times should the Referral Code generated for this campaign be
 				used?</label
 			>
 			<div>
 				<div>
-					<label for="" class="form-label"
+					<label for="" class=""
 					><input
 							id="selected_period"
 							name="promo_code_usages"
 							type="radio"
 							:checked="newPromoCode.max_number_of_uses > 0"
 						>
-						<div class="d-inline-block ml-2">
+						<div class=" ml-2">
 							<div class="flex items-center gap-x-2">
 								<input
 									v-model.number="newPromoCode.max_number_of_uses"
@@ -52,7 +52,7 @@
 									class="w-full outline-none px-3 py-2 rounded-md border focus:border-gray-900"
 									placeholder="e.g 2"
 								>
-								<div class="input-group-append">
+								<div class="">
 									<span class="text-lg">times</span>
 								</div>
 							</div>
@@ -60,7 +60,7 @@
 					</label>
 				</div>
 				<div>
-					<label for="promo_code_usages_unlimited" class="form-label"
+					<label for="promo_code_usages_unlimited" class=""
 					><input
 						id="promo_code_usages_unlimited"
 						v-model.number="newPromoCode.max_number_of_uses"
@@ -74,8 +74,8 @@
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>How do you want to reward the customers that use this referral
 				code?</label
 			>
@@ -84,20 +84,14 @@
 				name="reward_kind"
 				class="input-field"
 			>
-				<option value="wallet_credit">
-					Credit Customer's Wallet
-				</option>
-				<option value="flat_rate_discount_on_trips">
-					Discount Customer's Trip by an Amount
-				</option>
-				<option value="percentage_discount_on_trips">
-					Discount Customer's Trip by a Percentage
+				<option v-for="(itm, idx) in customer_reward_plans" :key="idx" :value="itm.value">
+					{{ itm.text }}
 				</option>
 			</select>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label">{{ rewardAmountLabel }}</label>
+		<div class="">
+			<label for="" class="">{{ rewardAmountLabel }}</label>
 			<div class="flex items-center">
 				<div class="bg-gray-100 rounded-tl-md rounded-bl-md py-2.5 px-3">
 					{{ rewardAmountLabelSymbol }}
@@ -112,8 +106,8 @@
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>Which customers can use this referral code?</label
 			>
 			<select
@@ -121,22 +115,19 @@
 				name="reward_kind"
 				class="input-field"
 			>
-				<option value="none">
-					All Customers
-				</option>
-				<option value="new_customer">
-					Only New Customers
+				<option v-for="(itm, idx) in customers_using_referral_code" :key="idx" :value="itm.value">
+					{{ itm.text }}
 				</option>
 			</select>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>When should this referral code expire?</label
 			>
 			<div>
 				<div>
-					<label for="" class="form-label"
+					<label for="" class=""
 					><input
 							id="should_expire_yes"
 							type="radio"
@@ -144,8 +135,7 @@
 							:checked="newPromoCode.expires_at"
 							name="should_expire"
 						>
-						<div class="d-inline-block ml-2">
-							{{ newPromoCode.expires_at }}
+						<div class=" ml-2">
 							<InputDateInput
 								v-model="newPromoCode.expires_at"
 								class="font-light"
@@ -155,7 +145,7 @@
 					</label>
 				</div>
 				<div>
-					<label for="should_expire_no" class="form-label"
+					<label for="should_expire_no" class=""
 					><input
 						id="should_expire_no"
 						type="radio"
@@ -170,8 +160,8 @@
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label for="" class="form-label"
+		<div class="">
+			<label for="" class=""
 			>Do you want to reward the
 				{{ newPromoCode?.owners?.length > 1 ? "owners" : "owner" }}
 				of
@@ -181,7 +171,7 @@
 				when other customers use their Referral Code?</label
 			>
 			<div>
-				<label for="should_owner_benefits_yes" class="form-label"
+				<label for="should_owner_benefits_yes" class=""
 				><input
 					id="should_owner_benefits_yes"
 					type="radio"
@@ -194,7 +184,7 @@
 				</label>
 			</div>
 			<div>
-				<label for="should_owner_benefits_no" class="form-label"
+				<label for="should_owner_benefits_no" class=""
 				><input
 					id="should_owner_benefits_no"
 					v-model="newPromoCode.owner_benefit.reward_kind"
@@ -211,8 +201,8 @@
 			v-if="newPromoCode.owner_benefit.reward_kind != 'none'"
 			class="space-y-6"
 		>
-			<div class="form-group">
-				<label for="" class="form-label"
+			<div class="">
+				<label for="" class=""
 				>How do you want to reward the referral code owner?</label
 				>
 				<select
@@ -220,20 +210,14 @@
 					name="reward_kind"
 					class="input-field"
 				>
-					<option value="wallet_credit">
-						Credit Owner's Wallet
-					</option>
-					<option value="flat_rate_discount_on_trips">
-						Discount Owner's Trip by an Amount
-					</option>
-					<option value="percentage_discount_on_trips">
-						Discount Owner's Trip by a Percentage
+					<option v-for="(itm, idx) in referral_code_owner_reward" :key="idx" :value="itm.value">
+						{{ itm.text }}
 					</option>
 				</select>
 			</div>
 
-			<div class="form-group">
-				<label for="" class="form-label">{{ ownerRewardAmountLabel }}</label>
+			<div class="">
+				<label for="" class="">{{ ownerRewardAmountLabel }}</label>
 				<div class="flex items-center">
 					<div class="bg-gray-100 py-3 px-3 rounded-rl-md rounded-bl-md">
 						<span class="input-group-text">{{
@@ -252,12 +236,12 @@
 		</div>
 
 		<div class="">
-			<label for="" class="form-label"
+			<label for="" class=""
 			>Which of the existing customer is this referral code for?</label
 			>
 			<div>
 				<div class="">
-					<label for="" class="form-label w-full">
+					<label for="" class=" w-full">
 						<input
 							id="owner_type_customers"
 							v-model="newPromoCode.owner_type"
@@ -266,16 +250,12 @@
 							name="owner_type"
 						>
 						<div class="w-full">
-							<UserSelector
-								v-model="selectedOwner"
-								:multiple="true"
-								@update:model-value="handleSelectedUsers"
-							/>
+							<UserMultiSelect label="" @update:model-value="handleSelectedUsers" />
 						</div>
 					</label>
 				</div>
 				<div>
-					<label for="promo_code_owner_type" class="form-label"
+					<label for="promo_code_owner_type" class=""
 					><input
 						id="owner_type_all"
 						v-model="newPromoCode.owner_type"
@@ -289,7 +269,7 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="">
 			<button
 				type="submit"
 				:disabled="sendingRequest"
@@ -313,13 +293,53 @@ const { createReferralCode, loading } = useCreateReferralCode()
 
 const selectedOwner = ref({}) as any
 
-const handleSelectedUsers = () => {
-  if (Object.keys(selectedOwner).length) {
-    newPromoCode.value.owners.push(selectedOwner.value)
+const handleSelectedUsers = (val:any) => {
+  if (Object.keys(val).length) {
+    newPromoCode.value.owners.push(val)
   }
 }
 
-const router = useRouter()
+const customer_reward_plans = ref([
+	{
+		text: 'Credit Customer\'s Wallet',
+		value: 'wallet_credit'
+	},
+	{
+		text: 'Discount Customer\'s Trip by an Amount',
+		value: 'flat_rate_discount_on_trips'
+	},
+	{
+		text: 'Discount Customer\'s Trip by a Percentage',
+		value: 'percentage_discount_on_trips'
+	}
+])
+
+const customers_using_referral_code = ref([
+	{
+		text: 'none',
+		value: 'wallet_credit'
+	},
+	{
+		text: 'Only New Customers',
+		value: 'new_customer'
+	}
+])
+
+const referral_code_owner_reward = ref([
+	{
+		text: 'Credit Owner\'s Wallet',
+		value: 'wallet_credit'
+	},
+	{
+		text: 'Discount Owner\'s Trip by an Amount',
+		value: 'flat_rate_discount_on_trips'
+	},
+	{
+		text: 'Discount Owner\'s Trip by a Percentage',
+		value: 'percentage_discount_on_trips'
+	}
+])
+
 const shouldRewardOwners = ref(0)
 const sendingRequest = ref(false)
 const newPromoCode = ref({
@@ -346,7 +366,6 @@ const newPromoCode = ref({
   }
 })
 const customersList = ref([])
-const isLoading = ref(false)
 
 const ownerHasBenefit = computed(() => {
   return newPromoCode.value.owner_benefit.reward_kind !== 'none'
@@ -414,59 +433,55 @@ watch(newPromoCode.value.owners, (val) => {
   newPromoCode.value.owner_type = 'customer'
 })
 
-// watch(newPromoCode.value.expires_at, () => {
-
-// })
 const user_ids = ref([]) as any
 const handleCreateReferralCode = () => {
-  const payload = {
-    customer_benefit: {
-      reward_amount: newPromoCode.value.reward_amount,
-      reward_kind: newPromoCode.value.reward_kind,
-      customer_constraint: 'none'
-    },
-    ...newPromoCode.value
-    // owners: user_ids
+  const payload = generateNewReferralCodePayload()
+  createReferralCode(payload)
+}
+
+const generateNewReferralCodePayload = () => {
+  const selectedUsers = newPromoCode.value.owners
+
+  if (selectedUsers.length < 1 && newPromoCode.value.owner_type !== 'all') {
+	useAlert().openAlert({ type: 'ERROR', msg: 'Please select at least one user' })
   }
+
+  let user_ids = [] as Record<string, any>
   if (newPromoCode.value.owner_type !== 'all') {
-    user_ids.value = newPromoCode.value.owners.map((item) => {
+    user_ids = selectedUsers.map((item) => {
       return { owner_type: 'customer', owner_id: item.id }
     })
-    newPromoCode.value.owners = user_ids
   }
-  if (newPromoCode?.value?.owners?.length > 0) {
-    newPromoCode.value.owner_type = 'customer'
+  const payload = Object.assign(
+    {
+      customer_benefit: {
+        reward_amount: newPromoCode.value.reward_amount,
+        reward_kind: newPromoCode.value.reward_kind,
+        customer_constraint: 'none'
+      }
+    },
+    newPromoCode.value,
+    {
+      owners: user_ids
+    }
+  )
+
+  if (Object.keys(payload).includes('promo_code')) {
+    delete (payload as any).promo_code
   }
 
-  if (newPromoCode?.value?.owner_benefit?.reward_kind === 'none') {
-    delete (newPromoCode.value as any).owner_benefit
-  }
-
-  if (
-    newPromoCode?.value?.owners?.length < 1 &&
-    newPromoCode.value.owner_type !== 'all'
-  ) {
-    useAlert().openAlert({
-      type: 'ERROR',
-      msg: 'Please select at least one user'
-    })
-  }
-
-  if (Object.keys(newPromoCode.value).includes('promo_code')) {
-    delete (newPromoCode.value as any).promo_code
+  if (newPromoCode.value.owner_type === 'all') {
+    delete (payload as any).owners
+    payload.owner_type = 'all'
+    payload.owner_id = 1
   }
 
   if (
     newPromoCode.value.customer_constraint &&
     newPromoCode.value.customer_constraint !== ''
   ) {
-    newPromoCode.value.customer_constraint
-  }
-
-  if (newPromoCode.value.owner_type === 'all') {
-    delete (newPromoCode.value as any).owners
-    newPromoCode.value.owner_type = 'all'
-    newPromoCode.value.owner_id = 1
+    payload.customer_benefit.customer_constraint =
+      newPromoCode.value.customer_constraint
   }
 
   if (
@@ -475,18 +490,22 @@ const handleCreateReferralCode = () => {
   ) {
     payload.owner_benefit = {
       reward_amount: newPromoCode.value.owner_reward_amount,
-      reward_kind: newPromoCode?.value?.owner_reward_kind
+      reward_kind: newPromoCode.value.owner_reward_kind
     }
   }
 
-  if (
-    Object.keys(newPromoCode.value).includes('expires_at') &&
-    !newPromoCode.value.expires_at
-  ) {
-    delete (newPromoCode.value as any).expires_at
+  if (payload.owner_benefit.reward_kind === 'none') {
+    delete (payload as any).owner_benefit
   }
-  //   setPayload(newPromoCode.value)
-  createReferralCode(payload)
+
+  if (
+    Object.keys(payload).includes('expires_at') &&
+    !payload.expires_at
+  ) {
+    delete payload.expires_at
+  }
+
+  return payload
 }
 
 const ownerRewardAmountLabel = computed(() => {
