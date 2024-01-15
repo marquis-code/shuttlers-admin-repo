@@ -27,6 +27,7 @@ import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useUser } from '@/composables/auth/user'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { user } = useUser()
 const { initTransfer } = useTransferTrip()
@@ -84,7 +85,7 @@ const setDataForLoggingIssue = (data: Record<string, any>) => {
 
 const dropdownChildren = computed(() => {
     const dropdownOptions = [
-        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data) }
+        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value }
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
