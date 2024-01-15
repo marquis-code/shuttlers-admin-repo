@@ -4,7 +4,7 @@
 			<div>
 				<div v-if="form.image">
 					<label for="image" class="w-full tracking-wide  cursor-pointer">
-						<p class="flex justify-center items-center gap-x-2 text-shuttlersGreen"><img :src="form.image" alt="previewAmenity" class="h-16 w-16 rounded-full border border-gray-600 object-cover"> Edit Image</p>
+						<p class="flex justify-center items-center gap-x-2 text-shuttlersGreen"><img :src="previewUrl" alt="previewAmenity" class="h-16 w-16 rounded-full border border-gray-600 object-cover"> Edit Image</p>
 						<input id="image" class="hidden" type="file" accept="image/*" @click="onFileSelected">
 					</label>
 				</div>
@@ -51,7 +51,7 @@
 						<option value="percent">
 							Percent
 						</option>
-						<option value="flat_amount">
+						<option value="flat">
 							Flat Amount
 						</option>
 					</select>
@@ -61,7 +61,7 @@
 				<div v-for="(itm, idx) in rows" :key="idx" class="flex justify-between gap-x-3 items-center">
 					<div class="py-3 rounded-md px-3 w-6/12">
 						<label class="text-xs">City</label>
-						<select v-model="form.city_id"
+						<select v-model="itm.city_id"
 							class="py-2 border outline-none rounded-md px-3 w-full">
 							<option v-for="itm in allCityNames" :key="itm" :value="itm.id">
 								{{ itm?.name }}
@@ -70,7 +70,7 @@
 					</div>
 					<div class="w-6/12">
 						<label class="text-xs">Cost of supply</label>
-						<input v-model="form.cost_of_supply" type="number" placeholder="N"
+						<input v-model="itm.cost_of_supply" type="number" placeholder="N"
 							class="py-2 border outline-none rounded-md px-3 w-full">
 					</div>
 					<div class="flex justify-center items-center mt-6">
@@ -105,21 +105,19 @@ const { selectedVehicleCategory, preConfigureVehicleCostOfSuplyForm, editVehicle
 const { fetchAllCityNames, allCityNames } = useCityAndCountry()
 fetchAllCityNames()
 const route = useRoute()
-// configureVehicleTypeForm,
-//         configureCostOfSupplyForm,
 
 const isButtonEnabled = computed(() => {
 	return !!(form.name && form.description && form.break_even_utilization && form.break_even_utilization && form.pricing_margin && form.pricing_margin_unit)
 })
 
-const rows = ref([] as any)
 const handleCreateVehicleCategory = () => {
 	if (Object.keys(selectedVehicleCategory.value).length) {
 		const vehicleCategoryId = selectedVehicleCategory.value.id
 		preConfigureVehicleCategoryForm(form)
 	    editVehicleCategory(vehicleCategoryId)
 	} else {
-	preConfigureVehicleCostOfSuplyForm(cost_of_supply_form)
+	// preConfigureVehicleCostOfSuplyForm(cost_of_supply_form)
+	preConfigureVehicleCostOfSuplyForm(rows.value)
 	preConfigureVehicleCategoryForm(form)
 	createVehicleCategory()
 	}
@@ -141,16 +139,28 @@ const cost_of_supply_form = reactive({
     currency: 'NGN'
 })
 
-const addRow = () => {
-	rows.value.push({ city: '', cost_of_supply: '' })
-	form.city_id = ''
+// const addRow = () => {
+// 	rows.value.push({ city: '', cost_of_supply: '' })
+// 	form.city_id = ''
+// }
+const rows = ref([] as any)
+const addRow = (cityPricingData) => {
+if (Object.keys(cityPricingData).length) {
+	rows.value.push({
+        id: cityPricingData?.id || null,
+        vehicle_type_id: cityPricingData?.vehicle_type_id || null,
+        city_id: cityPricingData?.city_id || null,
+        cost_of_supply: cityPricingData?.cost_of_supply || null,
+        currency: cityPricingData?.currency || 'NGN'
+      })
 }
+    }
 
 const deleteRow = (index) => {
 	rows.value.splice(index, 1)
 }
 
-const previewUrl = ref('')
+const previewUrl = ref() as any
 
 const onFileSelected = (e) => {
 	const file = e.target.files[0]
@@ -160,7 +170,7 @@ const onFileSelected = (e) => {
 		fileReader.onload = (e) => {
 			form.image = e?.target?.result
       }
-      previewUrl.value = URL.createObjectURL(e.target.files[0])
+      previewUrl.value = URL.createObjectURL(file)
       fileReader.readAsDataURL(file)
 	 }
     }
