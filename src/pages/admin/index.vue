@@ -24,6 +24,9 @@
 				<span v-else-if="item.updated_at">
 					{{ useDateFormat(item?.data?.updated_at, "DD, MMMM YYYY").value }}
 				</span>
+				<div v-else-if="item.ab_testing_role">
+					<span>{{ item?.data?.ab_testing_role ?? '-' }}</span>
+				</div>
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
@@ -71,6 +74,10 @@ const tableFields = ref([
     {
         text: 'Updated At',
         value: 'updated_at'
+    },
+    {
+        text: 'AB TESTING ROLE',
+        value: 'ab_testing_role'
     }
 ])
 

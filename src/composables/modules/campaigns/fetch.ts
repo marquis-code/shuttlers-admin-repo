@@ -263,7 +263,7 @@ export const use_get_campaigns = () => {
             }
     const getCampaigns = async () => {
         loading_campaigns.value = true
-        const res = await campaigns_api.$_get_campaigns(metaObject) as CustomAxiosResponse
+        const res = await campaigns_api.$_get_campaigns(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             campaignsList.value = res.data
         }

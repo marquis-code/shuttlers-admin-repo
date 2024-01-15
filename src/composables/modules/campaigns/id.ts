@@ -19,7 +19,7 @@ export const useCampaignWinners = () => {
     const getCampaignWinners = async () => {
         loading.value = true
 
-        const res = await $_get_valentine_campaign_winners(selectedCampaignId.value, metaObject) as CustomAxiosResponse
+        const res = await $_get_valentine_campaign_winners(selectedCampaignId.value, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             campaignWinners.value = res.data.data
             metaObject.total.value = res.data.metadata.total_pages
@@ -38,26 +38,11 @@ export const useCampaignWinners = () => {
                 filterData.search.value = data.value
                 break
                 case 'dateRange':
-                    filterData.start_date.value = data.value[0]
-                    filterData.end_date.value = data.value[1]
+                    filterData.start_date.value = data.value[0] || ''
+                    filterData.end_date.value = data.value[1] || ''
                 break
         }
     }
 
     return { getCampaignWinners, loading, campaignWinners, selectedCampaign, onFilterUpdate, moveTo, ...metaObject, next, prev, selectedCampaignId }
 }
-
-// export const useCampaignDetails = () => {
-//     const loading = ref(false)
-
-//     const getCampaignDetails = async (id: string) => {
-//         selectedCampaignId.value = id
-//         loading.value = true
-//         const res = await corporates_api.$_get_corporate_by_id(id) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             selectedCorporate.value = res.data
-//         }
-//         loading.value = false
-//     }
-//     return { selectedCorporate, loading, getCorporateById }
-// }

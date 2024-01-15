@@ -11,7 +11,8 @@ const createForm = {
 	phone: ref(''),
 	email: ref(''),
     password: ref(''),
-    role: ref('')
+    role: ref(''),
+    ab_testing_role: ref('') as any
 }
 
 const updatePasswordForm = {
@@ -27,6 +28,11 @@ export const useCreateAdmin = () => {
 
 	const createAdmin = async () => {
 		loading.value = true
+        if (createForm.ab_testing_role.value) {
+            createForm.ab_testing_role.value
+        } else {
+            createForm.ab_testing_role.value = null
+        }
 		const res = (await staffs_api.$_create_admin(
 			convertObjWithRefToObj(createForm)
 		)) as CustomAxiosResponse
@@ -116,6 +122,7 @@ export const useCreateAdmin = () => {
 		createForm.phone.value = data.phone || ''
 		createForm.email.value = data.email || ''
         createForm.role.value = data.role || ''
+        createForm.ab_testing_role.value || null
 	}
 
 	const populatePasswordUpdateForm = (data) => {
