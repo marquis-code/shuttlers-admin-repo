@@ -71,14 +71,14 @@
 					{{ details.levelOfImportance ?? 'N/A' }}
 				</p>
 			</div>
-			<div v-if="details.auditType === 'UPDATE'" class="flex flex-col">
+			<div v-if="details.auditType === 'UPDATE' && !isProdEnv" class="flex flex-col">
 				<p class="text-[12px] text-[#444854]">
 					Updated data
 				</p>
 				<div class="w-full overflow-auto">
 					<table class="min-w-[400px]">
 						<thead>
-							<tr class="border-b">
+							<tr class="border-b text-left">
 								<th class="p-2">
 									Property
 								</th>
@@ -91,15 +91,17 @@
 							</tr>
 						</thead>
 						<tr v-for="n in all_new_data_keys" :key="n" class="border-b">
-							<td class="p-2">
-								{{ n }}
-							</td>
-							<td class="p-2">
-								{{ oldData![n] }}
-							</td>
-							<td class="p-2">
-								{{ newData![n] }}
-							</td>
+							<template v-if="oldData![n] !== newData![n]">
+								<td class="p-2">
+									{{ n }}
+								</td>
+								<td class="p-2" :class="oldData![n] ? '' : 'text-red'">
+									{{ oldData![n] || '-' }}
+								</td>
+								<td class="p-2" :class="newData![n] ? '' : 'text-red'">
+									{{ newData![n] || '-' }}
+								</td>
+							</template>
 						</tr>
 					</table>
 				</div>
@@ -111,6 +113,7 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { useViewAuditDetails } from '@/composables/modules/audits'
+import { isProdEnv } from '@/composables/utils/system'
 const { details, all_new_data_keys, newData, oldData } = useViewAuditDetails()
 
 </script>
