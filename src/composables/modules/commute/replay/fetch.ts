@@ -28,7 +28,9 @@ export const useRouteReplay = () => {
         const res = await telemetry_api.$_get_vehicle_positions(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             if (res.data.data.length === 0) {
+                loadingPosition.value = false
                 useAlert().openAlert({ type: 'ERROR', msg: 'No Path found' })
+                return
             }
 
             positionList.value = res.data.data.map((obj: any) => ({

@@ -9,7 +9,7 @@ const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
 const $AUDIT_GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/audit/v1'
 const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/cost-revenue/v1'
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
-const $TELEMETRY_ENDPOINT = 'https://telemetry.shuttlers.ng'
+const $TELEMETRY_ENDPOINT = 'https://api.shuttlers.africa/telemetry'
 
 export const GATEWAY_ENDPOINT = axios.create({
 	baseURL: $GATEWAY_ENDPOINT
