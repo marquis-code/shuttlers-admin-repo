@@ -18,7 +18,7 @@
 
 					<div class="field relative">
 						<label for="vehicle">Date Range</label>
-						<InputDateInput range clearable />
+						<InputDateInput range clearable :disabled-date="() => false" />
 					</div>
 
 					<button class="btn-primary w-56 text-sm" :disabled="!selectedVehicle || loadingPosition" @click="getPosition(selectedVehicle.vehicle_id)">
