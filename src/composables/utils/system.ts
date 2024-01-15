@@ -46,6 +46,11 @@ export const getCurrentEnvironmentalUrl = computed(() => {
   return environmental_url.prod
 })
 
+export const isProdEnv = computed(() => {
+  if (window.location.href.includes('test') || window.location.href.includes('localhost') || window.location.href.includes('qa')) return false
+  return true
+})
+
 export const openAsExternalUrl = (url) => {
   const tokenValue = token.value
   switch (import.meta.env.VITE_ENV_ALIAS) {

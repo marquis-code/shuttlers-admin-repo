@@ -26,7 +26,7 @@ const searchText = ref('')
 const operationTypeSearch = ref('')
 
 const cleanString = (str: string) => {
-	return str.replace('-', ' ')
+	return str.replace(/-/g, ' ')
 }
 
 export const useAuditFilter = () => {

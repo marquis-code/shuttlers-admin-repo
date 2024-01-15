@@ -57,6 +57,7 @@ import moment from 'moment'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { initLogIssues } = useCreateIssues()
 const { initializeEndTrips } = useTripOptions()
@@ -130,7 +131,7 @@ const tableFields = ref([
 
 const dropdownChildren = computed(() => {
 	return [
-		{ name: 'Log Issue', func: (data) => initLogIssues(data) },
+		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'End Trip', func: (data) => handleTripCancellation(data), class: '!text-red' }
     ]
 })

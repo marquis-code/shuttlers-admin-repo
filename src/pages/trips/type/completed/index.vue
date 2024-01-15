@@ -54,6 +54,7 @@ import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useUser } from '@/composables/auth/user'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
@@ -87,7 +88,7 @@ definePageMeta({
 
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
-	{ name: 'Log Issue', func: (data) => initLogIssues(data) },
+	{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
 	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' }
 ])
 
