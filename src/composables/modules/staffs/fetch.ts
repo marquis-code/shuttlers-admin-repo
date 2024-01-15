@@ -24,7 +24,7 @@ export const useGetStaffs = () => {
 
     const getStaffs = async () => {
         loading.value = true
-        const res = await $_get_staffs(metaObject) as CustomAxiosResponse
+        const res = await $_get_staffs(metaObject, filterKeys) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             staffsData.value = res.data.data
             metaObject.total.value = res.data.metadata?.total_pages
@@ -33,6 +33,10 @@ export const useGetStaffs = () => {
     }
 
     setFunction(getStaffs)
+
+    watch([filterKeys.status, filterKeys.search], (val) => {
+        getStaffs()
+    })
 
     const filteredStaffs = computed(() => {
         const searchValue = filterKeys.search?.value?.toLowerCase()

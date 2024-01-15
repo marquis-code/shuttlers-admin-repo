@@ -53,7 +53,7 @@ export const campaigns_api = {
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_baners: (meta:TMetaObject) => {
-        const url = `/dynamic-dashboard/baners?limit=${meta.page_size.value}&page=${meta.page.value}`
+        const url = `/dynamic-dashboard/banners?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_carousels: (meta:TMetaObject) => {
@@ -77,5 +77,17 @@ export const campaigns_api = {
     $_toggle_story_feature: (id, payload) => {
         const url = `campaigns/${id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+    },
+    $_get_story_visibility: () => {
+        const url = '/stories/visibility'
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_update_story_visibility: (payload) => {
+        const url = '/stories/visibility'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    },
+    $_get_campaign_details: (id: string) => {
+        const url = `campaigns/${id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }

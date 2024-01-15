@@ -46,18 +46,3 @@ export const useCampaignWinners = () => {
 
     return { getCampaignWinners, loading, campaignWinners, selectedCampaign, onFilterUpdate, moveTo, ...metaObject, next, prev, selectedCampaignId }
 }
-
-// export const useCampaignDetails = () => {
-//     const loading = ref(false)
-
-//     const getCampaignDetails = async (id: string) => {
-//         selectedCampaignId.value = id
-//         loading.value = true
-//         const res = await corporates_api.$_get_corporate_by_id(id) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             selectedCorporate.value = res.data
-//         }
-//         loading.value = false
-//     }
-//     return { selectedCorporate, loading, getCorporateById }
-// }
