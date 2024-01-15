@@ -19,7 +19,7 @@
 				</p>
 			</div>
 			<div class="p-1">
-				<div v-if="selectedUsers.length > 0 && corporateId=== ''" class="grid grid-cols-3 gap-4 p-2">
+				<div v-if="selectedUsers.length > 0 && corporateId=== ''" class="flex flex-wrap gap-4 p-2">
 					<div
 						v-for="user in selectedUsers"
 						:key="user.id"

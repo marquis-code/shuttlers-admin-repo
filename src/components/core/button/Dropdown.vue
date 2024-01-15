@@ -31,9 +31,12 @@
 					>
 						<div class="p-2">
 							<div class="p-2 flex flex-col items-start w-full">
-								<button v-for="item in (children as Record<string, any>[])" :key="item.name" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
-									{{ item.name }}
-								</button>
+								<!-- eslint-disable-next-line vue/no-v-for-template-key -->
+								<template v-for="item in (children as Record<string, any>[])" :key="item.name">
+									<button v-if="!item.hide" class="item" role="menuitem" :class="item.class" @click="item.func(data)">
+										{{ item.name }}
+									</button>
+								</template>
 							</div>
 						</div>
 					</div>

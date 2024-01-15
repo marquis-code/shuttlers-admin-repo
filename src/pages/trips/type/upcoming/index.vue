@@ -50,6 +50,7 @@ import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetUpcomingTripsList()
 getUpcomingTrips()
@@ -82,7 +83,7 @@ const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
         { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
-		{ name: 'Log Issue', func: (data) => initLogIssues(data) },
+		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
     if (dayIsInThePast(main_data.trip_date)) {

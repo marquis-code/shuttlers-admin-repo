@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList" :has-options="true" :option="(data)=>$router.push(`/users/${id}/past-bookings/${data.id}`)">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
 			{{ bookings }}
 			<template #item="{ item }">
@@ -13,12 +13,12 @@
 					<span> {{ convertToCurrency(item?.data?.amount) }}</span>
 				</div>
 
-				<div v-if="item.start_date">
-					<span> {{ item?.data?.start_date }} {{ item?.data?.trip_date ?? 'N/A' }} </span>
-				</div>
-				<div v-if="item.end_date">
+				<p v-if="item.start_date" class="whitespace-nowrap">
+					<span> {{ item?.data?.start_date }} <br> {{ item?.data?.trip_date ?? 'N/A' }} </span>
+				</p>
+				<p v-if="item.end_date" class="whitespace-nowrap">
 					<span> {{ item?.data?.end_date }}</span>
-				</div>
+				</p>
 				<div v-if="item.route_type">
 					<span>
 						{{ item?.data?.route_type }}
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserBookings } from '@/composables/modules/users/id'
-const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, moveTo, page, total, setBookingType, bookingType } = useUserBookings()
+const { getBookings, loading, bookings, onFilterUpdate, next, prev, moveTo, page, total, bookingType } = useUserBookings()
 bookingType.value = 'completed'
 getBookings()
 
@@ -46,10 +46,10 @@ const formattedBookingList = computed(() => {
 			...item,
 			route_code: item?.route?.route_code ?? 'N/A',
 			start_date: item?.itinerary?.trip_time ?? 'N/A',
-			end_date: item?.end_date ?? 'N/A',
+			end_date: item?.trip_date ?? 'N/A',
 			amount: item?.unit_cost ?? 'N/A',
 			payment_source: `${item?.payment_source} ${item?.instant_payment_provider === 'paystack' ? '' : (item?.instant_payment_provider)}`,
-		    route_type: `${item?.route?.visibility} ${item?.route?.is_exclusive ? 'exclusive' : 'shared'}`
+		    route_type: `${item?.route?.visibility} ${item?.route?.is_exclusive ? 'Exclusive' : 'Shared'}`
 	    }
 	})
 })

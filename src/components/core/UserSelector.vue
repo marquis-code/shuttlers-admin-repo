@@ -4,7 +4,7 @@
 			{{ label }}
 		</label>
 		<VueMultiselect v-model="selectedUser" placeholder="Search user" :searchable="true" :internal-search="false"
-			:options="users" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" " select-label=""
+			:options="users" :multiple="multiple" :taggable="false" track-by="id" :loading="loading" label=" " select-label=""
 			@search-change="searching" @select="handleSelection" @open="is_droped_down = true" @close="is_droped_down = false"
 		>
 			<template v-if="selectedUser?.id && !is_droped_down" #selection="">
@@ -37,7 +37,8 @@ import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 const emit = defineEmits(['selected', 'update:modelValue'])
 const props = defineProps({
 	label: { type: String, default: 'Select User' },
-	modelValue: { type: Object, required: true }
+	modelValue: { type: Object, required: true },
+	multiple: { type: Boolean, default: false }
 })
 
 const is_droped_down = ref(false)

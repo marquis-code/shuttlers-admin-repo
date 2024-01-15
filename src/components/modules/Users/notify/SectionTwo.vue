@@ -54,7 +54,7 @@
 						</div>
 					</div>
 					<div>
-						<input :id="item.email" v-model="selectedUsers" :checked="true" :disabled="sortDirection === 'company'" type="checkbox" :value="item" class="form-checkbox rounded-full text-green7">
+						<input :id="item.email" v-model="selectedUsers" :checked="notificationType === 'all'" :disabled="sortDirection === 'company'" type="checkbox" :value="item" class="form-checkbox rounded-full text-green7">
 					</div>
 				</div>
 			</div>
@@ -81,9 +81,7 @@ getCorporatesList()
 getUsersList()
 
 const users = ref([])
-
 const { selectedUsers, search, credentials, notificationType, corporateId } = useCreateNotification()
-
 const sortDirection = ref('all')
 
 const handleAllUsersSelection = (e) => {

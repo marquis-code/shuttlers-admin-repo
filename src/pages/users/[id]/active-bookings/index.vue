@@ -2,35 +2,29 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="bookings">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
-			{{ bookings }}
 			<template #item="{ item }">
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span> {{ convertToCurrency(item?.data?.amount) }}</span>
+					<span> {{ convertToCurrency(item?.data?.cost) }}</span>
 				</div>
+				<p v-if="item.route_code">
+					{{ item.data?.route?.route_code || 'N/A' }}
+				</p>
 
-				<div v-if="item.start_date">
+				<p v-if="item.start_date" class="whitespace-nowrap">
 					<span> {{ item.data.start_date ?? 'N/A' }}</span>
-				</div>
-				<div v-if="item.end_date">
+				</p>
+				<p v-if="item.end_date" class="whitespace-nowrap">
 					<span> {{ item.data.end_date ?? 'N/A' }}</span>
-				</div>
+				</p>
 				<div v-if="item.route_type">
-					<span>
-						{{
-							item?.data?.route_type?.visibility
-						}}
-					</span>
+					<span> {{ item?.data?.route?.visibility }} </span>
 					<br>
-					<span>
-						{{
-							item?.data?.route_type?.type ? "exclusive" : "shared"
-						}}
-					</span>
+					<span> {{ item?.data?.route?.is_exclusive ? "Exclusive" : "Shared" }} </span>
 				</div>
 			</template>
 			<template #footer>

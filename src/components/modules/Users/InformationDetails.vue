@@ -19,7 +19,7 @@
 				AVATAR
 			</p>
 			<p>
-				<Avatar :name="selectedUser.fname" bg="#B1C2D9" />
+				<Avatar :src="selectedUser?.avatar" :name="selectedUser.fname" bg="#B1C2D9" />
 			</p>
 		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">

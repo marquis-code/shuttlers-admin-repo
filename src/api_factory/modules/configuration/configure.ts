@@ -100,5 +100,13 @@ export const configure_api = {
 	$_update_route_pricing_others: (itineraryId:number, payload:any) => {
 		const url = `/route-itineraries/${itineraryId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
-	}
+	},
+	$_get_fleet_trip_rating_settings: (serviceId) => {
+		const url = `/rating/settings/service-id/${serviceId}`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	  },
+	  $_get_trip_rating_data: (payload: any) => {
+		  const url = '/rating/reports/generic'
+		  return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, payload)
+	  }
 }

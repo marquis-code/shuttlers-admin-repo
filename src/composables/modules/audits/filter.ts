@@ -1,9 +1,10 @@
 import { watch } from 'vue'
-import { allAdmins } from './fetch'
+import { allAdmins, auditOperationTypes } from './fetch'
 
 const filter = ref(false)
 const typeStatus = ref(false)
 const actorStatus = ref(false)
+const operationTypeStatus = ref(false)
 const allTypes = ['Normal', 'Important', 'Critical']
 const selectedType = ref([]) as Ref<string[]>
 const computedSelectedType = computed(() => {
@@ -13,22 +14,44 @@ const computedSelectedType = computed(() => {
 	return ''
 })
 const selectedAdmin = ref([]) as Ref<Record<string, any>[]>
+const selectedOperationType = ref([]) as Ref<string[]>
+const computedSelectedOperationType = computed(() => {
+	if (selectedOperationType.value.length) {
+		return selectedOperationType.value.join(',')
+	}
+	return ''
+})
 const selectedAdminIds = computed(() => selectedAdmin.value.map((el) => el.id as number))
 const searchText = ref('')
+const operationTypeSearch = ref('')
+
+const cleanString = (str: string) => {
+	return str.replace(/-/g, ' ')
+}
 
 export const useAuditFilter = () => {
 	const closeAllFilterBox = () => {
 		filter.value = false
 		typeStatus.value = false
 		actorStatus.value = false
+		operationTypeStatus.value = false
+	}
+	const closeOtherFilterBox = () => {
+		typeStatus.value = false
+		actorStatus.value = false
+		operationTypeStatus.value = false
 	}
 	const openTypeFilter = () => {
-		actorStatus.value = false
+		closeOtherFilterBox()
 		typeStatus.value = true
 	}
 	const openActorFilter = () => {
-		typeStatus.value = false
+		closeOtherFilterBox()
 		actorStatus.value = true
+	}
+	const openOperationTypeFilter = () => {
+		closeOtherFilterBox()
+		operationTypeStatus.value = true
 	}
 	const adjustTypeFilter = (str:string) => {
 		if (!selectedType.value.includes(str)) {
@@ -46,11 +69,25 @@ export const useAuditFilter = () => {
 			selectedAdmin.value = selectedAdmin.value.filter((el) => el.id !== admin?.id)
 		}
 	}
+	const adjustOperationTypeFilter = (str:string) => {
+		if (!selectedOperationType.value.includes(str)) {
+			selectedOperationType.value.push(str)
+		} else {
+			const index = selectedOperationType.value.indexOf(str)
+			selectedOperationType.value.splice(index, 1)
+		}
+	}
 	const filteredAdmin = computed(() => {
 		return allAdmins.value.filter((obj: Record<string, any>) =>
 			obj.fname.toLowerCase().includes(searchText.value.toLowerCase()) ||
 			obj.lname.toLowerCase().includes(searchText.value.toLowerCase()))
 	})
 
-	return { filter, typeStatus, actorStatus, allTypes, selectedType, selectedAdmin, selectedAdminIds, searchText, closeAllFilterBox, openTypeFilter, openActorFilter, adjustTypeFilter, adjustActorFilter, filteredAdmin, computedSelectedType }
+	const filteredOperationTypes = computed(() => {
+		return auditOperationTypes.value.filter((el: string) =>
+			cleanString(el).toLowerCase().includes(operationTypeSearch.value.toLowerCase())
+		)
+	})
+
+	return { filter, typeStatus, actorStatus, allTypes, selectedType, selectedAdmin, selectedAdminIds, searchText, closeAllFilterBox, openTypeFilter, openActorFilter, adjustTypeFilter, adjustActorFilter, filteredAdmin, computedSelectedType, operationTypeSearch, operationTypeStatus, openOperationTypeFilter, adjustOperationTypeFilter, filteredOperationTypes, selectedOperationType, cleanString, computedSelectedOperationType }
 }

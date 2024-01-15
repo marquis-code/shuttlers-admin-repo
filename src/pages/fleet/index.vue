@@ -1,51 +1,65 @@
 <template>
 	<main class="">
-		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="fleetsList" :has-options="true"
-			:option="onRowClicked">
+		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="useMergeArrays(fleetsList, tripRatingData)" :has-options="true">
 			<template #header>
 				<TableFilter
-					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDatePicker: true }" />
+					:filter-type="{ showSearchBar: true, showDownloadButton: true, showStatus: true, showDateRange: true }" @filter="onFilterUpdate" />
+				<div class="bg-white border-y  border-x border-gray-300">
+					<div class="px-3 py-3 w-full">
+						<div class="flex justify-end items-center gap-x-3">
+							<p class="font-bold text-gray-900">Filter:</p>
+							<select v-if="!loading" v-model="filterData.type.value" class="border outline-none rounded-md border-gray-300 px-10 py-2.5">
+								<option value="" disabled>Filter by vehicle Type</option>
+								<option v-for="(itm, idx) in vehicleTypeslist" :key="idx" :value="itm.name">
+									{{ itm.name }}
+								</option>
+							</select>
+							<div><button v-if="filterData?.type?.value?.length" @click="filterData.type.value = ''" class="bg-black text-white text-sm px-3 py-2.5 rounded-md">Clear Filter</button></div>
+						</div>
+					</div>
+				</div>
 			</template>
 			<template #item="{ item }">
-				<div v-if="item.vehicle" class="flex items-center gap-x-3 mr-20">
-					<!-- <core-image-zoom style-class="avatar-sm mr-1"> -->
-					<img :src="generateQRCodeImageUrl(item)" alt="QR Code" class="avatar avatar-sm h-10 w-10">
-					<!-- </core-image-zoom> -->
-					<img src="@/assets/icons/source/default-bus.png" class="avatar-img h-10 w-10" alt="Bus">
+				<div v-if="item.vehicle" class="flex items-center gap-x-3">
+					<div><FullscreenImage :src="generateQRCodeImageUrl(item)" class="h-10 w-10" alt="QR Code" /></div>
+					<div><img src="@/assets/icons/source/default-bus.png" alt="QR Code"></div>
 					<span class="text-blue-600">{{ item.data.vehicle }}</span>
 				</div>
 				<div v-if="item.registration_number" class="">
-					<p class="text-blue-600">
+					<p class="text-blue-600 cursor-pointer" @click="onRowClicked(item.data)">
 						{{ item.data.registration_number }}
 					</p>
 				</div>
 				<div v-if="item.seats">
-					<p>
+					<p class="cursor-pointer" @click="onRowClicked(item.data)">
 						{{ item.data.seats }}
 					</p>
 				</div>
 				<div v-if="item.type">
-					<span>{{ item.data.type }}</span>
+					<span class="cursor-pointer" @click="onRowClicked(item.data)">{{ item.data.type }}</span>
 				</div>
 
 				<div v-if="item.rating">
-					<span>{{ item.data.rating }}</span>
+					<AverageRating :rating="item?.data?.rating || 0" :total-trips="item?.data?.trip_count || 0" @click="onRowClicked(item.data)" />
 				</div>
 				<div>
 					<div v-if="item.amenities">
-						<p>
+						<p class="cursor-pointer" @click="onRowClicked(item.data)">
 							{{ item.data.amenities }}
 						</p>
 					</div>
 				</div>
-				<div>
-					<div v-if="item.drivers">
-						<p v-for="(i, index) in item.data.drivers" :key="index" class="text-blue-600">
+				<div v-if="item.drivers">
+					<div v-if="item?.data?.drivers?.length">
+						<NuxtLink v-for="(i, index) in item.data.drivers" :key="index" :to="`/drivers/${i.id}/driver-info`" class="text-blue-600">
 							{{ i?.fname ?? 'N/A' }} {{ i?.lname ?? 'N/A' }}
-						</p>
+						</NuxtLink>
 					</div>
+					<p v-else class="text-sm text-gray-500">
+						No driver assigned
+					</p>
 				</div>
-				<span v-if="item.created_at">
+				<span v-if="item.created_at" class="cursor-pointer" @click="onRowClicked(item.data)">
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
 				</span>
 			</template>
@@ -58,11 +72,17 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useGetVehicleTypes } from '@/composables/modules/fleets/vehicle-types'
+import { useMergeArrays } from '@/composables/core/JoinWithRatingData'
+import { useGetTripRatingData } from '@/composables/modules/trips/tripRating'
 import { useGetFleets } from '@/composables/modules/fleets/fetch'
 import { useVehicleIdDetails } from '@/composables/modules/fleets/id'
-
 const { getFleetsList, loadingFleets, fleetsList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetFleets()
+const { tripRatingData, loadingRatingData, getRatingData } = useGetTripRatingData()
+const { getFleetTypes, loading, vehicleTypeslist } = useGetVehicleTypes()
 getFleetsList()
+getRatingData()
+getFleetTypes()
 
 definePageMeta({
 	layout: 'dashboard',
@@ -73,6 +93,12 @@ const onRowClicked = (data) => {
 	const { selectedVehicle } = useVehicleIdDetails()
 	useRouter().push(`/fleet/${data.id}/vehicle-info`)
 	selectedVehicle.value = data
+}
+
+const tableData = ref()
+if (!loadingRatingData) {
+	const mergedArray = useMergeArrays(fleetsList.value, tripRatingData.value)
+	tableData.value = mergedArray
 }
 
 const tableFields = ref([

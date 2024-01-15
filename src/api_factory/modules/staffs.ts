@@ -36,6 +36,10 @@ export const staffs_api = {
 		const url = `/staff/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
+	$_get_audit_operation_type: () => {
+		const url = 'audits/operation-type'
+		return AUDIT_GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_audits: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/audits?${queryParams}&metadata=true&page=${metaObject.page.value}&perPage=${metaObject.page_size.value}`
