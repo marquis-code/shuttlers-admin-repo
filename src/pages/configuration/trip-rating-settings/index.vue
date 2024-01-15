@@ -47,7 +47,7 @@
 						class="px-0 py-1 flex items-center justify-between"
 					>
 						<p>{{ item }}</p>
-						<img src="@/assets/icons/source/close.svg" alt=""
+						<img src="@/assets/icons/source/red-close.svg" alt=""
 							class="cursor-pointer"
 							@click="deleteIssueFromList(index)"
 						>
