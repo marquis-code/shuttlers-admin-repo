@@ -53,15 +53,16 @@ export const campaigns_api = {
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_baners: (meta:TMetaObject) => {
-        const url = `/dynamic-dashboard/baners?limit=${meta.page_size.value}&page=${meta.page.value}`
+        const url = `/dynamic-dashboard/banners?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_carousels: (meta:TMetaObject) => {
         const url = `/dynamic-dashboard/carousels?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-    $_get_campaigns: (meta:TMetaObject) => {
-        const url = `/campaigns?limit=${meta.page_size.value}&page=${meta.page.value}`
+    $_get_campaigns: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
+        const queryParams = useTableFilter(filterData)
+        const url = `/campaigns?${queryParams}limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_valentine_campaign_by_id: (id: string, meta:TMetaObject) => {
@@ -70,7 +71,23 @@ export const campaigns_api = {
     },
     $_get_valentine_campaign_winners: (id: string, meta:TMetaObject, filterData?: Record<string, Ref>) => {
         const queryParams = useTableFilter(filterData)
-        const url = `/campaigns/${id}/winners?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}`
+        const url = `/campaign/${id}/winners?${queryParams}limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_toggle_story_feature: (id, payload) => {
+        const url = `campaigns/${id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+    },
+    $_get_story_visibility: () => {
+        const url = '/stories/visibility'
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_update_story_visibility: (payload) => {
+        const url = '/stories/visibility'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    },
+    $_get_campaign_details: (id: string) => {
+        const url = `campaigns/${id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }

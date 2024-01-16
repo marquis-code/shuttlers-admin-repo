@@ -1,4 +1,6 @@
 import { batch_booking_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
+import { exportAsCsv } from '@/composables/utils/csv'
 
 const selectedBooking = ref({} as Record<string, any>)
 const selectedBookingId = ref('')
@@ -15,5 +17,21 @@ export const useBatchBookingIdDetails = () => {
         }
         loading.value = false
     }
-    return { selectedBooking, loading, getBatchBookingById }
+
+    const downloadBookings = () => {
+        if (!selectedBooking.value?.processing_result?.data?.length) {
+            useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+            return
+        }
+        const data = selectedBooking.value?.processing_result?.data
+        const newArr = data.map((el) => {
+            return {
+                Email_address: el?.userId || 'N/A',
+                Status: el?.success ? 'Completed' : 'Failed',
+                Reason: el?.error ? el?.error : 'N/A'
+            }
+        })
+        exportAsCsv(newArr, 'Batch booking list')
+    }
+    return { selectedBooking, loading, getBatchBookingById, downloadBookings }
 }
