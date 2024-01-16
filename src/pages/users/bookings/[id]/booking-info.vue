@@ -19,18 +19,17 @@
 						<h1 class="font-semibold">
 							Response
 						</h1>
-						<button class="flex items-center cursor-pointer gap-x-2" @click="onFilter({type:'download', value:selectedBooking?.processing_result?.data})">
+						<button :disabled="!selectedBooking?.processing_result?.data?.length"
+							class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed"
+							@click="downloadBookings"
+						>
 							<img src="@/assets/icons/source/download.svg" alt="" class="inline">
 							<p class="text-xs font-medium">
 								Download report
 							</p>
 						</button>
 					</div>
-					<div
-						v-if="
-							selectedBooking?.processing_result &&
-								!selectedBooking?.processing_result?.success
-						"
+					<div v-if="selectedBooking?.processing_result && !selectedBooking?.processing_result?.success"
 						class="text-white bg-red-500"
 					>
 						<p>
@@ -38,8 +37,10 @@
 						</p>
 						<p>{{ selectedBooking?.processing_result?.error }}</p>
 					</div>
-					<div v-else>
-						<div v-for="(item, index) in selectedBooking?.processing_result?.data" :key="index" class="flex justify-between items-center border-b py-5 text-sm">
+					<div v-else class="overflow-auto">
+						<div v-for="(item, index) in selectedBooking?.processing_result?.data" :key="index"
+							class="flex justify-between items-center border-b py-5 text-sm min-w-[500px] gap-4"
+						>
 							<div class="flex justify-between gap-x-10">
 								<p>{{ index + 1 }}</p>
 								<p>{{ item.userId }}</p>
@@ -66,7 +67,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useAlert } from '@/composables/core/notification'
 import { useBatchBookingIdDetails } from '@/composables/modules/batchBooking/id'
-const { getBatchBookingById, loading, selectedBooking } = useBatchBookingIdDetails()
+const { getBatchBookingById, loading, selectedBooking, downloadBookings } = useBatchBookingIdDetails()
 const id = useRoute().params.id as string
 getBatchBookingById(id)
 const router = useRouter()
