@@ -9,7 +9,7 @@ const inspectionSiteForm = {
 }
 
 const selectedActionType = ref('')
-const selectedVehicleCategory = ref({})
+const selectedVehicleCategory = ref({}) as any
 const selectedInspectionData = ref({})
 const vehicleCategoryResult = ref({})
 
@@ -20,6 +20,15 @@ const configureVehicleTypeForm = {
   pricing_margin_unit: ref('percent'),
   pricing_margin: ref(10),
   image: ref('')
+}
+
+const configureVehicleCategoryForm = {
+  name: '',
+  description: '',
+  cost_of_supply: '',
+  break_even_utilization: '',
+  pricing_margin: '',
+  pricing_margin_unit: ''
 }
 
 const configureCostOfSupplyForm = ref([]) as any
