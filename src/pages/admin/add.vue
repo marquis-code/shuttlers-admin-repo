@@ -17,6 +17,7 @@
 						>
 						<input
 							v-model="createForm.fname.value"
+							:disabled="user.role === 'user'"
 							type="text"
 							name="firstName"
 							class="input-field"
@@ -28,6 +29,7 @@
 						>
 						<input
 							v-model="createForm.lname.value"
+							:disabled="user.role === 'user'"
 							type="text"
 							name="lastName"
 							class="input-field"
@@ -42,6 +44,7 @@
 						>
 						<input
 							v-model="createForm.email.value"
+							:disabled="user.role === 'user'"
 							type="email"
 							name="emailAddress"
 							class="input-field"
@@ -53,6 +56,7 @@
 						>
 						<input
 							v-model="createForm.phone.value"
+							:disabled="user.role === 'user'"
 							type="tel"
 							name="phone"
 							class="input-field"
@@ -67,6 +71,7 @@
 						</label>
 						<input
 							v-model="createForm.password.value"
+							:disabled="user.role === 'user'"
 							type="password"
 							name="password"
 							class="input-field"
@@ -76,8 +81,8 @@
 						<label for="phone" class="label"
 						>Staff Role</label
 						>
-						<select v-model="createForm.role.value" class="input-field">
-							<option value="super_admin">
+						<select v-model="createForm.role.value" :disabled="user.role === 'user'" class="input-field">
+							<option v-if="user.role === 'super_admin'" value="super_admin">
 								Super Admin
 							</option>
 							<option value="admin">
@@ -89,9 +94,25 @@
 						</select>
 					</div>
 				</div>
+				<div class="w-6/12">
+					<label for="ab-testing" class="label"
+					>A/B testing role</label
+					>
+					<select v-model="createForm.ab_testing_role.value" :disabled="user.role === 'user'" name="ab-testing" class="input-field">
+						<option v-if="user.role === 'super_admin'" value="">
+							A
+						</option>
+						<option v-if="user.role === 'super_admin'" value="A">
+							B
+						</option>
+						<option value="B">
+							None
+						</option>
+					</select>
+				</div>
 
 				<div>
-					<button type="submit" class="text-white disabled:cursor-not-allowed disabled:opacity-25 bg-black rounded-md px-6 py-2.5 text-xm" :disabled="!isFormEmpty">
+					<button v-if="user.role !== 'user'" type="submit" class="text-white disabled:cursor-not-allowed disabled:opacity-25 bg-black rounded-md px-6 py-2.5 text-xm" :disabled="!isFormEmpty">
 						<span v-if="!loading" class="text-sm">Add Staff</span>
 						<Spinner v-else />
 					</button>
@@ -102,8 +123,10 @@
 </template>
 
 <script setup lang="ts">
+import { useUser } from '@/composables/auth/user'
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
 const { createForm, loading, createAdmin } = useCreateAdmin()
+const { user } = useUser()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
