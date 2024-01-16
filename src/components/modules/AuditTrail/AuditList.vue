@@ -58,7 +58,7 @@
 					<button class="filter text-left bg-transparent p-2 border-t" @click="openActorFilter">
 						Actor
 					</button>
-					<button class="filter text-left bg-transparent p-2 border-t" @click="openOperationTypeFilter">
+					<button v-if="!isProdEnv" class="filter text-left bg-transparent p-2 border-t" @click="openOperationTypeFilter">
 						Operation type
 					</button>
 				</div>
@@ -153,6 +153,7 @@ import { onClickOutside } from '@vueuse/core'
 import { useHandleFeatureFlaggedAudits, useFeatureFlaggedAudits } from '@/composables/modules/staffs/fetch'
 import { useAudits, useAuditFilter, useViewAuditDetails } from '@/composables/modules/audits'
 import { Capitalize } from '@/composables/utils/formatter'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { featureFlagAudits, loading, prePopulateFeatureForm } = useHandleFeatureFlaggedAudits()
 const { getFeatureFlaggedAudits, loading: loadingAuditStatus, featureFlaggedAuditStatus } = useFeatureFlaggedAudits()
@@ -186,7 +187,7 @@ const onRowClicked = (item) => {
 getAudits()
 getFeatureFlaggedAudits()
 getAllAdmins()
-getAuditOperationType()
+if (!isProdEnv.value) getAuditOperationType()
 onMounted(() => {
 	auditStatus.value = featureFlaggedAuditStatus.value
 })
