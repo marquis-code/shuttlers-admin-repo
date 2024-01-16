@@ -49,6 +49,7 @@
 	</main>
 </template>
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
@@ -68,7 +69,7 @@ completedTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: i?.route?.route_code ?? 'N/A',
-			 created_at: useDateFormat(i.trip_start_time, 'MMMM d, YYYY').value ?? 'N/A',
+			 trip_date: moment(i.trip_start_time).format('LL'),
 			 trip_time: i?.route_itinerary?.trip_time ?? 'N/A',
 			 pickup: i?.route?.pickup ?? 'N/A',
 			 dropoff: i?.route?.destination ?? 'N/A',
@@ -100,7 +101,7 @@ const tableFields = ref([
 	},
     {
         text: 'TRIP DATE',
-        value: 'created_at'
+        value: 'trip_date'
     },
     {
         text: 'ROUTE CODE ( START TIME)',
