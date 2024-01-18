@@ -40,7 +40,30 @@
 				</h1>
 				<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
 					<template #header>
-						<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+						<div class="bg-white border-x border-gray-100">
+							<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+							<div class="flex justify-end gap-x-3 items-end pr-3 py-3">
+								<div>
+									<CorporatesStaffMultiSelect v-model="corporates_staff" class="w-full" label="" />
+								</div>
+								<div>
+									<select v-model="filterData['filters[type]'].value" class="border border-gray-200r rounded-lg px-3 py-2.5 bg-gray-50 text-sm outline-none">
+										<option value="" disabled>
+											Select transaction type
+										</option>
+										<option value="all">
+											All
+										</option>
+										<option value="credit">
+											Credit
+										</option>
+										<option value="debit">
+											Debit
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
 					</template>
 					<template #item="{ item }">
 						<div v-if="item.description" class="flex items-center gap-x-4 w-[200px]">
@@ -200,7 +223,7 @@ import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/compos
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
-const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
+const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loading, filterData } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 const { copyToClipboard } = useClipboard()
@@ -208,6 +231,9 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+const corporates_staff = ref({ })
+const selected_user = ref({}) as any
+const transaction_type = ref('') as any
 const hideBalance = ref(true)
 const eyeToggle = computed(() => {
 	return hideBalance.value ? '@/assets/icons/source/eye.svg' : '@/assets/icons/source/eye-close.svg'

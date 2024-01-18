@@ -4,9 +4,9 @@ import { useAmenitiesList } from '@/composables/modules/configure'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 const amenitiesForm = {
-    name: '',
-	short_name: '',
-	image: '' as any
+    name: ref(''),
+	short_name: ref(''),
+	image: ref('') as any
 }
 
 const tripCategoryPayload = {
@@ -19,6 +19,7 @@ const tripOptionsPayload = {
     settings_id: ref(''),
     category_id: ref('')
 }
+const isRequestSuccessful = ref(false)
 
 export const useCreateAmentiites = () => {
 const loading = ref(false)
@@ -26,14 +27,18 @@ const deletingAmenity = ref(false)
     const handleCreateAmenity = async () => {
         loading.value = true
         const payload = {
-            image: amenitiesForm.image,
-            name: amenitiesForm.name,
-            short_name: amenitiesForm.short_name
+            image: amenitiesForm.image.value,
+            name: amenitiesForm.name.value,
+            short_name: amenitiesForm.short_name.value
         }
         const res = await configure_api.$_create_amenity(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'New Amenity successfully created' })
             useAmenitiesList().getAmenitiesList()
+            isRequestSuccessful.value = true
+            amenitiesForm.image.value = ''
+            amenitiesForm.name.value = ''
+            amenitiesForm.short_name.value = ''
         }
         loading.value = false
     }
@@ -48,7 +53,7 @@ const deletingAmenity = ref(false)
     }
     deletingAmenity.value = false
     }
-    return { amenitiesForm, loading, handleCreateAmenity, deletingAmenity, deleteAmenity }
+    return { amenitiesForm, isRequestSuccessful, loading, handleCreateAmenity, deletingAmenity, deleteAmenity }
 }
 
 export const useCreateTripRating = () => {
