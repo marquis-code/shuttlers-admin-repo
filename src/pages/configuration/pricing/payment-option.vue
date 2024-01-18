@@ -79,7 +79,6 @@ updatePaymentOption().then(() => {
 }
 
 const handleUpdatedSelectedCheckBox = (option) => {
-	console.log(option, 'option here')
 	if (option.checked) {
         newlySelectedPaymentOptions.value.push(option.id)
 		if (!newlySelectedPaymentOptions.value.includes(option.id)) {

@@ -27,7 +27,6 @@ import VueMultiselect from 'vue-multiselect'
 import { watchDebounced } from '@vueuse/core'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 const id = useRoute().params.id as string
-console.log(id, 'id here')
 const emit = defineEmits(['selected', 'update:modelValue'])
 const props = defineProps({
 	label: { type: String, default: 'Select Staff' },

@@ -40,10 +40,9 @@ export const useCorporateWallet = () => {
     currentWallet
   }
 }
-
 export const useCorporateWalletHistory = () => {
+  const loadingWalletHistory = ref(false)
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-  const loading = ref(false)
   const coprorateWalletHistory = ref([])
   const filterData = {
     'filters[type]': ref('') as any,
@@ -52,6 +51,7 @@ export const useCorporateWalletHistory = () => {
     'filters[end_date]': ref('') as any
   }
   const getCorporateWalletHistory = async () => {
+    loadingWalletHistory.value = true
     const res =
       (await corporates_api.$_get_corporate_wallet_transaction_history(
         Number(selectedCorporate.value?.wallet?.id),
@@ -62,7 +62,7 @@ export const useCorporateWalletHistory = () => {
       coprorateWalletHistory.value = res?.data?.data
       metaObject.total.value = res?.data?.total_pages
     }
-    loading.value = false
+    loadingWalletHistory.value = false
   }
 
   setFunction(getCorporateWalletHistory)
@@ -98,7 +98,7 @@ export const useCorporateWalletHistory = () => {
 
   return {
     getCorporateWalletHistory,
-    loading,
+    loadingWalletHistory,
     coprorateWalletHistory,
     next,
     prev,
