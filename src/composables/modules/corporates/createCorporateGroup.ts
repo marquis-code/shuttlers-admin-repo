@@ -3,7 +3,9 @@ import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
+import { useGroup } from '@/composables/modules/corporates/corporateGroup'
 const { selectedCorporate } = useCorporateIdDetails()
+const { fetchGroup } = useGroup()
 const corporateGroupForm = {
     name: ref('')
 }
@@ -19,6 +21,7 @@ export const useCreateCorporateGroup = () => {
                 msg: 'Corporate group was successfully created'
               })
               useCompaniesModal().closeCreateCorporateGroup()
+              fetchGroup(Number(selectedCorporate.value.id))
         }
         loading.value = false
 	}
