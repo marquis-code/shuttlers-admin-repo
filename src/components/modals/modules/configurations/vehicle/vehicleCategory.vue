@@ -227,7 +227,7 @@ const handleCreateVehicleCategory = () => {
   if (Object.keys(selectedVehicleCategory.value).length) {
     const vehicleCategoryId = selectedVehicleCategory.value.id
     preConfigureVehicleCategoryForm(form)
-    editVehicleCategory(vehicleCategoryId)
+    editVehicleCategory(selectedVehicleCategory.value.id)
   } else {
     // preConfigureVehicleCostOfSuplyForm(cost_of_supply_form)
     preConfigureVehicleCostOfSuplyForm(rows.value)
@@ -254,10 +254,6 @@ const cost_of_supply_form = reactive({
   currency: 'NGN'
 })
 
-// const addRow = () => {
-// 	rows.value.push({ city: '', cost_of_supply: '' })
-// 	form.city_id = ''
-// }
 const rows = ref([] as any)
 const addRow = (cityPricingData) => {
   if (Object.keys(cityPricingData).length) {
