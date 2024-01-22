@@ -101,16 +101,16 @@ export const useCreateVehicle = () => {
     }
   }
 
-  const editVehicleCategory = async (id) => {
+  const editVehicleCategory = async (id:any) => {
     loading.value = true
-
     const res = (await $_update_vehicle_types(
-      convertObjWithRefToObj(configureVehicleCategoryForm),
+      convertObjWithRefToObj(configureVehicleTypeForm),
       id
     )) as CustomAxiosResponse
 
     if (res.type !== 'ERROR') {
-      useAlert().openAlert({ type: 'SUCCESS', msg: '' })
+      useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle category was updated successfully.' })
+      useVehicleConfigurationModal().closeConfigureVehicleCategory()
     }
     loading.value = false
   }
@@ -143,7 +143,7 @@ export const useCreateVehicle = () => {
     inspectionSiteForm.address.value = data.address
   }
 
-  const preConfigureVehicleCategoryForm = (data) => {
+  const preConfigureVehicleCategoryForm = (data: any) => {
     configureVehicleTypeForm.name.value = data.name
     configureVehicleTypeForm.description.value = data.description
     configureVehicleTypeForm.break_even_utilization.value =
