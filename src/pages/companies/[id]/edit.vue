@@ -7,7 +7,7 @@
 			<div class="space-y-6 px-6">
 				<ModulesCorporatesCreateSteps :route-query="routeQuery" />
 				<ModulesCorporatesCreateCompanyInfoForm v-if="routeQuery.tab === 'company-information'" :form="form" @next="handleNext" />
-				<ModulesCorporatesCreateAdminInfoForm v-if="routeQuery.tab === 'admin-information'" :form="form" @complete="createCompany" />
+				<ModulesCorporatesCreateAdminInfoForm v-if="routeQuery.tab === 'admin-information'" :form="form" @complete="editCompany" />
 			</div>
 		</section>
 	</main>
@@ -18,7 +18,7 @@ import { useCreateCorporate } from '@/composables/modules/corporates/create'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 const { selectedCorporate } = useCorporateIdDetails()
-const { loading, createCorporate, populateCorporateForm } = useCreateCorporate()
+const { loading, editCorporate, populateEditCorporateForm } = useCreateCorporate()
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -27,6 +27,7 @@ const routeQuery = computed(() => {
     return useRoute().query
 })
 const form = reactive({
+    ...selectedCorporate.value,
     corporate_name: selectedCorporate.value.corporate_name,
     role: selectedCorporate.value.role,
     staff_strength: selectedCorporate.value.staff_strength,
@@ -48,18 +49,18 @@ const handleNext = () => {
     })
 }
 
-const createCompany = () => {
+const editCompany = () => {
     useConfirmationModal().openAlert({
-        title: 'Create a company',
+        title: `Edit ${selectedCorporate.value.corporate_name}`,
         type: 'NORMAL',
-        desc: 'Are you sure you want to create a company ?',
+        desc: `Are you sure you want to edit ${selectedCorporate.value.corporate_name} ?`,
         loading,
-        call_function: () => handleCreateCorporate()
+        call_function: () => handleEditCorporate()
 })
  }
 
- const handleCreateCorporate = () => {
-    populateCorporateForm(form)
-    createCorporate()
+ const handleEditCorporate = () => {
+    populateEditCorporateForm(form)
+    editCorporate()
  }
 </script>

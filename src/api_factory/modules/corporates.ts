@@ -52,7 +52,11 @@ export const corporates_api = {
 	},
 	$_create_corporate: (payload: any) => {
 		const url = '/corporates'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_edit_corporate: (payload: any, id: string) => {
+	const url = `/corporates/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 },
 $_bulk_staff_assignments: (payload:any) => {
 	const url = '/staff-routes-and-workshifts'
