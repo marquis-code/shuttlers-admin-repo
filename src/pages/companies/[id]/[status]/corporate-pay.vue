@@ -313,7 +313,7 @@ const search = ref('')
 const { groups, fetchGroup } = useGroup()
 onMounted(() => {
 	getCorporateStaff()
-	fetchGroup()
+	fetchGroup(Number(selectedCorporate.value.id))
 })
 
 const {

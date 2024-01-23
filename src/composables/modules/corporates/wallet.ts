@@ -4,7 +4,8 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate, loading, getCorporateById } = useCorporateIdDetails()
+const { selectedCorporate, loading, getCorporateById } =
+  useCorporateIdDetails()
 
 const walletActivationForm = {
   bvn: ref(''),
@@ -18,59 +19,119 @@ const currentWallet = computed(() => {
 })
 
 export const useCorporateWallet = () => {
-	const loading = ref(false)
-	const getCorporateWalletInfo = async () => {
-    loading.value = true
-        const res = (await corporates_api.$_get_corporate_wallet_info(Number(selectedCorporate.value.id))) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            wallets.value = res.data.data ?? []
-        }
-        loading.value = false
-    }
-
-    return {
- getCorporateWalletInfo, loading, wallets, ledgerAccountId,
-      walletIndex,
-      currentWallet
-}
-}
-
-export const useCorporateWalletHistory = () => {
-  const { moveTo, metaObject, next, prev, setFunction } = usePagination()
   const loading = ref(false)
-  const coprorateWalletHistory = ref([])
-	const getCorporateWalletHistory = async () => {
-        const res = (await corporates_api.$_get_corporate_wallet_transaction_history(Number(selectedCorporate.value?.wallet?.id), metaObject)) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            coprorateWalletHistory.value = res?.data?.data
-            metaObject.total.value = res?.data?.total_pages
-        }
-        loading.value = false
+  const getCorporateWalletInfo = async () => {
+    loading.value = true
+    const res = (await corporates_api.$_get_corporate_wallet_info(
+      Number(selectedCorporate.value.id)
+    )) as CustomAxiosResponse
+    if (res.type !== 'ERROR') {
+      wallets.value = res.data.data ?? []
     }
+    loading.value = false
+  }
 
-    return { getCorporateWalletHistory, loading, coprorateWalletHistory, next, prev, moveTo, ...metaObject }
+  return {
+    getCorporateWalletInfo,
+    loading,
+    wallets,
+    ledgerAccountId,
+    walletIndex,
+    currentWallet
+  }
+}
+export const useCorporateWalletHistory = () => {
+  const loadingWalletHistory = ref(false)
+  const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+  const coprorateWalletHistory = ref([])
+  const filterData = {
+    'filters[type]': ref('') as any,
+    'filters[user_ids]': ref('') as any,
+    'filters[start_date]': ref('') as any,
+    'filters[end_date]': ref('') as any
+  }
+  const getCorporateWalletHistory = async () => {
+    loadingWalletHistory.value = true
+    const res =
+      (await corporates_api.$_get_corporate_wallet_transaction_history(
+        Number(selectedCorporate.value?.wallet?.id),
+        metaObject,
+        filterData
+      )) as CustomAxiosResponse
+    if (res.type !== 'ERROR') {
+      coprorateWalletHistory.value = res?.data?.data
+      metaObject.total.value = res?.data?.total_pages
+    }
+    loadingWalletHistory.value = false
+  }
+
+  setFunction(getCorporateWalletHistory)
+
+  watch(
+    [
+      filterData['filters[type]'],
+      filterData['filters[user_ids]'],
+      filterData['filters[start_date]'],
+      filterData['filters[end_date]']
+    ],
+    (val) => {
+      getCorporateWalletHistory()
+    }
+  )
+
+  const onFilterUpdate = (data: any) => {
+    switch (data.type) {
+      case 'filters[type]':
+        filterData['filters[type]'].value = data.value ?? 'all'
+        break
+      case 'filters[user_ids]':
+        filterData['filters[user_ids]'].value = data.value
+        break
+      case 'filters[start_date]':
+        filterData['filters[start_date]'].value = data.value
+        break
+      case 'filters[end_date]':
+        filterData['filters[end_date]'].value = data.value
+        break
+    }
+  }
+
+  return {
+    getCorporateWalletHistory,
+    loadingWalletHistory,
+    coprorateWalletHistory,
+    next,
+    prev,
+    moveTo,
+    onFilterUpdate,
+    filterData,
+    ...metaObject
+  }
 }
 
 export const useCorporateWalletActivation = () => {
   const loading = ref(false)
-	const activateCorporateWallet = async () => {
+  const activateCorporateWallet = async () => {
     loading.value = true
-        const res = (await corporates_api.$_activate_corporate_wallet(Number(selectedCorporate.value?.wallet.id), convertObjWithRefToObj(walletActivationForm))) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-          useAlert().openAlert({
-            type: 'SUCCESS',
-            msg: 'Wallet has been successfully activated'
-          })
-        }
-        loading.value = false
+    const res = (await corporates_api.$_activate_corporate_wallet(
+      Number(selectedCorporate.value?.wallet.id),
+      convertObjWithRefToObj(walletActivationForm)
+    )) as CustomAxiosResponse
+    if (res.type !== 'ERROR') {
+      useAlert().openAlert({
+        type: 'SUCCESS',
+        msg: 'Wallet has been successfully activated'
+      })
     }
+    loading.value = false
+  }
 
-    const populateWalletActivationForm = (data) => {
-      walletActivationForm.bvn.value = data.bvn
-      walletActivationForm.provider.value = data.provider
-    }
+  const populateWalletActivationForm = (data) => {
+    walletActivationForm.bvn.value = data.bvn
+    walletActivationForm.provider.value = data.provider
+  }
 
-    return { populateWalletActivationForm, activateCorporateWallet, loading }
+  return { populateWalletActivationForm, activateCorporateWallet, loading }
 }
 
 export const useFlutterWave = () => {
@@ -84,7 +145,10 @@ export const useFlutterWave = () => {
       provider: 'flutterwave',
       reference: `shuttlers_${new Date().getTime()}`
     }
-    const res = (await corporates_api.$_payment_funding_reference(Number(selectedCorporate.value?.wallet.ledger_account_id), payload)) as CustomAxiosResponse
+    const res = (await corporates_api.$_payment_funding_reference(
+      Number(selectedCorporate.value?.wallet.ledger_account_id),
+      payload
+    )) as CustomAxiosResponse
     if (res.type !== 'ERROR' && res.data.reference) {
       loading.value = false
       window.FlutterwaveCheckout({
@@ -110,7 +174,7 @@ export const useFlutterWave = () => {
         },
         meta: {
           ledger_account_reference:
-          selectedCorporate.value?.wallet.ledger_account_id
+            selectedCorporate.value?.wallet.ledger_account_id
         },
         onclose(): void {
           useAlert().openAlert({
@@ -124,9 +188,9 @@ export const useFlutterWave = () => {
         redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
         tx_ref: res.data.reference
       })
-  } else {
-    useAlert().openAlert({ type: 'Alert', msg: 'An error occured' })
-  }
+    } else {
+      useAlert().openAlert({ type: 'Alert', msg: 'An error occured' })
+    }
   }
 
   return { makePayment, amount, desc, loading }
@@ -138,25 +202,32 @@ const corporateOverDraftUpdateForm = {
 }
 
 export const useCorporateOverdreftUpdate = () => {
-	const updating = ref(false)
-	const updateCorporateWalletOverdraft = async () => {
+  const updating = ref(false)
+  const updateCorporateWalletOverdraft = async () => {
     updating.value = true
-        const res = (await corporates_api.$_update_corporate_overdraft(Number(selectedCorporate.value.wallet.id), convertObjWithRefToObj(corporateOverDraftUpdateForm))) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-          useAlert().openAlert({
-            type: 'SUCCESS',
-            msg: 'Wallet Overdraf was successfully updated'
-          })
-        }
-        updating.value = false
+    const res = (await corporates_api.$_update_corporate_overdraft(
+      Number(selectedCorporate.value.wallet.id),
+      convertObjWithRefToObj(corporateOverDraftUpdateForm)
+    )) as CustomAxiosResponse
+    if (res.type !== 'ERROR') {
+      useAlert().openAlert({
+        type: 'SUCCESS',
+        msg: 'Wallet Overdraf was successfully updated'
+      })
     }
+    updating.value = false
+  }
 
-    const populateOverdraftForm = (data: any) => {
-      corporateOverDraftUpdateForm.max_over_draw_value.value = data.max_over_draw_value
-      corporateOverDraftUpdateForm.supports_over_draw.value = data.supports_over_draw
-    }
+  const populateOverdraftForm = (data: any) => {
+    corporateOverDraftUpdateForm.max_over_draw_value.value =
+      data.max_over_draw_value
+    corporateOverDraftUpdateForm.supports_over_draw.value =
+      data.supports_over_draw
+  }
 
-    return {
-      updateCorporateWalletOverdraft, updating, populateOverdraftForm
-}
+  return {
+    updateCorporateWalletOverdraft,
+    updating,
+    populateOverdraftForm
+  }
 }

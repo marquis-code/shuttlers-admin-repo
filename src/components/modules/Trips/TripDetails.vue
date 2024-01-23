@@ -21,9 +21,27 @@
 						<ul class="py-3">
 							<li v-for="col in tripCol" :key="col.name" class="flex flex-wrap gap-4 justify-between items-center  py-3  border-b text-sm">
 								<span class="font-medium">{{ col.name }} </span>
-
-								<RouteDescription v-if="col.value === 'route'" :pickup="selectedTrip?.route?.pickup" :destination="selectedTrip?.route?.destination" />
+								<nuxt-link v-if="col.name === 'Driver'" :to="`/drivers/${selectedTrip.driver.id}/driver-info`" class="text-blue-700">
+									{{ col.value }}
+								</nuxt-link>
 								<StatusBadge v-else-if="col.value === 'status'" :name="selectedTrip?.route?.status ? 'Active' : 'Inactive'" />
+								<div v-else-if="col.name === 'Route Code'">
+									<nuxt-link :to="`/trips/routes/${selectedTrip?.route?.id}/details`" class="text-blue-700">
+										{{ col.value }}
+									</nuxt-link>
+								</div>
+								<div v-else-if="col.name === 'Vehicle'">
+									<nuxt-link :to="`/fleet/${selectedTrip?.vehicle?.id}/vehicle-info`" class="text-blue-700">
+										{{ col.value }}
+									</nuxt-link>
+								</div>
+								<div v-else-if="col.name === 'Partner'">
+									<nuxt-link v-if="selectedTrip?.partner?.id" :to="`/partners/${selectedTrip?.partner?.id}/partner-info`" class="text-blue-700">
+										{{ col.value }}
+									</nuxt-link>
+									<span v-else>N/A</span>
+								</div>
+								<RouteDescription v-else-if="col.value === 'route'" :pickup="selectedTrip?.route?.pickup" :destination="selectedTrip?.route?.destination" />
 								<span v-else>{{ col.value }} </span>
 							</li>
 						</ul>
@@ -70,7 +88,6 @@ const props = defineProps({
 	const vehicleData = computed(() => {
       return props.selectedTrip?.vehicle || props.selectedTrip?.driver?.vehicle
     })
-
 const tripCol = computed(() => {
 	return [
 		{ name: 'Route', value: 'route' },

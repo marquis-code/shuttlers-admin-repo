@@ -52,7 +52,11 @@ export const corporates_api = {
 	},
 	$_create_corporate: (payload: any) => {
 		const url = '/corporates'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_edit_corporate: (payload: any, id: string) => {
+	const url = `/corporates/${id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 },
 $_bulk_staff_assignments: (payload:any) => {
 	const url = '/staff-routes-and-workshifts'
@@ -132,8 +136,9 @@ $_assign_bussiness_account_manager: (corporateId:number, payload: any) => {
 	const url = `/corporates/${corporateId}/managers`
 	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 },
-$_get_corporate_wallet_transaction_history: (walletId:number, metaObject: TMetaObject) => {
-	const url = `/corporate-wallets/${walletId}/transactions?metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&filters[type]=all`
+$_get_corporate_wallet_transaction_history: (walletId:number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+	const queryParams = useTableFilter(filterData)
+	const url = `/corporate-wallets/${walletId}/transactions?${queryParams}&metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
 $_get_corporate_wallet_info: (corporateId:number) => {
@@ -235,6 +240,10 @@ $_update__applicable_employee: (corporateId:number, payload:any) => {
 },
 $_generate_business_booking_report: (corporateId, routeId, monthId) => {
 	const url = `/corporates/${corporateId}/bookings/route/${routeId}/duration/${monthId}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_corporates_staffs_for_selector_component: (search = '', corporateId) => {
+	const url = `/corporates/${corporateId}/staff?limit=${20}&page=${1}&search=${search}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 }
 }

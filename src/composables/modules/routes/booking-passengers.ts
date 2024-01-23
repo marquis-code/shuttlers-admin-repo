@@ -3,7 +3,7 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 
 const routePassengersPayload = {
     booking_days: ref([] as Record<string, any>),
-    driver_id: ref()
+    driver_id: ref('')
 }
 
 const loadingRoutePassengers = ref(false)
@@ -20,7 +20,7 @@ export const useRoutePassengers = () => {
         loadingRoutePassengers.value = false
     }
 
-    const populateRoutePassengers = (data) => {
+    const populateRoutePassengers = (data: any) => {
         routePassengersPayload.driver_id.value = data.driver_id
         routePassengersPayload.booking_days.value = data.booking_days
     }

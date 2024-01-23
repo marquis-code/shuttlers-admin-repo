@@ -40,7 +40,30 @@
 				</h1>
 				<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
 					<template #header>
-						<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+						<div class="bg-white border-x border-gray-100">
+							<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+							<div class="flex justify-end gap-x-3 items-end pr-3 py-3">
+								<div>
+									<CorporatesStaffMultiSelect class="w-full" label="" @update:modelValue="handleSelectedCorporates" />
+								</div>
+								<div>
+									<select v-model="filterData['filters[type]'].value" class="border border-gray-200r rounded-lg px-3 py-2.5 bg-gray-50 text-sm outline-none">
+										<option value="" disabled>
+											Select transaction
+										</option>
+										<option value="all">
+											All
+										</option>
+										<option value="credit">
+											Credit
+										</option>
+										<option value="debit">
+											Debit
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
 					</template>
 					<template #item="{ item }">
 						<div v-if="item.description" class="flex items-center gap-x-4 w-[200px]">
@@ -65,131 +88,133 @@
 					</template>
 
 					<template #footer>
-						<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+						<TablePaginator :current-page="page" :total-pages="total" :loading="loadingWalletHistory" @move-to="moveTo($event)" @next="next" @prev="prev" />
 					</template>
 				</Table>
 			</div>
 		</div>
-		<div v-if="!loadingCorporateWallet" class="lg:w-4/12 space-y-10">
-			<div v-if="corporateWalletDetails?.wallet?.nuban_addresses?.length" class="card space-y-10 p-6">
-				<div v-for="(itm, idx) in corporateWalletDetails?.wallet?.nuban_addresses" :key="idx" class="space-y-3">
-					<div class="flex items-center justify-between">
-						<p class="text-gray-500 text-sm">
-							Bank Name
-						</p>
-						<p class="text-xl font-bold">
-							{{ itm?.bank_name ?? 'N/A' }}
-						</p>
-					</div>
-					<div class="flex items-center justify-between">
-						<p class="text-gray-500 text-sm">
-							Account Number
-						</p>
-						<p class="text-xl font-bold flex items-center gap-x-3">
-							<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="" @click="copyToClipboard(itm?.account_number)">
-						</p>
-					</div>
-					<div class="flex items-center justify-between">
-						<p class="text-gray-500 text-sm">
-							Account Name
-						</p>
-						<p class="text-lg font-bold">
-							{{ itm?.account_name ?? 'N/A' }}
-						</p>
-					</div>
-					<div class="flex items-center justify-between">
-						<p class="text-gray-500 text-sm">
-							Service Provider
-						</p>
-						<p class="text-sm font-bold">
-							{{ itm.provider ?? 'N/A' }}
-						</p>
-					</div>
-				</div>
-				<p class="leading-relaxed tracking-wide text-gray-400">
-					Transfer money to the bank account above to fund your wallet, your wallet will be credited automatically once payment is verified.
-				</p>
-				<div class="w-full flex justify-center items-center">
-					<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
-						Add Nuban
-					</button>
-				</div>
-			</div>
-			<div v-else class="h-60 relative z-0">
-				<div class="card space-y-4 p-6 backdrop-blur-sm bg-white/30">
-					<div class="space-y-6">
+		<div class="lg:w-4/12">
+			<div v-if="!loadingCorporateWallet" class="space-y-10">
+				<div v-if="corporateWalletDetails?.wallet?.nuban_addresses?.length" class="card space-y-10 p-6">
+					<div v-for="(itm, idx) in corporateWalletDetails?.wallet?.nuban_addresses" :key="idx" class="space-y-3">
 						<div class="flex items-center justify-between">
-							<p class="text-gray-500">
+							<p class="text-gray-500 text-sm">
 								Bank Name
 							</p>
 							<p class="text-xl font-bold">
-								N/A
+								{{ itm?.bank_name ?? 'N/A' }}
 							</p>
 						</div>
 						<div class="flex items-center justify-between">
-							<p class="text-gray-500">
+							<p class="text-gray-500 text-sm">
 								Account Number
 							</p>
 							<p class="text-xl font-bold flex items-center gap-x-3">
-								<span class="cursor-pointer">N/A</span> <img src="@/assets/icons/source/copy.svg" alt="">
+								<span id="accountNumber" ref="textToCopy" class="cursor-pointer">{{ itm?.account_number ?? 'N/A' }}</span> <img src="@/assets/icons/source/copy.svg" class="cursor-pointer" alt="" @click="copyToClipboard(itm?.account_number)">
 							</p>
 						</div>
 						<div class="flex items-center justify-between">
-							<p class="text-gray-500">
+							<p class="text-gray-500 text-sm">
 								Account Name
 							</p>
 							<p class="text-lg font-bold">
-								N/A
+								{{ itm?.account_name ?? 'N/A' }}
 							</p>
 						</div>
 						<div class="flex items-center justify-between">
-							<p class="text-gray-500">
+							<p class="text-gray-500 text-sm">
 								Service Provider
 							</p>
 							<p class="text-sm font-bold">
-								N/A
+								{{ itm.provider ?? 'N/A' }}
 							</p>
 						</div>
 					</div>
-				</div>
-				<div class="inset-0 bg-gray/50 absolute backdrop-blur-sm bg-white/30" />
-				<div class="w-full flex justify-center items-center blur-none absolute top-20 rounded-md z-50">
-					<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
-						Activate wallet
-					</button>
-				</div>
-			</div>
-			<div class="card space-y-6">
-				<h1 class="font-bold text-xl">
-					Overdraw settings
-				</h1>
-				<div class="flex items-center gap-x-2">
-					<input id="overdraft" v-model="computedOverdraft.supports_over_draw" :disabled="!isUpdatingOverdraft" type="checkbox">
-					<label for="overdraft" class="pt-2">Support overdraft</label>
-				</div>
-				<div class="space-y-3">
-					<p class="text-gray-800 font-medium">
-						Maximum overdraft
+					<p class="leading-relaxed tracking-wide text-gray-400">
+						Transfer money to the bank account above to fund your wallet, your wallet will be credited automatically once payment is verified.
 					</p>
-					<input v-model="computedOverdraft.max_over_draw_value" type="text" :readonly="!isUpdatingOverdraft" class="py-2.5 text-2xl font-bold w-full border outline-none rounded-md px-6">
+					<div class="w-full flex justify-center items-center">
+						<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
+							Add Nuban
+						</button>
+					</div>
 				</div>
-				<div v-if="!isUpdatingOverdraft">
-					<button class="bg-black text-white px-3 py-2 rounded-md" @click="handleUpdate">
-						Update
-					</button>
+				<div v-else class="h-60 relative z-0">
+					<div class="card space-y-4 p-6 backdrop-blur-sm bg-white/30">
+						<div class="space-y-6">
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Bank Name
+								</p>
+								<p class="text-xl font-bold">
+									N/A
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Account Number
+								</p>
+								<p class="text-xl font-bold flex items-center gap-x-3">
+									<span class="cursor-pointer">N/A</span> <img src="@/assets/icons/source/copy.svg" alt="">
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Account Name
+								</p>
+								<p class="text-lg font-bold">
+									N/A
+								</p>
+							</div>
+							<div class="flex items-center justify-between">
+								<p class="text-gray-500">
+									Service Provider
+								</p>
+								<p class="text-sm font-bold">
+									N/A
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="inset-0 bg-gray/50 absolute backdrop-blur-sm bg-white/30" />
+					<div class="w-full flex justify-center items-center blur-none absolute top-20 rounded-md z-50">
+						<button class="text-white bg-black rounded-md py-2.5 w-1/2" @click="useCompaniesModal().openActivateWallet()">
+							Activate wallet
+						</button>
+					</div>
 				</div>
-				<div v-else class="flex items-center space-x-3">
-					<button class="w-full bg-white rounded-md py-3 text-gray-900 text-sm border font-semibold border-gray-950" @click="isUpdatingOverdraft = false">
-						Cancel
-					</button>
-					<button class="auth-form-btn font-[700] w-full py-3 text-white bg-shuttlersGreen" @click="handleOverdraftUpdate">
-						<span v-if="!updating" class="flex justify-center items-center gap-2.5">Save</span>
-						<Spinner v-else />
-					</button>
+				<div class="card space-y-6">
+					<h1 class="font-bold text-xl">
+						Overdraw settings
+					</h1>
+					<div class="flex items-center gap-x-2">
+						<input id="overdraft" v-model="computedOverdraft.supports_over_draw" :disabled="!isUpdatingOverdraft" type="checkbox">
+						<label for="overdraft" class="pt-2">Support overdraft</label>
+					</div>
+					<div class="space-y-3">
+						<p class="text-gray-800 font-medium">
+							Maximum overdraft
+						</p>
+						<input v-model="computedOverdraft.max_over_draw_value" type="text" :readonly="!isUpdatingOverdraft" class="py-2.5 text-2xl font-bold w-full border outline-none rounded-md px-6">
+					</div>
+					<div v-if="!isUpdatingOverdraft">
+						<button class="bg-black text-white px-3 py-2 rounded-md" @click="handleUpdate">
+							Update
+						</button>
+					</div>
+					<div v-else class="flex items-center space-x-3">
+						<button class="w-full bg-white rounded-md py-3 text-gray-900 text-sm border font-semibold border-gray-950" @click="isUpdatingOverdraft = false">
+							Cancel
+						</button>
+						<button class="auth-form-btn font-[700] w-full py-3 text-white bg-shuttlersGreen" @click="handleOverdraftUpdate">
+							<span v-if="!updating" class="flex justify-center items-center gap-2.5">Save</span>
+							<Spinner v-else />
+						</button>
+					</div>
 				</div>
 			</div>
+			<Skeleton v-else height="500px" />
 		</div>
-		<Skeleton v-else height="100px" />
 	</section>
 </template>
 
@@ -200,7 +225,7 @@ import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/compos
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
-const { getCorporateWalletHistory, loading: loadingWalletHistory, coprorateWalletHistory, next, prev, moveTo, page, total, loading } = useCorporateWalletHistory()
+const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 const { copyToClipboard } = useClipboard()
@@ -208,6 +233,10 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const handleSelectedCorporates = (val:any) => {
+	filterData['filters[user_ids]'].value = val.id
+}
 const hideBalance = ref(true)
 const eyeToggle = computed(() => {
 	return hideBalance.value ? '@/assets/icons/source/eye.svg' : '@/assets/icons/source/eye-close.svg'

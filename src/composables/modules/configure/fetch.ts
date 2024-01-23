@@ -309,7 +309,11 @@ export const useUpdatePaymentOptions = () => {
     const updatePaymentOption = async () => {
         updatingPaymentOption.value = true
 
-        const res = await $_update_payment_options(paymentOptionsPayload) as CustomAxiosResponse
+        const payload = {
+            payment_options_ids: paymentOptionsPayload.payment_options_ids.value
+        }
+
+        const res = await $_update_payment_options(payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             // amenity was  created successfully

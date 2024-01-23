@@ -28,17 +28,17 @@ export const trips_api = {
 	},
 	$_get_active_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/trips/active?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const url = `/trips/active?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_upcoming_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/trips/upcoming?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const url = `/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_completed_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/trips/completed?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const url = `/trips/completed?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_bus_captains: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {

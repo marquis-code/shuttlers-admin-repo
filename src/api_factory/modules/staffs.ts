@@ -72,5 +72,9 @@ export const staffs_api = {
 	$_update_profile_picture: (id, payload) => {
 		const url = `/staffs/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
+	},
+	$_get_staffs_for_selector_component: (search = '') => {
+		const url = `/staffs?limit=${20}&page=${1}&search=${search}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

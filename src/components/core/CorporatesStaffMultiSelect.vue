@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<VueMultiselect
-			v-model="selectedCorporates"
-			:options="corporates"
+			v-model="selectedStaff"
+			:options="staffs"
 			:multiple="true"
 			:close-on-select="true"
 			placeholder="Type to search"
@@ -26,10 +26,10 @@
 import VueMultiselect from 'vue-multiselect'
 import { watchDebounced } from '@vueuse/core'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-
+const id = useRoute().params.id as string
 const emit = defineEmits(['selected', 'update:modelValue'])
 const props = defineProps({
-	label: { type: String, default: 'Select Corporate' },
+	label: { type: String, default: 'Select Staff' },
 	modelValue: { type: Object, required: false, default: () => {} },
 	multiple: { type: Boolean, default: false }
 })
@@ -37,13 +37,13 @@ const props = defineProps({
 const is_droped_down = ref(false)
 const loading = ref(false)
 const search = ref('')
-const corporates = ref([]) as Ref<any[]>
+const staffs = ref([]) as Ref<any[]>
 
-const getCorporates = async () => {
+const getStaffs = async () => {
 	loading.value = true
-    const res = await corporates_api.$_get_corporates_for_selector_component() as CustomAxiosResponse
+    const res = await corporates_api.$_get_corporates_staffs_for_selector_component(search.value, id) as CustomAxiosResponse
 	if (res.type !== 'ERROR') {
-		corporates.value = res.data.data?.length ? res.data.data : []
+		staffs.value = res.data.data?.length ? res.data.data : []
 	}
 	loading.value = false
 }
@@ -51,22 +51,18 @@ const getCorporates = async () => {
 const asyncFind = async (query: any) => {
     search.value = query
     loading.value = true
-    const result = await corporates_api.$_get_corporates_for_selector_component(query) as CustomAxiosResponse
+    const result = await corporates_api.$_get_corporates_staffs_for_selector_component(query, id) as CustomAxiosResponse
     if (result.type !== 'ERROR') {
-        corporates.value = result.data.data?.length ? result.data.data : []
+        staffs.value = result.data.data?.length ? result.data.data : []
 	}
     loading.value = false
   }
 
   const fullName = ({ fname, lname, email }) => {
-  return `${fname} ${lname} - ${email}`
+  return `${fname} ${lname}`
 }
 
-const searching = (val:string) => {
-	search.value = val
-}
-
-const selectedCorporates = ref(props.modelValue) as Ref<any>
+const selectedStaff = ref(props.modelValue) as Ref<any>
 
 const handleSelection = (val:any) => {
 	emit('update:modelValue', val)
@@ -78,5 +74,5 @@ watchDebounced(
   { debounce: 500, maxWait: 1000 }
 )
 
-getCorporates()
+getStaffs()
 </script>
