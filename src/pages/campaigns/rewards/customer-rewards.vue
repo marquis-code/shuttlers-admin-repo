@@ -16,9 +16,9 @@
 						</button>
 					</div>
 					<div class="flex items-center gap-x-3">
-						<!-- <button class="btn-secondary border w-full lg:w-max text-xs py-[10px] px-[16px] rounded-md" @click="useCampaignModal().openCreateManualReward()">
+						<button class="btn-secondary border w-full lg:w-max text-xs py-[10px] px-[16px] rounded-md" @click="useCampaignModal().openCreateManualReward()">
 							Manual reward
-						</button> -->
+						</button>
 						<button class="bg-black text-white w-full lg:w-max text-xs py-[10px] px-[16px] rounded-md" @click="useCampaignModal().openCreateReward()">
 							Create reward
 						</button>
