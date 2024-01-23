@@ -44,9 +44,10 @@
 				</div>
 				<div>
 					<div v-if="item.amenities">
-						<p class="cursor-pointer" @click="onRowClicked(item.data)">
-							{{ item.data.amenities }}
+						<p v-if="item.data.amenities" class="cursor-pointer" @click="onRowClicked(item.data)">
+							{{ item.data.amenities.map((itm) => itm.name) }}
 						</p>
+						<p v-else>N/A</p>
 					</div>
 				</div>
 				<div v-if="item.drivers">

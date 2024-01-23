@@ -4,8 +4,9 @@ import { useAlert } from '@/composables/core/notification'
 import { CustomAxiosResponse } from '@/api_factory/modules'
 
 export const staffs_api = {
-	$_get_staffs: (metaObject: TMetaObject) => {
-		const url = `/staff?page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
+	$_get_staffs: (metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/staff?${queryParams}&page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_all_staffs: () => {

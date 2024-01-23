@@ -45,14 +45,7 @@ const tableFields = ref([
 ])
 const handleEdit = (val) => {
 	useVehicleConfigurationModal().openConfigureVehicleCategory()
-	configureVehicleCategoryForm.name.value = val.data.name
-	configureVehicleCategoryForm.description.value = val.data.description
-	configureVehicleCategoryForm.cost_of_supply.value = val.data.cost_of_supply
-	configureVehicleCategoryForm.break_even_utilization.value = val.data.break_even_utilization
-	configureVehicleCategoryForm.pricing_margin.value = val.data.pricing_margin
-	configureVehicleCategoryForm.pricing_margin_unit.value = val.data.pricing_margin_unit
-	configureVehicleCategoryForm.image.value = val.data.image
-	selectedVehicleCategory.value = val.data
+	selectedVehicleCategory.value = val?.data
 }
 
 const handleDelete = (val) => {

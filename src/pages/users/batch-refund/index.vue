@@ -3,7 +3,7 @@
 		<TableSelectedTray class="mb-12" :selected="log_ids" :loading="processLoading" :call-function="getConfirmation" :computed-name-function="formattedName" @update="log_ids = ($event)" />
 		<Table :loading="loading" :headers="tableFields" :selected="log_ids" :table-data="formatedRefundList" :checkbox="true" @checked="log_ids = ($event)">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.status" class="text-xs text-white rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1 ']">
@@ -12,6 +12,16 @@
 				<span v-else-if="item.id">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
 				</span>
+			</template>
+			<template #footer>
+				<TablePaginator
+					:current-page="page"
+					:total-pages="total"
+					:loading="loading"
+					@move-to="moveTo($event)"
+					@next="next"
+					@prev="prev"
+				/>
 			</template>
 		</Table>
 	</main>
@@ -24,7 +34,7 @@ import { useProcessBatchRefund } from '@/composables/modules/users/batch-refund/
 
 const { setDeleteRefundId } = useDeleteRefund()
 const { loading: processLoading, log_ids, getConfirmation, formattedName } = useProcessBatchRefund()
-const { getBatchRefundList, loading, refundList } = useGetBatchRefundList()
+const { getBatchRefundList, loading, refundList, next, moveTo, onFilterUpdate, prev, total, page } = useGetBatchRefundList()
 getBatchRefundList()
 
 definePageMeta({
