@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<div v-if="!isEmptyObject(selectedRoute) || !loading" class="card">
+		<div v-if="!loading" class="card">
 			<div v-for="(itm, index) in routeDetails" :key="index"
 				class="flex  gap-x-6 items-center py-4 border-b last:border-none">
 				<p class="text-sm w-[100px] shrink-0">
@@ -26,7 +26,7 @@ import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, us
 import { isEmptyObject } from '@/composables/utils/basics'
 import { environmental_url, getCurrentEnvironmentalUrl } from '@/composables/utils/system'
 const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripStartTimeById()
-const { selectedRoute, loading, getRouteById } = useRouteIdDetails()
+const { selectedRoute, loadingRouteDetails: loading, getRouteById } = useRouteIdDetails()
 const routeDetails = computed(() => {
 	return [
 		{ name: 'Status', value: selectedRoute.value.status === 1 ? 'Active' : 'Inactive', class: `text-white text-xs px-2 py-1 rounded-md ${selectedRoute.value.status === 1 ? 'bg-shuttlersGreen' : 'bg-rose-500'}`, func: () => { } },
@@ -110,6 +110,9 @@ const copyUrl = async () => {
 const handleClick = (val: any) => {
 	window.open(val.target.innerHTML, '_blank')
 }
+
+const id = useRoute().params.id as string
+getRouteById(id)
 
 </script>
 

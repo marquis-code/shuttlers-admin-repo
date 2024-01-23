@@ -1,6 +1,6 @@
 <template>
 	<HeadersHeaderSlot class="text-xs leading-relaxed font-light" :title="`${selectedRoute?.route_code} ${selectedRoute?.pickup}-${selectedRoute?.destination}`"
-		pre-title="ROUTES" :loading="loading_route_details"
+		pre-title="ROUTES" :loading="loadingRouteDetails"
 	>
 		<template v-if="!$route.fullPath.includes('edit')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
@@ -18,31 +18,29 @@ import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/dele
 import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/update'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 const { updateRoute, loading } = useUpdateRouteStatus()
-const { selectedRoute, getRouteById, loading: loading_route_details } = useRouteIdDetails()
+const { selectedRoute, getRouteById, loadingRouteDetails } = useRouteIdDetails()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
 const router = useRouter()
 
-// if (Object.keys(selectedRoute.value).length === 0) {
 const id = useRoute().params.id as string
-getRouteById(id)
-// }
+// getRouteById(id)
 
 const pageTabs = computed(() => [
     {
         name: 'Details',
-        path: `/trips/routes/${selectedRoute.value.id}/details`
+        path: `/trips/routes/${id}/details`
     },
     {
         name: 'Bus Stops',
-        path: `/trips/routes/${selectedRoute.value.id}/bus-stops`
+        path: `/trips/routes/${id}/bus-stops`
     },
     {
         name: 'Itineraries',
-        path: `/trips/routes/${selectedRoute.value.id}/itineraries`
+        path: `/trips/routes/${id}/itineraries`
     },
     {
         name: 'Trips',
-        path: `/trips/routes/${selectedRoute.value.id}/trips`
+        path: `/trips/routes/${id}/trips`
     }
 ])
 
@@ -54,7 +52,7 @@ const dropdownChildren = computed(() => [
 ])
 
 const editRoute = () => {
-    router.push(`/trips/routes/${selectedRoute.value.id}/edit`)
+    router.push(`/trips/routes/${id}/edit`)
 }
 
 const handleRouteStatus = (data: any) => {

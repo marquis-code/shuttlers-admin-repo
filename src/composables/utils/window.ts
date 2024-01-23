@@ -7,3 +7,7 @@ export const windowWidth = ref(window.innerWidth)
 	  const { width } = entry.contentRect
 	  windowWidth.value = width
     })
+
+export const isScreenLg = computed(() => {
+  return windowWidth.value >= 1024
+})

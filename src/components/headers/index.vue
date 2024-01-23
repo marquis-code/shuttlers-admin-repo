@@ -106,7 +106,7 @@ const componentRouteArray = [
     { routes: ['campaigns-rewards-id-reward-history'], component: RewardHistory },
     { routes: ['campaigns-rewards', 'campaigns-rewards-pilot-rewards', 'campaigns-rewards-customer-points', 'campaigns-rewards-customer-rewards'], component: CampaignRewards },
     { routes: ['trips-sos'], component: sos },
-    { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-bus-captains'], component: Trips },
+    { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-cancelled', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
     { routes: ['trips-routes-create-route'], component: CreateRoute },
@@ -118,7 +118,8 @@ const componentRouteArray = [
     {
         routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings', 'trips-type-upcoming-id-issues',
             'trips-type-active-id-trip-details', 'trips-type-active-id-passengers', 'trips-type-active-id-ratings', 'trips-type-active-id-issues',
-            'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials', 'trips-type-completed-id-issues'], component: TripDetails
+            'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials', 'trips-type-completed-id-issues',
+            'trips-type-cancelled-id-trip-details'], component: TripDetails
     },
     { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify'], component: GenericHeader },
     { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
