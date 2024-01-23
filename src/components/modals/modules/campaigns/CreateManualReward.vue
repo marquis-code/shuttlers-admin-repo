@@ -1,7 +1,7 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Create Reward"
+		title="Reward customers manually"
 		:no-close-btn="true"
 		class="text-center"
 	>
@@ -48,10 +48,12 @@
 <script setup lang="ts">
 import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
-import { use_get_pilot_reward_list, use_create_reward } from '@/composables/modules/campaigns/fetch'
+import { use_get_pilot_reward_list, use_create_reward, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
+
 const { getPilotRewards, loadingPilotRewardList, rewardsList } = use_get_pilot_reward_list()
 const { payloads, createReward, processing } = use_create_reward()
-getPilotRewards()
+
+const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const form = reactive({
 	reward: '',
     point: '',
