@@ -1,10 +1,6 @@
 <template>
 	<main class="">
-<<<<<<< HEAD
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-index="true" :has-options="true" :option="(data)=>$router.push(`/trips/type/active/${data.id}/trip-details`)">
-=======
 		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="onRowClicked">
->>>>>>> 493b37c793ba8ae909e696e15aed49711b0bc1aa
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
