@@ -27,7 +27,7 @@ import ConfigureInspectionSite from '@/components/modals/modules/configurations/
 import ConfigureVehicleCategory from '@/components/modals/modules/configurations/vehicle/vehicleCategory.vue'
 import DeleteVehicleCategory from '@/components/modals/modules/configurations/vehicle/DeleteCategoryConfirmation.vue'
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
-import AddDriver from '@/components/modals/modules/routes/Itineraries/AddDriver.vue'
+import AddDriver from '@/components/modals/modules/routes/Itineraries/Add_Driver.vue'
 import AssignDriver from '@/components/modals/modules/routes/Itineraries/AssignDriverFromAuction.vue'
 import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateRoutes.vue'
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
