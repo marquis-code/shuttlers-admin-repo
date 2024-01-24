@@ -14,19 +14,18 @@ const routePricingData = {
     pickup_id: ref('')
 }
 
+const loadingRouteDetails = ref(false)
 export const useRouteIdDetails = () => {
-    const loading = ref(false)
-
     const getRouteById = async (id: string) => {
         selectedRouteId.value = id
-        loading.value = true
+        loadingRouteDetails.value = true
         const res = await routes_api.$_get_route_by_id(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             selectedRoute.value = res.data
         }
-        loading.value = false
+        loadingRouteDetails.value = false
     }
-    return { selectedRoute, loading, getRouteById }
+    return { selectedRoute, loadingRouteDetails, getRouteById }
 }
 
 export const useRouteBusstops = () => {

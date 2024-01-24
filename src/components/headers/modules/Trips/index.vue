@@ -21,6 +21,10 @@ const pageTabs = [
         path: '/trips/type/completed'
     },
     {
+        name: 'Cancelled Trips',
+        path: '/trips/type/cancelled'
+    },
+    {
         name: 'Bus Captains',
         path: '/trips/type/bus-captains'
     }

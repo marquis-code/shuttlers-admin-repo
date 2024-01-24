@@ -1,5 +1,6 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, CustomAxiosResponse } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
 
 export const users_api = {
 
@@ -7,6 +8,20 @@ export const users_api = {
 		const queryParams = useTableFilter(filterData)
 		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_download_all_users: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/users?${queryParams}&limit=${10}&page=${1}&metadata=true&sort[id]=desc&related=wallet`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/users?${queryParams}&limit=${total}&page=${1}&metadata=true&sort[id]=desc&related=wallet`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
 	},
 	$_get_searched_users: (payload: any, meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
@@ -68,7 +83,7 @@ export const users_api = {
 	},
 	$_get_wallet_transactions: (id:string, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/wallet?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		const url = `/users/${id}/wallet?limit=${metaObject.page_size.value}&page=${metaObject.page.value}&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_active_booking: (id:string, metaObject: TMetaObject) => {

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -8,6 +8,12 @@
 				</section>
 			</template>
 			<template #item="{ item }">
+				<p v-if="item.partner">
+					{{ item.data.vehicle?.partner?.company_name ?? 'N/A' }}
+				</p>
+				<p v-if="item.vehicle">
+					{{ `${item.data?.vehicle?.brand} ${item.data?.vehicle?.name}  (${item.data?.vehicle?.registration_number})` }}
+				</p>
 				<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap" @click.stop>
 					<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
 						{{
@@ -24,67 +30,45 @@
 					</span>
 				</span>
 				<span v-if="item.route_code" @click.stop>
-					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
+					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">{{ item?.data?.route?.route_code }}</NuxtLink> <span>({{ item?.data?.itinerary?.trip_time }})</span>
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
-					<p>{{ item.data.passengers }}</p>
+					<p>{{ item.data.passengers_count }}/{{ item.data.vehicle?.seats }}</p>
 					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/upcoming/${item.data.id}/passengers`)">
 						View
 					</button>
 				</div>
 				<div v-if="item.route">
-					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
+					<RouteDescription :pickup="item.data.route?.pickup" :destination="item.data?.route?.destination" />
 				</div>
 				<span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren(item.data)" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingUpcomingTrips" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingCancelledTrips" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
 </template>
 <script setup lang="ts">
-import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
+import { useGetCancelledTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
-import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
 
-const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetUpcomingTripsList()
-const { selectedTrip } = useCompletedTripIdDetails()
-getUpcomingTrips()
+const { getCancelledTrips, loadingCancelledTrips, cancelledTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCancelledTripsList()
+getCancelledTrips()
 
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
 const { initLogIssues } = useCreateIssues()
 const router = useRouter()
-const formattedUpcomingTripsList = computed(() =>
-upcomingTripsList.value.map((i:any, index) => {
-         return {
-             ...i,
-             route_code: i?.route?.route_code ?? 'N/A',
-			 trip_time: i?.itinerary?.trip_time ?? 'N/A',
-			 pickup: i?.route?.pickup ?? 'N/A',
-			 dropoff: i?.route?.destination ?? 'N/A',
-			 partner: i?.vehicle?.partner?.company_name ?? 'N/A',
-             vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
-			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
-             action: ''
-         }
-    })
-)
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-
-const onRowClicked = (data: any) => {
-	useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)
-	selectedTrip.value = data
-}
 
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
@@ -100,38 +84,14 @@ const dropdownChildren = (main_data) => {
 }
 
 const tableFields = ref([
-    {
-        text: 'TRIP DATE',
-        value: 'trip_date'
-    },
-    {
-        text: 'ROUTE CODE ( START TIME)',
-        value: 'route_code'
-    },
-    {
-        text: 'ROUTE',
-        value: 'route'
-    },
-    {
-        text: 'PARTNER\'S NAME',
-        value: 'partner'
-    },
-    {
-        text: 'VEHICLE NAME',
-        value: 'vehicle'
-    },
-	{
-        text: 'DRIVER',
-        value: 'driver'
-    },
-	{
-        text: 'PASSENGERS',
-        value: 'passengers'
-    },
-	{
-		text: 'ACTIONS',
-		value: 'action'
-	}
+    { text: 'TRIP DATE', value: 'trip_date' },
+    { text: 'ROUTE CODE ( START TIME)', value: 'route_code' },
+    { text: 'ROUTE', value: 'route' },
+    { text: 'PARTNER\'S NAME', value: 'partner' },
+    { text: 'VEHICLE NAME', value: 'vehicle' },
+	{ text: 'DRIVER', value: 'driver' },
+	{ text: 'PASSENGERS', value: 'passengers' }
+	// { text: 'ACTIONS', value: 'action' }
 ])
 
 </script>

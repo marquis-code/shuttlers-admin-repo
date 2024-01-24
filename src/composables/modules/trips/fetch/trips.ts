@@ -6,6 +6,9 @@ import { useDownloadReport } from '@/composables/utils/csv'
 const { download } = useDownloadReport()
 
 const activeTripsList = ref([] as Record<string, any>[])
+const currentRoute = computed(() => {
+    return useRoute().fullPath
+})
 
 export const useGetActiveTripsList = () => {
     const loadingActiveTrips = ref(false)
@@ -41,7 +44,7 @@ export const useGetActiveTripsList = () => {
     setFunction(getActiveTrips)
 
     watch(watchArray, () => {
-        getActiveTrips()
+        if (currentRoute.value.includes('active')) getActiveTrips()
     })
 
     return { getActiveTrips, loadingActiveTrips, activeTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadReport }
@@ -82,7 +85,7 @@ export const useGetUpcomingTripsList = () => {
     setFunction(getUpcomingTrips)
 
     watch(watchArray, () => {
-        getUpcomingTrips()
+        if (currentRoute.value.includes('upcoming')) getUpcomingTrips()
     })
 
     return { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadReport }
@@ -122,8 +125,49 @@ export const useGetCompletedTripsList = () => {
     setFunction(getCompletedTrips)
 
     watch(watchArray, () => {
-        getCompletedTrips()
+        if (currentRoute.value.includes('completed')) getCompletedTrips()
     })
 
     return { getCompletedTrips, loadingCompletedTrips, completedTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadReport }
+}
+
+const cancelledTripsList = ref([] as Record<string, any>[])
+export const useGetCancelledTripsList = () => {
+    const loadingCancelledTrips = ref(false)
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+
+    const getCancelledTrips = async () => {
+        const request = async () => {
+            loadingCancelledTrips.value = true
+            const res = await trips_api.$_get_cancelled_trips(filterData, metaObject) as CustomAxiosResponse
+            if (res.type !== 'ERROR') {
+                cancelledTripsList.value = res.data.data
+                metaObject.total.value = res.data.metadata.total_pages
+            }
+            loadingCancelledTrips.value = false
+        }
+        addToQueue(request)
+        return cancelledTripsList.value
+    }
+
+    const downloadReport = async () => {
+        const { metaObject: downloadMetaObject } = usePagination()
+        const request = async () => {
+            downloadMetaObject.page_size.value = metaObject.total.value * metaObject.page_size.value
+            const res = await trips_api.$_get_cancelled_trips(filterData, downloadMetaObject) as CustomAxiosResponse
+            if (res.type !== 'ERROR') {
+                const csvData = formattedCSVData(res.data.data)
+                download(csvData, 'Cancelled Trip Report')
+            }
+            loadingCancelledTrips.value = false
+        }
+        addToQueue(request)
+    }
+    setFunction(getCancelledTrips)
+
+    watch(watchArray, () => {
+        if (currentRoute.value.includes('cancelled')) getCancelledTrips()
+    })
+
+    return { getCancelledTrips, loadingCancelledTrips, cancelledTripsList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadReport }
 }

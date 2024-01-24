@@ -88,6 +88,7 @@ export const useUpcomingTripIdDetails = () => {
 export const useActiveTripIdDetails = () => {
     const loading = ref(false)
     const getActiveTripById = async (id: string) => {
+        selectedTrip.value = {}
         selectedTripId.value = id
         loading.value = true
         const res = await trips_api.$_get_trip_by_id(id) as CustomAxiosResponse

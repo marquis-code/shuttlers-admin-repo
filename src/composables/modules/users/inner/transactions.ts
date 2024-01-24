@@ -14,9 +14,9 @@ export const useUserTransactions = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const getUserTransactionsById = async (id?: string) => {
+        transactionsList.value = []
         // TODO: add pagination logic
         const userId = useRoute().params.id as string
-        // if (transactionsList.value.length > 0) return
         loading.value = true
         const res = await users_api.$_get_wallet_transactions(userId, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

@@ -68,8 +68,8 @@ export const useUserBookings = () => {
         }
 
         if (res.type !== 'ERROR') {
-            bookings.value = res.data
-            metaObject.total.value = res.data?.metadata?.pages || 1
+            bookings.value = res.data?.data
+            metaObject.total.value = res.data?.metadata?.total_pages
         }
         loading.value = false
     }

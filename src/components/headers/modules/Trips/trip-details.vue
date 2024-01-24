@@ -1,15 +1,12 @@
 <template>
-	<HeadersHeaderSlot :title="headstate.title.value" :pre-title="headstate.preTitle.value" class="relative">
+	<HeadersHeaderSlot :title="formatPageTitle" :pre-title="headstate.preTitle.value" :loading="Object.keys(selectedTrip).length === 0" class="relative">
 		<template #title>
 			<StatusBadge :name="tripType" />
 		</template>
-		<template #actions>
-			<div v-if="tripType !== 'completed'">
+		<template v-if="tripType !== 'cancelled'" #actions>
+			<div>
 				<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
 			</div>
-			<button v-if="tripType === 'completed' && user.role === 'super_admin'" class="bg-dark text-light text-sm p-2 rounded-md px-4" @click="initTransfer(selectedTrip)">
-				Transfer Trip
-			</button>
 		</template>
 
 		<template #tabs>
@@ -20,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { usePageHeader } from '@/composables/utils/header'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
@@ -28,19 +26,20 @@ import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
+import { useCancelTrip } from '@/composables/modules/trips/cancel'
 
 const { user } = useUser()
 const { initTransfer } = useTransferTrip()
 const { selectedTrip } = useUpcomingTripIdDetails()
 const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
+const { initCancelTrip } = useCancelTrip()
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
-
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
 const pageTabs = computed(() => {
-	const headerArray = [
+	let headerArray = [
     {
         name: 'Details',
         path: `/trips/type/${tripType.value}/${id}/trip-details`
@@ -65,12 +64,11 @@ if (tripType.value === 'completed') {
         path: `/trips/type/${tripType.value}/${id}/financials`
     })
 }
-// if (tripType.value === 'upcoming') {
-// 	headerArray.push({
-//         name: 'Issues',
-//         path: `/trips/type/${tripType.value}/${id}/issues`
-//     })
-// }
+
+if (tripType.value === 'cancelled') {
+	headerArray = headerArray.filter((el) => el.name === 'Details')
+}
+
 return headerArray
 })
 
@@ -85,7 +83,9 @@ const setDataForLoggingIssue = (data: Record<string, any>) => {
 
 const dropdownChildren = computed(() => {
     const dropdownOptions = [
-        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value }
+        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value },
+        { name: 'Transfer trip', func: (data) => initTransfer(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' },
+        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' }
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
@@ -104,10 +104,30 @@ const dropdownChildren = computed(() => {
         dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data) }])
     }
 
-    if (tripType.value === 'completed') {
-        dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
-    }
+    // if (tripType.value === 'completed') {
+    //     dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
+    // }
     return dropdownOptions
+})
+
+// const formatPageTitle = (tripTitle: string) => {
+//     const result = {
+//         completed: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`,
+//         active: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`,
+//         upcoming: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`
+//     }
+
+//     return result[tripTitle]
+// }
+
+const formatPageTitle = computed(() => {
+   if (tripType.value === 'active' || tripType.value === 'completed') {
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
+   }
+
+   if (tripType.value === 'upcoming') {
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+   }
 })
 
 </script>

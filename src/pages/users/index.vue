@@ -2,7 +2,10 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDateRange: true}"
+					@filter="onFilterUpdate"
+					@download="downloadUsers"
+				/>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
@@ -42,7 +45,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 
-const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetUsersList()
+const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page, downloadUsers } = useGetUsersList()
 
 getUsersList()
 const onRowClicked = (data) => {
