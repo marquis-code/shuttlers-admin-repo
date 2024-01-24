@@ -8,6 +8,7 @@ import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmati
 import YesConfirm from '@/components/modals/modules/core/YesConfirmation.vue'
 import ConfigurePoints from '@/components/modals/modules/campaigns/ConfigurePoints.vue'
 import CreateReward from '@/components/modals/modules/campaigns/CreateReward.vue'
+import CreateManualReward from '@/components/modals/modules/campaigns/CreateManualReward.vue'
 import SosNotifier from '@/components/modals/modules/commute/SosNotifier.vue'
 import RouteAvailabilityConfig from '@/components/modals/modules/commute/RouteAvailabilityConfig.vue'
 import UpdateDriverAndVehicle from '@/components/modals/modules/commute/trips/UpdateDriverAndVehicle.vue'
@@ -28,7 +29,7 @@ import DeleteVehicleCategory from '@/components/modals/modules/configurations/ve
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
 import AddDriver from '@/components/modals/modules/Routes/Itineraries/AddDriver.vue'
 import AssignDriver from '@/components/modals/modules/Routes/Itineraries/AssignDriverFromAuction.vue'
-import RouteDuplicationModal from '@/components/modals/modules/routes/DuplicateRoutes.vue'
+import RouteDuplicationModal from '@/components/modals/modules/Routes/DuplicateRoutes.vue'
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
 import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
@@ -70,7 +71,7 @@ import CancelTrip from '@/components/modals/modules/trips/CancelTrip.vue'
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
-type CampaignTypes = 'ConfigurePoints' | 'CreateReward'
+type CampaignTypes = 'ConfigurePoints' | 'CreateReward' | 'CreateManualReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
@@ -85,7 +86,7 @@ type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
-const CampaignModals = { ConfigurePoints, CreateReward } as Record<CampaignTypes, any>
+const CampaignModals = { ConfigurePoints, CreateReward, CreateManualReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>

@@ -3,6 +3,10 @@ import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const campaigns_api = {
     // Pilot Endpoints
+    $_manual_user_reward: (payload: any) => {
+        const url = '/user-compliance-events'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    },
     $_pilot_points_list: (meta:TMetaObject, user_type:string) => {
         const url = `/compliance-events?user_type=${user_type}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

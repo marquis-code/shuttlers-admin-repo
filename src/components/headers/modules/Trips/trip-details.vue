@@ -1,5 +1,5 @@
 <template>
-	<HeadersHeaderSlot :title="headstate.title.value" :pre-title="headstate.preTitle.value" class="relative">
+	<HeadersHeaderSlot :title="formatPageTitle" :pre-title="headstate.preTitle.value" :loading="Object.keys(selectedTrip).length === 0" class="relative">
 		<template #title>
 			<StatusBadge :name="tripType" />
 		</template>
@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { usePageHeader } from '@/composables/utils/header'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
@@ -34,7 +35,6 @@ const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
 const { initCancelTrip } = useCancelTrip()
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
-
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
@@ -108,6 +108,26 @@ const dropdownChildren = computed(() => {
     //     dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
     // }
     return dropdownOptions
+})
+
+// const formatPageTitle = (tripTitle: string) => {
+//     const result = {
+//         completed: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`,
+//         active: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`,
+//         upcoming: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.trip_date_time).format('Do MMMM, YYYY')}`
+//     }
+
+//     return result[tripTitle]
+// }
+
+const formatPageTitle = computed(() => {
+   if (tripType.value === 'active' || tripType.value === 'completed') {
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
+   }
+
+   if (tripType.value === 'upcoming') {
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+   }
 })
 
 </script>

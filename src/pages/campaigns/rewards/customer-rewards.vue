@@ -16,6 +16,9 @@
 						</button>
 					</div>
 					<div class="flex items-center gap-x-3">
+						<button class="btn-secondary border w-full lg:w-max text-xs py-[10px] px-[16px] rounded-md" @click="useCampaignModal().openCreateManualReward()">
+							Manual reward
+						</button>
 						<button class="bg-black text-white w-full lg:w-max text-xs py-[10px] px-[16px] rounded-md" @click="useCampaignModal().openCreateReward()">
 							Create reward
 						</button>
@@ -61,14 +64,14 @@
 								HIGHEST CUSTOMER POINT
 							</p>
 							<h1 class="text-[#000005] font-[700] text-lg leading-[20px]">
-								{{ computedPointData.highest_score ?? 'N/A' }} points
+								{{ computedPointData?.highest_score ?? 'N/A' }} points
 							</h1>
 							<div class="flex justify-between items-center">
 								<p class="text-[#667085] font-[400] text-xs">
 									Customer
 								</p>
-								<NuxtLink :to="`/users/${computedPointData.highest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.highest_pilot ?? 'N/A' }}
+								<NuxtLink :to="`/users/${computedPointData?.highest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData?.highest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>
@@ -77,14 +80,14 @@
 								LOWEST CUSTOMER POINT
 							</p>
 							<h1 class="text-[#000005] font-[700] text-lg leading-[20px]">
-								{{ computedPointData.lowest_score ?? 'N/A' }} points
+								{{ computedPointData?.lowest_score ?? 'N/A' }} points
 							</h1>
 							<div class="flex justify-between items-center">
 								<p class="text-[#667085] font-[400] text-xs">
 									Customer
 								</p>
-								<NuxtLink :to="`/users/${computedPointData.lowest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.lowest_pilot ?? 'N/A' }}
+								<NuxtLink :to="`/users/${computedPointData?.lowest_pilot_id}/user-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData?.lowest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>
@@ -145,10 +148,10 @@ definePageMeta({
 const computedPointData = computed(() => {
 	return ({
 		highest_score: pointsObject.value?.highest?.points_earned,
-		highest_pilot: `${pointsObject.value?.highest.user?.fname} ${pointsObject.value?.highest?.user?.lname}`,
-		highest_pilot_id: pointsObject.value?.highest.user?.id,
-		lowest_pilot: `${pointsObject.value?.lowest.user?.fname} ${pointsObject.value?.lowest?.user?.lname}`,
-		lowest_pilot_id: pointsObject.value?.lowest.user?.id,
+		highest_pilot: `${pointsObject.value?.highest?.user?.fname} ${pointsObject.value?.highest?.user?.lname}`,
+		highest_pilot_id: pointsObject.value?.highest?.user?.id,
+		lowest_pilot: `${pointsObject.value?.lowest?.user?.fname} ${pointsObject.value?.lowest?.user?.lname}`,
+		lowest_pilot_id: pointsObject.value?.lowest?.user?.id,
 		lowest_score: pointsObject.value?.lowest?.points_earned
 	})
 })

@@ -61,14 +61,14 @@
 								HIGHEST PILOT POINT
 							</p>
 							<h1 class="text-[#000005] font-[700] text-lg leading-[20px]">
-								{{ computedPointData.highest_score ?? 'N/A' }} points
+								{{ computedPointData?.highest_score ?? 'N/A' }} points
 							</h1>
 							<div class="flex justify-between items-center">
 								<p class="text-[#667085] font-[400] text-xs">
 									Pilot
 								</p>
-								<NuxtLink :to="`/drivers/${computedPointData.highest_pilot_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.highest_pilot ?? 'N/A' }}
+								<NuxtLink :to="`/drivers/${computedPointData?.highest_pilot_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData?.highest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>
@@ -77,14 +77,14 @@
 								LOWEST PILOT POINT
 							</p>
 							<h1 class="text-[#000005] font-[700] text-lg leading-[20px]">
-								{{ computedPointData.lowest_score ?? 'N/A' }} points
+								{{ computedPointData?.lowest_score ?? 'N/A' }} points
 							</h1>
 							<div class="flex justify-between items-center">
 								<p class="text-[#667085] font-[400] text-xs">
 									Pilot
 								</p>
-								<NuxtLink :to="`/drivers/${computedPointData.lowest_piolt_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
-									{{ computedPointData.lowest_pilot ?? 'N/A' }}
+								<NuxtLink :to="`/drivers/${computedPointData?.lowest_piolt_id}/driver-info`" class="underline text-[#4848ED] font-[700] text-xs">
+									{{ computedPointData?.lowest_pilot ?? 'N/A' }}
 								</NuxtLink>
 							</div>
 						</div>

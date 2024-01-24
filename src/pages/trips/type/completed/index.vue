@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="(data)=>useRouter().push(`/trips/type/completed/${data.id}/trip-details`)">
+		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -54,6 +54,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
+import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
@@ -62,6 +63,7 @@ const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
 const { initTransfer } = useTransferTrip()
 const { initCancelTrip } = useCancelTrip()
+const { selectedTrip } = useCompletedTripIdDetails()
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
 getCompletedTrips()
 const router = useRouter()
@@ -95,6 +97,11 @@ const dropdownChildren = computed(() => [
 	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' },
 	{ name: 'Cancel trip', func: (data) => { initCancelTrip(data) } }
 ])
+
+const onRowClicked = (data: any) => {
+	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
+	selectedTrip.value = data
+}
 
 const tableFields = ref([
 	{
