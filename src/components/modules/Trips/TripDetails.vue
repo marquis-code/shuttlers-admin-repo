@@ -5,12 +5,12 @@
 				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
 		</div>
 		<section class="absolute top-4 left-[100px] flex flex-col items-start z-40">
-			<ButtonGoBack class="mb-6 bg-white" />
-			<div class="card !max-w-4xl md:w-[500px] z-[200000]">
-				<div class="card-header ">
+			<ButtonGoBack url="/trips/type/active" class="mb-6 bg-white" />
+			<div class="card p-0 !max-w-4xl md:w-[500px] z-[200000]">
+				<div class="card-header p-4">
 					Trip Information
 				</div>
-				<div class="card-body">
+				<div class="card-body p-4 overflow-auto h-[calc(100vh-180px)]">
 					<h5 v-if="Object.keys(selectedTrip).length === 0 && !loading" class="text-small text-center">
 						No Trip Detail available
 					</h5>

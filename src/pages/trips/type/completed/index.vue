@@ -57,10 +57,12 @@ import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
+import { useCancelTrip } from '@/composables/modules/trips/cancel'
 
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
 const { initTransfer } = useTransferTrip()
+const { initCancelTrip } = useCancelTrip()
 const { selectedTrip } = useCompletedTripIdDetails()
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
 getCompletedTrips()
@@ -92,7 +94,8 @@ definePageMeta({
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
 	{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
-	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' }
+	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' },
+	{ name: 'Cancel trip', func: (data) => { initCancelTrip(data) } }
 ])
 
 const onRowClicked = (data: any) => {

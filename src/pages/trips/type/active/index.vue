@@ -1,6 +1,10 @@
 <template>
 	<main class="">
+<<<<<<< HEAD
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-index="true" :has-options="true" :option="(data)=>$router.push(`/trips/type/active/${data.id}/trip-details`)">
+=======
 		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="onRowClicked">
+>>>>>>> 493b37c793ba8ae909e696e15aed49711b0bc1aa
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -8,12 +12,15 @@
 				</section>
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.idx">
-					{{ item.data.idx }}
-				</span>
-				<p v-if="item.route_code">
-					{{ item.data.route?.route_code }} ({{ moment.utc(item.data.trip_start_time).format('LT') }})
+				<p v-if="item.trip_date" class="min-w-[100px]">
+					{{ item.data.trip_date }}
 				</p>
+				<div v-if="item.route_code" class="whitespace-nowrap min-w-[80px]" @click.stop>
+					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">
+						{{ item?.data?.route?.route_code }}
+					</NuxtLink> <br>
+					({{ moment.utc(item.data.trip_start_time).format('LT') }})
+				</div>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
 					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/active/${item.data.id}/passengers`)">
@@ -35,6 +42,9 @@
 							? item.data.driver.phone.replace(/^0/, '+234') : 'N/A' }}</a>
 					</span>
 				</span>
+				<p v-if="item.vehicle" class="min-w-[100px]">
+					{{ item.data.vehicle }}
+				</p>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
@@ -52,7 +62,6 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
 import moment from 'moment'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
@@ -72,11 +81,11 @@ const formattedActiveTripsList = computed(() =>
              route_code: `${i?.route?.route_code}`,
 			 pickup: i?.route?.pickup,
 			 destination: i?.route?.destination,
-			 partner: i?.partner ?? 'N/A',
+			 partner: i?.vehicle?.partner?.company_name ?? 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',
-			 trip_date: useDateFormat(i.trip_start_time, 'YYYY-MM-DD').value,
+			 trip_date: moment(i.trip_start_time).format('LL'),
 			 idx: index + 1
          }
     })
@@ -97,11 +106,6 @@ definePageMeta({
 })
 
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'idx',
-		width: '10%'
-	},
     {
         text: 'TRIP DATE',
         value: 'trip_date'

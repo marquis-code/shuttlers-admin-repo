@@ -15,8 +15,8 @@ export const useUserPastBookings = () => {
         loading.value = true
         const res = await users_api.$_get_past_booking(id, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            pastBookingsList.value = res.data.map((item : Record<string, any>) => ({ ...item, route: { pickup: item?.route?.pickup, destination: item?.route?.destination }, route_code: item?.route?.route_code, start_date: item?.trip?.start_trip, end_date: item?.trip?.end_trip, amount: item?.unit_cost, payment_source: item?.payment_source, route_type: { type: item?.route?.is_exclusive, visibility: item?.route?.visibility } }))
-            metaObject.total.value = res.data.pagination?.pageCount
+            pastBookingsList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, route: { pickup: item?.route?.pickup, destination: item?.route?.destination }, route_code: item?.route?.route_code, start_date: item?.trip?.start_trip, end_date: item?.trip?.end_trip, amount: item?.unit_cost, payment_source: item?.payment_source, route_type: { type: item?.route?.is_exclusive, visibility: item?.route?.visibility } }))
+            metaObject.total.value = res.data.metadata?.total_pages
         }
         loading.value = false
     }

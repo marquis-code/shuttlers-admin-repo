@@ -1,6 +1,9 @@
+import moment from 'moment'
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 
+const { loading: downloading } = useDownloadReport()
 export const useGetUsersGraph = () => {
     const loading = ref(false)
     const usersGraphData = ref({} as any)
@@ -43,7 +46,7 @@ export const useGetUsersList = () => {
     const loading = ref(false)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref(''),
+        status: ref('active'),
         search: ref(''),
         start_date_filter: ref(''),
         end_date_filter: ref(''),
@@ -51,20 +54,12 @@ export const useGetUsersList = () => {
         is_corporate: ref(0)
     }
 
-    const { $_get_users, $_get_searched_users } = users_api
+    const { $_get_users } = users_api
 
     const getUsersList = async () => {
+        usersList.value = []
         loading.value = true
-        // let res = ref(null) as any
-        let res: CustomAxiosResponse
-        const payload = {
-            user: filterData.search.value
-        }
-        if (filterData.search.value) {
-            res = await $_get_searched_users(payload, metaObject, filterData) as CustomAxiosResponse
-        } else {
-            res = await $_get_users(metaObject, filterData) as CustomAxiosResponse
-        }
+        const res = await $_get_users(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             usersList.value = res.data.data
@@ -87,13 +82,36 @@ export const useGetUsersList = () => {
                 filterData.search.value = data.value
                 break
             case 'dateRange':
-                filterData.start_date_filter.value = data.value[0]
-                filterData.end_date_filter.value = data.value[1]
+                filterData.start_date_filter.value = data.value[0] ? data.value[0] : ''
+                filterData.end_date_filter.value = data.value[1] ? data.value[1] : ''
                 break
         }
     }
 
-    return { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    const downloadUsers = async () => {
+		downloading.value = true
+		const name = ref(`all-${filterData.status.value}-users`)
+		const res = await users_api.$_download_all_users(filterData) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    Name: `${el?.fname || ''} ${el?.lname || ''}`,
+                    Email: el?.email || 'N/A',
+                    Phone: el?.phone ? `${el.phone}` : 'N/A',
+					Date_joined: el?.created_at ? moment(el?.created_at).format('ll') : 'N/A',
+					Wallet_balance: `NGN ${el?.wallet?.amount}`,
+					Company_balance: `NGN ${el?.wallet?.credit_amount}`,
+                    Status: el?.active === '1' ? 'Active' : 'Inactive'
+                }
+            })
+			if (filterData.start_date_filter.value && filterData.end_date_filter.value) name.value = `${name.value}-from-${filterData.start_date_filter.value}-to-${filterData.end_date_filter.value}`
+			exportAsCsv(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
+    return { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadUsers }
 }
 
 export const useGetUserByCorporateId = () => {

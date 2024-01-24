@@ -3,13 +3,10 @@
 		<template #title>
 			<StatusBadge :name="tripType" />
 		</template>
-		<template #actions>
-			<div v-if="tripType !== 'completed'">
+		<template v-if="tripType !== 'cancelled'" #actions>
+			<div>
 				<ButtonDropdown :children="dropdownChildren" :data="selectedTrip" bg-color="#000" />
 			</div>
-			<button v-if="tripType === 'completed' && user.role === 'super_admin'" class="bg-dark text-light text-sm p-2 rounded-md px-4" @click="initTransfer(selectedTrip)">
-				Transfer Trip
-			</button>
 		</template>
 
 		<template #tabs>
@@ -29,18 +26,20 @@ import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
+import { useCancelTrip } from '@/composables/modules/trips/cancel'
 
 const { user } = useUser()
 const { initTransfer } = useTransferTrip()
 const { selectedTrip } = useUpcomingTripIdDetails()
 const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
+const { initCancelTrip } = useCancelTrip()
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
 const pageTabs = computed(() => {
-	const headerArray = [
+	let headerArray = [
     {
         name: 'Details',
         path: `/trips/type/${tripType.value}/${id}/trip-details`
@@ -65,6 +64,11 @@ if (tripType.value === 'completed') {
         path: `/trips/type/${tripType.value}/${id}/financials`
     })
 }
+
+if (tripType.value === 'cancelled') {
+	headerArray = headerArray.filter((el) => el.name === 'Details')
+}
+
 return headerArray
 })
 
@@ -79,7 +83,9 @@ const setDataForLoggingIssue = (data: Record<string, any>) => {
 
 const dropdownChildren = computed(() => {
     const dropdownOptions = [
-        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value }
+        { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value },
+        { name: 'Transfer trip', func: (data) => initTransfer(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' },
+        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' }
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
@@ -98,9 +104,9 @@ const dropdownChildren = computed(() => {
         dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data) }])
     }
 
-    if (tripType.value === 'completed') {
-        dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
-    }
+    // if (tripType.value === 'completed') {
+    //     dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
+    // }
     return dropdownOptions
 })
 
