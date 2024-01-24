@@ -78,7 +78,6 @@ export const use_get_pilot_point_list = () => {
         const res = await $_pilot_points_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             pointsList.value = res?.data
-            console.log(pointsList.value)
             metaObject.total.value = res?.data?.metadata?.total_pages || 0
         }
         // useAlert().openAlert({ type: 'SUCCESS', msg: 'Points was updated successfully' })
