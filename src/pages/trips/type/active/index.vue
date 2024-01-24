@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/active/${data.id}/trip-details`)">
+		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -57,10 +57,12 @@ import moment from 'moment'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
 
 const { initLogIssues } = useCreateIssues()
 const { initializeEndTrips } = useTripOptions()
+const { selectedTrip } = useCompletedTripIdDetails()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
@@ -79,6 +81,11 @@ const formattedActiveTripsList = computed(() =>
          }
     })
 )
+
+const onRowClicked = (data: any) => {
+	useRouter().push(`/trips/type/active/${data.id}/trip-details`)
+	selectedTrip.value = data
+}
 
 const handleTripCancellation = (data) => {
 	initializeEndTrips(data)
