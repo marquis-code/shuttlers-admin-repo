@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/upcoming/${data.id}/trip-details`)">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -50,9 +50,11 @@ import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
+import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
 
 const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetUpcomingTripsList()
+const { selectedTrip } = useCompletedTripIdDetails()
 getUpcomingTrips()
 
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate } = useTripOptions()
@@ -78,6 +80,11 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
+const onRowClicked = (data: any) => {
+	useRouter().push(`/trips/type/upcoming/${data.id}/trip-details`)
+	selectedTrip.value = data
+}
 
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [

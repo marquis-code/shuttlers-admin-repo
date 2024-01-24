@@ -69,6 +69,7 @@
 </template>
 
 <script lang="ts" setup>
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency, convertLatLngStringToObj } from '@/composables/utils/formatter'
 
@@ -91,7 +92,8 @@ const props = defineProps({
 const tripCol = computed(() => {
 	return [
 		{ name: 'Route', value: 'route' },
-		{ name: 'Started At', value: ` ${useDateFormat(props.selectedTrip.trip_date, 'DD MMM YYYY').value},  ${props.selectedTrip?.route_vehicle?.route_itinerary?.trip_time}` },
+		{ name: 'Started At', value: `${moment.utc(props?.selectedTrip?.trip_date_time).format('Do MMMM, YYYY | h:mm A') ?? moment.utc(props?.selectedTrip?.trip_date_time).format('Do MMMM, YYYY h:mm A')}` },
+		 // trip_date_time is the standard basically but in a situation where it is not available use "trip_date" which is the edge case as at the time this comment was made
 		{ name: 'Distance', value: props.selectedTrip?.route?.distance || 'N/A' },
 		{ name: 'Duration', value: props.selectedTrip?.route?.duration || 'N/A' },
 		{ name: 'Status', value: 'status' },
