@@ -29,7 +29,7 @@ import DeleteVehicleCategory from '@/components/modals/modules/configurations/ve
 import DeductEarning from '@/components/modals/modules/trips/DeductEarning.vue'
 import AddDriver from '@/components/modals/modules/Routes/Itineraries/AddDriver.vue'
 import AssignDriver from '@/components/modals/modules/Routes/Itineraries/AssignDriverFromAuction.vue'
-import RouteDuplicationModal from '@/components/modals/modules/Routes/DuplicateRoutes.vue'
+import RouteDuplicationModal from '@/components/modals/modules/Routes/Duplicate_Routes.vue'
 import AddPassengersToTrips from '@/components/modals/modules/trips/AddPassengersToTrip.vue'
 import TransferBooking from '@/components/modals/modules/trips/TransferBooking.vue'
 import NotifyPassengers from '@/components/modals/modules/trips/NotifyPassengers.vue'
