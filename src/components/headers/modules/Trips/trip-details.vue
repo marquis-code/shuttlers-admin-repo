@@ -1,5 +1,5 @@
 <template>
-	<HeadersHeaderSlot :title="headstate.title.value" :pre-title="headstate.preTitle.value" class="relative">
+	<HeadersHeaderSlot :title="formatPageTitle" :pre-title="headstate.preTitle.value" class="relative">
 		<template #title>
 			<StatusBadge :name="tripType" />
 		</template>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { usePageHeader } from '@/composables/utils/header'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast } from '@/composables/utils/formatter'
@@ -35,7 +36,6 @@ const { selectedTrip } = useUpcomingTripIdDetails()
 const { initLogIssues } = useCreateIssues()
 const { headstate } = usePageHeader()
 const { initializeStartTrips, initializeCancelTrips, initializeCompleteTrips, initializeTripUpdate, initializeEndTrips } = useTripOptions()
-
 const id = useRoute().params.id
 const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
@@ -65,12 +65,6 @@ if (tripType.value === 'completed') {
         path: `/trips/type/${tripType.value}/${id}/financials`
     })
 }
-// if (tripType.value === 'upcoming') {
-// 	headerArray.push({
-//         name: 'Issues',
-//         path: `/trips/type/${tripType.value}/${id}/issues`
-//     })
-// }
 return headerArray
 })
 
@@ -108,6 +102,20 @@ const dropdownChildren = computed(() => {
         dropdownOptions.push(...[{ name: 'Transfer Trip', func: (data) => initTransfer(data) }])
     }
     return dropdownOptions
+})
+
+// const formatPageTitle = (tripTitle: string) => {
+//     const result = {
+//         completed: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('Do MMMM, YYYY')}`,
+//         active: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('Do MMMM, YYYY')}`,
+//         upcoming: `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('Do MMMM, YYYY')}`
+//     }
+
+//     return result[tripTitle]
+// }
+
+const formatPageTitle = computed(() => {
+    return `${selectedTrip.value.route.route_code} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value.driver.lname} ${selectedTrip.value.driver.fname} ⚫ ${moment.utc(selectedTrip.value.start_trip).format('Do MMMM, YYYY')}`
 })
 
 </script>

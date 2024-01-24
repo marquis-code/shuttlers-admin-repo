@@ -62,6 +62,6 @@ watch(computedTitle, (val:string) => {
 		populateRoutePassengers(payload)
 		getRoutePassengers(selectedTrip?.value?.route?.id)
     }
-})
-getRoutePassengers(selectedTrip?.value?.route?.id)
+}, { immediate: true })
+// getRoutePassengers(selectedTrip?.value?.route?.id)
 </script>
