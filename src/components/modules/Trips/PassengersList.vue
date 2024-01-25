@@ -62,7 +62,9 @@
 								<Avatar :name="item.user.fname" bg="#B1C2D9" class="shrink-0" />
 								<div>
 									<p>{{ item?.user?.fname }} {{ item?.user?.lname }}</p>
-									<p class="text-sm">{{ item?.user?.email }}</p>
+									<p class="text-sm">
+										{{ item?.user?.email }}
+									</p>
 								</div>
 							</div>
 							<div class="">
@@ -110,7 +112,7 @@
 							</div>
 							<div class="space-y-2">
 								<div class="flex items-center gap-x-2">
-									<Avatar :name="item.user.fname" bg="#B1C2D9" class="shrink-0"/>
+									<Avatar :name="item.user.fname" bg="#B1C2D9" class="shrink-0" />
 									<div>
 										<p>{{ item?.user?.fname }} {{ item?.user?.lname }}</p>
 										<p>{{ item?.user?.email }}</p>
