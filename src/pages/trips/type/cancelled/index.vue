@@ -8,6 +8,9 @@
 				</section>
 			</template>
 			<template #item="{ item }">
+				<p v-if="item.trip_date" class="whitespace-nowrap">
+					{{ item.data.trip_date }}
+				</p>
 				<p v-if="item.partner">
 					{{ item.data.vehicle?.partner?.company_name ?? 'N/A' }}
 				</p>

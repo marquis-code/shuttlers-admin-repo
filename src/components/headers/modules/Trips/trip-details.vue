@@ -85,7 +85,7 @@ const dropdownChildren = computed(() => {
     const dropdownOptions = [
         { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value },
         { name: 'Transfer trip', func: (data) => initTransfer(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' },
-        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' }
+        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' }
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
