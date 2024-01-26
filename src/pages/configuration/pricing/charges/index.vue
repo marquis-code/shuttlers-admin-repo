@@ -52,7 +52,7 @@
 						{{ item.data.country_currently_active_in.name }}
 					</p>
 					<p v-if="item.data?.cities_currently_active_in.length" class="text-[#737876] text-xs">
-						{{ item.data?.cities_currently_active_in.length }} states
+						{{ item.data?.cities_currently_active_in.length }} {{ item.data?.cities_currently_active_in?.length > 1 ? 'states' : 'state' }}
 					</p>
 				</div>
 				<p v-if="item.desc" class="text-sm text-[#737876]">
@@ -108,7 +108,6 @@ const { fetchAllCityNames, fetchAllCountries } = useCityAndCountry()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
 const { intiActivate } = useActivateConfiguration()
-const { fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
 const tableFields = ref([
 	{ value: 'type', text: 'Charges type' },
 	{ value: 'fees', text: 'Fees' },
@@ -138,7 +137,6 @@ const onRowClicked = (data) => {
 fetchAllCityNames()
 fetchAllCountries()
 fetchConfiguredCharges()
-fetchAllChargeTypesWithoutPagination()
 </script>
 
 <style scoped>
