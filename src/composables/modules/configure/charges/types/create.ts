@@ -20,7 +20,7 @@ const closeAddTypeModal = () => {
 	chargeObj.desc.value = ''
 	chargeObj.id.value = null
 }
-const { fetchChargeTypes, fetchAllChargeTypesWithoutPagination } = useFetchChargeTypes()
+const { fetchChargeTypes, fetchAllChargeTypesWithoutPagination, fetchAllUnconfiguredChargeTypes } = useFetchChargeTypes()
 
 export const useCreateChargeType = () => {
 	const { $_create_charge_types, $_edit_charge_types } = charges_api
@@ -36,7 +36,8 @@ export const useCreateChargeType = () => {
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Charge type created successfully' })
 			fetchChargeTypes()
-			fetchAllChargeTypesWithoutPagination()
+			// fetchAllChargeTypesWithoutPagination()
+			fetchAllUnconfiguredChargeTypes()
 			useChargeModal().closeCreateChargeTypes()
         }
 		loading.value = false

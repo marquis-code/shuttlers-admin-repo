@@ -5,7 +5,7 @@ import { usePagination } from '@/composables/utils/table'
 const loading = ref(false)
 const configuredCharges = ref([])
 const search = ref('')
-const singleConfiguredCharge = ref(null) as Ref<any>
+export const singleConfiguredCharge = ref(null) as Ref<any>
 
 export const useFetchConfiguredCharges = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)">
+		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="true" :has-index="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -33,10 +33,10 @@
 					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">{{ item?.data?.route?.route_code }}</NuxtLink> <span>({{ item?.data?.itinerary?.trip_time }})</span>
 				</span>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
-					<p>{{ item.data.passengers_count }}/{{ item.data.vehicle?.seats }}</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/upcoming/${item.data.id}/passengers`)">
+					<p>{{ item.data.passengers_count || 0 }}/{{ item.data.vehicle?.seats }}</p>
+					<!-- <button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/cancelled/${item.data.id}/passengers`)">
 						View
-					</button>
+					</button> -->
 				</div>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.route?.pickup" :destination="item.data?.route?.destination" />

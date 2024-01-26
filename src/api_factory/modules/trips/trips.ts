@@ -38,7 +38,7 @@ export const trips_api = {
 	},
 	$_get_cancelled_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/trips/upcoming?${queryParams}&is_cancelled=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const url = `/cancelled-trips?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_completed_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
@@ -96,7 +96,7 @@ export const trips_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
 	$_cancel_completed_trip: (payload:Record<string, any>) => {
-		const url = '/trips'
-		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
+		const url = '/cancelled-trips'
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }
