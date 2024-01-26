@@ -119,10 +119,10 @@
 						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
 					</p>
 					<Skeleton v-else height="20px" width="130px" />
-					<ButtonMultiSelectDropdown v-model="cities" :children="citiesList" title="Route type:" />
+					<ButtonMultiSelectDropdown v-model="cities" :children="citiesList" title="Cities:" />
 					<div class="overflow-hidden flex items-stretch rounded border bg-[#F4F5F4] ">
 						<button v-for="n,i in ['All', 'Remitted', 'Unremitted']" :key="i" class="py-2 px-4 border-none"
-							:class="[status == n ? 'text-[#101211] !bg-white' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
+							:class="[status == n ? 'text-[#101211] !bg-white font-bold' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
 							@click="status = n"
 						>
 							{{ n }}

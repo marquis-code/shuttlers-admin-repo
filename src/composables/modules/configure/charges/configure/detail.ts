@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import moment from 'moment'
+import { singleConfiguredCharge } from './fetch'
 import { charges_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
@@ -47,6 +48,8 @@ export const useDetails = () => {
 					Name: `${el.user?.fname || ''} ${el.user?.lname || ''}`,
 					Email: el?.user?.email || 'N/A',
 					Route: el?.route?.route_code || 'N/A',
+					Charge_type: singleConfiguredCharge.value?.additionChargeType?.short_name || 'N/A',
+					Charge_percent: el.additionalCharge?.charge_type === 'percentage' ? `${el?.additionalCharge?.charge_value} %` : `NGN ${el?.additionalCharge?.charge_value} flat`,
 					Total_amount: el?.userRouteSchedule?.unit_cost || 'N/A',
 					Charge_Amount: el?.amount || 'N/A',
 					Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A'
