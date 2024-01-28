@@ -20,7 +20,7 @@ export const useCreateCorporateGroup = () => {
                 type: 'SUCCESS',
                 msg: 'Corporate group was successfully created'
               })
-              useCompaniesModal().closeCreateCorporateGroup()
+            useCompaniesModal().closeCreateCorporateGroup()
               fetchGroup(Number(selectedCorporate.value.id))
         }
         loading.value = false

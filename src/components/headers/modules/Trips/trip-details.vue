@@ -121,13 +121,14 @@ const dropdownChildren = computed(() => {
 // }
 
 const formatPageTitle = computed(() => {
-   if (tripType.value === 'active' || tripType.value === 'completed') {
-    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
-   }
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A') ?? moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY') ?? moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+//    if (tripType.value === 'active' || tripType.value === 'completed') {
+//     return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
+//    }
 
-   if (tripType.value === 'upcoming') {
-    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
-   }
+//    if (tripType.value === 'upcoming') {
+//     return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+//    }
 })
 
 </script>

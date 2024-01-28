@@ -31,7 +31,9 @@
 					class="input-field">
 			</div>
 			<div v-if="$route.params.id" class="space-y-4">
-				<p class="border-t border-gray-200 pt-3 font-semibold">Other Settings</p>
+				<p class="border-t border-gray-200 pt-3 font-semibold">
+					Other Settings
+				</p>
 				<div>
 					<label for="password" class="text-sm text-gray-700">Check-in/Check-out option</label>
 					<select id="other-settings" v-model="form.cico_option" class="input-field" name="other-settings">

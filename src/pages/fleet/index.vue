@@ -7,14 +7,22 @@
 				<div class="bg-white border-y  border-x border-gray-300">
 					<div class="px-3 py-3 w-full">
 						<div class="flex justify-end items-center gap-x-3">
-							<p class="font-bold text-gray-900">Filter:</p>
+							<p class="font-bold text-gray-900">
+								Filter:
+							</p>
 							<select v-if="!loading" v-model="filterData.type.value" class="border outline-none rounded-md border-gray-300 px-10 py-2.5">
-								<option value="" disabled>Filter by vehicle Type</option>
+								<option value="" disabled>
+									Filter by vehicle Type
+								</option>
 								<option v-for="(itm, idx) in vehicleTypeslist" :key="idx" :value="itm.name">
 									{{ itm.name }}
 								</option>
 							</select>
-							<div><button v-if="filterData?.type?.value?.length" @click="filterData.type.value = ''" class="bg-black text-white text-sm px-3 py-2.5 rounded-md">Clear Filter</button></div>
+							<div>
+								<button v-if="filterData?.type?.value?.length" class="bg-black text-white text-sm px-3 py-2.5 rounded-md" @click="filterData.type.value = ''">
+									Clear Filter
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -47,7 +55,9 @@
 						<p v-if="item.data.amenities" class="cursor-pointer" @click="onRowClicked(item.data)">
 							{{ item.data.amenities.map((itm) => itm.name) }}
 						</p>
-						<p v-else>N/A</p>
+						<p v-else>
+							N/A
+						</p>
 					</div>
 				</div>
 				<div v-if="item.drivers">
