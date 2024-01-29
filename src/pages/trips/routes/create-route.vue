@@ -5,7 +5,8 @@
 				class="w-4/12 bg-white border-r p-6 space-y-6 sticky top-4 h-full overflow-y-auto"
 			>
 				<h1 class="text-lg font-semibold text-gray-900 py-0">
-					New Route {{ longitude }} {{ latitude }} {{ locationError }}
+					New Route
+					<!-- {{ longitude }} {{ latitude }} {{ locationError }} -->
 				</h1>
 				<div class="space-y-3">
 					<div class="space-y-3">
@@ -275,7 +276,7 @@
 import { useGeolocationApi } from '@/composables/core/useGeoLocation'
 import { useCreateRoute } from '@/composables/modules/routes/createRoute'
 import { Capitalize } from '@/composables/utils/formatter'
-const { latitude, longitude, locationError } = useGeolocationApi()
+// const { latitude, longitude, locationError } = useGeolocationApi()
 const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, itinerary_time, fare, createRoute, polyLine, clearObj, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay } = useCreateRoute()
 
 definePageMeta({

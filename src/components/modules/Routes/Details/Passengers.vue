@@ -6,7 +6,7 @@
 		</p>
 		<div class="p-3 space-y-6">
 			<div class="">
-				<CompanySelector v-model="corporate" class="" />
+				<CompanySelector v-model="corporate" label="Filter by company" class="" />
 			</div>
 			<div>
 				<button class="bg-black text-white text-xs px-3 py-2 rounded-md">
@@ -26,6 +26,7 @@
 						</p>
 					</template>
 				</Table>
+				<MiniPaginator :current-page="1" :total-pages="bookingResult.length" />
 			</div>
 		</div>
 	</div>
