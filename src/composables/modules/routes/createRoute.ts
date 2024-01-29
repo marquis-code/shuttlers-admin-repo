@@ -67,7 +67,7 @@ const center = computed(() => {
     if (obj.startLocation.value?.lat && obj.endLocation.value?.lat) {
         return { lat: obj.startLocation.value.lat, lng: obj.startLocation.value.lng }
     } else {
-        return { lat: 51.093048, lng: 6.84212 }
+        return { lat: 6.465422, lng: 3.406448 }
     }
 })
 

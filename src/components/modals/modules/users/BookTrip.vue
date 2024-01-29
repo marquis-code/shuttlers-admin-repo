@@ -146,6 +146,48 @@
 				</div>
 			</div>
 
+			<div v-if="totalFare.fare" class="flex flex-col gap-4 border-t border-b py-4">
+				<div class="flex items-center justify-between">
+					<h3 class="text-dark font-bold">
+						Additional Charges
+					</h3>
+					<icon name="down" class="w-4" />
+				</div>
+				<div v-if="computedCharges.length" class="flex flex-col gap-2">
+					<div v-for="charge in computedCharges" :key="charge.id" class="flex justify-between gap-4">
+						<div class="flex gap-2 items-center">
+							<div class="flex gap-2">
+								<p class="text-sm">
+									{{ charge.name }}
+								</p>
+								<VTooltip>
+									<a class="cursor-pointer">
+										<!-- <Icon name="help" class="w-4" /> -->
+										<img src="@/assets/icons/source/help.svg" class="w-4" alt="">
+									</a>
+
+									<template #popper>
+										{{ charge?.description }}
+									</template>
+								</VTooltip>
+							</div>
+
+							<ToggleButtonSmall v-if="!charge.is_compulsory" v-model="charge.selected" :name="charge.name" label="" class="m-0 p-0" />
+						</div>
+						<span class="text-dark font-medium"> {{ convertToCurrency(charge.amount) }}</span>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="totalFare.fare" class="flex items-center justify-between gap-2 w-full">
+				<p class="text-sm">
+					You pay:
+				</p>
+				<p class="font-bold text-green">
+					{{ convertToCurrency(totalPay) }}
+				</p>
+			</div>
+
 			<div class="flex justify-between items-center gap-x-10">
 				<button type="submit" class="bg-gray-600 py-3 rounded-md text-xs text-white w-full"
 					@click="useUserModal().closeBookTrip()">
@@ -167,15 +209,17 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserModal } from '@/composables/core/modals'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
 import { useBookUserTrip } from '@/composables/modules/users/id'
+import { useFetchConfiguredCharges } from '@/composables/modules/configure/charges/configure'
 import { useItinerariesByRouteId, useBusstopsByItineraryId, useRoutePricingByItineraryId } from '@/composables/modules/routes/id'
 const { loading: processingBooking, handleUserTripBooking } = useBookUserTrip()
 const { getMainRoutesList, loadingMainRoutes, mainRoutesList } = useGetMainRoutes()
 const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = useBusstopsByItineraryId()
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
+const { fetchConfiguredCharges, configuredCharges } = useFetchConfiguredCharges()
 const { loading: loadingPricing, setRoutePricingDataForm, getRoutePricingInformation, routePricingInformation } = useRoutePricingByItineraryId()
 getMainRoutesList()
 const form = reactive({
-	selectedRoute: {},
+	selectedRoute: {} as Ref<Record<string, any>>,
 	route_id: '',
 	route_itinerary_id: null as any,
 	pickup_point: null as any,
@@ -225,7 +269,8 @@ const bookTrip = async () => {
     end_date: endDate.value,
     recurring: form?.has_subscription ? Number(1) : Number(0),
     payment_source: form?.payment_source,
-    luggage_quantity: form?.luggage_quantity
+    luggage_quantity: form?.luggage_quantity,
+	additional_charges_id: computedCharges.value.map((obj) => obj.id)
 	}
 	await handleUserTripBooking(payload)
 	useUserModal().closeBookTrip()
@@ -247,7 +292,7 @@ const dayWithIds = reactive({
         friday: 6,
         saturday: 7
       })
-const destinationPoints = ref([])
+const destinationPoints = ref([]) as Ref<Record<string, any>[]>
 const payment_source = reactive([
 	{
 		id: 'main_balance',
@@ -331,6 +376,35 @@ const totalFare = computed(() => {
 	}
 })
 
+const calculateChargePercent = (percent:string) => {
+	return Math.ceil((Number(percent) / 100) * totalFare.value.fare)
+}
+
+const computedCharges = computed(() => {
+	if (!configuredCharges.value.length) return configuredCharges.value
+	const res = ref([]) as Ref<Record<string, any>[]>
+	res.value = configuredCharges.value.map((el) => {
+		return {
+			id: el?.id,
+			name: el?.additionChargeType?.short_name,
+			description: el?.additionChargeType?.description,
+			is_compulsory: el?.is_compulsory,
+			amount: el?.charge_type === 'percentage' ? calculateChargePercent(el.charge_value) : Number(el?.charge_value),
+			selected: ref(!!el?.is_compulsory)
+		}
+	})
+
+	return res.value
+})
+
+const totalPay = computed(() => {
+	let x = totalFare.value.fare
+	for (const el of computedCharges.value) {
+		if (el.selected) x += el.amount
+	}
+	return x
+})
+
 const addWeeks = (startDate, numberOfWeeks) => {
 	const newDate = new Date(startDate)
 	const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000
@@ -357,4 +431,5 @@ const endDate = computed(() => {
 	return useDateFormat(form.startDate, 'YYYY-MM-DD').value
 })
 
+fetchConfiguredCharges()
 </script>
