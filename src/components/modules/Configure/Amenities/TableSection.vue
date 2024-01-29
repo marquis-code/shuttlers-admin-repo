@@ -10,7 +10,7 @@
 				<img :src="item.data.image" alt="amenity image" class="h-10 w-10 rounded-full object-cover"> {{ item.data.short_name }}{{ item.data.image.substr(item.data.image.length - 5) }}
 			</span>
 			<span v-if="item.created_at">
-				{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+				{{ moment(item.data.created_at).format('ll') }}
 			</span>
 			<span v-if="item.id">
 				<button @click="deleteAmentity(item.data)"><img src="@/assets/icons/source/red-trash.svg" alt="red trash"></button>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useCreateAmentiites } from '@/composables/modules/configure/create'
 import { useConfirmationModal } from '@/composables/core/confirmation'
