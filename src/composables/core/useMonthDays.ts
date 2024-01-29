@@ -8,15 +8,10 @@ export const useDaysInMonth = () => {
         return date.toISOString().split('T')[0]
     }
 
-    // Find the first Monday of the month
-    const firstMonday = new Date(year, month, 1)
-    while (firstMonday.getDay() !== 1) {
-        firstMonday.setDate(firstMonday.getDate() + 1)
-    }
-
+    // Start from the first day of the month
     const daysArray = []
-    for (let day = firstMonday.getDate(); day <= daysInMonth; day++) {
-        const date = new Date(year, month, day)
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day + 1)
         daysArray.push(formatDate(date))
     }
 
