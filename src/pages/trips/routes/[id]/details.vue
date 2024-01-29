@@ -125,8 +125,6 @@ import {
 } from '@/composables/modules/routes/id'
 const { populateCreateBusCaptainForm, createBusCaptains, loading: processingBusCaptain } = useCreateUsers()
 const { busstopUsersIds } = useNotifyPassenger()
-// const { bookingDate, selectedBookingDateData, loading: processingBusCaptain } =
-//   useGetRoutePassengersBookings()
 const {
   loadingRouteDrivers,
   getRouteDriversById,
