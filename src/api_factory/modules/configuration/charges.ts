@@ -51,7 +51,7 @@ export const charges_api = {
 	},
 	$_remit_charge: (id:number|string, payload:any) => {
 		const url = `/additional-charges-history/${id}`
-		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 
 	// for chage types
