@@ -3,7 +3,7 @@ import { charges_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const loading = ref(false)
-const configuredCharges = ref([])
+const configuredCharges = ref([]) as Ref<Record<string, any>[]>
 const search = ref('')
 export const singleConfiguredCharge = ref(null) as Ref<any>
 

@@ -34,6 +34,7 @@ export enum IconNames {
   'filter' = 'filter',
   'greater' = 'greater',
   'green-location' = 'green-location',
+  'help' = 'help',
   'inflow' = 'inflow',
   'info' = 'info',
   'info_2' = 'info_2',
