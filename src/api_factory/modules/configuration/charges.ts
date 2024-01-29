@@ -28,17 +28,19 @@ export const charges_api = {
 		const url = `/additional-charges/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_get_charge_history: (id:number|string, metaObject: TMetaObject, date:string[], status:string, cityId:string[], search = '') => {
-		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`
+	$_get_charge_history: (id:number|string, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/additional-charges-history?id=${id}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_download_charge_history: async (id:number|string, date:string[], status:string, cityId:string[], search = '') => {
-		const url = `/additional-charges-history?id=${id}&limit=5&page=1&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`
+	$_download_charge_history: async (id:number|string, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/additional-charges-history?id=${id}&limit=5&page=1&${queryParams}`
 		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			if (res.data?.data?.length) {
 				const total = res.data.metadata.total
-				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-history?id=${id}&limit=${total}&page=1&search=${search}${date[0] && date[1] ? `&start_date=${date[0]}&end_date=${date[1]}` : ''}&status=${status}${cityId.length ? `&city_ids=${cityId.join(',')}` : ''}`)
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/additional-charges-history?id=${id}&limit=${total}&page=1&${queryParams}`)
 			} else {
 				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
 				return null
