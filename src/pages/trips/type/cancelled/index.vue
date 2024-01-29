@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="true" :has-index="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)">
+		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="false" :has-index="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -8,6 +8,9 @@
 				</section>
 			</template>
 			<template #item="{ item }">
+				<p v-if="item.trip_date" class="whitespace-nowrap">
+					{{ item.data.trip_date }}
+				</p>
 				<p v-if="item.partner">
 					{{ item.data.vehicle?.partner?.company_name ?? 'N/A' }}
 				</p>

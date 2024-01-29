@@ -95,7 +95,7 @@ const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
 	{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
 	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' },
-	{ name: 'Cancel trip', func: (data) => { initCancelTrip(data) } }
+	{ name: 'Cancel trip', func: (data) => { initCancelTrip(data) }, hide: user.value?.role !== 'super_admin' }
 ])
 
 const onRowClicked = (data: any) => {
