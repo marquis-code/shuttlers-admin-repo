@@ -1,6 +1,6 @@
 <template>
 	<main class="space-y-6">
-		<div class="bg-white rounded-md border w-6/12">
+		<div class="bg-white rounded-md border md:w-6/12">
 			<div class="px-6 py-5">
 				<p class="font-medium">
 					Create New Issue Category
@@ -25,12 +25,12 @@
 							Issue type (Minimum of two issues)</label>
 						<div class="flex items-center">
 							<input v-model.trim="issueType" type="text" name="vehicleName"
-								class="w-full outline-none px-3 py-2 rounded-l-md border focus:border-gray-900">
-							<button
+								class="w-full outline-none px-3 py-2 rounded-l-md border focus:border-gray-900"
+								@keydown.enter.prevent="addIssueToList">
+							<button type="button"
 								class="text-white py-2 bg-black px-6 rounded-r-md disabled:cursor-not-allowed disabled:opacity-25"
-								type="button"
 								:disabled="!isFormEmpty"
-								@click.prevent="addIssueToList"
+								@click="addIssueToList"
 							>
 								Add
 							</button>
@@ -65,7 +65,7 @@
 			</form>
 		</div>
 
-		<Table :loading="loadingTripRatingSettingsCategories" :headers="tableFields" :table-data="tripRatingSettingsCategories" :has-options="true" :has-index="true" :option="onRowClicked">
+		<Table :loading="loadingTripRatingSettingsCategories" :headers="tableFields" :table-data="computedTripRatingSettingsCategories" :has-options="true" :has-index="true" :option="onRowClicked">
 			<template #header>
 				<h1 class="border-t bg-white rounded-t-md py-3 pl-4 font-semibold">
 					Categories List
@@ -164,4 +164,20 @@ const createCategory = async () => {
         getTripRatingSettingsCategories(tripRatingSettingsReference.value)
 	}
 }
+
+const computedTripRatingSettingsCategories = computed(() => {
+	if (!tripRatingSettingsCategories.value.length) return []
+	const sortedArray = tripRatingSettingsCategories.value.sort((a, b) => {
+		const dateA = new Date(a.created_at) as any
+        const dateB = new Date(b.created_at) as any
+		return dateB - dateA
+	})
+
+	return sortedArray.map((item, index) => {
+      return {
+		...item,
+		created_at: item.created_at ?? 'N/A'
+	  }
+	})
+})
 </script>
