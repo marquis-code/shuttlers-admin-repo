@@ -207,7 +207,8 @@
 									<span class="text-grey5 text-sm"> {{ charge.name }}  </span>
 									<VTooltip>
 										<a class="cursor-pointer">
-											<Icon name="help" class="w-4" />
+											<!-- <Icon name="help" class="w-4" /> -->
+											<img src="@/assets/icons/source/help.svg" class="w-4" alt="">
 										</a>
 
 										<template #popper>
@@ -222,6 +223,15 @@
 							<span class="text-dark font-medium"> {{ convertToCurrency(charge.total) }}</span>
 						</div>
 					</div>
+				</div>
+
+				<div v-if="totalFare.fare" class="flex items-center justify-between gap-2 w-full">
+					<p class="text-sm font-medium">
+						Pay per user:
+					</p>
+					<p class="font-bold text-green">
+						{{ convertToCurrency(totalPay) }}
+					</p>
 				</div>
 
 				<div>
@@ -280,7 +290,8 @@ const bookTrip = async () => {
 			end_date: endDate.value,
 			recurring: form?.has_subscription ? Number(1) : Number(0),
 			payment_source: form?.payment_source,
-			luggage_quantity: form?.luggage_quantity
+			luggage_quantity: form?.luggage_quantity,
+			additional_charges_id: selectedRoute_charges.value.map((obj) => obj.id)
 		},
 	   users: form.uploadedUsers
 	}
@@ -391,6 +402,14 @@ const totalFare = computed(() => {
 		fare: totalFare,
 		currency: 'NGN'
 	}
+})
+
+const totalPay = computed(() => {
+	let x = totalFare.value.fare
+	for (const el of selectedRoute_charges.value) {
+		if (el.selected) x += el.total
+	}
+	return x
 })
 
 onBeforeUnmount(() => clearObj())

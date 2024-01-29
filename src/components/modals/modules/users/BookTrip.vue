@@ -179,11 +179,11 @@
 				</div>
 			</div>
 
-			<div v-if="totalFare.fare" class="flex items-center gap-2 w-full">
-				<p class="text-sm font-medium">
+			<div v-if="totalFare.fare" class="flex items-center justify-between gap-2 w-full">
+				<p class="text-sm">
 					You pay:
 				</p>
-				<p class="font-bold">
+				<p class="font-bold text-green">
 					{{ convertToCurrency(totalPay) }}
 				</p>
 			</div>
