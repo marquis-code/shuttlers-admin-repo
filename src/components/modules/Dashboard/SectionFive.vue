@@ -66,7 +66,7 @@
 					</Table>
 				</div>
 				<div v-if="!loadingCharter" class="flex items-end justify-end py-4 pr-3">
-					<NuxtLink to="/trips/charter" class="flex items-center justify-center text-xs text-blue-500 gap-x-2">
+					<NuxtLink to="trips/rental" class="flex items-center font-semibold justify-center text-xs text-blue-500 gap-x-2">
 						All Charter Requests <img class="inline" src="@/assets/icons/source/next.svg" alt="">
 					</NuxtLink>
 				</div>
