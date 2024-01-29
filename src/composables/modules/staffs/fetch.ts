@@ -2,7 +2,7 @@ import { staffs_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { useAlert } from '@/composables/core/notification'
 
-const { $_get_staffs } = staffs_api
+const { $_get_staffs, $_get_staffs_by_search_query } = staffs_api
 const payload = {
     active: ref(''),
     name: ref('get-all-audits')
@@ -17,6 +17,7 @@ export const useGetStaffs = () => {
     const loading = ref(false)
     const staffsData = ref([] as any[])
     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+
     const filterKeys = {
         search: ref(''),
         status: ref('1')
@@ -32,10 +33,33 @@ export const useGetStaffs = () => {
         loading.value = false
     }
 
+    const getStaffsBySearchQuery = async () => {
+        const updatedFilterData: any = {
+            search: ref(filterKeys.search.value)
+        }
+        loading.value = true
+        const res = await $_get_staffs_by_search_query(updatedFilterData) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            staffsData.value = res.data.data
+            metaObject.total.value = res.data.metadata?.total_pages
+        }
+        loading.value = false
+    }
+
     setFunction(getStaffs)
 
-    watch([filterKeys.status, filterKeys.search], (val) => {
+    watch([filterKeys.status], (val) => {
         getStaffs()
+    })
+
+    watch(filterKeys.search, (val) => {
+       if (val) {
+        getStaffsBySearchQuery()
+       }
+
+       if (!val.length) {
+        getStaffs()
+       }
     })
 
     const filteredStaffs = computed(() => {
