@@ -61,7 +61,9 @@ const deleteAmentity = (data: any) => {
 		type: 'NORMAL',
         desc: 'You’re about to delete this vehicle amenity, if this is action was not intentional please cancel ?',
 		loading,
-		call_function: () => deleteAmenity(data.id)
+		call_function: () => deleteAmenity(data.id).then(() => {
+            getAmenitiesList()
+        })
     })
 }
 </script>
