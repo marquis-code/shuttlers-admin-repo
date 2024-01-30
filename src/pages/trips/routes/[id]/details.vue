@@ -97,10 +97,14 @@
 				<template #item="{ item }">
 					<p v-if="item.user" class="">
 						{{ item?.data?.user }}
+						<span v-if="item?.data?.user?.bus_captain_id">
+							<img src="@/assets/icons/source/bus-captain.svg" alt="">
+							<span class="captain-text ml-1">Bus Captain</span>
+						</span>
 					</p>
 					<p v-if="item.contact" class="">
-						<a :href="`mailto:` + item.data.user_email" target="_blank">{{ item?.data?.user_email }}</a>
-						<a :href="`tel:` + item.data.user_phone" target="_blank">{{ item?.data?.user_phone }}</a>
+						<a class="text-blue-600 text-medium underline" :href="`mailto:` + item.data.user_email" target="_blank">{{ item?.data?.user_email }}</a><br />
+						<a class="text-blue-600 text-medium underline" :href="`tel:` + item.data.user_phone" target="_blank">{{ item?.data?.user_phone }}</a>
 					</p>
 					<p v-if="item.created_at">
 						{{
