@@ -49,7 +49,7 @@ const deletingAmenity = ref(false)
       if (res.type !== 'ERROR') {
         useAlert().openAlert({ type: 'SUCCESS', msg: 'Amenity was successfully deleted' })
         useAmenitiesList().getAmenitiesList()
-       useConfirmationModal().closeAlert()
+        useConfirmationModal().closeAlert()
     }
     deletingAmenity.value = false
     }

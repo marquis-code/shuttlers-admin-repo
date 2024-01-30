@@ -1,9 +1,16 @@
+import { ref, Ref } from 'vue'
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
+interface RoutePassengersPayloadInterface {
+    booking_days: Ref<Record<string, any>>;
+    driver_id: Ref<string>;
+    itinerary_id?: Ref<number>;
+}
 
-const routePassengersPayload = {
+const routePassengersPayload: RoutePassengersPayloadInterface = {
     booking_days: ref([] as Record<string, any>),
-    driver_id: ref('')
+    driver_id: ref(''),
+    itinerary_id: ref('') as any
 }
 
 const loadingRoutePassengers = ref(false)
@@ -23,6 +30,9 @@ export const useRoutePassengers = () => {
     const populateRoutePassengers = (data: any) => {
         routePassengersPayload.driver_id.value = data.driver_id
         routePassengersPayload.booking_days.value = data.booking_days
+        if (data.itinerary_id) {
+            routePassengersPayload.itinerary_id.value = data.itinerary_id
+        }
     }
     return { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers }
 }
