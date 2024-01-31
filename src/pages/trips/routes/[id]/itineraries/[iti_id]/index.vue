@@ -1,8 +1,8 @@
 <template>
 	<Skeleton v-if="loading_single_iti" height="300px" />
-	<main v-else class="flex flex-col gap-4 lg:flex-row">
+	<main v-else class="flex flex-col gap-4 xl:flex-row">
 		<ModulesRoutesItinerariesItinerarySidebar />
-		<div class="w-full flex flex-col gap-4 lg:w-[calc(100%-250px)]">
+		<div class="w-full flex flex-col gap-4 xl:w-[calc(100%-250px)]">
 			<ModulesRoutesItinerariesEditableDetails />
 			<ModulesRoutesItinerariesDriverTable />
 			<ModulesRoutesItinerariesConfigurePayment />

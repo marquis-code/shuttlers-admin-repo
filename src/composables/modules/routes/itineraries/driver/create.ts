@@ -5,12 +5,25 @@ import { routes_api, drivers_api, CustomAxiosResponse } from '@/api_factory/modu
 import { useAlert } from '@/composables/core/notification'
 import { useDriverModal } from '@/composables/core/modals'
 
-const obj = {
+interface EditObjectInterface {
+	[key: string] : any
+}
+const editObj: EditObjectInterface = ref({}) as any
+
+interface ObjectInterface {
+	driver: Ref<Record<string, any>>;
+	break_even: number | any;
+	cost_of_supply: number | any;
+	pricing_margin: number | any;
+	pricing_unit: string | any;
+	id: Ref<null|number>;
+}
+const obj: ObjectInterface = {
 	driver: ref({}) as Ref<Record<string, any>>,
-	break_even: ref(0.7),
-	cost_of_supply: ref(0),
-	pricing_margin: ref(25),
-	pricing_unit: ref('percent'),
+	break_even: ref(0.7) as Ref<number>,
+	cost_of_supply: ref(0) as Ref<number>,
+	pricing_margin: ref(25) as Ref<number>,
+	pricing_unit: ref('percent') as Ref<string>,
 	id: ref(null) as Ref<null|number>
 }
 const loading = ref(false)
@@ -65,6 +78,7 @@ export const useAddDriver = () => {
 	}
 
 	const initEdit = (data:Record<string, any>) => {
+		editObj.value = data
 		obj.id.value = data.id
 		obj.driver.value = { ...data.driver }
 		if (data.vehicle?.id) obj.driver.value.vehicle = data.vehicle
@@ -88,6 +102,8 @@ export const useAddDriver = () => {
 			payload.break_even_utilization = obj.break_even.value
 			payload.pricing_margin_unit = obj.pricing_unit.value
 			payload.pricing_margin = obj.pricing_margin.value
+			payload.driver_id = editObj.value.driver.id
+			payload.vehicle_id = editObj.value.vehicle.id
 		}
 		loading.value = true
 		const res = await drivers_api.$_update_assigned_driver_to_route(obj.id.value!, payload) as CustomAxiosResponse

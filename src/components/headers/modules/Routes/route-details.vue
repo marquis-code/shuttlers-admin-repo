@@ -23,7 +23,7 @@ const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
 const router = useRouter()
 
 const id = useRoute().params.id as string
-// getRouteById(id)
+getRouteById(id)
 
 const pageTabs = computed(() => [
     {

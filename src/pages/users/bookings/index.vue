@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :has-index="true" :page="page" :headers="tableFields" :table-data="batchBookingList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showStatus:false}" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.pickup" class="flex items-center gap-4">
@@ -36,7 +36,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
 import { useBatchBookingIdDetails } from '@/composables/modules/batchBooking/id'
 
-const { getBatchBookingList, loading, batchBookingList, onFilterUpdate, moveTo, next, prev, total, page } = useGetBatchBookingList()
+const { getBatchBookingList, loading, batchBookingList, moveTo, next, prev, total, page } = useGetBatchBookingList()
 getBatchBookingList()
 
 definePageMeta({

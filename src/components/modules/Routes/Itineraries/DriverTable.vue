@@ -6,6 +6,7 @@
 			:headers="tableFields"
 			:table-data="itineraryDrivers"
 			:page="page"
+			:has-overflow="false"
 		>
 			<template #header>
 				<div class="flex flex-col gap-y-2 gap-x-4 md:flex-row md:items-center md:justify-between border border-b-0 p-3 rounded-tl-lg  rounded-tr-lg">

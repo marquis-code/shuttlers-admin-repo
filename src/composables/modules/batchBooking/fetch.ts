@@ -4,13 +4,13 @@ export const useGetBatchBookingList = () => {
     const loading = ref(false)
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const batchBookingList = ref([] as any)
-    const filterData = {
-        search: ref('')
-    }
+    // const filterData = {
+    //     search: ref('')
+    // }
     const { $_get_batch_bookings } = batch_booking_api
-    watch([filterData.search], (val) => {
-        getBatchBookingList()
-    })
+    // watch([filterData.search], (val) => {
+    //     getBatchBookingList()
+    // })
     const getBatchBookingList = async () => {
         loading.value = true
 
@@ -22,14 +22,14 @@ export const useGetBatchBookingList = () => {
         loading.value = false
     }
 
-    const onFilterUpdate = (data: any) => {
-        switch (data.type) {
-            case 'search':
-                filterData.search.value = data.value
-                break
-        }
-    }
-    setFunction(getBatchBookingList)
+    // const onFilterUpdate = (data: any) => {
+    //     switch (data.type) {
+    //         case 'search':
+    //             filterData.search.value = data.value
+    //             break
+    //     }
+    // }
+    // setFunction(getBatchBookingList)
 
-    return { getBatchBookingList, loading, batchBookingList, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    return { getBatchBookingList, loading, batchBookingList, moveTo, ...metaObject, next, prev }
 }

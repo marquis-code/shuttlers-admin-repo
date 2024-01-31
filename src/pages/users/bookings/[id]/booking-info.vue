@@ -2,19 +2,19 @@
 	<div class="space-y-6">
 		<ButtonGoBack url="/users/bookings" />
 		<div>
-			<div v-if="!loading" class="lg:flex justify-between items-start space-y-10 lg:space-y-0 lg:gap-x-10">
-				<div class="lg:w-6/12 rounded-md bg-white border p-6">
+			<div v-if="!loading" class="xl:flex justify-between items-start space-y-10 xl:space-y-0 lg:gap-x-10">
+				<div class="xl:w-6/12 rounded-md bg-white border p-6">
 					<h1 class="border-b pb-3 font-semibold">
 						Request
 					</h1>
-					<div v-for="(item, key, index) in bookingRequest" :key="index" class="flex justify-between items-center border-b py-5 text-sm">
+					<div v-for="(item, key, index) in bookingRequest" :key="index" class="flex justify-between items-center last:border-b-0 border-b py-5 text-sm">
 						<p>{{ key }}</p>
 						<p :class="[item === 'processed' ? 'bg-green-500 text-white rounded-md text-xs px-3 py-1.5' : null]">
 							{{ item }}
 						</p>
 					</div>
 				</div>
-				<div class="lg:w-6/12 rounded-md bg-white border p-6">
+				<div class="xl:w-6/12 rounded-md bg-white border p-6">
 					<div class="flex justify-between items-center border-b pb-3">
 						<h1 class="font-semibold">
 							Response
@@ -39,7 +39,7 @@
 					</div>
 					<div v-else class="overflow-auto">
 						<div v-for="(item, index) in selectedBooking?.processing_result?.data" :key="index"
-							class="flex justify-between items-center border-b py-5 text-sm min-w-[500px] gap-4"
+							class="flex justify-between items-center border-b last:border-b-0 py-5 text-sm min-w-[500px] gap-4"
 						>
 							<div class="flex justify-between gap-x-10">
 								<p>{{ index + 1 }}</p>
@@ -49,7 +49,7 @@
 								<p :class="[item.success ? 'bg-shuttlersGreen' : 'bg-red']" class="rounded-lg text-white text-xs px-2 py-1">
 									{{ item.success ? 'completed' : 'failed' }}
 								</p>
-								<p class="cursor-pointer flex items-center gap-x-2" @click="useAlert().openAlert({ type: 'Alert', msg: item.error })">
+								<p class="cursor-pointer flex items-center gap-x-2" @click="handleDetails(item)">
 									<img src="@/assets/icons/source/batch-booking-info.svg" alt="">
 									details
 								</p>
@@ -96,5 +96,13 @@ const emit = defineEmits(['filter'])
 type FilterKeys = 'type' | 'value'
 const onFilter = (item: Record<FilterKeys, string>) => {
 	emit('filter', item)
+}
+
+const handleDetails = (item) => {
+	if (item?.error) {
+		useAlert().openAlert({ type: 'Alert', msg: item.error })
+	} else {
+		useAlert().openAlert({ type: 'Alert', msg: 'Booking was processed successfully' })
+	}
 }
 </script>
