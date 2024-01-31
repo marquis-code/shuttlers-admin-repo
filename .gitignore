@@ -197,3 +197,7 @@ node_modules
 .vercel
 
 # End of https://www.toptal.com/developers/gitignore/api/nuxtjs,vercel,macos,node
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
