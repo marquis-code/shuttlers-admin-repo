@@ -5,6 +5,7 @@
 				<img src="@/assets/icons/source/upload.svg" alt="preview icon" class="rounded-full border p-2 h-10 w-10">
 				{{ selectedFileName ? selectedFileName : '' }}</p>
 			<input id="image" class="hidden" type="file" accept=".csv" @change="handleFileChange">
+			<span>Choose File</span>
 		</label>
 		<div v-if="errorMessage" class="error">
 			{{ errorMessage }}

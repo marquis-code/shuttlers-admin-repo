@@ -191,4 +191,8 @@ export const routes_api = {
 		const url = '/routes/booking-suspensions'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
+	// $_get_itinerary_drivers_list: (iti_id:string|number) => {
+	// 	const url = `/route-itineraries/${iti_id}/drivers`
+	// 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	// }
 }
