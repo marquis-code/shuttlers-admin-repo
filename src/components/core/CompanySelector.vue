@@ -11,7 +11,7 @@
 				<div class="flex gap-2 w-full overflow-hidden max-w-[300px]">
 					<div class="flex flex-col gap-1">
 						<p class="text-sm">
-							{{ selectedCorporate.fname || '' }} {{ selectedCorporate.lname || '' }}
+							{{ selectedCorporate.corporate_name || '' }}
 						</p>
 					</div>
 				</div>
@@ -20,7 +20,7 @@
 				<div class="flex gap-2 w-full overflow-hidden max-w-[300px]">
 					<div class="flex flex-col gap-1">
 						<p class="text-sm">
-							{{ option.fname || '' }} {{ option.lname || '' }}
+							{{ option.corporate_name || '' }}
 						</p>
 					</div>
 				</div>

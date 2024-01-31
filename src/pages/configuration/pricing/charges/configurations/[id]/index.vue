@@ -119,10 +119,11 @@
 						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
 					</p>
 					<Skeleton v-else height="20px" width="130px" />
-					<ButtonMultiSelectDropdown v-model="cities" :children="citiesList" title="Route type:" />
+					<ButtonMultiSelectDropdown v-model="countries" :children="countriesList" title="Countries:" />
+					<ButtonMultiSelectDropdown v-model="cities" :children="citiesList" title="Cities:" />
 					<div class="overflow-hidden flex items-stretch rounded border bg-[#F4F5F4] ">
 						<button v-for="n,i in ['All', 'Remitted', 'Unremitted']" :key="i" class="py-2 px-4 border-none"
-							:class="[status == n ? 'text-[#101211] !bg-white' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
+							:class="[status == n ? 'text-[#101211] !bg-white font-bold' : 'text-[#ACAFAE] bg-transparent', i === 1 ? 'border-right border-left' : '']"
 							@click="status = n"
 						>
 							{{ n }}
@@ -183,8 +184,8 @@ const { loading, fetchSingleConfiguredCharges, singleConfiguredCharge: config } 
 const { loading: fetchingAllChargeTypes } = useFetchChargeTypes()
 const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
-const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading, cities, downloadHistory } = useDetails()
-const { allCityNames, fetchAllCityNames } = useCityAndCountry()
+const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading, cities, countries, downloadHistory } = useDetails()
+const { allCityNames, fetchAllCityNames, fetchAllCountries, allCountries } = useCityAndCountry()
 // const { intiActivate } = useActivateConfiguration()
 
 const tableFields = [
@@ -203,10 +204,15 @@ const citiesList = computed(() => {
 	return allCityNames.value.map((el) => { return { name: el.name, value: el.id } })
 })
 
+const countriesList = computed(() => {
+	return allCountries.value.map((el) => { return { name: el.name, value: el.id } })
+})
+
 fetchSingleConfiguredCharges(useRoute().params.id as string)
 fetchHistory()
 getTotalCharges()
 fetchAllCityNames()
+fetchAllCountries()
 </script>
 
 <style scoped>

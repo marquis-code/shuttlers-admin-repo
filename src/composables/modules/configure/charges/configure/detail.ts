@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import moment from 'moment'
+import { singleConfiguredCharge } from './fetch'
 import { charges_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
@@ -11,12 +12,25 @@ const date = ref([])
 const status = ref('All')
 const totalCharge = ref(null)
 const cities = ref([]) as Ref<any[]>
-const search = ref('')
+const countries = ref([]) as Ref<any[]>
 const { loading: downloading, download } = useDownloadReport()
 
 const getCitiesId = computed(() => {
 	return cities.value.map((el) => { return el.value })
 })
+
+const getCountriesId = computed(() => {
+	return countries.value.map((el) => { return el.value })
+})
+
+const filterData = {
+    start_date: ref(''),
+	end_date: ref(''),
+	status: computed(() => status.value),
+    search: ref(''),
+	city_ids: computed(() => getCitiesId.value.length ? getCitiesId.value : ''),
+	country_ids: computed(() => getCountriesId.value.length ? getCountriesId.value : '')
+}
 
 export const useDetails = () => {
 	const { prev, metaObject, next, moveTo, setFunction } = usePagination()
@@ -25,7 +39,7 @@ export const useDetails = () => {
 	const fetchHistory = async () => {
 		loading.value = true
 		const id = useRoute().params.id as string
-		const res = await $_get_charge_history(id, metaObject, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
+		const res = await $_get_charge_history(id, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			chargeHistory.value = res.data?.data?.length ? res.data.data : []
 			metaObject.total.value = res.data.metadata.total_pages
@@ -37,7 +51,7 @@ export const useDetails = () => {
 		downloading.value = true
 		const name = ref(`${status.value}-charge-history`)
 		const id = useRoute().params.id as string
-		const res = await charges_api.$_download_charge_history(id, date.value, status.value.toLowerCase(), getCitiesId.value, search.value) as CustomAxiosResponse
+		const res = await charges_api.$_download_charge_history(id, filterData) as CustomAxiosResponse
         if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
 			const newArr:any[] = []
@@ -47,13 +61,15 @@ export const useDetails = () => {
 					Name: `${el.user?.fname || ''} ${el.user?.lname || ''}`,
 					Email: el?.user?.email || 'N/A',
 					Route: el?.route?.route_code || 'N/A',
+					Charge_type: singleConfiguredCharge.value?.additionChargeType?.short_name || 'N/A',
+					Charge_percent: el.additionalCharge?.charge_type === 'percentage' ? `${el?.additionalCharge?.charge_value} %` : `NGN ${el?.additionalCharge?.charge_value} flat`,
 					Total_amount: el?.userRouteSchedule?.unit_cost || 'N/A',
 					Charge_Amount: el?.amount || 'N/A',
 					Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A'
 				}
 				newArr.push(y)
 			}
-			if (date.value[0] && date.value[1]) name.value = `${name.value}-from-${date.value[0]}-to-${date.value[1]}`
+			if (filterData.start_date.value && filterData.end_date.value) name.value = `${name.value}-from-${filterData.start_date.value}-to-${filterData.end_date.value}`
 			exportAsCsv(newArr, name.value)
         }
 		downloading.value = false
@@ -61,10 +77,12 @@ export const useDetails = () => {
 	const onFilterUpdate = (data) => {
         switch (data.type) {
             case 'dateRange':
+				filterData.start_date.value = data.value[0] ? data.value[0] : ''
+				filterData.end_date.value = data.value[1] ? data.value[1] : ''
 				date.value = data.value
                 break
 			case 'search':
-				search.value = data.value
+				filterData.search.value = data.value
 				break
 			case 'download':
 				downloadHistory()
@@ -74,7 +92,8 @@ export const useDetails = () => {
 
 	setFunction(fetchHistory)
 
-	watch([status, date, search, cities], () => {
+	watch([status, filterData.end_date, filterData.search, cities, countries], () => {
+		metaObject.page.value = 1
 		fetchHistory()
 		getTotalCharges()
 	})
@@ -90,42 +109,5 @@ export const useDetails = () => {
 		loading_total.value = false
 	}
 
-	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status, getTotalCharges, loading_total, totalCharge, downloading, cities, downloadHistory }
+	return { loading, fetchHistory, chargeHistory, prev, next, moveTo, setFunction, ...metaObject, onFilterUpdate, date, status, getTotalCharges, loading_total, totalCharge, downloading, cities, countries, downloadHistory }
 }
-
-// const sample_data = [
-// 	{
-// 		id: 1,
-// 		user_id: 6,
-// 		additional_charge_id: 2,
-// 		user_route_schedule_id: 29,
-// 		is_remitted: 0,
-// 		amount: '2',
-// 		payment_reference: null,
-// 		created_at: '2023-11-19 15:54:34',
-// 		updated_at: '2023-11-19 15:54:34',
-// 		user: { fname: 'Sherif', lname: 'Abubakrri', email: 'saykeed@gmail.com' },
-// 		additionalCharge: {},
-// 		userRouteSchedule: {},
-// 		route: {
-// 			route_code: 'SG-code'
-// 		}
-// 	},
-// 	{
-// 		id: 2,
-// 		user_id: 7,
-// 		additional_charge_id: 2,
-// 		user_route_schedule_id: 29,
-// 		is_remitted: 0,
-// 		amount: '2',
-// 		payment_reference: null,
-// 		created_at: '2023-11-09 15:54:34',
-// 		updated_at: '2023-11-09 15:54:34',
-// 		user: { fname: 'Ope', lname: 'Yemi', email: 'opeyemi@gmail.com' },
-// 		additionalCharge: {},
-// 		userRouteSchedule: {},
-// 		route: {
-// 			route_code: 'SG-code'
-// 		}
-// 	}
-// ]

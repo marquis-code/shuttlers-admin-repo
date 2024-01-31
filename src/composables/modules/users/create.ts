@@ -144,6 +144,7 @@ export const useCreateUsers = () => {
 			useUserModal().closeMakeBusCaptain()
         }
 		loading.value = false
+		useConfirmationModal().closeAlert()
 		getUserById(selectedUserId.value)
 		getBusCaptainRoutesById(selectedUserId.value)
     }

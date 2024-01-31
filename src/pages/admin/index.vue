@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="filteredStaffs" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
+		<Table :loading="loading" :headers="tableFields" :table-data="staffsData" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
@@ -39,7 +39,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 
-const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate, total, moveTo, next, prev, page } = useGetStaffs()
+const { getStaffs, loading, filteredStaffs, filterKeys, onFilterUpdate, total, staffsData, moveTo, next, prev, page } = useGetStaffs()
 getStaffs()
 
 definePageMeta({

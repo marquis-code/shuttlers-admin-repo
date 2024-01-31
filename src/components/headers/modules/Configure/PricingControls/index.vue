@@ -58,7 +58,7 @@ const showOnProd = computed(() => {
 
 const chargesTab = computed(() => {
 	return [
-		{ name: 'Configure Charges', route: '/configuration/pricing/charges', active: useRoute().fullPath.includes('/configurations') },
+		{ name: 'Configured Charges', route: '/configuration/pricing/charges', active: useRoute().fullPath.includes('/configurations') },
 		{ name: 'Charge Types', route: '/configuration/pricing/charges/types' }
 		// {name: 'Charge Report', route: 'ChargesReport'},
 	]

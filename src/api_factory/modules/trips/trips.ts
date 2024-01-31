@@ -96,7 +96,7 @@ export const trips_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
 	$_cancel_completed_trip: (payload:Record<string, any>) => {
-		const url = '/trips'
-		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
+		const url = '/cancelled-trips'
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

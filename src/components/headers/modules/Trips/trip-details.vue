@@ -85,7 +85,7 @@ const dropdownChildren = computed(() => {
     const dropdownOptions = [
         { name: 'Log Issue', func: (data) => setDataForLoggingIssue(data), hide: isProdEnv.value },
         { name: 'Transfer trip', func: (data) => initTransfer(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' },
-        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' }
+        { name: 'Cancel trip', func: (data) => initCancelTrip(data), hide: tripType.value !== 'completed' || user.value.role !== 'super_admin' }
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
@@ -121,13 +121,14 @@ const dropdownChildren = computed(() => {
 // }
 
 const formatPageTitle = computed(() => {
-   if (tripType.value === 'active' || tripType.value === 'completed') {
-    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
-   }
+    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A') ?? moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY') ?? moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+//    if (tripType.value === 'active' || tripType.value === 'completed') {
+//     return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.trip_date_time).format('Do MMMM, YYYY')}`
+//    }
 
-   if (tripType.value === 'upcoming') {
-    return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
-   }
+//    if (tripType.value === 'upcoming') {
+//     return `${selectedTrip.value?.route?.route_code} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('h:mm A')} ⚫ ${selectedTrip.value?.driver?.lname} ${selectedTrip.value?.driver?.fname} ⚫ ${moment.utc(selectedTrip?.value?.start_trip).format('Do MMMM, YYYY')}`
+//    }
 })
 
 </script>

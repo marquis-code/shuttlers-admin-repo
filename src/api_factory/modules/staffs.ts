@@ -9,6 +9,11 @@ export const staffs_api = {
 		const url = `/staff?${queryParams}&page=${metaObject.page.value}&limit=${metaObject.page_size.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_staffs_by_search_query: (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/staff?${queryParams}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_all_staffs: () => {
 		const url = `/staff?page=${1}&limit=${10000}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
