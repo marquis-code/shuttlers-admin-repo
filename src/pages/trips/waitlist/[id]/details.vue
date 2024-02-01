@@ -6,7 +6,7 @@
 			:table-data="selectedWaitlist"
 		>
 			<template #header>
-				<TableFilter :filter-type="{ showSearchBar: true }" />
+				<TableFilter :filter-type="{ showSearchBar: true }" @filter="onFilterUpdate" />
 				<div class="bg-white border-x border-gray-200">
 					<div class="flex justify-end items-end pr-3 pb-2">
 						<div class="flex items-center gap-x-2">
@@ -95,7 +95,7 @@ import {
   useWaitlistByItinerary
 } from '@/composables/modules/waitlist/id'
 import useRemoveDuplicates from '@/composables/core/useRemoveDuplicates'
-const { selectedWaitlist, loading, getWaitlistById, filterData } =
+const { selectedWaitlist, loading, getWaitlistById, filterData, onFilterUpdate } =
   useWaitlistIdDetails()
   const { notifyWaitlistUser, processing } = useNotifyWaitlistUser()
 const {

@@ -8,7 +8,8 @@ const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 export const useWaitlistIdDetails = () => {
     const loading = ref(false)
     const filterData = {
-        routeCode: ref('')
+        routeCode: ref(''),
+        search: ref('')
     }
 
     const getWaitlistById = async () => {
@@ -22,12 +23,24 @@ export const useWaitlistIdDetails = () => {
     }
     setFunction(getWaitlistById)
 
-    watch([filterData.routeCode], (val) => {
-        getWaitlistById()
+    watch([filterData.routeCode, filterData.search], (val) => {
+        if (filterData.routeCode.value) {
+            const result = selectedWaitlist.value.filter((itm) => {
+                return (itm.value.toUpperCase().includes(val))
+            })
+            selectedWaitlist.value = result
+            return selectedWaitlist.value
+        } else {
+            getWaitlistById()
+        }
       })
 
       const onFilterUpdate = (data: any) => {
-        if (data.type === 'routeCode') {
+        if (data.type === 'search') {
+            filterData.search.value = data.value
+        }
+
+        if (filterData.routeCode.value) {
             filterData.routeCode.value = data.value
         }
       }
