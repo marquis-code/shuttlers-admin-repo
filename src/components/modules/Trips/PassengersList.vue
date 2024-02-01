@@ -3,7 +3,7 @@
 		<button v-if="isScreenLg" class="btn-controls" @click="$emit('prev')">
 			<Icon name="prev" class="w-7" />
 		</button>
-		<div class="space-y-8 w-full lg:w-[calc(100%-130px)]">
+		<div v-if="routePassengers.length" class="space-y-8 w-full lg:w-[calc(100%-130px)]">
 			<div class="flex items-center gap-x-6">
 				<div class="flex items-center gap-x-2">
 					<input id="all" v-model="form.all" name="all" type="checkbox">
@@ -142,6 +142,12 @@
 						</div>
 					</div>
 				</section>
+			</div>
+		</div>
+		<div v-else class="flex items-center justify-center p-4 py-10 shadow-lg bg-light rounded-lg w-full">
+			<div class="flex flex-col gap-2">
+				<h3 class="text-xl text-dark font-bold text-center">No bus stop or user found</h3>
+				<p class="text-center max-w-[250px] text-sm text-grey5">Try adjusting your search to find what you are looking for</p>
 			</div>
 		</div>
 
