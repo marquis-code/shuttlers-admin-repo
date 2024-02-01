@@ -9,8 +9,8 @@ interface RoutePassengersPayloadInterface {
 
 const routePassengersPayload: RoutePassengersPayloadInterface = {
     booking_days: ref([] as Record<string, any>),
-    driver_id: ref(''),
-    itinerary_id: ref('') as any
+    driver_id: ref('')
+    // itinerary_id: ref('') as any
 }
 
 const loadingRoutePassengers = ref(false)
@@ -18,9 +18,10 @@ const routePassengers = ref([] as any)
 
 export const useRoutePassengers = () => {
     const getRoutePassengers = async (id: string) => {
+        routePassengers.value = []
         if (!id) return
         loadingRoutePassengers.value = true
-        const res = await routes_api.$_get_route_bookings_passengers(id, convertObjWithRefToObj(routePassengersPayload)) as CustomAxiosResponse
+        const res = await routes_api.$_get_route_bookings_passengers(id, convertObjWithRefToObj(routePassengersPayload as any)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             routePassengers.value = res?.data?.data[0]?.data
         }
@@ -31,7 +32,7 @@ export const useRoutePassengers = () => {
         routePassengersPayload.driver_id.value = data.driver_id
         routePassengersPayload.booking_days.value = data.booking_days
         if (data.itinerary_id) {
-            routePassengersPayload.itinerary_id.value = data.itinerary_id
+            routePassengersPayload.itinerary_id!.value = data.itinerary_id
         }
     }
     return { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers }
