@@ -90,5 +90,5 @@ export const useRouteBustopMap = () => {
 		adding_busstop.value = false
 	}
 
-	return { loading, path, getRouteGeometry, center, routeDetails, editBusStop, editing_busstop, initDeleteBusstop, new_busstop_position, open_new_busstop_window, adding_busstop, createBusstop, fetching_busstops, getRouteBusstopsById, busstopsList, can_click }
+	return { loading, path, getRouteGeometry, center, routeDetails, editBusStop, editing_busstop, initDeleteBusstop, new_busstop_position, open_new_busstop_window, adding_busstop, createBusstop, reloadBusStopMap, fetching_busstops, getRouteBusstopsById, busstopsList, can_click }
 }

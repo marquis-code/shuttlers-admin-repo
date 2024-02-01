@@ -1,11 +1,12 @@
 import { ref, computed } from 'vue'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useGetUpcomingTripsList, useGetActiveTripsList, useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
+import { useGetUpcomingTripsList, useGetActiveTripsList, useGetCompletedTripsList, useGetCancelledTripsList } from '@/composables/modules/trips/fetch'
 import { usePagination } from '@/composables/utils/table'
 const { moveTo: financialsMoveTo, metaObject, next, prev, setFunction } = usePagination()
 const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
 const { getActiveTrips, activeTripsList, moveTo: activeMoveTo } = useGetActiveTripsList()
 const { getCompletedTrips, completedTripsList, moveTo: completedMoveTo } = useGetCompletedTripsList()
+const { getCancelledTrips, cancelledTripsList, moveTo: cancelledMoveTo } = useGetCancelledTripsList()
 
 const selectedTrip = ref({} as Record<string, any>)
 const selectedTripId = ref('')
@@ -20,6 +21,10 @@ const activeSelectedTripIndex = computed(() => {
 
 const completedSelectedTripIndex = computed(() => {
     return completedTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
+
+const cancelledSelectedTripIndex = computed(() => {
+    return cancelledTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
 })
 
 const currentIndex = ref(1)
@@ -169,6 +174,49 @@ export const useCompletedTripIdDetails = () => {
     }
     return { selectedTrip, loading, getCompletedTripById, handleNext, handlePrev, completedSelectedTripIndex }
 }
+
+export const useCancelledTripIdDetails = () => {
+    const loading = ref(false)
+    const getCancelledTripById = async (id: string) => {
+        selectedTripId.value = id
+        loading.value = true
+        const res = await trips_api.$_get_upcoming_trip_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            selectedTrip.value = res.data
+            if (cancelledTripsList.value.length === 0) {
+                await getCancelledTrips()
+            }
+        }
+        loading.value = false
+    }
+
+    const handleNext = async () => {
+        if (cancelledSelectedTripIndex.value < cancelledTripsList.value.length - 1) {
+            const nextTripId = cancelledTripsList.value[cancelledSelectedTripIndex.value + 1].id
+            await getCancelledTripById(nextTripId)
+        }
+        if (cancelledSelectedTripIndex.value === cancelledTripsList.value.length - 1) {
+            currentIndex.value++
+            loading.value = true
+            await cancelledMoveTo(currentIndex.value)
+            loading.value = false
+        }
+    }
+    const handlePrev = async () => {
+        if (cancelledSelectedTripIndex.value > 0) {
+            const prevTripId = cancelledTripsList.value[cancelledSelectedTripIndex.value - 1].id
+            await getCancelledTripById(prevTripId)
+        }
+        if (cancelledSelectedTripIndex.value === 0) {
+            if (currentIndex.value !== 1) {
+                currentIndex.value -= 1
+               await cancelledMoveTo(currentIndex.value)
+            }
+        }
+    }
+    return { selectedTrip, loading, getCancelledTripById, handleNext, handlePrev, cancelledSelectedTripIndex }
+}
+
 export const useTripFinancials = () => {
     const loading = ref(false)
     const tripFinancials = ref([])

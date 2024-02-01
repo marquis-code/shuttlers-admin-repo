@@ -66,7 +66,7 @@ if (tripType.value === 'completed') {
 }
 
 if (tripType.value === 'cancelled') {
-	headerArray = headerArray.filter((el) => el.name === 'Details')
+	headerArray = headerArray.filter((el) => el.name === 'Details' || el.name === 'Passengers')
 }
 
 return headerArray

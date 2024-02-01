@@ -5,7 +5,7 @@
 				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
 		</div>
 		<section class="absolute top-4 left-[100px] flex flex-col items-start z-40">
-			<ButtonGoBack url="/trips/type/active" class="mb-6 bg-white" />
+			<ButtonGoBack :url="`/trips/type/${tripType}`" class="mb-6 bg-white" />
 			<div class="card p-0 !max-w-4xl md:w-[500px] z-[200000]">
 				<div class="card-header p-4">
 					Trip Information
@@ -24,7 +24,7 @@
 								<nuxt-link v-if="col.name === 'Driver'" :to="`/drivers/${selectedTrip.driver.id}/driver-info`" class="text-blue-700">
 									{{ col.value }}
 								</nuxt-link>
-								<StatusBadge v-else-if="col.value === 'status'" :name="selectedTrip?.route?.status ? 'Active' : 'Inactive'" />
+								<StatusBadge v-else-if="col.value === 'status'" :name="tripType" />
 								<div v-else-if="col.name === 'Route Code'">
 									<nuxt-link :to="`/trips/routes/${selectedTrip?.route?.id}/details`" class="text-blue-700">
 										{{ col.value }}
@@ -36,7 +36,7 @@
 									</nuxt-link>
 								</div>
 								<div v-else-if="col.name === 'Partner'">
-									<nuxt-link v-if="selectedTrip?.partner?.id" :to="`/partners/${selectedTrip?.partner?.id}/partner-info`" class="text-blue-700">
+									<nuxt-link v-if="selectedTrip?.vehicle?.partner?.id" :to="`/partners/${selectedTrip?.vehicle?.partner?.id}/${selectedTrip?.vehicle?.partner?.account_sid}/partner-info`" class="text-blue-700">
 										{{ col.value }}
 									</nuxt-link>
 									<span v-else>N/A</span>
@@ -104,6 +104,8 @@ const tripCol = computed(() => {
 		{ name: 'Partner', value: `${props.selectedTrip?.vehicle?.partner?.company_name}` }
 	]
 })
+
+const tripType = computed(() => (useRoute().name as string).split('-')[2])
 
 definePageMeta({
     layout: 'dashboard',

@@ -193,6 +193,7 @@
 					<InputDateInput
 						id="startDate"
 						v-model="avail_start_date"
+						:clearable="true"
 						class="font-light"
 						placeholder="Filter by date"
 					/>

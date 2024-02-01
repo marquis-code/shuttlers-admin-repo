@@ -5,14 +5,15 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
+import { useUpcomingTripIdDetails, useCancelledTripIdDetails } from '@/composables/modules/trips/id'
 import { usePageHeader } from '@/composables/utils/header'
 import { usePassengersTracking } from '@/composables/modules/trips/tracking'
 
 const { listenToallPassengersLocation } = usePassengersTracking()
-const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = useUpcomingTripIdDetails()
+const { selectedTrip, loading, getCancelledTripById, handleNext, handlePrev } = useCancelledTripIdDetails()
 const id = useRoute().params.id as string
-getUpcomingTripById(id)
+// getUpcomingTripById(id)
+getCancelledTripById(id)
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {

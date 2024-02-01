@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { useRouteBustopMap } from '@/composables/modules/routes/bus-stop'
 
-const { open_new_busstop_window, new_busstop_position, adding_busstop, createBusstop } = useRouteBustopMap()
+const { open_new_busstop_window, reloadBusStopMap, new_busstop_position, adding_busstop, createBusstop } = useRouteBustopMap()
 
 const props = defineProps({
 	position: {
@@ -51,7 +51,9 @@ const onSave = () => {
 		is_dropoff: dropoff.value,
 		geometry: `${new_busstop_position.value.lat},${new_busstop_position.value.lng}`
     }
-	createBusstop(payload)
+	createBusstop(payload).then(() => {
+		reloadBusStopMap()
+	})
 }
 </script>
 

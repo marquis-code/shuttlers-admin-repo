@@ -45,6 +45,17 @@
 						>
 					</div>
 				</div>
+				<div v-if="item?.created_at">
+					{{ moment.utc(item.data.created_at).format('Do MMMM, YYYY') }}
+				</div>
+				<div v-if="item?.cost_of_supply">
+					<span>{{ item.data.cost_of_supply ?? 'N/A' }}</span>
+				</div>
+				<div v-if="item.id">
+					<button class="text-white bg-black text-xs px-3 py-2 rounded-lg" @click="navigateToTrip(item)">
+						View Trip
+					</button>
+				</div>
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
@@ -54,7 +65,8 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import moment from 'moment'
+import { useAlert } from '@/composables/core/notification'
 import { useItineraries } from '@/composables/modules/routes/itineraries'
 import { useRouteTrips } from '@/composables/modules/routes/id'
 
@@ -77,8 +89,7 @@ const computedRoutesTrips = computed(() => {
 			itinerary: item?.itinerary.trip_time || 'N/A',
             vehicle: item.vehicle ? `${item.vehicle.brand} ${item.vehicle.type}` : 'N/A',
 			partner: item?.vehicle?.partner_id || 'N/A',
-			driver: item.driver ? `${item.driver.fname} ${item.driver.lname}` : item.route.driver ? `${item.route.driver.fname} ${item.route.driver.lname}` : 'N/A',
-			cost_of_supply: item?.trip?.cost_of_supply || 'N/A',
+			driver: item.driver ? `${item.driver.fname} ${item.driver.lname} ${item.driver.phone}` : item.route.driver ? `${item.route.driver.fname} ${item.route.driver.lname} ${item.route.driver.phone}` : 'N/A',
 			status: item.id
         }
 	})
@@ -118,7 +129,7 @@ const tableFields = ref([
     },
 	{
         text: 'ACTIONS',
-        value: ''
+        value: 'id'
     }
 ])
 
@@ -143,6 +154,14 @@ const tripType = reactive([
 
 const selectedTrip = ref('')
 const selectedItineraries = ref('')
+
+const navigateToTrip = (itm) => {
+	if (!itm.data.trip_id) {
+		useAlert().openAlert({ type: 'ERROR', msg: 'The ID to the trip you are about to view is not available' })
+	} else {
+		useRouter().push(`/trips/type/upcoming/${itm.data.trip_id}/trip-details`)
+	}
+}
 
 </script>
 
