@@ -183,7 +183,7 @@ export const useGetSuggestedRoutes = () => {
         end_date: ref('')
     }
 
-    watch([filterData.search, filterData.start_date, filterData.end_date], (val) => {
+    watch([filterData.search, filterData.start_date, filterData.end_date], (val: any[]) => {
         getSuggestedRoutesList()
     })
 
@@ -199,20 +199,45 @@ export const useGetSuggestedRoutes = () => {
     }
 
     setFunction(getSuggestedRoutesList)
-
+    const newRange = ref([])
     const onFilterUpdate = (data) => {
         switch (data.type) {
-            case 'status':
+            case 'search':
                 filterData.search.value = data.value
                 break
             case 'dateRange':
-                filterData.start_date.value = data.value
-                filterData.end_date.value = data.value
+                filterData.start_date.value = data?.value
+                filterData.end_date.value = data?.value
+                newRange.value = data?.value
                 break
         }
     }
 
-    return { getSuggestedRoutesList, loadingSuggestedRoutes, suggestedRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+    const filteredSuggestedRoutes = computed(() => {
+        const searchValue = filterData.search?.value?.toLowerCase()
+        if (searchValue) {
+            return suggestedRoutesList.value.filter((itm) => {
+            return (
+                itm?.name?.toLowerCase().includes(searchValue) ||
+                itm?.email?.toLowerCase().includes(searchValue) ||
+                itm?.phone?.toLowerCase().includes(searchValue) ||
+                itm?.destination?.toLowerCase().includes(searchValue) ||
+                itm?.pickup?.toLowerCase().includes(searchValue)
+            )
+        })
+        } else if (newRange.value.length > 0) {
+            return suggestedRoutesList.value.filter((itm) => {
+            return (
+                itm?.created_at.split(' ')[0].includes(newRange.value[0]) ||
+                itm?.created_at.split(' ')[0].includes(newRange.value[1])
+            )
+        })
+        } else {
+            return suggestedRoutesList.value
+        }
+    })
+
+    return { getSuggestedRoutesList, filteredSuggestedRoutes, loadingSuggestedRoutes, suggestedRoutesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
 
 export const useRoutePaymentOptions = () => {

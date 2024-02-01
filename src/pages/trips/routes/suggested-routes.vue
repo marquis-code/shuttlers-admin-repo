@@ -1,12 +1,12 @@
 <template>
 	<main class="">
-		<Table :loading="loadingSuggestedRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="suggestedRoutesList">
+		<Table :loading="loadingSuggestedRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="filteredSuggestedRoutes">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: false, showDatePicker: true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true }" @download="handleDownload" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.created_at">
-					{{ useDateFormat(item?.data?.createdAt, "MMMM d, YYYY, HH:MM A").value }}
+					{{ moment(item.data.created_at).format('Do MMMM, YYYY, h:mm A') }}
 				</span>
 				<div v-if="item.name" class="space-y-2">
 					<span class="text-sm">{{ item?.data?.name }}</span><br>
@@ -30,12 +30,16 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import moment from 'moment'
+import { useDownloadReport } from '@/composables/utils/csv'
 import { useGetSuggestedRoutes } from '@/composables/modules/routes/fetch'
-
-const { getSuggestedRoutesList, loadingSuggestedRoutes, suggestedRoutesList, filterData, next, prev, moveTo, page, total } = useGetSuggestedRoutes()
+const { loading, download } = useDownloadReport()
+const { getSuggestedRoutesList, onFilterUpdate, filteredSuggestedRoutes, loadingSuggestedRoutes, suggestedRoutesList, filterData, next, prev, moveTo, page, total } = useGetSuggestedRoutes()
 getSuggestedRoutesList()
-
+const emit = defineEmits(['download'])
+const handleDownload = () => {
+	download(filteredSuggestedRoutes.value, 'Suggested routes report')
+}
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
