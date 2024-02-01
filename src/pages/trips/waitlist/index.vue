@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loadingWaitlist" :headers="tableFields" :table-data="waitlistList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @download="handleDownload" @filter="onFilterUpdate" />
 				<div class="bg-white border-x border-gray-200">
 					<div class="flex justify-end items-end pr-3 pb-2">
 						<div class="flex items-center gap-x-2">
@@ -40,12 +40,18 @@
 import { useDateFormat } from '@vueuse/core'
 import { useGetwaitlistList } from '@/composables/modules/waitlist/fetch'
 import { useWaitlistIdDetails } from '@/composables/modules/waitlist/id'
-
+import { useDownloadReport } from '@/composables/utils/csv'
+const { download, loading } = useDownloadReport()
 const {
  getWaitlist, loadingWaitlist, waitlistList, next, filterData,
     prev, page, total, moveTo, onFilterUpdate
 } = useGetwaitlistList()
 getWaitlist()
+
+const handleDownload = () => {
+ loading.value = true
+ download(waitlistList.value, 'Waitlist report')
+}
 
 definePageMeta({
     layout: 'dashboard',
