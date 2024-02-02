@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 import { useDownloadReport } from '@/composables/utils/csv'
 const { download, loading } = useDownloadReport()
@@ -29,7 +30,19 @@ export const useBatchDownload = () => {
             // callback(chunkData)
         }
         loading.value = false
-        download(modifiedArray.value, 'Completed Trip List')
+        const computedData = modifiedArray.value.map((itm) => {
+          return {
+            'Trip Date': moment.utc(itm.start_trip).format('Do MMMM, YYYY, h:mm A'),
+            'Route Code': itm?.route?.route_code,
+            Pickup: itm?.route?.pickup,
+            Destination: itm.route.destination,
+            'Partners Name': itm?.vehicle?.partner?.company_name,
+            Vehicle: `${itm?.vehicle?.registration_number} ${itm?.vehicle?.brand} ${itm?.vehicle?.name}`,
+            Driver: `${itm?.driver?.fname} ${itm?.driver?.lname}`,
+            Passengers: itm?.passengers_count
+          }
+        })
+        download(computedData, 'Completed Trip List')
     }
  }
  return { fetchCompletedTripsDataInChunks, compiledDataList }
