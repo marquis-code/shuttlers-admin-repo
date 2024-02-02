@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loadingRental" :headers="tableFields" :table-data="rentalList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/trips/rental/${data.id}`)">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true}" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true, showDownloadButton: true}" @download="handleDownload" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.pickup_address">
@@ -39,13 +39,19 @@
 </template>
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useDownloadReport } from '@/composables/utils/csv'
 
 import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
+const { download, loading } = useDownloadReport()
 
-const { getRentalList, loadingRental, rentalList, page, moveTo, next, prev, total } = useGetRentalList()
+const { getRentalList, loadingRental, onFilterUpdate, rentalList, page, moveTo, next, prev, total } = useGetRentalList()
 
 getRentalList()
 
+const handleDownload = () => {
+ loading.value = true
+ download(rentalList.value, 'Rentals report')
+}
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']

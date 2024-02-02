@@ -105,6 +105,7 @@ export const use_post_charter = () => {
             if (res.type !== 'ERROR') {
                 reset_form()
 				useAlert().openAlert({ type: 'SUCCESS', msg: 'Your charter request has been sent successfully. Our agents would reach out to you shortly.' })
+                useRouter().push(`/trips/rental/${res.data.id}`)
             }
         } catch (error) {
             useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong, please try again' })

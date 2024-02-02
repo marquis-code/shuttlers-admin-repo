@@ -17,7 +17,8 @@ export const useWaitlistIdDetails = () => {
         const res = await waitlist_api.$_get_waitlist_by_id(metaObject, selectedWaitlistObject.value.date, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             selectedWaitlist.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            // const { pageCount, create } = res.data.metadata
+            metaObject.total.value = res.data.metadata.pageCount
         }
         loading.value = false
     }
@@ -26,7 +27,7 @@ export const useWaitlistIdDetails = () => {
     watch([filterData.routeCode, filterData.search], (val) => {
         if (filterData.routeCode.value) {
             const result = selectedWaitlist.value.filter((itm) => {
-                return (itm.value.toUpperCase().includes(val))
+                return (itm.routeCode.includes(filterData.routeCode.value))
             })
             selectedWaitlist.value = result
             return selectedWaitlist.value
