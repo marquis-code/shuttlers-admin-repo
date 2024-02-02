@@ -72,7 +72,6 @@ instanceArray.forEach((instance) => {
 		return response
 	},
 	(err:any) => {
-		console.log(err, 'error message')
 		if (typeof err.response === 'undefined') {
 			useAlert().openAlert({ type: 'ERROR', msg: 'kindly check your network connection' })
 			return {
