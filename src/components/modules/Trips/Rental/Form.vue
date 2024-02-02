@@ -99,7 +99,7 @@
 				<label for="email">Time</label>
 				<!-- <DatePicker v-model:value="credentials.return_time.value" value-type="format" format="hh:mm a" type="time" /> -->
 				<InputTimeInput v-model="credentials.return_time.value" />
-				{{ credentials.return_time.value }}
+				<!-- {{ credentials.return_time.value }} -->
 			</div>
 		</section>
 		<footer class="absolute bottom-0 inset-x-0 border-t p-4 grid grid-cols-1 items-end gap-4 bg-white">

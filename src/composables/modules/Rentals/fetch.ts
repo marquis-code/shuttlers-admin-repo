@@ -6,7 +6,9 @@ export const useGetRentalList = () => {
     const rentalList = ref([] as any)
 
     const filterData = {
-        status: ref('')
+        search: ref(''),
+        from: ref(''),
+        to: ref('')
     }
 
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -25,7 +27,23 @@ export const useGetRentalList = () => {
 
     setFunction(getRentalList)
 
-    return { getRentalList, loadingRental, rentalList, ...metaObject, next, prev, moveTo, filterData }
+    watch([filterData.search, filterData.from, filterData.to], (val) => {
+        getRentalList()
+    })
+
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'search':
+                filterData.search.value = data.value
+                break
+            case 'dateRange':
+                filterData.from.value = data.value[0] ? data.value[0] : ''
+                filterData.to.value = data.value[1] ? data.value[1] : ''
+                break
+        }
+    }
+
+    return { getRentalList, onFilterUpdate, loadingRental, rentalList, ...metaObject, next, prev, moveTo, filterData }
 }
 
 const loading = ref(false)

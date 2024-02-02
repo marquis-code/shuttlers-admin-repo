@@ -21,7 +21,8 @@ export const useGetwaitlistList = () => {
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
       waitlistList.value = res.data.data
-      metaObject.total.value = res.data.metadata.pageCount
+      const { pageCount: total_pages } = res.data.metadata
+      metaObject.total.value = total_pages
     }
     loadingWaitlist.value = false
   }
