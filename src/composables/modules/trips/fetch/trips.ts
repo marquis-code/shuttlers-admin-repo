@@ -23,7 +23,7 @@ const currentRoute = computed(() => {
 const downloadReport = async () => {
   const route = useRoute()
   const routeType = useRoute().name?.split('-')[2]
-  const baseURL = `/trips/${routeType}?limit=10&metadata=true&sort[created_at]=desc`
+  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?limit=10&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
