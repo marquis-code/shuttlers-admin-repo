@@ -19,8 +19,13 @@ const activeTripsList = ref([] as Record<string, any>[])
 const currentRoute = computed(() => {
   return useRoute().fullPath
 })
-const route = useRoute()
-const routeType = route?.name.split('-')[2]
+
+const routeType = computed(() => {
+  const route = useRoute()
+  if (Object.keys(route).length) {
+    return route?.name?.split('-')[2]
+  }
+})
 const downloadReport = async () => {
   const route = useRoute()
   const baseURL = `/trips/${routeType}?limit=10&metadata=true&sort[created_at]=desc`
@@ -57,7 +62,6 @@ export const useGetActiveTripsList = () => {
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
   const getActiveTrips = async () => {
-    console.log(route, 'route here')
     const request = async () => {
       loadingActiveTrips.value = true
       const res = (await trips_api.$_get_active_trips(
@@ -72,40 +76,6 @@ export const useGetActiveTripsList = () => {
     }
     addToQueue(request)
   }
-
-  // const downloadReport = async () => {
-  //   const route = useRoute()
-  //   const baseURL = '/trips/active?limit=10&metadata=true&sort[created_at]=desc'
-  //   const fromParam = ref('') as any
-  //   const toParam = ref('') as any
-  //   watchEffect(() => {
-  //     fromParam.value = route.query.from ?? ''
-  //     toParam.value = route.query.to ?? ''
-  //   })
-
-  //   const constructApiUrl = computed(() => {
-  //     let url = baseURL
-  //     const params = new URLSearchParams()
-
-  //     if (fromParam.value) params.append('from', fromParam.value)
-  //     if (toParam.value) params.append('to', toParam.value)
-
-  //     const queryString = params.toString()
-  //     if (queryString) url += `&${queryString}`
-
-  //     return url
-  //   })
-
-  //   fetchAllPagesAndDownload(constructApiUrl.value).then(() => {
-  //     const csvData = formattedCSVData(allData.value)
-  //     download(csvData, 'Active Trip Report')
-  //     useAlert().openAlert({ type: 'SUCCESS', msg: 'Report has been downloaded successfully' })
-  //   })
-  // }
-  // const handleMergedDataToDownload = (data:any) => {
-  //              const csvData = formattedCSVData(data)
-  //           download(csvData, 'Active Trip Report')
-  // }
   setFunction(getActiveTrips)
 
   watch(watchArray, () => {
@@ -123,7 +93,6 @@ export const useGetActiveTripsList = () => {
     next,
     prev,
     downloadReport
-    // handleMergedDataToDownload
   }
 }
 
@@ -149,23 +118,6 @@ export const useGetUpcomingTripsList = () => {
     return upcomingTripsList.value
   }
 
-  // const downloadReport = async () => {
-  //   const { metaObject: downloadMetaObject } = usePagination()
-  //   const request = async () => {
-  //     downloadMetaObject.page_size.value =
-  //       metaObject.total.value * metaObject.page_size.value
-  //     const res = (await trips_api.$_get_upcoming_trips(
-  //       filterData,
-  //       downloadMetaObject
-  //     )) as CustomAxiosResponse
-  //     if (res.type !== 'ERROR') {
-  //       const csvData = formattedCSVData(res.data.data)
-  //       download(csvData, 'Upcoming Trip Report')
-  //     }
-  //     loadingUpcomingTrips.value = false
-  //   }
-  //   addToQueue(request)
-  // }
   setFunction(getUpcomingTrips)
 
   watch(watchArray, () => {
@@ -207,52 +159,6 @@ export const useGetCompletedTripsList = () => {
     }
     addToQueue(request)
   }
-  // const downloadReport = async () => {
-  //   // const { metaObject: downloadMetaObject } = usePagination()
-  //   // const request = async () => {
-  //   //   downloadMetaObject.page_size.value =
-  //   //     metaObject.total.value * metaObject.page_size.value
-  //   //   const res = (await trips_api.$_get_completed_trips(
-  //   //     filterData,
-  //   //     downloadMetaObject
-  //   //   )) as CustomAxiosResponse
-  //   //   if (res.type !== 'ERROR') {
-  //   //     const csvData = formattedCSVData(res.data.data)
-  //   //     download(csvData, 'Completed Trip Report')
-  //   //   }
-  //   //   loadingCompletedTrips.value = false
-  //   // }
-  //   // addToQueue(request)
-  // }
-  // const downloadReport = async () => {
-  //   const route = useRoute()
-  //   const baseURL = '/trips/completed?limit=10&metadata=true&sort[created_at]=desc'
-  //   const fromParam = ref('') as any
-  //   const toParam = ref('') as any
-  //   watchEffect(() => {
-  //     fromParam.value = route.query.from ?? ''
-  //     toParam.value = route.query.to ?? ''
-  //   })
-
-  //   const constructApiUrl = computed(() => {
-  //     let url = baseURL
-  //     const params = new URLSearchParams()
-
-  //     if (fromParam.value) params.append('from', fromParam.value)
-  //     if (toParam.value) params.append('to', toParam.value)
-
-  //     const queryString = params.toString()
-  //     if (queryString) url += `&${queryString}`
-
-  //     return url
-  //   })
-
-  //   fetchAllPagesAndDownload(constructApiUrl.value).then(() => {
-  //     const csvData = formattedCSVData(mergedData.value)
-  //     download(csvData, 'Active Trip Report')
-  //     useAlert().openAlert({ type: 'SUCCESS', msg: 'Report has been downloaded successfully' })
-  //   })
-  // }
   setFunction(getCompletedTrips)
 
   watch(watchArray, () => {
@@ -295,23 +201,6 @@ export const useGetCancelledTripsList = () => {
     return cancelledTripsList.value
   }
 
-  // const downloadReport = async () => {
-  //   const { metaObject: downloadMetaObject } = usePagination()
-  //   const request = async () => {
-  //     downloadMetaObject.page_size.value =
-  //       metaObject.total.value * metaObject.page_size.value
-  //     const res = (await trips_api.$_get_cancelled_trips(
-  //       filterData,
-  //       downloadMetaObject
-  //     )) as CustomAxiosResponse
-  //     if (res.type !== 'ERROR') {
-  //       const csvData = formattedCSVData(res.data.data)
-  //       download(csvData, 'Cancelled Trip Report')
-  //     }
-  //     loadingCancelledTrips.value = false
-  //   }
-  //   addToQueue(request)
-  // }
   setFunction(getCancelledTrips)
 
   watch(watchArray, () => {
