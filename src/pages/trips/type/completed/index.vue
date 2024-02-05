@@ -4,7 +4,7 @@
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="handleUpdatedBatchDownload" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
 				</section>
 			</template>
 			<template #item="{ item }">
@@ -50,8 +50,8 @@
 </template>
 <script setup lang="ts">
 import moment from 'moment'
-import { useDateFormat } from '@vueuse/core'
-import { useBatchDownload } from '@/composables/core/useBatchDownload'
+// import { useDateFormat } from '@vueuse/core'
+// import { useBatchDownload } from '@/composables/core/useBatchDownload'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
@@ -59,7 +59,7 @@ import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
-const { fetchCompletedTripsDataInChunks } = useBatchDownload()
+// const { fetchCompletedTripsDataInChunks } = useBatchDownload()
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
 const { initTransfer } = useTransferTrip()
@@ -69,9 +69,9 @@ const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUp
 getCompletedTrips()
 const router = useRouter()
 
-const handleUpdatedBatchDownload = () => {
-	fetchCompletedTripsDataInChunks()
-}
+// const handleUpdatedBatchDownload = () => {
+// 	fetchCompletedTripsDataInChunks()
+// }
 
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i:any, index) => {

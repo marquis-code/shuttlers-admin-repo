@@ -1,5 +1,5 @@
 import { useDateFormat } from '@vueuse/core'
-
+import moment from 'moment'
 const requestQueue: (() => Promise<void>)[] = [] // Array to store the API request functions
 let isQueueRunning = false // Flag to track the loading status
 
@@ -74,8 +74,8 @@ filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list
 const formattedCSVData = (data: any[]) => {
     return data.map((trip) => {
         return {
-            Date: useDateFormat(trip.trip_start_time, 'YYYY-MM-DD').value,
-            Time: trip?.itinerary?.trip_time ?? 'N/A',
+            Date: moment.utc(trip.trip_start_time).format('YYYY-MM-DD'),
+            time: moment.utc(trip?.trip_date_time).format('h:mm A') ?? 'N/A',
             'Route Code': trip.route.route_code,
             Pickup: trip.route.pickup || 'N/A',
             Destination: trip.route.destination,
