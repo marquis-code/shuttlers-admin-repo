@@ -1,49 +1,35 @@
-import moment from 'moment'
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
-import { useDownloadReport } from '@/composables/utils/csv'
-const { download, loading } = useDownloadReport()
-export const useBatchDownload = () => {
-    const compiledDataList = ref([]) as any
-    const modifiedArray = ref([]) as any
- const fetchCompletedTripsDataInChunks = async () => {
-    const page = 1
-    const limit = 10
-    const url = `/trips/completed?limit=${limit}&page=${page}&metadata=true&sort[created_at]=desc`
-    const paginatedResponse = await GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-    const data = paginatedResponse.data.data
-    const pages = paginatedResponse.data.metadata.total_pages
-   if (pages < 2) {
-    compiledDataList.value.push(data)
-   }
-    // callback(data)
+import { GATEWAY_ENDPOINT } from '@/api_factory/axios.config'
+import { useAlert } from '@/composables/core/notification'
+export function usePaginatedFetchAndDownload() {
+  const isDownloading = ref(false)
+  const mergedData = ref([]) as Record<string, any>
+  const error = ref(null) as Record<string, any>
 
-    if (pages > 2) {
-        for (let page = 2; page <= pages; page++) {
-            loading.value = true
-            const url = `/trips/completed?limit=${limit}&page=${page}&metadata=true&sort[created_at]=desc`
-            const chunkData = await GATEWAY_ENDPOINT_WITH_AUTH.get(url)
-            // compiledDataList.value = [...compiledDataList.value, chunkData.data.data]
-            compiledDataList.value.push(chunkData.data.data)
-            const flattenedArray = compiledDataList.value.flat()
-            modifiedArray.value = flattenedArray
-            // compiledDataList.value.push(chunkData)
-            // callback(chunkData)
-        }
-        loading.value = false
-        const computedData = modifiedArray.value.map((itm) => {
-          return {
-            'Trip Date': moment.utc(itm.start_trip).format('Do MMMM, YYYY, h:mm A'),
-            'Route Code': itm?.route?.route_code,
-            Pickup: itm?.route?.pickup,
-            Destination: itm.route.destination,
-            'Partners Name': itm?.vehicle?.partner?.company_name,
-            Vehicle: `${itm?.vehicle?.registration_number} ${itm?.vehicle?.brand} ${itm?.vehicle?.name}`,
-            Driver: `${itm?.driver?.fname} ${itm?.driver?.lname}`,
-            Passengers: itm?.passengers_count
-          }
-        })
-        download(computedData, 'Completed Trip List')
+  async function fetchDataPage(url, page) {
+    const response = await GATEWAY_ENDPOINT.get(`${url}&page=${page}`)
+    const pageData = response.data
+    return pageData
+  }
+
+  async function fetchAllPagesAndDownload(url) {
+    isDownloading.value = true
+    error.value = null
+    mergedData.value = []
+
+    try {
+      const firstPageData = await fetchDataPage(url, 1)
+      const totalPages = firstPageData.metadata.total_pages
+      for (let page = 1; page <= totalPages; page++) {
+        const pageData = await fetchDataPage(url, page)
+        mergedData.value = [...mergedData.value, ...pageData.data]
+      }
+    } catch (e) {
+      useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong while downloading report.' })
+      error.value = e
+    } finally {
+      isDownloading.value = false
     }
- }
- return { fetchCompletedTripsDataInChunks, compiledDataList }
+  }
+
+  return { fetchAllPagesAndDownload, isDownloading, error, mergedData }
 }
