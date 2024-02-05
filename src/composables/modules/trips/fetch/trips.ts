@@ -20,28 +20,23 @@ const currentRoute = computed(() => {
   return useRoute().fullPath
 })
 
-const routeType = computed(() => {
-  const route = useRoute()
-  if (Object.keys(route).length) {
-    return route?.name?.split('-')[2]
-  }
-})
 const downloadReport = async () => {
   const route = useRoute()
+  const routeType = useRoute().name?.split('-')[2]
   const baseURL = `/trips/${routeType}?limit=10&metadata=true&sort[created_at]=desc`
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
-    fromParam.value = route.query.from ?? ''
-    toParam.value = route.query.to ?? ''
+    fromParam.value = route?.query?.dateRange?.split(',')[0] ?? ''
+    toParam.value = route?.query?.dateRange?.split(',')[1] ?? ''
   })
 
   const constructApiUrl = computed(() => {
     let url = baseURL
     const params = new URLSearchParams()
 
-    if (fromParam.value) params.append('from', fromParam.value)
-    if (toParam.value) params.append('to', toParam.value)
+    if (fromParam.value) params.append('from', route?.query?.dateRange?.split(',')[0])
+    if (toParam.value) params.append('to', route?.query?.dateRange?.split(',')[1])
 
     const queryString = params.toString()
     if (queryString) url += `&${queryString}`
@@ -52,7 +47,7 @@ const downloadReport = async () => {
   fetchAllPagesAndDownload(constructApiUrl.value).then(() => {
     const csvData = formattedCSVData(mergedData.value)
     download(csvData, `${routeType} trip report`)
-    useAlert().openAlert({ type: 'SUCCESS', msg: `Total Trip report ${fromParam.value ? `${fromParam.value} to ${toParam.value}` : ''}` })
+    useAlert().openAlert({ type: 'SUCCESS', msg: `Total ${routeType} Trip report ${fromParam?.value ? `${fromParam?.value} to ${toParam?.value}` : ''}` })
   })
 }
 
