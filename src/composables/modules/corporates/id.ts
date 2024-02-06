@@ -39,7 +39,7 @@ export const useCorporateAccountManagers = () => {
         loading.value = true
         const res = await corporates_api.$_get_accout_managers(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            corporateAccountManagers.value = res.data.data
+            corporateAccountManagers.value = res.data
         }
         loading.value = false
     }
