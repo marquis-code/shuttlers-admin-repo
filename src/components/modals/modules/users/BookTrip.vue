@@ -270,10 +270,10 @@ const bookTrip = async () => {
     recurring: form?.has_subscription ? Number(1) : Number(0),
     payment_source: form?.payment_source,
     luggage_quantity: form?.luggage_quantity,
-	additional_charges_id: computedCharges.value.map((obj) => obj.id)
+	additional_charges_id: computedCharges.value.filter((el) => el.selected).map((obj) => obj.id)
 	}
-	await handleUserTripBooking(payload)
-	useUserModal().closeBookTrip()
+	handleUserTripBooking(payload)
+	// useUserModal().closeBookTrip()
 }
 
 const subscriptionWeeks = reactive([
