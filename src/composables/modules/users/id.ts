@@ -2,6 +2,7 @@ import { users_api, corporates_api, CustomAxiosResponse } from '@/api_factory/mo
 import { usePagination } from '@/composables/utils/table'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useUserModal } from '@/composables/core/modals'
 
 const selectedUser = ref({} as any)
 const selectedUserId = ref('')
@@ -135,10 +136,10 @@ export const useBookUserTrip = () => {
                 type: 'SUCCESS',
                 msg: 'Trip was successfully booked for user'
             })
-            useConfirmationModal().closeAlert()
+            useUserModal().closeBookTrip()
         }
         loading.value = false
-        return res.data
+        // return res.data
     }
     return { loading, handleUserTripBooking }
 }
