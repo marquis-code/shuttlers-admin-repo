@@ -46,7 +46,7 @@ watch(selectedTrip, () => {
 		driver_id: selectedTrip.value?.driver?.id
 	}
 	populateRoutePassengers(payload)
-	getRoutePassengers(selectedTrip?.value?.route?.id)
+	getRoutePassengers(selectedTrip?.value?.route?.id, true)
 })
 
 definePageMeta({

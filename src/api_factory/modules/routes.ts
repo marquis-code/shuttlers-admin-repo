@@ -147,8 +147,9 @@ export const routes_api = {
 		const url = '/route-vehicles/transfers'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_get_route_bookings_passengers: (route_id:string|number, payload) => {
-        const url = `/routes/${route_id}/bookings/null`
+	$_get_route_bookings_passengers: (route_id:string|number, payload, isCancelled = false) => {
+		console.log(isCancelled)
+        const url = `/routes/${route_id}/bookings/null${isCancelled ? '?is_cancelled=true' : ''}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_routes_charges: (id: string, payload:Record<string, any>) => {

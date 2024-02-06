@@ -17,11 +17,12 @@ const loadingRoutePassengers = ref(false)
 const routePassengers = ref([] as any)
 
 export const useRoutePassengers = () => {
-    const getRoutePassengers = async (id: string) => {
+    const getRoutePassengers = async (id: string, isCancelled = false) => {
+        console.log(isCancelled)
         routePassengers.value = []
         if (!id) return
         loadingRoutePassengers.value = true
-        const res = await routes_api.$_get_route_bookings_passengers(id, convertObjWithRefToObj(routePassengersPayload as any)) as CustomAxiosResponse
+        const res = await routes_api.$_get_route_bookings_passengers(id, convertObjWithRefToObj(routePassengersPayload as any), isCancelled) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             routePassengers.value = res?.data?.data[0]?.data
         }
