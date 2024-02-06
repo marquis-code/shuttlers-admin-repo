@@ -3,7 +3,7 @@
 		<!-- <div class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 			<div class="flex justify-end items-end">
 				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md" @click="useTripsModal().openAddPassengersToTrips()">
-					Add passengers
+					Add passenger
 				</button>
 			</div>
 		</div> -->
@@ -46,7 +46,7 @@ watch(selectedTrip, () => {
 		driver_id: selectedTrip.value?.driver?.id
 	}
 	populateRoutePassengers(payload)
-	getRoutePassengers(selectedTrip?.value?.route?.id)
+	getRoutePassengers(selectedTrip?.value?.route?.id, true)
 })
 
 definePageMeta({
