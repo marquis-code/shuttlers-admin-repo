@@ -245,5 +245,9 @@ $_generate_business_booking_report: (corporateId, routeId, monthId) => {
 $_get_corporates_staffs_for_selector_component: (search = '', corporateId) => {
 	const url = `/corporates/${corporateId}/staff?limit=${20}&page=${1}&search=${search}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_get_corporate_group_by_id: (id: string | number) => {
+	const url = `/corporate-groups/${id}/members?related=corporateGroup,staff`
+	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 }
 }

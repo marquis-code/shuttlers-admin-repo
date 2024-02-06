@@ -1,5 +1,48 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
+import { usePaginatedFetchAndDownload } from '@/composables/core/useBatchDownload'
+import { useDownloadReport } from '@/composables/utils/csv'
+const { download } = useDownloadReport()
+const { fetchAllPagesAndDownload, isDownloading, error, mergedData } =
+  usePaginatedFetchAndDownload()
+
+  const formattedCSVData = (data:any) => {
+    return data.map((corporate:any) => {
+        return {
+            Name: corporate?.corporate_name ?? 'N/A',
+            Phone: corporate?.corporate_phone ?? 'N/A',
+            Email: corporate?.email ?? 'N/A'
+        }
+    })
+  }
+
+const downloadReport = async () => {
+    const route = useRoute() as any
+    const active = ref('') as any
+    watchEffect(() => {
+      active.value = route?.query?.status ?? ''
+    })
+    const baseURL = `/corporates?limit=10&active=${active.value}`
+
+    const constructApiUrl = computed(() => {
+      let url = baseURL
+      const params = new URLSearchParams()
+
+      if (active.value) params.append('active', route?.query?.status)
+
+      const queryString = params.toString()
+      if (queryString) url += `&${queryString}`
+
+      return url
+    })
+
+    fetchAllPagesAndDownload(constructApiUrl.value).then(() => {
+      const csvData = formattedCSVData(mergedData.value)
+      download(csvData, `${active.value === '0' ? 'Inactive' : 'Active'} report`)
+      useAlert().openAlert({ type: 'SUCCESS', msg: `${active.value === '0' ? 'Inactive' : 'Active'} report has been downloaded successfully` })
+    })
+  }
 
 export const useGetCorporateGraph = () => {
     const loading = ref(false)
@@ -21,6 +64,7 @@ export const useGetCorporateGraph = () => {
 
     const corporatesList = ref([] as any)
 export const useGetCorporateList = () => {
+    const route = useRoute() as any
     const loading = ref(false)
 
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -29,12 +73,11 @@ export const useGetCorporateList = () => {
 
     const filterData = {
         search: ref(''),
-        start_date_filter: ref(''),
-        end_date_filter: ref(''),
+        query: ref(''),
         active: ref(1)
     }
 
-    watch([filterData.search, filterData.start_date_filter, filterData.end_date_filter, filterData.active], (val) => {
+    watch([filterData.search, filterData.active], (val) => {
         getCorporatesList()
     })
 
@@ -55,6 +98,7 @@ export const useGetCorporateList = () => {
         switch (data.type) {
             case 'search':
                 filterData.search.value = data.value
+                filterData.query.value = data.value
                 break
             case 'status':
                 filterData.active.value = data.value
@@ -62,7 +106,7 @@ export const useGetCorporateList = () => {
         }
     }
 
-    return { getCorporatesList, loading, corporatesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
+    return { getCorporatesList, loading, corporatesList, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, downloadReport }
 }
 
 export const useGetDemoRequest = () => {
