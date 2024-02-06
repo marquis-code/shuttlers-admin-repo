@@ -51,21 +51,21 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Insights',
         routePath: '/companies/insights',
         oldPath: '/companies/insights',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Insights into company requests'
       },
       {
         title: 'Companies',
         routePath: '/companies',
         oldPath: '/companies/active',
-          shouldRedirect: false,
+          shouldRedirect: true,
         description: ''
       },
       {
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
-          shouldRedirect: false,
+          shouldRedirect: true,
         description: ''
       }
     ]
@@ -120,14 +120,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/trips/type/active',
         description: 'Insights into company requests',
         oldPath: '/trips/list/active-trips',
-          shouldRedirect: false,
+          shouldRedirect: true,
         excludedPaths: ['/trips/track-vehicle']
       },
       {
         title: 'Track Vehicle',
         routePath: '/trips/vehicle',
         oldPath: '/trips/track-vehicle',
-          shouldRedirect: false,
+          shouldRedirect: true,
         description: ''
       },
       {
@@ -143,40 +143,40 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/trips/replay',
         oldPath: '/routes',
         description: 'All routes',
-        shouldRedirect: false
+        shouldRedirect: true
       },
       {
         title: 'Suggested routes',
         routePath: '/trips/routes/suggested-routes',
         oldPath: '/routes/suggested-routes',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: ''
       },
       {
         title: 'Waitlist',
         routePath: '/trips/waitlist',
         oldPath: '/waitlist',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: ''
       },
       {
         title: 'Rental',
         routePath: '/trips/rental',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Handle shuttlers charter requests'
       },
       {
         title: 'Emergency report',
         routePath: '/trips/sos',
         oldPath: '/trips/sos',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Handle shuttlers sos requests'
       },
       {
         title: 'Trip issues',
         routePath: '/trips/trip-issues',
         oldPath: '/trips/trips-issues',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Handle shuttlers trip issues'
       }
     ]
@@ -193,20 +193,20 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Partners List',
         routePath: '/partners',
         oldPath: '/partners/list',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Vehicles Partners List'
       },
       {
         title: 'Payout',
         routePath: '/partners/payouts',
         oldPath: '/partners/payout/pending',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Vehicles Partners payout'
       },
       {
         title: 'Notify',
         routePath: '/partners/notify',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Notify Vehicles Partners'
       }
     ]
@@ -217,14 +217,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'DRIVERS',
     children: [
           {
         title: 'Manage ',
         routePath: '/drivers',
         oldPath: '/drivers/list',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Manage Drivers'
       }
       ]
@@ -237,7 +237,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
-    shouldRedirect: false,
+    shouldRedirect: true,
     children: null,
     modulePermission: 'EVENTS'
   },
@@ -245,7 +245,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Transactions',
     routePath: '/transactions',
     oldPath: '/transactions',
-    shouldRedirect: false,
+    shouldRedirect: true,
     description: '',
     iconComponent: shallowRef(transactionIcon),
     children: null,
@@ -268,7 +268,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(tagIcon),
     children: null,
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'PROMOTIONS'
   },
   {
@@ -277,7 +277,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     oldPath: '/promo-codes',
     description: '',
     iconComponent: shallowRef(tagIcon),
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'PROMOTIONS',
     children: null
   },
@@ -287,27 +287,27 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(partnerIcon),
     rootPath: '/campaigns',
-      shouldRedirect: false,
+      shouldRedirect: true,
     modulePermission: 'CAMPAIGNS',
     children: [
       {
         title: 'Valentine',
         routePath: '/campaigns/valentine',
         oldPath: '/games&campaigns/valentine',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Valentine management'
       },
       {
         title: 'Rewards',
         routePath: '/campaigns/rewards',
         description: 'Campaign Rewards',
-        shouldRedirect: false
+        shouldRedirect: true
       },
       {
         title: 'CMS Banners',
         routePath: '/campaigns/promotions/banner',
         oldPath: '/games&campaigns/banner',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'CMS promotional banner'
       }
     ]
@@ -324,7 +324,7 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       children: null,
       rootPath: '/admin',
       oldPath: '/admin/list',
-      shouldRedirect: false,
+      shouldRedirect: true,
       modulePermission: 'STAFF',
       requiredAdmin: true
     },
@@ -334,35 +334,35 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       description: '',
       iconComponent: shallowRef(configureIcon),
       rootPath: '/configuration/trip-rating-settings',
-      shouldRedirect: false,
+      shouldRedirect: true,
       modulePermission: ['ADMINCONFIG', 'ADDITIONALCHARGES'],
       children: [
         {
           title: 'Trip Rating Settings',
           routePath: '/configuration/trip-rating-settings',
           oldPath: '/configuration/customer-app/trip-rating-settings',
-            shouldRedirect: false,
+            shouldRedirect: true,
           description: 'Configure and manage trip rating parameters'
         },
         {
           title: 'Vehicle Categories',
           routePath: '/configuration/vehicle-category-management',
           oldPath: '/configuration/vehicle/category-management',
-            shouldRedirect: false,
+            shouldRedirect: true,
           description: 'Manage vehicle categories'
         },
         {
           title: 'Amenities',
           routePath: '/configuration/vehicle-amenities',
           oldPath: '/configuration/vehicle-amenities/vehicle-amenities-settings',
-            shouldRedirect: false,
+            shouldRedirect: true,
           description: 'Manage vehicle amenities'
         },
         {
           title: 'Route Price Control',
           routePath: isProd.value ? '/configuration/pricing/payment-option' : '/configuration/pricing/pricing-control',
           oldPath: '/configuration/pricing-controls/',
-          shouldRedirect: false,
+          shouldRedirect: true,
           description: 'Manage route pricing centrally'
         }
       ],
