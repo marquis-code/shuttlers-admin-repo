@@ -66,7 +66,7 @@
 					<p class="text-gray-500">
 						Company
 					</p>
-					<NuxtLink :to="`/companies/${selectedUser.corporate_id}/company-info`" class="text-blue-600 font-semibold underline">
+					<NuxtLink :to="`/companies/${selectedUser?.company?.id}/${selectedUser?.company?.active === 1 ? 'active' : 'inactive'}/company-info`" class="text-blue-600 font-semibold underline">
 						{{ selectedUser?.company?.corporate_name ?? 'N/A' }}
 					</NuxtLink>
 				</li>
