@@ -1,7 +1,7 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Create Group"
+		:title="`${Object.keys(selectedCorporateGroup).length ? 'Edit' : 'Create'} Group`"
 	>
 		<form class="flex flex-col gap-6 gap-y-10" @submit.prevent="createCorporateGroup">
 			<div class="field relative">
@@ -24,10 +24,11 @@
 </template>
 
 <script setup lang="ts">
+import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
 import { useCreateCorporateGroup } from '@/composables/modules/corporates/createCorporateGroup'
 import { useCompaniesModal } from '@/composables/core/modals'
 const { corporateGroupForm, loading, createCorporateGroup } = useCreateCorporateGroup()
-
+const { selectedCorporateGroup } = useCorporateGroupByGroupId()
 const isFormEmpty = computed(() => {
     return !!(corporateGroupForm.name.value)
 })

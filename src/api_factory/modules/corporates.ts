@@ -249,5 +249,9 @@ $_get_corporates_staffs_for_selector_component: (search = '', corporateId) => {
 $_get_corporate_group_by_id: (id: string | number) => {
 	const url = `/corporate-groups/${id}/members?related=corporateGroup,staff`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+},
+$_edit_corporate_group_by_id: (corporate_id, group_id, payload) => {
+	const url = `/corporates/${corporate_id}/groups/${group_id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 }
 }
