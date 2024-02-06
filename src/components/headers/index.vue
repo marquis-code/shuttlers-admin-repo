@@ -64,6 +64,7 @@ import TripRatingSettingsDetails from '@/components/headers/modules/Configure/Tr
 import TripIssues from '@/components/headers/modules/Trip-issues/index.vue'
 import CreateCreditLineUsage from '@/components/headers/modules/Companies/create-credit-line.vue'
 import ShuttleRequestDetails from '@/components/headers/modules/Companies/shuttle-request-details.vue'
+import CorporateGroupDetails from '@/components/headers/modules/Companies/company-group-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -75,6 +76,7 @@ const componentRouteArray = [
     { routes: ['companies-id-status-company-info', 'companies-id-status-stats', 'companies-id-status-staff', 'companies-id-status-wallet', 'companies-id-status-trip-report', 'companies-id-status-company-groups', 'companies-id-status-credit-line', 'companies-id-status-routes', 'companies-id-status-requests', 'companies-id-status-corporate-pay', 'companies-id-status-staff-settings', 'companies-id-status-capacity-configuration'], component: CompanyDetails },
     { routes: ['companies-insights'], component: Company_insight },
     { routes: ['companies-shuttle-requests'], component: ShuttleRequests },
+    { routes: ['companies-id-status-company-groups-group_id'], component: CorporateGroupDetails },
     { routes: ['companies-shuttle-requests-id-info', 'companies-shuttle-requests-id-staff-list'], component: ShuttleRequestDetails },
     { routes: ['users'], component: Users },
     { routes: ['users-batch-refund', 'users-batch-refund-create'], component: BatchRefund },
