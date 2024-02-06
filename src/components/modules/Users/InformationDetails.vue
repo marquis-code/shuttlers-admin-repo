@@ -56,9 +56,9 @@
 			<p class="text-gray-500 text-sm">
 				COMPANY
 			</p>
-			<p class="text-sm">
-				{{ selectedUser.company ? selectedUser.company.corporate_name : 'N/A' }}
-			</p>
+			<NuxtLink :to="`/companies/${selectedUser.corporate_id}/company-info`" class="text-blue-600 font-semibold underline">
+				{{ selectedUser?.company?.corporate_name ?? 'N/A' }}
+			</NuxtLink>
 		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
