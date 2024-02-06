@@ -43,7 +43,9 @@ import { useUserModal } from '@/composables/core/modals'
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
 // const { populateUserProfileUpdateForm, loading: createLoading, updateProfilePicture } = useCreateAdmin()
 import { useCreateUsers } from '@/composables/modules/users/create'
-
+import { useUserIdDetails } from '@/composables/modules/users/id'
+const { getUserById } = useUserIdDetails()
+const user_id = Number(useRoute().params.id)
 const { updateUserAvatar, loading } = useCreateUsers()
 const form = ref({
     imgUrl: '' as any
@@ -77,7 +79,9 @@ const changeProfile = () => {
     }
 	// populateUserProfileUpdateForm(payload)
 	// updateProfilePicture(id)'
-	updateUserAvatar(payload)
+	updateUserAvatar(payload).then(() => {
+		getUserById(String(user_id))
+	})
 }
 </script>
 
