@@ -9,18 +9,18 @@
 			<div class="field relative space-y-3">
 				<div>
 					<label for="oldPassword">Upload Image</label>
-					<p class="text-sm text-gray-500">
+					<!-- <p class="text-sm text-gray-500">
 						Select an image to upload
-					</p>
+					</p> -->
 				</div>
-				<div v-if="!previewUrl" class="p-4 shadow-sm rounded-md border-[0.4px] h-40 w-full">
-					<div class="space-y-3 border border-gray-700 border-dotted rounded-md h-full w-full">
-						<label class="w-full tracking-wide  cursor-pointer h-full grid place-content-center">
-							<p class="flex justify-center items-center gap-x-2">Click to select image</p>
-							<input id="image" class="hidden h-full w-full" type="file" accept="image/*" @change="onFileSelected">
-						</label>
-					</div>
-				</div>
+				<!-- <div v-if="!previewUrl" class="p-4 shadow-sm rounded-md border-[0.4px] h-40 w-full"> -->
+				<!-- <div class="space-y-3 border border-gray-700 bg-red-500 border-dotted rounded-md h-full w-full" @click="triggerFileUpload"> -->
+				<label v-if="!previewUrl" for="image" class="w-full p-4 shadow-sm rounded-md border-[0.4px] h-40 space-y-3 border-gray-700 bg-red-500 border-dotted tracking-wide  cursor-pointer grid place-content-center">
+					<p class="flex justify-center items-center gap-x-2">Click to select image</p>
+					<input id="image" name="image" class="hidden h-full w-full" type="file" accept="image/*" @change="onFileSelected">
+				</label>
+				<!-- </div> -->
+				<!-- </div> -->
 				<div v-else class="w-full h-40 rounded-md">
 					<img :src="previewUrl" alt="previewAmenity" class="h-40 w-full object-cover rounded-md">
 				</div>
@@ -43,11 +43,14 @@ import { useUserModal } from '@/composables/core/modals'
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
 // const { populateUserProfileUpdateForm, loading: createLoading, updateProfilePicture } = useCreateAdmin()
 import { useCreateUsers } from '@/composables/modules/users/create'
-
+import { useUserIdDetails } from '@/composables/modules/users/id'
+const { getUserById } = useUserIdDetails()
+const user_id = Number(useRoute().params.id)
 const { updateUserAvatar, loading } = useCreateUsers()
 const form = ref({
     imgUrl: '' as any
 })
+
 const route = useRoute()
 const id = String(route.params.id)
 
@@ -76,7 +79,9 @@ const changeProfile = () => {
     }
 	// populateUserProfileUpdateForm(payload)
 	// updateProfilePicture(id)'
-	updateUserAvatar(payload)
+	updateUserAvatar(payload).then(() => {
+		getUserById(String(user_id))
+	})
 }
 </script>
 

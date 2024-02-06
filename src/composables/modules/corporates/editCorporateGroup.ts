@@ -6,15 +6,13 @@ import { useCreateCorporateGroup } from '@/composables/modules/corporates/create
 const selectedCorporate = ref({} as Record<string, any>)
 const { corporateGroupForm } = useCreateCorporateGroup()
 const { fetchGroup } = useGroup()
-const selectedCorporateId = ref('')
 
-export const useCorporateIdDetails = () => {
+export const useEditCorporateGroup = () => {
     const loading = ref(false)
 
-    const getCorporateById = async (id: string) => {
-        selectedCorporateId.value = id
-        const corporate_id = useRoute().params.id
-        const group_id = useRoute().params.group_id
+    const editCorporateGroup = async () => {
+        const corporate_id = useRoute().params.id as any
+        const group_id = useRoute().params.group_id as any
         loading.value = true
         const res = await corporates_api.$_edit_corporate_group_by_id(corporate_id, group_id, convertObjWithRefToObj(corporateGroupForm)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -26,5 +24,5 @@ export const useCorporateIdDetails = () => {
         }
         loading.value = false
     }
-    return { selectedCorporate, loading, getCorporateById }
+    return { selectedCorporate, loading, editCorporateGroup }
 }

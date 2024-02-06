@@ -26,11 +26,11 @@
 				<div v-if="!loadingItineraries" class="w-full">
 					<label for="itinerary">Select Itinerary</label>
 					<select id="itinerary" v-model="form.route_itinerary_id"
-						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3">
+						class="border-red-500 w-full text-sm border outline-none py-2.5 text-gray-900 rounded-md px-3">
 						<option value="" class="" disabled>
 							--- select ---
 						</option>
-						<option v-for="(itinerary, idx) in routeItineraries" :key="idx" :value="itinerary.id">
+						<option v-for="(itinerary, idx) in routeItineraries" :key="idx" :selected="defaultSelected" :value="itinerary.id">
 							{{ itinerary?.trip_time }}
 						</option>
 					</select>
@@ -221,7 +221,7 @@ getMainRoutesList()
 const form = reactive({
 	selectedRoute: {} as Ref<Record<string, any>>,
 	route_id: '',
-	route_itinerary_id: null as any,
+	route_itinerary_id: '5:10' as any,
 	pickup_point: null as any,
 	drop_off_point: null as any,
 	startDate: '',
@@ -231,6 +231,15 @@ const form = reactive({
 	subscriptionDays: [],
 	tripWeeks: 0,
 	luggage_quantity: ''
+})
+
+const defaultSelected = ref('5:10') as any
+watch(() => form.selectedRoute, (val) => {
+	if (val) {
+		getRouteItinerariesByRouteId(form.selectedRoute.id).then(() => {
+			form.route_itinerary_id = routeItineraries.value[0]?.trip_time ?? null
+		})
+	}
 })
 
 const routeSelected = (val: any) => {
@@ -301,14 +310,12 @@ const payment_source = reactive([
 	{
 		id: 'company_balance',
 		name: 'Company Balance'
+	},
+	{
+		id: 'instant_payment',
+		name: 'Charge my company'
 	}
 ])
-
-watch(() => form.selectedRoute, (val) => {
-	if (val) {
-		getRouteItinerariesByRouteId(form.selectedRoute.id)
-	}
-})
 
 watch(() => form.pickup_point, (val) => {
 	if (val) {

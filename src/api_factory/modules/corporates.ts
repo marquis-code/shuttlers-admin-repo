@@ -250,7 +250,7 @@ $_get_corporate_group_by_id: (id: string | number) => {
 	const url = `/corporate-groups/${id}/members?related=corporateGroup,staff`
 	return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 },
-$_edit_corporate_group_by_id: (corporate_id, group_id, payload) => {
+$_edit_corporate_group_by_id: (corporate_id:string | number, group_id:string | number, payload:any) => {
 	const url = `/corporates/${corporate_id}/groups/${group_id}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 }
