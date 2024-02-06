@@ -2,7 +2,7 @@
 	<main class="space-y-4">
 		<div class="flex justify-end items-end">
 			<div class="flex items-center gap-x-3">
-				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5">
+				<button @click="handleChangeGroup" class="text-xs bg-black text-white rounded-md px-3 py-2.5">
 					Change group
 				</button>
 				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5">
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
 const {
+	handleChangeGroup,
   groupMembers,
   loading,
   getCorporateGroupByGroupId,

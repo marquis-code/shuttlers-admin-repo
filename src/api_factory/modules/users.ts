@@ -6,7 +6,7 @@ export const users_api = {
 
 	$_get_users: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true&sort[id]=desc&related=wallet`
+		const url = `/users?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_download_all_users: async (filterData?: Record<string, Ref>) => {

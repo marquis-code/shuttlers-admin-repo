@@ -4,7 +4,7 @@
 			<ModulesUsersInformationDetails v-if="!loading" :selected-user="selectedUser" :bus-captains-routes="busCaptainRoutes" :bus-captains-loader="loadingBusCaptains" />
 			<Skeleton v-else height="600px" />
 		</div>
-		<div class="lg:w-5/12 bg-white rounded-md shadow-sm">
+		<div class="lg:w-5/12">
 			<ModulesUsersWallet v-if="!loading" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
 			<Skeleton v-else height="300px" />
 		</div>

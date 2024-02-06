@@ -1,5 +1,9 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useCreateCorporateGroup } from '@/composables/modules/corporates/createCorporateGroup'
 import { usePagination } from '@/composables/utils/table'
+
+import { useCompaniesModal } from '@/composables/core/modals'
+const { corporateGroupForm } = useCreateCorporateGroup()
 const selectedCorporateGroup = ref({} as Record<string, any>)
 
 export const useCorporateGroupByGroupId = () => {
@@ -32,5 +36,10 @@ export const useCorporateGroupByGroupId = () => {
             filterData.search.value = data.value
         }
     }
-    return { groupMembers, loading, getCorporateGroupByGroupId, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, selectedCorporateGroup }
+
+   const handleChangeGroup = () => {
+    useCompaniesModal().openCreateCorporateGroup()
+    corporateGroupForm.name.value = selectedCorporateGroup?.value?.name
+   }
+    return { groupMembers, loading, getCorporateGroupByGroupId, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject, selectedCorporateGroup, handleChangeGroup }
 }
