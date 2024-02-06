@@ -55,9 +55,15 @@ export const useCreateUsers = () => {
     }
     const editUser = async (id: string) => {
 		loading.value = true
-
+		const formData = convertObjWithRefToObj(createForm)
+		const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
+			if (value !== '' && !(key === 'password' && !value)) {
+				acc[key] = value
+			}
+			return acc
+		}, {})
         const res = (await users_api.$_edit_users(
-            convertObjWithRefToObj(createForm, ['password']), id
+            dataToSend, id
         )) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useRouter().push(`/users/${id}/user-info`)
