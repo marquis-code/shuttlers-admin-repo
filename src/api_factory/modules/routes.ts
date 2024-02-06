@@ -148,7 +148,6 @@ export const routes_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_route_bookings_passengers: (route_id:string|number, payload, isCancelled = false) => {
-		console.log(isCancelled)
         const url = `/routes/${route_id}/bookings/null${isCancelled ? '?is_cancelled=true' : ''}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
