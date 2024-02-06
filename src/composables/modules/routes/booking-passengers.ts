@@ -18,7 +18,6 @@ const routePassengers = ref([] as any)
 
 export const useRoutePassengers = () => {
     const getRoutePassengers = async (id: string, isCancelled = false) => {
-        console.log(isCancelled)
         routePassengers.value = []
         if (!id) return
         loadingRoutePassengers.value = true
