@@ -40,7 +40,7 @@
 				</p>
 			</div>
 
-			<ul class="space-y-6 p-6">
+			<ul v-if="corporateWalletLimitUsageInfo" class="space-y-6 p-6">
 				<li class="flex items-center justify-between">
 					<p class="text-gray-500">
 						Wallet limit
@@ -105,11 +105,12 @@
 					</p>
 					<p>
 						{{
-							corporateWalletDetails?.wallet?.max_over_draw_value ?? 'N/A'
+							convertToCurrency(corporateWalletDetails?.wallet?.max_over_draw_value) ?? 'N/A'
 						}}
 					</p>
 				</li>
 			</ul>
+			<p v-else class="text-sm text-center font-medium py-3">No corporate pay</p>
 		</section>
 	</main>
 </template>

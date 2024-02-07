@@ -1,7 +1,9 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { useUserIdDetails } from '@/composables/modules/users/id'
 const selectedCorporate = ref({} as Record<string, any>)
 const selectedCorporateId = ref('')
+const { selectedUser } = useUserIdDetails()
 
 export const useCorporateIdDetails = () => {
     const loading = ref(false)
@@ -22,8 +24,9 @@ export const useCorporateWalletDetails = () => {
     const loading = ref(false)
     const corporateWalletDetails = ref({} as any)
     const getCorporateWalletObject = async () => {
+        const corporate_id = Number(selectedUser?.value.corporate_id)
         loading.value = true
-        const res = await corporates_api.$_get_company_wallet_info_by_id(Number(selectedCorporate.value.id)) as CustomAxiosResponse
+        const res = await corporates_api.$_get_company_wallet_info_by_id(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             corporateWalletDetails.value = res.data.data[0]
         }

@@ -20,13 +20,13 @@ const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletL
 const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
 const id = Number(useRoute().params.id)
 const corporate_id = Number(selectedUser?.value.corporate_id)
-getUserById(String(id))
-getBusCaptainRoutesById(String(id))
 
 onMounted(() => {
+	getUserById()
+    getBusCaptainRoutesById()
 	if (corporate_id) {
 		getCorporateWalletObject()
-     getUserCorporateWalletLimitUsageInfo(id)
+        getUserCorporateWalletLimitUsageInfo()
 	}
 })
 
