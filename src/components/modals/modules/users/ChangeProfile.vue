@@ -6,17 +6,20 @@
 		class="text-center"
 	>
 		<form class="flex flex-col gap-6 mt-4" @submit.prevent="changeProfile">
-			<div class="field relative space-y-3">
-				<div>
-					<label for="oldPassword">Upload Image</label>
+			<div class="flex flex-col items-center justify-center space-y-4">
+				<div class="w-full h-20">
+					<img :src="imageSrc || placeholder" alt="Preview" class="rounded-lg h-20 p-3 w-full border border-dotted border-gray-400 object-center object-cover">
 				</div>
-				<label v-if="!previewUrl" for="image" class="w-full p-4 shadow-sm rounded-md border-[0.4px] h-40 space-y-3 border-gray-700 bg-red-500 border-dotted tracking-wide  cursor-pointer grid place-content-center">
-					<p class="flex justify-center items-center gap-x-2">Click to select image</p>
-					<input id="image" name="image" class="hidden h-full w-full" type="file" accept="image/*" @change="onFileSelected">
-				</label>
-				<div v-else class="w-full h-40 rounded-md">
-					<img :src="previewUrl" alt="previewAmenity" class="h-40 w-full object-cover rounded-md">
-				</div>
+				<input
+					type="file"
+					accept="image/*"
+					class="file:mr-4 file:py-2 file:px-4
+				  file:rounded-full file:border-0
+				  file:text-sm file:font-semibold
+				  file:bg-violet-50 file:text-violet-700
+				  hover:file:bg-violet-100"
+					@change="handleFileChange"
+				>
 			</div>
 			<div class="flex justify-between items-center gap-x-10 mt-6">
 				<button type="submit" class="bg-gray-600 py-3 rounded-md text-xs text-white w-full" @click="useUserModal().closeChangeProfile()">
@@ -32,10 +35,11 @@
 </template>
 
 <script setup lang="ts">
+import placeholder from '@/assets/icons/source/upload-cloud.svg'
 import { useUserModal } from '@/composables/core/modals'
 import { useCreateUsers } from '@/composables/modules/users/create'
 import { useUserIdDetails } from '@/composables/modules/users/id'
-const { getUserById } = useUserIdDetails()
+const { getUserById, loading: loadingUser, selectedUser } = useUserIdDetails()
 const user_id = Number(useRoute().params.id)
 const { updateUserAvatar, loading } = useCreateUsers()
 const form = ref({
@@ -43,23 +47,6 @@ const form = ref({
 })
 
 const route = useRoute()
-const id = String(route.params.id)
-
-const previewUrl = ref(null) as any
-
-const onFileSelected = (e) => {
-	const file = e.target.files[0]
-	if (file) {
-		const fileReader = new FileReader()
-
-		fileReader.onload = (e) => {
-			form.value.imgUrl = e?.target?.result
-		}
-		previewUrl.value = URL.createObjectURL(e.target.files[0])
-		fileReader.readAsDataURL(file)
-	}
-}
-
 const isButtonEnabled = computed(() => {
 	return form.value.imgUrl
 })
@@ -68,11 +55,32 @@ const changeProfile = () => {
 	const payload = {
         avatar: form.value.imgUrl
     }
-	// populateUserProfileUpdateForm(payload)
-	// updateProfilePicture(id)'
 	updateUserAvatar(payload).then(() => {
-		getUserById(String(user_id))
+		getUserById()
 	})
+}
+
+const imageSrc = ref('') as any
+
+onMounted(async () => {
+  getUserById()
+  if (selectedUser?.value?.avatar) {
+    imageSrc.value = selectedUser?.value.avatar
+  } else {
+    imageSrc.value = placeholder
+  }
+})
+
+function handleFileChange(event) {
+  const file = event.target.files[0]
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      imageSrc.value = e?.target?.result
+	  form.value.imgUrl = e?.target?.result
+    }
+    reader.readAsDataURL(file)
+  }
 }
 </script>
 
