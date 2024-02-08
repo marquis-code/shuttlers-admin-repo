@@ -132,8 +132,9 @@ export const useBookUserTrip = () => {
     const loading = ref(false)
 
     const handleUserTripBooking = async (payload) => {
+        const user_id = String(useRoute().params.id)
         loading.value = true
-        const res = await users_api.$_book_trip(selectedUserId.value, payload) as CustomAxiosResponse
+        const res = await users_api.$_book_trip(user_id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
                 type: 'SUCCESS',

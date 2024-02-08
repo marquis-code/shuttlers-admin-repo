@@ -44,7 +44,6 @@
 						<option
 							v-for="(itinerary, idx) in routeItineraries"
 							:key="idx"
-							:selected="defaultSelected"
 							:value="itinerary.id"
 						>
 							{{ itinerary?.trip_time }}
@@ -337,7 +336,7 @@ getMainRoutesList()
 const form = reactive({
   selectedRoute: {} as Ref<Record<string, any>>,
   route_id: '',
-  route_itinerary_id: '5:10' as any,
+  route_itinerary_id: '' as any,
   pickup_point: null as any,
   drop_off_point: null as any,
   startDate: '',
@@ -349,14 +348,11 @@ const form = reactive({
   luggage_quantity: ''
 })
 
-const defaultSelected = ref('5:10') as any
 watch(
   () => form.selectedRoute,
   (val) => {
     if (val) {
-      getRouteItinerariesByRouteId(form.selectedRoute.id).then(() => {
-        form.route_itinerary_id = routeItineraries.value[0]?.trip_time ?? null
-      })
+      getRouteItinerariesByRouteId(form?.selectedRoute?.id)
     }
   }
 )
@@ -436,8 +432,9 @@ const bookTrip = async () => {
     payload.payment_reference = uuidv4()
     payload.instant_payment_provider = 'corporate_pay'
   }
-  await handleUserTripBooking(payload)
-  useUserModal().closeBookTrip()
+  await handleUserTripBooking(payload).then(() => {
+	useUserModal().closeBookTrip()
+  })
 }
 
 const subscriptionWeeks = reactive([
