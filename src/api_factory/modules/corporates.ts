@@ -253,5 +253,13 @@ $_get_corporate_group_by_id: (id: string | number) => {
 $_edit_corporate_group_by_id: (corporate_id:string | number, group_id:string | number, payload:any) => {
 	const url = `/corporates/${corporate_id}/groups/${group_id}`
 	return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+},
+$_add_corporate_group_members: (group_id:string | number, payload) => {
+	const url = `/corporate-groups/${group_id}/members`
+	return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+},
+$_delete_corporate_member: (group_id:string | number, member_id: string | any) => {
+	const url = `/corporate-groups/${group_id}/members/${member_id}`
+	return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 }
 }

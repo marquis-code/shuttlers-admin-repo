@@ -12,7 +12,8 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.created_at">
-					<span>{{ useDateFormat(item.data.created_at, "hh:mm A, MMMM d, YYYY").value }}</span>
+					<p>{{ moment(item.data.created_at).format('LT') }}</p>
+					<p>{{ moment(item.data.created_at).format('LL') }}</p>
 				</div>
 				<div v-if="item.title">
 					<span>{{ item?.data?.title ?? 'N/A' }}</span>
@@ -33,6 +34,7 @@
 	</main>
 </template>
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserTransactions } from '@/composables/modules/users/inner/transactions'
