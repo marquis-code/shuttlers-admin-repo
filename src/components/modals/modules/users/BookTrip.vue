@@ -426,15 +426,14 @@ const bookTrip = async () => {
     recurring: form?.has_subscription ? Number(1) : Number(0),
     payment_source: form?.payment_source,
     luggage_quantity: form?.luggage_quantity,
-    additional_charges_id: computedCharges.value.map((obj) => obj.id)
+    additional_charges_id: computedCharges.value.filter((el) => el.selected).map((obj) => obj.id)
   }
   if (form.payment_source === 'instant_payment') {
     payload.payment_reference = uuidv4()
     payload.instant_payment_provider = 'corporate_pay'
   }
-  await handleUserTripBooking(payload).then(() => {
-	useUserModal().closeBookTrip()
-  })
+  handleUserTripBooking(payload)
+//   useUserModal().closeBookTrip()
 }
 
 const subscriptionWeeks = reactive([
@@ -531,7 +530,8 @@ watch(
 )
 
 const tripFare = computed(() => {
-  return selectedItinerary?.value?.default_fare || 0
+//   return selectedItinerary?.value?.default_fare || 0
+	return routePricingInformation.value[0]?.fare || 0
 })
 
 const totalFare = computed(() => {

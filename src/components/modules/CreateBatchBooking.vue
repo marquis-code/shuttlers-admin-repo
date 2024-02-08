@@ -291,7 +291,7 @@ const bookTrip = async () => {
 			recurring: form?.has_subscription ? Number(1) : Number(0),
 			payment_source: form?.payment_source,
 			luggage_quantity: form?.luggage_quantity,
-			additional_charges_id: selectedRoute_charges.value.map((obj) => obj.id)
+			additional_charges_id: selectedRoute_charges.value.filter((el) => el.selected).map((obj) => obj.id)
 		},
 	   users: form.uploadedUsers
 	}
@@ -388,7 +388,8 @@ watch(() => form.drop_off_point, (val) => {
 })
 
 const tripFare = computed(() => {
-	return selectedItinerary?.value?.default_fare || 0
+	// return selectedItinerary?.value?.default_fare || 0
+	return routePricingInformation.value[0]?.fare || 0
 })
 
 const totalFare = computed(() => {
