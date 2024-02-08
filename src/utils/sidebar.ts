@@ -142,8 +142,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Routes Replay',
         routePath: '/trips/replay',
         oldPath: '/routes',
-        description: 'All routes',
-        shouldRedirect: true
+        description: 'All routes'
       },
       {
         title: 'Suggested routes',
@@ -162,21 +161,18 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Rental',
         routePath: '/trips/rental',
-        shouldRedirect: true,
         description: 'Handle shuttlers charter requests'
       },
       {
         title: 'Emergency report',
         routePath: '/trips/sos',
         oldPath: '/trips/sos',
-        shouldRedirect: true,
         description: 'Handle shuttlers sos requests'
       },
       {
         title: 'Trip issues',
         routePath: '/trips/trip-issues',
         oldPath: '/trips/trips-issues',
-        shouldRedirect: true,
         description: 'Handle shuttlers trip issues'
       }
     ]
@@ -300,8 +296,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       {
         title: 'Rewards',
         routePath: '/campaigns/rewards',
-        description: 'Campaign Rewards',
-        shouldRedirect: true
+        description: 'Campaign Rewards'
       },
       {
         title: 'CMS Banners',
