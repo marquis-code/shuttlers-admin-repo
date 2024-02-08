@@ -18,7 +18,7 @@ import { useCompaniesModal } from '@/composables/core/modals'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 const { updateCorporateStatus, loading: processingStatusUpdate } = useUpdateCorporateStatus()
-const { selectedCorporate, getCorporateById } = useCorporateIdDetails()
+const { selectedCorporate, getCorporateById, loading } = useCorporateIdDetails()
 
 if (Object.keys(selectedCorporate.value).length === 0) {
     const id = useRoute().params.id as string

@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<Table :loading="loading" :headers="tableFields" :table-data="corporateAccountManagers" :has-options="true">
+		<Table :loading="loading" :headers="tableFields" :table-data="computedManagers" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 				<div class="flex justify-end items-end bg-white border-x pr-4 py-2">
@@ -12,6 +12,9 @@
 			<template #item="{ item }">
 				<div v-if="item.fname">
 					<Avatar :name="item?.data?.fname" bg="#B1C2D9" />
+				</div>
+				<div v-if="item.id">
+					<NuxtLink :to="`/admin/${item.data.id}/info`" class="text-white bg-black rounded-md text-sm px-3 py-2.5">Un-assign</NuxtLink>
 				</div>
 			</template>
 		</Table>
@@ -39,9 +42,18 @@ const tableFields = ref([
     },
     {
         text: 'ACTION',
-        value: 'action'
+        value: 'id'
     }
 ])
+
+const computedManagers = computed(() => {
+	return corporateAccountManagers.value.map((itm) => {
+		return {
+			...itm,
+			name: `${itm.fname} ${itm.lname}`
+		}
+	})
+})
 
 </script>
 

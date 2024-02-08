@@ -26,7 +26,7 @@
 
 				<div class="field relative">
 					<label for="Phone">Phone</label>
-					<input id="Phone" v-model="createForm.phone.value" type="number" name="" class="input-field" required>
+					<input id="Phone" v-model="createForm.phone.value" type="tel" name="" class="input-field" required>
 				</div>
 			</div>
 			<div class="grid lg:grid-cols-2 gap-8">
