@@ -44,6 +44,7 @@ export const use_auth_login = () => {
 
 		loading.value = false
 		if (res.type !== 'ERROR') {
+			console.log(res.data)
 			await useUser().createUser(res.data)
 			const redirectUrl = useUser().redirect.value
 			useUser().redirect.value = null
