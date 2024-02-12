@@ -103,7 +103,7 @@
 						</span>
 					</p>
 					<p v-if="item.contact" class="">
-						<a class="text-blue-600 text-medium underline" :href="`mailto:` + item.data.user_email" target="_blank">{{ item?.data?.user_email }}</a><br />
+						<a class="text-blue-600 text-medium underline" :href="`mailto:` + item.data.user_email" target="_blank">{{ item?.data?.user_email }}</a><br>
 						<a class="text-blue-600 text-medium underline" :href="`tel:` + item.data.user_phone" target="_blank">{{ item?.data?.user_phone }}</a>
 					</p>
 					<p v-if="item.created_at">
