@@ -98,7 +98,6 @@ const tableFields = ref([
 	{ text: 'DRIVER', value: 'driver' },
 	{ text: 'REASON', value: 'reason' },
 	{ text: 'PASSENGERS', value: 'passengers' }
-	// { text: 'ACTIONS', value: 'action' }
 ])
 
 </script>
