@@ -21,7 +21,8 @@
 					{{ item.data.status }}
 				</span>
 				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY, hh:mm:ss A").value }}
+					{{ moment.utc(item.data.created_at).format('ll, hh:mm:ss A') }}
+					<!-- {{ useDateFormat(item.data.created_at, "MMMM d, YYYY, hh:mm:ss A").value }} -->
 				</span>
 			</template>
 			<template #footer>
@@ -32,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useGetBatchBookingList } from '@/composables/modules/batchBooking/fetch'
 import { useBatchBookingIdDetails } from '@/composables/modules/batchBooking/id'
