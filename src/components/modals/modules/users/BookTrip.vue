@@ -459,7 +459,7 @@ const payment_source = reactive([
     name: 'Main Balance'
   },
   {
-    id: 'company_balance',
+    id: 'credit_balance',
     name: 'Company Balance'
   },
   {

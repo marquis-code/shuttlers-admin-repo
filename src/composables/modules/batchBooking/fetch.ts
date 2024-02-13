@@ -29,7 +29,7 @@ export const useGetBatchBookingList = () => {
     //             break
     //     }
     // }
-    // setFunction(getBatchBookingList)
+    setFunction(getBatchBookingList)
 
     return { getBatchBookingList, loading, batchBookingList, moveTo, ...metaObject, next, prev }
 }

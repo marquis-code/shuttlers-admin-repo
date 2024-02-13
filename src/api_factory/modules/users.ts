@@ -107,12 +107,12 @@ export const users_api = {
 		const url = `/users/${id}/corporate-wallet-limit-usage`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_user_completed_and_past_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
+	$_get_user_completed_and_past_bookings: (id:string | number, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/users/${id}/user-route-schedules?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_user_active_bookings: (id:string, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
+	$_get_user_active_bookings: (id:string | number, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
