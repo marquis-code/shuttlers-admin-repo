@@ -14,7 +14,9 @@
 					<Avatar :name="item?.data?.fname" bg="#B1C2D9" />
 				</div>
 				<div v-if="item.id">
-					<NuxtLink :to="`/admin/${item.data.id}/info`" class="text-white bg-black rounded-md text-sm px-3 py-2.5">Un-assign</NuxtLink>
+					<NuxtLink :to="`/admin/${item.data.id}/info`" class="text-white bg-black rounded-md text-sm px-3 py-2.5">
+						Un-assign
+					</NuxtLink>
 				</div>
 			</template>
 		</Table>
