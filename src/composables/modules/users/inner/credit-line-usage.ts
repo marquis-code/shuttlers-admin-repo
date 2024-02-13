@@ -3,7 +3,6 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const { selectedUser } = useUserIdDetails()
-
 export const useUserCreditLineUsage = () => {
     const loading = ref(false)
     const creditLineUsageList = ref([] as any)
@@ -11,25 +10,21 @@ export const useUserCreditLineUsage = () => {
     const filterData = {
       ascending: ref('1'),
       byColumn: ref('0'),
-      startDate: ref(''),
+      startDate: ref('') as any,
       staffId: ref(''),
-      endDate: ref('')
+      endDate: ref('') as any
     }
 
-    // watch(selectedUser, () => {
-    //     getUserCreditLineUsage()
-    // })
-
     const getUserCreditLineUsage = async () => {
+        loading.value = true
         if (!selectedUser?.value?.corporate_id) {
             return
         }
-        loading.value = true
         // const id = selectedUser?.value?.corporate_id
         const res = await corporates_api.$_get_credit_line_usage(selectedUser.value.corporate_id, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             creditLineUsageList.value = res.data
-            metaObject.total.value = res.data.metadata.total_pages
+            metaObject.total.value = res.data.total
         }
         loading.value = false
     }

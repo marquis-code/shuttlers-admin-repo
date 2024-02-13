@@ -12,7 +12,6 @@ import { usePassengersTracking } from '@/composables/modules/trips/tracking'
 const { listenToallPassengersLocation } = usePassengersTracking()
 const { selectedTrip, loading, getCancelledTripById, handleNext, handlePrev } = useCancelledTripIdDetails()
 const id = useRoute().params.id as string
-// getUpcomingTripById(id)
 getCancelledTripById(id)
 
 const computedTitle = computed(() => {
