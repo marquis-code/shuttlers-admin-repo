@@ -2,7 +2,7 @@ import moment from 'moment'
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
-
+const route = useRoute()
 const { loading: downloading } = useDownloadReport()
 export const useGetUsersGraph = () => {
     const loading = ref(false)
@@ -45,13 +45,27 @@ export const useGetRecentSignupsList = () => {
 export const useGetUsersList = () => {
     const loading = ref(false)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-    const filterData = {
+
+    interface FiltrerDataOInterface {
+        status: Record<string, any>,
+        search: Record<string, any>,
+        start_date_filter:Record<string, any>,
+        end_date_filter: Record<string, any>,
+        corporate_id:Record<string, any>,
+        is_corporate?:Record<string, any>,
+    }
+    let filterData: FiltrerDataOInterface = {
         status: ref('active'),
         search: ref(''),
         start_date_filter: ref(''),
         end_date_filter: ref(''),
-        corporate_id: ref('')
-        // is_corporate: ref(0)
+        corporate_id: ref(''),
+        is_corporate: ref(0)
+    }
+
+    if (route.name !== 'users-notify') {
+        const { is_corporate, ...remainingPayload } = filterData
+        filterData = remainingPayload
     }
 
     const { $_get_users, $_get_searched_users } = users_api

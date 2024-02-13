@@ -56,5 +56,4 @@ watch(computedTitle, (val:string) => {
 		getRoutePassengers(selectedTrip?.value?.route?.id)
     }
 }, { immediate: true })
-// getRoutePassengers(selectedTrip?.value?.route?.id)
 </script>

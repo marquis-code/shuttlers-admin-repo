@@ -66,7 +66,7 @@ const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
 const { usersList, loading } = useGetUsersList()
 
 const companyName = (data) => {
-      return corporatesList.value.find((c) => c.id === data)?.corporate_name
+      return corporatesList.value.find((c) => c.id === data).corporate_name
     }
 </script>
 
