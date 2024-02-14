@@ -28,10 +28,10 @@
 			</div>
 			<div v-if="sortDirection === 'company'" class="flex items-center justify-between  pt-6 pb-6 px-10 border-b gap-x-3 w-full">
 				<div class="w-4/12">
-					<label for="corporates" class="block mb-2 text-sm">Select Company</label>
+					<label for="corporates" class="block mb-2 text-sm">Select Company {{ corporateId }}</label>
 				</div>
 				<div class="w-8/12">
-					<select id="countries" v-model="corporateId" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
+					<select id="companies" v-model="corporateId" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
 						<option v-for="(item, index) in corporatesList" :key="index" :value="item.id">
 							{{ item.corporate_name }}
 						</option>
@@ -54,7 +54,7 @@
 						</div>
 					</div>
 					<div>
-						<input :id="item.email" v-model="selectedUsers" :checked="notificationType === 'all'" :disabled="sortDirection === 'company'" type="checkbox" :value="item" class="form-checkbox rounded-full text-green7">
+						<input :id="item.email" v-model="selectedUsers" :checked="notificationType === 'all'" :disabled="sortDirection === 'company' || notificationType === 'all'" type="checkbox" :value="item" class="form-checkbox rounded-full text-green7">
 					</div>
 				</div>
 			</div>
@@ -70,10 +70,11 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
 import { useCreateNotification } from '@/composables/modules/users/notification'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
+import { useGetUsersList, useGetUserByCorporateId } from '@/composables/modules/users/fetch'
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 
 const { getCorporatesList, loading: loadingCorporateList, corporatesList, page_size: corporate_page_size } = useGetCorporateList()
+const { getCorporatesByIdList, corporateUsersList } = useGetUserByCorporateId()
 const { getUsersList, loading, usersList, filterData, page_size } = useGetUsersList()
 
 corporate_page_size.value = 10000
@@ -116,6 +117,12 @@ watch(sortDirection, () => {
 		filterData.corporate_id.value = ''
 		corporateId.value = ''
 		getUsersList()
+	}
+
+	if (sortDirection.value === 'company') {
+		getCorporatesByIdList(corporateId.value).then(() => {
+			usersList.value = corporateUsersList.value
+		})
 	}
 })
 

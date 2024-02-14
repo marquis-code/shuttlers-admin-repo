@@ -50,8 +50,6 @@
 </template>
 <script setup lang="ts">
 import moment from 'moment'
-// import { useDateFormat } from '@vueuse/core'
-// import { useBatchDownload } from '@/composables/core/useBatchDownload'
 import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
@@ -59,7 +57,6 @@ import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
-// const { fetchCompletedTripsDataInChunks } = useBatchDownload()
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
 const { initTransfer } = useTransferTrip()
@@ -68,10 +65,6 @@ const { selectedTrip } = useCompletedTripIdDetails()
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
 getCompletedTrips()
 const router = useRouter()
-
-// const handleUpdatedBatchDownload = () => {
-// 	fetchCompletedTripsDataInChunks()
-// }
 
 const formattedCompletedTripsList = computed(() =>
 completedTripsList.value.map((i:any, index) => {

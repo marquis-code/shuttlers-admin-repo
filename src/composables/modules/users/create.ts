@@ -98,7 +98,7 @@ export const useCreateUsers = () => {
                 msg: 'Password has been changed successfully'
             })
 			useUserModal().closeChangeUserPassword()
-			getUserById(selectedUserId.value)
+			getUserById()
         }
         loading.value = false
     }
@@ -117,7 +117,7 @@ export const useCreateUsers = () => {
                 msg: `User has been ${type === 'suspend' ? 'suspended' : 'un-suspended'} successfully`
             })
 			useConfirmationModal().closeAlert()
-			getUserById(selectedUserId.value)
+			getUserById()
         }
         loading.value = false
     }
@@ -129,10 +129,10 @@ export const useCreateUsers = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
                 type: 'SUCCESS',
-                msg: `User wallet was debited of ${convertToCurrency(Number(walletUpdateForm?.amount?.value))} successfully`
+                msg: `User wallet was ${walletActionType.value === 'debit' ? 'debited of' : 'credited with'} ${convertToCurrency(Number(walletUpdateForm?.amount?.value))} successfully`
             })
 			useUserModal().closeWalletUpdate()
-			getUserById(selectedUserId.value)
+			getUserById()
         }
         loading.value = false
     }
@@ -151,8 +151,8 @@ export const useCreateUsers = () => {
         }
 		loading.value = false
 		useConfirmationModal().closeAlert()
-		getUserById(selectedUserId.value)
-		getBusCaptainRoutesById(selectedUserId.value)
+		getUserById()
+		getBusCaptainRoutesById()
     }
 	const populateWalletUpdateForm = (data: any) => {
 		walletUpdateForm.amount.value = data.amount || ''

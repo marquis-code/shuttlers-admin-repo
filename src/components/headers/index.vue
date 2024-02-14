@@ -65,6 +65,8 @@ import TripIssues from '@/components/headers/modules/Trip-issues/index.vue'
 import CreateCreditLineUsage from '@/components/headers/modules/Companies/create-credit-line.vue'
 import ShuttleRequestDetails from '@/components/headers/modules/Companies/shuttle-request-details.vue'
 import CorporateGroupDetails from '@/components/headers/modules/Companies/company-group-details.vue'
+import SalesAgent from '@/components/headers/modules/Agents/index.vue'
+import AgentDetails from '@/components/headers/modules/Agents/agent-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -134,7 +136,10 @@ const componentRouteArray = [
     { routes: ['configuration-trip-rating-settings-id'], component: TripRatingSettingsDetails },
     { routes: ['trips-routes-id-details', 'trips-routes-id-bus-stops', 'trips-routes-id-itineraries', 'trips-routes-id-itineraries-iti_id', 'trips-routes-id-itineraries-iti_id-new-auction', 'trips-routes-id-itineraries-iti_id-auction-details', 'trips-routes-id-trips', 'trips-routes-id-edit'], component: RouteDetails },
     { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo },
-    { routes: ['trips-trip-issues', 'trips-trip-issues-resolved'], component: TripIssues }
+    { routes: ['trips-trip-issues', 'trips-trip-issues-resolved'], component: TripIssues },
+    { routes: ['agents'], component: SalesAgent },
+    { routes: ['agents-create'], component: GenericHeader },
+    { routes: ['agents-id-agent-info', 'agents-id-Passengers', 'agents-id-agent-routes'], component: AgentDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {

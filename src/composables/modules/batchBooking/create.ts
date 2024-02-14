@@ -88,17 +88,17 @@ watch([() => form.selectedRoute, () => form.route_itinerary_id], () => {
 watch(() => form.has_return, () => {
     if (form.has_return) {
         returnTripItinerary.value = {}
-        if (selectedItinerary.value?.itinerary_pair_id) {
+        if (selectedItinerary.value?.itinerary_pair_id !== null) {
             getReturnTripDetails(selectedItinerary.value.itinerary_pair_id)
         } else {
-            useAlert().openAlert({ type: 'WARNING', msg: 'This trip doesnt have a return trip paired' })
+            useAlert().openAlert({ type: 'WARNING', msg: 'This trip does\'nt have a return trip paired' })
             form.has_return = false
         }
     }
 })
 
 const isFormEmpty = computed(() => {
-	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers)
+	return !!(form.selectedRoute && form.route_itinerary_id && form.pickup_point && form.drop_off_point && form.startDate && form.payment_source && form.uploadedUsers.length > 0)
 })
 
 const routeSelected = (val: any) => {

@@ -123,7 +123,6 @@ const computedRouteCodeList = computed(() => {
     new Set(selectedWaitlist.value.map((item) => item.routeCode))
   )
 })
-// const formattedWaitlist = removeDuplicates(selectedWaitlist.value)
 const propertiesToKeep = ['routeCode', 'itenery']
 const modifiedArray = computed(() => {
   return selectedWaitlist.value.map((obj) => {

@@ -44,8 +44,6 @@
 					<input :id="option.id" v-model="option.checked" :checked="option.checked" type="checkbox" :disabled="!isEditingPaymentOptions || isEditingPaymentOptionsLoading" @change="handleUpdatedSelectedCheckBox(option)">
 					{{ option.title }}
 				</label> -->
-				<span class="text-rose-500">{{ mappedPaymentOptions }}</span>
-				<span class="text-emerald-500">{{ newlySelectedPaymentOptions }}</span>
 				<label v-for="option in mappedPaymentOptions" :key="option.id" :for="option.id" class="flex items-center text-sm font-light mt-1.5">
 					<input :id="option.id" v-model="option.checked" :checked="newlySelectedPaymentOptions.includes(option.id)" type="checkbox" :disabled="!isEditingPaymentOptions || isEditingPaymentOptionsLoading" @change="handleUpdatedSelectedCheckBox(option)">
 					{{ option.title }}

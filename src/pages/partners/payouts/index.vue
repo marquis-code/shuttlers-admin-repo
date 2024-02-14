@@ -14,16 +14,21 @@
 					:filter-type="{
 						showSearchBar: true,
 						showDateRange: true,
+						showDownloadButton: true
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadPayouts"
 				/>
+			</template>
+			<template #sub_header>
+				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
-					{{ item.data.owner.fname || '' }} {{ item.data.owner.lname || '' }}
+					{{ item.data?.owner?.fname || '' }} {{ item.data?.owner?.lname || 'N/A' }}
 				</p>
 				<p v-if="item.payout_month" class="text-sm whitespace-nowrap">
-					{{ item.data.referenceTime ? moment(item.data.referenceTime).format('MMMM, YYYY') : 'N/A' }}
+					{{ item.data?.referenceTime ? moment(item.data.referenceTime).format('LL') : 'N/A' }}
 				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item.data.approvalsCount || 0 }}/2
@@ -51,7 +56,7 @@
 import moment from 'moment'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
-const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
@@ -68,9 +73,9 @@ const dropdownChildren = computed(() => [
 
 const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
-	{ text: 'PAYOUT MONTH', value: 'payout_month' },
-	{ text: 'COMPANY NAME', value: 'company_name', width: '50%' },
+	{ text: 'COMPANY NAME', value: 'company_name' },
 	{ text: 'EMAIL', value: 'company_email' },
+	{ text: 'PAYOUT DATE', value: 'payout_month' },
 	{ text: 'AMOUNT (₦)', value: 'amount' },
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }

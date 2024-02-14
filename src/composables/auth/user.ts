@@ -5,7 +5,7 @@ const runtimeData = {
 	auth: ref(),
 	user: ref({} as any),
 	token: ref(''),
-	redirect: ref('')
+	redirect: ref()
 }
 const localstorageDate = {
 	auth: ref(),

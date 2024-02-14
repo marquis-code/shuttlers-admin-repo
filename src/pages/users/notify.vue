@@ -1,5 +1,5 @@
 <template>
-	<div class="grid grid-cols-2 gap-8 pt-12">
+	<div class="grid lg:grid-cols-2 gap-8 pt-12">
 		<ModulesUsersNotifySectionOne />
 		<ModulesUsersNotifySectionTwo />
 	</div>

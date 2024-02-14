@@ -26,6 +26,7 @@ module.exports = {
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 		'no-tabs': 'off',
 		'vue/max-attributes-per-line': 'off',
+		'import/no-named-as-default-member': 'off',
 		'vue/first-attribute-linebreak': 'off',
 		'vue/html-closing-bracket-newline': 'off',
 		'vue/no-v-model-argument': 'off',

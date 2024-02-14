@@ -14,9 +14,14 @@
 					:filter-type="{
 						showSearchBar: true,
 						showDateRange: true,
+						showDownloadButton: true
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadPayouts"
 				/>
+			</template>
+			<template #sub_header>
+				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading"/>
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
@@ -48,7 +53,7 @@
 import moment from 'moment'
 import { useCompletedPayouts } from '@/composables/modules/partners/payouts/completed'
 
-const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchCompletedPayouts } = useCompletedPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchCompletedPayouts, downloadPayouts } = useCompletedPayouts()
 fetchCompletedPayouts()
 
 definePageMeta({
