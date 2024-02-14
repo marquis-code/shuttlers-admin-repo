@@ -14,8 +14,10 @@
 					:filter-type="{
 						showSearchBar: true,
 						showDateRange: true,
+						showDownloadButton: true
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadPayouts"
 				/>
 			</template>
 			<template #sub_header>
@@ -51,7 +53,7 @@
 import moment from 'moment'
 import { useFailedPayouts } from '@/composables/modules/partners/payouts/failed'
 
-const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchFailedPayouts } = useFailedPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchFailedPayouts, downloadPayouts } = useFailedPayouts()
 fetchFailedPayouts()
 
 definePageMeta({

@@ -17,10 +17,11 @@
 						showDownloadButton: true
 					}"
 					@filter="onFilterUpdate"
+					@download="downloadPayouts"
 				/>
 			</template>
 			<template #sub_header>
-				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading"/>
+				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
@@ -55,7 +56,7 @@
 import moment from 'moment'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
-const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
@@ -72,7 +73,7 @@ const dropdownChildren = computed(() => [
 
 const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
-	{ text: 'COMPANY NAME', value: 'company_name', width: '50%' },
+	{ text: 'COMPANY NAME', value: 'company_name' },
 	{ text: 'EMAIL', value: 'company_email' },
 	{ text: 'PAYOUT DATE', value: 'payout_month' },
 	{ text: 'AMOUNT (₦)', value: 'amount' },

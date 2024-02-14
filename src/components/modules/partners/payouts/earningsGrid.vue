@@ -6,7 +6,7 @@
 				{{ n.text }}
 			</p>
 			<h1 class="text-dark text-2xl font-semibold">
-				{{ convertToCurrency(n.amount) }}
+				{{ convertToCurrency(n.amount) || 'N/A' }}
 			</h1>
 		</div>
 	</div>
@@ -27,9 +27,9 @@ const props = defineProps({
 
 const arr = computed(() => {
     return [
-        { text: 'Total Revenue', amount: props.obj.totalRevenue || 0 },
-        { text: 'Total Deduction', amount: props.obj.totalDeductions || 0 },
-        { text: 'Amount Payable', amount: props.obj.netRevenue || 0 }
+        { text: 'Total Revenue', amount: props.obj?.totalRevenue || 0 },
+        { text: 'Total Deduction', amount: props.obj?.totalDeductions || 0 },
+        { text: 'Amount Payable', amount: props.obj?.netRevenue || 0 }
     ]
 })
 </script>

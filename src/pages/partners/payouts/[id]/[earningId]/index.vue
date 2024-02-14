@@ -288,6 +288,7 @@
 							showDownloadButton: true
 						}"
 						@filter="onFilterUpdate"
+						@download="downloadRevenues"
 					/>
 				</template>
 				<template #sub_header>
@@ -343,7 +344,7 @@ import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 
 const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions } = usePayoutDetails()
-const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev } = useEarningsRevenues()
+const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
 
