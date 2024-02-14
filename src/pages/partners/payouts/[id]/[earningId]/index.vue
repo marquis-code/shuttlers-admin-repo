@@ -176,31 +176,45 @@
 			<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-lg">
 				<div class="flex flex-col">
 					<p class="text-grey5 text-sm font-medium">Name</p>
-					<p class="text-base text-grey1 font-medium">Janet Manji</p>
+					<p class="text-base text-grey1 font-medium">
+						{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}
+					</p>
 				</div>
 				<div class="flex flex-col">
 					<p class="text-grey5 text-sm font-medium">Company Name</p>
-					<p class="text-base text-grey1 font-medium">Janet Manji</p>
+					<p class="text-base text-grey1 font-medium">
+						{{ partnerInfo.company_name || 'N/A' }}
+					</p>
 				</div>
 				<div class="flex flex-col">
 					<p class="text-grey5 text-sm font-medium">Partner's Email</p>
-					<p class="text-base text-[#7493CB] font-medium">email@email.com</p>
+					<p class="text-base text-[#7493CB] font-medium">
+						{{ partnerInfo.owner?.email || 'N/A' }}
+					</p>
 				</div>
 				<div class="flex flex-col">
 					<p class="text-grey5 text-sm font-medium">Company Email</p>
-					<p class="text-base text-[#7493CB] font-medium">email@email.com</p>
+					<p class="text-base text-[#7493CB] font-medium">
+						{{ partnerInfo?.company_email || 'N/A' }}
+					</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<p class="text-grey5 text-sm font-medium">Settlement Account</p>
 					<div class="flex flex-col">
-						<p class="text-base text-grey1 font-medium">65756575657</p>
-						<p class="text-xs font-medium text-grey5">Wema bank - Janet manji</p>
+						<p class="text-base text-grey1 font-medium">
+							{{ earningInfo.settlementAccount?.accountNumber }}
+						</p>
+						<p class="text-xs font-medium text-grey5">{{ earningInfo.settlementAccount?.bankName }} - {{ earningInfo.settlementAccount?.accountName }}</p>
 					</div>
 				</div>
-				<NuxtLink to="/" class="text-sm p-2 border rounded-md font-medium px-4 text-grey7">View Details</NuxtLink>
+				<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`"
+					class="text-sm p-2 border rounded-md font-medium px-4 text-grey7"
+				>
+					View Details
+				</NuxtLink>
 			</div>
 			<div class="flex flex-col lg:flex-row lg:items-start gap-6">
-				<div class="bg-light rounded-md p-4 border flex flex-col w-full max-w-[400px]">
+				<div class="bg-light rounded-md p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px]shrink-0">
 					<h3 class="text-base font-medium text-dark border-b py-3">
 						Payout
 					</h3>
@@ -221,7 +235,7 @@
 						</p>
 					</div>
 				</div>
-				<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow">
+				<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
 					<h3 class="p-4 text-dark font-medium border-b">
 						Deductions
 					</h3>
@@ -239,6 +253,9 @@
 								</p>
 								<p v-if="item.date" class="text-sm whitespace-nowrap">
 									{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+								</p>
+								<p v-if="item.type" class="text-sm whitespace-nowrap">
+									{{ item.data?.tripRevenueId ? 'Revenue' : 'Earning' }} deduction
 								</p>
 							</template>
 						</Table>
@@ -274,12 +291,7 @@
 					/>
 				</template>
 				<template #sub_header>
-					<div class="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						<div v-for="n in 3" :key="n" class="bg-light border rounded-md p-4 flex flex-col">
-							<p class="text-sm text-grey5 font-medium">Total Revenue</p>
-							<h1 class="text-dark text-2xl font-semibold">₦500,000.00</h1>
-						</div>
-					</div>
+					<ModulesPartnersPayoutsEarningsGrid :obj="revenueMeta" :loading="loading" />
 				</template>
 				<template #item="{ item }">
 					<p v-if="item.date" class="text-sm whitespace-nowrap">
@@ -331,9 +343,12 @@ import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 
 const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions } = usePayoutDetails()
-const { loading, revenues, onFilterUpdate, moveTo, page, total, next, prev } = useEarningsRevenues()
+const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
+
+const earningId = useRoute().params.earningId as string
+const id = useRoute().params.id as string
 
 fetchParnersInfo()
 fetchEarningInfo()

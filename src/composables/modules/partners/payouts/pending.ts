@@ -2,6 +2,7 @@ import { earnings_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
 const payouts = ref([]) as Ref<Record<string, any>[]>
+const payoutsMeta = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
 const filterData = {
     status: ref('pending-payout,pending-settlement'),
@@ -19,6 +20,7 @@ export const usePendingPayouts = () => {
         if (res.type !== 'ERROR') {
 			payouts.value = res.data.result?.length ? res.data.result : []
             metaObject.total.value = res.data.metadata?.pages || 0
+            payoutsMeta.value = res.data.metadata?.revenue
         }
         loading.value = false
 	}
@@ -42,5 +44,5 @@ export const usePendingPayouts = () => {
         }
     }
 
-	return { loading, payouts, fetchPendingPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev }
+	return { loading, payouts, payoutsMeta, fetchPendingPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }

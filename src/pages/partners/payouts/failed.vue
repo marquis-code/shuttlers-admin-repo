@@ -18,6 +18,9 @@
 					@filter="onFilterUpdate"
 				/>
 			</template>
+			<template #sub_header>
+				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading"/>
+			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
 					{{ item.data.owner.fname || '' }} {{ item.data.owner.lname || '' }}
@@ -48,7 +51,7 @@
 import moment from 'moment'
 import { useFailedPayouts } from '@/composables/modules/partners/payouts/failed'
 
-const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchFailedPayouts } = useFailedPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchFailedPayouts } = useFailedPayouts()
 fetchFailedPayouts()
 
 definePageMeta({

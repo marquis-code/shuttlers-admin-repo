@@ -40,7 +40,8 @@ export const usePayoutDetails = () => {
 		const res = await earnings_api.$_get_earnings_deductions(earningId) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			const arr = res.data.result?.length ? res.data.result : []
-			deductions.value = arr.filter((el) => !el.tripRevenueId)
+			deductions.value = arr
+			// deductions.value = arr.filter((el) => !el.tripRevenueId)
         }
 		loading_deductions.value = false
 	}
@@ -49,6 +50,7 @@ export const usePayoutDetails = () => {
 }
 
 const revenues = ref([]) as Ref<Record<string, any>[]>
+const revenueMeta = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
 const filterData = {
     startDate: ref(''),
@@ -66,6 +68,7 @@ export const useEarningsRevenues = () => {
         if (res.type !== 'ERROR') {
 			revenues.value = res.data.result?.length ? res.data.result : []
             metaObject.total.value = res.data.metadata?.pages || 0
+			revenueMeta.value = res.data.metadata?.revenue
         }
         loading.value = false
 	}
@@ -89,5 +92,5 @@ export const useEarningsRevenues = () => {
         }
     }
 
-	return { loading, revenues, fetchRevenues, onFilterUpdate, moveTo, ...metaObject, next, prev }
+	return { loading, revenues, revenueMeta, fetchRevenues, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }

@@ -20,12 +20,7 @@
 				/>
 			</template>
 			<template #sub_header>
-				<div class="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					<div v-for="n in 3" :key="n" class="bg-light border rounded-md p-4 flex flex-col">
-						<p class="text-sm text-grey5 font-medium">Total Revenue</p>
-						<h1 class="text-dark text-2xl font-semibold">₦500,000.00</h1>
-					</div>
-				</div>
+				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading"/>
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
@@ -60,7 +55,7 @@
 import moment from 'moment'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
-const { loading, payouts, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
