@@ -66,6 +66,7 @@ import CreateCreditLineUsage from '@/components/headers/modules/Companies/create
 import ShuttleRequestDetails from '@/components/headers/modules/Companies/shuttle-request-details.vue'
 import CorporateGroupDetails from '@/components/headers/modules/Companies/company-group-details.vue'
 import SalesAgent from '@/components/headers/modules/Agents/index.vue'
+import AgentDetails from '@/components/headers/modules/Agents/agent-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -137,7 +138,8 @@ const componentRouteArray = [
     { routes: ['admin-id-info', 'admin-id-permissions'], component: AdminInfo },
     { routes: ['trips-trip-issues', 'trips-trip-issues-resolved'], component: TripIssues },
     { routes: ['agents'], component: SalesAgent },
-    { routes: ['agents-create'], component: GenericHeader }
+    { routes: ['agents-create'], component: GenericHeader },
+    { routes: ['agents-id-agent-info', 'agents-id-Passengers', 'agents-id-agent-routes'], component: AgentDetails }
 ]
 
 const componentRouteKey = componentRouteArray.reduce((acc, curr) => {
