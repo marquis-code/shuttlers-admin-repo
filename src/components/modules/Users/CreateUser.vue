@@ -55,9 +55,9 @@
 					</div>
 
 					<div class="field relative">
-						<label for="">Company (optional)</label>
+						<label for="company">Company (optional)</label>
 
-						<InputMultiSelectCompanies name="company_name" obj-key="id" :value="selectedUser.company" @updated="createForm.corporate_id.value = $event" />
+						<InputMultiSelectCompanies name="company" obj-key="id" :value="selectedUser.company" @updated="createForm.corporate_id.value = $event" />
 					</div>
 				</div>
 
