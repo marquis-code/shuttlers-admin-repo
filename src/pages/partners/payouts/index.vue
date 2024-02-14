@@ -14,16 +14,25 @@
 					:filter-type="{
 						showSearchBar: true,
 						showDateRange: true,
+						showDownloadButton: true
 					}"
 					@filter="onFilterUpdate"
 				/>
 			</template>
+			<template #sub_header>
+				<div class="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+					<div v-for="n in 3" :key="n" class="bg-light border rounded-md p-4 flex flex-col">
+						<p class="text-sm text-grey5 font-medium">Total Revenue</p>
+						<h1 class="text-dark text-2xl font-semibold">₦500,000.00</h1>
+					</div>
+				</div>
+			</template>
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
-					{{ item.data.owner.fname || '' }} {{ item.data.owner.lname || '' }}
+					{{ item.data?.owner?.fname || '' }} {{ item.data?.owner?.lname || 'N/A' }}
 				</p>
 				<p v-if="item.payout_month" class="text-sm whitespace-nowrap">
-					{{ item.data.referenceTime ? moment(item.data.referenceTime).format('MMMM, YYYY') : 'N/A' }}
+					{{ item.data?.referenceTime ? moment(item.data.referenceTime).format('LL') : 'N/A' }}
 				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item.data.approvalsCount || 0 }}/2
@@ -68,9 +77,9 @@ const dropdownChildren = computed(() => [
 
 const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
-	{ text: 'PAYOUT MONTH', value: 'payout_month' },
 	{ text: 'COMPANY NAME', value: 'company_name', width: '50%' },
 	{ text: 'EMAIL', value: 'company_email' },
+	{ text: 'PAYOUT DATE', value: 'payout_month' },
 	{ text: 'AMOUNT (₦)', value: 'amount' },
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }
