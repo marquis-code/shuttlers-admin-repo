@@ -36,7 +36,7 @@
 					</div>
 				</div>
 				<div v-if="item.id">
-					<button @click="deleteMember(item.data)" class="">
+					<button class="" @click="deleteMember(item.data)">
 						<img src="@/assets/icons/source/red-trash.svg" alt="red trash">
 					</button>
 				</div>

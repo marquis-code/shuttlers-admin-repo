@@ -36,10 +36,14 @@
 <script setup lang="ts">
 
 import { useUserCreditLineUsage } from '@/composables/modules/users/inner/credit-line-usage'
+import { useMonthBoundaries } from '@/composables/core/useMonthBoundaries'
 const { creditLineUsageList, loading, getUserCreditLineUsage, filterData, moveTo, next, prev, total, page, onFilterUpdate } = useUserCreditLineUsage()
+const year = new Date().getFullYear()
+const month = new Date().getMonth()
+const { firstDay, lastDay } = useMonthBoundaries(year, month)
 const id = useRoute().params.id as string
-filterData.startDate.value = '2023-04-03'
-filterData.endDate.value = '2023-04-03'
+filterData.startDate.value = firstDay.value
+filterData.endDate.value = lastDay.value
 filterData.staffId.value = id
 getUserCreditLineUsage()
 definePageMeta({

@@ -94,8 +94,6 @@ const filterChildren = computed(() => {
 		...resolution_types.value.map((el) => {
 			return { name: el.name, value: el.name }
 		}),
-		// { name: 'Buffer', value: 'exclusive' },
-		// { name: 'Pilot warned', value: 'shared' },
 		{ name: 'Others', value: 'others' }
 	]
 })

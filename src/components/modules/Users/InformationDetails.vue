@@ -122,7 +122,7 @@ const dropdownChildren = computed(() => [
 			useRouter().push(`/users/add/${data.id}`)
 		}
 	},
-	{ name: 'Topup User Wallet', func: () => { handleWalletUpdate('credit') } },
+	{ name: 'Top-up User Wallet', func: () => { handleWalletUpdate('credit') } },
 	{ name: 'Change Password', func: () => { handleUserPasswordUpdate() } },
 	{ name: 'Book For User', func: () => { bookTrip() } },
 	{ name: 'Add Profile Picture', func: () => { useUserModal().openChangeProfile() } },

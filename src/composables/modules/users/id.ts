@@ -62,12 +62,13 @@ export const useUserBookings = () => {
     const { $_get_user_active_bookings, $_get_user_completed_and_past_bookings } = users_api
 
     const getBookings = async () => {
+        const id = Number(useRoute().params.id)
         let res
         loading.value = true
         if (bookingType.value === 'active') {
-            res = await $_get_user_active_bookings(selectedUserId.value, metaObject, bookingType.value, filterData) as CustomAxiosResponse
+            res = await $_get_user_active_bookings(id, metaObject, bookingType.value, filterData) as CustomAxiosResponse
         } else {
-            res = await $_get_user_completed_and_past_bookings(selectedUserId.value, metaObject, bookingType.value, filterData) as CustomAxiosResponse
+            res = await $_get_user_completed_and_past_bookings(id, metaObject, bookingType.value, filterData) as CustomAxiosResponse
         }
 
         if (res.type !== 'ERROR') {

@@ -110,7 +110,9 @@
 					</p>
 				</li>
 			</ul>
-			<p v-else class="text-sm text-center font-medium py-3">No corporate pay</p>
+			<p v-else class="text-sm text-center font-medium py-3">
+				No corporate pay
+			</p>
 		</section>
 	</main>
 </template>

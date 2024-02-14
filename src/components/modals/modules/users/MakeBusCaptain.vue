@@ -7,15 +7,18 @@
 	>
 		<form class="flex flex-col gap-6 mt-4" @submit.prevent="makeBusCaptain">
 			<div class="field relative">
-				<label for="route">Select Route</label>
-				<select v-if="!loadingMainRoutes" id="route" v-model="form.route_id" class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
+				<!-- <label for="route">Select Route</label> -->
+				<div v-if="!loadingMainRoutes" class="field relative w-full">
+					<RouteSelector class="w-full" @selected="routeSelected" />
+				</div>
+				<!-- <select v-if="!loadingMainRoutes" id="route" v-model="form.route_id" class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
 					<option class="" disabled>
 						--- select ---
 					</option>
 					<option v-for="(route, idx) in mainRoutesList" :key="idx" :value="route.id">
 						{{ `${route.route_code} - From ${route.pickup} To ${route.destination}` }}
 					</option>
-				</select>
+				</select> -->
 				<Skeleton v-else height="100px" />
 			</div>
 			<div v-if="form.route_id" class="field relative">
@@ -88,6 +91,10 @@ watch(() => form.route_itinerary_id, () => {
 const isButtonEnabled = computed(() => {
 	return form.route_itinerary_id && form.route_vehicle_id
 })
+
+const routeSelected = (val: any) => {
+	form.route_id = val.id
+}
 
 const makeBusCaptain = () => {
 	const payload = {

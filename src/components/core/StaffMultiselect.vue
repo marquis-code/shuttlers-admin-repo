@@ -48,7 +48,6 @@ const getUsers = async () => {
 	loading.value = false
 }
 
-
   const fullName = ({ fname, lname, email }) => {
   return `${fname} ${lname} - ${email}`
 }
