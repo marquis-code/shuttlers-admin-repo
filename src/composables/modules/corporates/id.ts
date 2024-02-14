@@ -3,7 +3,6 @@ import { usePagination } from '@/composables/utils/table'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 const selectedCorporate = ref({} as Record<string, any>)
 const selectedCorporateId = ref('')
-const { selectedUser } = useUserIdDetails()
 
 export const useCorporateIdDetails = () => {
     const loading = ref(false)
@@ -21,6 +20,7 @@ export const useCorporateIdDetails = () => {
 }
 
 export const useCorporateWalletDetails = () => {
+    const { selectedUser } = useUserIdDetails()
     const loading = ref(false)
     const corporateWalletDetails = ref({} as any)
     const getCorporateWalletObject = async () => {
