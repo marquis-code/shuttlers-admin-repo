@@ -3,7 +3,8 @@
 		modal="$atts.modal"
 		title="Add passenger to trip"
 		:no-close-btn="true"
-		class="text-center w-[700px]"
+		class="text-center w-0"
+		style="width: 0px"
 	>
 		<main class="">
 			<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
@@ -82,3 +83,13 @@ const tableFields = ref([
 ])
 
 </script>
+
+<style scoped>
+.modal {
+    max-height: 90vh;
+    width: 0px;
+    border-radius: 1rem;
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
+}
+</style>
