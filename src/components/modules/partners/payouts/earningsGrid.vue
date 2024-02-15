@@ -6,7 +6,7 @@
 				{{ n.text }}
 			</p>
 			<h1 class="text-dark text-2xl font-semibold">
-				{{ convertToCurrency(n.amount) || 'N/A' }}
+				{{ convertToCurrency(n.amount) || '0' }}
 			</h1>
 		</div>
 	</div>

@@ -8,10 +8,10 @@
 
 			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">
 				<div v-if="filterType.showDatePicker" class="pt-2">
-					<InputDateInput v-model="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" />
+					<InputDateInput v-model="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" :type="filterType.dateType" :format="filterType.dateFormat" />
 				</div>
 				<div v-if="filterType.showDateRange" class="pt-2">
-					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" :disabled-date="()=>null" clearable />
+					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" :disabled-date="()=>null" :type="filterType.dateType" :format="filterType.dateFormat" clearable />
 				</div>
 			</section>
 
@@ -66,6 +66,8 @@ interface FilterTypeProps {
 	showStatus?: boolean;
 	showDateRange?: boolean;
 	downloading?: boolean;
+	dateType?: string;
+	dateFormat?: string;
 }
 interface DefaultValueProps {
 	search?: string;
@@ -83,8 +85,9 @@ const props = defineProps({
 			showSearchBar: true,
 			showDownloadButton: false,
 			showStatus: false,
-			showDateRange: false
-
+			showDateRange: false,
+			dateType: 'date',
+			dateFormat: 'YYYY-MM-DD'
 		})
 	},
 	defaultValue: {

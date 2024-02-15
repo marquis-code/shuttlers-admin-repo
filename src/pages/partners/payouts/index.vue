@@ -14,7 +14,9 @@
 					:filter-type="{
 						showSearchBar: true,
 						showDateRange: true,
-						showDownloadButton: true
+						showDownloadButton: true,
+						dateType: 'month',
+						dateFormat: 'YYYY-MM'
 					}"
 					@filter="onFilterUpdate"
 					@download="downloadPayouts"
@@ -28,7 +30,7 @@
 					{{ item.data?.owner?.fname || '' }} {{ item.data?.owner?.lname || 'N/A' }}
 				</p>
 				<p v-if="item.payout_month" class="text-sm whitespace-nowrap">
-					{{ item.data?.referenceTime ? moment(item.data.referenceTime).format('LL') : 'N/A' }}
+					{{ item.data?.referenceTime ? moment(item.data.referenceTime).format('MMMM, YYYY') : 'N/A' }}
 				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item.data.approvalsCount || 0 }}/2
@@ -75,7 +77,7 @@ const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
 	{ text: 'COMPANY NAME', value: 'company_name' },
 	{ text: 'EMAIL', value: 'company_email' },
-	{ text: 'PAYOUT DATE', value: 'payout_month' },
+	{ text: 'PAYOUT MONTH', value: 'payout_month' },
 	{ text: 'AMOUNT (₦)', value: 'amount' },
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }

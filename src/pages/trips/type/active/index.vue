@@ -39,7 +39,7 @@
 					</span>
 				</span>
 				<p v-if="item.vehicle" class="min-w-[100px]">
-					{{ item.data.vehicle }}
+					{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
@@ -64,6 +64,7 @@ import { useTripOptions } from '@/composables/modules/trips/options'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { initLogIssues } = useCreateIssues()
 const { initializeEndTrips } = useTripOptions()
@@ -119,7 +120,7 @@ const tableFields = ref([
         value: 'partner'
     },
     {
-        text: 'VEHICLE NAME',
+        text: 'VEHICLE NAME - COST OF SUPPLY',
         value: 'vehicle'
     },
 	{
