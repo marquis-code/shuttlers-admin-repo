@@ -43,6 +43,7 @@ export const useDeductPayout = () => {
 			useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
 			usePayoutModal().closeDeductPayout()
 			if (isFromDetailsPage.value) {
+				useEarningsRevenues().fetchRevenues()
 				usePayoutDetails().fetchDeductions()
 				usePayoutDetails().fetchEarningInfo()
 			} else {
@@ -64,6 +65,7 @@ export const useDeductPayout = () => {
 			usePayoutModal().closeDeductPayout()
 			useEarningsRevenues().fetchRevenues()
 			usePayoutDetails().fetchEarningInfo()
+			usePayoutDetails().fetchDeductions()
         }
 		loading.value = false
 	}

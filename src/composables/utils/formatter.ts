@@ -46,3 +46,13 @@ export const dayIsInThePast = (trip_date: string) => {
 export const Capitalize = (str:string) => {
 	return str.charAt(0).toUpperCase() + str.slice(1)
 }
+
+export const formatDateToGetTheLastDay = (dateString:string) => {
+    const dateStr = dateString
+    const dateParts = dateStr.split('-')
+    const year = parseInt(dateParts[0])
+    const month = parseInt(dateParts[1])
+    const date = new Date(year, month, 0)
+    const lastDayOfMonth = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2)
+    return lastDayOfMonth
+}

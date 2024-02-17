@@ -189,7 +189,7 @@ const partnerInformation = computed(() => {
 		{ name: 'AVATAR', value: selectedPartner?.value?.fname, class: '' },
 		{ name: 'COMPANY', value: selectedPartner?.value?.company_name ?? 'N/A', class: '' },
 		{ name: 'DATE CREATED', value: selectedPartner?.value?.created_at ?? 'N/A', class: '' },
-		{ name: 'STATUS', value: selectedPartner?.value?.owner?.active === '1' ? 'active' : 'inactive', class: selectedPartner?.value?.owner?.active === '1' ? 'text-green' : 'text-red' }
+		{ name: 'STATUS', value: selectedPartner?.value?.status === 'active' ? 'active' : 'suspended', class: selectedPartner?.value?.status === 'active' ? 'text-green' : 'text-red' }
 	]
 })
 

@@ -3,6 +3,7 @@ import { earnings_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 import { useAlert } from '@/composables/core/notification'
+import { formatDateToGetTheLastDay } from '@/composables/utils/formatter'
 
 const { loading: downloading } = useDownloadReport()
 const payouts = ref([]) as Ref<Record<string, any>[]>
@@ -39,8 +40,8 @@ export const useCompletedPayouts = () => {
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'dateRange':
-				filterData.startDate.value = data.value[0] ? data.value[0] : ''
-				filterData.endDate.value = data.value[1] ? data.value[1] : ''
+				filterData.startDate.value = data.value[0] ? `${data.value[0]}-01` : ''
+				filterData.endDate.value = data.value[1] ? formatDateToGetTheLastDay(data.value[1]) : ''
                 break
             case 'search':
                 filterData.search.value = data.value

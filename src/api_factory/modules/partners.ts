@@ -116,5 +116,13 @@ export const partners_api = {
 	$_get_all_partner_drivers_by_id: (partnerSid:number) => {
 		const url = `/partners/${partnerSid}/drivers?metadata=true&limit=${1000}&status=active`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_update_partner: (partnerId:number|string, payload:Record<string, any>) => {
+		const url = `/partners/${partnerId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_update_partner_user_info: (partnerOwnerId:number|string, payload:Record<string, any>) => {
+		const url = `/users/${partnerOwnerId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }
