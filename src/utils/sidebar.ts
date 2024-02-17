@@ -120,7 +120,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         routePath: '/trips/type/active',
         description: 'Insights into company requests',
         oldPath: '/trips/list/active-trips',
-          shouldRedirect: true,
+          shouldRedirect: false,
         excludedPaths: ['/trips/track-vehicle']
       },
       {
