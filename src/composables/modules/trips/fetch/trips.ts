@@ -6,7 +6,7 @@ import {
   formattedCSVData
 } from './helpers'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { usePagination } from '@/composables/utils/table'
+import { usePagination, useTableFilter } from '@/composables/utils/table'
 import { useDownloadReport } from '@/composables/utils/csv'
 import { useAlert } from '@/composables/core/notification'
 import { usePaginatedFetchAndDownload } from '@/composables/core/useBatchDownload'
@@ -22,8 +22,9 @@ const currentRoute = computed(() => {
 
 const downloadReport = async () => {
   const route = useRoute()
+  const queryParams = useTableFilter(filterData)
   const routeType = useRoute().name?.split('-')[2]
-  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?limit=10&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
+  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?${queryParams}${queryParams ? '&' : ''}&limit=10&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
