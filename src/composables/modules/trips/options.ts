@@ -6,6 +6,7 @@ import { useCommuteModal } from '@/composables/core/modals'
 import { useTripIdDetails, useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
 const selectedTrip = ref({} as any)
+const isUpcoming = ref(false)
 
 const { getTripById } = useTripIdDetails()
 const { getUpcomingTripById } = useUpcomingTripIdDetails()
@@ -14,8 +15,9 @@ export const useTripOptions = () => {
     const loading = ref(false)
     const password = ref('')
 
-    const initializeTripUpdate = (tripObj) => {
+    const initializeTripUpdate = (tripObj, upcoming = false) => {
         selectedTrip.value = tripObj
+        isUpcoming.value = upcoming
         useCommuteModal().openUpdateDriverAndVehicle()
     }
     const initializeStartTrips = (tripObj) => {
@@ -39,8 +41,7 @@ export const useTripOptions = () => {
         loading.value = true
         const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            getTripById(selectedTrip.value.id)
-            getUpcomingTripById(selectedTrip.value.id)
+            !isUpcoming.value ? getTripById(selectedTrip.value.id) : getUpcomingTripById(selectedTrip.value.id)
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Upcoming trip updated successfully' })
             useCommuteModal().closeUpdateDriverAndVehicle()
             useGetUpcomingTripsList().getUpcomingTrips()
