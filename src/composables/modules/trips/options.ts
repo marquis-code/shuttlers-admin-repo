@@ -1,12 +1,12 @@
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useConfirmationModal, usePasswordConfirmationModal } from '@/composables/core/confirmation'
 import { useAlert } from '@/composables/core/notification'
-import { useGetUpcomingTripsList, useGetActiveTripsList } from '@/composables/modules/trips/fetch'
+import { useGetUpcomingTripsList, useGetActiveTripsList, useGetCancelledTripsList, useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
 import { useCommuteModal } from '@/composables/core/modals'
 import { useTripIdDetails, useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
-
+type TripType = 'upcoming'|'completed'|'cancelled'|'active'
 const selectedTrip = ref({} as any)
-const isUpcoming = ref(false)
+const tripType = ref('upcoming') as Ref<TripType>
 
 const { getTripById } = useTripIdDetails()
 const { getUpcomingTripById } = useUpcomingTripIdDetails()
@@ -15,9 +15,9 @@ export const useTripOptions = () => {
     const loading = ref(false)
     const password = ref('')
 
-    const initializeTripUpdate = (tripObj, upcoming = false) => {
+    const initializeTripUpdate = (tripObj, type:TripType) => {
         selectedTrip.value = tripObj
-        isUpcoming.value = upcoming
+        tripType.value = type
         useCommuteModal().openUpdateDriverAndVehicle()
     }
     const initializeStartTrips = (tripObj) => {
@@ -41,10 +41,13 @@ export const useTripOptions = () => {
         loading.value = true
         const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            !isUpcoming.value ? getTripById(selectedTrip.value.id) : getUpcomingTripById(selectedTrip.value.id)
-            useAlert().openAlert({ type: 'SUCCESS', msg: 'Upcoming trip updated successfully' })
+            (tripType.value !== 'upcoming') ? getTripById(selectedTrip.value.id) : getUpcomingTripById(selectedTrip.value.id)
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip updated successfully' })
             useCommuteModal().closeUpdateDriverAndVehicle()
-            useGetUpcomingTripsList().getUpcomingTrips()
+            if (tripType.value === 'upcoming') useGetUpcomingTripsList().getUpcomingTrips()
+            if (tripType.value === 'active') useGetActiveTripsList().getActiveTrips()
+            if (tripType.value === 'completed') useGetCompletedTripsList().getCompletedTrips()
+            if (tripType.value === 'cancelled') useGetCancelledTripsList().getCancelledTrips()
         }
         loading.value = false
         useCommuteModal().closeUpdateDriverAndVehicle()

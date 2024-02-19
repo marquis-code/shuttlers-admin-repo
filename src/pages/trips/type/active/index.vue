@@ -140,7 +140,7 @@ const tableFields = ref([
 const dropdownChildren = computed(() => {
 	return [
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
-		{ name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+		{ name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'active') },
         { name: 'End Trip', func: (data) => handleTripCancellation(data), class: '!text-red' }
     ]
 })

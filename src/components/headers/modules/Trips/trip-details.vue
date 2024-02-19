@@ -89,7 +89,7 @@ const dropdownChildren = computed(() => {
     ] as Record<string, any>[]
     const upcomingDropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'upcoming') },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
 
@@ -101,7 +101,7 @@ const dropdownChildren = computed(() => {
     }
 
     if (tripType.value === 'active') {
-        dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data) }])
+        dropdownOptions.push(...[{ name: 'End Trip', func: (data) => initializeEndTrips(data), class: '!text-red' }, { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'active') }])
     }
 
     return dropdownOptions
