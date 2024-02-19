@@ -14,9 +14,9 @@
 				<p v-if="item.partner">
 					{{ item.data.vehicle?.partner?.company_name ?? 'N/A' }}
 				</p>
-				<p v-if="item.reason" class="min-w-[100px]">
+				<!-- <p v-if="item.reason" class="min-w-[100px]">
 					{{ item.data.description || 'N/A' }}
-				</p>
+				</p> -->
 				<p v-if="item.vehicle" class="min-w-[100px]">
 					{{ `${item.data?.vehicle?.brand} ${item.data?.vehicle?.name}  (${item.data?.vehicle?.registration_number})` }} <br>
 					{{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
@@ -97,7 +97,7 @@ const tableFields = ref([
     { text: 'PARTNER\'S NAME', value: 'partner' },
     { text: 'VEHICLE NAME - COST OF SUPPLY', value: 'vehicle' },
 	{ text: 'DRIVER', value: 'driver' },
-	{ text: 'REASON', value: 'reason' },
+	// { text: 'REASON', value: 'reason' },
 	{ text: 'PASSENGERS', value: 'passengers' }
 ])
 
