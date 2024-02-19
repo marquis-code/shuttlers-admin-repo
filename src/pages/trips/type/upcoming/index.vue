@@ -93,7 +93,7 @@ const onRowClicked = (data: any) => {
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, true) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'upcoming') },
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
