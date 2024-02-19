@@ -83,13 +83,3 @@ const tableFields = ref([
 ])
 
 </script>
-
-<style scoped>
-.modal {
-    max-height: 90vh;
-    width: 0px;
-    border-radius: 1rem;
-    padding-left: 2.25rem;
-    padding-right: 2.25rem;
-}
-</style>

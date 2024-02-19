@@ -51,21 +51,21 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Insights',
         routePath: '/companies/insights',
         oldPath: '/companies/insights',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Insights into company requests'
       },
       {
         title: 'Companies',
         routePath: '/companies',
         oldPath: '/companies/active',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       },
       {
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
-          shouldRedirect: true,
+          shouldRedirect: false,
         description: ''
       }
     ]

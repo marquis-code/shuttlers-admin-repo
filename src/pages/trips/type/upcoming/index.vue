@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -93,7 +93,7 @@ const onRowClicked = (data: any) => {
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'upcoming') },
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]

@@ -66,8 +66,8 @@ import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
+const { initializeTripUpdate, initializeEndTrips } = useTripOptions()
 const { initLogIssues } = useCreateIssues()
-const { initializeEndTrips } = useTripOptions()
 const { selectedTrip } = useCompletedTripIdDetails()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
 getActiveTrips()
@@ -140,6 +140,7 @@ const tableFields = ref([
 const dropdownChildren = computed(() => {
 	return [
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
+		{ name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'active') },
         { name: 'End Trip', func: (data) => handleTripCancellation(data), class: '!text-red' }
     ]
 })

@@ -6,7 +6,7 @@ import {
   formattedCSVData
 } from './helpers'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { usePagination } from '@/composables/utils/table'
+import { usePagination, useTableFilter } from '@/composables/utils/table'
 import { useDownloadReport } from '@/composables/utils/csv'
 import { useAlert } from '@/composables/core/notification'
 import { usePaginatedFetchAndDownload } from '@/composables/core/useBatchDownload'
@@ -22,21 +22,22 @@ const currentRoute = computed(() => {
 
 const downloadReport = async () => {
   const route = useRoute()
-  const routeType = useRoute().name?.split('-')[2]
-  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?limit=10&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
+  const queryParams = useTableFilter(filterData)
+  const routeType = (useRoute().name as string)?.split('-')[2]
+  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?${queryParams}${queryParams ? '&' : ''}&limit=10&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
-    fromParam.value = route?.query?.dateRange?.split(',')[0] ?? ''
-    toParam.value = route?.query?.dateRange?.split(',')[1] ?? ''
+    fromParam.value = (route?.query?.dateRange as string).split(',')[0] ?? ''
+    toParam.value = (route?.query?.dateRange as string).split(',')[1] ?? ''
   })
 
   const constructApiUrl = computed(() => {
     let url = baseURL
     const params = new URLSearchParams()
 
-    if (fromParam.value) params.append('from', route?.query?.dateRange?.split(',')[0])
-    if (toParam.value) params.append('to', route?.query?.dateRange?.split(',')[1])
+    if (fromParam.value) params.append('from', (route?.query?.dateRange as string).split(',')[0])
+    if (toParam.value) params.append('to', (route?.query?.dateRange as string).split(',')[1])
 
     const queryString = params.toString()
     if (queryString) url += `&${queryString}`
