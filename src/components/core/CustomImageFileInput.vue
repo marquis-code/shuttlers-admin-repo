@@ -13,7 +13,7 @@
 			>
 				<label
 					for="dropzone-file"
-					class="flex items-center justify-center w-full h-full border border-dashed rounded-lg cursor-pointer"
+					class="flex items-center justify-center w-full h-full border  rounded-lg cursor-pointer p-6"
 				>
 					<div class="flex flex-col items-center">
 						<svg

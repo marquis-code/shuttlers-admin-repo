@@ -146,8 +146,12 @@
 		</div>
 		<div v-else class="flex items-center justify-center p-4 py-10 shadow-lg bg-light rounded-lg w-full">
 			<div class="flex flex-col gap-2">
-				<h3 class="text-xl text-dark font-bold text-center">No bus stop or user found</h3>
-				<p class="text-center max-w-[250px] text-sm text-grey5">Try adjusting your search to find what you are looking for</p>
+				<h3 class="text-xl text-dark font-bold text-center">
+					No bus stop or user found
+				</h3>
+				<p class="text-center max-w-[250px] text-sm text-grey5">
+					Try adjusting your search to find what you are looking for
+				</p>
 			</div>
 		</div>
 

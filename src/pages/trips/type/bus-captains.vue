@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loadingBusCaptains" :headers="tableFields" :table-data="formattedBusCaptainsList">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDatePicker: true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.id">

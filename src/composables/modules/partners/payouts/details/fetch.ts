@@ -1,6 +1,10 @@
+import moment from 'moment'
 import { earnings_api, partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
+import { useAlert } from '@/composables/core/notification'
 
+const { loading: downloading } = useDownloadReport()
 const partnerInfo = ref({}) as Ref<Record<string, any>>
 const earningInfo = ref({}) as Ref<Record<string, any>>
 const deductions = ref([]) as Ref<Record<string, any>[]>
@@ -40,7 +44,8 @@ export const usePayoutDetails = () => {
 		const res = await earnings_api.$_get_earnings_deductions(earningId) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			const arr = res.data.result?.length ? res.data.result : []
-			deductions.value = arr.filter((el) => !el.tripRevenueId)
+			deductions.value = arr
+			// deductions.value = arr.filter((el) => !el.tripRevenueId)
         }
 		loading_deductions.value = false
 	}
@@ -49,6 +54,7 @@ export const usePayoutDetails = () => {
 }
 
 const revenues = ref([]) as Ref<Record<string, any>[]>
+const revenueMeta = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
 const filterData = {
     startDate: ref(''),
@@ -66,6 +72,7 @@ export const useEarningsRevenues = () => {
         if (res.type !== 'ERROR') {
 			revenues.value = res.data.result?.length ? res.data.result : []
             metaObject.total.value = res.data.metadata?.pages || 0
+			revenueMeta.value = res.data.metadata?.revenue
         }
         loading.value = false
 	}
@@ -89,5 +96,37 @@ export const useEarningsRevenues = () => {
         }
     }
 
-	return { loading, revenues, fetchRevenues, onFilterUpdate, moveTo, ...metaObject, next, prev }
+	const downloadRevenues = async () => {
+        downloading.value = true
+		const earningId = useRoute().params.earningId as string
+        const name = ref('all-revenues')
+        const total = metaObject.page_size.value * metaObject.total.value
+        const res = await earnings_api.$_download_partner_revenue(partnerInfo.value.account_sid, earningId, filterData) as CustomAxiosResponse
+        if (res?.type !== 'ERROR') {
+            if (res.data.result.length) {
+                const data = res.data.result
+                const newArr = data.map((el) => {
+                    return {
+                        Trip_date: el?.tripStartTime ? moment(el?.tripStartTime).format('LLL') : 'N/A',
+						Time_of_creation: moment(el?.created_at).format('LL'),
+						Pickup: el?.metadata?.pickup || 'N/A',
+						Destination: el?.metadata?.dropoff || 'N/A',
+						Route_code: el?.metadata?.routeCode || 'N/A',
+						Amount_earned: el?.partnersRevenue || 'N/A',
+						Deduction: el?.totalDeductedAmount || 'N/A',
+						Net_income: el?.finalPartnersRevenue,
+						Description: el?.description || 'N/A',
+						Status: el?.isSettled ? 'Settled' : 'Not settled'
+					}
+                })
+                if (filterData.startDate.value && filterData.endDate.value) name.value = `${name.value}-from-${filterData.startDate.value}-to-${filterData.endDate.value}`
+                exportAsCsv(newArr, name.value)
+            } else {
+                useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+            }
+        }
+        downloading.value = false
+    }
+
+	return { loading, revenues, revenueMeta, fetchRevenues, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadRevenues }
 }

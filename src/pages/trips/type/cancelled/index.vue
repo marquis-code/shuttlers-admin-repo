@@ -14,11 +14,12 @@
 				<p v-if="item.partner">
 					{{ item.data.vehicle?.partner?.company_name ?? 'N/A' }}
 				</p>
-				<p v-if="item.reason" class="min-w-[100px]">
+				<!-- <p v-if="item.reason" class="min-w-[100px]">
 					{{ item.data.description || 'N/A' }}
-				</p>
-				<p v-if="item.vehicle">
-					{{ `${item.data?.vehicle?.brand} ${item.data?.vehicle?.name}  (${item.data?.vehicle?.registration_number})` }}
+				</p> -->
+				<p v-if="item.vehicle" class="min-w-[100px]">
+					{{ `${item.data?.vehicle?.brand} ${item.data?.vehicle?.name}  (${item.data?.vehicle?.registration_number})` }} <br>
+					{{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
 				<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap" @click.stop>
 					<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
@@ -60,7 +61,7 @@
 <script setup lang="ts">
 import { useGetCancelledTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
-import { dayIsInThePast } from '@/composables/utils/formatter'
+import { dayIsInThePast, convertToCurrency } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { isProdEnv } from '@/composables/utils/system'
 
@@ -79,7 +80,7 @@ definePageMeta({
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'cancelled') },
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
@@ -94,9 +95,9 @@ const tableFields = ref([
     { text: 'ROUTE CODE ( START TIME)', value: 'route_code' },
     { text: 'ROUTE', value: 'route' },
     { text: 'PARTNER\'S NAME', value: 'partner' },
-    { text: 'VEHICLE NAME', value: 'vehicle' },
+    { text: 'VEHICLE NAME - COST OF SUPPLY', value: 'vehicle' },
 	{ text: 'DRIVER', value: 'driver' },
-	{ text: 'REASON', value: 'reason' },
+	// { text: 'REASON', value: 'reason' },
 	{ text: 'PASSENGERS', value: 'passengers' }
 ])
 

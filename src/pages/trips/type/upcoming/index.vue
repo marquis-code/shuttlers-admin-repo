@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
@@ -35,6 +35,10 @@
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
 				</div>
+				<p v-if="item.vehicle" class="min-w-[100px]">
+					{{ item.data.vehicle }} <br>
+					{{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
+				</p>
 				<span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren(item.data)" :data="item.data" class-name="w-56" />
 				</span>
@@ -48,7 +52,7 @@
 <script setup lang="ts">
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
 import { useTripOptions } from '@/composables/modules/trips/options'
-import { dayIsInThePast } from '@/composables/utils/formatter'
+import { dayIsInThePast, convertToCurrency } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
@@ -89,7 +93,7 @@ const onRowClicked = (data: any) => {
 const dropdownChildren = (main_data) => {
  const dropdownOptions = [
         { name: 'Start Trip', func: (data) => initializeStartTrips(data) },
-        { name: 'Update Trip', func: (data) => initializeTripUpdate(data) },
+        { name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'upcoming') },
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
         { name: 'Cancel Trip', func: (data) => initializeCancelTrips(data), class: '!text-red' }
     ]
@@ -117,7 +121,7 @@ const tableFields = ref([
         value: 'partner'
     },
     {
-        text: 'VEHICLE NAME',
+        text: 'VEHICLE NAME - COST OF SUPPLY',
         value: 'vehicle'
     },
 	{

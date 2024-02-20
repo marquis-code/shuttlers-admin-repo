@@ -29,8 +29,8 @@ const filterData = {
     search: ref(''),
     route_type: ref(''),
     route_visibility: ref(''),
-    // occupancy_rate_from: ref(''),
-    // occupancy_rate_to: ref(''),
+    occupancy_rate_from: ref(''),
+    occupancy_rate_to: ref(''),
     city_ids: ref(''),
     vehicle_categories: ref(''),
     trip_time_list: ref('')
@@ -57,8 +57,8 @@ const onFilterUpdate = (data: any) => {
             filterData.trip_time_list.value = data.value.length === 0 ? '' : JSON.stringify(data.value.map((item: any) => item.value))
             break
         case 'occupancy':
-            // filterData.occupancy_rate_from.value = data.value[0]
-            // filterData.occupancy_rate_to.value = data.value[1]
+            filterData.occupancy_rate_from.value = data.value[0]
+            filterData.occupancy_rate_to.value = data.value[1]
             break
         case 'dateRange':
             filterData.from.value = data.value[0] ? data.value[0] : ''
@@ -67,8 +67,8 @@ const onFilterUpdate = (data: any) => {
     }
 }
 const watchArray = [filterData.search, filterData.from, filterData.to, filterData.route_type, filterData.route_visibility,
-filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list
-    // filterData.occupancy_rate_from, filterData.occupancy_rate_to
+filterData.vehicle_categories, filterData.city_ids, filterData.trip_time_list,
+    filterData.occupancy_rate_from, filterData.occupancy_rate_to
 ]
 
 const formattedCSVData = (data: any[]) => {

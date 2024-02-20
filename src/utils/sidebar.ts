@@ -108,6 +108,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     ]
   },
   {
+  title: 'Sales agents',
+    routePath: '/agents',
+    description: '',
+    iconComponent: shallowRef(userIcon),
+    rootPath: '/agents'
+  },
+  {
     title: 'Commute',
     routePath: '/trips/type/active',
     description: '',

@@ -3,7 +3,8 @@
 		modal="$atts.modal"
 		title="Add passenger to trip"
 		:no-close-btn="true"
-		class="text-center w-[700px]"
+		class="text-center w-0"
+		style="width: 0px"
 	>
 		<main class="">
 			<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">

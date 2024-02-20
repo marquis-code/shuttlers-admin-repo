@@ -39,7 +39,7 @@
 					</span>
 				</span>
 				<p v-if="item.vehicle" class="min-w-[100px]">
-					{{ item.data.vehicle }}
+					{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
@@ -64,9 +64,10 @@ import { useTripOptions } from '@/composables/modules/trips/options'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
+const { initializeTripUpdate, initializeEndTrips } = useTripOptions()
 const { initLogIssues } = useCreateIssues()
-const { initializeEndTrips } = useTripOptions()
 const { selectedTrip } = useCompletedTripIdDetails()
 const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
 getActiveTrips()
@@ -119,7 +120,7 @@ const tableFields = ref([
         value: 'partner'
     },
     {
-        text: 'VEHICLE NAME',
+        text: 'VEHICLE NAME - COST OF SUPPLY',
         value: 'vehicle'
     },
 	{
@@ -139,6 +140,7 @@ const tableFields = ref([
 const dropdownChildren = computed(() => {
 	return [
 		{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
+		{ name: 'Update Trip', func: (data) => initializeTripUpdate(data, 'active') },
         { name: 'End Trip', func: (data) => handleTripCancellation(data), class: '!text-red' }
     ]
 })
