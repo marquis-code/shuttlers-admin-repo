@@ -11,6 +11,7 @@ const obj = {
     fname: ref(''),
     lname: ref(''),
     email: ref(''),
+    phone: ref(''),
     id: ref(null) as Ref<null|number>
 }
 
@@ -18,6 +19,7 @@ const clearObj = () => {
     obj.fname.value = ''
     obj.lname.value = ''
     obj.email.value = ''
+    obj.phone.value = ''
     obj.id.value = null
 }
 
@@ -28,6 +30,7 @@ export const useUpdatePartnerInfo = () => {
         obj.fname.value = data?.owner?.fname
         obj.lname.value = data?.owner?.lname
         obj.email.value = data?.owner?.email
+        obj.phone.value = data?.phone
         usePartnerModal().openUpdatePartnerInfo()
 	}
 
@@ -35,7 +38,8 @@ export const useUpdatePartnerInfo = () => {
 		const payload = {
 			fname: obj.fname.value,
             lname: obj.lname.value,
-            email: obj.email.value
+            email: obj.email.value,
+            phone: obj.phone.value
 		}
 		loading.value = true
         const id = useRoute().params.id as string

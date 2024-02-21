@@ -230,7 +230,7 @@
 						<p class="key">
 							{{ n.key }}
 						</p>
-						<p class="value">
+						<p class="value font-medium" :class="n.key === 'Deductions' || n.value === 'failed' ? '!text-red' : n.value.includes('pending') ? '!text-orange-500' : n.value === 'settled' ? '!text-green' : '' ">
 							{{ n.value }}
 						</p>
 					</div>

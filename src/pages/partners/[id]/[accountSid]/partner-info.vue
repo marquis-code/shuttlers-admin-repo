@@ -26,7 +26,7 @@
 						{{ item?.value }}
 					</p>
 					<p v-if="item?.name === 'AVATAR'">
-						<Avatar :name="selectedPartner?.fname" bg="#B1C2D9" />
+						<Avatar :src="selectedPartner?.owner?.avatar" :name="selectedPartner?.owner?.fname" bg="#B1C2D9" />
 					</p>
 				</div>
 			</div>
@@ -51,11 +51,16 @@
 						<p class="text-gray-500 text-sm">
 							{{ item.name }}
 						</p>
-						<p v-if="item.name === 'STATUS'" class="text-sm">
-							<button class="bg-black text-white border px-2 py-1.5 rounded-md text-xs">
+						<template v-if="item.name === 'STATUS'">
+							<p v-if="partnersKycInformation?.identity?.status === 'completed'" class="text-sm font-medium text-green">
+								Verified
+							</p>
+							<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs"
+								@click="initVerifyKyc(partnersKycInformation.identity, 'Identity')"
+							>
 								Verify
 							</button>
-						</p>
+						</template>
 						<p v-else class="text-sm">
 							{{ item.value }}
 						</p>
@@ -67,11 +72,19 @@
 						<p class="text-gray-500 text-sm">
 							{{ item.name }}
 						</p>
-						<p v-if="item.name === 'STATUS'" class="text-sm">
-							<button :class="item.class">
-								update
+						<template v-if="item.name === 'STATUS'">
+							<p v-if="partnersKycInformation?.address?.status === 'completed'" class="text-sm font-medium text-green">
+								Verified
+							</p>
+							<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs">
+								Update
 							</button>
-						</p>
+						</template>
+						<a v-else-if="item.name === 'DOCUMENT'" :href="partnersKycInformation?.address?.document_files![0]"
+							target="_blank" class="text-blue-500 font-medium text-sm underline"
+						>
+							View document
+						</a>
 						<p v-else class="text-sm">
 							{{ item.value }}
 						</p>
@@ -87,6 +100,16 @@
 					</p>
 				</div>
 				<div v-if="Object.keys(partnersEarningInformation).length && !loadingEarnings">
+					<div class="flex items-center justify-center py-4">
+						<div class="flex flex-col gap-1 text-center">
+							<h1 class="text-3xl font-bold text-dark">
+								{{ convertToCurrency(partnersEarningInformation?.unsettledEarnings?.amount) || '₦0.00' }}
+							</h1>
+							<p class="text-sm text-grey6 font-medium">
+								PARTNER EARNINGS
+							</p>
+						</div>
+					</div>
 					<div class="px-6">
 						<div class="flex justify-between gap-y-2 items-center border-b py-4">
 							<p class="text-sm text-gray-500">
@@ -170,10 +193,11 @@
 
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary } from '@/composables/modules/partners/id'
+import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, useVerifyPartnerKyc } from '@/composables/modules/partners/id'
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
 const { getPartnerEarning, loadingEarnings, partnersEarningInformation } = useGetPartnerEarningSummary()
+const { initVerifyKyc } = useVerifyPartnerKyc()
 const id = useRoute().params.id as string
 const account_sid = useRoute().params.accountSid as string
 getPartnerById(id)
@@ -181,11 +205,11 @@ getPartnerKyc(account_sid)
 getPartnerEarning(account_sid)
 
 const partnerInformation = computed(() => {
-	if (!Object.keys(selectedPartner.value).length) return {}
+	if (!Object.keys(selectedPartner.value).length) return []
 	return [
 		{ name: 'NAME', value: `${selectedPartner?.value?.owner?.fname} ${selectedPartner?.value?.owner?.lname}`, class: '' },
-		{ name: 'PHONE NUMBER', value: selectedPartner?.value?.company_phone ?? 'N/A', class: '' },
-		{ name: 'EMAIL ADDRESS', value: selectedPartner?.value?.company_email ?? 'N/A', class: '' },
+		{ name: 'PHONE NUMBER', value: selectedPartner?.value?.owner?.phone ?? 'N/A', class: '' },
+		{ name: 'EMAIL ADDRESS', value: selectedPartner?.value?.owner?.email ?? 'N/A', class: '' },
 		{ name: 'AVATAR', value: selectedPartner?.value?.fname, class: '' },
 		{ name: 'COMPANY', value: selectedPartner?.value?.company_name ?? 'N/A', class: '' },
 		{ name: 'DATE CREATED', value: selectedPartner?.value?.created_at ?? 'N/A', class: '' },
