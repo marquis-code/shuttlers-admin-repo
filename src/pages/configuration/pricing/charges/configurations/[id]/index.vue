@@ -186,20 +186,15 @@ const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
 const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, page, next, prev, moveTo, onFilterUpdate, status, loading_total, getTotalCharges, totalCharge, downloading, cities, countries, downloadHistory } = useDetails()
 const { allCityNames, fetchAllCityNames, fetchAllCountries, allCountries } = useCityAndCountry()
-// const { intiActivate } = useActivateConfiguration()
 
 const tableFields = [
 	{ value: 'users', text: 'Users' },
 	{ value: 'route', text: 'Route' },
-	{ value: 't_amount', text: 'Total amount' },
+	{ value: 't_amount', text: 'Trip amount' },
 	{ value: 'c_amount', text: 'Charge amount' },
 	{ value: 'date', text: 'Date' }
 ]
 
-// const citiesList = ref([
-// 	{ name: 'Exclusive', value: 'exclusive' },
-// 	{ name: 'Shared', value: 'shared' }
-// ])
 const citiesList = computed(() => {
 	return allCityNames.value.map((el) => { return { name: el.name, value: el.id } })
 })

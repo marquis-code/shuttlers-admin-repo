@@ -8,6 +8,7 @@ const { loading: downloading } = useDownloadReport()
 const partnerInfo = ref({}) as Ref<Record<string, any>>
 const earningInfo = ref({}) as Ref<Record<string, any>>
 const deductions = ref([]) as Ref<Record<string, any>[]>
+const approvers = ref([]) as Ref<Record<string, any>[]>
 const loading_partners = ref(false)
 const loading_earnings = ref(false)
 const loading_deductions = ref(false)
@@ -50,7 +51,15 @@ export const usePayoutDetails = () => {
 		loading_deductions.value = false
 	}
 
-	return { loading_earnings, loading_partners, loading_deductions, partnerInfo, earningInfo, deductions, fetchDeductions, fetchParnersInfo, fetchEarningInfo }
+	const fetchApprovers = async () => {
+		const earningId = useRoute().params.earningId as string
+		const res = await earnings_api.$_get_approvers(earningId) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			approvers.value = res.data?.length ? res.data : []
+        }
+	}
+
+	return { loading_earnings, loading_partners, loading_deductions, partnerInfo, earningInfo, deductions, approvers, fetchDeductions, fetchApprovers, fetchParnersInfo, fetchEarningInfo }
 }
 
 const revenues = ref([]) as Ref<Record<string, any>[]>

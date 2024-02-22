@@ -230,9 +230,30 @@
 						<p class="key">
 							{{ n.key }}
 						</p>
-						<p class="value">
+						<p class="value font-medium" :class="n.key === 'Deductions' || n.value === 'failed' ? '!text-red' : n.value.includes('pending') ? '!text-orange-500' : n.value === 'settled' ? '!text-green' : '' ">
 							{{ n.value }}
 						</p>
+					</div>
+					<div class="flex items-center justify-between">
+						<div class="flex items-center gap-2">
+							<p class="key">
+								Approvals
+							</p>
+							<VTooltip>
+								<a class="cursor-pointer">
+									<img src="@/assets/icons/source/help.svg" class="w-4" alt="">
+								</a>
+
+								<template #popper>
+									Two approvals are needed to initiate this payout
+								</template>
+							</VTooltip>
+						</div>
+						<div class="flex flex-col gap-1 text-sm text-dark">
+							<p v-for="n in approvers" :key="n.id">
+								{{ n.staffName }}
+							</p>
+						</div>
 					</div>
 				</div>
 				<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
@@ -343,7 +364,7 @@ import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 
-const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions } = usePayoutDetails()
+const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions, approvers, fetchApprovers } = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
@@ -354,6 +375,7 @@ const id = useRoute().params.id as string
 fetchParnersInfo()
 fetchEarningInfo()
 fetchDeductions()
+fetchApprovers()
 const partner_info = computed(() => {
 	return [
 		{ key: 'Name', value: `${partnerInfo.value.owner?.fname || ''} ${partnerInfo.value.owner?.lname || ''}` },

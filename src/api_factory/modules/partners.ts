@@ -124,5 +124,9 @@ export const partners_api = {
 	$_update_partner_user_info: (partnerOwnerId:number|string, payload:Record<string, any>) => {
 		const url = `/users/${partnerOwnerId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_verify_partner_document: (partnerAccountSid:number|string, documentId: number|string, payload:Record<string, any>, status = 'completed') => {
+		const url = `/partners/${partnerAccountSid}/identity-documents/${documentId}/status/${status}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
 	}
 }

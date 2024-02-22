@@ -13,7 +13,7 @@ const configureChargeObj = {
 	desc: ref(''),
 	cityIds: ref([]) as Ref<any[]>,
 	allCity: ref(false),
-	isCompulsory: ref(false)
+	isCompulsory: ref(true)
 }
 
 const loading = ref(false)
