@@ -169,15 +169,14 @@ export const useGetPartnersAccountsList = (account_sid: string) => {
     return { getPartnersAccountList, loading, partnersAccountList, moveTo, ...metaObject, next, prev }
 }
 
+const loadingKycDetails = ref(false)
+const partnersKycInformation = ref({}) as Ref<Record<string, any>>
 export const useGetPartnerKyc = () => {
-    const loadingKycDetails = ref(false)
-    const partnersKycInformation = ref({}) as Ref<Record<string, any>>
-
     const { $_get_partner_kyc_by_id } = partners_api
 
     const getPartnerKyc = async (account_sid:string) => {
         loadingKycDetails.value = true
-
+        partnersKycInformation.value = {}
         const res = await $_get_partner_kyc_by_id(account_sid) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
@@ -192,6 +191,7 @@ export const useGetPartnerKyc = () => {
 export const useVerifyPartnerKyc = () => {
     const loading = ref(false)
     const documentObj = ref({}) as Ref<Record<string, any>>
+    const address_status = ref('')
 
     const verify = async () => {
         loading.value = true
@@ -201,11 +201,12 @@ export const useVerifyPartnerKyc = () => {
             user_id: user.value.id
         }
         const res = await partners_api.$_verify_partner_document(account_sid, documentObj.value.id, payload) as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
-            console.log(res.data)
             useAlert().openAlert({ type: 'SUCCESS', msg: 'You have successfully verified this partners identity' })
+            useGetPartnerKyc().getPartnerKyc(account_sid)
+            useConfirmationModal().closeAlert()
         }
+        loading.value = false
     }
 
     const initVerifyKyc = (document:Record<string, any>, documentType: 'Identity'|'Address') => {
@@ -219,7 +220,35 @@ export const useVerifyPartnerKyc = () => {
 		})
     }
 
-    return { initVerifyKyc, loading }
+    const initVerifyAddress = (document:Record<string, any>, status: string) => {
+        documentObj.value = document
+        address_status.value = status
+        useConfirmationModal().openAlert({
+			call_function: verifyAddress,
+			desc: 'Are you sure you want to continue?',
+			title: 'Update address',
+			loading,
+			type: 'DANGER'
+		})
+    }
+
+    const verifyAddress = async () => {
+        loading.value = true
+        const account_sid = useRoute().params.accountSid as string
+        const { user } = useUser()
+        const payload = {
+            user_id: user.value.id
+        }
+        const res = await partners_api.$_verify_partner_document(account_sid, documentObj.value.id, payload, address_status.value) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'You have successfully updated this partners address' })
+            useGetPartnerKyc().getPartnerKyc(account_sid)
+            useConfirmationModal().closeAlert()
+        }
+        loading.value = false
+    }
+
+    return { initVerifyKyc, loading, initVerifyAddress }
 }
 
 export const useGetPartnerEarningSummary = () => {

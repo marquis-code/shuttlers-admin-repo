@@ -61,5 +61,9 @@ export const earnings_api = {
 	$_retry_approve_revenue: (partnerSid: string, earningId: string, payload: Record<string, any>) => {
 		const url = `/partners/${partnerSid}/earnings/${earningId}/retry`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_approvers: (earningId: string) => {
+		const url = `/earnings/${earningId}/approvers`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	}
 }
