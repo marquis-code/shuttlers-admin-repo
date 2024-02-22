@@ -98,5 +98,13 @@ export const trips_api = {
 	$_cancel_completed_trip: (payload:Record<string, any>) => {
 		const url = '/cancelled-trips'
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_add_passengers_to_upcoming_trip: (id: string | number, payload) => {
+       const url = `/trips/${id}/passengers?isUpcomingTrip=true`
+	   return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_transfer_bookings: (payload) => {
+	 const url = '/user-route-schedules/transfers'
+	 return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

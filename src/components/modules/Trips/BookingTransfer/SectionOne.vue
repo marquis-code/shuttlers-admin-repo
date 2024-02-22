@@ -126,7 +126,7 @@ watch(() => form.selectedRoute, (val) => {
 })
 
 const handleFirstStep = (val: any) => {
-	emits('stepFormComplete')
+	emits('stepFormComplete', form)
 }
 
 </script>
