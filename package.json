@@ -65,6 +65,7 @@
 		"gsap": "^3.12.2",
 		"jwt-decode": "^3.1.2",
 		"moment": "^2.29.4",
+		"moment-timezone": "^0.5.45",
 		"papaparse": "5.3.2",
 		"postcss-custom-properties": "^12.1.11",
 		"socket.io": "^4.7.2",

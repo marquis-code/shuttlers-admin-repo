@@ -1,6 +1,6 @@
 <template>
 	<section class="mx-10 mt-14 space-y-6">
-		<div class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
+		<div v-if="!tripTimeHasPassed" class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 			<div class="flex justify-end items-end">
 				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md"
 					@click="useTripsModal().openAddPassengersToTrips()">
@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { usePageHeader } from '@/composables/utils/header'
 import { useRoutePassengers } from '@/composables/modules/routes/booking-passengers'
@@ -24,6 +25,7 @@ const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, rout
 
 const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = useUpcomingTripIdDetails()
 
+const tripTimeHasPassed = ref(false)
 const id = useRoute().params.id as string
 getUpcomingTripById(id)
 
@@ -58,6 +60,17 @@ definePageMeta({
 	layout: 'dashboard-zero',
 	middleware: ['is-authenticated']
 })
+
+function checkTripTime() {
+	const now = moment()
+  const trip = moment(selectedTrip.value.trip_date_time)
+  tripTimeHasPassed.value = now.isAfter(trip)
+}
+
+onMounted(() => {
+  checkTripTime()
+})
+
 </script>
 
 <style scoped></style>

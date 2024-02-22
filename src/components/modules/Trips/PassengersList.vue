@@ -244,6 +244,11 @@ const form = reactive({
 	all: false
 })
 
+watch(() => form.all, (val) => {
+	isChecked.value = val
+	// form.all = true
+})
+
 const filterType = ref('pickup')
 const selectedCheckboxes = ref([]) as any
 const hasCheckboxSelected = ref(false)
