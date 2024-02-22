@@ -47,48 +47,78 @@
 					<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
 						IDENTITY
 					</div>
-					<div v-for="(item, index) in kycIdentityInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
-						<p class="text-gray-500 text-sm">
-							{{ item.name }}
-						</p>
-						<template v-if="item.name === 'STATUS'">
-							<p v-if="partnersKycInformation?.identity?.status === 'completed'" class="text-sm font-medium text-green">
-								Verified
+					<p v-if="!partnersKycInformation?.identity?.status" class="text-sm text-center py-2 text-grey6">
+						Partner Identity information not submitted
+					</p>
+					<template v-else>
+						<div v-for="(item, index) in kycIdentityInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
+							<p class="text-gray-500 text-sm">
+								{{ item.name }}
 							</p>
-							<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs"
-								@click="initVerifyKyc(partnersKycInformation.identity, 'Identity')"
-							>
-								Verify
-							</button>
-						</template>
-						<p v-else class="text-sm">
-							{{ item.value }}
-						</p>
-					</div>
+							<template v-if="item.name === 'STATUS'">
+								<p v-if="partnersKycInformation?.identity?.status === 'completed'" class="text-sm font-medium text-green">
+									Verified
+								</p>
+								<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs"
+									@click="initVerifyKyc(partnersKycInformation.identity, 'Identity')"
+								>
+									Verify
+								</button>
+							</template>
+							<p v-else class="text-sm">
+								{{ item.value }}
+							</p>
+						</div>
+					</template>
 					<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
 						ADDRESS
 					</div>
-					<div v-for="(item, index) in kycAddressInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
-						<p class="text-gray-500 text-sm">
-							{{ item.name }}
-						</p>
-						<template v-if="item.name === 'STATUS'">
-							<p v-if="partnersKycInformation?.address?.status === 'completed'" class="text-sm font-medium text-green">
-								Verified
+					<p v-if="!partnersKycInformation?.address?.status" class="text-sm text-center py-2 text-grey6">
+						Partner address information not submitted
+					</p>
+					<template v-else>
+						<div v-for="(item, index) in kycAddressInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
+							<p class="text-gray-500 text-sm">
+								{{ item.name }}
 							</p>
-							<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs">
-								Update
-							</button>
-						</template>
-						<a v-else-if="item.name === 'DOCUMENT'" :href="partnersKycInformation?.address?.document_files![0]"
-							target="_blank" class="text-blue-500 font-medium text-sm underline"
-						>
-							View document
-						</a>
-						<p v-else class="text-sm">
-							{{ item.value }}
-						</p>
-					</div>
+							<template v-if="item.name === 'STATUS'">
+								<p v-if="partnersKycInformation?.address?.status === 'completed'" class="text-sm font-medium text-green">
+									Verified
+								</p>
+								<div v-else>
+									<div v-if="verifingAddress" class="flex items-center gap-3">
+										<select v-model="address_status" class="min-w-[100px] px-2 py-1 border rounded w-fit">
+											<option value="failed">
+												Failed
+											</option>
+											<option value="completed">
+												Approve
+											</option>
+										</select>
+										<button class="text-red text-sm p-2" @click="verifingAddress = false">
+											Cancel
+										</button>
+										<button class="bg-dark text-sm text-light p-2 rounded"
+											@click="initVerifyAddress(partnersKycInformation.address, address_status)"
+										>
+											Save
+										</button>
+									</div>
+									<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs" @click="verifingAddress = true">
+										Update
+									</button>
+								</div>
+							</template>
+							<a v-else-if="item.name === 'DOCUMENT'" :href="partnersKycInformation?.address?.document_files![0]"
+								target="_blank" class="text-blue-500 font-medium text-sm underline"
+							>
+								View document
+							</a>
+							<p v-else class="text-sm">
+								{{ item.value }}
+							</p>
+						</div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -133,9 +163,9 @@
 							<p class="text-sm text-gray-500">
 								Past Payouts
 							</p>
-							<p class="text-sm underline text-indigo-500 font-medium">
+							<NuxtLink :to="`/pastpayouts/${id}`" class="text-sm underline text-indigo-500 font-medium">
 								View all
-							</p>
+							</NuxtLink>
 						</div>
 					</div>
 				</div>
@@ -197,12 +227,11 @@ import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, use
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
 const { getPartnerEarning, loadingEarnings, partnersEarningInformation } = useGetPartnerEarningSummary()
-const { initVerifyKyc } = useVerifyPartnerKyc()
+const { initVerifyKyc, initVerifyAddress } = useVerifyPartnerKyc()
 const id = useRoute().params.id as string
 const account_sid = useRoute().params.accountSid as string
-getPartnerById(id)
-getPartnerKyc(account_sid)
-getPartnerEarning(account_sid)
+const verifingAddress = ref(false)
+const address_status = ref('failed')
 
 const partnerInformation = computed(() => {
 	if (!Object.keys(selectedPartner.value).length) return []
@@ -241,6 +270,10 @@ const partnerAssetStats = computed(() => {
 		{ name: 'Total Number of Drivers', value: selectedPartner?.value?.stats?.allDriversCount ?? 'N/A', class: '' }
 	]
 })
+
+getPartnerById(id)
+getPartnerKyc(account_sid)
+getPartnerEarning(account_sid)
 
 definePageMeta({
 	layout: 'dashboard',

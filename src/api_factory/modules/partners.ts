@@ -125,8 +125,8 @@ export const partners_api = {
 		const url = `/users/${partnerOwnerId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_verify_partner_document: (partnerAccountSid:number|string, documentId: number|string, payload:Record<string, any>) => {
-		const url = `/partners/${partnerAccountSid}/identity-documents/${documentId}/status/completed`
+	$_verify_partner_document: (partnerAccountSid:number|string, documentId: number|string, payload:Record<string, any>, status = 'completed') => {
+		const url = `/partners/${partnerAccountSid}/identity-documents/${documentId}/status/${status}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.put(url, payload)
 	}
 }
