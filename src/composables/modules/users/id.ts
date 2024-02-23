@@ -72,8 +72,12 @@ export const useUserBookings = () => {
         }
 
         if (res.type !== 'ERROR') {
-            bookings.value = res.data?.data
+            if (res.data?.data) {
+                bookings.value = res.data?.data
             metaObject.total.value = res.data?.metadata?.total_pages
+            } else {
+                bookings.value = res.data
+            }
         }
         loading.value = false
     }
