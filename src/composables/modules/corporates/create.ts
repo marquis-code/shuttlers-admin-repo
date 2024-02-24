@@ -39,7 +39,7 @@ export const useCreateCorporate = () => {
 		loading.value = true
 		const res = (await corporates_api.$_create_corporate(convertObjWithRefToObj(createForm))) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			useRouter().push('/companies')
+            useRouter().push(`/companies/${res.data.id}/${res.data.active === 1 ? 'active' : 'inactive'}/company-info`)
 			useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Corporate was created successfully'
@@ -53,12 +53,12 @@ export const useCreateCorporate = () => {
 		loading.value = true
 		const res = (await corporates_api.$_edit_corporate(convertObjWithRefToObj(editForm), corporateId)) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
-			useRouter().push(`/companies/${corporateId}/${selectedCorporate.value.active === 1 ? 'active' : 'inactive'}/company-info`)
 			useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Corporate was edited successfully'
 			})
             useConfirmationModal().closeAlert()
+            useRouter().push(`/companies/${corporateId}/${selectedCorporate.value.active === 1 ? 'active' : 'inactive'}/company-info`)
 		}
 		loading.value = false
     }

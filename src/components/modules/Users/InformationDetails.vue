@@ -56,9 +56,16 @@
 			<p class="text-gray-500 text-sm">
 				COMPANY
 			</p>
-			<NuxtLink :to="`/companies/${selectedUser?.company?.id}/${selectedUser?.company?.active === 1 ? 'active' : 'inactive'}/company-info`" class="text-blue-600 font-semibold underline">
-				{{ selectedUser?.company?.corporate_name ?? 'N/A' }}
-			</NuxtLink>
+			<div>
+				<span v-if="selectedUser?.company">
+					<NuxtLink :to="`/companies/${selectedUser?.company?.id}/${selectedUser?.company?.active === 1 ? 'active' : 'inactive'}/company-info`" class="text-blue-600 font-semibold underline">
+						{{ selectedUser?.company?.corporate_name }}
+					</NuxtLink>
+				</span>
+				<span v-else class="text-sm text-gray-600">
+					No company available
+				</span>
+			</div>
 		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
