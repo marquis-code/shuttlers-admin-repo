@@ -26,7 +26,7 @@
 						{{ item?.value }}
 					</p>
 					<p v-if="item?.name === 'AVATAR'">
-						<Avatar :name="selectedPartner?.fname" bg="#B1C2D9" />
+						<Avatar :src="selectedPartner?.owner?.avatar" :name="selectedPartner?.owner?.fname" bg="#B1C2D9" />
 					</p>
 				</div>
 			</div>
@@ -47,35 +47,78 @@
 					<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
 						IDENTITY
 					</div>
-					<div v-for="(item, index) in kycIdentityInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
-						<p class="text-gray-500 text-sm">
-							{{ item.name }}
-						</p>
-						<p v-if="item.name === 'STATUS'" class="text-sm">
-							<button class="bg-black text-white border px-2 py-1.5 rounded-md text-xs">
-								Verify
-							</button>
-						</p>
-						<p v-else class="text-sm">
-							{{ item.value }}
-						</p>
-					</div>
+					<p v-if="!partnersKycInformation?.identity?.status" class="text-sm text-center py-2 text-grey6">
+						Partner Identity information not submitted
+					</p>
+					<template v-else>
+						<div v-for="(item, index) in kycIdentityInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
+							<p class="text-gray-500 text-sm">
+								{{ item.name }}
+							</p>
+							<template v-if="item.name === 'STATUS'">
+								<p v-if="partnersKycInformation?.identity?.status === 'completed'" class="text-sm font-medium text-green">
+									Verified
+								</p>
+								<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs"
+									@click="initVerifyKyc(partnersKycInformation.identity, 'Identity')"
+								>
+									Verify
+								</button>
+							</template>
+							<p v-else class="text-sm">
+								{{ item.value }}
+							</p>
+						</div>
+					</template>
 					<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
 						ADDRESS
 					</div>
-					<div v-for="(item, index) in kycAddressInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
-						<p class="text-gray-500 text-sm">
-							{{ item.name }}
-						</p>
-						<p v-if="item.name === 'STATUS'" class="text-sm">
-							<button :class="item.class">
-								update
-							</button>
-						</p>
-						<p v-else class="text-sm">
-							{{ item.value }}
-						</p>
-					</div>
+					<p v-if="!partnersKycInformation?.address?.status" class="text-sm text-center py-2 text-grey6">
+						Partner address information not submitted
+					</p>
+					<template v-else>
+						<div v-for="(item, index) in kycAddressInformation" :key="index" class="flex justify-between items-center border-b py-4 px-3">
+							<p class="text-gray-500 text-sm">
+								{{ item.name }}
+							</p>
+							<template v-if="item.name === 'STATUS'">
+								<p v-if="partnersKycInformation?.address?.status === 'completed'" class="text-sm font-medium text-green">
+									Verified
+								</p>
+								<div v-else>
+									<div v-if="verifingAddress" class="flex items-center gap-3">
+										<select v-model="address_status" class="min-w-[100px] px-2 py-1 border rounded w-fit">
+											<option value="failed">
+												Failed
+											</option>
+											<option value="completed">
+												Approve
+											</option>
+										</select>
+										<button class="text-red text-sm p-2" @click="verifingAddress = false">
+											Cancel
+										</button>
+										<button class="bg-dark text-sm text-light p-2 rounded"
+											@click="initVerifyAddress(partnersKycInformation.address, address_status)"
+										>
+											Save
+										</button>
+									</div>
+									<button v-else class="bg-black text-white border px-2 py-1.5 rounded-md text-xs" @click="verifingAddress = true">
+										Update
+									</button>
+								</div>
+							</template>
+							<a v-else-if="item.name === 'DOCUMENT'" :href="partnersKycInformation?.address?.document_files![0]"
+								target="_blank" class="text-blue-500 font-medium text-sm underline"
+							>
+								View document
+							</a>
+							<p v-else class="text-sm">
+								{{ item.value }}
+							</p>
+						</div>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -87,6 +130,16 @@
 					</p>
 				</div>
 				<div v-if="Object.keys(partnersEarningInformation).length && !loadingEarnings">
+					<div class="flex items-center justify-center py-4">
+						<div class="flex flex-col gap-1 text-center">
+							<h1 class="text-3xl font-bold text-dark">
+								{{ convertToCurrency(partnersEarningInformation?.unsettledEarnings?.amount) || '₦0.00' }}
+							</h1>
+							<p class="text-sm text-grey6 font-medium">
+								PARTNER EARNINGS
+							</p>
+						</div>
+					</div>
 					<div class="px-6">
 						<div class="flex justify-between gap-y-2 items-center border-b py-4">
 							<p class="text-sm text-gray-500">
@@ -110,9 +163,9 @@
 							<p class="text-sm text-gray-500">
 								Past Payouts
 							</p>
-							<p class="text-sm underline text-indigo-500 font-medium">
+							<NuxtLink :to="`/pastpayouts/${id}`" class="text-sm underline text-indigo-500 font-medium">
 								View all
-							</p>
+							</NuxtLink>
 						</div>
 					</div>
 				</div>
@@ -170,22 +223,22 @@
 
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary } from '@/composables/modules/partners/id'
+import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, useVerifyPartnerKyc } from '@/composables/modules/partners/id'
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
 const { getPartnerEarning, loadingEarnings, partnersEarningInformation } = useGetPartnerEarningSummary()
+const { initVerifyKyc, initVerifyAddress } = useVerifyPartnerKyc()
 const id = useRoute().params.id as string
 const account_sid = useRoute().params.accountSid as string
-getPartnerById(id)
-getPartnerKyc(account_sid)
-getPartnerEarning(account_sid)
+const verifingAddress = ref(false)
+const address_status = ref('failed')
 
 const partnerInformation = computed(() => {
-	if (!Object.keys(selectedPartner.value).length) return {}
+	if (!Object.keys(selectedPartner.value).length) return []
 	return [
 		{ name: 'NAME', value: `${selectedPartner?.value?.owner?.fname} ${selectedPartner?.value?.owner?.lname}`, class: '' },
-		{ name: 'PHONE NUMBER', value: selectedPartner?.value?.company_phone ?? 'N/A', class: '' },
-		{ name: 'EMAIL ADDRESS', value: selectedPartner?.value?.company_email ?? 'N/A', class: '' },
+		{ name: 'PHONE NUMBER', value: selectedPartner?.value?.owner?.phone ?? 'N/A', class: '' },
+		{ name: 'EMAIL ADDRESS', value: selectedPartner?.value?.owner?.email ?? 'N/A', class: '' },
 		{ name: 'AVATAR', value: selectedPartner?.value?.fname, class: '' },
 		{ name: 'COMPANY', value: selectedPartner?.value?.company_name ?? 'N/A', class: '' },
 		{ name: 'DATE CREATED', value: selectedPartner?.value?.created_at ?? 'N/A', class: '' },
@@ -217,6 +270,10 @@ const partnerAssetStats = computed(() => {
 		{ name: 'Total Number of Drivers', value: selectedPartner?.value?.stats?.allDriversCount ?? 'N/A', class: '' }
 	]
 })
+
+getPartnerById(id)
+getPartnerKyc(account_sid)
+getPartnerEarning(account_sid)
 
 definePageMeta({
 	layout: 'dashboard',

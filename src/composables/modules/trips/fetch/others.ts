@@ -71,7 +71,7 @@ export const useLoadActiveTripPassengers = () => {
 export const useLoadUpcomingTripPassengers = () => {
     const loading = ref(false)
     const passengersList = ref([])
-    const getTUpcomingripPassengers = async (id: string) => {
+    const getUpcomingripPassengers = async (id: string) => {
         loading.value = true
         const res = await trips_api.$_get_upcoming_trip_passengers(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -80,7 +80,7 @@ export const useLoadUpcomingTripPassengers = () => {
         loading.value = false
     }
 
-    return { getTUpcomingripPassengers, loading, passengersList }
+    return { getUpcomingripPassengers, loading, passengersList }
 }
 
 export const useGetTripsGraph = () => {

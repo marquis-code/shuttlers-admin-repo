@@ -14,7 +14,11 @@
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="label">Email</label>
-				<input v-model="email" disabled required type="email" class="input-field">
+				<input v-model="email" required type="email" class="input-field">
+			</div>
+			<div class="flex flex-col gap-2">
+				<label class="label">Phone number</label>
+				<input v-model="phone" required type="text" class="input-field">
 			</div>
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : 'Update Partner' }}
@@ -26,7 +30,7 @@
 <script setup lang="ts">
 import { useUpdatePartnerInfo } from '@/composables/modules/partners'
 
-const { loading, clearObj, fname, lname, email, updatePartner } = useUpdatePartnerInfo()
+const { loading, clearObj, fname, lname, email, phone, updatePartner } = useUpdatePartnerInfo()
 const enableButton = computed(() => {
 	return !!(fname.value && lname.value && email.value)
 })

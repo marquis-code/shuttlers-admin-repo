@@ -8,7 +8,7 @@
 		@click.self="autoClose ? close($el) : null"
 	>
 		<transition name="modal" appear>
-			<div v-if="type == 'popup'" class="modal w-[8000px]">
+			<div v-if="type == 'popup'" :class="{'modal': baseModal, 'large_modal': isLargeModal, 'medium_modal': isMediumModal}" class="w-[8000px]">
 				<header class="modal-title flex justify-between w-full items-center">
 					<span v-if="showTitle" class="text-center w-full">{{ title }}</span>
 					<icon
@@ -41,6 +41,21 @@ watch(useRoute(), (from, to) => {
 })
 type modalTypes = 'popup' | 'sidebar';
 const props = defineProps({
+	baseModal: {
+		default: true,
+		type: Boolean,
+		required: false
+	},
+	isLargeModal: {
+		default: false,
+		type: Boolean,
+		required: false
+	},
+	isMediumModal: {
+		default: false,
+		type: Boolean,
+		required: false
+	},
 	autoClose: {
 		default: true,
 		type: Boolean,
@@ -132,8 +147,14 @@ const closeModal = () => {
 .modal {
 	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:w-[440px] md:max-h-[90vh];
 }
+.large_modal {
+	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh];
+}
+
+.medium_modal {
+	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh] md:w-[900px];
+}
 .modal-title {
 	@apply font-bold text-lg text-center w-full text-black ;
 }
-
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<label :for="name" class="flex items-center cursor-pointer">
 		<div id="toggle" class="relative">
-			<input :id="name" type="checkbox" class="sr-only" :checked="modelValue" @change="test">
+			<input :id="name" type="checkbox" class="sr-only" :disabled="disabled" :checked="modelValue" @change="test">
 			<div id="line" class="block bg-[#F9FBFA] border border-[#E5E5EA] w-14 h-[36px] rounded-full line" />
 			<div id="dot" class="dot absolute left-0 top-1 bg-white shadow-mode w-7 h-7 rounded-full transition" />
 		</div>
@@ -22,6 +22,11 @@ const props = defineProps({
 	name: {
 		type: String,
 		default: ''
+	},
+	disabled: {
+		type: Boolean,
+		default: false,
+		required: false
 	}
 })
 

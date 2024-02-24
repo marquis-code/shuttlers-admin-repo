@@ -68,7 +68,7 @@
 				</VueMultiselect>
 			</div>
 
-			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" />
+			<ToggleButton v-model="isCompulsory" name="is-compulsory" label="Users must pay this fee when making a booking" :disabled="true" />
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : `${isEditConfigureCharge ? 'Update configuration' : 'Configure new charge'}` }}

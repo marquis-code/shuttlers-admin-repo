@@ -28,8 +28,10 @@ const downloadReport = async () => {
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
-    fromParam.value = (route?.query?.dateRange as string).split(',')[0] ?? ''
-    toParam.value = (route?.query?.dateRange as string).split(',')[1] ?? ''
+    if (route?.query?.dateRange) {
+      fromParam.value = (route?.query?.dateRange as string).split(',')[0] ?? ''
+      toParam.value = (route?.query?.dateRange as string).split(',')[1] ?? ''
+    }
   })
 
   const constructApiUrl = computed(() => {
