@@ -71,9 +71,10 @@ import CancelTrip from '@/components/modals/modules/trips/CancelTrip.vue'
 import BatchAddCorporateGroupMembers from '@/components/modals/modules/companies/BatchAddCorporateGroupMembers.vue'
 import UpdatePartnerInfo from '@/components/modals/modules/partners/UpdatePartnerInfo.vue'
 import UpdatePartnerPassword from '@/components/modals/modules/partners/UpdatePartnerPassword.vue'
+import CancelBooking from '@/components/modals/modules/users/CancelBooking.vue'
 
 type AuthTypes = 'Logout'
-type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
+type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward' | 'CreateManualReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
@@ -89,7 +90,7 @@ type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
-const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
+const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward, CreateManualReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
