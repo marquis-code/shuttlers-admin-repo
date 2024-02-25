@@ -44,6 +44,7 @@ export const useCancelBooking = () => {
                 fetchTicketDetails()
             }
         }
+        cancelling.value = false
     }
 
     return { fetchBookedDays, loading, booked_days, cancelBooking, selected_days, cancelling }
