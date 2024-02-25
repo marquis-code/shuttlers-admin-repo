@@ -157,5 +157,17 @@ export const users_api = {
 		} else {
 			return GATEWAY_ENDPOINT_WITH_AUTH.post(searchUrl, payload)
 		}
+	},
+	$_get_booking_ticket_details: (ticketId:number|string) => {
+		const url = `/user-routes/${ticketId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_booked_days: (ticketId:number|string) => {
+		const url = `/users/routes/user_route_id/${ticketId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_cancel_booking: (userId:number|string, payload: Record<string, any>) => {
+		const url = `/users/${userId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
 	}
 }
