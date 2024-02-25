@@ -114,7 +114,7 @@ export const users_api = {
 	},
 	$_get_user_active_bookings: (id:string | number, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_change_password: (payload, id) => {
