@@ -20,10 +20,11 @@ const currentWallet = computed(() => {
 
 export const useCorporateWallet = () => {
   const loading = ref(false)
+  const id = useRoute().params.id
   const getCorporateWalletInfo = async () => {
     loading.value = true
     const res = (await corporates_api.$_get_corporate_wallet_info(
-      Number(selectedCorporate.value.id)
+      Number(id)
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
       wallets.value = res.data.data ?? []
