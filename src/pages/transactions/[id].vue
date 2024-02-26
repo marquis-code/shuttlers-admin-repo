@@ -16,18 +16,18 @@
 					<div class="flex justify-between items-center px-12 border-y ">
 						<div v-for="row in transactionRow" :key="row.value" class=" py-4 text-center">
 							<h6 class="uppercase text-gray-200 text-xs font-medium">
-								{{ row.name }}
+								{{ row?.name }}
 							</h6>
 							<h2 class="text-xl font-bold" :class="row.class">
-								{{ row.value }}
+								{{ row?.value }}
 							</h2>
 						</div>
 					</div>
 
 					<ul class="py-3">
 						<li v-for="col in transactionCol" :key="col.name" class="flex flex-wrap gap-4 justify-between items-center px-4 py-3  border-b text-sm">
-							<span class="font-medium">{{ col.name }} </span>
-							<span>{{ col.value }} </span>
+							<span class="font-medium">{{ col?.name }} </span>
+							<span>{{ col?.value }} </span>
 						</li>
 						<div class="border-l-4 pl-4 mt-2 flex flex-col gap-1">
 							<div v-for="n,i in additional_charges_on_fare" :key="i" class="flex items-center justify-between">
@@ -48,7 +48,7 @@
 									</VTooltip>
 								</div>
 								<p class="text-sm text-grey5">
-									<span class="text-dark">{{ convertToCurrency(Number(n.amount)) }}</span> x {{ transaction.booking_history.length }}
+									<span class="text-dark">{{ convertToCurrency(Number(n.amount)) }}</span> x {{ transaction?.booking_history?.length }}
 								</p>
 							</div>
 							<div class="flex items-center justify-between mt-2">

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="bookings" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="bookings" :has-options="true" class="cursor-pointer" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
