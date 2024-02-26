@@ -1,6 +1,11 @@
+import moment from 'moment'
 import { useSelectedStaff } from './select-staff'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { useDownloadReport, exportAsCsv } from '@/composables/utils/csv'
+import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
+const { download, loading: downloading } = useDownloadReport()
+const { selectedCorporate } = useCorporateIdDetails()
 
 const { selectedBranchIds, selectedShiftIds, selectedDays, selectedRoute } = useSelectedStaff()
 const loading = ref(false)
@@ -36,6 +41,30 @@ export const useCorporateStaff = () => {
         }
     }
 
+	const downloadCorporateStaffs = async () => {
+		downloading.value = true
+		const id = useRoute().params.id as string
+		const name = ref(`${selectedCorporate?.value?.corporate_name} Corporate Staffs'`)
+		const res = await corporates_api.$_download_corporate_staffs(Number(id), filters) as CustomAxiosResponse
+        if (res && res?.type !== 'ERROR') {
+			const data = res.data.data
+            const newArr = data.map((el) => {
+                return {
+                    name: `${el?.fname || ''} ${el?.lname || ''} ${el?.email || ''}`,
+					home_address: el?.address?.address || 'N/A',
+					nearest_busstop: el?.address?.closestBusstop?.address || 'N/A',
+					office_branch: el?.workShift?.officeBranch?.address || 'N/A',
+					work_shift: el?.workShift?.corporate_work_shift?.description || 'N/A',
+                    work_days: el?.workShift?.work_days.map((itm) => itm) || 'N/A',
+					credit_balance: el?.wallet?.amount || 'N/A',
+					preferred_routes: el?.preferredRoutes.map((itm:any) => itm?.route?.route_code) || 'N/A'
+                }
+            })
+			download(newArr, name.value)
+        }
+		downloading.value = false
+	}
+
 	watch([filters.search, selectedShiftIds, selectedBranchIds, selectedDays, selectedRoute], () => {
 		metaObject.page.value = 1
 		getCorporateStaff()
@@ -43,5 +72,5 @@ export const useCorporateStaff = () => {
 
 	setFunction(getCorporateStaff)
 
-	return { loading, staffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate }
+	return { loading, staffs, downloadCorporateStaffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate }
 }

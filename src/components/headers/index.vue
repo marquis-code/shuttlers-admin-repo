@@ -68,6 +68,7 @@ import CorporateGroupDetails from '@/components/headers/modules/Companies/compan
 import SalesAgent from '@/components/headers/modules/Agents/index.vue'
 import AgentDetails from '@/components/headers/modules/Agents/agent-details.vue'
 import PastPayouts from '@/components/headers/modules/Pastpayouts/index.vue'
+import TicketBookingDetails from '@/components/headers/modules/Users/booking-details.vue'
 
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -89,11 +90,12 @@ const componentRouteArray = [
     { routes: ['users-id-active-bookings', 'users-id-cancelled-trips', 'users-id-credit-line-usage', 'users-id-past-bookings', 'users-id-rides', 'users-id-transactions', 'users-id-user-info'], component: UserDetails },
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
+    { routes: ['users-id-booking-ticket-ticket_id'], component: TicketBookingDetails },
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners', 'partners-create'], component: Partners },
     { routes: ['partners-payouts', 'partners-payouts-completed', 'partners-payouts-failed'], component: PartnerPayout },
     { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
     { routes: ['partners-payouts-id-earningId'], component: PayoutDetails },
-    { routes: ['pastpayouts-id'], component: PastPayouts },
+    { routes: ['pastpayouts-id-accountSid'], component: PastPayouts },
     { routes: ['drivers'], component: Drivers },
     { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },

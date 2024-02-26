@@ -81,5 +81,13 @@ export const staffs_api = {
 	$_get_staffs_for_selector_component: (search = '') => {
 		const url = `/staffs?limit=${20}&page=${1}&search=${search}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_assign_staff_to_route: (payload:any) => {
+		const url = '/preferred-routes'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_delete_assigned_staff_route: (id:string | number) => {
+		const url = `/preferred-routes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }

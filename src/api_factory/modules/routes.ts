@@ -104,7 +104,7 @@ export const routes_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_routes: (search = '') => {
-		const url = `/routes?limit=20&fields[route]=id,pickup,destination,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
+		const url = `/routes?limit=20&fields[route]=id,pickup,destination,status,city_id,pickup_geometry,destination_geometry,slug,overview_polyline,fare,visibility&search=${search}&status=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_single_itinerary_details: (id:number|string) => {

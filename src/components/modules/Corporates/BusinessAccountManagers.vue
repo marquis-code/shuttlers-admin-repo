@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<Table :loading="loading" :headers="tableFields" :table-data="computedManagers" :has-options="true">
+		<Table :loading="loading" :headers="tableFields" :table-data="computedManagers" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" />
 				<div class="flex justify-end items-end bg-white border-x pr-4 py-2">
@@ -57,8 +57,7 @@ const computedManagers = computed(() => {
 	})
 })
 
+const onRowClicked = (data) => {
+	useRouter().push(`/admin/${data.id}/info`)
+}
 </script>
-
-<style>
-
-</style>
