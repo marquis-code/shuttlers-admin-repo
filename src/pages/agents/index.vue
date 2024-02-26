@@ -14,7 +14,7 @@
 				<span class="text-3xl font-bold">₦200,000.00</span>
 			</div>
 		</section>
-		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked" :has-index="true" :page="page">
 			<template #header>
 				<!-- <TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
 					@filter="onFilterUpdate"
@@ -23,7 +23,7 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
-					<Avatar :src="item?.data?.avatar" :name="item?.data?.fname" bg="#B1C2D9" />
+					{{ item?.data?.fname }} {{ item?.data?.lname }}
 				</div>
 				<div v-if="item.lname" class="">
 					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">
@@ -64,7 +64,7 @@ const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page } = 
 getAgentsList()
 const onRowClicked = (data) => {
 	const { selectedUser } = useUserIdDetails()
-	useRouter().push(`/users/${data.id}/user-info`)
+	useRouter().push(`/agents/${data.id}/agent-info`)
 	selectedUser.value = data
 }
 
@@ -86,12 +86,8 @@ const tableFields = ref([
         value: 'email'
     },
     {
-        text: 'BUS STOP',
-        value: '_'
-    },
-    {
         text: 'ROUTES CREATED',
-        value: '_'
+        value: 'id'
     },
     {
         text: 'DATE JOINED',
