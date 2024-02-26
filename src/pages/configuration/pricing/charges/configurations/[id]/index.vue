@@ -133,24 +133,34 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.users" class="flex flex-col gap-0 text-sm text-[#101211]">
-					<p class="font-medium">
-						{{ item.data.user?.fname || '' }} {{ item.data.user?.lname || '' }}
-					</p>
-					<p class="text-[#737876]">
-						{{ item.data.user?.email || '' }}
-					</p>
+					<template v-if="item.data.payer_type === 'user'">
+						<p class="font-medium">
+							{{ item.data.payer?.fname || '' }} {{ item.data.payer?.lname || '' }}
+						</p>
+						<p class="text-[#737876]">
+							{{ item.data.payer?.email || '' }}
+						</p>
+					</template>
+					<template v-else>
+						<p class="font-medium">
+							{{ item.data.payer?.corporate_name}} (company)
+						</p>
+						<p class="text-[#737876]">
+							{{ item.data.payer?.email || '' }}
+						</p>
+					</template>
 				</div>
 				<p v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap">
 					{{ item.data?.route?.route_code }}
 				</p>
 				<p v-if="item.t_amount" class="text-sm text-[#313533]">
-					{{ item.data?.userRouteSchedule?.unit_cost ? `₦${item.data.userRouteSchedule?.unit_cost}` : 'N/A' }}
+					{{ item.data?.trip_amount ? `₦${item.data.trip_amount}` : 'N/A' }}
 				</p>
 				<p v-if="item.c_amount" class="text-sm text-[#313533]">
 					{{ item.data?.amount ? `₦${item.data.amount}` : 'N/A' }}
 				</p>
-				<p v-if="item.date" class="text-sm text-[#313533] font-medium">
-					{{ moment(item.data.created_at).format('D-MM-YYYY') }}
+				<p v-if="item.date" class="text-sm text-[#313533] font-medium whitespace-nowrap">
+					{{ moment(item.data.created_at).format('ll') }}
 				</p>
 			</template>
 
@@ -188,7 +198,7 @@ const { fetchHistory, chargeHistory, loading: fetching_charge_history, total, pa
 const { allCityNames, fetchAllCityNames, fetchAllCountries, allCountries } = useCityAndCountry()
 
 const tableFields = [
-	{ value: 'users', text: 'Users' },
+	{ value: 'users', text: 'Users/Company' },
 	{ value: 'route', text: 'Route' },
 	{ value: 't_amount', text: 'Trip amount' },
 	{ value: 'c_amount', text: 'Charge amount' },
