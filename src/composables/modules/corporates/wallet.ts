@@ -213,7 +213,7 @@ export const useCorporateOverdreftUpdate = () => {
     if (res.type !== 'ERROR') {
       useAlert().openAlert({
         type: 'SUCCESS',
-        msg: 'Wallet Overdraf was successfully updated'
+        msg: 'Wallet Overdraft was successfully updated'
       })
     }
     updating.value = false

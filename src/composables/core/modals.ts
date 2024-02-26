@@ -23,6 +23,8 @@ import CreateChargeTypes from '@/components/modals/modules/configurations/charge
 import CreateChargeConfigurations from '@/components/modals/modules/configurations/charges/configure/index.vue'
 import RemitCharge from '@/components/modals/modules/configurations/charges/configure/remitted.vue'
 import AssignStaff from '@/components/modals/modules/companies/staff/multipleRouteAssignment.vue'
+import AssignStaffToRoute from '@/components/modals/modules/companies/staff/AssignStaffToRoute.vue'
+import ViewStaffRoutesList from '@/components/modals/modules/companies/staff/ViewStaffRoutesList.vue'
 import ConfigureInspectionSite from '@/components/modals/modules/configurations/vehicle/InspectionSite.vue'
 import ConfigureVehicleCategory from '@/components/modals/modules/configurations/vehicle/vehicleCategory.vue'
 import DeleteVehicleCategory from '@/components/modals/modules/configurations/vehicle/DeleteCategoryConfirmation.vue'
@@ -71,15 +73,16 @@ import CancelTrip from '@/components/modals/modules/trips/CancelTrip.vue'
 import BatchAddCorporateGroupMembers from '@/components/modals/modules/companies/BatchAddCorporateGroupMembers.vue'
 import UpdatePartnerInfo from '@/components/modals/modules/partners/UpdatePartnerInfo.vue'
 import UpdatePartnerPassword from '@/components/modals/modules/partners/UpdatePartnerPassword.vue'
+import CancelBooking from '@/components/modals/modules/users/CancelBooking.vue'
 
 type AuthTypes = 'Logout'
-type UserTypes = 'UserRefund' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
+type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
 type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward' | 'CreateManualReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
 type AdminTypes = 'ChangePassword'
 type ChargeTypes = 'CreateChargeTypes' | 'CreateChargeConfigurations' | 'RemitCharge'
-type CompaniesTypes = 'AssignStaff' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet' | 'ScheduledCreditLine' | 'EmployeeExemption' | 'RejectShuttleRequest' | 'BatchAddCorporateGroupMembers'
+type CompaniesTypes = 'AssignStaff' | 'ViewStaffRoutesList' | 'AddWorkShift' | 'AddWorkBranch' | 'AddAccountManagers' | 'CorporateWalletOptions' | 'CorporateBookingCancellation' | 'CorporateManifestExport' | 'CreateCorporateGroup' | 'CorporateVehicleCapacityConfig' | 'FundWallet' | 'ActivateWallet' | 'ScheduledCreditLine' | 'EmployeeExemption' | 'RejectShuttleRequest' | 'BatchAddCorporateGroupMembers' | 'AssignStaffToRoute'
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues' | 'TransferTrip' | 'CancelTrip'
@@ -89,13 +92,13 @@ type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
-const UserModals = { UserRefund, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
+const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward, CreateManualReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
 const AdminModals = { ChangePassword } as Record<AdminTypes, any>
 const ChargeModals = { CreateChargeTypes, CreateChargeConfigurations, RemitCharge } as Record<ChargeTypes, any>
-const CompaniesModals = { AssignStaff, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet, ScheduledCreditLine, EmployeeExemption, RejectShuttleRequest, BatchAddCorporateGroupMembers } as Record<CompaniesTypes, any>
+const CompaniesModals = { AssignStaff, ViewStaffRoutesList, AddWorkShift, AddWorkBranch, AddAccountManagers, CorporateWalletOptions, CorporateManifestExport, CorporateBookingCancellation, CreateCorporateGroup, CorporateVehicleCapacityConfig, FundWallet, ActivateWallet, ScheduledCreditLine, EmployeeExemption, RejectShuttleRequest, BatchAddCorporateGroupMembers, AssignStaffToRoute } as Record<CompaniesTypes, any>
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues, TransferTrip, CancelTrip } as Record<TripsTypes, any>

@@ -1,9 +1,9 @@
 <template>
 	<NuxtLink v-if="url" :to="url" class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2 w-fit">
-		Go back
+		{{ title }}
 	</NuxtLink>
 	<button v-else class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2 w-fit" @click="$router.go(-1)">
-		Go back
+		{{ title }}
 	</button>
 </template>
 
@@ -12,6 +12,11 @@ defineProps({
 	url: {
 		type: String,
 		default: '',
+		required: false
+	},
+	title: {
+		type: String,
+		default: 'Go back',
 		required: false
 	}
 })

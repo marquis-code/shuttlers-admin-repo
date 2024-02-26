@@ -163,7 +163,7 @@
 							<p class="text-sm text-gray-500">
 								Past Payouts
 							</p>
-							<NuxtLink :to="`/pastpayouts/${id}`" class="text-sm underline text-indigo-500 font-medium">
+							<NuxtLink :to="`/pastpayouts/${id}/${account_sid}`" class="text-sm underline text-indigo-500 font-medium">
 								View all
 							</NuxtLink>
 						</div>
