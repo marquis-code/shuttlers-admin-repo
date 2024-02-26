@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="bookings">
+		<Table :loading="loading" :headers="tableFields" :table-data="bookings" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
@@ -36,9 +36,15 @@
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useUserBookings } from '@/composables/modules/users/id'
+
+const userId = useRoute().params.id as string
 const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, moveTo, page, total, setBookingType, bookingType } = useUserBookings()
 bookingType.value = 'active'
 getBookings()
+
+const onRowClicked = (data) => {
+	useRouter().push(`/users/${userId}/booking-ticket/${data.id}`)
+}
 
 definePageMeta({
     layout: 'dashboard',

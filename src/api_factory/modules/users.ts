@@ -114,7 +114,7 @@ export const users_api = {
 	},
 	$_get_user_active_bookings: (id:string | number, metaObject:TMetaObject, bookingType, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		const url = `/users/${id}/routes?${queryParams}&status=${bookingType}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_change_password: (payload, id) => {
@@ -157,5 +157,17 @@ export const users_api = {
 		} else {
 			return GATEWAY_ENDPOINT_WITH_AUTH.post(searchUrl, payload)
 		}
+	},
+	$_get_booking_ticket_details: (ticketId:number|string) => {
+		const url = `/user-routes/${ticketId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_booked_days: (ticketId:number|string) => {
+		const url = `/users/routes/user_route_id/${ticketId}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_cancel_booking: (userId:number|string, payload: Record<string, any>) => {
+		const url = `/users/${userId}/routes`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
 	}
 }
