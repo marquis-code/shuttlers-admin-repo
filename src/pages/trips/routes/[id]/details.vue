@@ -10,6 +10,7 @@
 				<ModulesRoutesDetailsPassengers />
 				<ModulesRoutesDetailsBookingReport />
 				<ModulesRoutesDetailsPaymentOptions />
+				<ModulesRoutesDetailsCharges />
 			</section>
 		</section>
 		<section v-else>
