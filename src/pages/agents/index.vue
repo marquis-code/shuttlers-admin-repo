@@ -23,15 +23,12 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
-					<Avatar :src="item?.data?.avatar" :name="item?.data?.fname" bg="#B1C2D9" />
+					{{ item?.data?.fname }} {{ item?.data?.lname }}
 				</div>
-				<div v-if="item.lname" class="">
-					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">
-						<p>{{ item?.data?.fname }} {{ item?.data?.lname }}</p>
-						<p>{{ item?.data?.email ?? 'N/A' }}</p>
-						<p>{{ item?.data?.phone ?? 'N/A' }}</p>
-					</NuxtLink>
+				<div v-if="item.phone">
+					{{ item?.data?.phone ?? 'N/A' }}
 				</div>
+
 				<span v-else-if="item.created_at" class="space-y-4 text-base">
 					{{ useDateFormat(item?.data?.created_at, "DD, MMMM YYYY").value }}
 				</span>
@@ -64,7 +61,7 @@ const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page } = 
 getAgentsList()
 const onRowClicked = (data) => {
 	const { selectedUser } = useUserIdDetails()
-	useRouter().push(`/users/${data.id}/user-info`)
+	useRouter().push(`/agents/${data.id}/agent-info`)
 	selectedUser.value = data
 }
 
@@ -86,12 +83,8 @@ const tableFields = ref([
         value: 'email'
     },
     {
-        text: 'BUS STOP',
-        value: '_'
-    },
-    {
         text: 'ROUTES CREATED',
-        value: '_'
+        value: 'id'
     },
     {
         text: 'DATE JOINED',

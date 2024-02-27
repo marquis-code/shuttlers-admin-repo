@@ -13,8 +13,8 @@
 			</div>
 
 			<div v-if="bookingTransferActiveStep === '2'">
-				<ModulesTripsBookingTransferSectionTwo @passengers="handleTransferPassengersData" :dropoffs="dropoffLocations" :pickups="pickupLocations" :passengers="computedTableData"
-					:loading="loading" @go-back="bookingTransferActiveStep = '1'" />
+				<ModulesTripsBookingTransferSectionTwo :dropoffs="dropoffLocations" :pickups="pickupLocations" :passengers="computedTableData" :loading="loading"
+					@passengers="handleTransferPassengersData" @go-back="bookingTransferActiveStep = '1'" />
 			</div>
 		</section>
 	</Modal>
