@@ -65,7 +65,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
-          shouldRedirect: false,
+        shouldRedirect: false,
         description: ''
       }
     ]
@@ -107,13 +107,13 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       }
     ]
   },
-  {
-  title: 'Sales agents',
-    routePath: '/agents',
-    description: '',
-    iconComponent: shallowRef(userIcon),
-    rootPath: '/agents'
-  },
+  // {
+  // title: 'Sales agents',
+  //   routePath: '/agents',
+  //   description: '',
+  //   iconComponent: shallowRef(userIcon),
+  //   rootPath: '/agents'
+  // },
   {
     title: 'Commute',
     routePath: '/trips/type/active',
@@ -196,20 +196,20 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Partners List',
         routePath: '/partners',
         oldPath: '/partners/list',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Vehicles Partners List'
       },
       {
         title: 'Payout',
         routePath: '/partners/payouts',
         oldPath: '/partners/payout/pending',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Vehicles Partners payout'
       },
       {
         title: 'Notify',
         routePath: '/partners/notify',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Notify Vehicles Partners'
       }
     ]
@@ -220,14 +220,14 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'DRIVERS',
     children: [
           {
         title: 'Manage ',
         routePath: '/drivers',
         oldPath: '/drivers/list',
-        shouldRedirect: true,
+        shouldRedirect: false,
         description: 'Manage Drivers'
       }
       ]
@@ -262,6 +262,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(charterIcon),
     children: null,
+    shouldRedirect: false,
     modulePermission: 'VEHICLES'
   },
   {
@@ -271,7 +272,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(tagIcon),
     children: null,
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS'
   },
   {
@@ -280,7 +281,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     oldPath: '/promo-codes',
     description: '',
     iconComponent: shallowRef(tagIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS',
     children: null
   },

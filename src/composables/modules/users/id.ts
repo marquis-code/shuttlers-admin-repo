@@ -1,4 +1,4 @@
-import { users_api, corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'

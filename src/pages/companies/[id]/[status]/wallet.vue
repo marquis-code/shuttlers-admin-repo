@@ -71,12 +71,22 @@
 								<div><img v-if="item.data.direction === 'credit'" class="max-w-xl max-h-28" src="@/assets/icons/source/inflow.svg" alt=""></div>
 								<div><img v-if="item.data.direction === 'debit'" class="max-w-xl max-h-28" src="@/assets/icons/source/outflow.svg" alt=""></div>
 							</div>
-							<div class="space-y-4">
+							<div class="space-y-4 py-3">
+								<div>
+									<div v-if="moment().diff(moment(item.data.created_at), 'hours') > 24" class="flex flex-col w-fit">
+										<p class="text-black font-bold whitespace-nowrap">
+											{{ moment(item.data.created_at).format("Do MMM, YYYY") }}
+										</p>
+									</div>
+									<p v-else class="text-dark whitespace-nowrap font-bold w-fit">
+										{{ moment(item.data.created_at).fromNow() }}
+									</p>
+								</div>
 								<p class="font-medium text-gray-600">
 									{{ item.data.description }}
 								</p>
 								<p class="font-medium text-gray-600">
-									{{ item.data.updated_at.split(' ')[1] }}
+									{{ moment.utc(item.data.updated_at).format("h:mm A") }}
 								</p>
 							</div>
 						</div>
@@ -219,7 +229,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
+import moment from 'moment'
 import { useClipboard } from '@/composables/core/useClipboard'
 import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/composables/modules/corporates/wallet'
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
