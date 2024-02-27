@@ -18,14 +18,7 @@
 						showDatePicker: false,
 					}"
 					@filter="onFilterUpdate"
-				>
-					<!-- <template #filter_others>
-						<button class="shrink-0 flex items-center gap-[16px] font-medium justify-center py-3 px-4 bg-[#FAFAFA] rounded border text-[#444854]" @click="useChargeModal().openCreateChargeConfigurations()">
-							<img src="@/assets/icons/source/plus_black.svg" alt="">
-							Configure new charge
-						</button>
-					</template> -->
-				</TableFilter>
+				/>
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap">

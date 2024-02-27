@@ -41,7 +41,7 @@
 				<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
 					<template #header>
 						<div class="bg-white border-x border-gray-100">
-							<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+							<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
 							<div class="flex justify-end gap-x-3 items-end pr-3 py-3">
 								<div>
 									<CorporatesStaffMultiSelect class="w-full" label="" @update:modelValue="handleSelectedCorporates" />

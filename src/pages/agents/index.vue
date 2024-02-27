@@ -14,12 +14,12 @@
 				<span class="text-3xl font-bold">₦200,000.00</span>
 			</div>
 		</section>
-		<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
+				<!-- <TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
 					@filter="onFilterUpdate"
 					@download="downloadUsers"
-				/>
+				/> -->
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
@@ -56,12 +56,12 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
+import { useGetAgentsList } from '@/composables/modules/agents/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
 
-const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page, downloadUsers } = useGetUsersList()
+const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page } = useGetAgentsList()
 
-// getUsersList()
+getAgentsList()
 const onRowClicked = (data) => {
 	const { selectedUser } = useUserIdDetails()
 	useRouter().push(`/users/${data.id}/user-info`)
