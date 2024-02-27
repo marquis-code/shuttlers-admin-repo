@@ -5,7 +5,16 @@
 		:searchable="true" :loading="loadingQueriedCompany"
 		:internal-search="false" :options-limit="300"
 		:limit="10"
-		:show-no-results="false" :hide-selected="true" @search-change="queryCompany" />
+		:allow-empty="true"
+		:show-no-results="false" :hide-selected="true" @search-change="queryCompany">
+		<template slot="clear" slot-scope="props">
+			<div
+				v-if="queriedCompany.length"
+				class="multiselect__clear"
+				@mousedown.prevent.stop="clearAll(props.search)"
+			/>
+		</template>
+	</InputMultiSelect>
 </template>
 
 <script setup lang="ts">
@@ -53,6 +62,10 @@ watch(company, (val) => {
         emits('updated', val[props.objKey])
   }
 })
+
+const clearAll = () => {
+  queriedCompany.value = []
+    }
 </script>
 
 <style scoped>
