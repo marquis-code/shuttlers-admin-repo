@@ -88,5 +88,9 @@ export const charges_api = {
 	$_get_all_countries: () => {
 		const url = '/countries'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_all_charges_for_a_route: (routeId:number|string) => {
+		const url = `/route-additional-charges/route/${routeId}?active=true`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

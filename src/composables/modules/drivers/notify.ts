@@ -35,7 +35,7 @@ export const useNotifyDriver = () => {
 		useConfirmationModal().openAlert({
 			call_function: notifyDriver,
 			desc: 'Are you sure you want to notify the selected driver(s)?',
-			title: 'Notify driver',
+            title: 'Notify driver',
 			loading,
 			type: 'DANGER'
 		})
