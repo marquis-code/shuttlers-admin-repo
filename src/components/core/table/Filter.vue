@@ -1,17 +1,17 @@
 <template>
 	<header class="w-full ">
-		<div class="flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
+		<div class="space-y-4 md:space-y-0 md:flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
 			<form v-if="filterType.showSearchBar" class="relative flex gap-3" autocomplete="off" @submit.prevent="">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[15px]" aria-hidden="true" />
 				<input v-model="filterData.search.value" type="text" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
 			</form>
 
-			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4">
+			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4 w-full">
 				<div v-if="filterType.showDatePicker" class="pt-2">
-					<InputDateInput v-model="filterData.dateSelected.value" class="font-light" placeholder="Filter by date" :type="filterType.dateType" :format="filterType.dateFormat" />
+					<InputDateInput v-model="filterData.dateSelected.value" style="width: 100%" class="font-light w-full" placeholder="Filter by date" :type="filterType.dateType" :format="filterType.dateFormat" />
 				</div>
 				<div v-if="filterType.showDateRange" class="pt-2">
-					<InputDateInput v-model="filterData.dateRange.value" range placeholder="Filter by date" :disabled-date="()=>null" :type="filterType.dateType" :format="filterType.dateFormat" clearable />
+					<InputDateInput v-model="filterData.dateRange.value" class="w-full" range placeholder="Filter by date" :disabled-date="()=>null" :type="filterType.dateType" :format="filterType.dateFormat" clearable />
 				</div>
 			</section>
 
@@ -52,6 +52,10 @@ const { loading } = useDownloadReport()
 const onDownload = () => {
 	loading.value = true
 	emit('download')
+}
+
+const handleSearch = () => {
+
 }
 
 type FilterKeys = 'type' | 'value'

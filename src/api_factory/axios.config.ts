@@ -80,10 +80,7 @@ instanceArray.forEach((instance) => {
 			}
 		}
 		if (err.response.status === 401) {
-			// if (false) {
-			// 	logOut()
-			// }
-
+				logOut()
 			useAlert().openAlert({ type: 'ERROR', msg: 'Unauthorised ERROR' })
 			return {
 				type: 'ERROR',

@@ -21,7 +21,7 @@ export const useAssignManager = () => {
             useCompaniesModal().closeAddAccountManagers()
 			useAlert().openAlert({
 				type: 'SUCCESS',
-				msg: 'Account nmanager has beena assigned successfully.'
+				msg: 'Account manager has been assigned successfully.'
 			})
 		}
 		loading.value = false
