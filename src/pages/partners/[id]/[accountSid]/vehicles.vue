@@ -37,7 +37,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
 const { getPartnersVehiclesList, loading, partnersVehiclesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
 const id = Number(useRoute().params.id)
-getPartnersVehiclesList(id)
+getPartnersVehiclesList()
 
 definePageMeta({
     layout: 'dashboard',

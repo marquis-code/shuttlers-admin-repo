@@ -3,6 +3,9 @@ import { usePagination } from '@/composables/utils/table'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
+// import { usePartnerIdDetails } from '@/composables/modules/partners'
+
+// const { selectedPartner, getPartnerById } = usePartnerIdDetails()
 
 const selectedPartner = ref({} as Record<string, any>)
 const selectedPartnerId = ref('')
@@ -34,10 +37,10 @@ export const useGetPartnersVehiclesList = () => {
 
     const { $_get_partner_vehicles_by_id } = partners_api
 
-    const getPartnersVehiclesList = async (id:number) => {
+    const getPartnersVehiclesList = async () => {
         loading.value = true
-        partnerId.value = id
-        const res = await $_get_partner_vehicles_by_id(id, metaObject, filterData) as CustomAxiosResponse
+        // partnerId.value = id
+        const res = await $_get_partner_vehicles_by_id(Number(selectedPartner.value.id), metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             partnersVehiclesList.value = res.data.data
@@ -48,7 +51,7 @@ export const useGetPartnersVehiclesList = () => {
     setFunction(getPartnersVehiclesList)
 
     watch([filterData.status], (val) => {
-        getPartnersVehiclesList(Number(partnerId.value))
+        getPartnersVehiclesList()
     })
 
     const onFilterUpdate = (data: any) => {
