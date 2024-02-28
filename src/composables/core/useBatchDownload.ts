@@ -3,6 +3,7 @@ import { useAlert } from '@/composables/core/notification'
 export function usePaginatedFetchAndDownload() {
   const isDownloading = ref(false)
   const mergedData = ref([]) as Record<string, any>
+  const total_pages = ref() as any
   const error = ref(null) as Record<string, any>
 
   async function fetchDataPage(url, page) {
@@ -19,6 +20,7 @@ export function usePaginatedFetchAndDownload() {
     try {
       const firstPageData = await fetchDataPage(url, 1)
       const totalPages = firstPageData.metadata.total_pages
+      total_pages.value = totalPages
       for (let page = 1; page <= totalPages; page++) {
         const pageData = await fetchDataPage(url, page)
         mergedData.value = [...mergedData.value, ...pageData.data]
@@ -31,5 +33,5 @@ export function usePaginatedFetchAndDownload() {
     }
   }
 
-  return { fetchAllPagesAndDownload, isDownloading, error, mergedData }
+  return { fetchAllPagesAndDownload, isDownloading, error, mergedData, total_pages }
 }

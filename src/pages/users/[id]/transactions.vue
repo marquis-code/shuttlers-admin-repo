@@ -24,7 +24,7 @@
 					</span>
 				</div>
 				<div v-if="item.payment_source">
-					<span>{{ item?.data?.payment_source ?? 'N/A' }}</span>
+					<span>{{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source }}</span>
 				</div>
 			</template>
 			<template #footer>
