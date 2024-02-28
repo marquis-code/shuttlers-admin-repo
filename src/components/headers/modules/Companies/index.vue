@@ -15,16 +15,25 @@
 </template>
 
 <script setup lang="ts">
-const pageTabs = [
-    {
-        name: 'Active companies',
-        path: '/companies'
-    },
-    {
-        name: 'Demo requests',
-        path: '/companies/demo-requests'
-    }
-]
+import { isProdEnv } from '@/composables/utils/system'
+
+const pageTabs = computed(() => {
+    const tabs = [
+        {
+            name: 'Active companies',
+            path: '/companies'
+        },
+        {
+            name: 'Demo requests',
+            path: '/companies/demo-requests'
+        }
+    ]
+    if (!isProdEnv.value) tabs.push({
+        name: 'Notification',
+        path: '/companies/wallet-notification'
+    })
+    return tabs
+})
 
 const navigateToCreateCompany = () => {
 	navigateTo({

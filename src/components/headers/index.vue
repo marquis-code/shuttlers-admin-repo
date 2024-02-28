@@ -73,7 +73,7 @@ import TicketBookingDetails from '@/components/headers/modules/Users/booking-det
 const componentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
     { routes: ['route-searches', 'route-searches-top-destination', 'route-searches-top-origin'], component: RouteSearches },
-    { routes: ['companies', 'companies-demo-requests'], component: Companies },
+    { routes: ['companies', 'companies-demo-requests', 'companies-wallet-notification'], component: Companies },
     { routes: ['companies-add-company'], component: AddCompany },
     { routes: ['companies-id-edit'], component: EditCompany },
     { routes: ['companies-id-status-credit-line-create'], component: CreateCreditLineUsage },

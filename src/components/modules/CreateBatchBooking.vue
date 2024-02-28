@@ -83,7 +83,7 @@
 					</select>
 					<Skeleton v-else height="100px" />
 				</div>
-				<div class="flex flex-col gap-2">
+				<div v-if="!isProdEnv" class="flex flex-col gap-2">
 					<div class="flex items-center gap-3">
 						<label for="return" class="m-0">Enable return</label>
 						<input id="return" v-model="form.has_return" type="checkbox">
@@ -247,6 +247,7 @@
 </template>
 
 <script setup lang="ts">
+import { isProdEnv } from '@/composables/utils/system'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import useCsvDownload from '@/composables/core/useCsvDownload'
 import { useGetMainRoutes } from '@/composables/modules/routes/fetch'
