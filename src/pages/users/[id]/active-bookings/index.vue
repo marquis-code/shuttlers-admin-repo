@@ -9,17 +9,20 @@
 					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span> {{ convertToCurrency(item?.data?.cost) }}</span>
+					<span> {{ convertToCurrency(item?.data?.cost) ?? '₦ 0.00' }}</span>
 				</div>
 				<p v-if="item.route_code">
 					{{ item.data?.route?.route_code || 'N/A' }}
 				</p>
 
 				<p v-if="item.start_date" class="whitespace-nowrap">
-					<span> {{ item.data.start_date ?? 'N/A' }}</span>
+					<span> {{ item?.data?.start_date ?? 'N/A' }}</span>
 				</p>
 				<p v-if="item.end_date" class="whitespace-nowrap">
-					<span> {{ item.data.end_date ?? 'N/A' }}</span>
+					<span> {{ item?.data?.end_date ?? 'N/A' }}</span>
+				</p>
+				<p v-if="item.payment_source" class="whitespace-nowrap">
+					<span> {{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source}}</span>
 				</p>
 				<div v-if="item.route_type">
 					<span> {{ item?.data?.route?.visibility }} </span>

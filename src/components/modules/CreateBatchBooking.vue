@@ -296,8 +296,9 @@ const bookTrip = async () => {
 	   users: form.uploadedUsers
 	}
 	populateBatchBookingForm(payload)
-	await createBatchBooking()
-	useRouter().push(`/users/bookings/${batchBookingResult.value.id}/booking-info`)
+	await createBatchBooking().then(() => {
+		useRouter().push(`/users/bookings/${batchBookingResult.value.id}/booking-info`)
+	})
 }
 
 const subscriptionWeeks = reactive([
