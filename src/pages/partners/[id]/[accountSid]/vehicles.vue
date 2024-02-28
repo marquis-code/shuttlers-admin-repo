@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
+		<Table :has-index="true" :page="page" :loading="loading" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" @filter="onFilterUpdate" />
 			</template>
@@ -8,19 +8,21 @@
 				<span v-if="item.status" class="text-xs text-white rounded-lg py-1.5 px-2.5">
 					<StatusBadge :name="item.data.status" />
 				</span>
-				<div v-if="item.vehicle" class="flex items-center gap-x-2">
-					{{ item.data.vehicle }}
+				<div v-if="item.vehicleInfo" class="flex items-center gap-x-2">
+					<NuxtLink :to="`/fleet/${item?.data?.id}/vehicle-info`" class="font-semibold text-blue-600">
+						{{ item?.data?.brand }} {{ item?.data?.name }}
+					</NuxtLink>
 				</div>
-				<div v-if="item.driver" class="flex items-center gap-x-2">
-					{{ item.data.driver }}
+				<div v-if="item.vehicleDriver" class="flex items-center gap-x-2">
+					<NuxtLink v-if="item?.data?.driver" class="font-semibold text-blue-600" :to="`/drivers/${item?.data?.driver?.id}/driver-info`" >
+						{{ item?.data?.driver?.fname }} {{ item?.data?.driver?.lname }}
+					</NuxtLink>
+					<p v-else class="text-sm text-gray-500 font-medium">No driver assigned</p>
 				</div>
 				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+					{{ useDateFormat(item?.data?.created_at, "MMMM d, YYYY").value }}
 				</span>
 				<span v-if="item.id">
-					{{ item.data.table_index }}
-				</span>
-				<span v-else-if="item.code">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
@@ -33,10 +35,9 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
-const { getPartnersVehiclesList, loading, partnersVehiclesList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
+const { getPartnersVehiclesList, loading, partnersVehiclesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
 const id = Number(useRoute().params.id)
 getPartnersVehiclesList(id)
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 
 definePageMeta({
     layout: 'dashboard',
@@ -48,9 +49,8 @@ const formattedPartnersVehiclesList = computed(() => {
 	return partnersVehiclesList.value.map((item, index) => {
 		return {
 			...item,
-			vehicle: `${item?.brand} ${item?.name}` ?? 'N/A',
-			driver: item.driver.fname || item.driver.lname ? `${item?.driver?.fname} ${item?.driver?.lname}` : 'No driver assigned',
-			table_index: index + 1
+			vehicleInfo: `${item?.brand} ${item?.name}` ?? 'N/A',
+			vehicleDriver: item?.driver?.fname || item?.driver?.lname ? `${item?.driver?.fname} ${item?.driver?.lname}` : 'No driver assigned'
 		}
 	})
 })
@@ -62,13 +62,8 @@ const dropdownChildren = computed(() => [
 
 const tableFields = ref([
 	{
-		text: 'S/N',
-		value: 'id',
-		width: '10%'
-	},
-	{
 		text: 'VEHICLE',
-		value: 'name'
+		value: 'vehicleInfo'
 	},
 	{
 		text: 'PLATE NUMBER',
@@ -84,7 +79,7 @@ const tableFields = ref([
 	},
 	{
 		text: 'DRIVER',
-		value: 'driver'
+		value: 'vehicleDriver'
 	},
 	{
 		text: 'DATE ADDED',
@@ -96,7 +91,7 @@ const tableFields = ref([
 	},
 	{
 		text: 'ACTIONS',
-		value: 'code'
+		value: 'id'
 	}
 ])
 

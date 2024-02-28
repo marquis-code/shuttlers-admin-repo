@@ -52,10 +52,8 @@ export const useGetPartnersVehiclesList = () => {
     })
 
     const onFilterUpdate = (data: any) => {
-        switch (data.type) {
-            case 'status':
-                filterData.status.value = data.value
-                break
+        if (data.type === 'status') {
+            filterData.status.value = data.value === '1' ? 'active' : 'inactive'
         }
     }
 
