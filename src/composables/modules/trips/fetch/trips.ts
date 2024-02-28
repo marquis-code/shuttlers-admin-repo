@@ -51,6 +51,23 @@ const downloadReport = async () => {
     const csvData = formattedCSVData(mergedData.value)
     download(csvData, `${routeType} trip report`)
     useAlert().openAlert({ type: 'SUCCESS', msg: `Total ${routeType} Trip report ${fromParam?.value ? `${fromParam?.value} to ${toParam?.value}` : ''}` })
+  }).catch((error) => {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log('Error data:', error.response.data)
+      console.log('Error status:', error.response.status)
+      console.log('Error headers:', error.response.headers)
+    } else if (error.request) {
+      // The request was made but no response was received
+      // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+      // http.ClientRequest in node.js
+      console.log('Error request:', error.request)
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message)
+    }
+    console.log('Error config:', error.config)
   })
 }
 
