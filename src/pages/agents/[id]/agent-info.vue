@@ -1,34 +1,51 @@
 <template>
+	<ButtonGoBack class="mb-4" url="/agents" />
 	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 		<div class="lg:w-7/12 bg-white rounded-md shadow-sm p-3">
-			<ModulesAgentsInformationDetails v-if="!loading" :selected-user="selectedUser" :bus-captains-routes="busCaptainRoutes" :bus-captains-loader="loadingBusCaptains" />
+			<ModulesAgentsInformationDetails v-if="!AgentByIdloading" :selected-user="selectedAgent" />
 			<Skeleton v-else height="600px" />
 		</div>
 		<div class="lg:w-5/12">
-			<!-- <ModulesUsersWallet v-if="!loading" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
-			<Skeleton v-else height="300px" /> -->
+			<form class="card gap-4 flex flex-col" @submit.prevent="">
+				<h1 class="card-header">
+					Settlement account
+				</h1>
+
+				<div class="field relative">
+					<label for="status">Bank name</label>
+					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+				</div>
+				<div class="field relative">
+					<label for="status">Account number</label>
+					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+				</div>
+				<div class="field relative">
+					<label for="status">Account name</label>
+					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+				</div>
+
+				<!-- <div class="flex justify-end mt-12">
+					<button class="btn-primary" type="submit"
+						:disabled="AgentByIdloading || rentalDetails.status === 'rejected' || rentalDetails.status === 'cancelled' || rentalDetails?.userRoute?.booking_status === 'active'">
+						<span v-if="!AgentByIdloading" class="flex justify-center items-center gap-2.5">
+							Update request
+						</span>
+						<Spinner v-else />
+					</button>
+				</div> -->
+			</form>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useUserIdDetails, useUserCorporateWalletLimitUsageInfo, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
-import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
-const { busCaptainRoutes, loading: loadingBusCaptains, getBusCaptainRoutesById } = useGetBusCaptainRoutes()
-const { getUserById, loading, selectedUser } = useUserIdDetails()
-const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletLimitUsageInfo } = useUserCorporateWalletLimitUsageInfo()
-const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
-const id = Number(useRoute().params.id)
-const corporate_id = Number(selectedUser?.value.corporate_id)
+import { useAgentIdDetails } from '@/composables/modules/agents/id'
 
-onMounted(() => {
-	getUserById()
-    getBusCaptainRoutesById()
-	if (corporate_id) {
-		getCorporateWalletObject()
-        getUserCorporateWalletLimitUsageInfo()
-	}
-})
+const id = useRoute().params.id as string
+
+const { getAgentById, AgentByIdloading, selectedAgent } = useAgentIdDetails()
+
+	getAgentById(id)
 
 definePageMeta({
 	layout: 'dashboard',

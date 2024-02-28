@@ -11,8 +11,9 @@ export const agents_api = {
 		const url = `/users/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_create_batch_booking: (payload: any) => {
-        const url = '/batch-bookings'
-		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
-    }
+	$_get_agent_passageners: (id: string) => {
+		const url = `/sales-agent-users?sales_agent_account_id=${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	}
+
 }

@@ -7,19 +7,13 @@
 		</h1>
 
 		<form class="flex flex-col gap-4 px-6 py-12" @submit.prevent="type === 'new' ? createUser() : editUser(id)">
-			<div class="flex gap-5 mb-4">
-				<div>
-					<Icon name="user" class="w-32" />
-				</div>
-				<CustomImageFileInput
-					v-model="createForm.fname.value"
+			<FileUpload
+				v-model="createForm.fname.value"
+				@update:value="null"
+				@reset="null"
+				@file-selected="null"
+			/>
 
-					:value="null"
-					@update:value="null"
-					@reset="null"
-					@file-selected="null"
-				/>
-			</div>
 			<div class="grid lg:grid-cols-2 gap-8">
 				<div class="field relative">
 					<label for="First">First name</label>
