@@ -52,7 +52,7 @@
 					</option>
 				</select>
 			</div>
-			<div v-if="amenities.length" class="flex flex-col gap-1">
+			<div v-if="amenities" class="flex flex-col gap-1">
 				<label class="label">Vehicle amenities</label>
 				<div />
 				<label v-for="(itm, idx) in amenities" :key="idx" :for="itm">

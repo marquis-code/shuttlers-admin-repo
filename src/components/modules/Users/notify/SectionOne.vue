@@ -46,7 +46,10 @@
 
 				<ToggleButton v-model="credentials.email.value" name="email" label="Enable Email notification" />
 
-				<button :disabled="!isFormEmpty" class="btn-primary mt-4" type="submit">
+				<!-- <button :disabled="!isFormEmpty" class="btn-primary mt-4" type="submit">
+					{{ creatingNotification ? 'Processing...' : 'Notify users' }}
+				</button> -->
+				<button :disabled="!isFormActuallyEmpty" class="bg-black disabled:cursor-not-allowed disabled:opacity-25 text-white rounded-lg py-3 w-full">
 					{{ creatingNotification ? 'Processing...' : 'Notify users' }}
 				</button>
 			</div>
@@ -61,13 +64,17 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 
-const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedUser, selectedUsers, search, corporateId } = useCreateNotification()
+const { sendNotification, creatingNotification, message, credentials, notificationType, removeSelectedUser, selectedUsers, search, corporateId } = useCreateNotification()
 const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
 const { usersList, loading } = useGetUsersList()
 
 const companyName = (data) => {
       return corporatesList.value.find((c) => c.id === data).corporate_name
     }
+
+	const isFormActuallyEmpty = computed(() => {
+		return !!(credentials?.title?.value && credentials?.description?.value && (selectedUsers?.value?.length || notificationType.value === 'all'))
+	})
 </script>
 
 <style scoped>

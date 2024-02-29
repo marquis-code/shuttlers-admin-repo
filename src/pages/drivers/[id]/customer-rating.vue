@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading" :headers="tableFields" :table-data="driverRating" :has-index="true">
 			<template #header>
-				<TableFilter :filter-type="{showDateRange: true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showDateRange: true, showDownloadButton: true, }" @filter="onFilterUpdate" @download="exportDriverRatings" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.date" class="whitespace-nowrap">
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { useDriverRating } from '@/composables/modules/drivers'
-const { getDriverRating, loading, driverRating, moveTo, next, prev, total, page, onFilterUpdate } = useDriverRating()
+const { getDriverRating, loading, driverRating, moveTo, next, prev, total, page, onFilterUpdate, exportDriverRatings } = useDriverRating()
 const id = useRoute().params.id as string
 
 getDriverRating()
