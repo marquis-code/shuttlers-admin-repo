@@ -14,6 +14,10 @@ export const agents_api = {
 	$_get_agent_passageners: (id: string) => {
 		const url = `/sales-agent-users?sales_agent_account_id=${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_create_agent: (payload: any) => {
+		const url = '/users'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 
 }

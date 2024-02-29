@@ -6,12 +6,9 @@
 			{{ type === 'new' ? 'Enter agents details' : 'Edit' }}  User
 		</h1>
 
-		<form class="flex flex-col gap-4 px-6 py-12" @submit.prevent="type === 'new' ? createUser() : editUser(id)">
+		<form class="flex flex-col gap-4 px-6 py-12" @submit.prevent="type === 'new' ? createAgent() : ''">
 			<FileUpload
-				v-model="createForm.fname.value"
-				@update:value="null"
-				@reset="null"
-				@file-selected="null"
+				v-model="createForm.avatar.value"
 			/>
 
 			<div class="grid lg:grid-cols-2 gap-8">
@@ -38,10 +35,10 @@
 			</div>
 
 			<div class="grid lg:grid-cols-2 gap-8">
-				<div class="field relative">
+				<!-- <div class="field relative">
 					<label for="nin">NIN (Optional)</label>
-					<input id="nin" v-model="createForm.phone.value" type="number" name="" class="input-field">
-				</div>
+					<input id="nin" v-model="createForm.nin.value" type="text" name="" class="input-field">
+				</div> -->
 				<div v-if="type === 'new'" class="field relative">
 					<label for="password" class="w-full">Enter password</label>
 					<input id="password" v-model="createForm.password.value" autocomplete="true" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
@@ -52,7 +49,7 @@
 				<span class="text-lg font-medium">Location information</span>
 				<div class="field relative">
 					<label for="address">Address</label>
-					<input id="address" v-model="createForm.phone.value" type="tel" name="" class="input-field" required>
+					<input id="address" v-model="createForm.address.value" type="tel" name="" class="input-field" required>
 				</div>
 			</div>
 
@@ -67,12 +64,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useCreateUsers } from '@/composables/modules/users/create'
-import { useUserIdDetails } from '@/composables/modules/users/id'
+import { useCreateAgents } from '@/composables/modules/agents/create'
 
-const { selectedUser } = useUserIdDetails()
-
-const { createForm, createUser, editUser, loading: createLoading } = useCreateUsers()
+const { createAgent, createForm, loading: createLoading } = useCreateAgents()
 
  defineProps({
 	id: {
