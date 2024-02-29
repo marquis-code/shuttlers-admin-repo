@@ -37,7 +37,7 @@ export const useGetPartnersVehiclesList = () => {
 
     const { $_get_partner_vehicles_by_id } = partners_api
 
-    const lear = async () => {
+    const getPartnersVehiclesList = async () => {
         loading.value = true
         // partnerId.value = id
         const res = await $_get_partner_vehicles_by_id(Number(selectedPartner.value.id), metaObject, filterData) as CustomAxiosResponse
