@@ -69,6 +69,7 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
 const tableFields = ref([
     {
         text: 'NAME',
