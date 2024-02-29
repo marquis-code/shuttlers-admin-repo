@@ -1,5 +1,6 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, CustomAxiosResponse } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
 
 export const drivers_api = {
 
@@ -77,5 +78,19 @@ export const drivers_api = {
 	$_delete_driver: (driverId:number|string) => {
 		const url = `/drivers/${driverId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+	},
+	$_download_all_drivers: async (filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/drivers?${queryParams}&limit=${10}&page=${1}&metadata=true&related=device`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/drivers?${queryParams}&limit=${total}&page=${1}&metadata=true&related=device`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No drivers data to download' })
+				return null
+			}
+        }
 	}
 }

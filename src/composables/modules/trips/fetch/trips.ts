@@ -23,7 +23,7 @@ const downloadReport = async () => {
   const route = useRoute()
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
-  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?${queryParams}${queryParams ? '&' : ''}&limit=${total_pages.value > 100 ? '100' : '10'}&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
+  const baseURL = `/trips/${routeType === 'cancelled' ? 'upcoming' : routeType}?${queryParams}${queryParams ? '&' : ''}&limit=${total_pages.value > 150 ? '200' : '10'}&metadata=true&sort[created_at]=desc${routeType === 'cancelled' ? '&is_cancelled=true' : ''}`
   const fromParam = ref('') as any
   const toParam = ref('') as any
   watchEffect(() => {
@@ -52,14 +52,6 @@ const downloadReport = async () => {
     useAlert().openAlert({ type: 'SUCCESS', msg: `Total ${routeType} Trip report ${fromParam?.value ? `${fromParam?.value} to ${toParam?.value}` : ''}` })
   }).catch((error) => {
     throw new Error(error)
-    // if (error.response) {
-    // } else if (error.request) {
-
-    //   // console.log('Error request:', error.request)
-    // } else {
-    //   // Something happened in setting up the request that triggered an Error
-
-    // }
   })
 }
 
