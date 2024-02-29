@@ -5,7 +5,7 @@ import { useConfirmationModal } from '@/composables/core/confirmation'
 const credentials = {
     title: ref(''),
     description: ref(''),
-    sms: ref(true),
+    sms: ref(false),
     email: ref(false),
     notifyAll: ref(false)
 }
@@ -17,9 +17,10 @@ const search = ref('')
 export const useCreateNotification = () => {
     const creatingNotification = ref(false)
     const message = ref('')
-    const isFormEmpty = computed(() => {
-        return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
-    })
+    // const isFormEmpty = computed(() => {
+    //     return !!(credentials.description && credentials.title)
+    //     // return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
+    // })
 
         const sendNotification = async () => {
             useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${selectedPartners.value.length} partners?`, loading: creatingNotification, call_function: () => createNotifications() })
