@@ -37,7 +37,7 @@
 		</div>
 
 		<Table :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs"
-			:has-index="true" @checked="selectedStaffs = ($event)">
+			:has-index="true" :page="page" @checked="selectedStaffs = ($event)">
 			<template #header>
 				<TableFilter @download="downloadCorporateStaffs" :filter-type="{ showStatus: false, showSearchBar: true, showDownloadButton: true }" @filter="onFilterUpdate">
 					<template #filter_others>
