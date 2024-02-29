@@ -92,5 +92,19 @@ export const drivers_api = {
 				return null
 			}
         }
+	},
+	$_download_all_driver_ratings: async (driverId: string | number, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/ratings/drivers/${driverId}?${queryParams}&limit=${10}&page=${1}&metadata=true`
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/ratings/drivers/${driverId}?${queryParams}&limit=${total}&page=${1}&metadata=true`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No driver ratings data to download' })
+				return null
+			}
+        }
 	}
 }
