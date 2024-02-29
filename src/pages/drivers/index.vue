@@ -12,6 +12,7 @@
 						showDatePicker: false,
 						showDateRange: true
 					}"
+					@download="downloadReport"
 					@filter="onFilterUpdate">
 					<template #filter_others>
 						<button v-if="selected_drivers.length" class="p-2 px-3 bg-dark text-light text-sm rounded-md" @click="initDeactivate">
@@ -55,7 +56,7 @@ import moment from 'moment'
 import { useDateFormat } from '@vueuse/core'
 import { useGetDriversList, useDriverIdDetails, useDeactivateDriver } from '@/composables/modules/drivers'
 
-const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetDriversList()
+const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page, downloadReport } = useGetDriversList()
 const { loading: deactivating, selected_drivers, initDeactivate } = useDeactivateDriver()
 
 getDriversList()
