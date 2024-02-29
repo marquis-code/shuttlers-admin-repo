@@ -1,5 +1,6 @@
 import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
+import { useDriverModal } from '@/composables/core/modals'
 
 const selectedVehicle = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
@@ -14,6 +15,7 @@ export const useAssignBus = () => {
 		const res = await drivers_api.$_update_driver(id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle assigned to driver successfully' })
+			useDriverModal().closeAssignBus()
 			useRouter().push(`/drivers/${res.data.id}/driver-info`)
         }
 		loading.value = false
