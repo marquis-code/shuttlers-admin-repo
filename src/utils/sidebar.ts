@@ -363,9 +363,9 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
         },
         {
           title: 'Route Price Control',
-          routePath: isProd.value ? '/configuration/pricing/payment-option' : '/configuration/pricing/pricing-control',
+          routePath: isProd.value ? '/configuration/pricing/charges' : '/configuration/pricing/pricing-control',
           oldPath: '/configuration/pricing-controls/',
-          shouldRedirect: true,
+          shouldRedirect: false,
           description: 'Manage route pricing centrally'
         }
       ],

@@ -1,6 +1,7 @@
 import moment from 'moment'
 
 export const convertToCurrency = (value: number) => {
+    if (value === 0) return 0
     if (!value) return
     if (typeof value === 'undefined') return
 
