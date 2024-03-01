@@ -15,12 +15,11 @@ const {
   fetchAllPagesAndDownload,
   isDownloading,
   error,
-  mergedData,
-  total_pages
+  mergedData
 } = usePaginatedFetchAndDownload()
 
-const { download } = useDownloadReport()
-
+const { download, loading: downloading } = useDownloadReport()
+const total_pages = ref() as any
 const activeTripsList = ref([] as Record<string, any>[])
 const currentRoute = computed(() => {
   return useRoute().fullPath
@@ -28,6 +27,7 @@ const currentRoute = computed(() => {
 
 const downloadReport = async () => {
   const route = useRoute()
+  downloading.value = false
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
   const baseURL = `/trips/${
@@ -66,26 +66,33 @@ const downloadReport = async () => {
       title: 'Please Confirm',
       type: 'DANGER',
       desc: 'It is recommended  to download a minimum of 10 days to avoid request time outs',
-      loading: isDownloading,
-      call_function: () =>
+      loading: downloading,
+      call_function: () => {
+        useConfirmationModal().closeAlert()
+        downloading.value = true
         fetchAllPagesAndDownload(constructApiUrl.value)
-          .then(() => {
-            const csvData = formattedCSVData(mergedData.value)
-            download(csvData, `${routeType} trip report`)
-            useAlert().openAlert({
-              type: 'SUCCESS',
-              msg: `Total ${routeType} Trip report ${
-                fromParam?.value
-                  ? `${fromParam?.value} to ${toParam?.value}`
-                  : ''
-              }`
-            })
+        .then(() => {
+          const csvData = formattedCSVData(mergedData.value)
+          download(csvData, `${routeType} trip report`)
+          useAlert().openAlert({
+            type: 'SUCCESS',
+            msg: `Total ${routeType} Trip report ${
+              fromParam?.value
+                ? `${fromParam?.value} to ${toParam?.value}`
+                : ''
+            }`
           })
-          .catch((error) => {
-            throw new Error(error)
-          })
+          downloading.value = false
+        })
+        .catch((error) => {
+          throw new Error(error)
+        }).finally(() => {
+          downloading.value = false
+        })
+      }
     })
   } else {
+    downloading.value = true
     fetchAllPagesAndDownload(constructApiUrl.value)
       .then(() => {
         const csvData = formattedCSVData(mergedData.value)
@@ -96,9 +103,12 @@ const downloadReport = async () => {
             fromParam?.value ? `${fromParam?.value} to ${toParam?.value}` : ''
           }`
         })
+        downloading.value = false
       })
       .catch((error) => {
         throw new Error(error)
+      }).finally(() => {
+        downloading.value = false
       })
   }
 }
@@ -117,6 +127,7 @@ export const useGetActiveTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         activeTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingActiveTrips.value = false
@@ -157,6 +168,7 @@ export const useGetUpcomingTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         upcomingTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingUpcomingTrips.value = false
@@ -200,6 +212,7 @@ export const useGetCompletedTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         completedTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingCompletedTrips.value = false
