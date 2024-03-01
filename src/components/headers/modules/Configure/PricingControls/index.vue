@@ -61,7 +61,7 @@ const chargesTab = computed(() => {
 	return [
 		{ name: 'Configured Charges', route: '/configuration/pricing/charges', active: useRoute().fullPath.includes('/configurations') },
 		{ name: 'Charge Types', route: '/configuration/pricing/charges/types' }
-		// {name: 'Charge Report', route: 'ChargesReport'},
+		// {name: 'Charge Report', route: 'ChargesReport'}
 	]
 })
 
