@@ -66,6 +66,7 @@ import EmployeeExemption from '@/components/modals/modules/companies/EmployeeExe
 import ChangeFleetDriver from '@/components/modals/modules/fleets/ChangeFleetDriver.vue'
 import RejectShuttleRequest from '@/components/modals/modules/companies/RejectShuttleRequest.vue'
 import DeductPayout from '@/components/modals/modules/partners/payouts/Deduct.vue'
+import AddBankAccount from '@/components/modals/modules/partners/AddBankAccount.vue'
 import MarkMultipleAsPaid from '@/components/modals/modules/partners/payouts/Mark_multiple.vue'
 import PairReturnTrip from '@/components/modals/modules/Routes/Itineraries/PairReturnTrip.vue'
 import TransferTrip from '@/components/modals/modules/trips/TransferTrip.vue'
@@ -90,7 +91,7 @@ type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' |
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
-type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword'
+type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'AddBankAccount'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -106,7 +107,7 @@ const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, Noti
 const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
-const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword } as Record<PartnerTypes, any>
+const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, AddBankAccount } as Record<PartnerTypes, any>
 
 export const modal = useModal(ref([] as any))
 

@@ -50,7 +50,7 @@ export const useCreateNotification = () => {
         selectedPartners.value.splice(index, 1)
     }
 
-    return { createNotifications, sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, selectedPartners, removeSelectedPartner, search }
+    return { createNotifications, sendNotification, creatingNotification, message, credentials, notificationType, selectedPartners, removeSelectedPartner, search }
 }
 
 const resetCredentials = () => {
