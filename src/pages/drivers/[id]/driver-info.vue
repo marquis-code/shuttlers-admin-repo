@@ -2,7 +2,7 @@
 	<div class="space-y-10">
 		<ButtonGoBack />
 		<div v-if="!loading" class="flex flex-col gap-5 lg:flex-row lg:gap-x-10 items-start">
-			<div class="w-7/12 max-w-[600px] bg-white rounded-md shadow-sm p-3">
+			<div class="lg:w-7/12 max-w-[600px] bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 					<div class="font-medium">
 						Driver Information
@@ -128,7 +128,7 @@
 					</p>
 				</div>
 			</div>
-			<div class="w-5/12 max-w-[400px] flex flex-col gap-4">
+			<div class="lg:w-5/12 max-w-[400px] flex flex-col gap-4">
 				<template v-if="documents.length">
 					<div v-for="n, i in documents" :key="i" class="bg-white rounded-md shadow-sm px-4 border-b py-3 flex justify-between items-center">
 						<div class="flex items-center gap-x-3 gap-y-2">

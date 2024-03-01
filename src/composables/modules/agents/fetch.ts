@@ -1,10 +1,6 @@
-import moment from 'moment'
 import { CustomAxiosResponse } from '@/api_factory/modules'
 import { agents_api } from '@/api_factory/modules/agent'
 import { usePagination } from '@/composables/utils/table'
-import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
-const route = useRoute()
-const { loading: downloading } = useDownloadReport()
 
     const agentsList = ref([] as any)
 export const useGetAgentsList = () => {

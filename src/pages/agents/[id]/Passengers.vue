@@ -1,16 +1,15 @@
 <template>
 	<main class="flex flex-col gap-6">
 		<ButtonGoBack />
-		<Table :loading="loading" :headers="tableFields" :table-data="usersList" :has-options="true" :option="onRowClicked">
+		<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsPassenger" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
-					@filter="onFilterUpdate"
-					@download="downloadUsers"
+
 				/>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
-					<Avatar :src="item?.data?.avatar" :name="item?.data?.fname" bg="#B1C2D9" />
+					{{ item?.data?.fname }} {{ item?.data?.lname }}
 				</div>
 				<div v-if="item.lname" class="">
 					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">
@@ -42,23 +41,29 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useAlert } from '@/composables/core/notification'
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
-import { useUserIdDetails } from '@/composables/modules/users/id'
+import { useAgentIdDetails } from '@/composables/modules/agents/id'
+import { useGetAgentsPassengers } from '@/composables/modules/agents/passengers'
 
-const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, next, prev, total, page, downloadUsers } = useGetUsersList()
+const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
+const { agentsPassenger, getAgentsPassenger, loading, page, total, moveTo, next, prev } = useGetAgentsPassengers()
 
-// getUsersList()
-const onRowClicked = (data) => {
-	const { selectedUser } = useUserIdDetails()
-	useRouter().push(`/users/${data.id}/user-info`)
-	selectedUser.value = data
-}
+watch(selectedAgent, (value) => {
+	if (value.sales_agent_account_id) {
+		getAgentsPassenger(value.sales_agent_account_id)
+	} else if (value && !value.sales_agent_account_id) {
+		useAlert().openAlert({ type: 'ERROR', msg: 'sales_agent_account_id not found' })
+	} else {
+		useAlert().openAlert({ type: 'ERROR', msg: 'Agent not found' })
+	}
+})
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
 const tableFields = ref([
     {
         text: 'NAME',
@@ -72,13 +77,13 @@ const tableFields = ref([
         text: 'EMAIL ADDRESS',
         value: 'email'
     },
+    // {
+    //     text: 'ROUTE ASSIGNED',
+    //     value: 'id'
+    // },
     {
-        text: 'BUS STOP',
-        value: '_'
-    },
-    {
-        text: 'ROUTES CREATED',
-        value: '_'
+        text: 'CLOSEST BUSSTOP',
+        value: 'closest_busstop'
     },
     {
         text: 'DATE JOINED',

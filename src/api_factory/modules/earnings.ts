@@ -6,7 +6,7 @@ import { useAlert } from '@/composables/core/notification'
 export const earnings_api = {
     $_get_earnings: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
         const queryParams = useTableFilter(filterData)
-        const url = `/earnings?${queryParams}&perPage=${meta.page_size.value}&page=${meta.page.value}${filterData?.startDate?.value || filterData?.endDate?.value ? '&filterDateBy=referenceTime' : ''}`
+        const url = `/earnings?${queryParams}&perPage=${meta.page_size.value}&page=${meta.page.value}&filterDateBy=referenceTime`
         return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
     },
 	$_download_earnings: (total:number, filterData?: Record<string, Ref>) => {

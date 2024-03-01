@@ -1,5 +1,9 @@
+import moment from 'moment'
 import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
+const route = useRoute()
+const { loading: downloading } = useDownloadReport()
 
 const loading = ref(false)
 const driversList = ref([] as any)
@@ -8,6 +12,26 @@ export const filterData = {
     start_date_filter: ref(''),
     end_date_filter: ref(''),
     search: ref('')
+}
+
+const downloadReport = async () => {
+    downloading.value = true
+    const name = ref('Drivers List')
+    const res = await drivers_api.$_download_all_drivers(filterData) as CustomAxiosResponse
+    if (res && res?.type !== 'ERROR') {
+        const data = res.data.data
+        const newArr = data.map((el) => {
+            return {
+                Name: `${el?.fname || ''} ${el?.lname || ''}`,
+                Average_Rating: `${el?.average || 0} ${el?.trip_count || 0}`,
+                Date_joined: el?.created_at ? moment(el?.created_at).format('ll') : 'N/A',
+                Status: el?.active === '1' ? 'Active' : 'Inactive'
+            }
+        })
+        if (filterData.start_date_filter.value && filterData.end_date_filter.value) name.value = `${name.value}-from-${filterData.start_date_filter.value}-to-${filterData.end_date_filter.value}`
+        exportAsCsv(newArr, name.value)
+    }
+    downloading.value = false
 }
 
 export const useGetDriversList = () => {
@@ -49,5 +73,5 @@ export const useGetDriversList = () => {
         }
     }
 
-    return { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    return { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadReport }
 }

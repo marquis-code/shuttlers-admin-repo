@@ -2,13 +2,13 @@
 	<section>
 		<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 			<div class="font-medium">
-				Agents Information
+				Agent Information
 			</div>
 			<ButtonDropdown :children="dropdownChildren" :data="selectedUser" />
 		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
-				FULLNAME
+				NAME
 			</p>
 			<p class="text-sm">
 				{{ `${selectedUser.fname} ${selectedUser.lname}` ?? 'N/A' }}
@@ -22,7 +22,6 @@
 				<Avatar :src="selectedUser?.avatar" :name="selectedUser.fname" bg="#B1C2D9" />
 			</p>
 		</div>
-
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
 				EMAIL ADDRESS
@@ -39,42 +38,50 @@
 				{{ selectedUser.phone ?? 'N/A' }}
 			</p>
 		</div>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				NIN
+			</p>
+			<p class="text-sm">
+				{{ selectedUser.nin ?? 'N/A' }}
+			</p>
+		</div>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				DATE CREATED
+			</p>
+			<p class="text-sm">
+				{{ useDateFormat(selectedUser?.created_at, "DD, MMMM YYYY").value }}
+			</p>
+		</div>
+		<h1 class="card-header mt-7 px-3">
+			Location information
+		</h1>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				COUNTRY
+			</p>
+			<p class="text-sm">
+				{{ selectedUser?.country_code ?? 'N/A' }}
+			</p>
+		</div>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				STATE
+			</p>
+			<p class="text-sm">
+				{{ selectedUser?.city_id ?? 'N/A' }}
+			</p>
+		</div>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				ADDRESS
+			</p>
+			<p class="text-sm">
+				{{ 'N/A' }}
+			</p>
+		</div>
 
-		<div class="flex justify-between items-center border-b py-4 px-3">
-			<p class="text-gray-500 text-sm">
-				COMPANY
-			</p>
-			<div>
-				<span v-if="selectedUser?.company">
-					<NuxtLink :to="`/companies/${selectedUser?.company?.id}/${selectedUser?.company?.active === 1 ? 'active' : 'inactive'}/company-info`" class="text-blue-600 font-semibold underline">
-						{{ selectedUser?.company?.corporate_name }}
-					</NuxtLink>
-				</span>
-				<span v-else class="text-sm text-gray-600">
-					No company available
-				</span>
-			</div>
-		</div>
-		<div class="flex justify-between items-center border-b py-4 px-3">
-			<p class="text-gray-500 text-sm">
-				CAR OWNER
-			</p>
-			<p class="text-sm">
-				{{
-					selectedUser.car_owner == 1 ? 'Yes' : 'No'
-				}}
-			</p>
-		</div>
-		<div class="flex justify-between items-center border-b py-4 px-3">
-			<p class="text-gray-500 text-sm">
-				GENDER
-			</p>
-			<p class="text-sm">
-				{{
-					selectedUser.gender ?? 'N/A'
-				}}
-			</p>
-		</div>
 		<div class="flex justify-between items-center py-4 px-3">
 			<p class="text-gray-500 text-sm">
 				STATUS
@@ -89,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 
 const props = defineProps({
     selectedUser: {
@@ -101,8 +109,7 @@ const props = defineProps({
 const dropdownChildren = computed(() => [
 	{
 		name: 'Edit Agent', func: (data) => {
-			props.selectedUser.value = data
-			useRouter().push(`/users/${data.id}/edit`)
+			useRouter().push(`/agents/${data.id}/edit`)
 		}
 	},
 	{ name: 'Make inactive', func: () => { } }

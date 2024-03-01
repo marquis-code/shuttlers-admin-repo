@@ -6,6 +6,7 @@ export const useGetRentalList = () => {
     const rentalList = ref([] as any)
 
     const filterData = {
+        status: ref(''),
         search: ref(''),
         from: ref(''),
         to: ref('')
