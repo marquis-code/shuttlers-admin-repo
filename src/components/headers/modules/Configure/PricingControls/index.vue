@@ -50,8 +50,9 @@ const pageTabs = computed(() => {
 const showOnProd = computed(() => {
 	return [
 		{
-			name: 'Payment option display',
-			path: '/configuration/pricing/payment-option'
+			name: 'Additional charges',
+			path: '/configuration/pricing/charges',
+			active: useRoute().fullPath.includes('charges')
 		}
 	]
 })
