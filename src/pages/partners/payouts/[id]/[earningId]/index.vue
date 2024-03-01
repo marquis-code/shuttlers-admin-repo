@@ -54,7 +54,7 @@
 				</h3>
 				<div class="flex flex-col gap-1 py-4">
 					<h1 class="text-3xl font-bold text-dark text-center">
-						₦ {{ earningInfo?.netRevenue || 0 }}
+						{{ convertToCurrency(earningInfo?.netRevenue) }}
 					</h1>
 					<h3 class="text-grey4 text-base text-center font-medium">
 						PARTNERS PAYOUT
@@ -330,8 +330,14 @@
 					<p v-if="item.route_code" class="text-sm whitespace-nowrap">
 						{{ item.data?.metadata?.routeCode || 'N/A' }}
 					</p>
+					<p v-if="item.partnersRevenue" class="text-sm whitespace-nowrap">
+						{{ convertToCurrency(item.data?.partnersRevenue )}}
+					</p>
 					<p v-if="item.deduction" class="text-sm whitespace-nowrap text-red">
-						{{ item.data?.totalDeductedAmount || '0' }}
+						{{ convertToCurrency(item.data?.totalDeductedAmount) }}
+					</p>
+					<p v-if="item.finalPartnersRevenue" class="text-sm whitespace-nowrap">
+						{{ convertToCurrency(item.data?.finalPartnersRevenue) }}
 					</p>
 					<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit"
 						:class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'"
@@ -360,6 +366,7 @@
 
 <script setup lang="ts">
 import moment from 'moment'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove } from '@/composables/modules/partners/payouts/details'
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
@@ -387,8 +394,8 @@ const partner_info = computed(() => {
 
 const payout_info = computed(() => {
 	return [
-		{ key: 'Total amount', value: `₦ ${earningInfo.value?.totalRevenue || 0}` },
-		{ key: 'Deductions', value: `₦ ${earningInfo.value?.totalDeduction || 0}` },
+		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue) },
+		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction) },
 		{ key: 'Status', value: earningInfo.value?.status }
 	]
 })
