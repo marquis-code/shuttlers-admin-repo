@@ -37,6 +37,7 @@ export const useDetails = () => {
 	const { $_get_charge_history, $_get_total_charges } = charges_api
 
 	const fetchHistory = async () => {
+		chargeHistory.value = []
 		loading.value = true
 		const id = useRoute().params.id as string
 		const res = await $_get_charge_history(id, metaObject, filterData) as CustomAxiosResponse
