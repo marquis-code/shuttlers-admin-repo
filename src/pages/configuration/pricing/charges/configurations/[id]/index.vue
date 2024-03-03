@@ -143,15 +143,21 @@
 					</template>
 					<template v-else>
 						<p class="font-medium">
-							{{ item.data.payer?.corporate_name}} (company)
+							{{ item.data.payer?.corporate_name || 'N/A'}} (company)
 						</p>
 						<p class="text-[#737876]">
 							{{ item.data.payer?.email || '' }}
 						</p>
 					</template>
 				</div>
-				<p v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap">
-					{{ item.data?.route?.route_code }}
+				<div v-if="item.route" class="text-sm text-[#101211] whitespace-nowrap flex flex-col">
+					<p class="font-medium">
+						{{ item.data?.route?.route_code || 'N/A' }}
+					</p>
+					<p>{{ item.data?.route_day?.itinerary?.trip_time || 'N/A' }}</p>
+				</div>
+				<p v-if="item.trip_date" class="text-sm text-[#313533] whitespace-nowrap">
+					{{ item.data?.route_day?.trip_date || 'N/A' }}
 				</p>
 				<p v-if="item.t_amount" class="text-sm text-[#313533]">
 					{{ item.data?.trip_amount ? `₦${item.data.trip_amount}` : 'N/A' }}
@@ -200,6 +206,7 @@ const { allCityNames, fetchAllCityNames, fetchAllCountries, allCountries } = use
 const tableFields = [
 	{ value: 'users', text: 'Users/Company' },
 	{ value: 'route', text: 'Route' },
+	{ value: 'trip_date', text: 'Trip date' },
 	{ value: 't_amount', text: 'Trip amount' },
 	{ value: 'c_amount', text: 'Charge amount' },
 	{ value: 'date', text: 'Date' }
