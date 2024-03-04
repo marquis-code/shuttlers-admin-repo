@@ -12,12 +12,13 @@ const obj = {
 	capacity: ref(''),
 	type: ref(''),
 	code: ref(''),
-	amenities: ref('')
+	amenities: ref(''),
+	inventory_type: ref('')
 }
 
-if (update_source.value === 'vehicle') {
-	obj.inventory_type = ''
-}
+// if (update_source.value === 'vehicle') {
+// 	obj.inventory_type = ''
+// }
 
 const loading = ref(false)
 const clearObj = () => {
@@ -29,6 +30,7 @@ const clearObj = () => {
 	obj.type.value = ''
 	obj.code.value = ''
 	obj.amenities.value = ''
+	obj.inventory_type.value = ''
 }
 
 export const useEditVehicles = () => {
@@ -57,13 +59,17 @@ export const useEditVehicles = () => {
 			capacity: obj.capacity.value,
 			type: obj.type.value,
 			code: obj.code.value,
-			amenities: obj.amenities.value
-			// inventory_type: obj?.inventory_type.value
+			amenities: obj.amenities.value,
+			inventory_type: obj.inventory_type.value
 		}
 
-		if (update_source.value === 'vehicle') {
-			payload.inventory_type = obj?.inventory_type.value
-		}
+		// if (update_source.value === 'driver') {
+		// 	payload.inventory_type = obj?.inventory_type.value
+		// }
+
+		// if (update_source.value === 'vehicle') {
+		// 	payload.inventory_type = ''
+		// }
 		loading.value = true
 		const res = await vehicles_api.$_update_vehicle(obj.id.value!, payload) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
@@ -77,5 +83,9 @@ export const useEditVehicles = () => {
 		loading.value = false
 	}
 
-	return { loading, ...obj, openEditBus, clearObj, updateVehicle, update_source }
+	// const setUpdateSource = (data: string) => {
+	// 	update_source.value = data
+	// }
+
+	return { loading, ...obj, setUpdateSource, openEditBus, clearObj, updateVehicle, update_source }
 }

@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="filterData.status.value === 'active'"
 			:has-options="true" :selected="selected_drivers" :option="onRowClicked" @checked="selected_drivers = ($event)"
 		>
