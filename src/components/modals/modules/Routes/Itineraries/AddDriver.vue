@@ -44,7 +44,7 @@ const { singleItinerary: itinerary } = useItineraries()
 const { break_even, driver, pricing_margin, pricing_unit, cost_of_supply, loading, addDriver, clearObj, isEdit, loading_cost_of_supply, updateDriver } = useAddDriver()
 
 const enableButton = computed(() => {
-	return !!driver.value?.id
+	return !!(driver.value?.id && cost_of_supply.value && break_even.value && pricing_margin.value && pricing_unit.value)
 })
 
 onBeforeUnmount(() => clearObj())
