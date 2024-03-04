@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { configure_api, CustomAxiosResponse } from '@/api_factory/modules'
 export const useGetTripRatingData = () => {
-  const tripRatingData = ref([] as Record<string, any>)
+  const tripRatingData = ref([]) as any
   const loadingRatingSetting = ref(false)
   const loadingRatingData = ref(false)
   const getRatingData = async () => {
