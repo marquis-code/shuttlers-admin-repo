@@ -60,7 +60,7 @@ export const useEditVehicles = () => {
 			type: obj.type.value,
 			code: obj.code.value,
 			amenities: obj.amenities.value,
-			inventory_type: obj.inventory_type.value
+			inventory_type: obj.inventory_type
 		}
 
 		// if (update_source.value === 'driver') {
@@ -73,6 +73,7 @@ export const useEditVehicles = () => {
 		loading.value = true
 		const res = await vehicles_api.$_update_vehicle(obj.id.value!, payload) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
+			loading.value = false
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle information has been updated successfully' })
 			useVehicleModal().closeEditBus()
 			if (useRoute().fullPath.includes('driver-info')) {
