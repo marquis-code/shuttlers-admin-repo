@@ -41,11 +41,6 @@
 				<div class="flex items-center flex-wrap gap-6 md:gap-[16px] justify-between">
 					<div class="flex flex-col gap-1 text-sm text-[#101211] font-medium">
 						<p>{{ config.country_currently_active_in.name }}</p>
-						<!-- <div class="flex flex-wrap gap-x-2 gap-y-0 max-w-[150px]">
-							<p v-for="n,i in config.cities_currently_active_in" :key="i" class="text-[#737876] text-xs">
-								{{ n.city_name }}
-							</p>
-						</div> -->
 						<ModulesConfigureChargesCityList :cities="config.cities_currently_active_in || []" />
 					</div>
 					<p class="text-sm text-[#0DAC5C] font-medium">
@@ -57,7 +52,7 @@
 						</p>
 						<p class="text-[#6E717C] font-medium">
 							<template v-if="config.charge_type === 'flat'">
-								N{{ config.charge_value }} flat
+								{{ convertToCurrency(Number(config.charge_value)) }} flat
 							</template>
 							<template v-else>
 								{{ config.charge_value }} Percent (%)
@@ -116,7 +111,7 @@
 			<template #sub_header>
 				<div class="flex flex-col gap-y-2 gap-x-[16px] bg-white border border-b-0 md:flex-row md:items-center md:justify-between py-3 px-[16px] border-bottom">
 					<p v-if="!loading_total" class="text-sm font-medium text-[#6E717C]">
-						Total VAT: <span class="text-[#000005]">₦{{ totalCharge }}</span>
+						Total VAT: <span class="text-[#000005]">{{ convertToCurrency(totalCharge!) }}</span>
 					</p>
 					<Skeleton v-else height="20px" width="130px" />
 					<ButtonMultiSelectDropdown v-model="countries" :children="countriesList" title="Countries:" />
@@ -156,14 +151,14 @@
 					</p>
 					<p>{{ item.data?.route_day?.itinerary?.trip_time || 'N/A' }}</p>
 				</div>
-				<p v-if="item.trip_date" class="text-sm text-[#313533] whitespace-nowrap">
-					{{ item.data?.route_day?.trip_date || 'N/A' }}
+				<p v-if="item.trip_date" class="text-sm text-[#313533] whitespace-nowrap font-medium">
+					{{ moment(new Date(item.data?.route_day?.trip_date)).format('ll') }}
 				</p>
 				<p v-if="item.t_amount" class="text-sm text-[#313533]">
-					{{ item.data?.trip_amount ? `₦${item.data.trip_amount}` : 'N/A' }}
+					{{ convertToCurrency(Number(item.data?.trip_amount)) }}
 				</p>
 				<p v-if="item.c_amount" class="text-sm text-[#313533]">
-					{{ item.data?.amount ? `₦${item.data.amount}` : 'N/A' }}
+					{{ convertToCurrency(Number(item.data?.amount)) }}
 				</p>
 				<p v-if="item.date" class="text-sm text-[#313533] font-medium whitespace-nowrap">
 					{{ moment(item.data.created_at).format('ll') }}
@@ -190,6 +185,7 @@ import { useFetchConfiguredCharges, useDeleteChargeConfiguration, useCreateConfi
 import { useChargeModal } from '@/composables/core/modals'
 import { useFetchChargeTypes } from '@/composables/modules/configure/charges/types/fetch'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 definePageMeta({
     layout: 'dashboard',

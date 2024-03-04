@@ -29,7 +29,7 @@ const closeConfigureChargeModal = () => {
 	configureChargeObj.desc.value = ''
 	configureChargeObj.cityIds.value = []
 	configureChargeObj.allCity.value = false
-	configureChargeObj.isCompulsory.value = false
+	configureChargeObj.isCompulsory.value = true
 }
 
 const enableButton = computed(() => {
