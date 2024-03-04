@@ -36,7 +36,8 @@ const pageTabs = computed(() => [
     },
     {
         name: 'Itineraries',
-        path: `/trips/routes/${id}/itineraries`
+        path: `/trips/routes/${id}/itineraries`,
+        active: useRoute().fullPath.includes('/itineraries')
     },
     {
         name: 'Trips',
