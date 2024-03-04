@@ -22,7 +22,7 @@
 					<span> {{ item?.data?.end_date ?? 'N/A' }}</span>
 				</p>
 				<p v-if="item.payment_source" class="whitespace-nowrap">
-					<span> {{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source}}</span>
+					<span> {{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source }}</span>
 				</p>
 				<div v-if="item.route_type">
 					<span> {{ item?.data?.route?.visibility }} </span>

@@ -175,36 +175,48 @@
 		<div v-else class="flex flex-col gap-6">
 			<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-lg">
 				<div class="flex flex-col">
-					<p class="text-grey5 text-sm font-medium">Name</p>
+					<p class="text-grey5 text-sm font-medium">
+						Name
+					</p>
 					<p class="text-base text-grey1 font-medium">
 						{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}
 					</p>
 				</div>
 				<div class="flex flex-col">
-					<p class="text-grey5 text-sm font-medium">Company Name</p>
+					<p class="text-grey5 text-sm font-medium">
+						Company Name
+					</p>
 					<p class="text-base text-grey1 font-medium">
 						{{ partnerInfo.company_name || 'N/A' }}
 					</p>
 				</div>
 				<div class="flex flex-col">
-					<p class="text-grey5 text-sm font-medium">Partner's Email</p>
+					<p class="text-grey5 text-sm font-medium">
+						Partner's Email
+					</p>
 					<p class="text-base text-[#7493CB] font-medium">
 						{{ partnerInfo.owner?.email || 'N/A' }}
 					</p>
 				</div>
 				<div class="flex flex-col">
-					<p class="text-grey5 text-sm font-medium">Company Email</p>
+					<p class="text-grey5 text-sm font-medium">
+						Company Email
+					</p>
 					<p class="text-base text-[#7493CB] font-medium">
 						{{ partnerInfo?.company_email || 'N/A' }}
 					</p>
 				</div>
 				<div class="flex flex-col gap-1">
-					<p class="text-grey5 text-sm font-medium">Settlement Account</p>
+					<p class="text-grey5 text-sm font-medium">
+						Settlement Account
+					</p>
 					<div class="flex flex-col">
 						<p class="text-base text-grey1 font-medium">
 							{{ earningInfo.settlementAccount?.accountNumber }}
 						</p>
-						<p class="text-xs font-medium text-grey5">{{ earningInfo.settlementAccount?.bankName }} - {{ earningInfo.settlementAccount?.accountName }}</p>
+						<p class="text-xs font-medium text-grey5">
+							{{ earningInfo.settlementAccount?.bankName }} - {{ earningInfo.settlementAccount?.accountName }}
+						</p>
 					</div>
 				</div>
 				<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`"
@@ -331,7 +343,7 @@
 						{{ item.data?.metadata?.routeCode || 'N/A' }}
 					</p>
 					<p v-if="item.partnersRevenue" class="text-sm whitespace-nowrap">
-						{{ convertToCurrency(item.data?.partnersRevenue )}}
+						{{ convertToCurrency(item.data?.partnersRevenue ) }}
 					</p>
 					<p v-if="item.deduction" class="text-sm whitespace-nowrap text-red">
 						{{ convertToCurrency(item.data?.totalDeductedAmount) }}
