@@ -87,5 +87,5 @@ export const useEditVehicles = () => {
 	// 	update_source.value = data
 	// }
 
-	return { loading, ...obj, setUpdateSource, openEditBus, clearObj, updateVehicle, update_source }
+	return { loading, ...obj, openEditBus, clearObj, updateVehicle }
 }

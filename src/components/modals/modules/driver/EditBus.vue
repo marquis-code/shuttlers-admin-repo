@@ -74,7 +74,7 @@ import { useEditVehicles } from '@/composables/modules/fleets/vehicles/update'
 import { useAllVehicleType } from '@/composables/modules/configure/fetch'
 
 const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
-const { loading, name, brand, type, capacity, plate_no, amenities, code, inventory_type, clearObj, updateVehicle, update_source, setUpdateSource } = useEditVehicles()
+const { loading, name, brand, type, capacity, plate_no, amenities, code, inventory_type, clearObj, updateVehicle } = useEditVehicles()
 
 getAllVehicleWithoutLimit()
 onBeforeUnmount(() => clearObj())
