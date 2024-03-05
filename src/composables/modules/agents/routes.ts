@@ -28,7 +28,6 @@ export const useGetAgentsRoutes = () => {
                     route_available_days: pasrsed.join(', ')
                 }
             })
-                console.log(agentsRoute.value)
             metaObject.total.value = response.data.metadata.total_pages
         }
         loading.value = false
