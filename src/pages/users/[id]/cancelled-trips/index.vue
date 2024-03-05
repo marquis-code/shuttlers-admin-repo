@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList">
+		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showSearchBar:true, showDateRange: true }" @filter="onFilterUpdate" />
 			</template>
