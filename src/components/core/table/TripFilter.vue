@@ -6,7 +6,7 @@
 			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="formattedTripTime" :loading="loadingTripTime" title="Start time:" />
 			<ButtonMultiSelectDropdown v-model="filterData.vehicleType.value" :children="formattedVehicle" :loading="loadingVehicleTypes" title="Vehicle type:" />
 			<ButtonMultiSelectDropdown v-model="filterData.city.value" :children="formattedCities" :loading="loading" title="City:" />
-			<div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
+			<!-- <div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
 				<span class="text-grey5 w-full">Occupancy rate:</span>
 				<label for="occupancy_from">
 					<span class="text-dark">From:</span>
@@ -21,7 +21,7 @@
 				<button class="btn-primary" @click="emitOccupancy">
 					Apply
 				</button>
-			</div>
+			</div> -->
 		</section>
 
 		<button class="btn-primary w-32" @click="resetData">
@@ -123,7 +123,7 @@ const resetData = () => {
 	filterData.city.value = []
 	filterData.occupancy_from.value = 0
 	filterData.occupancy_to.value = 100
-	emitOccupancy()
+	// emitOccupancy()
 }
 watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val: any[]) => {
 	if (val[0]) {
@@ -159,7 +159,7 @@ const convertURLParamsToObject = (() => {
 	filterData.city.value = urlParams.city as string ? JSON.parse(urlParams.city as string) : [] as string[]
 	filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
 	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 100
-	emitOccupancy()
+	// emitOccupancy()
 })()
 
 </script>
