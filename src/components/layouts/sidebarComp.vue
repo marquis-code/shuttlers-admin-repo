@@ -8,10 +8,10 @@
 				<component :is="data.menuIcon" class="img w-8" />
 			</button>
 		</div>
-		<label v-if="!isProd" for="redirect" class="ml-5">
+		<!-- <label v-if="!isProd" for="redirect" class="ml-5">
 			<input id="redirect" v-model="shouldNotRedirectToExternalUrl" type="checkbox" class="form-checkbox">
 			<span>Shouldn't Redirect</span>
-		</label>
+		</label> -->
 		<div class="sidebar-menus">
 			<ul class="nav">
 				<li v-for="main in data.menuList" :key="main.menus">
@@ -153,6 +153,7 @@ $content-area-width: calc(100vw - 14rem);
 }
 
 .sidebar {
+    background-color: var(--grey11);
     border-bottom: 1px solid $sh-neutral-400;
 
     .sidebar-header {
@@ -225,7 +226,7 @@ $content-area-width: calc(100vw - 14rem);
         left: 0;
         height: 100vh;
         overflow: auto;
-        border-right: 1px solid $sh-gray-9;
+        // border-right: 1px solid $sh-gray-9;
         border-bottom: none;
 
         .sidebar-header {
