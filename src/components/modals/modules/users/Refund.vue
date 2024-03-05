@@ -2,7 +2,7 @@
 	<Modal
 		modal="$atts.modal"
 		title="Refund amount"
-		:no-close-btn="false"
+		:no-close-btn="true"
 		class="text-center"
 	>
 		<form class="flex flex-col gap-6" @submit.prevent="refund">
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { useUserModal } from '@/composables/core/modals'
 import { useRefundPastBookings } from '@/composables/modules/users/inner/refund'
 import { convertToCurrency } from '@/composables/utils/formatter'
 

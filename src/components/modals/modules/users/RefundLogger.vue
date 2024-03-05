@@ -2,7 +2,7 @@
 	<Modal
 		modal="$atts.modal"
 		:title="mode === 'CREATE' ? 'Log trip refund' : 'Edit trip refund'"
-		:no-close-btn="false"
+		:no-close-btn="true"
 		class="text-center"
 	>
 		<form class="flex flex-col gap-6" @submit.prevent="logRefund">
