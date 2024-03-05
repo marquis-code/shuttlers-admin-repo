@@ -57,7 +57,7 @@ watch(selectedAgent, (value) => {
 	} else {
 		useAlert().openAlert({ type: 'ERROR', msg: 'Agent not found' })
 	}
-})
+}, { immediate: true })
 
 definePageMeta({
     layout: 'dashboard',
@@ -77,10 +77,7 @@ const tableFields = ref([
         text: 'EMAIL ADDRESS',
         value: 'email'
     },
-    // {
-    //     text: 'ROUTE ASSIGNED',
-    //     value: 'id'
-    // },
+
     {
         text: 'CLOSEST BUSSTOP',
         value: 'closest_busstop'

@@ -170,16 +170,16 @@ const populateTable = (data: any) => {
 	const element = {}
 
 	props.headers.forEach((item: any) => {
-		// for (const key in data) {
-		// 	if (key === item.value) {
-		// 		element[key] = data[key]
-		// 	}
-		// }
-		if (item.value in data) {
-			element[item.value] = data[item.value]
-		} else {
-			element[item.value] = 'N/A'
+		for (const key in data) {
+			if (key === item.value) {
+				element[key] = data[key]
+			}
 		}
+		// if (item.value in data) {
+		// 	element[item.value] = data[item.value]
+		// } else {
+		// 	element[item.value] = 'N/A'
+		// }
 	})
 
 	return element
