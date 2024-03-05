@@ -1,30 +1,33 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="bookings" :has-options="true" class="cursor-pointer" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :table-data="bookings" :has-options="true" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.route">
-					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+					<RouteDescription @click="onRowClicked(item.data)" :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
 				</div>
 				<div v-if="item.amount">
-					<span> {{ convertToCurrency(item?.data?.cost) ?? '₦ 0.00' }}</span>
+					<span @click="onRowClicked(item.data)"> {{ convertToCurrency(item?.data?.cost) ?? '₦ 0.00' }}</span>
 				</div>
 				<p v-if="item.route_code">
-					{{ item.data?.route?.route_code || 'N/A' }}
+					<NuxtLink v-if="item.route_code" class="underline text-blue-700 font-semibold" :to="`/trips/routes/${item.data?.route?.id}/details`">
+						{{ item.data?.route?.route_code || 'N/A' }}
+					</NuxtLink>
+					<span v-else>No route available</span>
 				</p>
 
 				<p v-if="item.start_date" class="whitespace-nowrap">
-					<span> {{ item?.data?.start_date ?? 'N/A' }}</span>
+					<span @click="onRowClicked(item.data)"> {{ item?.data?.start_date ?? 'N/A' }}</span>
 				</p>
 				<p v-if="item.end_date" class="whitespace-nowrap">
-					<span> {{ item?.data?.end_date ?? 'N/A' }}</span>
+					<span @click="onRowClicked(item.data)"> {{ item?.data?.end_date ?? 'N/A' }}</span>
 				</p>
 				<p v-if="item.payment_source" class="whitespace-nowrap">
-					<span> {{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source }}</span>
+					<span @click="onRowClicked(item.data)"> {{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source }}</span>
 				</p>
-				<div v-if="item.route_type">
+				<div v-if="item.route_type" @click="onRowClicked(item.data)">
 					<span> {{ item?.data?.route?.visibility }} </span>
 					<br>
 					<span> {{ item?.data?.route?.is_exclusive ? "Exclusive" : "Shared" }} </span>

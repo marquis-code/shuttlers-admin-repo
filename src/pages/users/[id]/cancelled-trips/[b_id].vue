@@ -40,6 +40,7 @@
 						</div>
 						<span class="text-gray-500">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
+							<!-- <p>{{ pastBooking?.itinerary?.trip_time }}</p> -->
 						</span>
 					</li>
 				</ul>
@@ -59,7 +60,7 @@
 					</div>
 				</section>
 
-				<section v-if="!loadingAduit" class="flex flex-col py-5  mt-1 items-center gap-2 border-b">
+				<section v-if="!loadingAduit" class="flex flex-col py-5  mt-1 items-center gap-2">
 					<div v-for="audit in auditArray" :key="audit.id" class="flex flex-col gap-2 text-sm w-full">
 						<span class="font-medium text-purp7">{{ audit.description }}</span>
 						<div class="flex items-center justify-between gap-4">
@@ -70,23 +71,6 @@
 					</div>
 				</section>
 				<Skeleton v-else height="100px" />
-
-				<div v-if="pastBooking.is_refunded === 0" class="grid grid-cols-2 gap-5">
-					<div class="flex w-full mt-4">
-						<button class="btn-outline w-full" @click="openLogRefund(pastBooking.refund_log ? 'EDIT' : 'CREATE', pastBooking)">
-							{{ pastBooking.refund_log ? 'Update Log' : 'Log refund' }}
-						</button>
-					</div>
-
-					<div class="flex w-full mt-4">
-						<button class="btn-primary w-full" @click="intialRefund(pastBooking)">
-							Refund
-						</button>
-					</div>
-				</div>
-				<button v-else class="btn mt-4 !text-green08 !bg-[#EDFFF8] border border-[#93FFC5] w-full cursor-default">
-					Refund completed
-				</button>
 			</div>
 
 			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" :props-loading="loading" />
