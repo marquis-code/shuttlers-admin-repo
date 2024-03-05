@@ -31,7 +31,7 @@
 					{{ item.data.vehicle?.seats }} seater - {{ item.data.vehicle?.name }} ({{ item.data.vehicle?.registration_number }})
 				</p>
 				<p v-if="item.cost_of_supply" class="whitespace-nowrap">
-					NGN {{ item.data?.cost_of_supply || 'N/A' }}
+					{{ convertToCurrency(item.data?.cost_of_supply) || 'N/A' }}
 				</p>
 				<p v-if="item.utilization" class="whitespace-nowrap">
 					{{ item.data?.break_even_utilization ? item.data.break_even_utilization * 100 : 0 }}%
@@ -40,7 +40,7 @@
 					{{ item.data?.pricing_margin }} {{ item.data?.pricing_margin_unit }}
 				</p>
 				<p v-if="item.fare" class="whitespace-nowrap">
-					{{ item.data?.max_fare ? `NGN ${item.data?.max_fare}` : 'N/A' }}
+					{{ convertToCurrency(item.data?.max_fare) || 'N/A' }}
 				</p>
 				<span v-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-40" />
@@ -110,6 +110,7 @@
 import { useItineraries, useItineraryDrivers } from '@/composables/modules/routes/itineraries'
 import { useAddDriver, useDeleteDriverFromItinerary, useTransferBooking } from '@/composables/modules/routes/itineraries/driver'
 import { useDriverModal } from '@/composables/core/modals'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { singleItinerary: itinerary } = useItineraries()
 const { loading: loading_drivers, getItineraryDrivers, page, total, moveTo, next, prev, itineraryDrivers } = useItineraryDrivers()

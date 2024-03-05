@@ -4,6 +4,9 @@
 		:title="!isEditConfigureCharge ? 'Configure new charge' : 'Edit configuration'"
 	>
 		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="isEditConfigureCharge ? updateConfigureCharge() : configureCharge()">
+			<p class="text-sm text-center bg-[#2C8EED] text-light py-2">
+				You can only create Percent-type charges. Flat fee charges will be available soon
+			</p>
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center gap-[16px] justify-between">
 					<label class="text-xs text-[#6E717C] font-medium">Select charge type</label>
@@ -32,7 +35,7 @@
 						<option class="p-2" value="percentage">
 							Percent(%)
 						</option>
-						<option class="p-2" value="flat">
+						<option disabled class="p-2" value="flat">
 							Flat amount(₦)
 						</option>
 					</select>
