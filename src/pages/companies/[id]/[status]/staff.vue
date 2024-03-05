@@ -39,7 +39,7 @@
 		<Table :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs"
 			:has-index="true" :page="page" @checked="selectedStaffs = ($event)">
 			<template #header>
-				<TableFilter @download="downloadCorporateStaffs" :filter-type="{ showStatus: false, showSearchBar: true, showDownloadButton: true }" @filter="onFilterUpdate">
+				<TableFilter :filter-type="{ showStatus: false, showSearchBar: true, showDownloadButton: true }" @download="downloadCorporateStaffs" @filter="onFilterUpdate">
 					<template #filter_others>
 						<div ref="target"
 							class="relative flex justify-end lg:max-w-[500px] xl:max-w-[800px] 2xl:max-w-full flex-wrap gap-y-3 gap-2 items-center">

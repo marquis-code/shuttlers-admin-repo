@@ -14,10 +14,12 @@
 					</NuxtLink>
 				</div>
 				<div v-if="item.vehicleDriver" class="flex items-center gap-x-2">
-					<NuxtLink v-if="item?.data?.driver" class="font-semibold text-blue-600" :to="`/drivers/${item?.data?.driver?.id}/driver-info`" >
+					<NuxtLink v-if="item?.data?.driver" class="font-semibold text-blue-600" :to="`/drivers/${item?.data?.driver?.id}/driver-info`">
 						{{ item?.data?.driver?.fname }} {{ item?.data?.driver?.lname }}
 					</NuxtLink>
-					<p v-else class="text-sm text-gray-500 font-medium">No driver assigned</p>
+					<p v-else class="text-sm text-gray-500 font-medium">
+						No driver assigned
+					</p>
 				</div>
 				<span v-if="item.created_at">
 					{{ useDateFormat(item?.data?.created_at, "MMMM d, YYYY").value }}

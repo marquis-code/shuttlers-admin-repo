@@ -138,7 +138,7 @@
 					</template>
 					<template v-else>
 						<p class="font-medium">
-							{{ item.data.payer?.corporate_name || 'N/A'}} (company)
+							{{ item.data.payer?.corporate_name || 'N/A' }} (company)
 						</p>
 						<p class="text-[#737876]">
 							{{ item.data.payer?.email || '' }}
