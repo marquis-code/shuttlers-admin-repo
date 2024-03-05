@@ -12,7 +12,7 @@
 					<span @click="onRowClicked(item.data)"> {{ convertToCurrency(item?.data?.cost) ?? '₦ 0.00' }}</span>
 				</div>
 				<p v-if="item.route_code">
-					<NuxtLink v-if="item.route_code" class="underline text-shuttlersGreen font-medium" :to="`/trips/routes/${item.data?.route?.id}/details`">
+					<NuxtLink v-if="item.route_code" class="underline text-blue-700 font-semibold" :to="`/trips/routes/${item.data?.route?.id}/details`">
 						{{ item.data?.route?.route_code || 'N/A' }}
 					</NuxtLink>
 					<span v-else>No route available</span>
