@@ -40,7 +40,7 @@ export const useCreateNotification = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
             useConfirmationModal().closeAlert()
-            resetCredentials()
+            credentials.description.value = ''
         }
         creatingNotification.value = false
     }
