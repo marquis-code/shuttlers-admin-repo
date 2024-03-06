@@ -1,5 +1,6 @@
 <template>
 	<main class="space-y-4">
+		<ButtonGoBack class="mb-6" />
 		<div class="flex justify-end items-end">
 			<div class="flex items-center gap-x-3">
 				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5" @click="handleChangeGroup">

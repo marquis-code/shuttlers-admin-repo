@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="sortedCorporateList" :has-index="true" :page="page" :option="onRowClicked" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true, showStatus:true}" @filter="onFilterUpdate" @download="downloadReport" />

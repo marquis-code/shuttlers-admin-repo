@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :has-index="true" :page="page" :headers="tableFields" :table-data="batchBookingList" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false}" />

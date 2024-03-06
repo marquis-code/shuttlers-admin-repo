@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading_campaigns" :headers="tableFields" :table-data="campaignsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{ showSearchBar:true }" :checkbox="true" @filter="onFilterUpdate" />

@@ -1,8 +1,11 @@
 <template>
-	<section class="mx-10 mt-14 space-y-10">
-		<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev " />
-		<Skeleton v-else height="300px" />
-	</section>
+	<main>
+		<ButtonGoBack />
+		<section class="mx-10 mt-14 space-y-10">
+			<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev " />
+			<Skeleton v-else height="300px" />
+		</section>
+	</main>
 </template>
 
 <script setup lang="ts">

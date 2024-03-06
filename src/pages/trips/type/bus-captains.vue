@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingBusCaptains" :headers="tableFields" :table-data="formattedBusCaptainsList">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />

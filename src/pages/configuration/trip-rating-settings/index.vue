@@ -1,5 +1,6 @@
 <template>
 	<main class="space-y-6">
+		<ButtonGoBack class="mb-6" />
 		<div class="bg-white rounded-md border md:w-6/12">
 			<div class="px-6 py-5">
 				<p class="font-medium">

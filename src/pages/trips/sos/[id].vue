@@ -1,24 +1,27 @@
 <template>
-	<main class="w-full flex flex-col">
-		<div class="flex items-center justify-between mb-5">
-			<ButtonGoBack />
-			<div v-if="!loadingSosRequest" class="text-green7 bg-green05 p-4 rounded-xl text-sm font-medium">
-				{{ useDateFormat(formattedSosList[0]?.created_at, "MMMM D, YYYY").value }}
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<section class="w-full flex flex-col">
+			<div class="flex items-center justify-between mb-5">
+				<ButtonGoBack />
+				<div v-if="!loadingSosRequest" class="text-green7 bg-green05 p-4 rounded-xl text-sm font-medium">
+					{{ useDateFormat(formattedSosList[0]?.created_at, "MMMM D, YYYY").value }}
+				</div>
 			</div>
-		</div>
 
-		<main class="">
-			<Table :loading="loadingSosRequest" :headers="tableFields" :table-data="formattedSosList" :has-index="true">
-				<template #item="{ item }">
-					<span v-if="item.created_at">
-						{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-					</span>
-					<span v-else-if="item.status" class="flex">
-						<StatusBadge :name="item.data.status" />
-					</span>
-				</template>
-			</Table>
-		</main>
+			<section class="">
+				<Table :loading="loadingSosRequest" :headers="tableFields" :table-data="formattedSosList" :has-index="true">
+					<template #item="{ item }">
+						<span v-if="item.created_at">
+							{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
+						</span>
+						<span v-else-if="item.status" class="flex">
+							<StatusBadge :name="item.data.status" />
+						</span>
+					</template>
+				</Table>
+			</section>
+		</section>
 	</main>
 </template>
 

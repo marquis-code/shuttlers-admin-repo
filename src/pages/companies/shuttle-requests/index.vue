@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :has-index="true" :loading="loading" :headers="tableFields" :table-data="shuttleRequestsList">
 			<template #header>
 				<TableFilter :filter-type="{showDownloadButton:true, showSearchBar:true}" @filter="onFilterUpdate" />

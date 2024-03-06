@@ -1,5 +1,6 @@
 <template>
 	<div class="">
+		<ButtonGoBack class="mb-6" />
 		<div class="flex h-[calc(100vh-90px)]">
 			<div
 				class="w-4/12 bg-white border-r p-6 space-y-6 sticky top-4 h-full overflow-y-auto"
