@@ -15,7 +15,6 @@ export const useFetchConfiguredCharges = () => {
 		loading.value = true
 		const res = await $_get_configurations(metaObject, search.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-			console.log(res.data, 'charges here')
             configuredCharges.value = res.data.data
 			metaObject.total.value = res.data.metadata.total_pages
         }
