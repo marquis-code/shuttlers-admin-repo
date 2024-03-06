@@ -37,8 +37,9 @@
 				</div>
 			</div>
 			<div class="p-6">
+				<!-- <UpdatedTestEditor /> -->
 				<ClientOnly>
-					<QuillEditor v-model:content="credentials.description.value" content-type="text" theme="snow" placeholder="Enter notification description" />
+					<QuillEditor v-model:content="credentials.description.value" content="html" content-type="html" :edit="true" theme="snow" placeholder="Enter notification description" />
 				</ClientOnly>
 			</div>
 			<div class="flex flex-col gap-4 px-6 pb-6">
@@ -75,8 +76,25 @@ const companyName = (data) => {
 	const isFormActuallyEmpty = computed(() => {
 		return !!(credentials?.title?.value && credentials?.description?.value && (selectedUsers?.value?.length || notificationType.value === 'all'))
 	})
+
+	const toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+  ['blockquote', 'code-block'],
+  ['link', 'image', 'video', 'formula'],
+
+  [{ header: 1 }, { header: 2 }], // custom button values
+  [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+  [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+  [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+  [{ direction: 'rtl' }], // text direction
+
+  [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+  [{ font: [] }],
+  [{ align: [] }],
+
+  ['clean'] // remove formatting button
+]
 </script>
-
-<style scoped>
-
-</style>
