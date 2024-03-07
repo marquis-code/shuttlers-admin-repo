@@ -3,7 +3,6 @@ import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useTripsModal } from '@/composables/core/modals'
 
-const { getCompletedTrips } = useGetCompletedTripsList()
 const obj = {
     tripId: ref(null) as Ref<number|null>,
     password: ref(''),
@@ -36,7 +35,8 @@ export const useCancelTrip = () => {
 		loading.value = true
 		const res = await trips_api.$_cancel_completed_trip(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-			if (res.data.success) {
+            if (res.data.success) {
+                const { getCompletedTrips } = useGetCompletedTripsList()
 				useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip cancelled successfully' })
 				useTripsModal().closeCancelTrip()
 				getCompletedTrips()

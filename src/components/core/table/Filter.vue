@@ -78,7 +78,6 @@ interface DefaultValueProps {
 	dateSelected?: string;
 	dateRange?: Array<string>;
 	status?: string;
-
 }
 
 const props = defineProps({
