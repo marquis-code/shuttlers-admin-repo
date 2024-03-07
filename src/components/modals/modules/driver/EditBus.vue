@@ -47,7 +47,7 @@
 					<option value="regular">
 						Regular
 					</option>
-					<option value="one_off">
+					<option value="one-off">
 						One-off
 					</option>
 				</select>
@@ -78,11 +78,6 @@ const { loading, name, brand, type, capacity, plate_no, amenities, code, invento
 
 getAllVehicleWithoutLimit()
 onBeforeUnmount(() => clearObj())
-// const handleUpdateVehicle = () => {
-// 	// update_source.value = 'driver'
-// 	// setUpdateSource('driver')
-// 	updateVehicle()
-// }
 </script>
 
 <style scoped>
