@@ -12,7 +12,7 @@ const obj = {
 	capacity: ref(''),
 	type: ref(''),
 	code: ref(''),
-	amenities: ref(''),
+	amenities: ref([]) as any,
 	inventory_type: ref('')
 }
 
@@ -25,7 +25,7 @@ const clearObj = () => {
 	obj.capacity.value = ''
 	obj.type.value = ''
 	obj.code.value = ''
-	obj.amenities.value = ''
+	obj.amenities.value = []
 	obj.inventory_type.value = ''
 }
 
