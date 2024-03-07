@@ -3,7 +3,6 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const actionType = ref('create')
 
@@ -14,6 +13,7 @@ const configurationForm = {
 }
 
 export const useCreateCapacityConfiguration = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     const loading = ref(false)
     const { $_create_corporate_vehicle_capacity } = corporates_api
     const createCapacityConfiguration = async () => {

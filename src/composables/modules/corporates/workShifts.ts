@@ -3,7 +3,7 @@ import { useAlert } from '@/composables/core/notification'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate } = useCorporateIdDetails()
+
 const createWorkShiftForm = {
         startTime: ref(''),
         endTime: ref(''),
@@ -11,7 +11,8 @@ const createWorkShiftForm = {
     }
     const isEditShift = ref(false)
 
-    export const useCreateWorkShift = () => {
+export const useCreateWorkShift = () => {
+        const { selectedCorporate } = useCorporateIdDetails()
         const loading = ref(false)
 
         const createWorkShift = async () => {

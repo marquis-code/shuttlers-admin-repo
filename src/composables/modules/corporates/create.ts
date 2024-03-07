@@ -3,7 +3,6 @@ import { useAlert } from '@/composables/core/notification'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const createForm = {
 	role: ref(''),
@@ -33,6 +32,7 @@ const editForm = {
 }
 const corporateId = useRoute().params.id as string
 export const useCreateCorporate = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
 	const loading = ref(false)
 
 	const createCorporate = async () => {

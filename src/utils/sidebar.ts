@@ -41,7 +41,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
 export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Corporates',
-    routePath: '/companies/insights',
+    routePath: null,
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
@@ -116,7 +116,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   },
   {
     title: 'Commute',
-    routePath: '/trips/type/active',
+    routePath: null,
     description: '',
     iconComponent: shallowRef(charterIcon),
     rootPath: '/trips',
@@ -216,7 +216,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   },
   {
     title: 'Drivers',
-    routePath: '/drivers',
+    routePath: null,
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),

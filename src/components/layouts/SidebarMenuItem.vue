@@ -14,7 +14,7 @@
 			<li class="nav-menu transite"
 				:class="{ 'nav-menu--open': menu.isOpen, 'nav-menu--expandable': hasSubMenus(menu), 'nav-menu--active': isActive || pathContainsRoot(menu?.rootPath) }">
 				<template v-if="hasSubMenus(menu)">
-					<div class="nav-title" @click="toggleMenuOpenedState(menu)">
+					<div class="nav-title" @click="setChildrenElement(menu)">
 						<span class="flex items-center">
 							<component :is="menu.iconComponent" class="img" />
 							<span class="text-sm">{{ menu.title }}</span>
@@ -22,26 +22,6 @@
 						<component :is="downIcon" class="float-right ml-auto w-4 transite -rotate-90"
 							:class="[menu.isOpen ? 'rotate-180' : '']" />
 					</div>
-					<ul class="nav-submenus">
-						<span v-for="(submenu, submenuIndex) in menu.children" :key="submenuIndex">
-							<nuxt-link v-if="!submenu.shouldRedirect || is_dev || shouldNotRedirectToExternalUrl"
-								:to="{ path: submenu.routePath }">
-								<template #default="{ isActive, href }">
-									<li class="nav-submenu" :class="{ 'nav-submenu--active': isActive && excludedPathsIgnored(submenu) }">
-										<a :href="href">
-											{{ submenu.title }}
-										</a>
-									</li>
-								</template>
-							</nuxt-link>
-							<a v-else href="#" @click="openAsExternalUrl(submenu.oldPath)">
-								<span class="nav-submenu" @click="submenu.calling_function">
-									{{ submenu.title }}
-								</span>
-							</a>
-
-						</span>
-					</ul>
 				</template>
 				<template v-else>
 					<a :href="href">
@@ -61,6 +41,7 @@
 <script setup>
 import downIcon from '@/assets/icons/src/down.vue'
 import { openAsExternalUrl, is_dev, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { setChildrenElement } from '@/utils/sidebar_controls'
 
 const props = defineProps({
   menu: {
@@ -79,6 +60,7 @@ watch(() => props.route, (value) => {
 })
 
 const toggleMenuOpenedState = (menu) => {
+  console.log(menu)
   menu.isOpen = !menu?.isOpen
 }
 const hasSubMenus = (menu) => {
@@ -103,10 +85,9 @@ const excludedPathsIgnored = (submenu) => {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $sh-neutral-600 : #737876;
 $sh-green-500 : #20E682;
-$sh-neutral-900 : #101211;
 
 .nav-menu {
   color: $sh-neutral-600;
@@ -162,7 +143,7 @@ $sh-neutral-900 : #101211;
 
     a {
       // Overrides the default color on a tags for the router link
-      color: white;
+      color: var(--grey5);
       width: 100%;
     }
 
@@ -191,45 +172,32 @@ $sh-neutral-900 : #101211;
 
   &:not(&--open):not(&--active):hover {
     & .nav-title {
-      color: $sh-neutral-900;
+      color: var(--grey5);
     }
   }
 
   &--open,
   &--active {
     .nav-title {
-      color: white;
+      color: var(--green);
     }
   }
 
   &--active {
 
     &:not(.nav-menu--open) {
-      color: $sh-green-500;
+      color: var(--green);
 
       &+.nav-menu--open {
         margin-top: 0.5rem;
       }
 
-      &:after {
-        top: 0.75rem;
-        bottom: 0.75rem;
-        right: 0;
-        left: auto;
-        position: absolute;
-        border-radius: 10px;
-        border-right: 4px solid $sh-green-500;
-        border-bottom: 0;
-        content: "";
-      }
     }
 
-    background-color: $sh-neutral-900;
   }
 
   &--open {
-    color: white;
-    background-color: $sh-neutral-900;
+    color: var(--green);
 
     &:not(:last-of-type) {
       margin-bottom: .5rem;

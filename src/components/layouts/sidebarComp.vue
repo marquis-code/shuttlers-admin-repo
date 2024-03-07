@@ -1,5 +1,5 @@
 <template>
-	<aside class="sidebar">
+	<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden">
 		<div class="sidebar-header">
 			<router-link to="/">
 				<component :is="data.logoIcon" class="img" />
@@ -23,43 +23,40 @@
 				</li>
 			</ul>
 		</div>
-		<div class="sidebar-footer hidden md:block">
-			<div v-if="currentUser" id="sidebarUser" class="user-box">
-				<div class="avatar avatar-sm w-auto">
-					<router-link class="flex items-center" :to="`/admin/${currentUser.id}/info`" title="View your profile">
-						<div class="w-10 h-10 flex-1 ">
-							<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-full">
-							<div v-else class="avatar-title rounded-full w-10 h-10">
-								{{ getInitials(currentUser.fname, currentUser.lname) }}
-							</div>
-						</div>
+		<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
+	</aside>
 
-						<span class="name ml-2">{{ currentUser.fname }}</span>
-					</router-link>
-				</div>
-				<span class="icon" title="Logout" @click="signOutFunction()">
-					<component :is="logoutIcon" class="img" />
-				</span>
-			</div>
-		</div>
+	<aside v-else class="sidebar h-full flex flex-col">
+		<button class="sidebar-header flex gap-1 items-center !justify-normal " @click="showPrimaryMenuRef = true">
+			<icon name="down" class="w-6 rotate-90" />
+			<span class="font-bold text-xl">{{ currentRouteObject?.parentName || currentRouteObject?.title }}</span>
+		</button>
+		<ul class="nav-menu">
+			<span v-for="(menu, submenuIndex) in parentOfTheCurrentRouteChildren" :key="submenuIndex">
+				<li class="nav-menu transite">
+					<nuxt-link :to="menu.routePath">
+						<div class="nav-title">
+							<span class="flex items-center">
+								<component :is="routeIcon" class="img" />
+								<span class="text-sm">{{ menu.title }}</span>
+							</span>
+						</div>
+					</nuxt-link>
+				</li>
+
+			</span>
+		</ul>
+		<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
 	</aside>
 </template>
 
 <script setup lang='ts'>
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
-import logoutIcon from '@/assets/icons/src/logoutIcon.vue'
-import { shouldNotRedirectToExternalUrl, environmental_url } from '@/composables/utils/system'
+import routeIcon from '@/assets/icons/src/compass.vue'
 
-const getInitials = (string1, string2) => {
-    if (!string1 || !string2) {
-        return ''
-    }
-    const initials = string1[0] + string2[0]
-    return initials.toUpperCase()
-}
-
-const host = useRoute()
+import { shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { currentRouteObject, showPrimaryMenuRef, parentOfTheCurrentRouteChildren } from '@/utils/sidebar_controls'
 
 const isProd = computed(() => {
     return location.host === 'v3.admin.shuttlers.africa'
@@ -117,13 +114,13 @@ const resetMenus = () => {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $sh-neutral-400 : #ACAFAE;
 $sh-gray-9: #E5E9F2;
 $sh-green-900 : #006633;
 $sh-gray-3: #444854;
-$sidebar-width: 14rem;
-$content-area-width: calc(100vw - 14rem);
+$sidebar-width: 17rem;
+$content-area-width: calc(100vw - 17rem);
 
 .avatar {
   position: relative;
@@ -133,6 +130,9 @@ $content-area-width: calc(100vw - 14rem);
   font-size: 1rem;
 }
 
+.router-link-active.router-link-exact-active > *{
+      color: var(--green) !important
+}
 .avatar-sm {
   width: 2.5rem;
   height: 2.5rem;
@@ -148,8 +148,6 @@ $content-area-width: calc(100vw - 14rem);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #244166;
-    color: #FFFFFF;
 }
 
 .sidebar {
@@ -174,11 +172,11 @@ $content-area-width: calc(100vw - 14rem);
     }
 
     .sidebar-footer {
-        padding: 1rem;
+
+        padding: 1rem 0.5rem;
 
         .user-box {
-            background: transparentize($sh-green-900, 0.9);
-            border-radius: 0.625rem;
+            border-top: 1px solid #E5E9F2;
             padding: 1rem;
             display: flex;
             justify-content: space-between;
@@ -225,7 +223,7 @@ $content-area-width: calc(100vw - 14rem);
         bottom: 0;
         left: 0;
         height: 100vh;
-        overflow: auto;
+        overflow: hidden;
         // border-right: 1px solid $sh-gray-9;
         border-bottom: none;
 

@@ -2,8 +2,9 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-const { selectedCorporate } = useCorporateIdDetails()
+
 export const useUpdateStaffAdditionByDomainStatus = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
 	const loading = ref(false)
 
     const payload = {

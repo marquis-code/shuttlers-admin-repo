@@ -1,5 +1,5 @@
 <template>
-	<div class="px-0 container-fluid root-layout relative">
+	<div class="px-0 container-fluid root-layout relative overflow-hidden">
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
@@ -20,9 +20,9 @@
 </script>
 
 <style scoped lang='scss'>
-$sidebar-width: 14rem;
+$sidebar-width: 17rem;
 $dasboard_margin: 2rem;
-$content-area-width: calc(100vw - (14rem + 1rem));
+$content-area-width: calc(100vw - (17rem + 1rem));
 .main-content {
   background-color: var(--grey);
   min-height: 90vh;
