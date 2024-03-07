@@ -555,7 +555,7 @@ const calculateChargePercent = (percent: string) => {
 const computedCharges = computed(() => {
   if (!configuredCharges.value.length) return configuredCharges.value
   const res = ref([]) as Ref<Record<string, any>[]>
-  res.value = configuredCharges.value.map((el) => {
+  res.value = configuredCharges.value.filter((val) => val?.is_compulsory).map((el) => {
     return {
       id: el?.id,
       name: el?.additionChargeType?.short_name,

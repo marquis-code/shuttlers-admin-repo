@@ -46,6 +46,11 @@
 						View
 					</button>
 				</div>
+				<p v-if="item.previous_state" class="whitespace-nowrap font-medium"
+					:class="item.data?.trip_id ? 'text-dark' : 'text-grey3'"
+				>
+					{{ item.data?.trip_id ? 'Completed' : 'Upcoming' }}
+				</p>
 				<div v-if="item.route">
 					<RouteDescription :pickup="item.data.route?.pickup" :destination="item.data?.route?.destination" />
 				</div>
@@ -99,7 +104,8 @@ const tableFields = ref([
     { text: 'VEHICLE NAME - COST OF SUPPLY', value: 'vehicle' },
 	{ text: 'DRIVER', value: 'driver' },
 	// { text: 'REASON', value: 'reason' },
-	{ text: 'PASSENGERS', value: 'passengers' }
+	{ text: 'PASSENGERS', value: 'passengers' },
+	{ text: 'PREVIOUS STATE', value: 'previous_state' }
 ])
 
 </script>
