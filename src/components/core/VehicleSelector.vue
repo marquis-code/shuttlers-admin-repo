@@ -29,9 +29,10 @@ import { useAllVehicles } from '@/composables/modules/fleets/vehicles/vehicles'
 const emit = defineEmits(['selected', 'update:modelValue'])
 const props = defineProps({
 	label: { type: String, default: 'Select Vehicle' },
-	modelValue: { type: Object, required: true }
+	modelValue: { type: Object, required: true },
+	entityStatus: { type: String, default: 'all' }
 })
-const { vehicles, loading, getVehicles } = useAllVehicles()
+const { vehicles, loading, getVehicles, getActiveVehicles } = useAllVehicles()
 
 const is_droped_down = ref(false)
 const selectedVehicle = ref(props.modelValue) as Ref<any>
@@ -41,4 +42,5 @@ const handleSelection = (val:any) => {
 }
 
 if (!vehicles.value.length) getVehicles()
+if (props.entityStatus === 'active') getActiveVehicles()
 </script>

@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Edit Vehicle Information"
 	>
-		<form class="flex flex-col gap-4 w-full" @submit.prevent="handleUpdateVehicle">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="updateVehicle">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<div class="flex flex-col gap-1">
 					<label class="label">Vehicle brand</label>
@@ -74,14 +74,15 @@ import { useEditVehicles } from '@/composables/modules/fleets/vehicles/update'
 import { useAllVehicleType } from '@/composables/modules/configure/fetch'
 
 const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
-const { loading, name, brand, type, capacity, plate_no, amenities, code, inventory_type, clearObj, updateVehicle, update_source } = useEditVehicles()
+const { loading, name, brand, type, capacity, plate_no, amenities, code, inventory_type, clearObj, updateVehicle } = useEditVehicles()
 
 getAllVehicleWithoutLimit()
 onBeforeUnmount(() => clearObj())
-const handleUpdateVehicle = () => {
-	update_source.value = 'driver'
-	updateVehicle()
-}
+// const handleUpdateVehicle = () => {
+// 	// update_source.value = 'driver'
+// 	// setUpdateSource('driver')
+// 	updateVehicle()
+// }
 </script>
 
 <style scoped>

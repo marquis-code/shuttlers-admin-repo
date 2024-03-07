@@ -13,5 +13,14 @@ export const useAllVehicles = () => {
 		loading.value = false
 	}
 
-	return { loading, vehicles, getVehicles }
+	const getActiveVehicles = async () => {
+		loading.value = true
+		const res = await vehicles_api.$_get_active_vehicles_for_selector_component() as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			vehicles.value = res.data.data?.length ? res.data.data : []
+		}
+		loading.value = false
+	}
+
+	return { loading, vehicles, getVehicles, getActiveVehicles }
 }

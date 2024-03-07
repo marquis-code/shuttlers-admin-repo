@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="filterData.status.value === 'active'"
 			:has-options="true" :selected="selected_drivers" :option="onRowClicked" @checked="selected_drivers = ($event)"
 		>
@@ -29,7 +30,7 @@
 				</div>
 				<span v-if="item.rating" class="flex items-center gap-4">
 					<div class="flex items-center gap-1">
-						<img src="@/assets/icons/source/star.svg" alt="">
+						<StarRating :rating="item.data.average ?? 0" />
 						<p>{{ item.data?.average || 0 }} ({{ item.data?.trip_count || 0 }} trips)</p>
 					</div>
 				</span>
@@ -53,14 +54,12 @@
 
 <script setup lang="ts">
 import moment from 'moment'
-import { useDateFormat } from '@vueuse/core'
 import { useGetDriversList, useDriverIdDetails, useDeactivateDriver } from '@/composables/modules/drivers'
 
 const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page, downloadReport } = useGetDriversList()
 const { loading: deactivating, selected_drivers, initDeactivate } = useDeactivateDriver()
 
 getDriversList()
-
 const onRowClicked = (data) => {
 	const { selectedDriver } = useDriverIdDetails()
 	useRouter().push(`/drivers/${data.id}/driver-info`)
