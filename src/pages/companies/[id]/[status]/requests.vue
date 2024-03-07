@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :page="page" :has-index="true" :headers="tableFields" :table-data="formattedShuttleRequest" :option="onRowClicked">
 			<template #header>
 				<div class="flex items-center gap-x-3  bg-white rounded-tr-md rounded-tl-md px-4 py-3">

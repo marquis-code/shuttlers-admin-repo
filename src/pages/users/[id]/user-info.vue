@@ -1,14 +1,17 @@
 <template>
-	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
-		<div class="lg:w-7/12 bg-white rounded-md shadow-sm p-3">
-			<ModulesUsersInformationDetails v-if="!loading" :selected-user="selectedUser" :bus-captains-routes="busCaptainRoutes" :bus-captains-loader="loadingBusCaptains" />
-			<Skeleton v-else height="600px" />
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
+			<div class="lg:w-7/12 bg-white rounded-md shadow-sm p-3">
+				<ModulesUsersInformationDetails v-if="!loading" :selected-user="selectedUser" :bus-captains-routes="busCaptainRoutes" :bus-captains-loader="loadingBusCaptains" />
+				<Skeleton v-else height="600px" />
+			</div>
+			<div class="lg:w-5/12">
+				<ModulesUsersWallet v-if="!loading" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
+				<Skeleton v-else height="300px" />
+			</div>
 		</div>
-		<div class="lg:w-5/12">
-			<ModulesUsersWallet v-if="!loading" :selected-user="selectedUser" :corporate-wallet-limit-usage-info="corporateWalletInfo" :corporate-wallet-details="corporateWalletDetails" />
-			<Skeleton v-else height="300px" />
-		</div>
-	</div>
+	</main>
 </template>
 
 <script setup lang="ts">

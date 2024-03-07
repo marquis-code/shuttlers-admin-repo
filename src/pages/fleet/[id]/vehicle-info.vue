@@ -1,5 +1,6 @@
 <template>
 	<div class="space-y-4">
+		<ButtonGoBack class="mb-6" />
 		<div>
 			<div v-if="!loading">
 				<BreadCrums title="Vehicle" :content="breadcrum" />

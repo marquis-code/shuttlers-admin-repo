@@ -1,5 +1,6 @@
 <template>
 	<main class="space-y-10">
+		<ButtonGoBack class="mb-6" />
 		<div v-if="!loading" class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 			<ModulesCorporatesCompanyDetails :selected-corporate="selectedCorporate" :dropdown-children="dropdownChildren" />
 			<div class="lg:w-6/12 space-y-6">

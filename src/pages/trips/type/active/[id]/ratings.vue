@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack />
 		<Table :loading="loadingTripRatings" :headers="tableFields" :table-data="tripRatingList" :has-index="true" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true }" />

@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table
 			:loading="loading"
 			:has-index="true"

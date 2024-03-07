@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingUpcomingTrips" :headers="tableFields" :table-data="formattedUpcomingTripsList" :has-index="true" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">

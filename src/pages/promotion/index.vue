@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingPromotions" :headers="tableFields" :table-data="promotionsList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/promotion/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :checkbox="true" />

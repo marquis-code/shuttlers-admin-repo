@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<ButtonGoBack class="mb-6" />
 		<div class="container-fluid py-5">
 			<div class="lg:w-6/12">
 				<div class="">

@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingFleets" :page="page" :headers="tableFields" :table-data="useMergeArrays(fleetsList, tripRatingData)" :has-options="true">
 			<template #header>
 				<TableFilter

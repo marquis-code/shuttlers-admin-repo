@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<ButtonGoBack class="mb-6" />
 		<ModulesUsersCreateUser v-if="!loading" :id="id" type="edit" />
 		<Skeleton v-else height="400px" />
 	</div>

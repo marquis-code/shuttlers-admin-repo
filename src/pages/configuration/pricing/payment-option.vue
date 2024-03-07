@@ -30,28 +30,31 @@
 			</div>
 		</section>
 	</main> -->
-	<div class="rounded-md bg-white shadow-md">
-		<section class="card p-4">
-			<header class="flex justify-between w-full">
-				<p>Payment Options</p>
-				<button v-if="!isEditingPaymentOptionsLoading" :disabled="updatingPaymentOption" type="button" class="bg-black text-xs text-white px-4 py-1 rounded-md" @click="isEditingPaymentOptions ? savePaymentOptions() : isEditingPaymentOptions = true">
-					{{ isEditingPaymentOptions ? 'Save' : updatingPaymentOption ? 'saving..' : 'Edit' }}
-				</button>
-				<div v-else class="spinner-border mr-[20px] !w-3 !h-3" />
-			</header>
-			<div v-if="!loadingPaymentOptions" class="flex justify-between items-center flex-wrap w-10/12 mt-10">
-				<!-- <label v-for="option in mappedPaymentOptions" :key="option.id" :for="option.id" class="flex items-center text-sm font-light mt-1.5">
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<div class="rounded-md bg-white shadow-md">
+			<section class="card p-4">
+				<header class="flex justify-between w-full">
+					<p>Payment Options</p>
+					<button v-if="!isEditingPaymentOptionsLoading" :disabled="updatingPaymentOption" type="button" class="bg-black text-xs text-white px-4 py-1 rounded-md" @click="isEditingPaymentOptions ? savePaymentOptions() : isEditingPaymentOptions = true">
+						{{ isEditingPaymentOptions ? 'Save' : updatingPaymentOption ? 'saving..' : 'Edit' }}
+					</button>
+					<div v-else class="spinner-border mr-[20px] !w-3 !h-3" />
+				</header>
+				<div v-if="!loadingPaymentOptions" class="flex justify-between items-center flex-wrap w-10/12 mt-10">
+					<!-- <label v-for="option in mappedPaymentOptions" :key="option.id" :for="option.id" class="flex items-center text-sm font-light mt-1.5">
 					<input :id="option.id" v-model="option.checked" :checked="option.checked" type="checkbox" :disabled="!isEditingPaymentOptions || isEditingPaymentOptionsLoading" @change="handleUpdatedSelectedCheckBox(option)">
 					{{ option.title }}
 				</label> -->
-				<label v-for="option in mappedPaymentOptions" :key="option.id" :for="option.id" class="flex items-center text-sm font-light mt-1.5">
-					<input :id="option.id" v-model="option.checked" :checked="newlySelectedPaymentOptions.includes(option.id)" type="checkbox" :disabled="!isEditingPaymentOptions || isEditingPaymentOptionsLoading" @change="handleUpdatedSelectedCheckBox(option)">
-					{{ option.title }}
-				</label>
-			</div>
-			<Skeleton v-else height="100px" class="mt-4" />
-		</section>
-	</div>
+					<label v-for="option in mappedPaymentOptions" :key="option.id" :for="option.id" class="flex items-center text-sm font-light mt-1.5">
+						<input :id="option.id" v-model="option.checked" :checked="newlySelectedPaymentOptions.includes(option.id)" type="checkbox" :disabled="!isEditingPaymentOptions || isEditingPaymentOptionsLoading" @change="handleUpdatedSelectedCheckBox(option)">
+						{{ option.title }}
+					</label>
+				</div>
+				<Skeleton v-else height="100px" class="mt-4" />
+			</section>
+		</div>
+	</main>
 </template>
 
 <script setup lang="ts">

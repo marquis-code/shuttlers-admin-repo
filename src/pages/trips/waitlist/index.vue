@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingWaitlist" :headers="tableFields" :table-data="waitlistList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @download="handleDownload" @filter="onFilterUpdate" />

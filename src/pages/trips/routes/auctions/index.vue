@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingAutions" :has-index="true" :page="page" :headers="tableFields" :table-data="routeAutionList" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showStatus: true, showDateRange: true}" />

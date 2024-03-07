@@ -1,6 +1,9 @@
 <template>
-	<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" />
-	<Skeleton v-else height="70vh" />
+	<main>
+		<ButtonGoBack />
+		<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" />
+		<Skeleton v-else height="70vh" />
+	</main>
 </template>
 
 <script setup lang="ts">

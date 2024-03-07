@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingCancelledTrips" :headers="tableFields" :table-data="cancelledTripsList" :has-options="true" :has-index="true" :option="(data)=>$router.push(`/trips/type/cancelled/${data.id}/trip-details`)" :page="page">
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">

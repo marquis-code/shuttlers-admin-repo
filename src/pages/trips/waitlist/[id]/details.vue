@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack />
 		<Table
 			:loading="loading"
 			:headers="computedTableFields"
