@@ -112,7 +112,6 @@
 						N/A
 					</p>
 				</div>
-				{{ selectedDriver }}
 				<div class="flex justify-between items-center gap-4 border-b py-4 px-3">
 					<p class="text-gray-500 text-sm">
 						ROUTE ASSIGNED
