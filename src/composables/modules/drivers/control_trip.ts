@@ -30,7 +30,7 @@ export const useControlTrips = () => {
 			const payload = {
 				route_id: obj.route.value?.id,
 				pickup_coordinate: obj.route.value?.pickup_coordinate,
-				driver_id: id
+				driver_id: Number(id)
 			}
 			res = await trips_api.$_start_trip(payload) as CustomAxiosResponse
 		} else {
