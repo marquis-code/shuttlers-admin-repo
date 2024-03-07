@@ -59,10 +59,6 @@ watch(() => props.route, (value) => {
   currentRoute.value = value
 })
 
-const toggleMenuOpenedState = (menu) => {
-  console.log(menu)
-  menu.isOpen = !menu?.isOpen
-}
 const hasSubMenus = (menu) => {
   return menu?.children?.length
 }

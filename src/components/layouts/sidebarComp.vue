@@ -1,53 +1,55 @@
 <template>
-	<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden">
-		<div class="sidebar-header">
-			<router-link to="/">
-				<component :is="data.logoIcon" class="img" />
-			</router-link>
-			<button ref="menuToggle" type="button" class="hidden">
-				<component :is="data.menuIcon" class="img w-8" />
+	<transition name="sidebar" appear>
+		<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden">
+			<div class="sidebar-header">
+				<router-link to="/">
+					<component :is="data.logoIcon" class="img" />
+				</router-link>
+				<button ref="menuToggle" type="button" class="hidden">
+					<component :is="data.menuIcon" class="img w-8" />
+				</button>
+			</div>
+			<label v-if="!isProd" for="redirect" class="ml-5">
+				<input id="redirect" v-model="shouldNotRedirectToExternalUrl" type="checkbox" class="form-checkbox">
+				<span>Shouldn't Redirect</span>
+			</label>
+			<div class="sidebar-menus">
+				<ul class="nav">
+					<li v-for="main in data.menuList" :key="main.menus">
+						<label v-if="main.title" class="navbar-label">{{ main.title }}</label>
+						<!-- eslint-disable-next-line vue/no-v-for-template-key -->
+						<template v-for="(menu, index) in main.menus.value" :key="`${index}_system`">
+							<sidebar-menu :menu="menu" :route="route" />
+						</template>
+					</li>
+				</ul>
+			</div>
+			<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
+		</aside>
+
+		<aside v-else class="sidebar h-full flex flex-col">
+			<button class="sidebar-header flex gap-1 items-center !justify-normal " @click="showPrimaryMenuRef = true">
+				<icon name="down" class="w-6 rotate-90" />
+				<span class="font-bold text-xl">{{ currentRouteObject?.parentName || currentRouteObject?.title }}</span>
 			</button>
-		</div>
-		<label v-if="!isProd" for="redirect" class="ml-5">
-			<input id="redirect" v-model="shouldNotRedirectToExternalUrl" type="checkbox" class="form-checkbox">
-			<span>Shouldn't Redirect</span>
-		</label>
-		<div class="sidebar-menus">
-			<ul class="nav">
-				<li v-for="main in data.menuList" :key="main.menus">
-					<label v-if="main.title" class="navbar-label">{{ main.title }}</label>
-					<!-- eslint-disable-next-line vue/no-v-for-template-key -->
-					<template v-for="(menu, index) in main.menus.value" :key="`${index}_system`">
-						<sidebar-menu :menu="menu" :route="route" />
-					</template>
-				</li>
+			<ul class="nav-menu">
+				<span v-for="(menu, submenuIndex) in parentOfTheCurrentRouteChildren" :key="submenuIndex">
+					<li class="nav-menu transite">
+						<nuxt-link :to="menu.routePath">
+							<div class="nav-title">
+								<span class="flex items-center">
+									<component :is="routeIcon" class="img" />
+									<span class="text-sm">{{ menu.title }}</span>
+								</span>
+							</div>
+						</nuxt-link>
+					</li>
+
+				</span>
 			</ul>
-		</div>
-		<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
-	</aside>
-
-	<aside v-else class="sidebar h-full flex flex-col">
-		<button class="sidebar-header flex gap-1 items-center !justify-normal " @click="showPrimaryMenuRef = true">
-			<icon name="down" class="w-6 rotate-90" />
-			<span class="font-bold text-xl">{{ currentRouteObject?.parentName || currentRouteObject?.title }}</span>
-		</button>
-		<ul class="nav-menu">
-			<span v-for="(menu, submenuIndex) in parentOfTheCurrentRouteChildren" :key="submenuIndex">
-				<li class="nav-menu transite">
-					<nuxt-link :to="menu.routePath">
-						<div class="nav-title">
-							<span class="flex items-center">
-								<component :is="routeIcon" class="img" />
-								<span class="text-sm">{{ menu.title }}</span>
-							</span>
-						</div>
-					</nuxt-link>
-				</li>
-
-			</span>
-		</ul>
-		<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
-	</aside>
+			<layouts-sidebar-footer :current-user="currentUser" :sign-out-function="signOutFunction" />
+		</aside>
+	</transition>
 </template>
 
 <script setup lang='ts'>
@@ -121,6 +123,16 @@ $sh-green-900 : #006633;
 $sh-gray-3: #444854;
 $sidebar-width: 17rem;
 $content-area-width: calc(100vw - 17rem);
+
+.sidebar-enter-active,
+.sidebar-leave-active {
+  transition: all 0.5s ease;
+}
+.sidebar-enter-from,
+.sidebar-leave-to {
+  transform: translateX(-172px);
+  opacity: 0;
+}
 
 .avatar {
   position: relative;
