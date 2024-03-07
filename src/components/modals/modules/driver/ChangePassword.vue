@@ -2,6 +2,7 @@
 	<Modal
 		modal="$atts.modal"
 		title="Change user password"
+		:no-close-btn="true"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="changePassword">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
