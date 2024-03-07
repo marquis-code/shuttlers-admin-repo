@@ -8,10 +8,10 @@
 				<component :is="data.menuIcon" class="img w-8" />
 			</button>
 		</div>
-		<!-- <label v-if="!isProd" for="redirect" class="ml-5">
+		<label v-if="!isProd" for="redirect" class="ml-5">
 			<input id="redirect" v-model="shouldNotRedirectToExternalUrl" type="checkbox" class="form-checkbox">
 			<span>Shouldn't Redirect</span>
-		</label> -->
+		</label>
 		<div class="sidebar-menus">
 			<ul class="nav">
 				<li v-for="main in data.menuList" :key="main.menus">

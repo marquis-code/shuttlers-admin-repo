@@ -19,7 +19,7 @@
 							<component :is="menu.iconComponent" class="img" />
 							<span class="text-sm">{{ menu.title }}</span>
 						</span>
-						<component :is="downIcon" class="float-right ml-auto w-4 transite"
+						<component :is="downIcon" class="float-right ml-auto w-4 transite -rotate-90"
 							:class="[menu.isOpen ? 'rotate-180' : '']" />
 					</div>
 					<ul class="nav-submenus">
