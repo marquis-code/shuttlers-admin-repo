@@ -165,3 +165,25 @@ select {
     background-position: 468px 0;
   }
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light_primary);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8885;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8886;
+}
