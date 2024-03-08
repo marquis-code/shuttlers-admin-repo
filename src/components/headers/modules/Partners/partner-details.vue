@@ -4,12 +4,24 @@
 			<RouterTabs :tabs="pageTabs" />
 		</template>
 		<template #actions>
-			<ButtonIconDropdown class="bg-black font-medium text-white px-3 py-1 rounded-lg" button-text="Actions" :children="dropdownChildren" :data="selectedPartner" class-name="w-56" />
+			<div class="flex items-center gap-3">
+				<ButtonIconDropdown v-if="$route.fullPath.includes('vehicles')"
+					class="bg-black font-medium text-white rounded-lg" button-text="Link Vehicle"
+					:children="vehicleDropdownChildren"
+					class-name="w-fit"
+				/>
+				<ButtonIconDropdown
+					class="bg-black font-medium text-white rounded-lg" button-text="Actions"
+					:children="dropdownChildren"
+					:data="selectedPartner" class-name="w-56"
+				/>
+			</div>
 		</template>
 	</HeadersHeaderSlot>
 </template>
 
 <script setup lang="ts">
+import { usePartnerModal } from '@/composables/core/modals'
 import { usePartnerIdDetails, useSuspendPartner, useUpdatePartnerInfo, useUpdatePartnerPassword } from '@/composables/modules/partners'
 
 const { selectedPartner, getPartnerById } = usePartnerIdDetails()
@@ -51,6 +63,11 @@ const dropdownChildren = computed(() => [
     { name: 'Update Partner Password', func: (data) => { initUpdatePassword(data) } }
 	// { name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
 	// { name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }
+])
+
+const vehicleDropdownChildren = computed(() => [
+	{ name: 'Link Vehicle', func: () => { usePartnerModal().openLinkVehicle() } },
+	{ name: 'Batch Linking', func: () => { alert('batch linking') } }
 ])
 </script>
 

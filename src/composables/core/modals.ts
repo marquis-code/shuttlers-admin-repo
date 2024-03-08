@@ -75,6 +75,7 @@ import UpdatePartnerInfo from '@/components/modals/modules/partners/UpdatePartne
 import UpdatePartnerPassword from '@/components/modals/modules/partners/UpdatePartnerPassword.vue'
 import CancelBooking from '@/components/modals/modules/users/CancelBooking.vue'
 import WalletNotification from '@/components/modals/modules/companies/wallet-notification/WalletNotification.vue'
+import LinkVehicle from '@/components/modals/modules/partners/LinkVehicle.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -90,7 +91,7 @@ type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' |
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
-type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword'
+type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -106,7 +107,7 @@ const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, Noti
 const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
-const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword } as Record<PartnerTypes, any>
+const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle } as Record<PartnerTypes, any>
 
 export const modal = useModal(ref([] as any))
 
