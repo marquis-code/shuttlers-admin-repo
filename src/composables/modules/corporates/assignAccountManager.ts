@@ -3,7 +3,6 @@ import { useAlert } from '@/composables/core/notification'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const assignForm = {
 	staffId: ref('')
@@ -13,6 +12,7 @@ export const useAssignManager = () => {
 	const loading = ref(false)
 
 	const assignBusinessAccountManager = async () => {
+		const { selectedCorporate } = useCorporateIdDetails()
 		loading.value = true
 		const res = (await corporates_api.$_assign_bussiness_account_manager(selectedCorporate.value.id,
 			convertObjWithRefToObj(assignForm)

@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="formatedRefundList" :has-index="true" :page="page">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDateRange: true, showDownloadButton: true }"

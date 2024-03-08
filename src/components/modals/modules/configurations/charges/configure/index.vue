@@ -4,7 +4,7 @@
 		:title="!isEditConfigureCharge ? 'Configure new charge' : 'Edit configuration'"
 	>
 		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="isEditConfigureCharge ? updateConfigureCharge() : configureCharge()">
-			<p class="text-sm text-center text-[#2C8EED]">
+			<p class="text-sm text-center bg-[#2C8EED] text-light py-2">
 				You can only create Percent-type charges. Flat fee charges will be available soon
 			</p>
 			<div class="flex flex-col gap-2">

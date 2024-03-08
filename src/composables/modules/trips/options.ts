@@ -8,9 +8,6 @@ type TripType = 'upcoming'|'completed'|'cancelled'|'active'
 const selectedTrip = ref({} as any)
 const tripType = ref('upcoming') as Ref<TripType>
 
-const { getTripById } = useTripIdDetails()
-const { getUpcomingTripById } = useUpcomingTripIdDetails()
-
 export const useTripOptions = () => {
     const loading = ref(false)
     const password = ref('')
@@ -38,6 +35,8 @@ export const useTripOptions = () => {
     }
 
     const updateTrip = async (payload) => {
+        const { getUpcomingTripById } = useUpcomingTripIdDetails()
+        const { getTripById } = useTripIdDetails()
         loading.value = true
         const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

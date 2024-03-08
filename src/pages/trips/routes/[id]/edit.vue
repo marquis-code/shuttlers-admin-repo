@@ -1,5 +1,6 @@
 <template>
 	<div class="">
+		<ButtonGoBack class="mb-6" />
 		<div v-if="loading_details" class="p-4">
 			<Skeleton height="400px" />
 		</div>

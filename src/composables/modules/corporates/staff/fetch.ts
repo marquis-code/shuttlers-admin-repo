@@ -5,7 +5,6 @@ import { usePagination } from '@/composables/utils/table'
 import { useDownloadReport, exportAsCsv } from '@/composables/utils/csv'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 const { download, loading: downloading } = useDownloadReport()
-const { selectedCorporate } = useCorporateIdDetails()
 
 const { selectedBranchIds, selectedShiftIds, selectedDays, selectedRoute } = useSelectedStaff()
 const loading = ref(false)
@@ -42,6 +41,7 @@ export const useCorporateStaff = () => {
     }
 
 	const downloadCorporateStaffs = async () => {
+		const { selectedCorporate } = useCorporateIdDetails()
 		downloading.value = true
 		const id = useRoute().params.id as string
 		const name = ref(`${selectedCorporate?.value?.corporate_name} Corporate Staffs'`)

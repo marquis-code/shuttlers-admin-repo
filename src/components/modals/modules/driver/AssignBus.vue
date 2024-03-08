@@ -3,8 +3,8 @@
 		modal="$atts.modal"
 		title="Assign vehicle to driver"
 	>
-		<form @submit.prevent="assignBus" class="flex flex-col gap-4 w-full">
-			<VehicleSelector v-model="selectedVehicle" />
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="assignBus">
+			<VehicleSelector v-model="selectedVehicle" entity-status="active" />
 			<div v-if="vehicleInfo" class="flex flex-col">
 				<div v-for="n,i in vehicleInfo" :key="i" class="border-b p-2 flex items-center justify-between gap-4">
 					<p class="text-sm font-medium uppercase text-grey4">

@@ -2,8 +2,12 @@ import moment from 'moment'
 import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
+import { useGetTripRatingData } from '@/composables/modules/trips/tripRating'
+import { useMergeVehiclesWithAverage } from '@/composables/modules/drivers/useMergeDriversAndRatingsArrayById'
+const { tripRatingData, loadingRatingData, getRatingData } = useGetTripRatingData()
 const route = useRoute()
 const { loading: downloading } = useDownloadReport()
+const { mergeWithAverage } = useMergeVehiclesWithAverage()
 
 const loading = ref(false)
 const driversList = ref([] as any)
@@ -34,18 +38,23 @@ const downloadReport = async () => {
     downloading.value = false
 }
 
+// onMounted(() => {
+//     getRatingData()
+// })
+
 export const useGetDriversList = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const { $_get_drivers } = drivers_api
 
     const getDriversList = async () => {
+        getRatingData()
         driversList.value = []
         loading.value = true
 
         const res = await $_get_drivers(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            driversList.value = res.data.data.map((item : Record<string, any>) => ({ ...item, rating: item.rating ?? 'N/A' }))
+            driversList.value = mergeWithAverage(res?.data?.data, tripRatingData.value)
             metaObject.total.value = res.data.metadata.total_pages
         }
         loading.value = false

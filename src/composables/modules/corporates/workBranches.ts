@@ -2,7 +2,7 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-const { selectedCorporate } = useCorporateIdDetails()
+
 const createWorkBranchForm = {
   name: ref(''),
   address: ref(''),
@@ -13,6 +13,7 @@ const createWorkBranchForm = {
 const isEditBranch = ref(false)
 
 export const useCreateWorkBranch = () => {
+  const { selectedCorporate } = useCorporateIdDetails()
   const loading = ref(false)
 
   const createWorkBranch = async () => {

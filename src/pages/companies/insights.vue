@@ -1,14 +1,17 @@
 <template>
-	<section class="px-0 card">
-		<header class="border-b">
-			<h3 class="font-medium pb-3.5 px-6">
-				Companies Growth
-			</h3>
-		</header>
-		<div class="p-5">
-			<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(corporatesGraphData)" />
-		</div>
-	</section>
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<section class="px-0 card">
+			<header class="border-b">
+				<h3 class="font-medium pb-3.5 px-6">
+					Companies Growth
+				</h3>
+			</header>
+			<div class="p-5">
+				<ChartsBarChart class="!h-72" :loading="loading" :data="getYearlyBarChartData(corporatesGraphData)" />
+			</div>
+		</section>
+	</main>
 </template>
 
 <script setup lang="ts">

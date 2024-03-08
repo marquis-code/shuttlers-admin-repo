@@ -12,7 +12,7 @@
 					<p>{{ item?.data?.itinerary ?? 'N/A' }}</p>
 				</div>
 				<div v-if="item.id">
-					<button @click="deleteStaffRoute(item.data)" class="text-white bg-black px-4 py-3 rounded-md">
+					<button class="text-white bg-black px-4 py-3 rounded-md" @click="deleteStaffRoute(item.data)">
 						Delete
 					</button>
 				</div>

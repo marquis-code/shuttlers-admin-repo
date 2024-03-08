@@ -2,8 +2,9 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetCreditLineExecutions } from '@/composables/modules/corporates/creditLineExecutions'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 const { getCreditLineExecutions, loadingExecutions, creditLineExecutions, next, prev, moveTo, ...metaObject } = useGetCreditLineExecutions()
-const { selectedCorporate } = useCorporateIdDetails()
+
 export const useGetCreditSystem = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     const loading = ref(false)
     const creditSystem = ref({} as any)
     const needCreditSystem = ref(false)

@@ -28,7 +28,7 @@ export const useCreateNotification = () => {
 
     const createNotifications = async () => {
         const payload = {
-            description: credentials.description.value,
+            description: `<html>${credentials.description.value}</html>`,
             title: credentials.title.value,
             sms: credentials.sms.value,
             email: credentials.email.value,
@@ -40,7 +40,7 @@ export const useCreateNotification = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
             useConfirmationModal().closeAlert()
-            resetCredentials()
+            credentials.description.value = ''
         }
         creatingNotification.value = false
     }

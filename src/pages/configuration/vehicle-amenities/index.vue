@@ -1,5 +1,6 @@
 <template>
 	<main class="space-y-16">
+		<ButtonGoBack class="mb-6" />
 		<section>
 			<ModulesConfigureAmenitiesCreateAmenities />
 		</section>

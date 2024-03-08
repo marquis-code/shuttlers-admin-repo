@@ -1,11 +1,11 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const selectedRequest = ref({})
 
 export const useGetCorporateShuttleRequests = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     const loading = ref(false)
     const shuttleRequests = ref([])
 

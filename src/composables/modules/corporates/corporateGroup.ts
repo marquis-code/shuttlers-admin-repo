@@ -1,8 +1,5 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { usePagination } from '@/composables/utils/table'
-
-const { selectedCorporate } = useCorporateIdDetails()
 
 export const useGroup = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()

@@ -1,6 +1,7 @@
 <template>
-	<main class="">
-		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList">
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList" class="cursor-pointer" :option="(data)=>$router.push(`/users/${id}/cancelled-trips/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{ showSearchBar:true, showDateRange: true }" @filter="onFilterUpdate" />
 			</template>
@@ -37,7 +38,7 @@ import { useUserBookings } from '@/composables/modules/users/id'
 const { getBookings, loading, bookings, filterData, onFilterUpdate, next, prev, moveTo, page, total, setBookingType, bookingType } = useUserBookings()
 bookingType.value = 'cancelled'
 getBookings()
-
+const id = useRoute().params.id
 const formattedBookingList = computed(() => {
 	if (!bookings.value.length) return []
 	return bookings.value.map((item, index) => {

@@ -1,8 +1,11 @@
 <template>
-	<div class="grid grid-cols-2 gap-8 pt-12">
-		<ModulesPartnersNotifySectionOne />
-		<ModulesPartnersNotifySectionTwo />
-	</div>
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<div class="grid grid-cols-2 gap-8 pt-12">
+			<ModulesPartnersNotifySectionOne />
+			<ModulesPartnersNotifySectionTwo />
+		</div>
+	</main>
 </template>
 
 <script setup lang="ts">

@@ -1,7 +1,7 @@
 import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
-const { loading: downloading } = useDownloadReport()
+const { loading: downloading, download } = useDownloadReport()
 const loading = ref(false)
 const driverRating = ref([] as any[])
 const filterData = {
@@ -21,15 +21,15 @@ const exportDriverRatings = async () => {
                 Date_Created: el?.date_created || 'N/A',
                 Passenger_Name: el?.passenger_name || 'N/A',
                 Rating: el?.star || 'N/A',
-                Comment: el?.comment ? el?.comment.map((itm) => itm) : 'N/A',
-                Issues: el?.issues ? el?.issues?.map((itm) => itm) : 'N/A',
+                Comment: el?.comment || 'N/A',
+                Issues: el?.issues?.length ? el?.issues?.map((itm) => itm) : 'N/A',
                 Attachments: el?.attachment_urls ? el?.attachment_urls?.map((itm) => itm) : 'N/A',
                 Trip_Time: el?.trip_time || 'N/A',
                 Route: el?.route || 'N/A'
             }
         })
         if (filterData?.creation_date_start?.value && filterData?.creation_date_end?.value) name.value = `${name.value}-from-${filterData?.creation_date_start?.value}-to-${filterData?.creation_date_end?.value}`
-        exportAsCsv(newArr, name.value)
+        download(newArr, name.value)
     }
     downloading.value = false
 }

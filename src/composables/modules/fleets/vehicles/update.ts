@@ -12,11 +12,8 @@ const obj = {
 	capacity: ref(''),
 	type: ref(''),
 	code: ref(''),
-	amenities: ref('')
-}
-
-if (update_source.value === 'vehicle') {
-	obj.inventory_type = ''
+	amenities: ref([]) as any,
+	inventory_type: ref('')
 }
 
 const loading = ref(false)
@@ -28,7 +25,8 @@ const clearObj = () => {
 	obj.capacity.value = ''
 	obj.type.value = ''
 	obj.code.value = ''
-	obj.amenities.value = ''
+	obj.amenities.value = []
+	obj.inventory_type.value = ''
 }
 
 export const useEditVehicles = () => {
@@ -45,7 +43,7 @@ export const useEditVehicles = () => {
 		obj.type.value = data.type
 		obj.code.value = data.code
 		obj.amenities.value = data.amenity_list
-		obj.inventory_type = data.inventory_type
+		obj.inventory_type.value = data.inventory_type
 		useVehicleModal().openEditBus()
 	}
 
@@ -57,16 +55,14 @@ export const useEditVehicles = () => {
 			capacity: obj.capacity.value,
 			type: obj.type.value,
 			code: obj.code.value,
-			amenities: obj.amenities.value
-			// inventory_type: obj?.inventory_type.value
+			amenities: obj.amenities.value,
+			inventory_type: obj.inventory_type.value
 		}
 
-		if (update_source.value === 'vehicle') {
-			payload.inventory_type = obj?.inventory_type.value
-		}
 		loading.value = true
 		const res = await vehicles_api.$_update_vehicle(obj.id.value!, payload) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
+			loading.value = false
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle information has been updated successfully' })
 			useVehicleModal().closeEditBus()
 			if (useRoute().fullPath.includes('driver-info')) {
@@ -77,5 +73,5 @@ export const useEditVehicles = () => {
 		loading.value = false
 	}
 
-	return { loading, ...obj, openEditBus, clearObj, updateVehicle, update_source }
+	return { loading, ...obj, openEditBus, clearObj, updateVehicle }
 }

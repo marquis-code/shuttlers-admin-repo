@@ -3,8 +3,9 @@ import { useGetCreditLineExecutions } from '@/composables/modules/corporates/cre
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { usePagination } from '@/composables/utils/table'
 const { getCreditLineExecutions, loadingExecutions, creditLineExecutions, next, prev, moveTo, ...metaObject } = useGetCreditLineExecutions()
-const { selectedCorporate } = useCorporateIdDetails()
+
 export const useGetCapacityConfiguration = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     const loading = ref(false)
     const capacityConfigurationList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
