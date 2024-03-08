@@ -1,5 +1,5 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
+import { useCorporateIdDetails, useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
@@ -41,10 +41,11 @@ export const useCorporateWallet = () => {
     currentWallet
   }
 }
+
+const loadingWalletHistory = ref(false)
+const coprorateWalletHistory = ref([])
 export const useCorporateWalletHistory = () => {
-  const loadingWalletHistory = ref(false)
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-  const coprorateWalletHistory = ref([])
   const filterData = {
     'filters[type]': ref('') as any,
     'filters[user_ids]': ref('') as any,
@@ -152,14 +153,17 @@ export const useFlutterWave = () => {
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR' && res.data.reference) {
       loading.value = false
-      window.FlutterwaveCheckout({
+      const flutterModal = window.FlutterwaveCheckout({
         amount: Number(amount.value),
-        callback(data: any): void {
+        callback: () => {
+          flutterModal.close()
           useAlert().openAlert({
             type: 'SUCCESS',
-            msg: data
+            msg: 'Payment is successful'
           })
           useCompaniesModal().closeFundWallet()
+          useCorporateWalletHistory().getCorporateWalletHistory()
+          useCorporateWalletDetails().getCorporateWalletObject()
         },
         country: 'NG',
         currency: 'NGN',
@@ -186,7 +190,7 @@ export const useFlutterWave = () => {
         },
         payment_options: 'card, banktransfer, ussd',
         public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
-        redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
+        // redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
         tx_ref: res.data.reference
       })
     } else {
