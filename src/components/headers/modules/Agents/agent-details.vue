@@ -1,5 +1,5 @@
 <template>
-	<HeadersHeaderSlot :title="`${selectedUser.fname} ${selectedUser.lname}`" pre-title="Overview" :loading="Object.keys(selectedUser).length === 0">
+	<HeadersHeaderSlot :title="`${selectedAgent.fname} ${selectedAgent.lname}`" pre-title="Overview" :loading="Object.keys(selectedAgent).length === 0">
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
@@ -7,27 +7,25 @@
 </template>
 
 <script setup lang="ts">
-import { useUserIdDetails } from '@/composables/modules/users/id'
+import { useAgentIdDetails } from '@/composables/modules/agents/id'
 
-const { selectedUser, getUserById } = useUserIdDetails()
+const { selectedAgent, getAgentById } = useAgentIdDetails()
 
-if (Object.keys(selectedUser.value).length === 0) {
-    const id = useRoute().params.id as string
-getUserById(id)
-}
+const id = useRoute().params.id as string
+getAgentById(id)
 
 const pageTabs = computed(() => [
     {
         name: 'Agents information',
-        path: `/agents/${selectedUser.value.id}/agent-info`
+        path: `/agents/${selectedAgent.value.id}/agent-info`
     },
     {
         name: 'Passengers',
-        path: `/agents/${selectedUser.value.id}/passengers`
+        path: `/agents/${selectedAgent.value.id}/passengers`
     },
     {
         name: 'Agent routes',
-        path: `/agents/${selectedUser.value.id}/agent-routes`
+        path: `/agents/${selectedAgent.value.id}/agent-routes`
     }
 
 ])

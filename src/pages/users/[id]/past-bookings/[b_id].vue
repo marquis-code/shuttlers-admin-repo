@@ -40,7 +40,6 @@
 						</div>
 						<span class="text-gray-500">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
-							<!-- <p>{{ pastBooking?.itinerary?.trip_time }}</p> -->
 						</span>
 					</li>
 				</ul>

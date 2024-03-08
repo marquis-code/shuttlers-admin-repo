@@ -10,7 +10,7 @@ export const use_image_upload = () => {
         try {
             const res = await image_upload_api.$_upload_api({
                 mimetype: 'image/png',
-                prefix: 'customer',
+                prefix: 'admin',
                 filesB64: [bannerBase64.value.split(',')[1]]
             })
             if (res) {
@@ -22,4 +22,23 @@ export const use_image_upload = () => {
     }
 
     return { uploadProgress, bannerURL, bannerObject, bannerBase64, uploadApi }
+}
+
+export const use_file_upload = () => {
+    const upload = async (base64: string) => {
+        try {
+            const res = await image_upload_api.$_upload_api({
+                mimetype: 'image/png',
+                prefix: 'admin',
+                filesB64: [base64.split(',')[1]]
+            })
+            if (res) {
+                return res.data.files[0].Location
+            }
+        } catch (e) {
+            useAlert().openAlert({ type: 'ERROR', msg: 'Something went wrong, please try again' })
+        }
+    }
+
+    return { uploadProgress, upload }
 }

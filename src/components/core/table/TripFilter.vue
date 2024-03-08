@@ -1,12 +1,12 @@
 <template>
-	<header class="w-full flex lg:flex-row flex-col items-start justify-between gap-4 z-50">
-		<section class="flex w-full flex-wrap gap-4">
+	<header class="w-full items-center flex lg:flex-row flex-col justify-between gap-4 z-50">
+		<section class="flex items-center w-full flex-wrap gap-4">
 			<ButtonMultiSelectDropdown v-model="filterData.routeType.value" :children="[{ name: 'Exclusive', value: 'exclusive' }, { name: 'Shared', value: 'shared' }]" title="Route type:" />
 			<ButtonMultiSelectDropdown v-model="filterData.visibility.value" :children="[{ name: 'Private', value: 'private' }, { name: 'Public', value: 'public' }]" title="Visibility:" />
 			<ButtonMultiSelectDropdown v-model="filterData.startTime.value" :children="formattedTripTime" :loading="loadingTripTime" title="Start time:" />
 			<ButtonMultiSelectDropdown v-model="filterData.vehicleType.value" :children="formattedVehicle" :loading="loadingVehicleTypes" title="Vehicle type:" />
 			<ButtonMultiSelectDropdown v-model="filterData.city.value" :children="formattedCities" :loading="loading" title="City:" />
-			<!-- <div class="btn flex font-medium outline-none items-center px-3 py-2.5 shadow-sm border border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
+			<!-- <div class="btn flex font-medium outline-none items-center shadow-sm border pl-2 border-[#D0D5DD] bg-light rounded-lg text-sm gap-3">
 				<span class="text-grey5 w-full">Occupancy rate:</span>
 				<label for="occupancy_from">
 					<span class="text-dark">From:</span>
@@ -18,10 +18,10 @@
 					<input id="occupancy_to" v-model="filterData.occupancy_to.value" type="number" class="bg-neut1 px-2 w-14 h-8 rounded !outline-none  text-grey3 !ring-0">
 				</label>
 				<span>%</span>
-				<button class="btn-primary" @click="emitOccupancy">
+				<button class="bg-gray-300 px-3 py-2.5 rounded-sm" @click="emitOccupancy">
 					Apply
 				</button>
-			</div> -->
+			</div>  -->
 		</section>
 
 		<button class="btn-primary w-32" @click="resetData">

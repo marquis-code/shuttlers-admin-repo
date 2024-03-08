@@ -41,7 +41,7 @@ export const TOP_LEVEL_SIDEBAR_MENUS = [
 export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
   {
     title: 'Corporates',
-    routePath: '/companies/insights',
+    routePath: null,
     description: '',
     iconComponent: shallowRef(corporateIcon),
     rootPath: '/companies',
@@ -65,7 +65,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Shuttle request',
         routePath: '/companies/shuttle-requests',
         oldPath: '/request',
-        shouldRedirect: false,
+          shouldRedirect: false,
         description: ''
       }
     ]
@@ -107,16 +107,16 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
       }
     ]
   },
-  // {
-  // title: 'Sales agents',
-  //   routePath: '/agents',
-  //   description: '',
-  //   iconComponent: shallowRef(userIcon),
-  //   rootPath: '/agents'
-  // },
+  {
+  title: 'Sales agents',
+    routePath: '/agents',
+    description: '',
+    iconComponent: shallowRef(userIcon),
+    rootPath: '/agents'
+  },
   {
     title: 'Commute',
-    routePath: '/trips/type/active',
+    routePath: null,
     description: '',
     iconComponent: shallowRef(charterIcon),
     rootPath: '/trips',
@@ -196,38 +196,38 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
         title: 'Partners List',
         routePath: '/partners',
         oldPath: '/partners/list',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Vehicles Partners List'
       },
       {
         title: 'Payout',
         routePath: '/partners/payouts',
         oldPath: '/partners/payout/pending',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Vehicles Partners payout'
       },
       {
         title: 'Notify',
         routePath: '/partners/notify',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Notify Vehicles Partners'
       }
     ]
   },
   {
     title: 'Drivers',
-    routePath: '/drivers',
+    routePath: null,
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(userIcon),
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'DRIVERS',
     children: [
           {
         title: 'Manage ',
         routePath: '/drivers',
         oldPath: '/drivers/list',
-        shouldRedirect: false,
+        shouldRedirect: true,
         description: 'Manage Drivers'
       }
       ]
@@ -262,7 +262,6 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(charterIcon),
     children: null,
-    shouldRedirect: false,
     modulePermission: 'VEHICLES'
   },
   {
@@ -272,7 +271,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(tagIcon),
     children: null,
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'PROMOTIONS'
   },
   {
@@ -281,7 +280,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     oldPath: '/promo-codes',
     description: '',
     iconComponent: shallowRef(tagIcon),
-    shouldRedirect: false,
+    shouldRedirect: true,
     modulePermission: 'PROMOTIONS',
     children: null
   },

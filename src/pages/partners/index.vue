@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="fetchingPartners" :headers="tableFields" :table-data="formattedPartnersList" :has-index="true" :page="page" :option="onRowClicked" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDateRange: true, showDownloadButton: true }" @filter="onFilterUpdate" @download="downloadAllPartners" />

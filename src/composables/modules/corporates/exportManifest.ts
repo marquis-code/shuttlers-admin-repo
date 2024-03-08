@@ -6,7 +6,7 @@ import { useCompaniesModal } from '@/composables/core/modals'
 import { useRouteIdDetails } from '@/composables/modules/routes/id'
 import { useFileDownloadFromUrl } from '@/composables/utils/downloadFile'
 const { downloadFile } = useFileDownloadFromUrl()
-const { selectedCorporate } = useCorporateIdDetails()
+
 const { selectedRoute } = useRouteIdDetails()
 const manifestExportType = ref('corporate')
 const corporateRouteManifestExportForm = {
@@ -15,6 +15,7 @@ const corporateRouteManifestExportForm = {
 }
 
 export const useExportCorporateRouteManifest = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
 const loading = ref(false)
 const exportCorporateRouteManifest = async () => {
     loading.value = true

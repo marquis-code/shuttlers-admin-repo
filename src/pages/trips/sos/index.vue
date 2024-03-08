@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingSos" :headers="tableFields" :table-data="formattedSosList" :has-index="true" :has-options="true" :option="(data)=> $router.push(`/trips/sos/${data.trip_id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true }" />

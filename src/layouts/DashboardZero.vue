@@ -24,8 +24,8 @@
 </script>
 
 <style scoped lang='scss'>
-$sidebar-width: 14rem;
-$content-area-width: calc(100vw - 14rem);
+$sidebar-width: 17rem;
+$content-area-width: calc(100vw - 17rem);
 .main-content {
   background-color: var(--grey);
   min-height: 100vh;

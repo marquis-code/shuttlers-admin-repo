@@ -3,7 +3,6 @@ import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const corporateOptionsForm = {
     restrict_booking_on_public_routes: ref(false),
@@ -14,6 +13,7 @@ const corporateOptionsForm = {
 }
 
 export const useCoporateOptions = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
 const loading = ref(false)
 const processCorporatesOptions = async () => {
     loading.value = true

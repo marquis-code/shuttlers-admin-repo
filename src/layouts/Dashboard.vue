@@ -1,16 +1,12 @@
 <template>
-	<div class="px-0 container-fluid root-layout">
+	<div class="px-0 container-fluid root-layout relative overflow-hidden">
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
-		<div class="main-content">
-			<div class="dashboard-view">
-				<div class="">
-					<Headers id="header" />
-					<div class="px-5 py-8 md:px-9">
-						<slot />
-					</div>
-				</div>
+		<div class="main-content z-50">
+			<Headers id="header" />
+			<div class="px-5 pt-8 md:px-9  overflow-auto relative  h-[87vh]">
+				<slot />
 			</div>
 		</div>
 
@@ -24,16 +20,16 @@
 </script>
 
 <style scoped lang='scss'>
-$sidebar-width: 14rem;
-$content-area-width: calc(100vw - 14rem);
+$sidebar-width: 17rem;
+$dasboard_margin: 2rem;
+$content-area-width: calc(100vw - (17rem + 1rem));
 .main-content {
   background-color: var(--grey);
-  min-height: 100vh;
+  min-height: 90vh;
+  margin-left: $dasboard_margin;
+  @apply border-2 border-grey9 rounded-3xl fixed bottom-5 top-5   w-full;
 }
 
-.dashboard-view {
-  position: relative;
-}
 .dashboard-padded {
   padding-top: 60px !important;
 }
@@ -47,6 +43,7 @@ $content-area-width: calc(100vw - 14rem);
     @media screen and (min-width: 768px) {
       width: $content-area-width;
       margin-left: $sidebar-width;
+	  margin-right: 120rem
     }
   }
 }

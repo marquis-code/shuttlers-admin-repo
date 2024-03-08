@@ -1,31 +1,34 @@
 <template>
-	<main class="flex gap-6 w-full h-[90vh] p-6 pb-0 relative">
-		<section class="flex flex-col lg:w-6/12 xl:w-7/12 w-full">
-			<h1 class="text-2xl font-bold">
-				Rent a Vehicle
-			</h1>
-			<p class="text-[#595E5C]">
-				Explore our diverse selection of vehicle categories
-			</p>
-			<div class="overflow-y-auto lg:mt-10 mt-4">
-				<ModulesTripsRentalVehicleList />
-			</div>
-		</section>
-		<section v-if="step<3 && shouldShowOnSmallScreen" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12  !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light p-5">
-			<ModulesTripsRentalSelectedVehicle v-if="Object.keys(selectedVehicle).length" />
-			<ModulesTripsRentalSelectedVehicleList v-else-if="Object.keys(selectedVehicle).length === 0 && selectedVehiclessList.length" />
-			<div v-else id="emptyState" class="lg:flex flex-col items-center text-center my-auto hidden ">
-				<!-- <Icon name="bus" class="w-20 text-neut3 mb-4" /> -->
-				<img src="@/assets/icons/source/bus.svg" class="w-20 mx-auto">
-				<p class="text-lg">
-					No vehicle information available
+	<main>
+		<ButtonGoBack class="mb-6" />
+		<main class="flex gap-6 w-full h-[90vh] p-6 pb-0 relative">
+			<section class="flex flex-col lg:w-6/12 xl:w-7/12 w-full">
+				<h1 class="text-2xl font-bold">
+					Rent a Vehicle
+				</h1>
+				<p class="text-[#595E5C]">
+					Explore our diverse selection of vehicle categories
 				</p>
-				<span class="text-neut6 max-w-[230px]">Kindly select a bus to see more details</span>
-			</div>
-		</section>
-		<section v-else-if="step === 3" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12 !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light">
-			<ModulesTripsRentalForm />
-		</section>
+				<div class="overflow-y-auto lg:mt-10 mt-4">
+					<ModulesTripsRentalVehicleList />
+				</div>
+			</section>
+			<section v-if="step<3 && shouldShowOnSmallScreen" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12  !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light p-5">
+				<ModulesTripsRentalSelectedVehicle v-if="Object.keys(selectedVehicle).length" />
+				<ModulesTripsRentalSelectedVehicleList v-else-if="Object.keys(selectedVehicle).length === 0 && selectedVehiclessList.length" />
+				<div v-else id="emptyState" class="lg:flex flex-col items-center text-center my-auto hidden ">
+					<!-- <Icon name="bus" class="w-20 text-neut3 mb-4" /> -->
+					<img src="@/assets/icons/source/bus.svg" class="w-20 mx-auto">
+					<p class="text-lg">
+						No vehicle information available
+					</p>
+					<span class="text-neut6 max-w-[230px]">Kindly select a bus to see more details</span>
+				</div>
+			</section>
+			<section v-else-if="step === 3" class="lg:flex flex-col h-full border lg:w-6/12 xl:w-5/12 !z-[40] lg:relative absolute right-0 w-full inset-y-0 bg-light">
+				<ModulesTripsRentalForm />
+			</section>
+		</main>
 	</main>
 </template>
 

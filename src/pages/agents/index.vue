@@ -25,13 +25,10 @@
 				<div v-if="item.fname">
 					{{ item?.data?.fname }} {{ item?.data?.lname }}
 				</div>
-				<div v-if="item.lname" class="">
-					<NuxtLink :to="`/users/${item.data.id}/user-info`" class="flex flex-col gap-y-2 py-3 text-blue-600 hover:text-gray-600 text-base">
-						<p>{{ item?.data?.fname }} {{ item?.data?.lname }}</p>
-						<p>{{ item?.data?.email ?? 'N/A' }}</p>
-						<p>{{ item?.data?.phone ?? 'N/A' }}</p>
-					</NuxtLink>
+				<div v-if="item.phone">
+					{{ item?.data?.phone ?? 'N/A' }}
 				</div>
+
 				<span v-else-if="item.created_at" class="space-y-4 text-base">
 					{{ useDateFormat(item?.data?.created_at, "DD, MMMM YYYY").value }}
 				</span>
@@ -72,6 +69,7 @@ definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
+
 const tableFields = ref([
     {
         text: 'NAME',

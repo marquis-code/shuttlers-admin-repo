@@ -3,29 +3,10 @@ import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetUpcomingTripsList, useGetActiveTripsList, useGetCompletedTripsList, useGetCancelledTripsList } from '@/composables/modules/trips/fetch'
 import { usePagination } from '@/composables/utils/table'
 const { moveTo: financialsMoveTo, metaObject, next, prev, setFunction } = usePagination()
-const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
-const { getActiveTrips, activeTripsList, moveTo: activeMoveTo } = useGetActiveTripsList()
-const { getCompletedTrips, completedTripsList, moveTo: completedMoveTo } = useGetCompletedTripsList()
-const { getCancelledTrips, cancelledTripsList, moveTo: cancelledMoveTo } = useGetCancelledTripsList()
 
 const selectedTrip = ref({} as Record<string, any>)
 const selectedTripId = ref('')
 const tripFinancialId = ref('')
-const selectedTripIndex = computed(() => {
-    return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
-})
-
-const activeSelectedTripIndex = computed(() => {
-    return activeTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
-})
-
-const completedSelectedTripIndex = computed(() => {
-    return completedTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
-})
-
-const cancelledSelectedTripIndex = computed(() => {
-    return cancelledTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
-})
 
 const currentIndex = ref(1)
 export const useTripIdDetails = () => {
@@ -44,6 +25,10 @@ export const useTripIdDetails = () => {
 }
 
 export const useUpcomingTripIdDetails = () => {
+    const { getUpcomingTrips, upcomingTripsList, moveTo } = useGetUpcomingTripsList()
+    const selectedTripIndex = computed(() => {
+    return upcomingTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
     const loading = ref(false)
     const getUpcomingTripById = async (id: string) => {
         selectedTripId.value = id
@@ -91,6 +76,11 @@ export const useUpcomingTripIdDetails = () => {
 }
 
 export const useActiveTripIdDetails = () => {
+    const { getActiveTrips, activeTripsList, moveTo: activeMoveTo } = useGetActiveTripsList()
+    const activeSelectedTripIndex = computed(() => {
+    return activeTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
+
     const loading = ref(false)
     const getActiveTripById = async (id: string) => {
         selectedTrip.value = {}
@@ -134,6 +124,10 @@ export const useActiveTripIdDetails = () => {
 }
 
 export const useCompletedTripIdDetails = () => {
+    const { getCompletedTrips, completedTripsList, moveTo: completedMoveTo } = useGetCompletedTripsList()
+    const completedSelectedTripIndex = computed(() => {
+    return completedTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
     const loading = ref(false)
     const getCompletedTripById = async (id: string) => {
         selectedTripId.value = id
@@ -176,6 +170,10 @@ export const useCompletedTripIdDetails = () => {
 }
 
 export const useCancelledTripIdDetails = () => {
+    const { getCancelledTrips, cancelledTripsList, moveTo: cancelledMoveTo } = useGetCancelledTripsList()
+    const cancelledSelectedTripIndex = computed(() => {
+    return cancelledTripsList.value.findIndex((item: any) => item.id === selectedTripId.value)
+})
     const loading = ref(false)
     const getCancelledTripById = async (id: string) => {
         selectedTripId.value = id

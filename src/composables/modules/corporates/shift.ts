@@ -1,6 +1,5 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
-const { selectedCorporate } = useCorporateIdDetails()
+
 const shifts = ref([]) as Ref<any[]>
 const loading = ref(false)
 

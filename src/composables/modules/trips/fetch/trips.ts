@@ -6,19 +6,25 @@ import {
   formattedCSVData
 } from './helpers'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useConfirmationModal } from '@/composables/core/confirmation'
 import { usePagination, useTableFilter } from '@/composables/utils/table'
 import { useDownloadReport } from '@/composables/utils/csv'
 import { useAlert } from '@/composables/core/notification'
-import { useConfirmationModal } from '@/composables/core/confirmation'
-import { usePaginatedFetchAndDownload } from '@/composables/core/useBatchDownload'
-const {
-  fetchAllPagesAndDownload,
-  isDownloading,
-  error,
-  mergedData
-} = usePaginatedFetchAndDownload()
+import {
+  GATEWAY_ENDPOINT,
+  GATEWAY_ENDPOINT_WITH_AUTH
+} from '@/api_factory/axios.config'
+// import { usePaginatedFetchAndDownload } from '@/composables/core/useBatchDownload'
+// const {
+//   fetchAllPagesAndDownload,
+//   isDownloading,
+//   error,
+//   mergedData,
+//   total_pages
+// } = usePaginatedFetchAndDownload()
 
 const { download, loading: downloading } = useDownloadReport()
+
 const total_pages = ref() as any
 const activeTripsList = ref([] as Record<string, any>[])
 const currentRoute = computed(() => {
@@ -26,76 +32,59 @@ const currentRoute = computed(() => {
 })
 
 const downloadReport = async () => {
+  downloading.value = false
+  const loading = ref(false)
+  useConfirmationModal().openAlert({
+    title: 'Hello!!! Please Note.',
+    type: 'NORMAL',
+    desc: 'It is recommended to download a minimum of 10 days to avoid request time outs. Click Yes to continue',
+    loading,
+    call_function: () => proceedToDownload()
+  })
+}
+
+const proceedToDownload = async () => {
+  useConfirmationModal().closeAlert()
+  downloading.value = true
   const route = useRoute()
   downloading.value = false
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
   const baseURL = `/trips/${
     routeType === 'cancelled' ? 'upcoming' : routeType
-  }?${queryParams}${queryParams ? '&' : ''}&limit=${
-    total_pages.value > 150 ? '200' : '10'
-  }&metadata=true&sort[created_at]=desc${
+  }?${queryParams}${
+    queryParams ? '&' : ''
+  }metadata=true&sort[created_at]=desc${
     routeType === 'cancelled' ? '&is_cancelled=true' : ''
   }`
-  const fromParam = ref('') as any
-  const toParam = ref('') as any
-  watchEffect(() => {
-    if (route?.query?.dateRange) {
-      fromParam.value = (route?.query?.dateRange as string).split(',')[0] ?? ''
-      toParam.value = (route?.query?.dateRange as string).split(',')[1] ?? ''
-    }
-  })
-
-  const constructApiUrl = computed(() => {
-    let url = baseURL
-    const params = new URLSearchParams()
-
-    if (fromParam.value)
-      params.append('from', (route?.query?.dateRange as string).split(',')[0])
-    if (toParam.value)
-      params.append('to', (route?.query?.dateRange as string).split(',')[1])
-
-    const queryString = params.toString()
-    if (queryString) url += `&${queryString}`
-
-    return url
-  })
-
-  if (total_pages.value > 150) {
-    useConfirmationModal().openAlert({
-      title: 'Please Confirm',
-      type: 'DANGER',
-      desc: 'It is recommended  to download a minimum of 10 days to avoid request time outs',
-      loading: downloading,
-      call_function: () => {
-        useConfirmationModal().closeAlert()
-        downloading.value = true
-        fetchAllPagesAndDownload(constructApiUrl.value)
-        .then(() => {
-          const csvData = formattedCSVData(mergedData.value)
-          download(csvData, `${routeType} trip report`)
-          useAlert().openAlert({
-            type: 'SUCCESS',
-            msg: `Total ${routeType} Trip report ${
-              fromParam?.value
-                ? `${fromParam?.value} to ${toParam?.value}`
-                : ''
-            }`
-          })
-          downloading.value = false
-        })
-        .catch((error) => {
-          throw new Error(error)
-        }).finally(() => {
-          downloading.value = false
-        })
+  const res = (await GATEWAY_ENDPOINT_WITH_AUTH.get(`${baseURL}&limit=${10}&page=${1}`)) as CustomAxiosResponse
+  if (res.type !== 'ERROR') {
+    const total = res.data.metadata.total
+    const fromParam = ref('') as any
+    const toParam = ref('') as any
+    watchEffect(() => {
+      if (route?.query?.dateRange) {
+        fromParam.value = (route?.query?.dateRange as string).split(',')[0] ?? ''
+        toParam.value = (route?.query?.dateRange as string).split(',')[1] ?? ''
       }
     })
-  } else {
-    downloading.value = true
-    fetchAllPagesAndDownload(constructApiUrl.value)
-      .then(() => {
-        const csvData = formattedCSVData(mergedData.value)
+    const constructApiUrl = computed(() => {
+      let url = `${baseURL}&limit=${total}&page=${1}`
+      const params = new URLSearchParams()
+
+      if (fromParam.value)
+        params.append('from', (route?.query?.dateRange as string).split(',')[0])
+      if (toParam.value)
+        params.append('to', (route?.query?.dateRange as string).split(',')[1])
+
+      const queryString = params.toString()
+      if (queryString) url += `&${queryString}`
+
+      return url
+    })
+    await GATEWAY_ENDPOINT.get(constructApiUrl.value)
+      .then((result) => {
+        const csvData = formattedCSVData(result.data.data)
         download(csvData, `${routeType} trip report`)
         useAlert().openAlert({
           type: 'SUCCESS',
@@ -103,10 +92,10 @@ const downloadReport = async () => {
             fromParam?.value ? `${fromParam?.value} to ${toParam?.value}` : ''
           }`
         })
-        downloading.value = false
       })
-      .catch((error) => {
-        throw new Error(error)
+      .catch(() => {
+        useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+        return null
       }).finally(() => {
         downloading.value = false
       })

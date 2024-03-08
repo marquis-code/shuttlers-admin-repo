@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingReferrals" :headers="tableFields" :table-data="referralsList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/referral/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" />

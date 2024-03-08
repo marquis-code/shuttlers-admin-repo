@@ -38,7 +38,7 @@
 			</div>
 			<div class="p-6">
 				<ClientOnly>
-					<QuillEditor v-model:content="credentials.description.value" content-type="text" theme="snow" placeholder="Enter notification description" />
+					<QuillEditor v-model:content="credentials.description.value" content="html" content-type="html" :edit="true" theme="snow" placeholder="Enter notification description" />
 				</ClientOnly>
 			</div>
 			<div class="flex flex-col gap-4 px-6 pb-6">
@@ -76,7 +76,3 @@ const companyName = (data) => {
 		return !!(credentials?.title?.value && credentials?.description?.value && (selectedUsers?.value?.length || notificationType.value === 'all'))
 	})
 </script>
-
-<style scoped>
-
-</style>

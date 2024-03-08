@@ -4,8 +4,9 @@ import { useRoutePassengers } from '@/composables/modules/routes/booking-passeng
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 const { getRoutePassengers } = useRoutePassengers()
-const { selectedTrip } = useUpcomingTripIdDetails()
+
 export const useAddPassengers = () => {
+    const { selectedTrip } = useUpcomingTripIdDetails()
     const loading = ref(false)
     const passengersList = ref([]) as any
     const { $_add_passengers_to_upcoming_trip } = trips_api

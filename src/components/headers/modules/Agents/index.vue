@@ -1,5 +1,5 @@
 <template>
-	<HeadersHeaderSlot title="Users" pre-title="Overview">
+	<HeadersHeaderSlot title="Sales agents" pre-title="Overview">
 		<template #actions>
 			<div class="flex items-center space-x-2">
 				<button class="btn-outline" @click="useRouteModal().openConfigureAgentCommission()">

@@ -3,7 +3,7 @@ import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useAlert } from '@/composables/core/notification'
-const { selectedCorporate } = useCorporateIdDetails()
+
 const corporatePaySettings = {
     book_on_corporate_routes: ref(true),
     book_on_public_routes: ref(true),
@@ -58,6 +58,7 @@ const getExemptionLimitWriteUp = (data) => {
 
 export const useCorporatePaySetting = () => {
     const loading = ref(false)
+    const { selectedCorporate } = useCorporateIdDetails()
     const fetchCorporatePaySetting = async () => {
         loading.value = true
         const { $_fetch_corporate_payment_settings } = corporates_api
@@ -108,7 +109,7 @@ export const useCorporatePaySetting = () => {
                     }
                 ]
             }
-        const res = await $_update_corporate_payment_settings(selectedCorporate.value.id, payload) as CustomAxiosRespons
+        const res = await $_update_corporate_payment_settings(selectedCorporate.value.id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',

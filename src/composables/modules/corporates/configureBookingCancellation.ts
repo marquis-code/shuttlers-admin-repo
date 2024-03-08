@@ -3,7 +3,6 @@ import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate } = useCorporateIdDetails()
 
 const corporateBookingCancellationForm = {
         restrict_admin_bookings_cancellation: ref(false),
@@ -11,7 +10,8 @@ const corporateBookingCancellationForm = {
     }
 
 export const useCoporateBookingCancellationOptions = () => {
-const loading = ref(false)
+    const loading = ref(false)
+    const { selectedCorporate } = useCorporateIdDetails()
 const configureBookingCancellationOption = async () => {
     loading.value = true
     const res = (await corporates_api.$_configure_corporate_options(

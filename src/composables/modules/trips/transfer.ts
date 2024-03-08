@@ -5,7 +5,6 @@ import { trips_api, partners_api, CustomAxiosResponse } from '@/api_factory/modu
 import { useAlert } from '@/composables/core/notification'
 import { useYesConfirmationModal } from '@/composables/core/confirmation'
 
-const { getCompletedTrips } = useGetCompletedTripsList()
 const obj = {
 	trip: ref({}) as Ref<Record<string, any>>,
 	partner: ref({}) as Ref<Record<string, any>>,
@@ -62,6 +61,7 @@ export const useTransferTrip = () => {
 		const res = await trips_api.$_transfer_trip(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			if (res.data.success) {
+				const { getCompletedTrips } = useGetCompletedTripsList()
 				useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip transferred successfully' })
 				useTripsModal().closeTransferTrip()
 				getCompletedTrips()

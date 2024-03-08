@@ -10,7 +10,7 @@ const loading_total = ref(false)
 const chargeHistory = ref([]) as Ref<any[]>
 const date = ref([])
 const status = ref('All')
-const totalCharge = ref(null)
+const totalCharge = ref(null) as Ref<null|number>
 const cities = ref([]) as Ref<any[]>
 const countries = ref([]) as Ref<any[]>
 const { loading: downloading, download } = useDownloadReport()
@@ -37,6 +37,7 @@ export const useDetails = () => {
 	const { $_get_charge_history, $_get_total_charges } = charges_api
 
 	const fetchHistory = async () => {
+		chargeHistory.value = []
 		loading.value = true
 		const id = useRoute().params.id as string
 		const res = await $_get_charge_history(id, metaObject, filterData) as CustomAxiosResponse

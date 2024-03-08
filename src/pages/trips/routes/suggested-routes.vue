@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingSuggestedRoutes" :has-index="true" :page="page" :headers="tableFields" :table-data="filteredSuggestedRoutes">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true }" @download="handleDownload" @filter="onFilterUpdate" />

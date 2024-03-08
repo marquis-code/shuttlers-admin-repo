@@ -2,11 +2,12 @@ import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useAlert } from '@/composables/core/notification'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
-const { selectedCorporate } = useCorporateIdDetails()
+
 const configPayload = {
     staff_details_config: ref([])
 }
 export const useUserSetting = () => {
+    const { selectedCorporate } = useCorporateIdDetails()
 	const loading = ref(false)
 
 	const setStaffDetailsConfig = async () => {

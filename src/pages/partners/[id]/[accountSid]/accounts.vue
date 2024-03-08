@@ -1,5 +1,6 @@
 <template>
 	<main>
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingAccounts" :headers="tableFields" :table-data="formattedPartnersAccountsList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showSearchBar: true }" />

@@ -1,5 +1,6 @@
 <template>
 	<div class="w-full">
+		<ButtonGoBack class="mb-6" />
 		<div v-if="loading">
 			<div class="p-4 text-center center">
 				<span class="fe fe-spinner">Loading..</span>

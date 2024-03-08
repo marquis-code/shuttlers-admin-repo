@@ -1,7 +1,7 @@
 <template>
 	<main class="">
-		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true"
-			:option="onRowClicked">
+		<ButtonGoBack class="mb-6" />
+		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{
 					showSearchBar: true,

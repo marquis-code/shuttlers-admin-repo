@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table
 			:loading="loading"
 			:has-index="true"
@@ -35,6 +36,15 @@
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item.data.approvalsCount || 0 }}/2
 				</p>
+				<p v-if="item.amount" class="text-sm whitespace-nowrap">
+					{{ item.data?.amount ? convertToCurrency(item.data?.amount) : 0 }}
+				</p>
+				<p v-if="item.deduction" class="text-sm whitespace-nowrap">
+					{{ item.data?.totalDeduction ? convertToCurrency(item.data?.totalDeduction) : 0 }}
+				</p>
+				<p v-if="item.net" class="text-sm whitespace-nowrap">
+					{{ convertToCurrency((item.data?.totalDeduction || 0) + (item.data?.amount || 0)) }}
+				</p>
 				<span v-if="item.action">
 					<ButtonIconDropdown :index="item.index" :children="dropdownChildren" :data="item.data" class-name="w-40" />
 				</span>
@@ -56,6 +66,7 @@
 
 <script setup lang="ts">
 import moment from 'moment'
+import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
 const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
@@ -78,7 +89,9 @@ const tableFields = ref([
 	{ text: 'COMPANY NAME', value: 'company_name' },
 	{ text: 'EMAIL', value: 'company_email' },
 	{ text: 'PAYOUT MONTH', value: 'payout_month' },
-	{ text: 'AMOUNT (₦)', value: 'amount' },
+	{ text: 'AMOUNT EARNED (₦)', value: 'amount' },
+	{ text: 'Deduction (₦)', value: 'deduction' },
+	{ text: 'Net Revenue (₦)', value: 'net' },
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }
 ])

@@ -26,7 +26,7 @@ export const useDriverPicture = () => {
 				msg: 'Driver profile picture was changed successfully'
 			})
 			getDriverById(id)
-			useDriverModal().closeChangeDriverPassword()
+			useDriverModal().closeChangeDriverPicture()
         }
         loading.value = false
 	}

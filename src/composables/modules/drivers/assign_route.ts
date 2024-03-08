@@ -1,6 +1,8 @@
 import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useDriverModal } from '@/composables/core/modals'
+import { useDriverIdDetails } from '@/composables/modules/drivers'
+const { getDriverById } = useDriverIdDetails()
 
 const obj = {
 	assign: ref(true),
@@ -11,6 +13,7 @@ const clearObj = () => {
 	obj.assign.value = true
 	obj.route.value = {}
 }
+const id = useRoute().params.id as string
 
 export const useAssignRouteToDriver = () => {
 	const assignRoute = async () => {
@@ -28,6 +31,7 @@ export const useAssignRouteToDriver = () => {
         if (res.type !== 'ERROR') {
 			useDriverModal().closeAssignRoute()
 			useAlert().openAlert({ type: 'SUCCESS', msg: `Route has been ${obj.assign.value ? 'assigned' : 'unassigned'} successfully` })
+			getDriverById(id)
 			useRouter().push(`/drivers/${id}/driver-info`)
         }
 	}

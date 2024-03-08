@@ -1,16 +1,19 @@
 <template>
-	<section class="mx-10 mt-14 space-y-6">
-		<div v-if="!tripTimeHasPassed" class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
-			<div class="flex justify-end items-end">
-				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md"
-					@click="useTripsModal().openAddPassengersToTrips()">
-					Add passengers
-				</button>
+	<main>
+		<ButtonGoBack class="my-6 ml-8" />
+		<section class="mx-10 mt-14 space-y-6">
+			<div v-if="!tripTimeHasPassed" class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
+				<div class="flex justify-end items-end">
+					<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md"
+						@click="useTripsModal().openAddPassengersToTrips()">
+						Add passengers
+					</button>
+				</div>
 			</div>
-		</div>
-		<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev" />
-		<Skeleton v-else height="300px" />
-	</section>
+			<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev" />
+			<Skeleton v-else height="300px" />
+		</section>
+	</main>
 </template>
 
 <script setup lang="ts">

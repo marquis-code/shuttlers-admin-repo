@@ -2,10 +2,8 @@
 
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { useConfirmationModal } from '@/composables/core/confirmation'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
-const { selectedCorporate } = useCorporateIdDetails()
+
 export const useUpdateApplicableEmployee = () => {
 	const loading = ref(false)
 

@@ -2,7 +2,7 @@
 	<div class="space-y-10">
 		<ButtonGoBack />
 		<div v-if="!loading" class="flex flex-col gap-5 lg:flex-row lg:gap-x-10 items-start">
-			<div class="lg:w-7/12 max-w-[600px] bg-white rounded-md shadow-sm p-3">
+			<div class="w-full lg:w-7/12 max-w-[600px] bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
 					<div class="font-medium">
 						Driver Information
@@ -21,8 +21,12 @@
 					<p class="text-gray-500 text-sm">
 						AVATAR
 					</p>
-					<p>
+					<p v-if="!selectedDriver.avatar">
 						<Avatar :name="selectedDriver.fname" :src="selectedDriver?.avatar" bg="#B1C2D9" />
+					</p>
+					<p v-else>
+						<img :src="selectedDriver?.avatar" alt=""
+							class="h-14 w-14 object-cover object-center rounded-full">
 					</p>
 				</div>
 				<div class="flex justify-between items-center border-b py-4 px-3">
@@ -72,9 +76,11 @@
 						VEHICLE ASSIGNED
 					</p>
 					<div v-if="selectedDriver.vehicle">
-						<nuxt-link :to="`/fleet/${selectedDriver.vehicle.id}/vehicle-info`" class="text-sm text-indigo-500 cursor-pointer">
+						<nuxt-link :to="`/fleet/${selectedDriver.vehicle.id}/vehicle-info`"
+							class="text-sm text-indigo-500 cursor-pointer">
 							{{
-								`${selectedDriver.vehicle.seats} Seater - ${selectedDriver.vehicle.brand} ${selectedDriver.vehicle.name} ${selectedDriver.vehicle.registration_number}`
+								`${selectedDriver.vehicle.seats} Seater - ${selectedDriver.vehicle.brand}
+							${selectedDriver.vehicle.name} ${selectedDriver.vehicle.registration_number}`
 							}}
 						</nuxt-link>
 					</div>
@@ -111,11 +117,8 @@
 						ROUTE ASSIGNED
 					</p>
 					<div v-if="selectedDriver?.routes?.length" class="text-sm flex items-center gap-2 flex-wrap">
-						<span
-							v-for="(route, index) in selectedDriver?.routes"
-							:key="index"
-						>{{ route?.route_code || 'N/A' }}</span
-						>
+						<span v-for="(route, index) in selectedDriver?.routes" :key="index">{{ route?.route_code ||
+							'N/A' }}</span>
 					</div>
 					<span v-else>N/A</span>
 				</div>
@@ -128,9 +131,10 @@
 					</p>
 				</div>
 			</div>
-			<div class="lg:w-5/12 max-w-[400px] flex flex-col gap-4">
+			<div class="w-full lg:w-5/12 max-w-[400px] flex flex-col gap-4">
 				<template v-if="documents.length">
-					<div v-for="n, i in documents" :key="i" class="bg-white rounded-md shadow-sm px-4 border-b py-3 flex justify-between items-center">
+					<div v-for="n, i in documents" :key="i"
+						class="bg-white rounded-md shadow-sm px-4 border-b py-3 flex justify-between items-center">
 						<div class="flex items-center gap-x-3 gap-y-2">
 							<img src="@/assets/icons/source/pdf_download.svg" alt="">
 							<div>
@@ -198,17 +202,23 @@ definePageMeta({
 	middleware: ['is-authenticated']
 })
 
-const dropdownChildren = computed(() => [
-	{ name: 'Edit Driver', func: () => { useRouter().push(`/drivers/edit/${id}`) } },
-	{ name: 'Assign Bus', func: () => openAssignBus() },
-	{ name: 'Edit Bus', func: () => openEditBus(selectedDriver.value?.vehicle) },
-	{ name: 'Assign/Unassign Route', func: () => useDriverModal().openAssignRoute() },
-	{ name: 'Start or Stop Trip', func: () => initControlTrips() },
-	{ name: 'Change Password', func: () => useDriverModal().openChangeDriverPassword() },
-	{ name: 'Add Profile Picture', func: () => useDriverModal().openChangeDriverPicture() },
-	{ name: `${selectedDriver.value.active === '1' ? 'Suspend' : 'Unsuspend'} Driver`, func: () => initSuspension(selectedDriver.value), class: '!text-red' },
-	{ name: 'Delete Driver', func: () => initDelete(), class: '!text-red' }
-])
+const dropdownChildren = computed(() => {
+	const result = [
+		{ name: 'Edit Driver', func: () => { useRouter().push(`/drivers/edit/${id}`) } },
+		{ name: 'Assign Bus', func: () => openAssignBus() },
+		{ name: 'Assign/Unassign Route', func: () => useDriverModal().openAssignRoute() },
+		{ name: 'Start or Stop Trip', func: () => initControlTrips() },
+		{ name: 'Change Password', func: () => useDriverModal().openChangeDriverPassword() },
+		{ name: `${selectedDriver.value.avatar == null ? 'Add' : 'Update'} Profile Picture`, func: () => useDriverModal().openChangeDriverPicture() },
+		{ name: `${selectedDriver.value.active === '1' ? 'Suspend' : 'Unsuspend'} Driver`, func: () => initSuspension(selectedDriver.value), class: '!text-red' },
+		{ name: 'Delete Driver', func: () => initDelete(), class: '!text-red' }
+	]
+	if (selectedDriver.value.vehicle_id) {
+		result.push({ name: 'Edit Bus', func: () => openEditBus(selectedDriver.value.vehicle) })
+	}
+
+	return result
+})
 
 const openAssignBus = () => {
 	if (selectedDriver.value?.vehicle?.id) selectedVehicle.value = selectedDriver.value.vehicle

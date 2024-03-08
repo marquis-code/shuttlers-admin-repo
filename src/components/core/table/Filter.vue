@@ -2,11 +2,11 @@
 	<header class="w-full ">
 		<div class="space-y-4 md:space-y-0 md:flex justify-between w-full px-4 py-1 bg-white border-t border-x rounded-t-md">
 			<form v-if="filterType.showSearchBar" class="relative flex gap-3" autocomplete="off" @submit.prevent="">
-				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[15px]" aria-hidden="true" />
-				<input v-model="filterData.search.value" type="text" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-full !pl-6">
+				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[20px]" aria-hidden="true" />
+				<input v-model="filterData.search.value" type="text" placeholder="search" autocomplete="off" class="input-field !bg-transparent border-none outline-none  text-start w-auto !pl-6">
 			</form>
 
-			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4 w-full">
+			<section v-if="filterType.showDatePicker || filterType.showDateRange" class="flex gap-4 w-auto">
 				<div v-if="filterType.showDatePicker" class="pt-2">
 					<InputDateInput v-model="filterData.dateSelected.value" style="width: 100%" class="font-light w-full" placeholder="Filter by date" :type="filterType.dateType" :format="filterType.dateFormat" />
 				</div>
@@ -78,7 +78,6 @@ interface DefaultValueProps {
 	dateSelected?: string;
 	dateRange?: Array<string>;
 	status?: string;
-
 }
 
 const props = defineProps({

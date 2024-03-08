@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingInspectionSites" :headers="tableFields" :table-data="inspectionSiteList">
 			<template #item="{ item }">
 				<span v-if="item.id" class="flex items-center gap-4 py-3">

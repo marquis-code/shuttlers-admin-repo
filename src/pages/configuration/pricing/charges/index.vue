@@ -1,5 +1,6 @@
 <template>
 	<main class="">
+		<ButtonGoBack class="mb-6" />
 		<Table
 			:loading="loading"
 			:has-index="true"
@@ -21,51 +22,51 @@
 				/>
 			</template>
 			<template #item="{ item }">
-				<p v-if="item.type" class="text-sm text-[#737876] whitespace-nowrap">
+				<p v-if="item.charge_type" class="text-sm text-[#737876] whitespace-nowrap">
 					<span class="text-[#101211] uppercase">
-						{{ item.data.additionChargeType?.short_name + ' ' || '' }}
+						{{ item?.data?.additionChargeType?.short_name + ' ' || '' }}
 					</span>
 					<span>
-						({{ item.data.additionChargeType?.name || '' }})
+						({{ item?.data?.additionChargeType?.name || '' }})
 					</span>
 				</p>
-				<p v-if="item.fees" class="text-sm text-[#737876] whitespace-nowrap">
+				<p v-if="item.charge_value" class="text-sm text-[#737876] whitespace-nowrap">
 					<template v-if="item.data.charge_type === 'flat'">
-						₦{{ item.data.charge_value }}
+						₦{{ item?.data?.charge_value }}
 					</template>
 					<template v-else>
-						{{ item.data.charge_value }}%
+						{{ item?.data?.charge_value }}%
 					</template>
 				</p>
-				<p v-if="item.compulsory" class="text-sm font-medium whitespace-nowrap" :class="item.data.is_compulsory ? 'text-[orange]' : 'text-[#0DAC5C]'">
-					{{ item.data.is_compulsory ? 'Compulsory' : 'Optional' }}
+				<p v-if="item.is_compulsory" class="text-sm font-medium whitespace-nowrap" :class="item.data.is_compulsory ? 'text-[orange]' : 'text-[#0DAC5C]'">
+					{{ item?.data?.is_compulsory ? 'Compulsory' : 'Optional' }}
 				</p>
-				<div v-if="item.countries" class="flex flex-col gap-1 py-2 text-[#101211] font-medium">
+				<div v-if="item.country_currently_active_in" class="flex flex-col gap-1 py-2 text-[#101211] font-medium">
 					<p class="text-sm">
-						{{ item.data.country_currently_active_in.name }}
+						{{ item?.data?.country_currently_active_in?.name }}
 					</p>
 					<p v-if="item.data?.cities_currently_active_in.length" class="text-[#737876] text-xs">
-						{{ item.data?.cities_currently_active_in.length }} {{ item.data?.cities_currently_active_in?.length > 1 ? 'states' : 'state' }}
+						{{ item.data?.cities_currently_active_in?.length }} {{ item.data?.cities_currently_active_in?.length > 1 ? 'states' : 'state' }}
 					</p>
 				</div>
-				<p v-if="item.desc" class="text-sm text-[#737876]">
-					{{ item.data.description }}
+				<p v-if="item.description" class="text-sm text-[#737876]">
+					{{ item?.data?.description }}
 				</p>
-				<p v-if="item.configured_by" class="text-sm text-[#2C8EED] font-medium">
-					{{ item.data.updated_by_data?.fname || '' }} {{ item.data.updated_by_data?.lname || '' }}
+				<p v-if="item.updated_by_data" class="text-sm text-[#2C8EED] font-medium">
+					{{ item?.data?.updated_by_data?.fname || '' }} {{ item?.data.updated_by_data?.lname || '' }}
 				</p>
-				<div v-if="item.time" class="flex flex-col gap-1 text-xs text-[#313533] font-medium">
-					<p>{{ moment(item.data.created_at).format('LT') }}</p>
+				<div v-if="item.created_at" class="flex flex-col gap-1 text-xs text-[#313533] font-medium">
+					<p>{{ moment(item?.data?.created_at).format('LT') }}</p>
 					<p class="whitespace-nowrap">
-						{{ moment(item.data.created_at).format('LL') }}
+						{{ moment(item?.data?.created_at).format('LL') }}
 					</p>
 				</div>
-				<p v-if="item.status" class="text-xs py-1 px-2 rounded-full font-medium w-fit"
+				<p v-if="item.is_active" class="text-xs py-1 px-2 rounded-full font-medium w-fit"
 					:class="item.data?.is_active ? 'st_active' : 'st_inactive'"
 				>
-					{{ item.data.is_active ? 'Active' : 'Inactive' }}
+					{{ item?.data?.is_active ? 'Active' : 'Inactive' }}
 				</p>
-				<span v-if="item.action">
+				<span v-if="item.id">
 					<ButtonIconDropdown :index="item.index" :children="sortDropdownChildren(item.data)" :data="item.data" class-name="w-40" />
 				</span>
 			</template>
@@ -102,14 +103,15 @@ const { initEditConfigure } = useCreateConfigureCharge()
 const { initDeleteConfiguration } = useDeleteChargeConfiguration()
 const { intiActivate } = useActivateConfiguration()
 const tableFields = ref([
-	{ value: 'type', text: 'Charges type' },
-	{ value: 'fees', text: 'Fees' },
-	{ value: 'compulsory', text: 'Compulsory' },
-	{ value: 'countries', text: 'Countries/Cities' },
-	{ value: 'configured_by', text: 'Configured by' },
-	{ value: 'time', text: 'Date created' },
-	{ value: 'status', text: 'Status' },
-	{ value: 'action', text: 'Action' }
+	{ value: 'charge_type', text: 'Charges type' },
+	{ value: 'charge_value', text: 'Fees' },
+	{ value: 'is_compulsory', text: 'Compulsory' },
+	{ value: 'country_currently_active_in', text: 'Countries/Cities' },
+	{ value: 'description', text: 'Configured by' },
+	{ value: 'updated_by_data', text: 'Configured by' },
+	{ value: 'created_at', text: 'Date created' },
+	{ value: 'is_active', text: 'Status' },
+	{ value: 'id', text: 'Action' }
 ])
 
 const sortDropdownChildren = (data:Record<string, any>) => {
