@@ -4,6 +4,8 @@ import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
 import { useCompaniesModal } from '@/composables/core/modals'
+import { insertScriptTag } from '@/composables/utils/system'
+
 const { selectedCorporate, loading, getCorporateById } =
   useCorporateIdDetails()
 
@@ -137,6 +139,7 @@ export const useCorporateWalletActivation = () => {
 }
 
 export const useFlutterWave = () => {
+  insertScriptTag('https://checkout.flutterwave.com/v3.js')
   const amount = ref('')
   const desc = ref('')
   const loading = ref(false)
