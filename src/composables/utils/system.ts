@@ -31,7 +31,7 @@ export const insertScriptTag = (url: string): void => {
   if (process.client && document.head.querySelectorAll(`script[src="${url}"]`).length > 0) return
   const scriptTag = document.createElement('script')
   scriptTag.src = url
-  document.body.appendChild(scriptTag)
+  document.head.appendChild(scriptTag)
 }
 
 export const environmental_url = {
