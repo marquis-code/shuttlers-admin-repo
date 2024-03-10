@@ -32,7 +32,7 @@ const obj = {
     unavailable_days: ref([]) as Ref<string[]>,
     status: ref('active') as Ref<'active'|'inactive'>,
     route_owner_type: ref('system'),
-    route_owner: ref({}),
+    route_owner: ref({} as Record<string, any>),
     who_pays: ref(''),
     payment_mode: ref('pre-trip') as Ref<'pre-trip'|'post-trip'>
 }
@@ -126,6 +126,7 @@ const removeUnavailableDay = (val: string) => {
     obj.unavailable_days.value.splice(index, 1)
 }
 const populateFields = (data: Record<string, any>) => {
+    console.log(data)
     obj.pickup.value = data?.pickup
     obj.destination.value = data?.destination
     obj.visibility.value = data?.visibility

@@ -22,6 +22,10 @@ export const agents_api = {
 	$_create_agent: (payload: any) => {
 		const url = '/users'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_decline_suggestion: (id:string, payload: any) => {
+		const url = `/sales-route-suggestions/${id}/decline`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 
 }

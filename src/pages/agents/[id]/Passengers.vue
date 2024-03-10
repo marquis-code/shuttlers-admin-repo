@@ -52,10 +52,8 @@ const { agentsPassenger, getAgentsPassenger, loading, page, total, moveTo, next,
 watch(selectedAgent, (value) => {
 	if (value.sales_agent_account_id) {
 		getAgentsPassenger(value.sales_agent_account_id)
-	} else if (value && !value.sales_agent_account_id) {
+	} else if (Object.keys(value).length && !value.sales_agent_account_id) {
 		useAlert().openAlert({ type: 'ERROR', msg: 'sales_agent_account_id not found' })
-	} else {
-		useAlert().openAlert({ type: 'ERROR', msg: 'Agent not found' })
 	}
 }, { immediate: true })
 

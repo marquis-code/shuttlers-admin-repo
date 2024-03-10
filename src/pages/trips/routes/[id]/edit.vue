@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack class="mb-6 ml-9" />
 		<div v-if="loading_details" class="p-4">
 			<Skeleton height="400px" />
 		</div>
@@ -299,7 +299,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="w-8/12">
+			<div v-if="startLocation?.lat && endLocation?.lat" class="w-8/12">
 				<GMapMap map-type-id="terrain" class="h-screen"
 					:options="{
 						zoomControl: true,
@@ -332,11 +332,12 @@ import { Capitalize } from '@/composables/utils/formatter'
 
 const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, updateRoute, polyLine, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay, getRouteDetailsToPrefillFields, loading_details, status, route_owner_type, route_owner, who_pays, payment_mode, pickup, destination } = useCreateRoute()
 
-getRouteDetailsToPrefillFields(useRoute().params.id as string)
+const id = useRoute().params.id as string
+getRouteDetailsToPrefillFields(id)
 
 definePageMeta({
   layout: 'dashboard-zero',
   middleware: ['is-authenticated']
 })
 
-</script>
+</script>src/composables/modules/routes/create

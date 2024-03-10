@@ -12,6 +12,7 @@
 
 		<Alert />
 		<ModalBase />
+		<CommandPalette />
 	</div>
 </template>
 

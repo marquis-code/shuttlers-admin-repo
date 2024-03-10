@@ -47,17 +47,20 @@
 import { useAgentIdDetails } from '@/composables/modules/agents/id'
 import { useGetAgentsRoutes } from '@/composables/modules/agents/routes'
 import { useAlert } from '@/composables/core/notification'
+import { useDeclineRouteSuggestion } from '@/composables/modules/agents/decline'
+import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
 const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev } = useGetAgentsRoutes()
 
+const { setAcceptRoute } = useAcceptRouteSuggestion()
+const { setDeclineRoute } = useDeclineRouteSuggestion()
+
 watch(selectedAgent, (value) => {
 	if (value.sales_agent_account_id) {
 		getAgentsRoute(value.sales_agent_account_id)
-	} else if (value && !value.sales_agent_account_id) {
+	} else if (Object.keys(value).length && !value.sales_agent_account_id) {
 		useAlert().openAlert({ type: 'ERROR', msg: 'sales_agent_account_id not found' })
-	} else {
-		useAlert().openAlert({ type: 'ERROR', msg: 'Agent not found' })
 	}
 }, { immediate: true })
 
@@ -100,8 +103,8 @@ const tableFields = ref([
 
 const dropdownChildren = computed(() => [
 
-	{ name: 'Approve route', func: (data) => { } },
-    { name: 'Decline route', func: (data) => { } }
+	{ name: 'Approve route', func: (data) => { setAcceptRoute(data) } },
+    { name: 'Decline route', func: (data) => { setDeclineRoute(data) } }
 	// { name: 'Duplicate', func: (data) => { useRouteModal().openRouteDuplicationModal() } },
 	// { name: 'Delete', func: (data) => { handleRouteDelete(data) }, class: '!text-red' }
 ])
