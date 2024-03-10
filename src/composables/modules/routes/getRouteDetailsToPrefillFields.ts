@@ -21,5 +21,5 @@ export const useGetRouteDetailsToPrefillFields = () => {
     loading_details.value = false
   }
 
-  return { getRouteDetailsToPrefillFields }
+  return { getRouteDetailsToPrefillFields, loading_details }
 }

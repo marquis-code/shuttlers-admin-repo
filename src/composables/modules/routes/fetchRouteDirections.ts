@@ -16,5 +16,5 @@ export const useGetRouteDirections = () => {
     }
   }
 
-  return { getRouteDirection }
+  return { getRouteDirection, activeRoute, polyLine }
 }

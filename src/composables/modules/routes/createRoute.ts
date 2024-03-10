@@ -3,7 +3,7 @@ import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useGetRouteDirections } from '@/composables/modules/routes/fetchRouteDirections'
 
-export const all_days = [
+const all_days = [
   'sunday',
   'monday',
   'tuesday',
@@ -134,6 +134,14 @@ const removeUnavailableDay = (val: string) => {
   const index = obj.unavailable_days.value.indexOf(val)
   obj.unavailable_days.value.splice(index, 1)
 }
+
+const globalCreateRouteVariable = () => {
+  return {
+    all_days,
+    obj
+  }
+}
+
 export const populateFields = (data: Record<string, any>) => {
   obj.pickup.value = data?.pickup
   obj.destination.value = data?.destination
@@ -173,7 +181,7 @@ export const populateFields = (data: Record<string, any>) => {
 }
 
 export const useCreateRoute = () => {
-  const { getRouteDirection } = useGetRouteDirections()
+  const { getRouteDirection, activeRoute, polyLine } = useGetRouteDirections()
   const createRoute = async () => {
     loading.value = true
     const payload: Record<string, any> = {
@@ -292,19 +300,19 @@ export const useCreateRoute = () => {
   //     loading.value = false
   //   }
 
-  //   const getRouteDirection = async (payload: Record<string, any>) => {
-  //     polyLine.value = []
-  //     const res = (await routes_api.$_get_route_direction(
-  //       payload
-  //     )) as CustomAxiosResponse
-  //     if (res.type !== 'ERROR') {
-  //       activeRoute.value = res.data?.data?.routes[0]
-  //       const arr = JSON.parse(res.data?.data?.routes[0]?.overview_geojson)
-  //       polyLine.value = arr.coordinates.map((el) => {
-  //         return { lng: el[0], lat: el[1] }
-  //       })
-  //     }
+  // const getRouteDirection = async (payload: Record<string, any>) => {
+  //   polyLine.value = []
+  //   const res = (await routes_api.$_get_route_direction(
+  //     payload
+  //   )) as CustomAxiosResponse
+  //   if (res.type !== 'ERROR') {
+  //     activeRoute.value = res.data?.data?.routes[0]
+  //     const arr = JSON.parse(res.data?.data?.routes[0]?.overview_geojson)
+  //     polyLine.value = arr.coordinates.map((el) => {
+  //       return { lng: el[0], lat: el[1] }
+  //     })
   //   }
+  // }
 
   watch([obj.startLocation, obj.endLocation], () => {
     if (obj.startLocation.value.lat && obj.endLocation.value?.lat) {
@@ -320,23 +328,23 @@ export const useCreateRoute = () => {
     }
   })
 
-//   const getRouteDetailsToPrefillFields = async (routeId: string | number) => {
-//     loading_details.value = true
-//     const res = (await routes_api.$_get_route_by_id(
-//       routeId
-//     )) as CustomAxiosResponse
-//     if (res.type !== 'ERROR') {
-//       if (res?.data?.id) {
-//         populateFields(res.data)
-//       } else {
-//         useAlert().openAlert({
-//           type: 'WARNING',
-//           msg: 'Unable to fetch route details'
-//         })
-//       }
-//     }
-//     loading_details.value = false
-//   }
+  //   const getRouteDetailsToPrefillFields = async (routeId: string | number) => {
+  //     loading_details.value = true
+  //     const res = (await routes_api.$_get_route_by_id(
+  //       routeId
+  //     )) as CustomAxiosResponse
+  //     if (res.type !== 'ERROR') {
+  //       if (res?.data?.id) {
+  //         populateFields(res.data)
+  //       } else {
+  //         useAlert().openAlert({
+  //           type: 'WARNING',
+  //           msg: 'Unable to fetch route details'
+  //         })
+  //       }
+  //     }
+  //     loading_details.value = false
+  //   }
   return {
     loading,
     ...obj,
@@ -354,7 +362,8 @@ export const useCreateRoute = () => {
     removeUnavailableDay,
     showDatePicker,
     // getRouteDetailsToPrefillFields,
-    loading_details
+    loading_details,
+    globalCreateRouteVariable
     // updateRoute
   }
 }

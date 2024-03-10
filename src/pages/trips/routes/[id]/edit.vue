@@ -328,9 +328,13 @@
 
 <script setup lang="ts">
 import { useCreateRoute } from '@/composables/modules/routes/createRoute'
+import { useUpdateRoute } from '@/composables/modules/routes/update'
+import { useGetRouteDetailsToPrefillFields } from '@/composables/modules/routes/getRouteDetailsToPrefillFields'
 import { Capitalize } from '@/composables/utils/formatter'
 
-const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, updateRoute, polyLine, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay, getRouteDetailsToPrefillFields, loading_details, status, route_owner_type, route_owner, who_pays, payment_mode, pickup, destination } = useCreateRoute()
+const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, polyLine, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay, status, route_owner_type, route_owner, who_pays, payment_mode, pickup, destination } = useCreateRoute()
+const { updateRoute } = useUpdateRoute()
+const { getRouteDetailsToPrefillFields, loading_details } = useGetRouteDetailsToPrefillFields()
 
 getRouteDetailsToPrefillFields(useRoute().params.id as string)
 
