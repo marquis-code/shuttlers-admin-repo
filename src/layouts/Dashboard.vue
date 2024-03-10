@@ -12,6 +12,7 @@
 
 		<Alert />
 		<ModalBase />
+		<GlobalSearch />
 	</div>
 </template>
 
