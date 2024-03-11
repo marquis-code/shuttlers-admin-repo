@@ -6,7 +6,10 @@ import partnerIcon from '@/assets/icons/src/vehicle_partner.vue'
 import eventIcon from '@/assets/icons/src/fleet management.vue'
 import transactionIcon from '@/assets/icons/src/payment.vue'
 import charterIcon from '@/assets/icons/src/charter.vue'
+import referralIcon from '@/assets/icons/src/referral.vue'
+import promoIcon from '@/assets/icons/src/promo.vue'
 import tagIcon from '@/assets/icons/src/tag.vue'
+import campaignsIcon from '@/assets/icons/src/campaigns.vue'
 import adminIcon from '@/assets/icons/src/admin.vue'
 import configureIcon from '@/assets/icons/src/configure.vue'
 
@@ -118,7 +121,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
 		routePath: '/referral',
 		oldPath: '/referral-codes',
 		description: '',
-		iconComponent: shallowRef(tagIcon),
+		iconComponent: shallowRef(referralIcon),
 		children: null,
 		shouldRedirect: true,
 		modulePermission: 'PROMOTIONS'
@@ -128,7 +131,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
 		routePath: '/promotion',
 		oldPath: '/promo-codes',
 		description: '',
-		iconComponent: shallowRef(tagIcon),
+		iconComponent: shallowRef(promoIcon),
 		shouldRedirect: true,
 		modulePermission: 'PROMOTIONS',
 		children: null
@@ -137,7 +140,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
 		title: 'Campaigns',
 		routePath: null,
 		description: '',
-		iconComponent: shallowRef(partnerIcon),
+		iconComponent: shallowRef(campaignsIcon),
 		rootPath: '/campaigns',
 		shouldRedirect: true,
 		modulePermission: 'CAMPAIGNS',
