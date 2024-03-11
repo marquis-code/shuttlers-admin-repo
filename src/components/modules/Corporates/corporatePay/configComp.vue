@@ -57,11 +57,17 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from 'vue'
 
 // Marquis define proper types for the props
-const props = defineProps(['type', 'active', 'book_or_amount_limit', 'select_period', 'show_example'])
+const props = defineProps([
+	'type',
+	'active',
+	'book_or_amount_limit',
+	'select_period',
+	'show_example'
+]) as any
 
 </script>
 

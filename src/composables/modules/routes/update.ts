@@ -8,7 +8,7 @@ import {
   legTotalDurationText,
   legTotalDistanceValue,
   legTotalDistanceText,
-  all_days
+  globalCreateRouteVariable
 } from '@/composables/modules/routes/createRoute'
 
 export const useUpdateRoute = () => {
@@ -51,7 +51,7 @@ export const useUpdateRoute = () => {
       status: obj.status.value === 'active' ? 1 : 0
     }
     if (obj.route_availability.value === 'everyday') {
-      payload.route_availability_days = all_days
+      payload.route_availability_days = globalCreateRouteVariable().all_days
     } else {
       payload.route_availability_days = obj.route_availability_days.value
     }
