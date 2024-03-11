@@ -15,27 +15,22 @@ const clearObj = () => {
 }
 const id = useRoute().params.id as string
 
-export const useAssignRouteToDriver = () => {
-	const assignRoute = async () => {
+export const useUnAssignRouteToDriver = () => {
+	const unassignRoute = async (routeId: string) => {
 		loading.value = true
-		const id = useRoute().params.id as string
+		// const id = useRoute().params.id as string
 		const payload = {
-			route_id: obj.route.value?.id
+			route_id: routeId
 		}
-		let res:CustomAxiosResponse
-		if (obj.assign.value) {
-			res = await drivers_api.$_assign_driver_to_route(id, payload) as CustomAxiosResponse
-		} else {
-			res = await drivers_api.$_unassign_driver_to_route(id, payload) as CustomAxiosResponse
-		}
+		const res = await drivers_api.$_unassign_driver_to_route(id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useDriverModal().closeAssignRoute()
-			useAlert().openAlert({ type: 'SUCCESS', msg: `Route has been ${obj.assign.value ? 'assigned' : 'unassigned'} successfully` })
+			useAlert().openAlert({ type: 'SUCCESS', msg: 'Route has been unassigned successfully' })
 			getDriverById(id)
 			useRouter().push(`/drivers/${id}/driver-info`)
         }
 		loading.value = false
 	}
 
-	return { loading, assignRoute, ...obj, clearObj, selectedDriver }
+	return { loading, unassignRoute, ...obj, clearObj, selectedDriver }
 }
