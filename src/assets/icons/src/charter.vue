@@ -29,5 +29,4 @@
 			</clipPath>
 		</defs>
 	</svg>
-
 </template>

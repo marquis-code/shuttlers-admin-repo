@@ -30,7 +30,7 @@ const props = defineProps([
     'mouseMove',
     'touchResize',
     'wheelResize'
-])
+]) as any
 const notificationVisible = ref(false)
 const notificationType = ref()
 const hideNotifications = debounce(() => {

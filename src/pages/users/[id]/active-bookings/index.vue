@@ -7,7 +7,7 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.route">
-					<RouteDescription @click="onRowClicked(item.data)" :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+					<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" @click="onRowClicked(item.data)" />
 				</div>
 				<div v-if="item.amount">
 					<span @click="onRowClicked(item.data)"> {{ convertToCurrency(item?.data?.cost) ?? '₦ 0.00' }}</span>

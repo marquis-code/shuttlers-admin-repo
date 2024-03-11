@@ -11,9 +11,9 @@ const corporateGroupForm = {
 }
 
 export const useCreateCorporateGroup = () => {
-  const { selectedCorporate } = useCorporateIdDetails()
      const loading = ref(false)
 	const createCorporateGroup = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
          loading.value = true
         const res = await corporates_api.$_create_corporate_group(Number(selectedCorporate.value.id), convertObjWithRefToObj(corporateGroupForm)) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

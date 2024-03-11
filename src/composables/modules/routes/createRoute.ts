@@ -135,7 +135,7 @@ const removeUnavailableDay = (val: string) => {
   obj.unavailable_days.value.splice(index, 1)
 }
 
-const globalCreateRouteVariable = () => {
+export const globalCreateRouteVariable = () => {
   return {
     all_days,
     obj
