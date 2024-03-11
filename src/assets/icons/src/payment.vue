@@ -5,16 +5,16 @@
 			fill="white" />
 		<path
 			d="M14.3056 12.7778C15.8397 12.7778 17.0833 11.5341 17.0833 10C17.4537 11.6667 17.4167 15.5 14.3056 17.5C13.8426 17.7778 12.0833 18.3333 8.75 18.3333C10.2841 18.3333 11.5278 17.0897 11.5278 15.5556C11.5278 15.0007 11.4306 14.3466 11.5751 13.8072C11.7035 13.3279 12.0779 12.9535 12.5572 12.8251C13.0966 12.6806 13.7507 12.7778 14.3056 12.7778Z"
-			fill="white" stroke="#6E717C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+			fill="white" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 		<path
 			d="M2.91675 8.33333C2.91675 5.19064 2.91675 3.61929 3.95408 2.64298C4.99141 1.66667 6.66097 1.66667 10.0001 1.66667H10.644C13.3617 1.66667 14.7205 1.66667 15.6642 2.33153C15.9346 2.52202 16.1746 2.74794 16.377 3.00241C17.0834 3.89056 17.0834 5.16947 17.0834 7.72727V9.84849C17.0834 12.3178 17.0834 13.5525 16.6926 14.5385C16.0644 16.1238 14.7358 17.3743 13.0514 17.9655C12.0037 18.3333 10.6919 18.3333 8.06826 18.3333C6.56904 18.3333 5.81943 18.3333 5.22073 18.1232C4.25824 17.7853 3.49904 17.0708 3.14005 16.1649C2.91675 15.6014 2.91675 14.8959 2.91675 13.4849V8.33333Z"
-			stroke="#6E717C" stroke-width="1.5" stroke-linejoin="round" />
+			stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
 		<path
 			d="M17.0833 10C17.0833 11.5341 15.8397 12.7778 14.3056 12.7778C13.7507 12.7778 13.0966 12.6806 12.5572 12.8251C12.0779 12.9535 11.7035 13.3279 11.5751 13.8072C11.4306 14.3466 11.5278 15.0007 11.5278 15.5556C11.5278 17.0897 10.2841 18.3333 8.75 18.3333"
-			stroke="#6E717C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-		<path d="M6.66675 5.83334H12.5001" stroke="#6E717C" stroke-width="1.5" stroke-linecap="round"
+			stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+		<path d="M6.66675 5.83334H12.5001" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 			stroke-linejoin="round" />
-		<path d="M6.66675 9.16667H9.16675" stroke="#6E717C" stroke-width="1.5" stroke-linecap="round"
+		<path d="M6.66675 9.16667H9.16675" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
 			stroke-linejoin="round" />
 	</svg>
 </template>

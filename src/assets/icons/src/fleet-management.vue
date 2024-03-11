@@ -3,10 +3,10 @@
 		<g clip-path="url(#clip0_4920_7851)">
 			<path opacity="0.4"
 				d="M9.96112 1.66673C14.585 1.66673 18.3334 5.39769 18.3334 10.0001C18.3334 14.6024 14.585 18.3334 9.96112 18.3334C-0.525837 18.3334 -1.52207 3.34802 9.58219 4.16673C12.375 4.37264 15.0242 7.00852 15.0242 10.0001C15.0242 13.7501 12.6957 15.4167 9.58219 15.4167C3.75008 15.4167 3.33341 7.50006 9.16853 7.50006C10.8334 7.50006 11.6802 9.16672 11.6802 10.0001C11.6802 11.6667 10.8334 12.5001 9.16675 12.5001"
-				stroke="#6E717C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+				stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 			<path
 				d="M9.57405 4.16669C12.3587 4.37261 15 7.00849 15 10C15 13.75 12.6784 15.4167 9.57405 15.4167C3.75913 15.4167 3.3437 7.50003 9.16161 7.50003C10.8216 7.50003 11.6659 9.16669 11.6659 10C11.6659 11.6667 10.8216 12.5 9.15984 12.5"
-				stroke="#6E717C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+				stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 		</g>
 		<defs>
 			<clipPath id="clip0_4920_7851">
