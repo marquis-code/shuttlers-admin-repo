@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { ADMIN_SIDEBAR_MENUS, OPS_AND_MANAGEMENT_SIDEBAR_MENUS, TOP_LEVEL_SIDEBAR_MENUS } from '@/utils/sidebar'
 
 const mergedMenu = computed(() => {
-    return [...TOP_LEVEL_SIDEBAR_MENUS, ...ADMIN_SIDEBAR_MENUS.value, ...OPS_AND_MANAGEMENT_SIDEBAR_MENUS]
+    return [...TOP_LEVEL_SIDEBAR_MENUS, ...ADMIN_SIDEBAR_MENUS.value, ...OPS_AND_MANAGEMENT_SIDEBAR_MENUS] as any[]
 })
 
 const subMenuChildren = ref([])

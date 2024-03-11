@@ -13,6 +13,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     })
  } else {
-    console.log('Google Maps API already loaded.')
+    // console.log('Google Maps API already loaded.')
  }
 })
