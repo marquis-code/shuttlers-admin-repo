@@ -1,13 +1,13 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails, useCorporateWalletDetails } from '@/composables/modules/corporates/id'
+import {
+  useCorporateIdDetails,
+  useCorporateWalletDetails
+} from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { insertScriptTag } from '@/composables/utils/system'
-
-const { selectedCorporate, loading, getCorporateById } =
-  useCorporateIdDetails()
 
 const walletActivationForm = {
   bvn: ref(''),
@@ -24,6 +24,8 @@ export const useCorporateWallet = () => {
   const loading = ref(false)
   const id = useRoute().params.id
   const getCorporateWalletInfo = async () => {
+    const { selectedCorporate, loading, getCorporateById } =
+      useCorporateIdDetails()
     loading.value = true
     const res = (await corporates_api.$_get_corporate_wallet_info(
       Number(id)
