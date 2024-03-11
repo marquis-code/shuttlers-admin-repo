@@ -1,9 +1,11 @@
+import Fuse from 'fuse.js'
+
 export const useCommandPalette = () => {
     const search = ref('')
 
  const allCommandPaletteQuickRoute = computed(() => {
     const allRoutes = useRouter().getRoutes()
-    const res = allRoutes.map((item:Record<string, any>) => {
+    return allRoutes.map((item:Record<string, any>) => {
         return {
             id: item.name,
             name: item.name.split('-').join(' '),
@@ -11,22 +13,21 @@ export const useCommandPalette = () => {
             readablePath: item.path.split('/').filter((i) => i !== '').join(' > ')
         }
     }).filter((i) => !i.path.includes(':id()'))
-
-    console.log(res)
-    return res
 })
 
-const shortenedCommandPalleteQuick = computed(() => {
-    return allCommandPaletteQuickRoute.value.slice(0, 7)
-})
+        const fuse = new Fuse(allCommandPaletteQuickRoute.value, {
+        keys: ['name', 'path', 'readablePath'], // Define which object keys to search in
+        includeScore: true, // Include the search score in the result
+        threshold: 0.4 // Tweak this value to be more or less strict. Lower means more strict.
+    })
 
-    const searchResult = computed(() => {
-        if (search.value) {
-            return allCommandPaletteQuickRoute.value.filter((item) => item.name.toLowerCase().includes(search.value.toLowerCase()))
+   const searchResult = computed(() => {
+       if (search.value) {
+            return fuse.search(search.value).map((result) => result.item)
         } else {
-            return shortenedCommandPalleteQuick.value
+            return allCommandPaletteQuickRoute.value.slice(0, 7)
         }
     })
 
-    return { search, shortenedCommandPalleteQuick, allCommandPaletteQuickRoute, searchResult }
+    return { search, allCommandPaletteQuickRoute, searchResult }
 }
