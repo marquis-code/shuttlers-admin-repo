@@ -35,7 +35,6 @@ export const drivers_api = {
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_unassign_driver_to_route: (driverId:number, payload:any) => {
-		console.log(driverId, payload)
 		const url = `/drivers/${driverId}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, { data: payload })
 	},
