@@ -161,32 +161,6 @@ const removeUnavailableDay = (val: string) => {
   const index = obj.unavailable_days.value.indexOf(val)
   obj.unavailable_days.value.splice(index, 1)
 }
-<<<<<<< HEAD
-const populateFields = (data: Record<string, any>) => {
-    console.log(data)
-    obj.pickup.value = data?.pickup
-    obj.destination.value = data?.destination
-    obj.visibility.value = data?.visibility
-    obj.route_availability.value = JSON.parse(data?.route_availability_days).length === 7 ? 'everyday' : 'selected_days'
-    obj.route_availability_days.value = JSON.parse(data?.route_availability_days)
-    obj.corporate.value = data?.corporate_id ? data.corporate_id : {}
-    obj.is_exclusive.value = data?.is_exclusive === 0 ? 'shared' : 'exclusive'
-    obj.route_code.value = data?.route_code
-    obj.desc.value = data?.info?.description
-    obj.startLocation.value = { lat: data?.pickup_geometry?.y, lng: data?.pickup_geometry?.x }
-    obj.endLocation.value = { lat: data?.destination_geometry?.y, lng: data?.destination_geometry?.x }
-    // obj.otherStops.value = []
-    // obj.itinerary_time.value = ''
-    // obj.fare.value = ''
-    obj.avail_start_date.value = data?.route_availability_start_date ? moment(data?.route_availability_start_date).format('YYYY-MM-DD') : ''
-    obj.avail_end_date.value = data?.route_availability_end_date ? moment(data?.route_availability_end_date).format('YYYY-MM-DD') : ''
-    obj.unavailable_days.value = data?.blacklisted_availability_days_list
-    obj.status.value = data?.status ? 'active' : 'inactive'
-    obj.route_owner_type.value = data?.owner_type
-    obj.route_owner.value = data?.owner_id
-    obj.who_pays.value = data?.payer
-    obj.payment_mode.value = data?.payment_mode
-=======
 
 const globalCreateRouteVariable = () => {
   return {
@@ -231,7 +205,6 @@ export const populateFields = (data: Record<string, any>) => {
   obj.route_owner.value = data?.owner_id
   obj.who_pays.value = data?.payer
   obj.payment_mode.value = data?.payment_mode
->>>>>>> 8c6a8f451667d7d56b88717e2392742b3c41c5b6
 }
 
 export const useCreateRoute = () => {
