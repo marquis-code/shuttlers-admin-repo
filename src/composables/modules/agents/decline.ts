@@ -10,12 +10,10 @@ const selectedRoute = ref({} as Record<string, any>)
 export const useDeclineRouteSuggestion = () => {
     const loading = ref(false)
     const setDeclineRoute = (data: Record<string, any>) => {
-        console.log(data)
         selectedRoute.value = data
         useRouteModal().openDeclineReason()
     }
     const decline = async () => {
-        console.log(selectedRoute.value.id)
         if (!selectedRoute.value.id) return
 
         loading.value = true

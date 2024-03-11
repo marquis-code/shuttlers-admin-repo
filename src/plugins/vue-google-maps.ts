@@ -1,5 +1,6 @@
 import VueGoogleMaps from 'vue-google-maps-community-fork'
 import { defineNuxtPlugin } from '#app'
+import { useAlert } from '@/composables/core/notification'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 
@@ -13,6 +14,6 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     })
  } else {
-    console.log('Google Maps API already loaded.')
+  useAlert().openAlert({ type: 'SUCCESS', msg: 'Google Maps API already loaded.' })
  }
 })
