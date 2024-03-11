@@ -38,7 +38,7 @@ type modalTypes = 'popup' | 'sidebar';
 const props = defineProps({
 
 	autoClose: {
-		default: true,
+		default: false,
 		type: Boolean,
 		required: false
 	},

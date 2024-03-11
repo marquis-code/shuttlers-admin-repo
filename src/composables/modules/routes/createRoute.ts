@@ -12,32 +12,6 @@ const all_days = [
   'friday',
   'saturday'
 ]
-<<<<<<< HEAD
-const obj = {
-    pickup: ref(''),
-    destination: ref(''),
-    visibility: ref('public') as Ref<'public' | 'private'>,
-    route_availability: ref('everyday') as Ref<'everyday' | 'selected_days'>,
-    route_availability_days: ref([]) as Ref<any[]>,
-    corporate: ref({}) as Ref<Record<string, any>>,
-    is_future_route: ref(false),
-    is_exclusive: ref('shared') as Ref<'shared' | 'exclusive'>,
-    route_code: ref(''),
-    desc: ref(''),
-    startLocation: ref({}) as Ref<Record<string, any>>,
-    endLocation: ref({}) as Ref<Record<string, any>>,
-    otherStops: ref([]) as Ref<any[]>,
-    itinerary_time: ref(''),
-    fare: ref(''),
-    avail_start_date: ref(''),
-    avail_end_date: ref(''),
-    unavailable_days: ref([]) as Ref<string[]>,
-    status: ref('active') as Ref<'active'|'inactive'>,
-    route_owner_type: ref('system'),
-    route_owner: ref({} as Record<string, any>),
-    who_pays: ref(''),
-    payment_mode: ref('pre-trip') as Ref<'pre-trip'|'post-trip'>
-=======
 export const obj = {
   pickup: ref(''),
   destination: ref(''),
@@ -62,7 +36,6 @@ export const obj = {
   route_owner: ref({}),
   who_pays: ref(''),
   payment_mode: ref('pre-trip') as Ref<'pre-trip' | 'post-trip'>
->>>>>>> 8c6a8f451667d7d56b88717e2392742b3c41c5b6
 }
 const loading = ref(false)
 const loading_details = ref(false)
