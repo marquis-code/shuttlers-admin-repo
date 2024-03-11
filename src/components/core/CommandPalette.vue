@@ -111,7 +111,7 @@ watchEffect(() => {
 const props = defineProps({
 
 	autoClose: {
-		default: false,
+		default: true,
 		type: Boolean,
 		required: false
 	},
@@ -125,6 +125,7 @@ const props = defineProps({
 })
 
 const close = (e: any) => {
+    console.log(e.className)
 	if (
 		typeof e.className === 'string' &&
 		e.className.includes('modal-background')
