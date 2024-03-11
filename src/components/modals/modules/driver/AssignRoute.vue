@@ -9,7 +9,9 @@
 					Unassign route
 				</option>
 			</select>
-			<RouteSelector @selected="(val) => route = val" />
+			<div v-if="assign === true">
+				<RouteSelector @selected="(val) => route = val" />
+			</div>
 			<div v-if="selectedDriver.routes">
 				<div v-for="route in selectedDriver.routes" :key="route.id" class="flex items-center justify-between">
 					<p class="text-gray-800 rounded-md px-3 py-2.5">
@@ -21,8 +23,8 @@
 					</button>
 				</div>
 			</div>
-			<button type="submit" :disabled="loading || !route?.id"
-				class="mt-[100px] text-sm bg-black p-[16px] text-white text-center w-full border-none outline-none rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
+			<button v-if="assign === true" type="submit" :disabled="loading || !route?.id"
+				class="mt-[80px] text-sm bg-black p-[16px] text-white text-center w-full border-none outline-none rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : `${assign ? 'Assign' : 'Unassign'} Route` }}
 			</button>
 		</form>
