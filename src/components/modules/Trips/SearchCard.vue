@@ -80,7 +80,7 @@ import { useTripCardSearch } from '@/composables/modules/trips/card'
 
 const { fetchedData, loading, fetchTrips, applyFilter } = useTripCardSearch()
 
-const { meta, x /* keys you want to monitor */ } = useMagicKeys()
+const { meta, x } = useMagicKeys()
 
 watchEffect(() => {
 	if (meta.value && x.value) {
