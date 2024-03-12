@@ -3,11 +3,11 @@ import { useUser, REDIRECT_URL } from '../auth/user'
 import { useAlert } from '@/composables/core/notification'
 import { auth_api } from '@/api_factory/modules/auth'
 
-const { updateUser, setToken } = useUser()
 const error = ref('')
 
 export const useSignInUserExternally = () => {
     const sign_user_in = async (token: string, redirect = '/dashboard/events/manage/upcoming') => {
+        const { updateUser, setToken } = useUser()
         error.value = ''
         if (!token) {
             error.value = 'Missing token'
