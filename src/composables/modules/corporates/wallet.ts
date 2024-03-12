@@ -19,6 +19,7 @@ const walletIndex = ref(0)
 const currentWallet = computed(() => {
   if (wallets.value.length) return wallets.value[walletIndex.value]
 })
+const { selectedCorporate } = useCorporateIdDetails()
 
 export const useCorporateWallet = () => {
   const loading = ref(false)
