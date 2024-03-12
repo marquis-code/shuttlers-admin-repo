@@ -3,7 +3,7 @@
 		<slot name="header" />
 		<slot name="sub_header" />
 		<div class="border border-gray-200 md:rounded-b-lg" :class="[hasOverflow ? 'overflow-auto' : '']">
-			<table v-if="loading || displayTable.length > 0" class="table w-full">
+			<table class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
 						<th v-if="checkbox" class="pl-4 text-light">
@@ -23,13 +23,12 @@
 				<div />
 				<tbody v-if="!loading">
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
-							'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
-							hasOptions ? 'cursor-pointer' : '',
-						]"
-						@click.stop="option(data)"
-					>
+						'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
+						hasOptions ? 'cursor-pointer' : '',
+					]" @click.stop="option(data)">
 						<td v-if="checkbox" class="pl-4">
-							<input v-model="checkedArray" :value="data" type="checkbox" @click.stop @change="$emit('checked', checkedArray)">
+							<input v-model="checkedArray" :value="data" type="checkbox" @click.stop
+								@change="$emit('checked', checkedArray)">
 						</td>
 						<td v-if="hasIndex" class="pl-4">
 							{{ (page - 1) * 10 + index + 1 }}
@@ -54,8 +53,8 @@
 					</tr>
 				</tbody>
 			</table>
-			<div v-else class="flex items-center justify-center py-8">
-				<span class="text-gray-400">No data available</span>
+			<div v-if="!loading && displayTable.length <= 0" class="flex items-center justify-center py-8">
+				<span class="text-gray-400 font-medium pb-8">No records available</span>
 			</div>
 		</div>
 		<slot name="footer" />
@@ -83,9 +82,9 @@ const props = defineProps({
 		default: false
 	},
 	selected: {
-        type: Array,
-        default: () => []
-    },
+		type: Array,
+		default: () => []
+	},
 	headers: {
 		type: Array,
 		default: () => [],
@@ -121,7 +120,7 @@ const props = defineProps({
 	}
 })
 
-watch(() => props.selected, (value:any) => {
+watch(() => props.selected, (value: any) => {
 	checkedArray.value = value
 })
 const displayTable = computed({
