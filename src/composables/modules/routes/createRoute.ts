@@ -33,7 +33,7 @@ export const obj = {
   unavailable_days: ref([]) as Ref<string[]>,
   status: ref('active') as Ref<'active' | 'inactive'>,
   route_owner_type: ref('system'),
-  route_owner: ref({}),
+  route_owner: ref({} as Record<string, any>),
   who_pays: ref(''),
   payment_mode: ref('pre-trip') as Ref<'pre-trip' | 'post-trip'>
 }
@@ -163,9 +163,7 @@ export const populateFields = (data: Record<string, any>) => {
     lat: data?.destination_geometry?.y,
     lng: data?.destination_geometry?.x
   }
-  // obj.otherStops.value = []
-  // obj.itinerary_time.value = ''
-  // obj.fare.value = ''
+
   obj.avail_start_date.value = data?.route_availability_start_date
     ? moment(data?.route_availability_start_date).format('YYYY-MM-DD')
     : ''
@@ -241,110 +239,17 @@ export const useCreateRoute = () => {
     loading.value = false
   }
 
-  //   const updateRoute = async () => {
-  //     loading.value = true
-  //     const payload: Record<string, any> = {
-  //       pickup: obj.pickup.value,
-  //       destination: obj.destination.value,
-  //       day_of_week: 'MON - FRI',
-  //       visibility: obj.visibility.value,
-  //       corporate_id: obj.corporate.value?.id || null,
-  //       is_future_route: obj.is_future_route.value,
-  //       is_exclusive: obj.is_exclusive.value === 'exclusive' ? 1 : 0,
-  //       route_code: obj.route_code.value,
-  //       info: {
-  //         description: obj.desc.value
-  //       },
-  //       route_preview: JSON.parse(activeRoute.value.overview_geojson),
-  //       bounds: activeRoute.value.bounds,
-  //       duration_value: legTotalDurationValue.value,
-  //       distance_value: legTotalDistanceValue.value,
-  //       duration: legTotalDurationText.value,
-  //       distance: legTotalDistanceText.value,
-  //       start_location: {
-  //         lat: obj.startLocation.value?.lat,
-  //         lng: obj.startLocation.value?.lng
-  //       },
-  //       end_location: {
-  //         lat: obj.endLocation.value?.lat,
-  //         lng: obj.endLocation.value?.lng
-  //       },
-  //       route_availability_end_date: obj.avail_end_date.value,
-  //       route_availability_start_date: obj.avail_start_date.value,
-  //       blacklisted_availability_days: obj.unavailable_days.value,
-  //       owner_type: obj.route_owner_type.value,
-  //       owner_id: obj.route_owner.value?.id || obj.route_owner.value?.id,
-  //       payer: obj.who_pays.value,
-  //       payment_mode: obj.payment_mode.value,
-  //       status: obj.status.value === 'active' ? 1 : 0
-  //     }
-  //     if (obj.route_availability.value === 'everyday') {
-  //       payload.route_availability_days = all_days
-  //     } else {
-  //       payload.route_availability_days = obj.route_availability_days.value
-  //     }
-  //     const id = useRoute().params.id as string
-  //     const res = (await routes_api.$_update_route(
-  //       id,
-  //       payload
-  //     )) as CustomAxiosResponse
-  //     if (res.type !== 'ERROR') {
-  //       useAlert().openAlert({
-  //         type: 'SUCCESS',
-  //         msg: 'Route was updated successfully'
-  //       })
-  //       if (res.data?.id)
-  //         useRouter().push(`/trips/routes/${res.data?.id}/details`)
-  //       clearObj()
-  //     }
-  //     loading.value = false
-  //   }
-
-  // const getRouteDirection = async (payload: Record<string, any>) => {
-  //   polyLine.value = []
-  //   const res = (await routes_api.$_get_route_direction(
-  //     payload
-  //   )) as CustomAxiosResponse
-  //   if (res.type !== 'ERROR') {
-  //     activeRoute.value = res.data?.data?.routes[0]
-  //     const arr = JSON.parse(res.data?.data?.routes[0]?.overview_geojson)
-  //     polyLine.value = arr.coordinates.map((el) => {
-  //       return { lng: el[0], lat: el[1] }
-  //     })
-  //   }
-  // }
-
   watch([obj.startLocation, obj.endLocation], () => {
     if (obj.startLocation.value.lat && obj.endLocation.value?.lat) {
       const payload = {
         startPoint: `${obj.startLocation.value?.lat},${obj.startLocation.value?.lng}`,
         endPoint: `${obj.endLocation.value?.lat},${obj.endLocation.value?.lng}`
-        // waypoints: [
-        // 	"6.5532932,3.3370028",
-        // 	"6.529884999999998,3.353477"
-        // ]
+
       }
       getRouteDirection(payload)
     }
   })
 
-  //   const getRouteDetailsToPrefillFields = async (routeId: string | number) => {
-  //     loading_details.value = true
-  //     const res = (await routes_api.$_get_route_by_id(
-  //       routeId
-  //     )) as CustomAxiosResponse
-  //     if (res.type !== 'ERROR') {
-  //       if (res?.data?.id) {
-  //         populateFields(res.data)
-  //       } else {
-  //         useAlert().openAlert({
-  //           type: 'WARNING',
-  //           msg: 'Unable to fetch route details'
-  //         })
-  //       }
-  //     }
-  //     loading_details.value = false
-  //   }
   return {
     loading,
     ...obj,
@@ -361,9 +266,7 @@ export const useCreateRoute = () => {
     handleUnavailableDate,
     removeUnavailableDay,
     showDatePicker,
-    // getRouteDetailsToPrefillFields,
     loading_details,
     globalCreateRouteVariable
-    // updateRoute
   }
 }

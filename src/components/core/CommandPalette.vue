@@ -48,14 +48,14 @@ const { searchResult, search } = useCommandPalette()
 const isOpen = ref(false)
 const searchInput = ref(null) as Ref<HTMLInputElement | null>
 
-const { meta, k } = useMagicKeys()
+const { meta, k, control } = useMagicKeys()
 
 watch(() => useRoute().path, (from, to) => {
 	isOpen.value = false
 })
 
 watchEffect(() => {
-	if (meta.value && k.value) {
+	if ((meta.value && k.value) || (control.value && k.value)) {
 		search.value = ''
 		isOpen.value = true
 		setTimeout(() => {

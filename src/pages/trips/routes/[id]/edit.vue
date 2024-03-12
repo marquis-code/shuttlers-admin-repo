@@ -25,40 +25,6 @@
 								@change="selectedStartAddress"
 							/>
 						</div>
-						<!-- <div v-if="otherStopNumber" class="space-y-3">
-							<div
-								v-for="(itm, idx) in otherStopNumber"
-								:key="idx"
-								class="flex items-center w-full h-full rounded-md border"
-							>
-								<div class="w-full h-full">
-									<LocationInput
-										:id="itm + 'stops'"
-										name="addedStopLocation"
-										class="input-field"
-										placeholder="Enter stop point"
-										@change="selectedAdditionalEndPoint"
-									/>
-								</div>
-								<div class="border h-12">
-									<img
-										src="@/assets/icons/source/close.svg"
-										alt="close"
-										class="h-full p-1"
-									>
-								</div>
-							</div>
-						</div> -->
-						<!-- <button
-							class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
-							@click="addStopPoint"
-						>
-							<img
-								src="@/assets/icons/source/white_plus.svg"
-								class="h-3 w-3"
-								alt="plus"
-							>Add Stop
-						</button> -->
 					</div>
 					<div>
 						<LocationInput
