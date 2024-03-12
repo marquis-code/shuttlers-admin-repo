@@ -268,12 +268,12 @@
 													{{ getExemptionLimitWriteUp(n) }}
 												</td>
 												<td class="px-3 py-4 text-xs text-left text-[#09090F]">
-													<template v-if="n.subject_type == 'group' && computedGroup.length">
+													<template v-if="n.subject_type === 'group' && computedGroup.length">
 														{{ computedGroup.filter(el => el.id == n.subject_id)[0].name }}
 													</template>
-													<template v-else-if="n.subject_type == 'user' && computedStaff.length">
-														{{ `${computedStaff.filter(el => el.id == n.subject_id)[0].fname}
-																												${computedStaff.filter(el => el.id == n.subject_id)[0].lname}` }}
+													<template v-else-if="n.subject_type === 'user' && computedStaff.length">
+														{{ `${computedStaff.filter(el => el.id == n.subject_id)[0]?.fname}
+																												${computedStaff.filter(el => el.id == n.subject_id)[0]?.lname}` }}
 													</template>
 													<span v-else>Loading</span>
 												</td>
