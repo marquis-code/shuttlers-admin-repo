@@ -48,6 +48,8 @@ const getPeriod = (str) => {
     }
 }
 
+const corporate_id = Number(useRoute().params.id)
+
 const getExemptionLimitWriteUp = (data) => {
     if (data.limit_type === 'trip') {
         return `Allow an employee book ${data.limit_value} trips per ${getPeriod(data.limit_value_unit)}`
@@ -62,7 +64,7 @@ export const useCorporatePaySetting = () => {
     const fetchCorporatePaySetting = async () => {
         loading.value = true
         const { $_fetch_corporate_payment_settings } = corporates_api
-        const res = await $_fetch_corporate_payment_settings(selectedCorporate.value.id) as CustomAxiosResponse
+        const res = await $_fetch_corporate_payment_settings(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             const data = res?.data
 			corporatePaySettings.book_on_corporate_routes.value = data.book_on_corporate_routes
@@ -83,7 +85,7 @@ export const useCorporatePaySetting = () => {
     const saveCorporatePaySettings = async (val: any) => {
         loading.value = true
         const { $_update_corporate_payment_settings } = corporates_api
-        const res = await $_update_corporate_payment_settings(selectedCorporate.value.id, convertObjWithRefToObj({ ...val })) as CustomAxiosResponse
+        const res = await $_update_corporate_payment_settings(corporate_id, convertObjWithRefToObj({ ...val })) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',
