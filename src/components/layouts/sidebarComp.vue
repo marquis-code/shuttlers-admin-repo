@@ -56,7 +56,7 @@
 						<nuxt-link :to="menu.routePath">
 							<div class="nav-title">
 								<span class="flex items-center">
-									<component :is="routeIcon" class="img" />
+									<component :is="menu.iconComponent ?? routeIcon" class="img" />
 									<span class="text-sm">{{ menu.title }}</span>
 								</span>
 							</div>

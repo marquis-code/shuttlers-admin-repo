@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack class="mb-6 ml-9" />
 		<div v-if="loading_details" class="p-4">
 			<Skeleton height="400px" />
 		</div>
@@ -25,40 +25,6 @@
 								@change="selectedStartAddress"
 							/>
 						</div>
-						<!-- <div v-if="otherStopNumber" class="space-y-3">
-							<div
-								v-for="(itm, idx) in otherStopNumber"
-								:key="idx"
-								class="flex items-center w-full h-full rounded-md border"
-							>
-								<div class="w-full h-full">
-									<LocationInput
-										:id="itm + 'stops'"
-										name="addedStopLocation"
-										class="input-field"
-										placeholder="Enter stop point"
-										@change="selectedAdditionalEndPoint"
-									/>
-								</div>
-								<div class="border h-12">
-									<img
-										src="@/assets/icons/source/close.svg"
-										alt="close"
-										class="h-full p-1"
-									>
-								</div>
-							</div>
-						</div> -->
-						<!-- <button
-							class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
-							@click="addStopPoint"
-						>
-							<img
-								src="@/assets/icons/source/white_plus.svg"
-								class="h-3 w-3"
-								alt="plus"
-							>Add Stop
-						</button> -->
 					</div>
 					<div>
 						<LocationInput
@@ -299,7 +265,7 @@
 					</button>
 				</div>
 			</div>
-			<div class="w-8/12">
+			<div v-if="startLocation?.lat && endLocation?.lat" class="w-8/12">
 				<GMapMap map-type-id="terrain" class="h-screen"
 					:options="{
 						zoomControl: true,
@@ -328,15 +294,20 @@
 
 <script setup lang="ts">
 import { useCreateRoute } from '@/composables/modules/routes/createRoute'
+import { useUpdateRoute } from '@/composables/modules/routes/update'
+import { useGetRouteDetailsToPrefillFields } from '@/composables/modules/routes/getRouteDetailsToPrefillFields'
 import { Capitalize } from '@/composables/utils/formatter'
 
-const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, updateRoute, polyLine, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay, getRouteDetailsToPrefillFields, loading_details, status, route_owner_type, route_owner, who_pays, payment_mode, pickup, destination } = useCreateRoute()
+const { loading, startLocation, endLocation, showDatePicker, desc, route_code, visibility, is_exclusive, corporate, route_availability, avail_end_date, avail_start_date, unavailable_days, route_availability_days, polyLine, all_days, center, selectedStartAddress, selectedEndAddress, handleSelectedDay, handleUnavailableDate, removeUnavailableDay, status, route_owner_type, route_owner, who_pays, payment_mode, pickup, destination } = useCreateRoute()
+const { updateRoute } = useUpdateRoute()
+const { getRouteDetailsToPrefillFields, loading_details } = useGetRouteDetailsToPrefillFields()
 
-getRouteDetailsToPrefillFields(useRoute().params.id as string)
+const id = useRoute().params.id as string
+getRouteDetailsToPrefillFields(id)
 
 definePageMeta({
   layout: 'dashboard-zero',
   middleware: ['is-authenticated']
 })
 
-</script>
+</script>src/composables/modules/routes/create

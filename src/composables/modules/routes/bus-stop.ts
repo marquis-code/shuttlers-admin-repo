@@ -1,7 +1,6 @@
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'
-
 const path = ref([]) as Ref<Record<string, any>>
 const routeDetails = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
