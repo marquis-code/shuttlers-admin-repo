@@ -77,6 +77,7 @@ import CancelBooking from '@/components/modals/modules/users/CancelBooking.vue'
 import WalletNotification from '@/components/modals/modules/companies/wallet-notification/WalletNotification.vue'
 import LinkVehicle from '@/components/modals/modules/partners/LinkVehicle.vue'
 import DeclineReason from '@/components/modals/modules/agents/DeclineReason.vue'
+import NewReward from '@/components/modals/modules/promotion/newReward.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -93,6 +94,7 @@ type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle'
+type PromotionTypes = 'NewReward'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -109,6 +111,7 @@ const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, Confi
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
 const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle } as Record<PartnerTypes, any>
+const PromotionModals = { NewReward } as Record<PromotionTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -127,6 +130,7 @@ const routeModal = modal.register('Routes', RoutesModal)
 const vehicleModal = modal.register('Vehicles', VehicleModals)
 const payoutModal = modal.register('Payout', PayoutModals)
 const partnerModal = modal.register('Partner', PartnerModals)
+const promotionModal = modal.register('Promotion', PromotionModals)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -143,3 +147,4 @@ export const useRouteModal = () => routeModal
 export const useVehicleModal = () => vehicleModal
 export const usePayoutModal = () => payoutModal
 export const usePartnerModal = () => partnerModal
+export const usePromotionModal = () => promotionModal
