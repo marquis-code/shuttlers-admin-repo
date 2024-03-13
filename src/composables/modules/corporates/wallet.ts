@@ -24,8 +24,7 @@ export const useCorporateWallet = () => {
   const loading = ref(false)
   const id = useRoute().params.id
   const getCorporateWalletInfo = async () => {
-    const { selectedCorporate, loading, getCorporateById } =
-      useCorporateIdDetails()
+    const { selectedCorporate, loading, getCorporateById } = useCorporateIdDetails()
     loading.value = true
     const res = (await corporates_api.$_get_corporate_wallet_info(
       Number(id)
@@ -57,6 +56,7 @@ export const useCorporateWalletHistory = () => {
     'filters[end_date]': ref('') as any
   }
   const getCorporateWalletHistory = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     loadingWalletHistory.value = true
     const res =
       (await corporates_api.$_get_corporate_wallet_transaction_history(
@@ -118,6 +118,7 @@ export const useCorporateWalletHistory = () => {
 export const useCorporateWalletActivation = () => {
   const loading = ref(false)
   const activateCorporateWallet = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     loading.value = true
     const res = (await corporates_api.$_activate_corporate_wallet(
       Number(selectedCorporate.value?.wallet.id),
@@ -141,6 +142,7 @@ export const useCorporateWalletActivation = () => {
 }
 
 export const useFlutterWave = () => {
+  const { selectedCorporate } = useCorporateIdDetails()
   insertScriptTag('https://checkout.flutterwave.com/v3.js')
   const amount = ref('')
   const desc = ref('')
@@ -214,6 +216,7 @@ const corporateOverDraftUpdateForm = {
 export const useCorporateOverdreftUpdate = () => {
   const updating = ref(false)
   const updateCorporateWalletOverdraft = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     updating.value = true
     const res = (await corporates_api.$_update_corporate_overdraft(
       Number(selectedCorporate.value.wallet.id),
