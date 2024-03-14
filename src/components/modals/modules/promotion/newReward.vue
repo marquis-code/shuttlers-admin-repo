@@ -24,7 +24,7 @@
 					<p class="text-base text-[#101828] font-medium">
 						Users
 					</p>
-					<a href="/template/users_email.csv" download="Users template" class="flex items-center gap-0 text-[#4848ED] font-medium">
+					<a href="/template/users_email.csv" download="Users template" class="flex items-center gap-0 text-purp7 font-medium">
 						<Icon name="doc" class="w-6" />
 						<span class="underline">Download template</span>
 					</a>
@@ -50,7 +50,7 @@
 				<label class="label">How many trips should this apply to ?</label>
 				<div class="w-full h-fit relative">
 					<input v-model="trips_count" required type="number" class="input-field w-full" placeholder="">
-					<p class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-neut9 font-bold pl-2 border-l border-neut9">
+					<p class="absolute_tag font-bold">
 						Trips
 					</p>
 				</div>
@@ -69,14 +69,14 @@
 					<label class="label">Discount percentage</label>
 					<div class="w-full h-fit relative">
 						<input v-model="percent" required type="number" class="input-field w-full" placeholder="">
-						<p class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-neut9 font-medium pl-2 border-l border-neut9">
+						<p class="absolute_tag">
 							%
 						</p>
 					</div>
 				</div>
 			</div>
 
-			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-4 text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
+			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-4 text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-grey8">
 				{{ loading ? 'processing...' : 'Proceed' }}
 			</button>
 		</form>
@@ -133,5 +133,9 @@ onBeforeUnmount(() => clearObj())
 <style scoped>
 label{
 	margin: 0;
+}
+
+.absolute_tag{
+	@apply absolute right-2 top-1/2 -translate-y-1/2 text-sm text-neut9 font-medium pl-2 border-l border-neut9
 }
 </style>
