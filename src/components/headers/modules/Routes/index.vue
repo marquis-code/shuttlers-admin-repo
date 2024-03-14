@@ -11,7 +11,7 @@
 				<button class="border-gray-800 text-sm text-gray-800 bg-white border rounded-md py-2.5 px-3" @click="handleRouteAvailabilityConfigModal">
 					Availability Config
 				</button>
-				<NuxtLink to="/trips/routes/create-route" class="btn-primary text-sm">
+				<NuxtLink to="/trips/routes/create" class="btn-primary text-sm">
 					Create route
 				</NuxtLink>
 			</div>

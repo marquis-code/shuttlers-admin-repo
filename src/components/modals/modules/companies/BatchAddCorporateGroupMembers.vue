@@ -25,10 +25,6 @@
 <script setup lang="ts">
 import { useAddCorporateGroupMembers } from '@/composables/modules/corporates/createCorporateGroupMembers'
 import { useCompaniesModal } from '@/composables/core/modals'
-import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
-const {
-  getCorporateGroupByGroupId
-} = useCorporateGroupByGroupId()
 const { createCorporateGroupMembers, loading: processing, payload } = useAddCorporateGroupMembers()
 
 const handleSelectedCorporates = (val:any) => {
@@ -40,9 +36,7 @@ const isFormEmpty = computed(() => {
 })
 
 const handleSubmit = () => {
-	createCorporateGroupMembers().then(() => {
-		getCorporateGroupByGroupId()
-	})
+	createCorporateGroupMembers()
 }
 
 </script>

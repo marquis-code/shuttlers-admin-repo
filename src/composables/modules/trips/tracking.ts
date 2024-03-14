@@ -14,20 +14,21 @@ export const usePassengersTracking = () => {
 	_connectToSocket()
 
 	const listenToallPassengersLocation = () => {
-		listenToEvent('trips:124827', (data) => {
+		listenToEvent('trips:59203', (data) => {
+				// console.log(data, 'sss')
 		})
 	}
 
 	const listenToSpecificPassengerLocationAndAddtoMap = (
 		passengerId: string, clickFunc:(data:any)=>void
 	) => {
-		listenToEvent(`passengers:${passengerId}:new-position`, (data: PassagerType) => {
-            loadMarkeronMap({
-                id: data.user_id,
-                lat: data.position_latitude,
-                lng: data.position_longitude
-            }, clickFunc)
-		})
+		// listenToEvent('passengers:all:new-position', (data: PassagerType) => {
+        //     loadMarkeronMap({
+        //         id: data.user_id,
+        //         lat: data.position_latitude,
+        //         lng: data.position_longitude
+        //     }, clickFunc)
+		// })
 	}
 
 	return {

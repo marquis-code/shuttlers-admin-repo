@@ -23,7 +23,7 @@ export const appendObjectToCurrentURL = (key, value) => {
         queryString += encodeURIComponent(key) + '=' + encodeURIComponent(value)
       }
       url = hasQueryString ? url.split('?')[0] + '?' + queryString : url + '?' + queryString
-      window.history.replaceState(null, null, url)
+      window.history.replaceState(null, 'null', url)
     }
 
 export const insertScriptTag = (url: string): void => {
@@ -31,7 +31,7 @@ export const insertScriptTag = (url: string): void => {
   if (process.client && document.head.querySelectorAll(`script[src="${url}"]`).length > 0) return
   const scriptTag = document.createElement('script')
   scriptTag.src = url
-  document.body.appendChild(scriptTag)
+  document.head.appendChild(scriptTag)
 }
 
 export const environmental_url = {
@@ -40,11 +40,11 @@ export const environmental_url = {
   prod: 'https://admin.shuttlers.africa'
 }
 
-export const getCurrentEnvironmentalUrl = computed(() => {
-  if (window.location.href.includes('test') || window.location.href.includes('localhost')) return environmental_url.test
-  if (window.location.href.includes('qa')) return environmental_url.staging
-  return environmental_url.prod
-})
+export const customer_web_app_url = {
+  test: 'https://test.my.shuttlers.africa',
+  staging: 'https://qa.my.shuttlers.africa',
+  prod: 'https://my.shuttlers.africa'
+}
 
 export const isProdEnv = computed(() => {
   if (window.location.href.includes('test') || window.location.href.includes('localhost') || window.location.href.includes('qa')) return false

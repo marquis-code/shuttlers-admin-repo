@@ -21,7 +21,7 @@
 				<button class="bg-gray-300 px-3 py-2.5 rounded-sm" @click="emitOccupancy">
 					Apply
 				</button>
-			</div>  -->
+			</div> -->
 		</section>
 
 		<button class="btn-primary w-32" @click="resetData">
@@ -102,16 +102,16 @@ const filterData = {
 	visibility: ref([]),
 	startTime: ref([]),
 	vehicleType: ref([]),
-	city: ref([]),
-	occupancy_from: ref(0),
-	occupancy_to: ref(100)
+	city: ref([])
+	// occupancy_from: ref(0),
+	// occupancy_to: ref(100)
 }
 
 const emitOccupancy = () => {
 	// if (filterData.occupancy_from.value && filterData.occupancy_to.value) {
-		appendObjectToCurrentURL('occupancy_from', JSON.stringify(filterData.occupancy_from.value))
-		appendObjectToCurrentURL('occupancy_to', JSON.stringify(filterData.occupancy_to.value))
-		onFilter({ type: 'occupancy', value: [filterData.occupancy_from.value, filterData.occupancy_to.value] })
+		// appendObjectToCurrentURL('occupancy_from', JSON.stringify(filterData.occupancy_from.value))
+		// appendObjectToCurrentURL('occupancy_to', JSON.stringify(filterData.occupancy_to.value))
+		// onFilter({ type: 'occupancy', value: [filterData.occupancy_from.value, filterData.occupancy_to.value] })
 	// }
 }
 
@@ -121,9 +121,9 @@ const resetData = () => {
 	filterData.startTime.value = []
 	filterData.vehicleType.value = []
 	filterData.city.value = []
-	filterData.occupancy_from.value = 0
-	filterData.occupancy_to.value = 100
-	// emitOccupancy()
+	// filterData.occupancy_from.value = 0
+	// filterData.occupancy_to.value = 100
+	emitOccupancy()
 }
 watchDebounced([filterData.routeType, filterData.visibility, filterData.startTime, filterData.vehicleType, filterData.city], (val: any[]) => {
 	if (val[0]) {
@@ -157,9 +157,9 @@ const convertURLParamsToObject = (() => {
 	filterData.startTime.value = urlParams.startTime as string ? JSON.parse(urlParams.startTime as string) : [] as string[]
 	filterData.vehicleType.value = urlParams.vehicleType as string ? JSON.parse(urlParams.vehicleType as string) : [] as string[]
 	filterData.city.value = urlParams.city as string ? JSON.parse(urlParams.city as string) : [] as string[]
-	filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
-	filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 100
-	// emitOccupancy()
+	// filterData.occupancy_from.value = urlParams.occupancy_from as string ? JSON.parse(urlParams.occupancy_from as string) : 0
+	// filterData.occupancy_to.value = urlParams.occupancy_to as string ? JSON.parse(urlParams.occupancy_to as string) : 100
+	emitOccupancy()
 })()
 
 </script>

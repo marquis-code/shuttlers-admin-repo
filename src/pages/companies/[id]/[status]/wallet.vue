@@ -20,7 +20,7 @@
 								****
 							</p>
 							<div class="w-full">
-								<button class="text-white text-sm bg-black px-3 py-2.5 w-11/12 rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
+								<button class="text-white text-sm bg-black px-3 py-2.5 w-fit rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
 									<span class="rounded-full bg-white p-1">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg>
 									</span>
@@ -40,7 +40,7 @@
 					<h1 class="font-bold text-lg">
 						Wallet History
 					</h1>
-					<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true" :option="onRowClicked">
+					<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true">
 						<template #header>
 							<div class="bg-white border-x border-gray-100">
 								<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />

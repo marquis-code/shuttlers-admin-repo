@@ -1,11 +1,13 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
+import {
+  useCorporateIdDetails,
+  useCorporateWalletDetails
+} from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
 import { useCompaniesModal } from '@/composables/core/modals'
-const { selectedCorporate, loading, getCorporateById } =
-  useCorporateIdDetails()
+import { insertScriptTag } from '@/composables/utils/system'
 
 const walletActivationForm = {
   bvn: ref(''),
@@ -22,6 +24,7 @@ export const useCorporateWallet = () => {
   const loading = ref(false)
   const id = useRoute().params.id
   const getCorporateWalletInfo = async () => {
+    const { selectedCorporate, loading, getCorporateById } = useCorporateIdDetails()
     loading.value = true
     const res = (await corporates_api.$_get_corporate_wallet_info(
       Number(id)
@@ -41,10 +44,11 @@ export const useCorporateWallet = () => {
     currentWallet
   }
 }
+
+const loadingWalletHistory = ref(false)
+const coprorateWalletHistory = ref([])
 export const useCorporateWalletHistory = () => {
-  const loadingWalletHistory = ref(false)
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-  const coprorateWalletHistory = ref([])
   const filterData = {
     'filters[type]': ref('') as any,
     'filters[user_ids]': ref('') as any,
@@ -52,6 +56,7 @@ export const useCorporateWalletHistory = () => {
     'filters[end_date]': ref('') as any
   }
   const getCorporateWalletHistory = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     loadingWalletHistory.value = true
     const res =
       (await corporates_api.$_get_corporate_wallet_transaction_history(
@@ -113,6 +118,7 @@ export const useCorporateWalletHistory = () => {
 export const useCorporateWalletActivation = () => {
   const loading = ref(false)
   const activateCorporateWallet = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     loading.value = true
     const res = (await corporates_api.$_activate_corporate_wallet(
       Number(selectedCorporate.value?.wallet.id),
@@ -136,6 +142,8 @@ export const useCorporateWalletActivation = () => {
 }
 
 export const useFlutterWave = () => {
+  const { selectedCorporate } = useCorporateIdDetails()
+  insertScriptTag('https://checkout.flutterwave.com/v3.js')
   const amount = ref('')
   const desc = ref('')
   const loading = ref(false)
@@ -152,14 +160,17 @@ export const useFlutterWave = () => {
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR' && res.data.reference) {
       loading.value = false
-      window.FlutterwaveCheckout({
+      const flutterModal = window.FlutterwaveCheckout({
         amount: Number(amount.value),
-        callback(data: any): void {
+        callback: () => {
+          flutterModal.close()
           useAlert().openAlert({
             type: 'SUCCESS',
-            msg: data
+            msg: 'Payment is successful'
           })
           useCompaniesModal().closeFundWallet()
+          useCorporateWalletHistory().getCorporateWalletHistory()
+          useCorporateWalletDetails().getCorporateWalletObject()
         },
         country: 'NG',
         currency: 'NGN',
@@ -186,7 +197,7 @@ export const useFlutterWave = () => {
         },
         payment_options: 'card, banktransfer, ussd',
         public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
-        redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
+        // redirect_url: `${process.env.VITE_FLW_PUBLIC_KEY}${company.id}/active/wallet`,
         tx_ref: res.data.reference
       })
     } else {
@@ -205,6 +216,7 @@ const corporateOverDraftUpdateForm = {
 export const useCorporateOverdreftUpdate = () => {
   const updating = ref(false)
   const updateCorporateWalletOverdraft = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
     updating.value = true
     const res = (await corporates_api.$_update_corporate_overdraft(
       Number(selectedCorporate.value.wallet.id),

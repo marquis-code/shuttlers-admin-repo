@@ -39,7 +39,7 @@
 				<p v-if="item.amount" class="text-sm whitespace-nowrap">
 					{{ item.data?.amount ? convertToCurrency(item.data?.amount) : 0 }}
 				</p>
-				<p v-if="item.deduction" class="text-sm whitespace-nowrap">
+				<p v-if="item.deduction" class="text-sm text-red whitespace-nowrap">
 					{{ item.data?.totalDeduction ? convertToCurrency(item.data?.totalDeduction) : 0 }}
 				</p>
 				<p v-if="item.net" class="text-sm whitespace-nowrap">
@@ -89,9 +89,9 @@ const tableFields = ref([
 	{ text: 'COMPANY NAME', value: 'company_name' },
 	{ text: 'EMAIL', value: 'company_email' },
 	{ text: 'PAYOUT MONTH', value: 'payout_month' },
-	{ text: 'AMOUNT EARNED (₦)', value: 'amount' },
-	{ text: 'Deduction (₦)', value: 'deduction' },
 	{ text: 'Net Revenue (₦)', value: 'net' },
+	{ text: 'Deduction (₦)', value: 'deduction' },
+	{ text: 'AMOUNT EARNED (₦)', value: 'amount' },
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }
 ])

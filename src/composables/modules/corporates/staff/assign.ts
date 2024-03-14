@@ -5,7 +5,6 @@ import { routes_api, corporates_api, CustomAxiosResponse } from '@/api_factory/m
 import { useCompaniesModal } from '@/composables/core/modals'
 
 const { selectedStaffIds, selectedStaffs } = useSelectedStaff()
-const { getCorporateStaff } = useCorporateStaff()
 const obj = {
 	route_id: ref(null),
 	itinerary_id: ref(null),
@@ -31,6 +30,7 @@ const busstops = ref([]) as Ref<any[]>
 const loading = ref(false)
 export const useAssignStaff = () => {
 	const assignStaff = async () => {
+		const { getCorporateStaff } = useCorporateStaff()
 		const payload = {
 			user_ids: selectedStaffIds.value,
 			corporate_id: useRoute().params.id,

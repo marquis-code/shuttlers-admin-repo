@@ -19,10 +19,10 @@ export const useCorporateIdDetails = () => {
     return { selectedCorporate, loading, getCorporateById }
 }
 
+const corporateWalletDetails = ref({} as any)
 export const useCorporateWalletDetails = () => {
     const { selectedUser } = useUserIdDetails()
     const loading = ref(false)
-    const corporateWalletDetails = ref({} as any)
     const getCorporateWalletObject = async () => {
         const corporate_id = Number(useRoute().params.id)
         loading.value = true

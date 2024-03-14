@@ -13,7 +13,7 @@ const createForm = {
 	password: ref(''),
 	gender: ref(''),
 	dob: ref(''),
-	corporate_id: ref()
+	corporate_id: ref('')
 }
 const updatePasswordForm = {
 	password: ref('')
@@ -56,14 +56,9 @@ export const useCreateUsers = () => {
     const editUser = async (id: string) => {
 		loading.value = true
 		const formData = convertObjWithRefToObj(createForm)
-		const dataToSend = Object.entries(formData).reduce((acc, [key, value]) => {
-			if (value !== '' && !(key === 'password' && !value)) {
-				acc[key] = value
-			}
-			return acc
-		}, {})
+		const { password, ...formDataExceptPassword } = formData
         const res = (await users_api.$_edit_users(
-            dataToSend, id
+            formDataExceptPassword, id
         )) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useRouter().push(`/users/${id}/user-info`)
@@ -83,7 +78,7 @@ export const useCreateUsers = () => {
 		createForm.password.value = data.password || ''
 		createForm.gender.value = data.gender || ''
 		createForm.dob.value = data.dob || ''
-		createForm.corporate_id.value = data.corporate_id || ''
+		createForm.corporate_id.value = data.corporate_id
 	}
 
 	const updateUserPassword = async (id: string) => {

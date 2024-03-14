@@ -25,9 +25,9 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 
 const options = {
-    componentRestrictions: { country: ['NG'] },
-    fields: ['address_components', 'geometry', 'name'],
-	types: props.busStop ? ['bus_station'] : []
+     componentRestrictions: { country: ['NG'] },
+    fields: ['address_components', 'geometry', 'name']
+
 }
 const autocompleteInput = ref(null)
 const autocomplete = ref()
@@ -36,10 +36,8 @@ const isEmpty = () => {
 }
 const modelValueProp = toRef(props, 'modelValue')
 
-onMounted(() => {
-	const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-
-    const fillInAddress = () => {
+onMounted(async () => {
+	const fillInAddress = () => {
 		const place = autocomplete.value.getPlace()
 		const lat = place.geometry.location.lat()
 		const lng = place.geometry.location.lng()
@@ -47,7 +45,7 @@ onMounted(() => {
 		const latlng = { lat, lng }
 
 		const emitter = {
-			name: (document.getElementById(props.id)as HTMLInputElement).value, ...latlng
+			name: (document.getElementById(props.id) as HTMLInputElement).value, ...latlng
 		}
 		emit('update:modelValue', emitter)
 		emit('change', emitter)
@@ -55,13 +53,17 @@ onMounted(() => {
 	if (!isObject(modelValueProp.value) && modelValueProp.value) {
 		(document.getElementById(`${props.id}`) as HTMLInputElement).value = modelValueProp.value
 	}
-	loader.load().then(() => {
-		autocomplete.value = new google.maps.places.Autocomplete(
+
+	const { Autocomplete } = await loader.importLibrary('places')
+
+	autocomplete.value = new Autocomplete(
 			document.getElementById(props.id) as HTMLInputElement,
 			options
 		)
+
         autocomplete.value.addListener('place_changed', fillInAddress)
-	})
+
+	// })
 })
 </script>
 

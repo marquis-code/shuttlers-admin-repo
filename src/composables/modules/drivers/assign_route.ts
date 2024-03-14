@@ -2,7 +2,7 @@ import { drivers_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useDriverModal } from '@/composables/core/modals'
 import { useDriverIdDetails } from '@/composables/modules/drivers'
-const { getDriverById } = useDriverIdDetails()
+const { getDriverById, selectedDriver } = useDriverIdDetails()
 
 const obj = {
 	assign: ref(true),
@@ -34,7 +34,8 @@ export const useAssignRouteToDriver = () => {
 			getDriverById(id)
 			useRouter().push(`/drivers/${id}/driver-info`)
         }
+		loading.value = false
 	}
 
-	return { loading, assignRoute, ...obj, clearObj }
+	return { loading, assignRoute, ...obj, clearObj, selectedDriver }
 }
