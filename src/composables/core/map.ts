@@ -161,7 +161,6 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]) => {
     currentPolyline = polyline // Update the reference to the current polyline
 
     const bounds = new google.maps.LatLngBounds()
-    console.log(bounds)
     pathLine.forEach((point) => bounds.extend(point))
     map.fitBounds(bounds)
 }
