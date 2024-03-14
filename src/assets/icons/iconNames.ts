@@ -27,7 +27,6 @@ export enum IconNames {
   'destination_point_green' = 'destination_point_green',
   'down' = 'down',
   'download' = 'download',
-  'doc' = 'doc',
   'edit-pen' = 'edit-pen',
   'edit' = 'edit',
   'empty-activity' = 'empty-activity',
@@ -35,8 +34,8 @@ export enum IconNames {
   'eye-close' = 'eye-close',
   'eye' = 'eye',
   'filter' = 'filter',
-  'file_upload' = 'file_upload',
   'greater' = 'greater',
+  'green-add' = 'green-add',
   'green-location' = 'green-location',
   'green-tick' = 'green-tick',
   'help' = 'help',
@@ -58,6 +57,7 @@ export enum IconNames {
   'phone' = 'phone',
   'pickup_point' = 'pickup_point',
   'play' = 'play',
+  'plus' = 'plus',
   'plus_black' = 'plus_black',
   'position' = 'position',
   'prev' = 'prev',
@@ -81,7 +81,6 @@ export enum IconNames {
   'vehicle_icon' = 'vehicle_icon',
   'warning' = 'warning',
   'white-plus' = 'white-plus',
-  'white_plus' = 'white_plus',
   'yellow-tick' = 'yellow-tick',
   'zoom-cursor' = 'zoom-cursor'
 }

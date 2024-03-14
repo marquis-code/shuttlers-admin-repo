@@ -4,13 +4,13 @@ import { useAlert } from '@/composables/core/notification'
 import { useGroup } from '@/composables/modules/corporates/corporateGroup'
 import { useCreateCorporateGroup } from '@/composables/modules/corporates/createCorporateGroup'
 const selectedCorporate = ref({} as Record<string, any>)
-const { corporateGroupForm } = useCreateCorporateGroup()
 const { fetchGroup } = useGroup()
 
 export const useEditCorporateGroup = () => {
     const loading = ref(false)
 
     const editCorporateGroup = async () => {
+        const { corporateGroupForm } = useCreateCorporateGroup()
         const corporate_id = useRoute().params.id as any
         const group_id = useRoute().params.group_id as any
         loading.value = true

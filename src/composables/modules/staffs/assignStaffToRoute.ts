@@ -7,9 +7,6 @@ import {
 } from '@/composables/modules/corporates/staff/index'
 import { useCorporateBranches } from '@/composables/modules/corporates/branch'
 import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
-const { getCorporateStaff } = useCorporateStaff()
-const { getBranches } = useCorporateBranches()
-const { getShifts } = useCorporateWorkShifts()
 
 const assignForm = {
   itinerary_ids: [],
@@ -21,6 +18,9 @@ const selectedStaffPreferredRoutes = ref([]) as any
 export const useAssignStaffToRoute = () => {
   const loading = ref(false)
   const assignStaff = async () => {
+    const { getCorporateStaff } = useCorporateStaff()
+    const { getBranches } = useCorporateBranches()
+    const { getShifts } = useCorporateWorkShifts()
     loading.value = true
     const res = (await staffs_api.$_assign_staff_to_route(
       assignForm
@@ -28,8 +28,8 @@ export const useAssignStaffToRoute = () => {
     if (res.type !== 'ERROR') {
       useCompaniesModal().closeAssignStaffToRoute()
       getCorporateStaff()
-      getBranches(useRoute().params.id as string)
-      getShifts(useRoute().params.id as string)
+      getBranches(Number(useRoute().params.id))
+      getShifts(Number(useRoute().params.id))
       useAlert().openAlert({
         type: 'SUCCESS',
         msg: 'Staff has been successfully assigned to route'
@@ -48,7 +48,7 @@ export const useAssignStaffToRoute = () => {
     assignStaff,
     assignForm,
     selectedStaffToAssign,
-	selectedStaffPreferredRoutes,
+    selectedStaffPreferredRoutes,
     loading
   }
 }

@@ -4,18 +4,18 @@
 </template>
 
 <script setup>
-import { initMap, calculateCenterAndZoom, loading, getPathFromPolyline, loadPolyline } from '@/composables/core/map'
+import { initMap, calculateCenterAndZoom, loading, getPathFromPolyline, loadPolyline, addPointOnMap } from '@/composables/core/map'
 
 const mapRef = ref(null)
 
 const props = defineProps({
     startPoint: {
-        type: Object,
+        type: [Object, null],
         default: null,
         required: false
     },
     endPoint: {
-        type: Object,
+        type: [Object, null],
         default: null,
         required: false
     },
@@ -32,7 +32,7 @@ const props = defineProps({
         type: String
     },
     encodedPolyline: {
-        type: String,
+        type: [Object, String],
         default: null
     },
     propsLoading: {
@@ -48,12 +48,36 @@ const props = defineProps({
 onMounted(async () => {
     initMap(mapRef)
     // calculateCenterAndZoom(props.startPoint, props.endPoint)
-    if (props.encodedPolyline) {
+
+    if (props.encodedPolyline && typeof props.encodedPolyline === 'string') {
         const poly = await getPathFromPolyline(props.encodedPolyline)
         loadPolyline(poly)
-    } else if (props.startPoint && props.endPoint) {
-            calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
+    } else if (props.startPoint?.x && props.endPoint?.x) {
+            // calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
+    } else if (props.startPoint || props.endPoint) {
+            if (props.startPoint) {
+                addPointOnMap({ lat: props.startPoint.y, lng: props.startPoint.x })
+            } else {
+                addPointOnMap({ lat: props.endPoint.y, lng: props.endPoint.x })
+            }
         }
+})
+
+watchEffect(async () => {
+        const end_poly = await props.encodedPolyline
+    if (end_poly && typeof end_poly === 'string') {
+        const poly = await getPathFromPolyline(end_poly)
+        loadPolyline(poly)
+    }
+    if (props.startPoint?.x && props.endPoint?.x) {
+            // calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
+    } else if (props.startPoint?.x || props.endPoint?.x) {
+        if (props.startPoint) {
+            addPointOnMap({ lat: props.startPoint.y, lng: props.startPoint.x })
+        } else {
+            addPointOnMap({ lat: props.endPoint.y, lng: props.endPoint.x })
+        }
+    }
 })
 
 </script>
