@@ -5,7 +5,7 @@
 
 		<div class="main-content">
 			<Headers id="header" />
-			<div class=" overflow-auto relative  h-[87.5vh]">
+			<div class=" overflow-auto relative  h-[88.9vh]">
 				<slot />
 			</div>
 		</div>

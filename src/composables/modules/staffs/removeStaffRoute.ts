@@ -7,12 +7,12 @@ import {
 } from '@/composables/modules/corporates/staff/index'
 import { useCorporateBranches } from '@/composables/modules/corporates/branch'
 import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
-const { getCorporateStaff } = useCorporateStaff()
-const { getBranches } = useCorporateBranches()
-const { getShifts } = useCorporateWorkShifts()
 
 const selectedRouteToDelete = ref(null) as Record<string, any>
 export const useDeleteStaffToRoute = () => {
+  const { getCorporateStaff } = useCorporateStaff()
+  const { getBranches } = useCorporateBranches()
+const { getShifts } = useCorporateWorkShifts()
   const loading = ref(false)
   const removeStaffRoute = async (id) => {
     loading.value = true
