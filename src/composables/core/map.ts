@@ -95,15 +95,6 @@ export const loadExternalDataMarkers = async (
     //  const markerCluster = new MarkerClusterer({ markers, map })
 }
 
-const rotateImage = (rotation) => {
-  const img = document.querySelector('img[src="/bus.svg"]') as any
-  const imgHolder = document.querySelector('img[src="https://maps.gstatic.com/mapfiles/transparent.png"]') as any
-  if (img) {
-    img.style.transform = `rotate(${rotation}deg)`
-    imgHolder!.style.transform = `rotate(${rotation}deg)`
-  }
-}
-
 const markersArray = [] as google.maps.Marker[]
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
@@ -111,7 +102,10 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
     const existingMarker = markersArray.find((marker) => marker.id === location.id)
     if (existingMarker) {
         existingMarker.setPosition(location)
-        rotateImage(direction)
+         existingMarker.setIcon({
+            url: imgString,
+            rotation: direction
+        })
     } else {
         const marker = new Marker({
             map,
@@ -128,7 +122,7 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
             clickFunc(location)
         })
         markersArray.push(marker)
-        rotateImage(direction)
+         map.setCenter(location)
     }
 }
 

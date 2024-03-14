@@ -50,6 +50,8 @@ export enum IconNames {
   'next' = 'next',
   'next2' = 'next2',
   'next_arrow' = 'next_arrow',
+  'offline' = 'offline',
+  'online' = 'online',
   'open-eye' = 'open-eye',
   'outflow' = 'outflow',
   'pause' = 'pause',

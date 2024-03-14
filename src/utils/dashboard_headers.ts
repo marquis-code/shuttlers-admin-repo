@@ -40,7 +40,6 @@ import Waitlist from '@/components/headers/modules/Waitlist/index.vue'
 import WaitlistDetails from '@/components/headers/modules/Waitlist/waitlist-details.vue'
 import SuggestedRoutes from '@/components/headers/modules/Routes/suggested-routes.vue'
 import Charter from '@/components/headers/modules/Charter/index.vue'
-import TripTracking from '@/components/headers/modules/Trips/track-vehicle.vue'
 import TripDetails from '@/components/headers/modules/Trips/trip-details.vue'
 import CampaignRewards from '@/components/headers/modules/Rewards/index.vue'
 import RewardHistory from '@/components/headers/modules/Rewards/reward-history.vue'
@@ -116,7 +115,6 @@ export const headerComponentRouteArray = [
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-waitlist-id-details'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
-    { routes: ['trips-vehicle'], component: TripTracking },
     { routes: ['trips-rental', 'trips-rental-upcoming', 'trips-rental-create'], component: Rental },
     {
         routes: ['trips-type-upcoming-id-trip-details', 'trips-type-upcoming-id-passengers', 'trips-type-upcoming-id-ratings', 'trips-type-upcoming-id-issues',
@@ -124,7 +122,7 @@ export const headerComponentRouteArray = [
             'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials', 'trips-type-completed-id-issues',
             'trips-type-cancelled-id-trip-details', 'trips-type-cancelled-id-passengers'], component: TripDetails
     },
-    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify'], component: GenericHeader },
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify', 'trips-vehicle'], component: GenericHeader },
     { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
     { routes: ['campaigns-valentine'], component: ValentineCampaign },
     { routes: ['campaigns-valentine-id'], component: ValentineCampaignDetails },
