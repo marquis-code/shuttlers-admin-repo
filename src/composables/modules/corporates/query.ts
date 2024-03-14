@@ -16,7 +16,6 @@ export const useQueryCompany = () => {
         loadingQueriedCompany.value = true
         filterData.search.value = query
         const res = await $_get_list(metaObject, filterData) as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
             queriedCompany.value = res.data.data
         }
