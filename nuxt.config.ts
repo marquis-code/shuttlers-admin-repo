@@ -52,6 +52,9 @@ export default {
 		cssPath: '@/assets/css/main.css'
 	},
 	vite: {
+		ssr: {
+			noExternal: ['@googlemaps/js-api-loader']
+		},
 		optimizeDeps: {
 			include: [
 				'fast-deep-equal'

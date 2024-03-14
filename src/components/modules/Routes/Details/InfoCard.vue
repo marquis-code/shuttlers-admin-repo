@@ -1,8 +1,7 @@
 <template>
 	<section>
 		<div v-if="!loading" class="card">
-			<div v-for="(itm, index) in routeDetails" :key="index"
-				class="flex  gap-x-6 items-center py-4 border-b last:border-none">
+			<div v-for="(itm, index) in routeDetails" :key="index" class="flex  gap-x-6 items-center py-4 border-b last:border-none">
 				<p class="text-sm w-[100px] shrink-0">
 					{{ itm.name }}
 				</p>
@@ -22,9 +21,9 @@
 
 <script setup lang="ts">
 import { useAlert } from '@/composables/core/notification'
-import { useRouteIdDetails, useRoutePaymentOptionsById, useTripStartTimeById, useRoutePassengersById, useRouteDriversById } from '@/composables/modules/routes/id'
-import { isEmptyObject } from '@/composables/utils/basics'
-import { environmental_url, getCurrentEnvironmentalUrl } from '@/composables/utils/system'
+import { useRouteIdDetails, useTripStartTimeById } from '@/composables/modules/routes/id'
+import { customer_web_app_url } from '@/composables/utils/system'
+
 const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripStartTimeById()
 const { selectedRoute, loadingRouteDetails: loading, getRouteById } = useRouteIdDetails()
 const routeDetails = computed(() => {
@@ -50,8 +49,20 @@ const routeDetails = computed(() => {
 })
 
 const routeUrl = computed(() => {
-	if (selectedRoute?.value?.slug) {
-		return `${getCurrentEnvironmentalUrl.value}/trips/routes/${selectedRoute?.value.slug}`
+	if (selectedRoute?.value?.id) {
+		switch (import.meta.env.VITE_ENV_ALIAS) {
+			case 'test':
+			case 'TEST':
+				return `${customer_web_app_url.test}/dashboard/discover/${selectedRoute?.value.id}`
+			case 'staging':
+			case 'QA':
+				return `${customer_web_app_url.staging}/dashboard/discover/${selectedRoute?.value.id}`
+			case 'prod':
+			case 'PROD':
+				return `${customer_web_app_url.prod}/dashboard/discover/${selectedRoute?.value.id}`
+			default:
+				return `${customer_web_app_url.test}/dashboard/discover/${selectedRoute?.value.id}`
+		}
 	} else {
 		return ''
 	}
@@ -67,9 +78,9 @@ const computedTripStartTime = computed(() => {
 
 const routeAvailableDays = computed(() => {
 	if (selectedRoute.value?.route_availability_days) {
-			const days = JSON.parse(selectedRoute.value?.route_availability_days)
-	if (!days || !days.length) return 'Not available'
-	return days.length === 7 ? 'Everyday' : days.join(', ')
+		const days = JSON.parse(selectedRoute.value?.route_availability_days)
+		if (!days || !days.length) return 'Not available'
+		return days.length === 7 ? 'Everyday' : days.join(', ')
 	} else {
 		return 'Not available'
 	}
@@ -116,6 +127,4 @@ getRouteById(id)
 
 </script>
 
-<style>
-
-</style>
+<style></style>

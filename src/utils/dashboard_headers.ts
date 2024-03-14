@@ -112,7 +112,7 @@ export const headerComponentRouteArray = [
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-cancelled', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },
     { routes: ['trips-routes-suggested-routes'], component: SuggestedRoutes },
-    { routes: ['trips-routes-create-route'], component: CreateRoute },
+    { routes: ['trips-routes-create'], component: CreateRoute },
     { routes: ['trips-waitlist'], component: Waitlist },
     { routes: ['trips-waitlist-id-details'], component: WaitlistDetails },
     { routes: ['trips-charter'], component: Charter },
