@@ -1,7 +1,5 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
-
 		<main class="card p-0 max-w-3xl">
 			<h1 class="card-header px-6 py-5 border-b">
 				{{ type === 'new' ? 'Add a New' : 'Edit' }} User
@@ -62,18 +60,7 @@
 
 					<div class="field relative">
 						<label for="company">Company (optional)</label>
-						<select v-model="selectedUser.company">
-							<option value="">
-								Select an option
-							</option>
-							<option v-for="company in companies" :key="company.id" :value="company.id">
-								{{
-									company.corporate_name }}
-							</option>
-						</select>
-						<!-- <v-select v-model="selectedUser.company" class="form-group" :options="companies"
-							label="corporate_name" :reduce="(company) => company.id" /> -->
-						<!-- <InputMultiSelectCompanies name="company" obj-key="id" :value="selectedUser.company" @updated="createForm.corporate_id.value = $event" /> -->
+						<InputMultiSelectCompanies name="company" obj-key="id" :value="selectedUser.company" @updated="createForm.corporate_id.value = $event" />
 					</div>
 				</div>
 
@@ -119,5 +106,4 @@ const toggleShow = () => {
 const preventDisableDate = (date) => {
 	date < new Date().setHours(0, 0, 0, 0) || (date > new Date(new Date().getTime() + 28 * 24 * 3600 * 1000))
 }
-
 </script>
