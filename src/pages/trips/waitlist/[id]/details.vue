@@ -96,9 +96,9 @@
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useNotifyWaitlistUser } from '@/composables/modules/waitlist/notifyWaitlistUser'
 import {
-  useWaitlistIdDetails,
-  useWaitlistByItinerary
+  useWaitlistIdDetails
 } from '@/composables/modules/waitlist/id'
+import { useWaitlistByItinerary } from '@/composables/modules/waitlist/getWaitlistByItinerary'
 import useRemoveDuplicates from '@/composables/core/useRemoveDuplicates'
 const { selectedWaitlist, loading, getWaitlistById, filterData, onFilterUpdate, next, prev, moveTo: waitlistMoveTo, total, page } =
   useWaitlistIdDetails()

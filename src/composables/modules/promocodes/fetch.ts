@@ -1,9 +1,10 @@
 import { promotions_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 
+const loadingPromotions = ref(false)
+const promotionsList = ref([] as any)
+
 export const useGetPromotionsList = () => {
-    const loadingPromotions = ref(false)
-    const promotionsList = ref([] as any)
     const { moveTo, metaObject, next, prev } = usePagination()
 
     const { $_get_promotions } = promotions_api

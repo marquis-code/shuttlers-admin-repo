@@ -5,7 +5,7 @@
 		</label>
 		<Skeleton v-if="loading" height="46px" />
 		<VueMultiselect v-else v-model="selectedVehicle" placeholder="Search vehicle" select-label="" :searchable="true" :internal-search="true"
-			:options="vehicles" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" "
+			:options="vehicles" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" " :disabled="isDisabled"
 			@select="handleSelection" @open="is_droped_down = true" @close="is_droped_down = false"
 		>
 			<template v-if="selectedVehicle?.id && !is_droped_down" #selection="">
@@ -30,7 +30,8 @@ const emit = defineEmits(['selected', 'update:modelValue'])
 const props = defineProps({
 	label: { type: String, default: 'Select Vehicle' },
 	modelValue: { type: Object, required: true },
-	entityStatus: { type: String, default: 'all' }
+	entityStatus: { type: String, default: 'all' },
+	isDisabled: { type: Boolean, default: false }
 })
 const { vehicles, loading, getVehicles, getActiveVehicles } = useAllVehicles()
 
