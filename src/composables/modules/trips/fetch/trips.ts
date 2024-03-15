@@ -25,6 +25,7 @@ import {
 
 const { download, loading: downloading } = useDownloadReport()
 
+const total_pages = ref() as any
 const activeTripsList = ref([] as Record<string, any>[])
 const currentRoute = computed(() => {
   return useRoute().fullPath
@@ -46,6 +47,7 @@ const proceedToDownload = async () => {
   useConfirmationModal().closeAlert()
   downloading.value = true
   const route = useRoute()
+  downloading.value = false
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
   const baseURL = `/trips/${
@@ -114,6 +116,7 @@ export const useGetActiveTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         activeTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingActiveTrips.value = false
@@ -154,6 +157,7 @@ export const useGetUpcomingTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         upcomingTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingUpcomingTrips.value = false
@@ -197,6 +201,7 @@ export const useGetCompletedTripsList = () => {
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
         completedTripsList.value = res.data.data
+        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingCompletedTrips.value = false

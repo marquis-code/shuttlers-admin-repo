@@ -274,6 +274,7 @@ export const useGetPartnerEarningSummary = () => {
 
 export const useGetPartnerAccount = () => {
     const loadingAccounts = ref(false)
+    const processingDeleteAccount = ref(false)
     const partnersAccountInformation = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
@@ -283,15 +284,34 @@ export const useGetPartnerAccount = () => {
         loadingAccounts.value = true
 
         const res = await $_get_partner_accounts_by_id(account_sid, metaObject) as CustomAxiosResponse
-
         if (res.type !== 'ERROR') {
-            partnersAccountInformation.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            partnersAccountInformation.value = res?.data
         }
         loadingAccounts.value = false
     }
 
+    const handleRemoveAccount = (account_sid) => {
+        useConfirmationModal().openAlert({
+            title: 'Please Confirm',
+            type: 'NORMAL',
+            desc: 'Are you sure you want to delete this account?',
+            loading: processingDeleteAccount,
+            call_function: () => deletePartnerAccount(account_sid)
+        })
+    }
+
+    const deletePartnerAccount = async (account_sid) => {
+        processingDeleteAccount.value = true
+        const res = await partners_api.$_delete_partner_account(account_sid) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Account was successfully deleted' })
+            useConfirmationModal().closeAlert()
+            getPartnerAccount(account_sid)
+        }
+        processingDeleteAccount.value = false
+    }
+
     setFunction(getPartnerAccount)
 
-    return { getPartnerAccount, loadingAccounts, partnersAccountInformation, moveTo, ...metaObject, next, prev }
+    return { getPartnerAccount, loadingAccounts, partnersAccountInformation, handleRemoveAccount, moveTo, ...metaObject, next, prev, processingDeleteAccount, deletePartnerAccount }
 }

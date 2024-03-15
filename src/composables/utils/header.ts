@@ -1,5 +1,5 @@
 type headstateTypes = {
-    preTitle: string
+    preTitle?: string
     title: string
     loading?: Ref<boolean>
 }

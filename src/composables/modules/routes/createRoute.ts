@@ -156,12 +156,12 @@ export const populateFields = (data: Record<string, any>) => {
   obj.route_code.value = data?.route_code
   obj.desc.value = data?.info?.description
   obj.startLocation.value = {
-    lat: data?.pickup_geometry?.y,
-    lng: data?.pickup_geometry?.x
+    y: data?.pickup_geometry?.y,
+    x: data?.pickup_geometry?.x
   }
   obj.endLocation.value = {
-    lat: data?.destination_geometry?.y,
-    lng: data?.destination_geometry?.x
+    y: data?.destination_geometry?.y,
+    x: data?.destination_geometry?.x
   }
 
   obj.avail_start_date.value = data?.route_availability_start_date
@@ -178,7 +178,7 @@ export const populateFields = (data: Record<string, any>) => {
   obj.payment_mode.value = data?.payment_mode
 }
 
-export const useCreateRoute = () => {
+export const _useCreateRoute = () => {
   const { getRouteDirection, activeRoute, polyLine } = useGetRouteDirections()
   const createRoute = async () => {
     loading.value = true

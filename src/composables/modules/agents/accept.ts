@@ -15,7 +15,7 @@ export const useAcceptRouteSuggestion = () => {
     }
     const accept = async () => {
         useConfirmationModal().closeAlert()
-        useRouter().push('/trips/routes/create-route')
+        useRouter().push('/trips/routes/create')
     }
 
     return {

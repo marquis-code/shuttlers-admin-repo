@@ -1,13 +1,15 @@
 import { Loader } from '@googlemaps/js-api-loader'
+
+import { ref } from 'vue'
 // import { insertScriptTag } from '../utils/system'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
+
 export const loader = new Loader({
 	apiKey: GOOGLE_MAPS_API_KEY as string,
-	libraries: ['places']
+	  libraries: ['places', 'marker', 'drawing'],
+  version: 'beta'
 })
-
-export const InitedLoader = Loader
 
 let map: google.maps.Map
 
@@ -93,15 +95,6 @@ export const loadExternalDataMarkers = async (
     //  const markerCluster = new MarkerClusterer({ markers, map })
 }
 
-const rotateImage = (rotation) => {
-  const img = document.querySelector('img[src="/bus.svg"]') as any
-  const imgHolder = document.querySelector('img[src="https://maps.gstatic.com/mapfiles/transparent.png"]') as any
-  if (img) {
-    img.style.transform = `rotate(${rotation}deg)`
-    imgHolder!.style.transform = `rotate(${rotation}deg)`
-  }
-}
-
 const markersArray = [] as google.maps.Marker[]
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
@@ -109,7 +102,10 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
     const existingMarker = markersArray.find((marker) => marker.id === location.id)
     if (existingMarker) {
         existingMarker.setPosition(location)
-        rotateImage(direction)
+         existingMarker.setIcon({
+            url: imgString,
+            rotation: direction
+        })
     } else {
         const marker = new Marker({
             map,
@@ -126,19 +122,26 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
             clickFunc(location)
         })
         markersArray.push(marker)
-        rotateImage(direction)
+         map.setCenter(location)
     }
 }
 
 export const getPathFromPolyline = async (overviewPolyline) => {
+    if (typeof overviewPolyline !== 'string') return
     const encodedPolyline = JSON.parse(overviewPolyline)
 
     const { encoding } = await google.maps.importLibrary('geometry') as google.maps.GeometryLibrary
     return encoding.decodePath(encodedPolyline.points)
 }
 
+let currentPolyline = null as any
+
 export const loadPolyline = async (pathLine: google.maps.LatLng[]) => {
     const { Polyline } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary
+
+    if (currentPolyline) {
+        currentPolyline.setMap(null) // Step 2: Clear the existing polyline if any
+    }
 
     const polyline = new Polyline({
         path: pathLine,
@@ -148,9 +151,22 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]) => {
         strokeWeight: 3.5
     })
 
+    polyline.setMap(map)
+    currentPolyline = polyline // Update the reference to the current polyline
+
     const bounds = new google.maps.LatLngBounds()
     pathLine.forEach((point) => bounds.extend(point))
     map.fitBounds(bounds)
+}
 
-    polyline.setMap(map)
+export const addPointOnMap = async (location: Coordinate) => {
+    if (!map) return
+    if (!location.lat) return
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+
+    const marker = new Marker({
+        map,
+        position: location
+    })
+      map.setCenter(location)
 }

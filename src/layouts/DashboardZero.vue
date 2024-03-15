@@ -5,7 +5,7 @@
 
 		<div class="main-content">
 			<Headers id="header" />
-			<div class=" overflow-auto relative  h-[87.5vh]">
+			<div class=" overflow-auto relative  h-[88.9vh]">
 				<slot />
 			</div>
 		</div>
@@ -25,7 +25,7 @@ $sidebar-width: 17rem;
 $dasboard_margin: 2rem;
 $content-area-width: calc(100vw - (17rem + 1rem));
 .main-content {
-  background-color: var(--grey);
+  background-color: #FDFDFD;
   min-height: 90vh;
   margin-left: $dasboard_margin;
   @apply border-2 border-grey9 rounded-3xl fixed bottom-5 top-5   w-full;
@@ -39,7 +39,7 @@ $content-area-width: calc(100vw - (17rem + 1rem));
   & > .main-content {
     width: 100%;
     margin-left: 0;
-    background-color: var(--grey);
+    background-color: #FDFDFD;
 
     @media screen and (min-width: 768px) {
       width: $content-area-width;
