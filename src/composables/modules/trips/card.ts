@@ -1,4 +1,6 @@
-import { useGetActiveTripsList, useGetCompletedTripsList, useGetUpcomingTripsList } from './fetch'
+import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
+import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch/upcomingTrips'
+import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch/completedTrips'
 
 export const useTripCardSearch = () => {
     const { activeTripsList, filterData: active_filterData, getActiveTrips, loadingActiveTrips } = useGetActiveTripsList()

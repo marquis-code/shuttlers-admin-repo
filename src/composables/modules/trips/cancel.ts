@@ -1,4 +1,4 @@
-import { useGetCompletedTripsList } from './fetch'
+import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch/completedTrips'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useTripsModal } from '@/composables/core/modals'

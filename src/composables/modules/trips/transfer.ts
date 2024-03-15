@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useGetCompletedTripsList } from './fetch'
+import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch/completedTrips'
 import { useTripsModal } from '@/composables/core/modals'
 import { trips_api, partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'

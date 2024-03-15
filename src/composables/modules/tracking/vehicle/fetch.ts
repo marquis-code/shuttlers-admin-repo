@@ -1,5 +1,5 @@
 import { useTripTracking } from '../index'
-import { useGetActiveTripsList } from '../../trips/fetch'
+import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 
 export const useVehicleTracking = () => {
     const { activeTripsList, getActiveTrips, loadingActiveTrips } = useGetActiveTripsList()

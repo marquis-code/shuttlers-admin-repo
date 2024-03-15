@@ -5,7 +5,7 @@
 			<template #header>
 				<section class="flex items-center flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadTrips" />
 				</section>
 			</template>
 			<template #item="{ item }">
@@ -60,17 +60,19 @@
 </template>
 <script setup lang="ts">
 import moment from 'moment'
-import { useGetActiveTripsList } from '@/composables/modules/trips/fetch'
+import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
 import { convertToCurrency } from '@/composables/utils/formatter'
+import { useDownloadTrips } from '@/composables/modules/trips/fetch'
 
 const { initializeTripUpdate, initializeEndTrips } = useTripOptions()
+const { downloadTrips } = useDownloadTrips()
 const { initLogIssues } = useCreateIssues()
 const { selectedTrip } = useCompletedTripIdDetails()
-const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetActiveTripsList()
+const { getActiveTrips, loadingActiveTrips, activeTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetActiveTripsList()
 getActiveTrips()
 const formattedActiveTripsList = computed(() =>
  activeTripsList.value.map((i:any, index) => {
