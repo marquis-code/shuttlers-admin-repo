@@ -1,8 +1,8 @@
 <template>
-	<section class="flex flex-col max-w-full  z-10">
+	<section class="flex flex-col max-w-full  z-10 border rounded-lg border-gray-300">
 		<slot name="header" />
 		<slot name="sub_header" />
-		<div class="border border-gray-200 md:rounded-b-lg" :class="[hasOverflow ? 'overflow-auto' : '']">
+		<div class="" :class="[hasOverflow ? 'overflow-auto' : '']">
 			<table class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
@@ -23,7 +23,7 @@
 				<div />
 				<tbody v-if="!loading">
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
-						'py-8 font-normal border-t text-sm h-[52px] odd:bg-[#F9FBFD] bg-light',
+						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
 					]" @click.stop="option(data)">
 						<td v-if="checkbox" class="pl-4">
@@ -40,7 +40,7 @@
 							</slot>
 						</td>
 					</tr>
-					<div class="h-16" />
+					<div :class="[!loading ? 'h-0' : 'h-16']" />
 				</tbody>
 				<tbody v-else>
 					<tr v-for="n in 3" :key="n" class="border-t border-gray50 py-8 font-normal  text-sm h-[52px]">
@@ -57,7 +57,7 @@
 				<span class="text-gray-400 font-medium pb-8">No records available</span>
 			</div>
 		</div>
-		<slot name="footer" />
+		<slot name="footer" class="border-t-4 border-gray-500" />
 	</section>
 </template>
 
