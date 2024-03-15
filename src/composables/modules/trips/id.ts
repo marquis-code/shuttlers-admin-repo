@@ -1,6 +1,10 @@
 import { ref, computed } from 'vue'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useGetUpcomingTripsList, useGetActiveTripsList, useGetCompletedTripsList, useGetCancelledTripsList } from '@/composables/modules/trips/fetch'
+import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
+import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch/upcomingTrips'
+import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch/completedTrips'
+import { useGetCancelledTripsList } from '@/composables/modules/trips/fetch/cancelledTrips'
+
 import { usePagination } from '@/composables/utils/table'
 const { moveTo: financialsMoveTo, metaObject, next, prev, setFunction } = usePagination()
 

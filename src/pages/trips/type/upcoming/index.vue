@@ -5,7 +5,7 @@
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadTrips" />
 				</section>
 			</template>
 			<template #item="{ item }">
@@ -51,14 +51,16 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch'
+import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch/upcomingTrips'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast, convertToCurrency } from '@/composables/utils/formatter'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
 import { isProdEnv } from '@/composables/utils/system'
+import { useDownloadTrips } from '@/composables/modules/trips/fetch'
 
-const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetUpcomingTripsList()
+const { downloadTrips } = useDownloadTrips()
+const { getUpcomingTrips, loadingUpcomingTrips, upcomingTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetUpcomingTripsList()
 const { selectedTrip } = useCompletedTripIdDetails()
 getUpcomingTrips()
 

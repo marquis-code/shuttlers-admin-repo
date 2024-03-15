@@ -5,7 +5,7 @@
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
-					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadReport" />
+					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadTrips" />
 				</section>
 			</template>
 			<template #item="{ item }">
@@ -55,7 +55,7 @@
 </template>
 <script setup lang="ts">
 import moment from 'moment'
-import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch'
+import { useGetCompletedTripsList } from '@/composables/modules/trips/fetch/completedTrips'
 import { useCreateIssues } from '@/composables/modules/trips/issues'
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
@@ -63,13 +63,15 @@ import { useUser } from '@/composables/auth/user'
 import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
 import { convertToCurrency } from '@/composables/utils/formatter'
+import { useDownloadTrips } from '@/composables/modules/trips/fetch'
 
+const { downloadTrips } = useDownloadTrips()
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
 const { initTransfer } = useTransferTrip()
 const { initCancelTrip } = useCancelTrip()
 const { selectedTrip } = useCompletedTripIdDetails()
-const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev, downloadReport } = useGetCompletedTripsList()
+const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
 getCompletedTrips()
 const router = useRouter()
 

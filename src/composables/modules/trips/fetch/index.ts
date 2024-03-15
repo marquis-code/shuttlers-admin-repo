@@ -1,2 +1,2 @@
-export * from './trips'
+export * from './downloadTrips'
 export * from './others'
