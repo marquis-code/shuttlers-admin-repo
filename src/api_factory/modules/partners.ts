@@ -140,5 +140,9 @@ export const partners_api = {
 	$_validate_account_number: (bank_code: string| number, account_number: string| number) => {
 		const url = `/banks/resolve-accounts?bank_code=${bank_code}&account_number=${account_number}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_link_vehicles: (payload:Record<string, any>[]) => {
+		const url = '/partners/batch-assign-vehicles'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

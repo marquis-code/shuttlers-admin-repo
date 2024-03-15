@@ -27,26 +27,26 @@ export const usePartnerIdDetails = () => {
     return { selectedPartner, loading, getPartnerById }
 }
 
+const loadingPartnerVehicles = ref(false)
 export const useGetPartnersVehiclesList = () => {
-    const loading = ref(false)
     const partnersVehiclesList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref('')
+        status: ref('active')
     }
 
     const { $_get_partner_vehicles_by_id } = partners_api
 
     const getPartnersVehiclesList = async () => {
-        loading.value = true
+        loadingPartnerVehicles.value = true
         // partnerId.value = id
         const res = await $_get_partner_vehicles_by_id(Number(selectedPartner.value.id), metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             partnersVehiclesList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
-        loading.value = false
+        loadingPartnerVehicles.value = false
     }
     setFunction(getPartnersVehiclesList)
 
@@ -60,7 +60,7 @@ export const useGetPartnersVehiclesList = () => {
         }
     }
 
-    return { getPartnersVehiclesList, loading, partnersVehiclesList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    return { getPartnersVehiclesList, loadingPartnerVehicles, partnersVehiclesList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
 export const useGetPartnersDriversList = (account_sid: string) => {

@@ -97,13 +97,13 @@ instanceArray.forEach((instance) => {
 				...err.response
 			}
 		} else if (err.response.status === 500) {
-			useAlert().openAlert({ type: 'ERROR', msg: err.response.data.message })
+			useAlert().openAlert({ type: 'ERROR', msg: err?.response?.data?.message || err?.response?.data?.error || 'An error occured' })
 			return {
 				type: 'ERROR',
 				...err.response
 			}
 		} else if (err.response.status === 409) {
-			useAlert().openAlert({ type: 'ERROR', msg: err.response.data.message })
+			useAlert().openAlert({ type: 'ERROR', msg: err?.response?.data?.message || err?.response?.data?.error || 'An error occured' })
 		}
 	}
 )

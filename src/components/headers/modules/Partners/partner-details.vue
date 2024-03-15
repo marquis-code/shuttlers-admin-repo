@@ -67,7 +67,7 @@ const dropdownChildren = computed(() => [
 
 const vehicleDropdownChildren = computed(() => [
 	{ name: 'Link Vehicle', func: () => { usePartnerModal().openLinkVehicle() } },
-	{ name: 'Batch Linking', func: () => { alert('batch linking') } }
+	{ name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkVehicle() } }
 ])
 </script>
 
