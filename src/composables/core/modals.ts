@@ -66,6 +66,7 @@ import EmployeeExemption from '@/components/modals/modules/companies/EmployeeExe
 import ChangeFleetDriver from '@/components/modals/modules/fleets/ChangeFleetDriver.vue'
 import RejectShuttleRequest from '@/components/modals/modules/companies/RejectShuttleRequest.vue'
 import DeductPayout from '@/components/modals/modules/partners/payouts/Deduct.vue'
+import AddBankAccount from '@/components/modals/modules/partners/AddBankAccount.vue'
 import MarkMultipleAsPaid from '@/components/modals/modules/partners/payouts/Mark_multiple.vue'
 import PairReturnTrip from '@/components/modals/modules/Routes/Itineraries/PairReturnTrip.vue'
 import TransferTrip from '@/components/modals/modules/trips/TransferTrip.vue'

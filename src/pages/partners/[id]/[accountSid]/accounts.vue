@@ -3,11 +3,22 @@
 		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingAccounts" :headers="tableFields" :table-data="formattedPartnersAccountsList" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" />
+				<TableFilter :filter-type="{ showSearchBar: true }" />
+				<div class="flex justify-end items-end bg-white border-x border-gray-300 p-3 border-t border-gray-300">
+					<button class="bg-black text-white px-3 py-2 text-sm rounded-md" @click="usePartnerModal().openAddBankAccount()">
+						Add Account
+					</button>
+				</div>
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+				<span v-if="item.table_index">
+					{{ item.data.table_index }}
+				</span>
+				<span v-if="item.isDefault">
+					{{ item.data.isDefault ? 'Assigned' : 'Not Assigned' }}
+				</span>
+				<span v-if="item.partnerId">
+					<button :disabled="processingDeleteAccount" class="bg-white text-rose-500 border-2 border-rose-600 px-3 py-2 rounded-lg font-semibold" @click="handleRemoveAccount(item.data.id)">{{ processingDeleteAccount ? 'processing..' : 'Remove' }}</button>
 				</span>
 			</template>
 		</Table>
@@ -15,7 +26,8 @@
 </template>
 <script setup lang="ts">
 import { useGetPartnerAccount } from '@/composables/modules/partners/id'
-const { getPartnerAccount, loadingAccounts, partnersAccountInformation } = useGetPartnerAccount()
+import { usePartnerModal } from '@/composables/core/modals'
+const { getPartnerAccount, loadingAccounts, partnersAccountInformation, handleRemoveAccount, processingDeleteAccount } = useGetPartnerAccount()
 const sid = useRoute().params.accountSid as string
 getPartnerAccount(sid)
 
@@ -24,16 +36,12 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
-const dropdownChildren = computed(() => [
-	{ name: 'Deduct partner earnings', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'View financials', class: '!text-red' }
-])
-
 const formattedPartnersAccountsList = computed(() => {
-	if (!partnersAccountInformation.value.length) return []
+	if (!partnersAccountInformation?.value?.length) return []
 	return partnersAccountInformation.value.map((item, index) => {
 		return {
-			...item
+			...item,
+			table_index: index + 1
 		}
 	})
 })
@@ -62,7 +70,7 @@ const tableFields = ref([
 	},
 	{
 		text: 'ACTIONS',
-		value: 'id'
+		value: 'partnerId'
 	}
 ])
 </script>

@@ -3,13 +3,10 @@
 		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter
-					:filter-type="{
-						showSearchBar: true,
-						showDateRange: true
-					}"
-					@filter="onFilterUpdate"
-				/>
+				<TableFilter :filter-type="{
+					showSearchBar: true,
+					showDateRange: true
+				}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.created_at">
@@ -20,16 +17,19 @@
 					<span>{{ item?.data?.title ?? 'N/A' }}</span>
 				</div>
 				<div v-if="item.amount">
-					<span :class="[ item.data.type === 'credit' ? 'text-green': 'text-red']">
+					<span :class="[item.data.type === 'credit' ? 'text-green' : 'text-red']">
 						{{ convertToCurrency(item?.data?.amount) }}
 					</span>
 				</div>
 				<div v-if="item.payment_source">
-					<span>{{ item?.data?.payment_source === 'instant_payment' ? `${item?.data?.payment_source}(Corporate pay)` : item?.data?.payment_source }}</span>
+					<span>{{ item?.data?.payment_source }}</span>
+					<br>
+					<span v-if="item.data.payment_gateway">({{ item.data.payment_gateway }})</span>
 				</div>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)"
+					@next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -48,27 +48,27 @@ const onRowClicked = (data) => {
 }
 
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 
 const tableFields = ref([
-    {
-        text: 'TRANSACTION DATE',
-        value: 'created_at'
-    },
-    {
-        text: 'DESCRIPTION',
-        value: 'title'
-    },
-    {
-        text: 'AMOUNT',
-        value: 'amount'
-    },
-    {
-        text: 'SOURCE',
-        value: 'payment_source'
-    }
+	{
+		text: 'TRANSACTION DATE',
+		value: 'created_at'
+	},
+	{
+		text: 'DESCRIPTION',
+		value: 'title'
+	},
+	{
+		text: 'AMOUNT',
+		value: 'amount'
+	},
+	{
+		text: 'SOURCE',
+		value: 'payment_source'
+	}
 ])
 
 </script>

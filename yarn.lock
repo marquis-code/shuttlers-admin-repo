@@ -6901,6 +6901,11 @@ negotiator@0.6.3, negotiator@^0.6.3:
   resolved "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
 
+ng-banks@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ng-banks/-/ng-banks-2.1.1.tgz#22d3402cf7dacc5d5a9c74a174d3ae4e05b1113d"
+  integrity sha512-vmYB5ru1DO1bNTfMFiCGJKrd9qOJXNoTYJZ/KHgN3cA1L1aJt8GMVHtzJCuP1XvIxlMuTVnFteWzxPvpM+nklg==
+
 nitropack@^2.5.2:
   version "2.8.1"
   resolved "https://registry.npmjs.org/nitropack/-/nitropack-2.8.1.tgz"

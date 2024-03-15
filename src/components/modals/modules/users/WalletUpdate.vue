@@ -24,13 +24,10 @@
 			</div>
 			<div class="field relative">
 				<label for="source">Account</label>
-				<select id="source" v-model="form.source" class="input-field" required>
-					<option value="main_balance">
-						Main Balance
+				<select v-for="item in accountSource" id="source" :key="item.value" v-model="form.source" class="input-field" required>
+					<option :value="item.value">
+						{{ item.name }}
 					</option>
-					<!-- <option value="company_balance">
-						Company Balance
-					</option> -->
 				</select>
 			</div>
 			<div class="flex justify-between items-center gap-x-10">
@@ -78,4 +75,30 @@ const id = String(route.params.id)
 	populateWalletUpdateForm(payload)
 	updateUserWallet(id, wallet_id)
  }
+
+ const creditAccountSource = ref([
+	{
+		name: 'Main Balance',
+		value: 'main_balance'
+	},
+	{
+		name: 'Company Balance',
+		value: 'company_balance'
+	}
+ ])
+
+ const debitAccountSource = ref([
+	{
+		name: 'Main Balance',
+		value: 'main_balance'
+	},
+	{
+		name: 'Company Balance',
+		value: 'company_balance'
+	}
+ ])
+
+ const accountSource = computed(() => {
+	return walletActionType.value === 'debit' ? debitAccountSource.value : creditAccountSource.value
+ })
 </script>
