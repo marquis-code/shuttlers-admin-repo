@@ -17,5 +17,17 @@ export const useAgentIdDetails = () => {
         AgentByIdloading.value = false
         return res.data
     }
-    return { selectedAgent, AgentByIdloading, getAgentById }
+    return { selectedAgent, AgentByIdloading, getAgentById, selectedId }
+}
+
+export const useGetAgentRouteSuggestionsById = () => {
+    const AgentSuggestedRoute = ref({} as any)
+    const getAgentRouteSuggestionsById = async (id: string) => {
+        const res = await agents_api.$_get_agent_route_suggestions_by_id(id) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            AgentSuggestedRoute.value = res.data
+            return res.data
+        }
+    }
+    return { getAgentRouteSuggestionsById, AgentSuggestedRoute }
 }

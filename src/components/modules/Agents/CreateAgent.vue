@@ -3,10 +3,10 @@
 
 	<main class="card p-0 ">
 		<h1 class="card-header px-6 py-5 border-b">
-			{{ type === 'new' ? 'Enter agents details' : 'Edit' }}  User
+			{{ type === 'new' ? 'Enter agents details' : 'Edit agents details' }}
 		</h1>
 
-		<form class="flex flex-col gap-4 px-6 py-12" @submit.prevent="type === 'new' ? createAgent() : ''">
+		<form class="flex flex-col gap-4 px-6 py-12" @submit.prevent="type === 'new' ? createAgent() : editAgent()">
 			<FileUpload
 				v-model="createForm.avatar.value"
 			/>
@@ -54,8 +54,8 @@
 			</div>
 
 			<div>
-				<button type="submit" class="btn-primary ml-auto mt-12" :disabled="createLoading">
-					<span v-if="!createLoading">{{ type === 'new' ? 'Create' : 'Edit' }}	 Agent</span>
+				<button type="submit" class="btn-primary ml-auto mt-12" :disabled="createLoading || editLoading">
+					<span v-if="!createLoading && !editLoading">{{ type === 'new' ? 'Create' : 'Edit' }}	 Agent</span>
 					<Spinner v-else />
 				</button>
 			</div>
@@ -65,10 +65,12 @@
 
 <script lang="ts" setup>
 import { useCreateAgents } from '@/composables/modules/agents/create'
+import { useEditAgents } from '@/composables/modules/agents/edit'
 
 const { createAgent, createForm, loading: createLoading } = useCreateAgents()
+const { editAgent, loading: editLoading, initForm } = useEditAgents()
 
- defineProps({
+const props = defineProps({
 	id: {
 		type: String,
 		required: false,
@@ -80,6 +82,10 @@ const { createAgent, createForm, loading: createLoading } = useCreateAgents()
 		default: 'new'
 	}
 })
+
+if (props.type === 'edit') {
+	initForm(props.id)
+}
 const showPassword = ref(false)
 const toggleShow = () => {
 	showPassword.value = !showPassword.value
