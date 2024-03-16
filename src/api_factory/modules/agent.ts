@@ -15,8 +15,10 @@ export const agents_api = {
 		const url = `/sales-agent-users?sales_agent_account_id=${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_agent_suggested_routes: (id: string) => {
-		const url = `/sales-route-suggestions?agent_account_id=${id}`
+	$_get_agent_suggested_routes: (id: string, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/sales-route-suggestions?${queryParams}&agent_account_id=${id}`
+
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_agent: (payload: any) => {
@@ -27,5 +29,4 @@ export const agents_api = {
 		const url = `/sales-route-suggestions/${id}/decline`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
-
 }

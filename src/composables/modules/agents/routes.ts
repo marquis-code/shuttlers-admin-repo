@@ -4,16 +4,25 @@ import { usePagination } from '@/composables/utils/table'
 import { isValidJsonString } from '@/composables/utils/formatter'
 
 const agentsRoute = ref([] as any)
+const selectedAgentId = ref('')
 
 export const useGetAgentsRoutes = () => {
+    const filterOptions = [{ name: 'Pending review', value: 'pending_review' }, { name: 'Not Submitted', value: 'not_submitted' }, { name: 'Approved routes', value: 'approved' }, { name: 'Declined routes', value: 'declined' }]
+    const filterData = {
+        approval_status: ref('pending_review')
+    }
+        watch([filterData.approval_status], (val) => {
+        getAgentsRoute()
+    })
+
     const loading = ref(false)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
-    const getAgentsRoute = async (id:string) => {
+    const getAgentsRoute = async () => {
         agentsRoute.value = []
         loading.value = true
 
-        const response = await agents_api.$_get_agent_suggested_routes(id) as CustomAxiosResponse
+        const response = await agents_api.$_get_agent_suggested_routes(selectedAgentId.value, filterData) as CustomAxiosResponse
 
         if (response.type !== 'ERROR') {
             agentsRoute.value = response.data.data.map((data) => {
@@ -34,5 +43,5 @@ export const useGetAgentsRoutes = () => {
     }
     setFunction(getAgentsRoute)
 
-    return { getAgentsRoute, loading, agentsRoute, moveTo, ...metaObject, next, prev }
+    return { getAgentsRoute, loading, agentsRoute, moveTo, ...metaObject, next, prev, filterOptions, filterData, selectedAgentId }
 }

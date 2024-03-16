@@ -3,7 +3,7 @@
 		<article v-for="data in activeTripsList" :key="data.id" class="bg-grey10 p-1.5 rounded-2xl flex-col gap-1.5 flex ">
 			<div class="flex justify-between flex-wrap md:flex-nowrap gap-1">
 				<RouteDescription :destination="data.route.destination" :pickup="data.route.pickup" class="w-7/12" />
-				<AvailabiltyBadge :available="true" class=" ml-auto" />
+				<AvailabiltyBadge :available="data.status" class=" ml-auto" />
 			</div>
 
 			<div class="bg-light flex flex-col border rounded-xl p-3">

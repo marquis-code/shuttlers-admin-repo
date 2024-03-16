@@ -8,7 +8,8 @@ export const useVehicleTracking = () => {
         await getActiveTrips()
         watch(activeTripsList, () => {
             if (activeTripsList.value.length > 0) {
-                    activeTripsList.value.forEach((trips) => {
+                activeTripsList.value.forEach((trips) => {
+                trips.status = false
                 listenToSpecificTripLocationAndAddtoMap(trips.id, () => {})
             })
             }

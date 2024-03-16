@@ -105,6 +105,7 @@ import { useUserModal } from '@/composables/core/modals'
 import { useCreateUsers } from '@/composables/modules/users/create'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useDeleteBusCaptains } from '@/composables/modules/users/id'
+
 const { suspendUsers, updateUserWallet, loading, setUpdateWalletActionType } = useCreateUsers()
 const { deleteBusCaptain, loading: loadingBusCaptains } = useDeleteBusCaptains()
 const props = defineProps({
@@ -113,7 +114,7 @@ const props = defineProps({
         required: true
     },
 	busCaptainsRoutes: {
-		type: Array,
+		type: Array as PropType<any[]>,
         required: true
 	},
 	busCaptainsLoader: {

@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="relative">
 		<label class="flex gap-5 mb-4 !cursor-pointer" for="upload">
 			<img :src="image_ref || `/user.svg`" name="user" class="w-32 border rounded-full max-h-[126px] max-w-[126px] min-h-[126px] min-w-[126px] cursor-pointer">
 			<div

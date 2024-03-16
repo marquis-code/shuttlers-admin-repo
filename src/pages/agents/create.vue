@@ -1,4 +1,4 @@
-<template>
+e<template>
 	<div>
 		<ModulesAgentsCreateAgent id="" type="new" />
 	</div>

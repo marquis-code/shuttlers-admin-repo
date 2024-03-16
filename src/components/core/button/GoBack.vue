@@ -3,7 +3,7 @@
 		<NuxtLink v-if="url" :to="url" class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2 w-fit">
 			{{ title }}
 		</NuxtLink>
-		<button v-else class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2 w-fit" @click="$router.go(-1)">
+		<button v-else class="text text-xs bg-gray-200 text-gray-900 rounded-lg px-3 py-2 w-fit" type="button" @click="$router.go(-1)">
 			{{ title }}
 		</button>
 	</div>

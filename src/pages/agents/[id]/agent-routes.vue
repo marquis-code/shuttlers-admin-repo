@@ -1,6 +1,14 @@
 <template>
-	<main class="flex flex-col gap-6">
-		<ButtonGoBack />
+	<section v-if="!loading && !AgentByIdloading" class="absolute top-0 z-30 bg-white inset-x-0 py-4 px-10">
+		<span v-for="filter in filterOptions" :key="filter.value"
+			class="px-5  font-bold text-[13px] py-2.5 rounded-lg cursor-pointer"
+			:class="[filterData.approval_status.value === filter.value ? 'text-green bg-neut1 ':'']"
+			@click="filterData.approval_status.value = filter.value"
+		>
+			{{ filter.name }}
+		</span>
+	</section>
+	<main class="flex flex-col gap-6 mt-20">
 		<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
@@ -51,14 +59,15 @@ import { useDeclineRouteSuggestion } from '@/composables/modules/agents/decline'
 import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev, selectedAgentId, filterOptions, filterData } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
 
 watch(selectedAgent, (value) => {
 	if (value.sales_agent_account_id) {
-		getAgentsRoute(value.sales_agent_account_id)
+		selectedAgentId.value = value.sales_agent_account_id
+		getAgentsRoute()
 	} else if (Object.keys(value).length && !value.sales_agent_account_id) {
 		useAlert().openAlert({ type: 'ERROR', msg: 'sales_agent_account_id not found' })
 	}

@@ -86,9 +86,9 @@
 			<p class="text-gray-500 text-sm">
 				STATUS
 			</p>
-			<p :class="[selectedUser.active === '1' ? 'text-green-500' : 'text-orange-700']" class="text-sm">
+			<p :class="[selectedUser.sales_agent_account_active === '1' ? 'text-green-500' : 'text-orange-700']" class="text-sm">
 				{{
-					selectedUser.active === '1' ? 'Active' : 'Inactive'
+					selectedUser.sales_agent_account_active === '1' ? 'Active' : 'Inactive'
 				}}
 			</p>
 		</div>
@@ -97,6 +97,9 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { useSuspendAgent } from '@/composables/modules/agents/suspend'
+
+const { suspendAgent, suspend } = useSuspendAgent()
 
 const props = defineProps({
     selectedUser: {
@@ -112,7 +115,7 @@ const dropdownChildren = computed(() => [
 			useRouter().push(`/agents/${data.id}/edit`)
 		}
 	},
-	{ name: 'Make inactive', func: () => { } }
+	{ name: `${props.selectedUser.sales_agent_account_active === '1' ? 'Suspend' : 'Un-suspend'}`, func: (data) => { suspend(data) }, class: '!text-red' }
 
 ])
 

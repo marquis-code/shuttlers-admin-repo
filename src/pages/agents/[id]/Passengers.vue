@@ -1,6 +1,5 @@
 <template>
 	<main class="flex flex-col gap-6">
-		<ButtonGoBack />
 		<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsPassenger" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"

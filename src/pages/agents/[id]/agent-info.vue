@@ -45,7 +45,7 @@ const id = useRoute().params.id as string
 
 const { getAgentById, AgentByIdloading, selectedAgent } = useAgentIdDetails()
 
-	getAgentById(id)
+getAgentById(id)
 
 definePageMeta({
 	layout: 'dashboard',
