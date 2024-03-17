@@ -40,7 +40,8 @@ export const useGetPartnersVehiclesList = () => {
     const getPartnersVehiclesList = async () => {
         loadingPartnerVehicles.value = true
         // partnerId.value = id
-        const res = await $_get_partner_vehicles_by_id(Number(selectedPartner.value.id), metaObject, filterData) as CustomAxiosResponse
+        const partnerId = useRoute().params.id as string
+        const res = await $_get_partner_vehicles_by_id(Number(partnerId), metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             partnersVehiclesList.value = res.data.data

@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<ButtonGoBack class="mb-6" />
-		<Table :has-index="true" :page="page" :loading="loading" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
+		<Table :has-index="true" :page="page" :loading="loadingPartnerVehicles" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" @filter="onFilterUpdate" />
 			</template>
@@ -30,7 +30,7 @@
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingPartnerVehicles" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
-const { getPartnersVehiclesList, loading, partnersVehiclesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
+const { getPartnersVehiclesList, loadingPartnerVehicles, partnersVehiclesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
 const id = Number(useRoute().params.id)
 getPartnersVehiclesList()
 

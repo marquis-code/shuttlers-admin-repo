@@ -8,7 +8,7 @@
 			<div class="grid grid-cols-2 gap-4">
 				<div class="flex flex-col gap-2">
 					<label class="label">Reward name</label>
-					<input v-model="reward_name" required type="text" class="input-field" @change="generatePrefix" placeholder="Enter reward name">
+					<input v-model="reward_name" required type="text" class="input-field" placeholder="Enter reward name" @change="generatePrefix">
 				</div>
 				<div class="flex flex-col gap-2">
 					<label class="label">Prefix</label>

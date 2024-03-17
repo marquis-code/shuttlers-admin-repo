@@ -1,29 +1,56 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Batch Link Vehicle"
+		title="Link Vehicles With Plate Numbers"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="initlinkVehicle">
-			<div class="flex flex-col gap-1">
-				<p class="text-base text-dark font-medium">
-					Batch link a vehicle
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="initlinkVehicleWithPlateNumber">
+			<div v-if="file && plate_no_errors.length" class="flex flex-col gap-1">
+				<p class="text-xs text-red font-medium">
+					The following plate numbers are invalid!. Please correct them and try again.
 				</p>
-				<p class="text-sm text-grey5">
-					Upload vehicles plate number (CSV only)
-				</p>
-				<a href="/docs/Vehicles_batch_linking_template.csv" download="Vehicles_batch_linking_template" class="text-sm text-green7 font-medium">
+				<div class="flex gap-2 ">
+					<p v-for="n,i in plate_no_errors" :key="i" class="p-2 border border-red rounded-md text-center text-sm px-4 text-red font-medium">
+						{{ n?.vehicle_id }}
+					</p>
+				</div>
+			</div>
+
+			<div class="flex items-center gap-4 justify-between">
+				<div class="flex flex-col gap-0">
+					<p class="text-base text-dark font-medium">
+						Batch link a vehicle
+					</p>
+					<p class="text-sm text-grey5">
+						Upload vehicles plate number (CSV only)
+					</p>
+				</div>
+				<a href="/template/Vehicles_batch_linking_template.csv" download="Vehicles_batch_linking_template" class="underline text-sm text-green7 font-medium">
 					Download CSV Template
 				</a>
 			</div>
 
-			<div class="field relative">
-				<label class="label">Upload document</label>
-				<input type="file" class="w-full" @change="onChange">
+			<input id="csvPlateNumber" type="file" class="hidden" accept=".csv" @change="onChange">
+
+			<div class="field relative cursor-pointer bg-grey p-3 rounded-lg" @click="selectFile">
+				<p class="text-sm text-dark font-bold">
+					Upload document
+				</p>
+				<p class="text-xs text-grey5">
+					File size should be a max of 500kb
+				</p>
 			</div>
 
-			<div class="bg-dark p-4 flex items-center gap-4 justify-between">
-				<p>{{ file?.name }}</p>
-				<Icon name="close" class="text-light w-4" />
+			<div v-if="file" class="bg-dark p-4 flex items-center gap-4 justify-between rounded-lg">
+				<p class="text-light text-sm">
+					{{ file?.name }}
+				</p>
+				<Icon name="close" class="text-light w-4 cursor-pointer" @click="clearFile" />
+			</div>
+
+			<div v-if="file" class="flex gap-2 flex-wrap">
+				<p v-for="n in plate_numbers" :key="n" class="p-2 border rounded-md text-center text-sm px-4 font-medium">
+					{{ n }}
+				</p>
 			</div>
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
@@ -35,19 +62,27 @@
 
 <script setup lang="ts">
 import Papa from 'papaparse/papaparse.js'
-import { useLinkVehicle } from '@/composables/modules/partners'
+import { usePlateNumberToLinkVehicle } from '@/composables/modules/partners'
 
-const { loading, vehicles, initlinkVehicle } = useLinkVehicle()
+const { loading, plate_no_errors, plate_numbers, initlinkVehicleWithPlateNumber, clearObj } = usePlateNumberToLinkVehicle()
 const enableButton = computed(() => {
-	return !!(vehicles.value.length)
+	return !!(plate_numbers.value.length)
 })
-
-const plate_numbers = ref([]) as Ref<string[]>
 const file = ref(null) as Ref<any>
+
+const selectFile = () => {
+    const x = document.querySelector('#csvPlateNumber') as HTMLInputElement
+    x.click()
+}
+
+const clearFile = () => {
+    file.value = null
+    clearObj()
+}
 
 const onChange = (event:any) => {
 	file.value = event.target.files[0]
-	console.log(file.value)
+    plate_no_errors.value = []
 
 	if (file.value) {
 		Papa.parse(file.value, {
@@ -59,9 +94,11 @@ const onChange = (event:any) => {
 			}
 		})
 	}
+    const x = document.querySelector('#csvPlateNumber') as any
+    x.value = null
 }
 
-onBeforeUnmount(() => vehicles.value = [])
+onBeforeUnmount(() => clearObj())
 </script>
 
 <style scoped>
