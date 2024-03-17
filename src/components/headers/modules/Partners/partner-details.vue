@@ -5,7 +5,7 @@
 		</template>
 		<template #actions>
 			<div class="flex items-center gap-3">
-				<ButtonIconDropdown v-if="isVehiclePage || isDriverPage"
+				<ButtonIconDropdown v-if="!isProdEnv && (isVehiclePage || isDriverPage)"
 					class="bg-black font-medium text-white rounded-lg" :button-text="isVehiclePage ? 'Link Vehicle' : 'Link Driver'"
 					:children="isVehiclePage ? vehicleDropdownChildren : driverDropdownChildren"
 					class-name="w-fit"
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { usePartnerModal } from '@/composables/core/modals'
 import { usePartnerIdDetails, useSuspendPartner, useUpdatePartnerInfo, useUpdatePartnerPassword } from '@/composables/modules/partners'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { selectedPartner, getPartnerById } = usePartnerIdDetails()
 const { initSuspension } = useSuspendPartner()
@@ -78,8 +79,8 @@ const vehicleDropdownChildren = computed(() => [
 ])
 
 const driverDropdownChildren = computed(() => [
-	{ name: 'Link Driver', func: () => { alert('link driver') } },
-	{ name: 'Batch Linking', func: () => { alert('batch link driver') } }
+	{ name: 'Link Driver', func: () => { usePartnerModal().openLinkDriver() } }
+	// { name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkDriver } }
 ])
 </script>
 

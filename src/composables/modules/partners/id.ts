@@ -64,42 +64,42 @@ export const useGetPartnersVehiclesList = () => {
     return { getPartnersVehiclesList, loadingPartnerVehicles, partnersVehiclesList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
-export const useGetPartnersDriversList = (account_sid: string) => {
-    const loading = ref(false)
+const loadingPartnerDriver = ref(false)
+export const useGetPartnersDriversList = () => {
     const partnersDriversList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref('')
+        status: ref('active')
     }
 
     const { $_get_partner_drivers_by_id } = partners_api
 
-    const getPartnersDriversList = async (account_sid:string) => {
-        loading.value = true
-
+    const getPartnersDriversList = async () => {
+        loadingPartnerDriver.value = true
+        const account_sid = useRoute().params.accountSid as string
         const res = await $_get_partner_drivers_by_id(account_sid, metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             partnersDriversList.value = res.data.data
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.total_pages
         }
-        loading.value = false
+        loadingPartnerDriver.value = false
     }
     setFunction(getPartnersDriversList)
 
     watch([filterData.status], (val) => {
-        getPartnersDriversList(account_sid)
+        getPartnersDriversList()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'status':
-                filterData.status.value = data.value
+                filterData.status.value = Number(data?.value) ? 'active' : 'inactive'
                 break
         }
     }
 
-    return { getPartnersDriversList, loading, partnersDriversList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
+    return { getPartnersDriversList, loadingPartnerDriver, partnersDriversList, filterData, onFilterUpdate, moveTo, ...metaObject, next, prev }
 }
 
 export const useGetPartnersCompletedTripsList = () => {

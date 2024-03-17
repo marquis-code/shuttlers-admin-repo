@@ -31,6 +31,7 @@ const returnTripLoading = ref(false)
 const selectedItinerary = computed(() => {
 	return routeItineraries.value.find((itinerary) => itinerary.id === form.route_itinerary_id)
 })
+const tripFare = ref(0)
 
 const form = reactive({
 	selectedRoute: {} as Record<string, any> as any,
@@ -57,28 +58,41 @@ const clearObj = () => {
     form.has_subscription = false
     form.has_luggage = false
     form.has_return = false
+    tripFare.value = 0
+    selectedRoute_charges.value = []
 }
 
-watch([selectedItinerary, form], async (val) => {
-    if (val[0]?.route_id) {
-        selectedRoute_charges_loading.value = true
-        const res = await routes_api.$_get_routes_charges(val[0]?.route_id, {
-            price_per_trip: val[0]?.default_fare,
-            no_of_trips: 1 * (form.subscriptionDays.length > 0 ? form.subscriptionDays.length : 1) * (form.tripWeeks > 0 ? form.tripWeeks : 1)
-        })
+watch(() => form.pickup_point, () => {
+    tripFare.value = 0
+    selectedRoute_charges.value = []
+})
 
-        selectedRoute_charges.value = res.data.data.charges.map((charge: any) => {
-            return {
-                selected: !!charge.is_compulsory,
-                is_compulsory: charge.is_compulsory,
-                total: charge.charge_type_fare_for_all_trips,
-                id: charge.additional_charge_id,
-                description: charge.description,
-                name: charge.short_name
-            }
-        })
-        selectedRoute_charges_loading.value = false
+watch(() => form.drop_off_point, async () => {
+    if (!form.drop_off_point?.id || !form.pickup_point?.id) return
+    const routeId = form.drop_off_point?.route_id
+    const payload = {
+        destination_id: form.drop_off_point?.id,
+        pickup_id: form.pickup_point?.id
     }
+    const price_res = await routes_api.$_get_route_pricing(routeId, payload)
+    tripFare.value = price_res.data[0].fare
+    selectedRoute_charges_loading.value = true
+    const res = await routes_api.$_get_routes_charges(routeId, {
+        price_per_trip: tripFare.value,
+        no_of_trips: 1 * (form.subscriptionDays.length > 0 ? form.subscriptionDays.length : 1) * (form.tripWeeks > 0 ? form.tripWeeks : 1)
+    })
+
+    selectedRoute_charges.value = res.data.data.charges.map((charge: any) => {
+        return {
+            selected: !!charge.is_compulsory,
+            is_compulsory: charge.is_compulsory,
+            total: charge.charge_type_fare_for_all_trips,
+            id: charge.additional_charge_id,
+            description: charge.description,
+            name: charge.short_name
+        }
+    })
+    selectedRoute_charges_loading.value = false
 })
 
 watch([() => form.selectedRoute, () => form.route_itinerary_id], () => {
@@ -178,5 +192,5 @@ export const useCreateBatchBooking = () => {
         }
     }
 
-    return { selectedRoute_charges, selectedRoute_charges_loading, createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, returnTripItinerary, returnTripLoading, clearObj }
+    return { selectedRoute_charges, selectedRoute_charges_loading, createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, returnTripItinerary, returnTripLoading, clearObj, tripFare }
 }

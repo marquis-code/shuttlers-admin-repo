@@ -144,5 +144,9 @@ export const partners_api = {
 	$_link_vehicles: (payload:Record<string, any>[]) => {
 		const url = '/partners/batch-assign-vehicles'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_link_drivers: (payload:Record<string, any>[]) => {
+		const url = '/partners/batch-assign-drivers'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

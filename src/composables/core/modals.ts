@@ -80,6 +80,8 @@ import LinkVehicle from '@/components/modals/modules/partners/LinkVehicle.vue'
 import DeclineReason from '@/components/modals/modules/agents/DeclineReason.vue'
 import NewReward from '@/components/modals/modules/promotion/newReward.vue'
 import BatchLinkVehicle from '@/components/modals/modules/partners/BatchLinkVehicle.vue'
+import LinkDriver from '@/components/modals/modules/partners/LinkDriver.vue'
+import BatchLinkDriver from '@/components/modals/modules/partners/BatchLinkDriver.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -95,7 +97,7 @@ type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' |
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
-type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle'
+type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver'
 type PromotionTypes = 'NewReward'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
@@ -112,7 +114,7 @@ const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, Noti
 const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
-const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle } as Record<PartnerTypes, any>
+const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
 const PromotionModals = { NewReward } as Record<PromotionTypes, any>
 
 export const modal = useModal(ref([] as any))

@@ -259,7 +259,7 @@ const { loading: loadBusstops, getBusstopsByItineraryId, itineraryBusstops } = u
 const { routeItineraries, loading: loadingItineraries, getRouteItinerariesByRouteId } = useItinerariesByRouteId()
 const { loading: loadingPricing, setRoutePricingDataForm, getRoutePricingInformation, routePricingInformation } = useRoutePricingByItineraryId()
 const { downloadCsv, downloading } = useCsvDownload()
-const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, selectedRoute_charges, selectedRoute_charges_loading, returnTripItinerary, returnTripLoading, clearObj } = useCreateBatchBooking()
+const { createBatchBooking, loading, populateBatchBookingForm, batchBookingResult, form, isFormEmpty, routeSelected, handleUploadedEmails, endDate, selectedItinerary, selectedRoute_charges, selectedRoute_charges_loading, returnTripItinerary, returnTripLoading, clearObj, tripFare } = useCreateBatchBooking()
 getMainRoutesList()
 
 function getDayOfWeek(startDate) {
@@ -389,10 +389,10 @@ watch(() => form.drop_off_point, (val) => {
     }
 })
 
-const tripFare = computed(() => {
-	// return selectedItinerary?.value?.default_fare || 0
-	return routePricingInformation.value[0]?.fare || 0
-})
+// const tripFare = computed(() => {
+// 	// return selectedItinerary?.value?.default_fare || 0
+// 	return routePricingInformation.value[0]?.fare || 0
+// })
 
 const totalFare = computed(() => {
 	let totalFare = null as any
