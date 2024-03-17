@@ -4,7 +4,6 @@ import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { usePartnerModal } from '@/composables/core/modals'
 
-const { getPartnerById } = usePartnerIdDetails()
 const partner = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
 const obj = {
@@ -51,7 +50,7 @@ export const useUpdatePartnerInfo = () => {
 				msg: 'Partner information was updated successfully'
 			})
             usePartnerModal().closeUpdatePartnerInfo()
-			getPartnerById(id)
+			usePartnerIdDetails().getPartnerById(id)
         }
         loading.value = false
 	}

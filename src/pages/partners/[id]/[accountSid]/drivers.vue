@@ -1,16 +1,16 @@
 <template>
 	<main>
 		<ButtonGoBack class="mb-6" />
-		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersDriversList" class="cursor-pointer">
+		<Table :loading="loadingPartnerDriver" :has-index="true" :page="page" :headers="tableFields" :table-data="formattedPartnersDriversList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.status" class="text-xs text-white rounded-lg py-1.5 px-2.5">
-					<StatusBadge :name="item.data.status" />
+					<StatusBadge :name="Boolean(item.data?.driver?.active) ? 'active' : 'inactive' " />
 				</span>
 				<div v-if="item.avatar" class="flex items-center gap-x-2">
-					<Avatar :name="item.data.name" bg="#B1C2D9" />
+					<Avatar :src="item.data?.driver?.avatar" :name="item.data?.driver?.fname" bg="#B1C2D9" />
 				</div>
 				<div v-if="item.name" class="flex items-center gap-x-2">
 					{{ item.data.name }}
@@ -34,15 +34,12 @@
 				<span v-if="item.date_created">
 					{{ item.data.date_created }}
 				</span>
-				<span v-if="item.id">
-					{{ item.data.table_index }}
-				</span>
 				<span v-else-if="item.action">
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingPartnerDriver" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -50,10 +47,9 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersDriversList } from '@/composables/modules/partners/id'
-const { getPartnersDriversList, loading, partnersDriversList, filterData, onFilterUpdate, moveTo, total, page, next, prev } = useGetPartnersDriversList()
+const { getPartnersDriversList, loadingPartnerDriver, partnersDriversList, onFilterUpdate, moveTo, total, page, next, prev } = useGetPartnersDriversList()
 const id = useRoute().params.accountSid as string
-getPartnersDriversList(id)
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
+getPartnersDriversList()
 
 definePageMeta({
     layout: 'dashboard',
@@ -86,11 +82,6 @@ const formattedPartnersDriversList = computed(() => {
 })
 
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'id',
-		width: '10%'
-	},
 	{
 		text: 'AVATAR',
 		value: 'avatar'

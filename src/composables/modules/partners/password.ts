@@ -3,7 +3,6 @@ import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { usePartnerModal } from '@/composables/core/modals'
 
-const { getPartnerById } = usePartnerIdDetails()
 const loading = ref(false)
 const obj = {
     password: ref(''),
@@ -37,7 +36,7 @@ export const useUpdatePartnerPassword = () => {
 				msg: 'Partner password was updated successfully'
 			})
             usePartnerModal().closeUpdatePartnerPassword()
-			getPartnerById(id)
+			usePartnerIdDetails().getPartnerById(id)
         }
         loading.value = false
 	}

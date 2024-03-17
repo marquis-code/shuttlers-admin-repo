@@ -5,9 +5,9 @@
 		</template>
 		<template #actions>
 			<div class="flex items-center gap-3">
-				<ButtonIconDropdown v-if="$route.fullPath.includes('vehicles')"
-					class="bg-black font-medium text-white rounded-lg" button-text="Link Vehicle"
-					:children="vehicleDropdownChildren"
+				<ButtonIconDropdown v-if="!isProdEnv && (isVehiclePage || isDriverPage)"
+					class="bg-black font-medium text-white rounded-lg" :button-text="isVehiclePage ? 'Link Vehicle' : 'Link Driver'"
+					:children="isVehiclePage ? vehicleDropdownChildren : driverDropdownChildren"
 					class-name="w-fit"
 				/>
 				<ButtonIconDropdown
@@ -23,6 +23,7 @@
 <script setup lang="ts">
 import { usePartnerModal } from '@/composables/core/modals'
 import { usePartnerIdDetails, useSuspendPartner, useUpdatePartnerInfo, useUpdatePartnerPassword } from '@/composables/modules/partners'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { selectedPartner, getPartnerById } = usePartnerIdDetails()
 const { initSuspension } = useSuspendPartner()
@@ -57,6 +58,13 @@ const pageTabs = computed(() => [
     }
 ])
 
+const isVehiclePage = computed(() => {
+	return useRoute().fullPath.includes('vehicles')
+})
+const isDriverPage = computed(() => {
+	return useRoute().fullPath.includes('drivers')
+})
+
 const dropdownChildren = computed(() => [
 	{ name: selectedPartner.value.status === 'active' ? 'Suspend' : 'Un-suspend', func: (data) => { initSuspension(data) } },
 	{ name: 'Update Personal Information', func: (data) => { initUpdate(data) } },
@@ -67,7 +75,12 @@ const dropdownChildren = computed(() => [
 
 const vehicleDropdownChildren = computed(() => [
 	{ name: 'Link Vehicle', func: () => { usePartnerModal().openLinkVehicle() } },
-	{ name: 'Batch Linking', func: () => { alert('batch linking') } }
+	{ name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkVehicle() } }
+])
+
+const driverDropdownChildren = computed(() => [
+	{ name: 'Link Driver', func: () => { usePartnerModal().openLinkDriver() } }
+	// { name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkDriver } }
 ])
 </script>
 

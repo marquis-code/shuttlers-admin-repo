@@ -99,8 +99,8 @@ export const routes_api = {
 		const url = `/itineraries/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_pricing: (id: string, payload: any) => {
-		const url = `/routes/${id}/price-calculation`
+	$_get_route_pricing: (routeId: string, payload: any) => {
+		const url = `/routes/${routeId}/price-calculation`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_routes: (search = '') => {

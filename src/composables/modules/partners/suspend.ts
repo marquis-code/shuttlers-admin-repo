@@ -3,7 +3,6 @@ import { useConfirmationModal } from '@/composables/core/confirmation'
 import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 
-const { getPartnerById } = usePartnerIdDetails()
 const partner = ref({}) as Ref<Record<string, any>>
 const loading = ref(false)
 
@@ -33,7 +32,7 @@ export const useSuspendPartner = () => {
 				msg: `Partner was ${partner.value.status === 'active' ? 'suspended' : 'unsuspended'} successfully`
 			})
 			// useRouter().push(`/drivers/${id}/driver-info`)
-			getPartnerById(id)
+			usePartnerIdDetails().getPartnerById(id)
         }
         loading.value = false
 	}
