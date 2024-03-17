@@ -26,12 +26,12 @@ const pageTabs = computed(() => {
         {
             name: 'Demo requests',
             path: '/companies/demo-requests'
+        },
+        {
+            name: 'Notification',
+            path: '/companies/wallet-notification'
         }
     ]
-    if (!isProdEnv.value) tabs.push({
-        name: 'Notification',
-        path: '/companies/wallet-notification'
-    })
     return tabs
 })
 
