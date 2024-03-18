@@ -8,15 +8,14 @@ import { usePagination } from '@/composables/utils/table'
 const { corporateGroupForm } = useCreateCorporateGroup()
 const selectedCorporateGroup = ref({} as Record<string, any>)
 const selectedStaffToDelete = ref({}) as any
-
+const isNewDataAdded = ref(false)
 export const useCorporateGroupByGroupId = () => {
-  const { moveTo, metaObject, next, prev, setFunction } = usePagination()
   const loading = ref(false)
+  const { moveTo, metaObject, next, prev, setFunction } = usePagination()
   const groupMembers = ref([]) as Record<string, any>
   const filterData = {
     search: ref('')
   }
-
   const getCorporateGroupByGroupId = async () => {
     const id = useRoute().params.group_id as any
     loading.value = true
@@ -30,7 +29,7 @@ export const useCorporateGroupByGroupId = () => {
     loading.value = false
   }
 
-  watch([filterData.search], (val) => {
+  watch([filterData.search, isNewDataAdded], (val) => {
     getCorporateGroupByGroupId()
   })
 
@@ -84,6 +83,7 @@ export const useCorporateGroupByGroupId = () => {
     ...metaObject,
     selectedCorporateGroup,
     handleChangeGroup,
-    selectedStaffToDelete
+    selectedStaffToDelete,
+    isNewDataAdded
   }
 }
