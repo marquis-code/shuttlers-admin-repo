@@ -13,7 +13,6 @@ export const useEditAgents = () => {
 	const initForm = async (agentId: string) => {
 		loading.value = true
 		await getAgentById(agentId)
-		console.log(selectedAgent.value)
         createForm.fname.value = selectedAgent.value.fname
         createForm.lname.value = selectedAgent.value.lname
         createForm.avatar.value = selectedAgent.value.avatar

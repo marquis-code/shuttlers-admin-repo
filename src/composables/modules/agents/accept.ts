@@ -10,7 +10,6 @@ const selectedRoute = ref({} as Record<string, any>)
 export const useAcceptRouteSuggestion = () => {
     const loading = ref(false)
     const setAcceptRoute = (data: Record<string, any>) => {
-        console.log(data)
         selectedRoute.value = data
         useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Accept Route', desc: 'To approve this route, you will need to add stops and configure the route, do you wish to proceed?', call_function: accept, loading })
     }
