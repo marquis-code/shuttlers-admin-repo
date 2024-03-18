@@ -41,7 +41,7 @@
 		<hr>
 
 		<div class="w-full">
-			<label class="">Route Code</label>
+			<label>Route Code</label>
 			<input v-model="createRouteForm.route_code.value" type="text" placeholder="e.g S300" class="input-field">
 		</div>
 		<div class="w-full">
