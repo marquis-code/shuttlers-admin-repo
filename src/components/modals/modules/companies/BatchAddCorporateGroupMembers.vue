@@ -23,9 +23,7 @@
 <script setup lang="ts">
 import { useAddCorporateGroupMembers } from '@/composables/modules/corporates/createCorporateGroupMembers'
 import { useCompaniesModal } from '@/composables/core/modals'
-import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
 const { createCorporateGroupMembers, loading: processing, payload } = useAddCorporateGroupMembers()
-const { getCorporateGroupByGroupId } = useCorporateGroupByGroupId()
 const handleSelectedCorporates = (val: any) => {
 	payload.staff_ids.value.push(val.id)
 }
