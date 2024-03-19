@@ -15,7 +15,6 @@ const proceedToDownload = async () => {
   useConfirmationModal().closeAlert()
   downloading.value = true
   const route = useRoute()
-  downloading.value = false
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
   const baseURL = `/trips/${
