@@ -6,7 +6,7 @@
 				<input type="text" placeholder="Search active trip" autocomplete="off" class="input-field !bg-transparent  text-start w-full !pl-9">
 			</form>
 			<ButtonMultiSelectDropdown :children="[{ name: 'Online', value: 'online' }, { name: 'Offline', value: 'offline' }]" title="All status" />
-			<ButtonMultiSelectDropdown :children="[{ name: 'Lagos', value: 'lagos' }]" title="All cities" />
+			<ButtonMultiSelectDropdown :children="formattedCities" :loading="loading" title="All cities" />
 
 			<span class="text-sm font-bold ml-auto">
 				Showing {{ filteredActiveTripsList.length }} of {{ page_size }} active trips
@@ -32,10 +32,22 @@
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { usePageHeader } from '@/composables/utils/header'
 import { useVehicleTracking } from '@/composables/modules/tracking/vehicle/fetch'
+import { use_user_city } from '@/composables/auth/register'
 
 const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, page_size } = useVehicleTracking()
+const { cityArray, fetchCities, loading } = use_user_city()
 
 initializeTracking()
+fetchCities()
+
+const formattedCities = computed(() =>
+	cityArray.value.map((i: any) => {
+		return {
+			name: i.name,
+			value: i.city_id
+		}
+	})
+)
 
 definePageMeta({
 	layout: 'dashboard',
