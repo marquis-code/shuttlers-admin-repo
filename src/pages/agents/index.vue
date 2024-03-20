@@ -39,6 +39,9 @@
 				<span v-else-if="item.active" class="text-base">
 					<StatusBadge :name="item?.data?.sales_agent_account_active === '1' ? 'active' : 'inactive'" />
 				</span>
+				<span v-else-if="item.suggestedRoutes" class="text-base">
+					{{ item.data.suggestedRoutes.filter(i=> i.approved_at).length }}
+				</span>
 			</template>
 
 			<template #footer>
