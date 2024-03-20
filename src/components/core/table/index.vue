@@ -1,13 +1,12 @@
 <template>
-	<section class="flex flex-col max-w-full  z-10 border rounded-lg border-gray-300">
+	<section class="flex flex-col max-w-full  z-10">
 		<slot name="header" />
 		<slot name="sub_header" />
-		<div class="" :class="[hasOverflow ? 'overflow-auto' : '']">
+		<div class="border-gray-300 border " :class="[hasOverflow ? 'overflow-auto' : '']">
 			<table class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
 						<th v-if="checkbox" class="pl-4 text-light">
-							<!-- <input type="checkbox"> -->
 							<div />
 						</th>
 						<th v-if="hasIndex" class="pl-4 text-dark text-xs">
