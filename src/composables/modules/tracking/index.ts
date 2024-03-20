@@ -20,7 +20,7 @@ export const useTripTracking = () => {
 		tripId: string, clickFunc:(data:any)=>void
     ) => {
 		listenToEvent(`trips:${tripId}`, (data: PassagerType) => {
-			console.log(data)
+			// console.log(data)
 			activeTripsList.value.filter((i) => i.id === tripId)[0].vehicle_status = true
             loadMarkeronMap({
                 id: data.driver_id,

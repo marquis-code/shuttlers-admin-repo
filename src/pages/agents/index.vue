@@ -83,7 +83,7 @@ const tableFields = ref([
     },
     {
         text: 'ROUTES CREATED',
-        value: 'id'
+        value: 'suggestedRoutes'
     },
     {
         text: 'DATE JOINED',
