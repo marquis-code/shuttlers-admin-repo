@@ -1,6 +1,6 @@
 <template>
 	<main class="flex flex-col gap-6">
-		<!-- <section class="flex gap-4 w-full">
+		<section class="flex gap-4 w-full">
 			<div class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Agent count</span>
 				<span class="text-3xl font-bold">200</span>
@@ -13,13 +13,11 @@
 				<span class="text-sm text-grey5">Total amount disbursed</span>
 				<span class="text-3xl font-bold">₦200,000.00</span>
 			</div>
-		</section> -->
+		</section>
 		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked" :has-index="true" :page="page">
 			<template #header>
-				<!-- <TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
-					@filter="onFilterUpdate"
-					@download="downloadUsers"
-				/> -->
+				<TableFilter :filter-type="{ showSearchBar:true, showDownloadButton: true,}"
+				/>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
