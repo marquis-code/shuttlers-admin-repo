@@ -7,7 +7,7 @@ const agentsRoute = ref([] as any)
 const selectedAgentId = ref('')
 
 export const useGetAgentsRoutes = () => {
-    const filterOptions = [{ name: 'Pending review', value: 'pending_review' }, { name: 'Not Submitted', value: 'not_submitted' }, { name: 'Approved routes', value: 'approved' }, { name: 'Declined routes', value: 'declined' }]
+    const filterOptions = [{ name: 'Pending review', value: 'pending_review' }, { name: 'Trip monitoring', value: 'monitoring' }, { name: 'Approved routes', value: 'approved' }, { name: 'Declined routes', value: 'declined' }]
     const filterData = {
         approval_status: ref('pending_review')
     }
