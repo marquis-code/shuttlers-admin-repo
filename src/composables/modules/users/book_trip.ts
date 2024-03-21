@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
 import { users_api, routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useUserModal } from '@/composables/core/modals'
 
 const bookUserTripObj = {
@@ -206,7 +205,6 @@ export const useBookUserTrip = () => {
             payload.payment_reference = uuidv4()
             payload.instant_payment_provider = 'corporate_pay'
         }
-        // console.log(payload)
         const user_id = useRoute().params.id as string
         loading.value = true
         const res = await users_api.$_book_trip(user_id, payload) as CustomAxiosResponse
