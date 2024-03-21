@@ -122,7 +122,7 @@ export const headerComponentRouteArray = [
             'trips-type-completed-id-trip-details', 'trips-type-completed-id-passengers', 'trips-type-completed-id-ratings', 'trips-type-completed-id-financials', 'trips-type-completed-id-issues',
             'trips-type-cancelled-id-trip-details', 'trips-type-cancelled-id-passengers'], component: TripDetails
     },
-    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify', 'trips-vehicle'], component: GenericHeader },
+    { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-routes-rid', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify', 'trips-vehicle'], component: GenericHeader },
     { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
     { routes: ['campaigns-valentine'], component: ValentineCampaign },
     { routes: ['campaigns-valentine-id'], component: ValentineCampaignDetails },

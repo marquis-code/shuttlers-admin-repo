@@ -11,7 +11,7 @@ export const useAddCorporateGroupMembers = () => {
   const loading = ref(false)
   const { $_add_corporate_group_members } = corporates_api
   const createCorporateGroupMembers = async () => {
-    const { getCorporateGroupByGroupId } = useCorporateGroupByGroupId()
+    const { isNewDataAdded } = useCorporateGroupByGroupId()
     const group_id = useRoute().params.group_id as any
     loading.value = true
     const res = (await $_add_corporate_group_members(
@@ -19,11 +19,11 @@ export const useAddCorporateGroupMembers = () => {
       convertObjWithRefToObj(payload)
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
+      isNewDataAdded.value = true
       useAlert().openAlert({
         type: 'SUCCESS',
         msg: 'New group member was added successfully'
       })
-      getCorporateGroupByGroupId()
       useCompaniesModal().closeBatchAddCorporateGroupMembers()
     }
     loading.value = false

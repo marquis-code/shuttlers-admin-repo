@@ -11,6 +11,10 @@ export const agents_api = {
 		const url = `/users/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_agent_route_suggestions_by_id: (id: string) => {
+		const url = `/sales-route-suggestions/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_agent_passageners: (id: string) => {
 		const url = `/sales-agent-users?sales_agent_account_id=${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)

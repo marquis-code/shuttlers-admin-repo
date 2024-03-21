@@ -137,8 +137,8 @@ export const users_api = {
 		const url = `/bus-captains/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	},
-	$_book_trip: (id, payload) => {
-		const url = `/users/${id}/routes`
+	$_book_trip: (user_id, payload) => {
+		const url = `/users/${user_id}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_upload_user_avatar: (userId:number|string, payload: Record<string, any>) => {

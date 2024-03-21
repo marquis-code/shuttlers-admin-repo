@@ -6,13 +6,13 @@ import {
 } from './helpers'
 import { usePagination } from '@/composables/utils/table'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
+
+  const activeTripsList = ref([] as Record<string, any>[])
 export const useGetActiveTripsList = () => {
   const loadingActiveTrips = ref(false)
-  const activeTripsList = ref([] as Record<string, any>[])
   const total_pages = ref() as any
-  const currentRoute = computed(() => {
-    return useRoute().fullPath
-  })
+
+  const currentRoute = computed(() => { return useRoute().fullPath })
 
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
@@ -24,7 +24,10 @@ export const useGetActiveTripsList = () => {
         metaObject
       )) as CustomAxiosResponse
       if (res.type !== 'ERROR') {
-        activeTripsList.value = res.data.data
+        activeTripsList.value = res.data.data.map((trip) => {
+          trip.vehicle_status = false
+          return trip
+            })
         total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }

@@ -1,7 +1,7 @@
 <template>
-	<section class="relative">
+	<section class="relative w-auto flex ">
 		<label class="flex gap-5 mb-4 !cursor-pointer" for="upload">
-			<img :src="image_ref || `/user.svg`" name="user" class="w-32 border rounded-full max-h-[126px] max-w-[126px] min-h-[126px] min-w-[126px] cursor-pointer">
+			<img :src="image_ref || `/user2.svg`" name="user" class="w-32 border rounded-full max-h-[126px] max-w-[126px] min-h-[126px] min-w-[126px] cursor-pointer">
 			<div
 
 				class="flex center  border py-4 px-6 rounded-lg cursor-pointer   max-w-[366px]"

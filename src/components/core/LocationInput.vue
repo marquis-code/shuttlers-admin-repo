@@ -6,6 +6,7 @@
 		type="text"
 		:placeholder="placeholder"
 		required
+		:value="(modelValue as Record<string, any>).name"
 		@input="isEmpty"
 	>
 </template>
