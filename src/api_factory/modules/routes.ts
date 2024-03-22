@@ -95,7 +95,7 @@ export const routes_api = {
 		const url = `/route-itineraries/${id}/vehicles`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_busstops_by_itinerary_id: (id: string) => {
+	$_get_busstops_by_itinerary_id: (id: string|number) => {
 		const url = `/itineraries/${id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -151,8 +151,8 @@ export const routes_api = {
         const url = `/routes/${route_id}/bookings/null${isCancelled ? '?is_cancelled=true' : ''}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_get_routes_charges: (id: string, payload:Record<string, any>) => {
-        const url = `/additional-charges/routes/${id}`
+	$_get_routes_charges: (route_id: string, payload:Record<string, any>) => {
+        const url = `/additional-charges/routes/${route_id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     },
 	$_edit_busstop: (busstop_id: string|number, payload:Record<string, any>) => {

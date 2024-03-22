@@ -35,13 +35,13 @@
 			</div>
 
 			<div class="grid lg:grid-cols-2 gap-8">
-				<!-- <div class="field relative">
+				<div class="field relative">
 					<label for="nin">NIN (Optional)</label>
-					<input id="nin" v-model="createForm.nin.value" type="text" name="" class="input-field">
-				</div> -->
+					<input id="nin" disabled type="text" name="" class="input-field">
+				</div>
 				<div v-if="type === 'new'" class="field relative">
 					<label for="password" class="w-full">Enter password</label>
-					<input id="password" v-model="createForm.password.value" autocomplete="true" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
+					<input id="password" v-model="createForm.password.value" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
 					<icon name="eye" class="w-6 absolute top-[53%] right-4" @click="toggleShow" />
 				</div>
 			</div>

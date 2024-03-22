@@ -1,25 +1,23 @@
 <template>
 	<main class="flex flex-col gap-6">
-		<!-- <section class="flex gap-4 w-full">
+		<section class="flex gap-4 w-full">
 			<div class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Agent count</span>
-				<span class="text-3xl font-bold">200</span>
+				<span class="text-3xl font-bold">{{ statsData.sales_agent_count }}</span>
 			</div>
 			<div class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Total no. of onboarded users</span>
-				<span class="text-3xl font-bold">200</span>
+				<span class="text-3xl font-bold">{{ statsData.sales_agent_onboarded_users_count }}</span>
 			</div>
 			<div class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Total amount disbursed</span>
-				<span class="text-3xl font-bold">₦200,000.00</span>
+				<span class="text-3xl font-bold">{{ statsData.total_amount_disbursed }}</span>
 			</div>
-		</section> -->
+		</section>
 		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked" :has-index="true" :page="page">
 			<template #header>
-				<!-- <TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
-					@filter="onFilterUpdate"
-					@download="downloadUsers"
-				/> -->
+				<TableFilter :filter-type="{ showSearchBar:true, showDownloadButton: true,}"
+				/>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
@@ -41,6 +39,9 @@
 				<span v-else-if="item.active" class="text-base">
 					<StatusBadge :name="item?.data?.sales_agent_account_active === '1' ? 'active' : 'inactive'" />
 				</span>
+				<span v-else-if="item.suggestedRoutes" class="text-base">
+					{{ item.data.suggestedRoutes.filter(i=> i.approved_at).length }}
+				</span>
 			</template>
 
 			<template #footer>
@@ -55,9 +56,13 @@ import { useDateFormat } from '@vueuse/core'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetAgentsList } from '@/composables/modules/agents/fetch'
 import { useUserIdDetails } from '@/composables/modules/users/id'
+import { useGetSalesAgentsStats } from '@/composables/modules/agents/stats'
+
+const { getSalesAgentsStats, loading: statLoading, statsData } = useGetSalesAgentsStats()
 
 const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page } = useGetAgentsList()
 
+getSalesAgentsStats()
 getAgentsList()
 const onRowClicked = (data) => {
 	const { selectedUser } = useUserIdDetails()
@@ -85,7 +90,7 @@ const tableFields = ref([
     },
     {
         text: 'ROUTES CREATED',
-        value: 'id'
+        value: 'suggestedRoutes'
     },
     {
         text: 'DATE JOINED',
