@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/trips/routes" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="computedRoutesTrips" :has-options="true">
 			<template #header>
 				<div class="flex items-end justify-end">

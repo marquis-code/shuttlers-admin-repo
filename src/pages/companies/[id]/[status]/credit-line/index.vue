@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/companies" class="mb-6" />
 		<section v-if="!Object.keys(route.query).length">
 			<section v-if="!loading" class="">
 				<div v-if="needCreditSystem" class="flex justify-center items-center flex-col space-y-3 mt-20">

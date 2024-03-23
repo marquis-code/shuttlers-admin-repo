@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/companies" class="mb-6" />
 		<section class="lg:flex justify-between gap-x-10 space-y-6 lg:space-y-0">
 			<div class="lg:w-8/12 space-y-8">
 				<div v-if="!loadingCorporateWallet" class="h-48 rounded-lg bg-indigo-100 p-6">

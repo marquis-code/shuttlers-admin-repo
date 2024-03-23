@@ -1,6 +1,9 @@
 <template>
-	<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" @next="handleNext" @prev="handlePrev" />
-	<Skeleton v-else height="70vh" />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/cancelled" class="mt-2 ml-4" />
+		<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" @next="handleNext" @prev="handlePrev" />
+		<Skeleton v-else height="70vh" />
+	</main>
 </template>
 
 <script setup lang="ts">
