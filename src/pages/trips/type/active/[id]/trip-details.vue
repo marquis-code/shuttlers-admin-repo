@@ -1,6 +1,6 @@
 <template>
-	<main>
-		<ButtonGoBack />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/active" class="mt-2 ml-4" />
 		<ModulesTripsTripDetails v-if="!loading" :selected-trip="selectedTrip" :loading="loading" />
 		<Skeleton v-else height="70vh" />
 	</main>

@@ -1,7 +1,7 @@
 <template>
-	<main>
-		<ButtonGoBack />
-		<section class="mx-10 mt-14 space-y-10">
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/completed" class="ml-4 mt-2" />
+		<section class="mx-10 mt-4 space-y-10">
 			<ModulesTripsPassengersList v-if="!loadingRoutePassengers && !loading" :route-passengers="routePassengers" :loading="loading" @next="handleNext" @prev="handlePrev " />
 			<Skeleton v-else height="300px" />
 		</section>

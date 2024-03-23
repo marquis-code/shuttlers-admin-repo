@@ -1,16 +1,16 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Link Vehicles With Plate Numbers"
+		title="Link drivers with emails (csv)"
 	>
-		<form class="flex flex-col gap-4 w-full" @submit.prevent="initlinkVehicleWithPlateNumber">
-			<div v-if="file && plate_no_errors.length" class="flex flex-col gap-1">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="initLinkDriverWithEmail">
+			<div v-if="file && driver_emails_errors.length" class="flex flex-col gap-1">
 				<p class="text-xs text-red font-medium">
 					The following plate numbers are invalid!. Please correct them and try again.
 				</p>
 				<div class="flex gap-2 ">
-					<p v-for="n,i in plate_no_errors" :key="i" class="p-2 border border-red rounded-md text-center text-sm px-4 text-red font-medium">
-						{{ n?.vehicle_id }}
+					<p v-for="n,i in driver_emails_errors" :key="i" class="p-2 border border-red rounded-md text-center text-sm px-4 text-red font-medium">
+						{{ n?.driver_id }}
 					</p>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 			</div>
 
 			<div v-if="file" class="flex gap-2 flex-wrap">
-				<p v-for="n in plate_numbers" :key="n" class="p-2 border rounded-md text-center text-sm px-4 font-medium">
+				<p v-for="n in driver_emails" :key="n" class="p-2 border rounded-md text-center text-sm px-4 font-medium">
 					{{ n }}
 				</p>
 			</div>
@@ -62,11 +62,11 @@
 
 <script setup lang="ts">
 import Papa from 'papaparse/papaparse.js'
-import { usePlateNumberToLinkVehicle } from '@/composables/modules/partners'
+import { useEmailToLinkDriver } from '@/composables/modules/partners'
 
-const { loading, plate_no_errors, plate_numbers, initlinkVehicleWithPlateNumber, clearObj } = usePlateNumberToLinkVehicle()
+const { loading, driver_emails, driver_emails_errors, initLinkDriverWithEmail, clearObj } = useEmailToLinkDriver()
 const enableButton = computed(() => {
-	return !!(plate_numbers.value.length)
+	return !!(driver_emails.value.length)
 })
 const file = ref(null) as Ref<any>
 
@@ -82,7 +82,7 @@ const clearFile = () => {
 
 const onChange = (event:any) => {
 	file.value = event.target.files[0]
-    plate_no_errors.value = []
+    driver_emails.value = []
 
 	if (file.value) {
 		Papa.parse(file.value, {
@@ -90,7 +90,7 @@ const onChange = (event:any) => {
 			dynamicTyping: true,
 			complete: function(results) {
 				const csvDataArray = results.data
-				plate_numbers.value = csvDataArray.map((el) => el['Plate Numbers']).filter((val) => { return val !== null })
+				driver_emails.value = csvDataArray.map((el) => el['Drivers Email']).filter((val) => { return val !== null })
 			}
 		})
 	}

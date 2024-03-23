@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="my-3 ml-8" />
+		<ButtonGoBack url="/trips/type/upcoming" class="my-3" />
 		<Table :loading="loadingTripRatings" :headers="tableFields" :table-data="tripRatingList" :has-index="true" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true }" />

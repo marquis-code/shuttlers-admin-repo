@@ -1,6 +1,6 @@
 <template>
 	<main class="flex flex-col gap-4">
-		<ButtonGoBack />
+		<ButtonGoBack url="/trips/type/completed" />
 		<Table
 			:loading="loading"
 			:has-index="true"

@@ -1,6 +1,6 @@
 <template>
 	<section class="flex flex-col gap-4 items-start">
-		<ButtonGoBack class="mt-5" />
+		<ButtonGoBack url="/trips/rental" class="mt-5" />
 		<main v-if="!loadingRental" class="flex gap-4 w-full">
 			<ModulesTripsRentalSectionOne :rental-details="rentalDetails" />
 			<section class="w-6/12 flex flex-col gap-4">
