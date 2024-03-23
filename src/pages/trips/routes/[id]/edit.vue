@@ -1,6 +1,6 @@
 <template>
 	<div class="">
-		<ButtonGoBack class="mb-6 ml-9" />
+		<ButtonGoBack url="/trips/routes" class="mb-6 ml-9" />
 		<div v-if="loading_details" class="p-4">
 			<Skeleton height="400px" />
 		</div>

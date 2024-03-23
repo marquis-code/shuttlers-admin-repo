@@ -1,6 +1,6 @@
 <template>
 	<main class="relative">
-		<ButtonGoBack class="mb-6 mt-3 ml-10" />
+		<ButtonGoBack url="/trips/routes" class="mb-6 mt-3 ml-10" />
 		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-4 left-[240px] z-40"
 			@click="can_click = !can_click"
 		>

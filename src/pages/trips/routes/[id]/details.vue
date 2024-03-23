@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/trips/routes" class="mb-6" />
 		<section v-if="!$route?.query?.booking_date" class="xl:flex gap-x-6">
 			<section class="xl:w-6/12 space-y-6">
 				<ModulesRoutesDetailsInfoCard />
