@@ -49,6 +49,13 @@
 			</template>
 		</Table>
 	</main>
+
+	<transition
+		appear
+		name="list"
+	>
+		<ModulesAgentsRouteRequest />
+	</transition>
 </template>
 
 <script setup lang="ts">
@@ -103,3 +110,22 @@ const tableFields = ref([
 ])
 
 </script>
+
+<style scoped>
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.btn-controls{
+	@apply bg-white p-2 rounded-full border border-dark
+}
+
+</style>

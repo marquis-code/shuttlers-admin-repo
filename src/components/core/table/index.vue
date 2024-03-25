@@ -1,8 +1,8 @@
 <template>
-	<section class="flex flex-col max-w-full  z-10">
+	<section class="flex flex-col max-w-full  z-0">
 		<slot name="header" />
 		<slot name="sub_header" />
-		<div class="border-gray-300 border " :class="[hasOverflow ? 'overflow-auto' : '']">
+		<div class="border-gray-300 border" :class="[hasOverflow ? 'overflow-auto' : '']">
 			<table class="table w-full">
 				<thead class="px-4">
 					<tr class="h-[52px] border-b px-4">
@@ -61,7 +61,6 @@
 </template>
 
 <script lang="ts" setup>
-import gsap from 'gsap'
 
 defineEmits(['checked'])
 
@@ -70,7 +69,7 @@ const checkedArray = ref([] as Record<string, any>[])
 const props = defineProps({
 	hasOverflow: {
 		type: Boolean,
-		default: true
+		default: false
 	},
 	option: {
 		type: Function,

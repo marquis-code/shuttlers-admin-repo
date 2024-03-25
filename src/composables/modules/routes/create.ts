@@ -20,7 +20,7 @@ const createRouteForm = {
     route_availability_days: ref([...days_of_the_week]) as Ref<any[]>,
     itinerary_time: ref(''),
     fare: ref(''),
-    sales_route_suggestions_id: ref('')
+    sales_route_suggestion_id: ref('')
 }
 
 const clearCreateForm = () => {
@@ -136,8 +136,8 @@ export const useCreateRoute = () => {
         if (createRouteForm.waypoints.value.length > 0) {
             payload.waypoints = createRouteForm.waypoints.value
         }
-        if (createRouteForm.sales_route_suggestions_id.value) {
-            payload.sales_route_suggestions_id = createRouteForm.sales_route_suggestions_id.value
+        if (createRouteForm.sales_route_suggestion_id.value) {
+            payload.sales_route_suggestion_id = createRouteForm.sales_route_suggestion_id.value
         }
 
         const res = (await routes_api.$_create_route(payload)) as CustomAxiosResponse

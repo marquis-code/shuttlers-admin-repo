@@ -20,8 +20,8 @@
 				<span class="text-3xl font-bold">5,000 pts</span>
 			</div>
 		</section>
-		<main class="flex flex-col gap-6 ">
-			<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true">
+		<main class="flex flex-col gap-6">
+			<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true" class="mb-12">
 				<template #header>
 					<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
 
