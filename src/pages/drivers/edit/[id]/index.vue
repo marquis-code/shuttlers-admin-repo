@@ -1,6 +1,6 @@
 <template>
 	<main class="flex flex-col gap-10">
-		<ButtonGoBack class="!w-fit" />
+		<ButtonGoBack :url="`/drivers/${$route.params.id}/driver-info`" class="!w-fit" />
 		<Skeleton v-if="loading" height="300px" />
 		<div v-else class="flex flex-col w-full max-w-[600px] rounded-md bg-light">
 			<div class="p-4 px-6 border-b">

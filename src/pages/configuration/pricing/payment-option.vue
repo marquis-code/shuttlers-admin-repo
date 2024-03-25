@@ -31,7 +31,7 @@
 		</section>
 	</main> -->
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<!-- <ButtonGoBack class="mb-6" /> -->
 		<div class="rounded-md bg-white shadow-md">
 			<section class="card p-4">
 				<header class="flex justify-between w-full">
