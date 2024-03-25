@@ -161,6 +161,8 @@ watch(bookUserTripObj.selectedRoute, () => {
 })
 
 watch(bookUserTripObj.itinerary_id, () => {
+    bookUserTripObj.pickup.value = {}
+    bookUserTripObj.destination.value = {}
     if (bookUserTripObj.itinerary_id.value) getBusstops()
 })
 
@@ -180,7 +182,7 @@ watch(total_fare, () => {
 })
 
 const enableButton = computed(() => {
-    return !!(bookUserTripObj.start_date.value && total_fare.value && bookUserTripObj.destination.value?.id)
+    return !!(bookUserTripObj.start_date.value && bookUserTripObj.destination.value?.id)
 })
 
 export const useBookUserTrip = () => {

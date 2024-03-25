@@ -106,5 +106,9 @@ export const trips_api = {
 	$_transfer_bookings: (payload) => {
 	 const url = '/user-route-schedules/transfers'
 	 return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_resync_revenue: (payload:Record<string, any>) => {
+		const url = '/trips/revenues'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<Skeleton v-if="loading" height="70px" radius="5px" />
-	<div v-else class="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+	<div v-else class="py-4 border-t grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 		<div v-for="n,i in arr" :key="i" class="bg-light border rounded-md p-4 flex flex-col">
 			<p class="text-sm text-grey5 font-medium">
 				{{ n.text }}
