@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/users" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="transactionsList" :has-options="true" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{

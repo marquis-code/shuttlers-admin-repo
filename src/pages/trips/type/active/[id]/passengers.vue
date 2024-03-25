@@ -1,7 +1,7 @@
 <template>
-	<main>
-		<ButtonGoBack />
-		<section class="mx-10 mt-14 space-y-10">
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/active" class="ml-4 mt-2" />
+		<section class="mx-10 space-y-10">
 			<!-- <div class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 			<div class="flex justify-end items-end">
 				<button class="bg-black text-white px-2 py-2.5 text-xs rounded-md" @click="useTripsModal().openAddPassengersToTrips()">

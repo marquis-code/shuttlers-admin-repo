@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-3" />
+		<ButtonGoBack :url="backUrl" class="mb-3" />
 		<p class="border-t border-x py-3 rounded-t-lg pl-5 font-medium">
 			Reward History
 		</p>
@@ -53,6 +53,10 @@ const rewardHistoriesListTableFields = ref([
         value: 'points'
     }
 ])
+
+const backUrl = computed(() => {
+	return useRoute().query.userType === 'driver' ? '/campaigns/rewards/pilot-rewards' : '/campaigns/rewards/customer-rewards'
+})
 
 </script>
 

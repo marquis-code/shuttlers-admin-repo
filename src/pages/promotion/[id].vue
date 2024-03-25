@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/promotion" class="mb-6" />
 		<section class="flex justify-start items-start gap-x-10">
 			<div v-if="!loading" class="w-5/12 shadow-md border-[0.4px] rounded-md p-6 space-y-6">
 				<div class="flex justify-between items-center">

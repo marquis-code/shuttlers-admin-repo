@@ -79,8 +79,8 @@ const vehicleDropdownChildren = computed(() => [
 ])
 
 const driverDropdownChildren = computed(() => [
-	{ name: 'Link Driver', func: () => { usePartnerModal().openLinkDriver() } }
-	// { name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkDriver } }
+	{ name: 'Link Driver', func: () => { usePartnerModal().openLinkDriver() } },
+	{ name: 'Batch Linking', func: () => { usePartnerModal().openBatchLinkDriver() } }
 ])
 </script>
 

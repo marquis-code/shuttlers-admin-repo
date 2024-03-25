@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="my-6 ml-8" />
+		<ButtonGoBack url="/trips/type/upcoming" class="my-6 ml-8" />
 		<section class="mx-10 mt-14 space-y-6">
 			<div v-if="!tripTimeHasPassed" class="h-16 bg-white shadow-sm border-[0.4px] rounded-md p-3 w-full flex items-center justify-end">
 				<div class="flex justify-end items-end">
