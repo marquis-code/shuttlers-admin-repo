@@ -1,5 +1,6 @@
 <template>
-	<main class="">
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/drivers" />
 		<Table :loading="loading" :headers="tableFields" :table-data="driverRating" :has-index="true">
 			<template #header>
 				<TableFilter :filter-type="{showDateRange: true, showDownloadButton: true, }" @filter="onFilterUpdate" @download="exportDriverRatings" />

@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/partners" class="mb-6" />
 		<Table :has-index="true" :page="page" :loading="loadingPartnerVehicles" :headers="tableFields" :table-data="formattedPartnersVehiclesList" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true, showDownloadButton:true, }" @filter="onFilterUpdate" />

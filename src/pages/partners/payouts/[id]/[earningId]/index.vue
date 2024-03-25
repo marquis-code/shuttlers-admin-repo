@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack :url="backUrl" class="mb-6" />
 		<section v-if="false" class="flex flex-col gap-6">
 			<Skeleton v-if="loading_partners || loading_earnings" height="45px" radius="10px" />
 			<div v-else class="flex items-center gap-2">
@@ -413,6 +413,10 @@ const payout_info = computed(() => {
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction) },
 		{ key: 'Status', value: earningInfo.value?.status }
 	]
+})
+
+const backUrl = computed(() => {
+	return earningInfo.value?.status === 'failed' ? '/partners/payouts/failed' : earningInfo.value?.status === 'settled' ? '/partners/payouts/completed' : '/partners/payouts'
 })
 
 const tableFields = ref([

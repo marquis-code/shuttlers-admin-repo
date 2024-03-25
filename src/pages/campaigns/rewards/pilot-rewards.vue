@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<!-- <ButtonGoBack class="mb-6" /> -->
 		<section class="space-y-10">
 			<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
 				Current pilots point rate: 1 point ~  {{ loading_points_rate ? 'loading...' : convertToCurrency(pointsRateObject?.value) }}
