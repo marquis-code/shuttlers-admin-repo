@@ -172,6 +172,8 @@ watch(batchBookTripObj.selectedRoute, () => {
 })
 
 watch(batchBookTripObj.selectedItinerary, () => {
+    batchBookTripObj.pickup.value = {}
+    batchBookTripObj.destination.value = {}
     if (batchBookTripObj.selectedItinerary.value?.id) getBusstops()
 })
 
@@ -203,7 +205,7 @@ watch(batchBookTripObj.has_return, () => {
 })
 
 const enableButton = computed(() => {
-    return !!(batchBookTripObj.start_date.value && total_fare.value && batchBookTripObj.destination.value?.id)
+    return !!(batchBookTripObj.start_date.value && batchBookTripObj.destination.value?.id)
 })
 
 export const useBatchBookTrip = () => {
