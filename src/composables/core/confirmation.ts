@@ -55,6 +55,8 @@ export const useConfirmationModal = () => {
         confirmationState.description.value = ''
         confirmationState.title.value = ''
         confirmationState.call_function.value = () => { }
+        confirmationState.proceedText.value = 'Yes'
+        confirmationState.cancelText.value = 'No'
         closeConfirm()
 	}
 
