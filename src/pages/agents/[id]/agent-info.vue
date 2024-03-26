@@ -13,15 +13,15 @@
 
 				<div class="field relative">
 					<label for="status">Bank name</label>
-					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+					<input id="user" type="text" name="user" class="input-field" :value="selectedAgent.bank_name" disabled>
 				</div>
 				<div class="field relative">
 					<label for="status">Account number</label>
-					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+					<input id="user" type="text" name="user" class="input-field" :value="selectedAgent.account_number" disabled>
 				</div>
 				<div class="field relative">
 					<label for="status">Account name</label>
-					<input id="user" type="text" name="user" class="input-field" value="N/A" disabled>
+					<input id="user" type="text" name="user" class="input-field" :value="selectedAgent.bank_account_name" disabled>
 				</div>
 
 				<!-- <div class="flex justify-end mt-12">

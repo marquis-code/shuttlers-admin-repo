@@ -6,7 +6,6 @@
 			:has-index="true"
 			:headers="tableFields"
 			:table-data="chargeTypes"
-			:has-options="true"
 			:page="page"
 		>
 			<template #header>

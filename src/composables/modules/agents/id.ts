@@ -42,5 +42,5 @@ const setFormInfoForCreateRouteForm = (data:Record<string, any>) => {
     const { createRouteForm } = useCreateRoute()
     createRouteForm.start_location.value = { name: data.pickup, lat: '0', lng: '0' }
     createRouteForm.end_location.value = { name: data.destination, lat: '0', lng: '0' }
-    createRouteForm.sales_route_suggestions_id.value = data.id
+    createRouteForm.sales_route_suggestion_id.value = data.id
 }

@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/partners" class="mb-6" />
 		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 			<div class="w-8/12 space-y-10">
 				<div v-if="!Object.keys(selectedPartner).length && !loading">
