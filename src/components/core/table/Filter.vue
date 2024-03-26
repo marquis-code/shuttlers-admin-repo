@@ -29,6 +29,7 @@
 			<section class="flex items-center flex-row-reverse gap-4">
 				<button v-if="filterType.showDownloadButton" :disabled="loading" class="flex items-center cursor-pointer gap-x-2 disabled:cursor-not-allowed" @click="onDownload">
 					<img v-if="!loading" src="@/assets/icons/source/download.svg" alt="" class="inline">
+					<Spinner v-else :light="false" />
 					<p class="text-xs font-medium">
 						{{ loading ? 'Downloading...' : 'Download report' }}
 					</p>

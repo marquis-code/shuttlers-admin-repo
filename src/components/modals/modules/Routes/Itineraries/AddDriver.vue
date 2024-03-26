@@ -9,7 +9,7 @@
 					<input id="updateVehicle" v-model="isUpdateVehicleDisabled" type="checkbox" name="updateVehicle">
 					<label for="updateVehicle" class="font-semibold text-sm">{{ !isUpdateVehicleDisabled ? 'Enable': 'Disable' }} Update Vehicle</label>
 				</div>
-				<VehicleSelector v-model="selectedVehicle" :is-disabled="!isUpdateVehicleDisabled" />
+				<VehicleSelector v-if="showVehicleComp" v-model="selectedVehicle" :is-disabled="!isUpdateVehicleDisabled" />
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="label">Cost of supply</label>
@@ -58,10 +58,10 @@ const {
 const isUpdateVehicleDisabled = ref(false)
 
 const { singleItinerary: itinerary } = useItineraries()
-const { break_even, driver, pricing_margin, pricing_unit, cost_of_supply, loading, addDriver, clearObj, isEdit, loading_cost_of_supply } = useAddDriver()
+const { break_even, driver, pricing_margin, pricing_unit, cost_of_supply, loading, addDriver, clearObj, isEdit, loading_cost_of_supply, id } = useAddDriver()
 
 const enableButton = computed(() => {
-	return !!(driver.value?.id && cost_of_supply.value && break_even.value && pricing_margin.value && pricing_unit.value)
+	return !!(driver.value?.id && cost_of_supply.value && break_even.value && pricing_margin.value && pricing_unit.value && selectedVehicle.value?.id)
 })
 const selectedVehicle = ref({}) as any
 const handleUpdateDriver = () => {
@@ -71,16 +71,25 @@ const handleUpdateDriver = () => {
 		pricing_margin: pricing_margin.value,
 		pricing_unit: pricing_unit.value,
 		cost_of_supply: cost_of_supply.value,
-		vehicle: selectedVehicle.value
+		vehicle: selectedVehicle.value,
+		id: id.value
 	})
 	isEdit.value ? updateDriver() : addDriver()
 }
 
 // const selectedDriver = ref({}) as any
+const showVehicleComp = ref(true)
+const reloadVehicleComp = () => {
+	showVehicleComp.value = false
+	setTimeout(() => {
+		showVehicleComp.value = true
+	}, 200)
+}
 
 watch(driver, (newDriver) => {
 	if (newDriver && newDriver.vehicle_id) {
 		selectedVehicle.value = newDriver.vehicle
+		reloadVehicleComp()
 	} else {
 		selectedVehicle.value = null
 	}
@@ -88,6 +97,7 @@ watch(driver, (newDriver) => {
 	immediate: true,
 	deep: true
 })
+
 onBeforeUnmount(() => clearObj())
 </script>
 
