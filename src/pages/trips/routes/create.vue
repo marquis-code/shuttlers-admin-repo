@@ -1,7 +1,6 @@
 <template>
 	<div class="flex">
 		<ModulesRoutesCreateForm class="md:min-w-[360px] w-4/12" />
-
 		<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading" :encoded-polyline="polyline" class="w-8/12 rounded-br-xl" height="87vh" />
 	</div>
 </template>
