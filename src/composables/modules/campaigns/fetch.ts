@@ -205,7 +205,7 @@ export const use_update_reward = () => {
 }
 
 const loading_points_rate = ref(false)
-const pointsRateObject = ref({})
+const pointsRateObject = ref({} as Record<string, any>)
 
 export const use_get_points_rate = () => {
     const getPilotPointsRate = async (userType:string) => {
