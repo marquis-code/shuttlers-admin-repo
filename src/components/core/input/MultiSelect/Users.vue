@@ -17,7 +17,7 @@ const user = ref()
 const emits = defineEmits(['update:modelValue', 'updated'])
 const props = defineProps({
   modelValue: {
-    type: [Number, String, Object],
+    type: [Number, Object],
     required: false,
     default: 0
     },
