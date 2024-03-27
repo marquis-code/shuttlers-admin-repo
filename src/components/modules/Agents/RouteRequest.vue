@@ -7,28 +7,32 @@
 				<Icon name="closed" class="w-5 cursor-pointer" @click="closeCard" />
 			</header>
 
-			<article v-for="route in suggestedRoutes" :key="route.id" class="p-3 flex flex-col w-full">
-				<div class="flex justify-between items-center w-full">
-					<RouteDescription :pickup="route.pickup" :destination="route.destination" />
-					<div class="text-sm flex flex-col justify-between h-full py-2 font-medium">
-						<span>{{ route.is_return_trip ? 'Round-trip' : 'One-way trip' }}</span>
-						<span>{{ route.departure_time }} {{ route.time_of_day }}</span>
+			<section v-if="suggestedRoutes.length" class="flex flex-col gap-4 w-full">
+				<article v-for="route in suggestedRoutes" :key="route.id" class="p-3 flex flex-col w-full">
+					<div class="flex justify-between items-center w-full">
+						<RouteDescription :pickup="route.pickup" :destination="route.destination" />
+						<div class="text-sm flex flex-col justify-between h-full py-2 font-medium">
+							<span>{{ route.is_return_trip ? 'Round-trip' : 'One-way trip' }}</span>
+							<span>{{ route.departure_time }} {{ route.time_of_day }}</span>
+						</div>
 					</div>
-				</div>
-				<footer class="flex justify-between mt-3">
-					<nuxt-link :to="`agents/${route.owner?.id}/agent-routes`" class="bg-white text-shuttlersGreen border px-4 py-0 leading-[2] border-shuttlersGreen rounded-full">
-						View
-					</nuxt-link>
-					<div class="flex gap-3">
-						<button class="btn-outline-xs border-red text-red" @click="setDeclineRoute(route)">
-							Decline
-						</button>
-						<button class="btn-primary-xs !py-2" @click="setAcceptRoute(route)">
-							Approve
-						</button>
-					</div>
-				</footer>
-			</article>
+					<footer class="flex justify-between mt-3">
+						<nuxt-link :to="`agents/${route.owner?.id}/agent-routes`" class="bg-white text-shuttlersGreen border px-4 py-0 leading-[2] border-shuttlersGreen rounded-full">
+							View
+						</nuxt-link>
+						<div class="flex gap-3">
+							<button class="btn-outline-xs border-red text-red" @click="setDeclineRoute(route)">
+								Decline
+							</button>
+							<button class="btn-primary-xs !py-2" @click="setAcceptRoute(route)">
+								Approve
+							</button>
+						</div>
+					</footer>
+				</article>
+			</section>
+
+			<span v-else class="h-24 center w-full font-bold">No Suggested Route Request Available</span>
 		</section>
 	</aside>
 </template>

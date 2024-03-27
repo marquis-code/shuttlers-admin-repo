@@ -1,11 +1,9 @@
 <template>
-	<div class="">
-		<div class="flex h-[calc(100vh-90px)]">
-			<ModulesRoutesCreateForm v-if="!suggestionLoading" class="md:min-w-[360px]" />
-			<Skeleton v-else class=" min-h-screen md:min-w-[360px]" />
+	<div class="flex h-full">
+		<ModulesRoutesCreateForm v-if="!suggestionLoading" class="md:min-w-[360px] w-4/12" />
+		<Skeleton v-else class="md:min-w-[360px]" />
 
-			<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading || suggestionLoading" :encoded-polyline="polyline" class="w-8/12 min-h-screen rounded-md" height="100vh" />
-		</div>
+		<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading || suggestionLoading" :encoded-polyline="polyline" class="w-8/12 rounded-br-xl" height="87vh" />
 	</div>
 </template>
 

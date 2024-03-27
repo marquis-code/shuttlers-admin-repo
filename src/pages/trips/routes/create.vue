@@ -1,11 +1,8 @@
 <template>
-	<div class="">
-		<!-- <ButtonGoBack class="mb-6" /> -->
-		<div class="flex h-[calc(100vh-90px)]">
-			<ModulesRoutesCreateForm class="md:min-w-[360px]" />
+	<div class="flex">
+		<ModulesRoutesCreateForm class="md:min-w-[360px] w-4/12" />
 
-			<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading" :encoded-polyline="polyline" class="w-8/12 min-h-screen rounded-md" />
-		</div>
+		<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading" :encoded-polyline="polyline" class="w-8/12 rounded-br-xl" height="87vh" />
 	</div>
 </template>
 

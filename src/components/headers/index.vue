@@ -1,5 +1,7 @@
 <template>
-	<component :is="component" />
+	<div>
+		<component :is="component" />
+	</div>
 </template>
 <script setup lang="ts">
 import { headerComponentRouteArray } from '@/utils/dashboard_headers'
