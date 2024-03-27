@@ -1,43 +1,45 @@
 <template>
 	<div class="h-[84vh] overflow-auto">
-		<form class="flex flex-col gap-4 p-6 pb-0 items-start " @submit.prevent="create">
-			<LocationInput
-				id="startLocation"
-				v-model="createRouteForm.start_location.value"
-				name="startLocation"
-				class="input-field"
-				placeholder="Starting point"
-			/>
-			<div v-for="(n, idx) in createRouteForm.waypoints.value" :key="n" class="field relative mt-6">
-				<label for="stops">Stop {{ idx +1 }} </label>
-				<div class="relative input-field p-0 border-none flex">
-					<LocationInput
-						:id="idx+'stops'"
-						autocomplete="off"
-						placeholder="Enter location"
-						type="text"
-						class="input-field"
-						required
-						@change="updateWaypoint($event, idx)"
-					/>
-					<Icon name="closed" class="h-[45px] text-dark absolute bg-grey12 border rounded-md right-0 top-0 p-3 cursor-pointer rounded-l-none" @click="createRouteForm.waypoints.value.splice(idx, 1) " />
+		<form class="flex flex-col gap-4 p-6 pb-0 items-start " @submit.prevent="isEdit ? update() : create()">
+			<div v-if="!isEdit" class="flex flex-col gap-4">
+				<LocationInput
+					id="startLocation"
+					v-model="createRouteForm.start_location.value"
+					name="startLocation"
+					class="input-field"
+					placeholder="Starting point"
+				/>
+				<div v-for="(n, idx) in createRouteForm.waypoints.value" :key="n" class="field relative mt-6">
+					<label for="stops">Stop {{ idx +1 }} </label>
+					<div class="relative input-field p-0 border-none flex">
+						<LocationInput
+							:id="idx+'stops'"
+							autocomplete="off"
+							placeholder="Enter location"
+							type="text"
+							class="input-field"
+							required
+							@change="updateWaypoint($event, idx)"
+						/>
+						<Icon name="closed" class="h-[45px] text-dark absolute bg-grey12 border rounded-md right-0 top-0 p-3 cursor-pointer rounded-l-none" @click="createRouteForm.waypoints.value.splice(idx, 1) " />
+					</div>
 				</div>
-			</div>
-			<button
-				type="button"
-				class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
-				@click="createRouteForm.waypoints.value.push({id:createRouteForm.waypoints.value.length+1, data: '' })"
-			>
-				<Icon name="plus" class="w-4 text-white " />	Add Stop
-			</button>
+				<button
+					type="button"
+					class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
+					@click="createRouteForm.waypoints.value.push({id:createRouteForm.waypoints.value.length+1, data: '' })"
+				>
+					<Icon name="plus" class="w-4 text-white " />	Add Stop
+				</button>
 
-			<LocationInput
-				id="endLocation"
-				v-model="createRouteForm.end_location.value"
-				name="endLocation"
-				class="input-field"
-				placeholder="Destination point"
-			/>
+				<LocationInput
+					id="endLocation"
+					v-model="createRouteForm.end_location.value"
+					name="endLocation"
+					class="input-field"
+					placeholder="Destination point"
+				/>
+			</div>
 
 			<hr>
 
@@ -181,7 +183,7 @@
 				</section>
 			</div>
 
-			<div class="space-y-3">
+			<div v-if="!isEdit" class="space-y-3">
 				<div>
 					<label>Route Itinerary</label>
 					<div>
@@ -201,8 +203,38 @@
 				</div>
 			</div>
 
+			<div v-if="isEdit" class="flex flex-col gap-4 w-full">
+				<div class="flex flex-col">
+					<label class="label">Route Owner Type</label>
+					<select v-model="createRouteForm.route_owner_type.value" class="input-field">
+						<option value="system">Shuttlers Owned</option>
+						<option value="corporate">Corporate</option>
+						<option value="user">User</option>
+					</select>
+				</div>
+				<div v-if="createRouteForm.route_owner_type.value !== 'system'" class="flex flex-col">
+					<label class="label">Select Route Owner</label>
+					<InputMultiSelectUsers v-if="createRouteForm.route_owner_type.value === 'user'" v-model="createRouteForm.route_owner.value" />
+					<InputMultiSelectCompanies v-else v-model="createRouteForm.route_owner.value" />
+				</div>
+				<div class="flex flex-col">
+					<label class="label">Who is paying for the bookings on this route?</label>
+					<select v-model="createRouteForm.payer.value" class="input-field">
+						<option value="passenger">Passenger</option>
+						<option value="owner">Route Onwer</option>
+					</select>
+				</div>
+				<div class="flex flex-col">
+					<label class="label">When is booking payment happening?</label>
+					<select v-model="createRouteForm.payment_mode.value" class="input-field">
+						<option value="pre-trip">Before Trip Starts</option>
+						<option value="post-trip">After Trip Ends</option>
+					</select>
+				</div>
+			</div>
+
 			<button class="btn-primary w-full" type="submit">
-				<span v-if="!loading">Create route</span>
+				<span v-if="!loading">{{ isEdit ? 'Update' : 'Create' }} route</span>
 				<Spinner v-else />
 			</button>
 		</form>
@@ -214,7 +246,7 @@ import { useCreateRoute } from '@/composables/modules/routes/create'
 import { days_of_the_week } from '@/composables/utils/constant'
 import { Capitalize } from '@/composables/utils/formatter'
 
-const { createRouteForm, loading, create } = useCreateRoute()
+const { createRouteForm, loading, create, clearCreateForm, update } = useCreateRoute()
 
 const updateWaypoint = (data, idx) => {
     createRouteForm.waypoints.value[idx].data = data
@@ -229,6 +261,11 @@ const handleSelectedDay = (n: string) => {
   }
 }
 
+const isEdit = computed(() => {
+	return useRoute().fullPath.includes('edit')
+})
+
+onBeforeUnmount(() => clearCreateForm())
 </script>
 
 <style scoped>
