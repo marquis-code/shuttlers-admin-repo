@@ -109,7 +109,7 @@ export const partners_api = {
 		const url = `/partners?limit=${20}&page=${1}&metadata=true&search=${search}&related=owner`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_all_partner_vehicle_by_id: (partnerId:number) => {
+	$_get_all_partner_vehicle_by_id: (partnerId:number|string) => {
 		const url = `/partner/${partnerId}/vehicles?metadata=true&limit=${1000}&related=driver&status=active`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
