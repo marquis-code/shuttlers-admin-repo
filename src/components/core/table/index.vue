@@ -69,7 +69,7 @@ const checkedArray = ref([] as Record<string, any>[])
 const props = defineProps({
 	hasOverflow: {
 		type: Boolean,
-		default: false
+		default: true
 	},
 	option: {
 		type: Function,

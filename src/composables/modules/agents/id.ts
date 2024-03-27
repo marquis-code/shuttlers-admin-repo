@@ -40,7 +40,9 @@ export const useGetAgentRouteSuggestionsById = () => {
 
 const setFormInfoForCreateRouteForm = (data:Record<string, any>) => {
     const { createRouteForm } = useCreateRoute()
-    createRouteForm.start_location.value = { name: data.pickup, lat: '0', lng: '0' }
-    createRouteForm.end_location.value = { name: data.destination, lat: '0', lng: '0' }
+    const pickup_coordinate = data.pickup_coordinate.split(',')
+    const destination_coordinate = data.destination_coordinate.split(',')
+    createRouteForm.start_location.value = { name: data.pickup, lat: pickup_coordinate[0], lng: pickup_coordinate[1] }
+    createRouteForm.end_location.value = { name: data.destination, lat: destination_coordinate[0], lng: destination_coordinate[1] }
     createRouteForm.sales_route_suggestion_id.value = data.id
 }

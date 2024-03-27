@@ -1,7 +1,7 @@
 const cardIsOpen = ref(false)
 const loading = ref(false)
 export const useOpenRouteRequest = () => {
-    const openCard = async (data: any) => {
+    const openCard = async () => {
         cardIsOpen.value = true
     }
 

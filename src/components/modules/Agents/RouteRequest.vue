@@ -1,5 +1,5 @@
 <template>
-	<aside v-if="cardIsOpen" class="fixed inset-0 bg-slate-50 bg-trans">
+	<aside v-if="cardIsOpen" class="fixed inset-0 bg-slate-50 bg-trans" @click.self="closeCard">
 		<Skeleton v-if="loading" height="70vh" width="400px" class="absolute top-[72px] right-6 flex flex-col items-start z-40 bg-light w-[400px] h-[75%] p-5 rounded-lg " />
 		<section v-else class="fixed inset-y-0 right-0 flex flex-col items-start z-40 bg-light w-[400px] h-full  ">
 			<header class="flex justify-between w-full items-center border-b p-5">
@@ -7,23 +7,23 @@
 				<Icon name="closed" class="w-5 cursor-pointer" @click="closeCard" />
 			</header>
 
-			<article class="p-3 flex flex-col w-full">
+			<article v-for="route in suggestedRoutes" :key="route.id" class="p-3 flex flex-col w-full">
 				<div class="flex justify-between items-center w-full">
-					<RouteDescription pickup="Akin Adesola Street, Lagos, Nigeria" destination="21 Road, Festac Town, Lagos" />
+					<RouteDescription :pickup="route.pickup" :destination="route.destination" />
 					<div class="text-sm flex flex-col justify-between h-full py-2 font-medium">
-						<span>One-way trip</span>
-						<span>6:00 AM</span>
+						<span>{{ route.is_return_trip ? 'Round-trip' : 'One-way trip' }}</span>
+						<span>{{ route.departure_time }} {{ route.time_of_day }}</span>
 					</div>
 				</div>
 				<footer class="flex justify-between mt-3">
-					<button class="bg-white text-shuttlersGreen border px-4 border-shuttlersGreen rounded-full">
+					<nuxt-link :to="`agents/${route.owner?.id}/agent-routes`" class="bg-white text-shuttlersGreen border px-4 py-0 leading-[2] border-shuttlersGreen rounded-full">
 						View
-					</button>
+					</nuxt-link>
 					<div class="flex gap-3">
-						<button class="btn-outline-xs border-red text-red">
+						<button class="btn-outline-xs border-red text-red" @click="setDeclineRoute(route)">
 							Decline
 						</button>
-						<button class="btn-primary-xs !py-2">
+						<button class="btn-primary-xs !py-2" @click="setAcceptRoute(route)">
 							Approve
 						</button>
 					</div>
@@ -35,9 +35,18 @@
 
 <script setup lang="ts">
 import { useOpenRouteRequest } from '@/composables/modules/agents/routeRequest'
+import { useGetAgentsRoutes } from '@/composables/modules/agents/allRoute'
+import { useDeclineRouteSuggestion } from '@/composables/modules/agents/decline'
+import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
+
+const { suggestedRoutes, getAgentsRoute } = useGetAgentsRoutes()
 
 const { closeCard, loading, cardIsOpen } = useOpenRouteRequest()
 
+const { setAcceptRoute } = useAcceptRouteSuggestion()
+const { setDeclineRoute } = useDeclineRouteSuggestion()
+
+getAgentsRoute()
 </script>
 
 <style scoped>
