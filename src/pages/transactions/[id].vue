@@ -123,7 +123,7 @@ const transactionCol = computed(() => {
 		{ name: 'Description', value: transaction.value?.title ?? 'N/A' },
 		{ name: 'Number of seat', value: transaction.value?.no_of_seats ?? 'N/A' },
 		{ name: 'Price per seat', value: convertToCurrency(unit_cost_before_additional_charges.value) || 'N/A' },
-		{ name: 'Number of trip(s)', value: transaction.value?.booking_history.length }
+		{ name: 'Number of trip(s)', value: transaction.value?.no_of_trips ?? 'N/A' }
 	]
 })
 
