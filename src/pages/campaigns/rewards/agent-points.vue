@@ -35,15 +35,16 @@
 
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
+
 import { use_get_pilot_point_list, use_edit_point, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 const { getPilotPoints, loadingPointsList, pointsList, page, total, moveTo, next, prev } = use_get_pilot_point_list()
 const { payloads, editPoint, loading } = use_edit_point()
 const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
-const userType = 'agent'
+const userType = 'sales_agent'
 getPilotPoints(userType)
 getPilotPointsRate(userType)
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
