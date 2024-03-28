@@ -10,7 +10,7 @@
 			</template>
 			<template #sub_header>
 				<div class="flex items-stretch justify-between gap-4 border border-b-0 p-2">
-					<InputMultiSelectCompanies v-model="corporate" class="max-w-[300px]" />
+					<InputMultiSelectCompanies v-model="corporate" :show-clear-btn="true" class="max-w-[300px]" />
 					<ButtonMultiSelectDropdown v-model="type" :children="typeChildren" title="Type" />
 					<ButtonMultiSelectDropdown v-model="visibility" :children="visibilityChildren" title="Visibility" />
 					<select v-model="city" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none bg-light">
@@ -147,7 +147,7 @@ const handleRouteDelete = (data: any) => {
 }
 
 watch(corporate, () => {
-	corporateId.value = corporate.value.id || null
+	corporateId.value = corporate.value?.id || null
 })
 
 </script>
