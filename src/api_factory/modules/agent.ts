@@ -11,6 +11,10 @@ export const agents_api = {
 		const url = `/users/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_route_suggestions: () => {
+		const url = '/sales-route-suggestions?approval_status=pending_review'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_get_agent_route_suggestions_by_id: (id: string) => {
 		const url = `/sales-route-suggestions/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
@@ -32,5 +36,13 @@ export const agents_api = {
 	$_decline_suggestion: (id:string, payload: any) => {
 		const url = `/sales-route-suggestions/${id}/decline`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_currency_swap_config: (payload: any) => {
+		const url = '/currency-swap-config'
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_currencies: () => {
+		const url = '/currencies'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }

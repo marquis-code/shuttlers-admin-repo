@@ -17,12 +17,16 @@ const pageTabs = [
         path: '/campaigns/rewards/pilot-rewards'
     },
     {
-        name: 'Customers point',
+        name: 'Customers points',
         path: '/campaigns/rewards/customer-points'
     },
     {
         name: 'Customers reward',
         path: '/campaigns/rewards/customer-rewards'
+    },
+    {
+        name: 'Agent points',
+        path: '/campaigns/rewards/agent-points'
     }
 
 ]

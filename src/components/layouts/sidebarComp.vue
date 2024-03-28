@@ -1,6 +1,6 @@
 <template>
 	<transition name="sidebar" appear>
-		<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden">
+		<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden" aria-label="Sidebar">
 			<div class="sidebar-header">
 				<router-link to="/">
 					<component :is="data.logoIcon" class="img" />

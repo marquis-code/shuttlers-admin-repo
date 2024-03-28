@@ -3,11 +3,13 @@
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
-		<div class="main-content">
-			<Headers id="header" />
-			<div class=" overflow-auto relative  h-[88.9vh]">
-				<slot />
-			</div>
+		<div class="main-content z-50   h-[95vh] relative ">
+			<Headers id="header" class="absolute top-0 inset-x-0 z-50" />
+			<section class=" mt-16  relative h-[89.5vh] bg-transparent overflow-auto">
+				<div class="relative h-full">
+					<slot />
+				</div>
+			</section>
 		</div>
 	</div>
 

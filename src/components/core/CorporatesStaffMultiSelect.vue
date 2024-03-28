@@ -12,7 +12,6 @@
 			:taggable="false"
 			:custom-label="fullName"
 			:loading="loading"
-			@select="handleSelection"
 			@open="is_droped_down = true"
 			@close="is_droped_down = false"
 			@search-change="asyncFind"
@@ -22,6 +21,7 @@
 			</template>
 		</VueMultiselect>
 	</div>
+	<!-- @select="handleSelection" -->
 </template>
 
 <script setup lang="ts">
@@ -64,11 +64,15 @@ const asyncFind = async (query: any) => {
   return `${fname} ${lname}`
 }
 
-const selectedStaff = ref(props.modelValue) as Ref<any>
+const selectedStaff = ref() as Ref<any>
 
-const handleSelection = (val:any) => {
-	emit('update:modelValue', val)
-}
+// const handleSelection = (val:any) => {
+// 	emit('update:modelValue', selectedStaff.value)
+// }
+
+watch(selectedStaff, () => {
+	emit('update:modelValue', selectedStaff.value)
+})
 
 watchDebounced(
   search,

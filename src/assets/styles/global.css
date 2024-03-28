@@ -90,6 +90,7 @@ html,
 body {
   @apply overflow-x-hidden;
   scroll-behavior: smooth;
+  background-color: var(--grey11);
 }
 
 select,
