@@ -20,7 +20,11 @@ const createRouteForm = {
     route_availability_days: ref([...days_of_the_week]) as Ref<any[]>,
     itinerary_time: ref(''),
     fare: ref(''),
-    sales_route_suggestion_id: ref('')
+    sales_route_suggestion_id: ref(''),
+    route_owner_type: ref(''),
+    route_owner: ref({}) as Ref<Record<string, any>>,
+    payer: ref(''),
+    payment_mode: ref('')
 }
 
 const clearCreateForm = () => {
@@ -41,6 +45,26 @@ const clearCreateForm = () => {
     createRouteForm.route_availability_days.value = [...days_of_the_week]
     createRouteForm.itinerary_time.value = ''
     createRouteForm.fare.value = ''
+    createRouteForm.route_owner_type.value = ''
+    createRouteForm.route_owner.value = {}
+    createRouteForm.payer.value = ''
+    createRouteForm.payment_mode.value = ''
+}
+
+const populateRouteData = (data:Record<string, any>) => {
+    createRouteForm.route_code.value = data?.route_code
+    createRouteForm.desc.value = data?.info?.description
+    createRouteForm.visibility.value = data?.visibility
+    createRouteForm.is_exclusive.value = data?.is_exclusive ? 'exclusive' : 'shared'
+    createRouteForm.route_availability.value = JSON.parse(data?.route_availability_days).length !== 7 ? 'selected_days' : 'everyday'
+    createRouteForm.route_availability_days.value = JSON.parse(data?.route_availability_days)
+    createRouteForm.avail_start_date.value = data?.route_availability_start_date
+    createRouteForm.avail_end_date.value = data?.route_availability_end_date
+    createRouteForm.unavailable_days.value = data?.blacklisted_availability_days_list
+    createRouteForm.route_owner_type.value = data?.owner_type
+    createRouteForm.route_owner.value = data?.owner_id
+    createRouteForm.payer.value = data?.payer
+    createRouteForm.payment_mode.value = data?.payment_mode
 }
 
 const ploylineLoading = ref(false)
@@ -92,10 +116,10 @@ const polyline = computed(async () => {
         return null
     }
 })
+const fetchingRoute = ref(false)
+const loading = ref(false)
 
 export const useCreateRoute = () => {
-    const loading = ref(false)
-
     const create = async () => {
         loading.value = true
         const payload = {
@@ -150,5 +174,48 @@ export const useCreateRoute = () => {
         }
         loading.value = false
     }
-    return { createRouteForm, startPosition, endPosition, loading, polyline, create, ploylineLoading }
+
+    const initEditRoute = async () => {
+        fetchingRoute.value = true
+        const routeId = useRoute().params.id as string
+        const res = (await routes_api.$_get_route_by_id(routeId)) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            populateRouteData(res.data?.id ? res.data : {})
+        }
+        fetchingRoute.value = false
+    }
+
+    const update = async () => {
+        const payload:Record<string, any> = {
+            payer: createRouteForm.payer.value,
+            payment_mode: createRouteForm.payment_mode.value,
+            owner_type: createRouteForm.route_owner_type.value,
+            is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
+            visibility: createRouteForm.visibility.value,
+            route_availability_days: createRouteForm.route_availability_days.value,
+            route_code: createRouteForm.route_code.value,
+            info: {
+                description: createRouteForm.desc.value
+            },
+            route_availability_end_date: createRouteForm.avail_end_date.value,
+            route_availability_start_date: createRouteForm.avail_start_date.value,
+            blacklisted_availability_days: createRouteForm.unavailable_days.value,
+            corporate_id: createRouteForm.corporate.value?.id || null
+        }
+        if (createRouteForm.route_owner_type.value !== 'system') {
+            payload.owner_id = createRouteForm.route_owner.value?.id || null
+        }
+        loading.value = true
+        const routeId = useRoute().params.id as string
+        const res = await routes_api.$_update_route(routeId, payload) as CustomAxiosResponse
+
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Route was updated successfully' })
+            if (res.data?.id) useRouter().push(`/trips/routes/${res.data?.id}/details`)
+            clearCreateForm()
+        }
+        loading.value = false
+    }
+
+    return { createRouteForm, startPosition, endPosition, loading, polyline, create, ploylineLoading, initEditRoute, fetchingRoute, clearCreateForm, update }
 }

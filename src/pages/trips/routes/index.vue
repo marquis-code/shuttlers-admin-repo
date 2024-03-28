@@ -9,7 +9,8 @@
 				/>
 			</template>
 			<template #sub_header>
-				<div class="flex items-stretch justify-end gap-4 border border-b-0 p-2">
+				<div class="flex items-stretch justify-between gap-4 border border-b-0 p-2">
+					<InputMultiSelectCompanies v-model="corporate" class="max-w-[300px]" />
 					<ButtonMultiSelectDropdown v-model="type" :children="typeChildren" title="Type" />
 					<ButtonMultiSelectDropdown v-model="visibility" :children="visibilityChildren" title="Visibility" />
 					<select v-model="city" class="min-w-[100px] w-fit pr-4 border py-1.5 px-2 rounded-md outline-none bg-light">
@@ -57,10 +58,11 @@ import { useUpdateRouteStatus } from '@/composables/modules/routes/updateRoute/u
 import { useUpdateDeletion } from '@/composables/modules/routes/updateRoute/delete'
 import { useCityAndCountry } from '@/composables/modules/configure/charges/utils'
 
+const corporate = ref({}) as Ref<Record<string, any>>
 const { allCityNames, fetchAllCityNames } = useCityAndCountry()
 const { updateRoute, loading } = useUpdateRouteStatus()
 const { loading: deletingRoute, deleteRoute } = useUpdateDeletion()
-const { getMainRoutesList, loadingMainRoutes, mainRoutesList, type, visibility, city, onFilterUpdate, moveTo, next, prev, total, page, downloadMainRoutes } = useGetMainRoutes()
+const { getMainRoutesList, loadingMainRoutes, mainRoutesList, type, visibility, city, onFilterUpdate, moveTo, next, prev, total, page, downloadMainRoutes, corporateId } = useGetMainRoutes()
 
 getMainRoutesList()
 fetchAllCityNames()
@@ -143,6 +145,10 @@ const handleRouteDelete = (data: any) => {
 		call_function: () => deleteRoute(data.id)
     })
 }
+
+watch(corporate, () => {
+	corporateId.value = corporate.value.id || null
+})
 
 </script>
 
