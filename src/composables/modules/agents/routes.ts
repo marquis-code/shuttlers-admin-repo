@@ -41,7 +41,6 @@ export const useGetAgentsRoutes = () => {
         }
         } else {
             const response = await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.id) as CustomAxiosResponse
-            console.log(response.data.data)
             if (response.type !== 'ERROR') {
                 agentsRoute.value = response.data.data
                 metaObject.total.value = response.data.metadata.total_pages
