@@ -29,6 +29,11 @@ export const agents_api = {
 
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_get_Agent_trip_monitoring: (id:number, filterData?: Record<string, Ref>, metaObject?:TMetaObject) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/users/${id}/routes?${queryParams}&limit=${metaObject?.page_size.value}&page=${metaObject?.page.value}&metadata=true`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
 	$_create_agent: (payload: any) => {
 		const url = '/users'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)

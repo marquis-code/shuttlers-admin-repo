@@ -10,7 +10,6 @@ import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
   const activeTripsList = ref([] as Record<string, any>[])
 export const useGetActiveTripsList = () => {
   const loadingActiveTrips = ref(false)
-  const total_pages = ref() as any
 
   const currentRoute = computed(() => { return useRoute().fullPath })
 
@@ -28,7 +27,6 @@ export const useGetActiveTripsList = () => {
           trip.vehicle_status = false
           return trip
             })
-        total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total_pages
       }
       loadingActiveTrips.value = false
@@ -38,7 +36,7 @@ export const useGetActiveTripsList = () => {
   setFunction(getActiveTrips)
 
   watch(watchArray, () => {
-    if (currentRoute.value.includes('active')) getActiveTrips()
+     getActiveTrips()
   })
 
   return {

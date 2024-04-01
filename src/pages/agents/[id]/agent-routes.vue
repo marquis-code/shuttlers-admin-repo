@@ -1,5 +1,5 @@
 <template>
-	<section v-if="!loading && !AgentByIdloading" class="absolute top-0 z-30 bg-white inset-x-0 py-4 px-10">
+	<section v-if="!loading && !AgentByIdloading" class=" z-30 bg-white py-4 px-3">
 		<span v-for="filter in filterOptions" :key="filter.value"
 			class="px-5  font-bold text-[13px] py-2.5 rounded-lg cursor-pointer"
 			:class="[filterData.approval_status.value === filter.value ? 'text-green bg-neut1 ':'']"
@@ -9,7 +9,7 @@
 		</span>
 	</section>
 
-	<div class="flex flex-col mt-12 gap-6">
+	<div class="flex flex-col mt-4 gap-6">
 		<section v-if="filterData.approval_status.value === 'monitoring' && !loading " class="flex gap-4 w-full ">
 			<div class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Total trips taken</span>
@@ -72,14 +72,14 @@ import { useDeclineRouteSuggestion } from '@/composables/modules/agents/decline'
 import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev, selectedAgentId, filterOptions, filterData } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev, agentDataRef, filterOptions, filterData } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
 
 watch(selectedAgent, (value) => {
 	if (value.sales_agent_account_id) {
-		selectedAgentId.value = value.sales_agent_account_id
+		agentDataRef.value = value
 		getAgentsRoute()
 	} else if (Object.keys(value).length && !value.sales_agent_account_id) {
 		useAlert().openAlert({ type: 'ERROR', msg: 'sales_agent_account_id not found' })

@@ -1,31 +1,36 @@
 <template>
-	<section v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="h-full flex flex-col gap-4">
+	<section class="flex flex-col gap-4 " :class="{ 'h-full' : (!loadingActiveTrips && filteredActiveTripsList.length > 0) }">
 		<div class="flex border rounded-2xl p-4 items-center gap-4">
 			<form class="relative flex gap-3 w-full max-w-sm" autocomplete="off" @submit.prevent="">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[16px] left-3" aria-hidden="true" />
-				<input type="text" placeholder="Search active trip" autocomplete="off" class="input-field !bg-transparent  text-start w-full !pl-9">
+				<input v-model="filterData.search.value" type="text" placeholder="Search active trip" autocomplete="off" class="input-field !bg-transparent  text-start w-full !pl-9">
 			</form>
-			<ButtonMultiSelectDropdown :children="[{ name: 'Online', value: 'online' }, { name: 'Offline', value: 'offline' }]" title="All status" />
-			<ButtonMultiSelectDropdown :children="formattedCities" :loading="loading" title="All cities" />
+			<ButtonMultiSelectDropdown v-model="filterStatus.status.value" :children="[{ name: 'Online', value: 'online' }, { name: 'Offline', value: 'offline' }]" title="All status" />
+			<ButtonMultiSelectDropdown v-model="filterStatus.city.value" :children="formattedCities" :loading="loading" title="All cities" />
 
 			<span class="text-sm font-bold ml-auto">
-				Showing {{ filteredActiveTripsList.length }} of {{ page_size }} active trips
+				Showing {{ filteredActiveTripsList.length }} of {{ total }} active trips
 			</span>
 		</div>
 
-		<div class="flex h-full border rounded-2xl">
+		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl">
 			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" />
 			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" />
 		</div>
 	</section>
 
-	<div v-if="!loadingActiveTrips && filteredActiveTripsList.length ===0" class="flex justify-center items-center h-screen">
+	<div v-if="!loadingActiveTrips && filteredActiveTripsList.length ===0" class="flex justify-center items-center h-full mt-4">
 		<div class="flex justify-center items-center flex-col">
 			<img src="@/assets/icons/source/bus_placeholder.svg" alt="track vehicle empty state">
-			<p>There are currently no active trips</p>
+			<p v-if="filterData.search.value || filterStatus.status.value || filterStatus.city.value">
+				There are currently no active trips for your current query
+			</p>
+			<p v-else>
+				There are currently no active trips
+			</p>
 		</div>
 	</div>
-	<Skeleton v-if="loadingActiveTrips" height="100%" radius="16px" />
+	<Skeleton v-if="loadingActiveTrips" height="100%" radius="16px" class="mt-4" />
 </template>
 
 <script setup lang="ts">
@@ -34,7 +39,7 @@ import { usePageHeader } from '@/composables/utils/header'
 import { useVehicleTracking } from '@/composables/modules/tracking/vehicle/fetch'
 import { use_user_city } from '@/composables/auth/register'
 
-const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, page_size } = useVehicleTracking()
+const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData } = useVehicleTracking()
 const { cityArray, fetchCities, loading } = use_user_city()
 
 initializeTracking()
