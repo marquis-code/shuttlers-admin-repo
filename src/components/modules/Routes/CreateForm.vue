@@ -207,9 +207,15 @@
 				<div class="flex flex-col">
 					<label class="label">Route Owner Type</label>
 					<select v-model="createRouteForm.route_owner_type.value" class="input-field">
-						<option value="system">Shuttlers Owned</option>
-						<option value="corporate">Corporate</option>
-						<option value="user">User</option>
+						<option value="system">
+							Shuttlers Owned
+						</option>
+						<option value="corporate">
+							Corporate
+						</option>
+						<option value="user">
+							User
+						</option>
 					</select>
 				</div>
 				<div v-if="createRouteForm.route_owner_type.value !== 'system'" class="flex flex-col">
@@ -220,15 +226,23 @@
 				<div class="flex flex-col">
 					<label class="label">Who is paying for the bookings on this route?</label>
 					<select v-model="createRouteForm.payer.value" class="input-field">
-						<option value="passenger">Passenger</option>
-						<option value="owner">Route Onwer</option>
+						<option value="passenger">
+							Passenger
+						</option>
+						<option value="owner">
+							Route Onwer
+						</option>
 					</select>
 				</div>
 				<div class="flex flex-col">
 					<label class="label">When is booking payment happening?</label>
 					<select v-model="createRouteForm.payment_mode.value" class="input-field">
-						<option value="pre-trip">Before Trip Starts</option>
-						<option value="post-trip">After Trip Ends</option>
+						<option value="pre-trip">
+							Before Trip Starts
+						</option>
+						<option value="post-trip">
+							After Trip Ends
+						</option>
 					</select>
 				</div>
 			</div>

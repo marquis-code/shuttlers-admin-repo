@@ -47,8 +47,10 @@
 					<Spinner v-else />
 				</button>
 				<NuxtLink to="/auth/forgot-password"
-					class="text-center flex justify-center items-center font-semibold text-gray-500 text-sm">Forgot
-					password?</NuxtLink>
+					class="text-center flex justify-center items-center font-semibold text-gray-500 text-sm">
+					Forgot
+					password?
+				</NuxtLink>
 			</form>
 		</section>
 	</main>
