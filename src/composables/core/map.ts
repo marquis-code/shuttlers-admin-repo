@@ -126,6 +126,18 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
     }
 }
 
+export const useLoadMarkerOnMap = () => {
+ const zoomMapInOnCoordinate = async (location: Coordinate) => {
+    if (!map) return
+    map.setCenter(location)
+    map.setZoom(16)
+}
+
+    return {
+        zoomMapInOnCoordinate
+    }
+}
+
 export const getPathFromPolyline = async (overviewPolyline) => {
     if (typeof overviewPolyline !== 'string') return
     const encodedPolyline = JSON.parse(overviewPolyline)

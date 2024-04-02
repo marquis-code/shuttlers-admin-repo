@@ -43,11 +43,13 @@ export const useVehicleTracking = () => {
             return 1
         })
 
-        if (filterStatusRef.value) {
+        if (filterStatusRef.value === true) {
             return res.filter((trip) => trip.vehicle_status)
-        } else {
+        } else if (filterStatusRef.value === false) {
             return res.filter((trip) => !trip.vehicle_status)
         }
+
+        return res
     })
 
     return { getActiveTrips, filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData }
