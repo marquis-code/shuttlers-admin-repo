@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/campaigns/valentine" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="formattedCampaignList" :has-index="true" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange: true}" :checkbox="true" @filter="onFilterUpdate" />

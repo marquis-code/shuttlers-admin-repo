@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/companies" class="mb-6" />
 		<section class="lg:flex justify-between gap-x-10 space-y-6 lg:space-y-0">
 			<div class="lg:w-8/12 space-y-8">
 				<div v-if="!loadingCorporateWallet" class="h-48 rounded-lg bg-indigo-100 p-6">
@@ -238,7 +238,7 @@ import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/compos
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
-const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData } = useCorporateWalletHistory()
+const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData, staff_ids } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 const { copyToClipboard } = useClipboard()
@@ -248,7 +248,7 @@ definePageMeta({
 })
 
 const handleSelectedCorporates = (val:any) => {
-	filterData['filters[user_ids]'].value = val.id
+	staff_ids.value = val.map((el) => { return el?.id })
 }
 const hideBalance = ref(true)
 const eyeToggle = computed(() => {

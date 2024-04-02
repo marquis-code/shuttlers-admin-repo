@@ -106,7 +106,7 @@ export const headerComponentRouteArray = [
     { routes: ['admin-add'], component: CreateAdmin },
     { routes: ['configuration'], component: null },
     { routes: ['campaigns-rewards-id-reward-history'], component: RewardHistory },
-    { routes: ['campaigns-rewards', 'campaigns-rewards-pilot-rewards', 'campaigns-rewards-customer-points', 'campaigns-rewards-customer-rewards'], component: CampaignRewards },
+    { routes: ['campaigns-rewards', 'campaigns-rewards-pilot-rewards', 'campaigns-rewards-customer-points', 'campaigns-rewards-customer-rewards', 'campaigns-rewards-agent-points'], component: CampaignRewards },
     { routes: ['trips-sos'], component: sos },
     { routes: ['trips-type-active', 'trips-type-upcoming', 'trips-type-completed', 'trips-type-cancelled', 'trips-type-bus-captains'], component: Trips },
     { routes: ['trips-routes', 'trips-routes-suspended', 'trips-routes-auctions', 'trips-routes-auctions-auction-details'], component: Routes },

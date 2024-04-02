@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/trips/routes" class="mb-6" />
 		<section class="flex flex-col gap-4 lg:flex-row">
 			<ModulesRoutesItinerariesItinerarySidebar />
 			<div class="flex items-center justify-center flex-grow">

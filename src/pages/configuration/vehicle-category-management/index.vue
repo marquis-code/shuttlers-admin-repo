@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<!-- <ButtonGoBack class="mb-6" /> -->
 		<Table :loading="loadingVehicleTypes" :headers="tableFields" :table-data="vehicleTypesList" :has-index="true" :page="page">
 			<template #item="{ item }">
 				<div v-if="item.name" class="flex items-center gap-x-4 py-6">

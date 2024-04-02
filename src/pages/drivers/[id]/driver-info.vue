@@ -1,6 +1,6 @@
 <template>
 	<div class="space-y-10">
-		<ButtonGoBack />
+		<ButtonGoBack url="/drivers" />
 		<div v-if="!loading" class="flex flex-col gap-5 lg:flex-row lg:gap-x-10 items-start">
 			<div class="w-full lg:w-7/12 max-w-[600px] bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">

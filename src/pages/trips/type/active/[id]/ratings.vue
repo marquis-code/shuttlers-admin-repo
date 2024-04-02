@@ -1,6 +1,6 @@
 <template>
-	<main class="">
-		<ButtonGoBack />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/active" />
 		<Table :loading="loadingTripRatings" :headers="tableFields" :table-data="tripRatingList" :has-index="true" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true }" />

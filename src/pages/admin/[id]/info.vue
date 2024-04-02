@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-6">
 		<BreadCrums v-if="!loading" class="text-sm" title="Admin" :content="breadcrumb" />
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/admin" class="mb-6" />
 		<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
 			<div v-if="!loading" class="md:w-6/12 bg-white rounded-md shadow-sm p-3">
 				<div class="flex justify-between items-center py-2.5 border-b pb-2 px-3">
@@ -75,7 +75,7 @@ const dropdownChildren = computed(() => [
 const breadcrumb = computed(() => {
 		return [
             {
-                name: 'Admin',
+                name: 'Access',
                 link: '#'
             },
             {

@@ -1,6 +1,6 @@
 <template>
-	<main class="">
-		<ButtonGoBack />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/waitlist" />
 		<Table
 			:loading="loading"
 			:headers="computedTableFields"

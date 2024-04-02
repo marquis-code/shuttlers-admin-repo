@@ -78,10 +78,12 @@ import CancelBooking from '@/components/modals/modules/users/CancelBooking.vue'
 import WalletNotification from '@/components/modals/modules/companies/wallet-notification/WalletNotification.vue'
 import LinkVehicle from '@/components/modals/modules/partners/LinkVehicle.vue'
 import DeclineReason from '@/components/modals/modules/agents/DeclineReason.vue'
+import ConfigureAgentPoints from '@/components/modals/modules/agents/ConfigureAgentPoints.vue'
 import NewReward from '@/components/modals/modules/promotion/newReward.vue'
 import BatchLinkVehicle from '@/components/modals/modules/partners/BatchLinkVehicle.vue'
 import LinkDriver from '@/components/modals/modules/partners/LinkDriver.vue'
 import BatchLinkDriver from '@/components/modals/modules/partners/BatchLinkDriver.vue'
+import ResyncRevenue from '@/components/modals/modules/partners/payouts/ResyncRevenue.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -94,9 +96,9 @@ type CompaniesTypes = 'AssignStaff' | 'WalletNotification' | 'ViewStaffRoutesLis
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBooking' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues' | 'TransferTrip' | 'CancelTrip'
-type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason'
+type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason' | 'ConfigureAgentPoints'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
-type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid'
+type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid' | 'ResyncRevenue'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver'
 type PromotionTypes = 'NewReward'
 
@@ -111,9 +113,9 @@ const CompaniesModals = { AssignStaff, WalletNotification, ViewStaffRoutesList, 
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBooking, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues, TransferTrip, CancelTrip } as Record<TripsTypes, any>
-const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason } as Record<RouteTypes, any>
+const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason, ConfigureAgentPoints } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
-const PayoutModals = { DeductPayout, MarkMultipleAsPaid } as Record<PayoutTypes, any>
+const PayoutModals = { DeductPayout, MarkMultipleAsPaid, ResyncRevenue } as Record<PayoutTypes, any>
 const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
 const PromotionModals = { NewReward } as Record<PromotionTypes, any>
 

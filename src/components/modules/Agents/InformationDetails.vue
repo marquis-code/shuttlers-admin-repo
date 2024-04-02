@@ -42,7 +42,7 @@
 			<p class="text-gray-500 text-sm">
 				NIN
 			</p>
-			<p class="text-sm">
+			<p class="text-sm truncate w-1/2">
 				{{ selectedUser.nin ?? 'N/A' }}
 			</p>
 		</div>

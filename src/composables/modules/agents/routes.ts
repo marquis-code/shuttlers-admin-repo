@@ -4,10 +4,10 @@ import { usePagination } from '@/composables/utils/table'
 import { isValidJsonString } from '@/composables/utils/formatter'
 
 const agentsRoute = ref([] as any)
-const selectedAgentId = ref('')
+const agentDataRef = ref()
 
 export const useGetAgentsRoutes = () => {
-    const filterOptions = [{ name: 'Pending review', value: 'pending_review' }, { name: 'Not Submitted', value: 'not_submitted' }, { name: 'Approved routes', value: 'approved' }, { name: 'Declined routes', value: 'declined' }]
+    const filterOptions = [{ name: 'Pending review', value: 'pending_review' }, { name: 'Trip monitoring', value: 'monitoring' }, { name: 'Approved routes', value: 'approved' }, { name: 'Declined routes', value: 'declined' }]
     const filterData = {
         approval_status: ref('pending_review')
     }
@@ -22,8 +22,8 @@ export const useGetAgentsRoutes = () => {
         agentsRoute.value = []
         loading.value = true
 
-        const response = await agents_api.$_get_agent_suggested_routes(selectedAgentId.value, filterData) as CustomAxiosResponse
-
+        if (filterData.approval_status.value !== 'monitoring') {
+                const response = await agents_api.$_get_agent_suggested_routes(agentDataRef.value.sales_agent_account_id, filterData) as CustomAxiosResponse
         if (response.type !== 'ERROR') {
             agentsRoute.value = response.data.data.map((data) => {
                 if (!isValidJsonString(data.route_available_days)) {
@@ -39,9 +39,16 @@ export const useGetAgentsRoutes = () => {
             })
             metaObject.total.value = response.data.metadata.total_pages
         }
+        } else {
+            const response = await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.id) as CustomAxiosResponse
+            if (response.type !== 'ERROR') {
+                agentsRoute.value = response.data.data
+                metaObject.total.value = response.data.metadata.total_pages
+            }
+        }
         loading.value = false
     }
     setFunction(getAgentsRoute)
 
-    return { getAgentsRoute, loading, agentsRoute, moveTo, ...metaObject, next, prev, filterOptions, filterData, selectedAgentId }
+    return { getAgentsRoute, loading, agentsRoute, moveTo, ...metaObject, next, prev, filterOptions, filterData, agentDataRef }
 }

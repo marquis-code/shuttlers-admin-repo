@@ -1,7 +1,7 @@
 <template>
-	<main>
-		<ButtonGoBack />
-		<section class="mx-10 mt-14 space-y-10">
+	<main class="flex flex-col gap-6">
+		<ButtonGoBack url="/trips/type/completed" />
+		<section class="space-y-10">
 			<div>
 				<ModulesTripsTripFinancialStartsCard v-if="!loadingFinancials" :trip-revenue-stats="revenueStats" />
 				<Skeleton v-else height="300px" />
@@ -21,7 +21,7 @@ const routeId = String(route.params.id)
 const { tripFinancials, loading: loadingFinancials, revenueStats, getTripFinancials, financialsMoveTo, page, next, prev } = useTripFinancials()
 getTripFinancials(routeId)
 definePageMeta({
-	layout: 'dashboard-zero',
+	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
 

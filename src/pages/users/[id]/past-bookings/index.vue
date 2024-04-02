@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/users" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="formattedBookingList" :has-options="true" :option="(data)=>$router.push(`/users/${id}/past-bookings/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />

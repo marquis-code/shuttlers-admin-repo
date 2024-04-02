@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/users" class="mb-6" />
 		<section class="px-0 card">
 			<header class="border-b">
 				<h3 class="font-medium px-6">

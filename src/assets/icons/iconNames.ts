@@ -5,6 +5,7 @@
 export enum IconNames {
   'add' = 'add',
   'arrowForward' = 'arrowForward',
+  'backward' = 'backward',
   'bank' = 'bank',
   'batch-booking-info' = 'batch-booking-info',
   'blue-notification' = 'blue-notification',
@@ -34,6 +35,7 @@ export enum IconNames {
   'eye-close' = 'eye-close',
   'eye' = 'eye',
   'filter' = 'filter',
+  'forward' = 'forward',
   'greater' = 'greater',
   'green-add' = 'green-add',
   'green-location' = 'green-location',
@@ -69,6 +71,7 @@ export enum IconNames {
   'red-exit' = 'red-exit',
   'red-trash' = 'red-trash',
   'refresh' = 'refresh',
+  'route' = 'route',
   'searchEmptyState' = 'searchEmptyState',
   'source_point' = 'source_point',
   'star' = 'star',
