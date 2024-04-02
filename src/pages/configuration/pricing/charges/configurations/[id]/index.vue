@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/configuration/pricing/charges" class="mb-6" />
 		<main class="flex flex-col gap-4">
 			<Skeleton v-if="loading || fetchingAllChargeTypes" height="200px" />
 			<template v-else>

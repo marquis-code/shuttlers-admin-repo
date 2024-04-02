@@ -1,5 +1,6 @@
 import { useSocketIo } from '@/api_factory/socket.config'
 import { loadMarkeronMap } from '@/composables/core/map'
+import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 
 type PassagerType = {
 	position_latitude: number;
@@ -11,13 +12,17 @@ type PassagerType = {
 };
 
 export const useTripTracking = () => {
+	const { activeTripsList } = useGetActiveTripsList()
 	const { listenToEvent, _connectToSocket } = useSocketIo()
 	_connectToSocket()
 
 	const listenToSpecificTripLocationAndAddtoMap = (
 		tripId: string, clickFunc:(data:any)=>void
     ) => {
-        listenToEvent(`trips:${tripId}`, (data: PassagerType) => {
+		listenToEvent(`trips:${tripId}`, (data: PassagerType) => {
+			activeTripsList.value.filter((i) => i.id === tripId)[0].vehicle_status = true
+			activeTripsList.value.filter((i) => i.id === tripId)[0].lat =	data.position_latitude
+			activeTripsList.value.filter((i) => i.id === tripId)[0].lng =	 data.position_longitude
             loadMarkeronMap({
                 id: data.driver_id,
                 lat: data.position_latitude,

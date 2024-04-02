@@ -24,8 +24,8 @@
 			</div>
 			<div class="field relative">
 				<label for="source">Account</label>
-				<select v-for="item in accountSource" id="source" :key="item.value" v-model="form.source" class="input-field" required>
-					<option :value="item.value">
+				<select id="source" v-model="form.source" class="input-field" required>
+					<option v-for="item in accountSource" :key="item.value" :value="item.value">
 						{{ item.name }}
 					</option>
 				</select>

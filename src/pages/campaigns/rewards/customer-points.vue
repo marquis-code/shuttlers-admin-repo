@@ -1,6 +1,5 @@
 <template>
 	<main class="space-y-10">
-		<ButtonGoBack class="mb-6" />
 		<div class="text-center bg-black h-12 text-sm text-white flex justify-center items-center">
 			Current customer point rate: 1 point ~ {{ loading_points_rate ? 'loading...' : convertToCurrency(pointsRateObject?.value) }}
 		</div>
@@ -48,9 +47,6 @@
 								</div>
 							</div>
 						</template>
-						<!-- <template #footer>
-							<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
-						</template> -->
 					</Table>
 				</div>
 			</div>

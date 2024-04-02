@@ -49,15 +49,23 @@ const loadingWalletHistory = ref(false)
 const coprorateWalletHistory = ref([])
 export const useCorporateWalletHistory = () => {
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+  const staff_ids = ref([]) as Ref<number[]>
   const filterData = {
     'filters[type]': ref('') as any,
-    'filters[user_ids]': ref('') as any,
+    'filters[user_ids]': computed(() => staff_ids.value.length ? staff_ids.value : ''),
     'filters[start_date]': ref('') as any,
     'filters[end_date]': ref('') as any
   }
   const getCorporateWalletHistory = async () => {
     const { selectedCorporate } = useCorporateIdDetails()
     loadingWalletHistory.value = true
+    if (!selectedCorporate.value?.wallet?.id) {
+      const companyId = useRoute().params.id as string
+      const resp = await corporates_api.$_get_corporate_by_id(companyId) as CustomAxiosResponse
+      if (resp.type !== 'ERROR') {
+        selectedCorporate.value = resp.data
+      }
+    }
     const res =
       (await corporates_api.$_get_corporate_wallet_transaction_history(
         Number(selectedCorporate.value?.wallet?.id),
@@ -66,7 +74,7 @@ export const useCorporateWalletHistory = () => {
       )) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
       coprorateWalletHistory.value = res?.data?.data
-      metaObject.total.value = res?.data?.total_pages
+      metaObject.total.value = res?.data?.metadata.total_pages
     }
     loadingWalletHistory.value = false
   }
@@ -87,17 +95,9 @@ export const useCorporateWalletHistory = () => {
 
   const onFilterUpdate = (data: any) => {
     switch (data.type) {
-      case 'filters[type]':
-        filterData['filters[type]'].value = data.value ?? 'all'
-        break
-      case 'filters[user_ids]':
-        filterData['filters[user_ids]'].value = data.value
-        break
-      case 'filters[start_date]':
-        filterData['filters[start_date]'].value = data.value
-        break
-      case 'filters[end_date]':
-        filterData['filters[end_date]'].value = data.value
+      case 'dateRange':
+        filterData['filters[start_date]'].value = data.value[0] ? data.value[0] : ''
+        filterData['filters[end_date]'].value = data.value[1] ? data.value[1] : ''
         break
     }
   }
@@ -111,7 +111,8 @@ export const useCorporateWalletHistory = () => {
     moveTo,
     onFilterUpdate,
     filterData,
-    ...metaObject
+    ...metaObject,
+    staff_ids
   }
 }
 

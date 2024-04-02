@@ -15,7 +15,6 @@ const proceedToDownload = async () => {
   useConfirmationModal().closeAlert()
   downloading.value = true
   const route = useRoute()
-  downloading.value = false
   const queryParams = useTableFilter(filterData)
   const routeType = (useRoute().name as string)?.split('-')[2]
   const baseURL = `/trips/${
@@ -82,11 +81,13 @@ export const useDownloadTrips = () => {
     downloading.value = false
     const loading = ref(false)
     useConfirmationModal().openAlert({
-      title: 'Hello!!! Please Note.',
+      title: 'Please Note.',
       type: 'NORMAL',
       desc: 'Downloading report for one month may take a lot of time. It is advised that you download report for a maximum of 10 days.',
       loading,
-      call_function: () => proceedToDownload()
+      call_function: () => proceedToDownload(),
+      proceedText: 'Proceed',
+      cancelText: 'Cancel'
     })
   }
 

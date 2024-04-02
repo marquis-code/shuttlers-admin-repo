@@ -1,173 +1,9 @@
 <template>
 	<main>
-		<ButtonGoBack class="mb-6" />
-		<section v-if="false" class="flex flex-col gap-6">
+		<section class="flex flex-col gap-6">
 			<Skeleton v-if="loading_partners || loading_earnings" height="45px" radius="10px" />
 			<div v-else class="flex items-center gap-2">
-				<NuxtLink to="/partners/payouts" class="text-sm text-grey4">
-					Payout
-				</NuxtLink>
-				<img src="@/assets/icons/source/caret-greater-than.svg" alt="">
-				<p>{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}</p>
-			</div>
-			<Skeleton v-if="loading_partners || loading_earnings" height="300px" radius="10px" />
-			<div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-				<div class="bg-light rounded-md p-4 border flex flex-col">
-					<h3 class="text-base font-medium text-dark border-b py-3">
-						Partner Information
-					</h3>
-					<div v-for="n in partner_info" :key="n.key" class="flex items-center justify-between gap-4 py-3 border-b">
-						<p class="key">
-							{{ n.key }}
-						</p>
-						<p class="value">
-							{{ n.value }}
-						</p>
-					</div>
-					<div class="flex items-center justify-between gap-4 py-3 border-b">
-						<p class="key">
-							settlement account
-						</p>
-						<div class="flex flex-col gap-1">
-							<p class="value !text-dark !font-medium">
-								{{ earningInfo?.settlementAccount?.accountNumber || 'N/A' }}
-							</p>
-							<p class="value">
-								{{ earningInfo?.settlementAccount?.accountName || 'N/A' }}
-							</p>
-							<p class="value">
-								{{ earningInfo?.settlementAccount?.bankName || 'N/A' }}
-							</p>
-						</div>
-					</div>
-					<div class="flex items-center justify-between gap-4 py-3">
-						<p class="key">
-							Partners full details
-						</p>
-						<NuxtLink :to="`/partners/${$route.params.id}/${$route.params.earningId}/partner-info`" class="underline text-blue-500 text-sm">
-							Click to view
-						</NuxtLink>
-					</div>
-				</div>
-
-				<div class="bg-light rounded-md p-4 border flex flex-col">
-					<h3 class="text-base font-medium text-dark border-b py-3">
-						Payout
-					</h3>
-					<div class="flex flex-col gap-1 py-4">
-						<h1 class="text-3xl font-bold text-dark text-center">
-							{{ convertToCurrency(earningInfo?.netRevenue) }}
-						</h1>
-						<h3 class="text-grey4 text-base text-center font-medium">
-							PARTNERS PAYOUT
-						</h3>
-					</div>
-					<div v-for="n in payout_info" :key="n.key" class="flex items-center justify-between gap-4 py-3 border-b">
-						<p class="key">
-							{{ n.key }}
-						</p>
-						<p class="value">
-							{{ n.value }}
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-light p-4 rounded-md">
-				<Table
-					:loading="loading_deductions"
-					:has-index="true"
-					:headers="tableFields"
-					:table-data="deductions"
-					:page="1"
-				>
-					<template #header>
-						<p class="p-2 text-base text-dark">
-							Deductions on earnings
-						</p>
-					</template>
-					<template #item="{ item }">
-						<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
-							-₦{{ item.data?.amount || 0 }}
-						</p>
-						<p v-if="item.date" class="text-sm whitespace-nowrap">
-							{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
-						</p>
-					</template>
-				</Table>
-			</div>
-
-			<div class="flex flex-col gap-4">
-				<div class="flex items-center justify-end gap-4">
-					<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded">
-						Resync Revenues
-					</button>
-					<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded" @click="markMultiple">
-						Mark multiple revenues as paid
-					</button>
-				</div>
-				<Table
-					:loading="loading"
-					:has-index="true"
-					:headers="revenueFields"
-					:table-data="revenues"
-					:page="page"
-				>
-					<template #header>
-						<TableFilter
-							:filter-type="{
-								showSearchBar: true,
-								showDateRange: true,
-								showDownloadButton: true
-							}"
-							@filter="onFilterUpdate"
-						/>
-					</template>
-					<template #item="{ item }">
-						<p v-if="item.date" class="text-sm whitespace-nowrap">
-							{{ moment(item.data.tripStartTime).format('LL') }} <br>
-							{{ moment.utc(item.data.tripStartTime).format('LT') }}
-						</p>
-						<p v-if="item.creation_date" class="text-sm whitespace-nowrap">
-							{{ moment(item.data.createdAt).format('LL') }} <br>
-							Marked by: {{ item.data?.metadata?.actor?.fname || '' }} {{ item.data?.metadata?.actor?.lname || '' }}
-						</p>
-						<div v-if="item.route" class="text-sm">
-							<RouteDescription :pickup="item.data.metadata?.pickup" :destination="item.data.metadata?.dropoff" />
-						</div>
-						<p v-if="item.route_code" class="text-sm whitespace-nowrap">
-							{{ item.data?.metadata?.routeCode || 'N/A' }}
-						</p>
-						<p v-if="item.deduction" class="text-sm whitespace-nowrap text-red">
-							{{ item.data?.totalDeductedAmount || '0' }}
-						</p>
-						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit"
-							:class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'"
-						>
-							{{ item.data?.isSettled ? 'Settled' : 'Not settled' }}
-						</p>
-						<span v-if="item.action">
-							<ButtonIconDropdown :index="item.index" :children="dropdownChildren" :data="item.data" class-name="w-40" />
-						</span>
-					</template>
-
-					<template #footer>
-						<TablePaginator
-							:current-page="page"
-							:total-pages="total"
-							:loading="loading"
-							@move-to="moveTo($event)"
-							@next="next"
-							@prev="prev"
-						/>
-					</template>
-				</Table>
-			</div>
-		</section>
-		<section v-else class="flex flex-col gap-6">
-			<Skeleton v-if="loading_partners || loading_earnings" height="45px" radius="10px" />
-			<div v-else class="flex items-center gap-2">
-				<NuxtLink to="/partners/payouts" class="text-sm text-grey4">
+				<NuxtLink :to="backUrl" class="text-sm text-grey4">
 					Payout
 				</NuxtLink>
 				<img src="@/assets/icons/source/caret-greater-than.svg" alt="">
@@ -300,14 +136,14 @@
 			</div>
 
 			<div class="flex flex-col gap-4">
-				<!-- <div class="flex items-center justify-end gap-4">
-				<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded">
-					Resync Revenues
-				</button>
-				<button class="p-2 bg-[rgb(237,242,249)] text-dark text-sm px-4 rounded" @click="markMultiple">
-					Mark multiple revenues as paid
-				</button>
-			</div> -->
+				<div class="flex items-center justify-end gap-4">
+					<button class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg" @click="usePayoutModal().openResyncRevenue()">
+						Resync Revenues
+					</button>
+					<button class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg" @click="markMultiple">
+						Mark multiple revenues as paid
+					</button>
+				</div>
 				<Table
 					:loading="loading"
 					:has-index="true"
@@ -385,6 +221,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove } from '@/composables/modules/partners/payouts/details'
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
+import { usePayoutModal } from '@/composables/core/modals'
 
 const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions, approvers, fetchApprovers } = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
@@ -413,6 +250,10 @@ const payout_info = computed(() => {
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction) },
 		{ key: 'Status', value: earningInfo.value?.status }
 	]
+})
+
+const backUrl = computed(() => {
+	return earningInfo.value?.status === 'failed' ? '/partners/payouts/failed' : earningInfo.value?.status === 'settled' ? '/partners/payouts/completed' : '/partners/payouts'
 })
 
 const tableFields = ref([

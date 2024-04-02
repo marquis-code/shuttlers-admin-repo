@@ -9,8 +9,10 @@
 				Log in to your account
 			</p>
 			<div class="flex items-center justify-center gap-4 mb-4">
-				<span class="auth_tab" :class="{ 'auth_tab_active': auth_type == 'email' }" @click="auth_type = 'email'">Email address</span>
-				<span class="auth_tab" :class="{ 'auth_tab_active': auth_type == 'phone' }" @click="auth_type = 'phone'">Phone number</span>
+				<span class="auth_tab" :class="{ 'auth_tab_active': auth_type == 'email' }"
+					@click="auth_type = 'email'">Email address</span>
+				<span class="auth_tab" :class="{ 'auth_tab_active': auth_type == 'phone' }"
+					@click="auth_type = 'phone'">Phone number</span>
 			</div>
 			<form class="auth-form" @submit.prevent="login">
 				<div class="flex flex-col mb-2 mobile">
@@ -24,14 +26,17 @@
 
 				<div v-if="auth_type == 'email'" class="field relative">
 					<label for="email">Email address</label>
-					<input id="email" v-model="credential.email.value" autocomplete="true" type="email" class="input-field" required>
+					<input id="email" v-model="credential.email.value" autocomplete="true" type="email"
+						class="input-field" required>
 				</div>
 				<ShPhoneInput v-else v-model="credential.phone.value" />
 				<div class="field relative">
 					<label for="password" class="w-full">Password
-						<span class="text-green7 text-xs ml-auto font-normal cursor-pointer" @click="sign_in_with_otp">Login with OTP</span>
+						<span class="text-green7 text-xs ml-auto font-normal cursor-pointer"
+							@click="sign_in_with_otp">Login with OTP</span>
 					</label>
-					<input id="password" v-model="credential.password.value" autocomplete="true" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
+					<input id="password" v-model="credential.password.value" autocomplete="true"
+						:type="showPassword ? 'text' : 'Password'" class="input-field" required>
 					<icon name="eye" class="w-6 absolute top-[53%] right-4" @click="toggleShow" />
 				</div>
 
@@ -41,6 +46,9 @@
 					</span>
 					<Spinner v-else />
 				</button>
+				<NuxtLink to="/auth/forgot-password"
+					class="text-center flex justify-center items-center font-semibold text-gray-500 text-sm">Forgot
+					password?</NuxtLink>
 			</form>
 		</section>
 	</main>

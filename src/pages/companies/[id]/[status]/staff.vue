@@ -2,10 +2,7 @@
 	<main>
 		<section class="flex flex-col gap-4">
 			<div class="flex items-stretch gap-4">
-				<button class="bg-[#EFF2F7] rounded-lg py-2 px-4 text-center text-sm text-[#444854] font-medium min-w-[100px]"
-					@click="$router.go(-1)">
-					Go back
-				</button>
+				<ButtonGoBack url="/companies" />
 				<button class="bg-black text-white rounded-lg py-2 px-4 text-sm">
 					Map view
 				</button>

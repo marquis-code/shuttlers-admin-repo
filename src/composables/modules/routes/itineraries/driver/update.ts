@@ -7,15 +7,12 @@ import { useAddDriver } from '@/composables/modules/routes/itineraries/driver/cr
 const { driverExportItems } = useAddDriver()
 export const useUpdateDriver = () => {
   const editObj = ref({}) as any
-  // const vehicle = ref({}) as any
   const updateDriver = async () => {
     const routeId = useRoute().params.id as string
     const iti_id = useRoute().params.iti_id as string
     useItineraryDrivers().getItineraryDrivers()
     const payload: Record<string, any> = {
-      // route_id: routeId,
       cost_of_supply: editObj.value.cost_of_supply
-      // itinerary_id: iti_id
     }
     if (
       driverExportItems().singleItinerary.value.pricing_type !==
@@ -29,7 +26,7 @@ export const useUpdateDriver = () => {
     }
     driverExportItems().loading.value = true
     const res = (await drivers_api.$_update_assigned_driver_to_route(
-      Number(iti_id),
+      Number(editObj.value.id),
       payload
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR') {

@@ -1,6 +1,6 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack url="/companies" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="capacityConfigurationList" :has-options="true">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:false}" />

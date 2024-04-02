@@ -26,7 +26,7 @@ export const use_auth_forgot_password = () => {
 
 		loading.value = false
 		if (res.type !== 'ERROR') {
-			Router.push('/auth/forgot-done?email=' + credential.email.value)
+			Router.push('/auth/forgot-password?email=' + credential.email.value)
 		}
 	}
 

@@ -1,6 +1,6 @@
 <template>
-	<main>
-		<ButtonGoBack />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack url="/trips/type/active" />
 		<section class="flex flex-col gap-4">
 			<Table
 				:loading="loading"

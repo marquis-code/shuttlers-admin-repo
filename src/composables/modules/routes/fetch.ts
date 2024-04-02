@@ -4,7 +4,7 @@ import { usePagination } from '@/composables/utils/table'
 import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 
 const { loading: downloading } = useDownloadReport()
-const corporateId = ref('') as any
+
 export const useGetRecentRoutesList = () => {
     const loadingRoutes = ref(false)
     const routesList = ref([] as any)
@@ -26,6 +26,7 @@ export const useGetRecentRoutesList = () => {
 }
 
 export const useGetMainRoutes = () => {
+    const corporateId = ref(null) as Ref<null|number>
     const loadingMainRoutes = ref(false)
     const mainRoutesList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
@@ -52,13 +53,13 @@ export const useGetMainRoutes = () => {
         city_id: computed(() => city.value)
     }
 
-    watch([filterData.status, type, visibility, city, filterData.search], (val) => {
+    watch([filterData.status, type, visibility, city, filterData.search, corporateId], (val) => {
         getMainRoutesList()
     })
 
     const getMainRoutesList = async () => {
         loadingMainRoutes.value = true
-        const res = await $_get_main_routes(metaObject, filterData, corporateId.value) as CustomAxiosResponse
+        const res = await $_get_main_routes(metaObject, filterData, corporateId.value!) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             mainRoutesList.value = res.data.data
             metaObject.total.value = res.data.metadata?.total_pages

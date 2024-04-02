@@ -16,10 +16,10 @@
         @apply disabled:cursor-not-allowed disabled:bg-grey2;
     }
     .btn {
-        @apply font-bold rounded-md cursor-pointer disabled:bg-grey2 center disabled:text-dark disabled:cursor-not-allowed;
+        @apply font-bold rounded-xl cursor-pointer disabled:bg-grey2 center disabled:text-dark disabled:cursor-not-allowed text-sm;
     }
     .btn-base {
-        @apply px-5 py-3 btn;
+        @apply px-4 py-3 btn;
     }
     .b-primary {
         @apply bg-dark text-white;
@@ -35,6 +35,9 @@
     }
     .btn-outline {
         @apply btn-base text-dark bg-transparent border border-dark;
+    }
+    .btn-outline-xs {
+        @apply btn-xs text-dark bg-transparent border border-dark;
     }
     .btn-primary-sm {
         @apply btn-sm b-primary;

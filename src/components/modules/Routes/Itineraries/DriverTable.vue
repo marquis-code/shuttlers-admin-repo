@@ -144,7 +144,7 @@ const tableFields = computed(() => {
 
 const dropdownChildren = computed(() => [
 	{ name: 'Update', func: (data:any) => { initEdit(data) } },
-	{ name: 'Transer booking', func: (data:any) => { initTransfer(data, itineraryDrivers.value) } },
+	{ name: 'Transfer booking', func: (data:any) => { initTransfer(data, itineraryDrivers.value) } },
 	{ name: 'Remove', func: (data:any) => initDelete(data.driver?.id), class: '!text-red' }
 ])
 

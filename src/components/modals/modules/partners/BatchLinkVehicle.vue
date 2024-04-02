@@ -1,7 +1,7 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Link Vehicles With Plate Numbers"
+		title="Link Vehicles With Plate Numbers (csv)"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="initlinkVehicleWithPlateNumber">
 			<div v-if="file && plate_no_errors.length" class="flex flex-col gap-1">

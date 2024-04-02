@@ -1,11 +1,14 @@
 <template>
 	<div>
-		<ModulesAgentsCreateAgent id="" type="new" />
+		<ModulesAgentsCreateAgent :id="id" type="edit" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { usePageHeader } from '@/composables/utils/header'
+
+const id = useRoute().params.id as string
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
