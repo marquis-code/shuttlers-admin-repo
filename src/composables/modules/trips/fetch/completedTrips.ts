@@ -6,14 +6,15 @@ import {
 } from './helpers'
 import { usePagination } from '@/composables/utils/table'
 import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
+
+const loadingCompletedTrips = ref(false)
+const completedTripsList = ref([] as Record<string, any>[])
 export const useGetCompletedTripsList = () => {
-  const loadingCompletedTrips = ref(false)
   const { moveTo, metaObject, next, prev, setFunction } = usePagination()
   const total_pages = ref() as any
   const currentRoute = computed(() => {
     return useRoute().fullPath
   })
-  const completedTripsList = ref([] as Record<string, any>[])
   const getCompletedTrips = async () => {
     const request = async () => {
       loadingCompletedTrips.value = true
