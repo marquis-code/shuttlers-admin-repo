@@ -132,7 +132,7 @@
 				</div>
 			</div>
 			<div class="w-full">
-				<label>Availability Start Date</label>
+				<label for="">Availability Start Date</label>
 				<InputDateInput
 					id="startDate"
 					v-model="createRouteForm.avail_start_date.value"
@@ -141,9 +141,9 @@
 				/>
 			</div>
 			<div class="w-full">
-				<label>Availability End Date</label>
+				<label for="endDate">Availability End Date</label>
 				<InputDateInput
-					id="startDate"
+					id="endDate"
 					v-model="createRouteForm.avail_end_date.value"
 					class="font-light"
 					placeholder="Filter by date"

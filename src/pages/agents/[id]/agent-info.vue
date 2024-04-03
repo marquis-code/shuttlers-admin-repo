@@ -1,11 +1,11 @@
 <template>
-	<ButtonGoBack class="mb-4" url="/agents" />
-	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0">
+	<ButtonGoBack v-if="!AgentByIdloading" class="my-4" url="/agents" />
+	<div class="lg:flex lg:gap-x-10 justify-center items-start space-y-10 lg:space-y-0 mt-8">
 		<div class="lg:w-7/12 bg-white rounded-md shadow-sm p-3">
 			<ModulesAgentsInformationDetails v-if="!AgentByIdloading" :selected-user="selectedAgent" />
 			<Skeleton v-else height="600px" />
 		</div>
-		<div class="lg:w-5/12">
+		<div v-if="!AgentByIdloading" class="lg:w-5/12">
 			<form class="card gap-4 flex flex-col" @submit.prevent="">
 				<h1 class="card-header">
 					Settlement account
@@ -35,6 +35,8 @@
 				</div> -->
 			</form>
 		</div>
+
+		<Skeleton v-else height="400px" />
 	</div>
 </template>
 
