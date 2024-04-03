@@ -97,7 +97,6 @@ export const loadExternalDataMarkers = async (
 
 const markersArray = [] as google.maps.Marker[]
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
-    console.log(location)
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
     // @ts-ignore
