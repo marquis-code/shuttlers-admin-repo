@@ -4,6 +4,7 @@ export type TMetaObject = {
   page: Ref<number>;
   page_size: Ref<number>; // Assuming PAGINATION_LIMIT is a constant number
   total: Ref<number>;
+  total_pages?: Ref<number>
 }
 
 export const usePagination = () => {
@@ -11,7 +12,8 @@ export const usePagination = () => {
     const metaObject = {
 		page: ref(1),
 		page_size: ref(PAGINATION_LIMIT),
-		total: ref(1)
+        total: ref(1),
+        total_pages: ref(1)
         }
 
     const showLoadMore = computed(() => {

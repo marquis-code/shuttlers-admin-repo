@@ -6,7 +6,7 @@ export const useActiveTripTrackingCardClick = () => {
     const onCardClick = (data) => {
         if (data.vehicle_status) {
             if (VehicleMarkerExist(data.driver_id)) {
-                zoomMapInOnCoordinate({ lat: data.lat, lng: data.lng }, data.driver_id)
+                zoomMapInOnCoordinate({ lat: data.lat, lng: data.lng })
             } else {
                 useAlert().openAlert({ type: 'ERROR', msg: 'Help me' })
             }

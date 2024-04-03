@@ -1,10 +1,25 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="onRowClicked">
+		<Table :checkbox="true" :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :disable-checkbox="selectedTrips.length === 5" :option="onRowClicked" :selected="selectedTrips"
+			@checked="handleCheckedItems"
+		>
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
+					<div v-if="selectedTrips.length" class="flex items-center justify-between gap-4">
+						<div class="flex-grow flex flex-wrap gap-2 items-center">
+							<div v-for="n in selectedTrips" :key="n.id" class="bg-gray-500 border-gray-900 rounded p-1 px-3 text-light flex items-center gap-2">
+								<p class="text-sm">
+									{{ n?.route_code }}
+								</p>
+								<Icon name="closed" class="text-red w-5 cursor-pointer" @click="handleCheckedItems(n)" />
+							</div>
+						</div>
+						<button class="btn bg-dark text-light p-3 shrink-0" @click="transferMultipleTrip">
+							Transfer Trips
+						</button>
+					</div>
 					<TableFilter :filter-type="{showSearchBar:true, showDownloadButton: true, showDateRange:true }" @filter="onFilterUpdate" @download="downloadTrips" />
 				</section>
 			</template>
@@ -44,7 +59,7 @@
 					{{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
 				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
+					<ButtonIconDropdown :children="dropdownChildren" :index="item.index" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
 			<template #footer>
@@ -64,11 +79,12 @@ import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useDownloadTrips } from '@/composables/modules/trips/fetch'
+import { useAlert } from '@/composables/core/notification'
 
 const { downloadTrips } = useDownloadTrips()
 const { user } = useUser()
 const { initLogIssues } = useCreateIssues()
-const { initTransfer } = useTransferTrip()
+const { initTransfer, selectedTrips } = useTransferTrip()
 const { initCancelTrip } = useCancelTrip()
 const { selectedTrip } = useCompletedTripIdDetails()
 const { getCompletedTrips, loadingCompletedTrips, completedTripsList, onFilterUpdate, moveTo, total, page, next, prev } = useGetCompletedTripsList()
@@ -93,6 +109,19 @@ completedTripsList.value.map((i:any, index) => {
     })
 )
 
+const handleCheckedItems = (val:Record<string, any>) => {
+	if (!selectedTrips.value.map((el) => el?.id).includes(val?.id)) {
+		if (selectedTrips.value.length === 5) {
+			useAlert().openAlert({ type: 'WARNING', msg: 'You can not select more than 5 trips' })
+			return
+		}
+		selectedTrips.value.push(val)
+	} else {
+		const index = selectedTrips.value.map((el) => el?.id).indexOf(val?.id)
+		selectedTrips.value.splice(index, 1)
+	}
+}
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
@@ -101,9 +130,13 @@ definePageMeta({
 const dropdownChildren = computed(() => [
 	{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data.id}/financials`) } },
 	{ name: 'Log Issue', func: (data) => initLogIssues(data), hide: isProdEnv.value },
-	{ name: 'Transfer trip', func: (data) => { initTransfer(data) }, hide: user.value?.role !== 'super_admin' },
+	{ name: 'Transfer trip', func: (data) => { initTransfer([data]) }, hide: user.value?.role !== 'super_admin' },
 	{ name: 'Cancel trip', func: (data) => { initCancelTrip(data) }, hide: user.value?.role !== 'super_admin' }
 ])
+
+const transferMultipleTrip = () => {
+	initTransfer(selectedTrips.value, true)
+}
 
 const onRowClicked = (data: any) => {
 	useRouter().push(`/trips/type/completed/${data.id}/trip-details`)
@@ -150,6 +183,7 @@ const tableFields = ref([
 	}
 ])
 
+selectedTrips.value = []
 </script>
 
 <style scoped></style>

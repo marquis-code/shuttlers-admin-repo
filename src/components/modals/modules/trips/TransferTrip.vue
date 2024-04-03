@@ -1,7 +1,7 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		title="Transfer trip"
+		:title="!is_multiple ? 'Transfer trip' : 'Transfer multiple trip'"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="transferTrip">
 			<PartnerSelector @selected="handleSelectedPartner" />
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 
-const { loading, vehicle, partner, clearObj, vehicles, transferTrip, loading_vehicles, enableButton, loading_drivers, drivers, driver_id, cost_of_supply } = useTransferTrip()
+const { loading, vehicle, partner, clearObj, vehicles, transferTrip, loading_vehicles, enableButton, loading_drivers, drivers, driver_id, cost_of_supply, is_multiple } = useTransferTrip()
 const handleSelectedPartner = (val:Record<string, any>) => {
 	partner.value = val
 }

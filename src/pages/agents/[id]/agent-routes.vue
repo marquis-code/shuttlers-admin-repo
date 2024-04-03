@@ -9,19 +9,21 @@
 		</span>
 	</section>
 
+	<Skeleton v-else height="56px" class="mt-4" />
+
 	<div class="flex flex-col mt-4 gap-6">
 		<section v-if="filterData.approval_status.value === 'monitoring' && !loading " class="flex gap-4 w-full ">
-			<div class="flex flex-col card min-w-[270px] px-6">
+			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Total trips taken</span>
-				<span class="text-3xl font-bold">50</span>
+				<span class="text-3xl font-bold">{{ total }}</span>
 			</div>
-			<div class="flex flex-col card min-w-[270px] px-6">
+			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Accrued earnings</span>
 				<span class="text-3xl font-bold">5,000 pts</span>
 			</div>
 		</section>
 		<main class="flex flex-col gap-6">
-			<Table :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true" class="mb-12">
+			<Table v-if="filterData.approval_status.value !== 'monitoring'" :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true" class="mb-12">
 				<template #header>
 					<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
 
@@ -29,7 +31,7 @@
 				</template>
 				<template #item="{ item }">
 					<div v-if="item.route_id">
-						{{ item?.data?.route_id ?? 'N/A' }}
+						{{ item?.data?.route?.route_code ?? 'N/A' }}
 					</div>
 					<div v-if="item.pickup">
 						<RouteDescription :pickup="item?.data?.pickup" :destination="item?.data?.destination" />
@@ -41,8 +43,8 @@
 					<span v-else-if="item.is_return_trip" class="space-y-4 text-base">
 						{{ item?.data?.is_return_trip === 1 ? 'Return Trip' : 'One Way Trip' }}
 					</span>
-					<span v-else-if="item.return_trip_departure_time" class="space-y-4 text-base">
-						{{ item?.data?.return_trip_departure_time }} {{ item?.data?.return_trip_time_of_day }}
+					<span v-else-if="item.departure_time" class="space-y-4 text-base">
+						{{ item?.data?.departure_time }} {{ item?.data?.time_of_day }}
 					</span>
 					<span v-else-if="item.passengers" class="space-y-4 text-base">
 						{{ item?.data?.passengers.length }}
@@ -59,20 +61,62 @@
 					<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 				</template>
 			</Table>
+			<Table v-if="filterData.approval_status.value === 'monitoring'" :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-index="true">
+				<template #item="{ item }">
+					<p v-if="item.start_date" class="min-w-[100px]">
+						{{ moment.utc(item.data.start_date).format('ll') }}
+					</p>
+					<div v-if="item.route_code" class="whitespace-nowrap min-w-[80px]" @click.stop>
+						<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">
+							{{ item?.data?.route?.route_code }}
+						</NuxtLink> <br>
+						({{ moment.utc(item.data.trip_start_time).format('LT') }})
+					</div>
+
+					<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap">
+						<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
+							{{
+								item.data.driver
+									? `${item.data.driver.fname} ${item.data.driver.lname}`
+									: item.data.route.driver
+										? `${item.data.route.driver.fname} ${item.data.route.driver.lname}`
+										: 'N/A'
+							}}
+						</NuxtLink>
+						<span v-if="item.data.driver && item.data.driver.phone">
+							<a :href="'tel:' + item.data.driver.phone">{{ item.data.driver
+								? item.data.driver.phone.replace(/^0/, '+234') : 'N/A' }}</a>
+						</span>
+					</span>
+					<span v-if="item.booking_status">
+						<StatusBadge :name="item.data.booking_status" />
+					</span>
+					<p v-if="item.vehicle" class="min-w-[100px]">
+						{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
+					</p>
+					<div v-if="item.route">
+						<RouteDescription :pickup="item.data.pickup.location" :destination="item.data.destination.location" />
+					</div>
+				</template>
+				<template #footer>
+					<TablePaginator :current-page="page" :total-pages="total_pages" :loading="loading || AgentByIdloading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				</template>
+			</Table>
 		</main>
 	</div>
 </template>
 
 <script setup lang="ts">
-
+import moment from 'moment'
 import { useAgentIdDetails } from '@/composables/modules/agents/id'
 import { useGetAgentsRoutes } from '@/composables/modules/agents/routes'
 import { useAlert } from '@/composables/core/notification'
 import { useDeclineRouteSuggestion } from '@/composables/modules/agents/decline'
 import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev, agentDataRef, filterOptions, filterData } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
@@ -112,17 +156,50 @@ const tableFields = computed(() => {
 
 		{
 			text: 'TIME',
-			value: 'return_trip_departure_time'
+			value: 'departure_time'
 		},
 		{
 			text: 'PASSENGERS',
 			value: 'passengers'
 		}
 	]
+
 	if (filterData.approval_status.value === 'pending_review') {
 			header.push({ text: '', value: 'id' })
-		}
-	return header
+	}
+
+	const tripMonitoringHeader = [
+    {
+        text: 'DATE',
+        value: 'start_date'
+    },
+    {
+        text: 'ROUTE CODE ( START TIME)',
+        value: 'route_code'
+    },
+    {
+        text: 'ROUTE',
+        value: 'route'
+    },
+    {
+        text: 'PASSENGERS\'S NAME',
+        value: 'partner'
+    },
+
+	{
+        text: 'DRIVER’S NAME',
+        value: 'driver'
+    },
+	{
+        text: 'STATUS',
+        value: 'booking_status'
+    },
+	{
+		text: 'EARNINGS (pts)',
+		value: 'action'
+	}
+]
+	return filterData.approval_status.value === 'monitoring' ? tripMonitoringHeader : header
 })
 
 const dropdownChildren = computed(() => [

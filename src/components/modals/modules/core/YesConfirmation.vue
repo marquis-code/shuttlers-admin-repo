@@ -22,9 +22,7 @@
 				</span>
 			</div>
 
-			<p class="text-start">
-				{{ description }}
-			</p>
+			<p class="text-start w-full" v-html="description" />
 			<div class="field relative">
 				<label for="yes_text" class="w-full">type YES below and click proceed button</label>
 				<input id="yes_text" v-model="yes_text" autocomplete="false" type="text" class="input-field" required>
