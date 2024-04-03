@@ -1,17 +1,22 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table :checkbox="true" :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="onRowClicked" @checked="handleCheckedItems">
+		<Table :checkbox="true" :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :disable-checkbox="selectedTrips.length === 5" :option="onRowClicked" :selected="selectedTrips"
+			@checked="handleCheckedItems"
+		>
 			<template #header>
 				<section class="flex flex-col gap-4 z-50">
 					<TableTripFilter @filter="onFilterUpdate" />
 					<div v-if="selectedTrips.length" class="flex items-center justify-between gap-4">
 						<div class="flex-grow flex flex-wrap gap-2 items-center">
-							<p v-for="n in selectedTrips" :key="n.id" class="bg-gray-500 border-gray-900 rounded p-1 px-3 text-light">
-								{{ n?.route_code }}
-							</p>
+							<div v-for="n in selectedTrips" :key="n.id" class="bg-gray-500 border-gray-900 rounded p-1 px-3 text-light flex items-center gap-2">
+								<p class="text-sm">
+									{{ n?.route_code }}
+								</p>
+								<Icon name="closed" class="text-red w-5 cursor-pointer" @click="handleCheckedItems(n)" />
+							</div>
 						</div>
-						<button class="btn border p-3 shrink-0" @click="transferMultipleTrip">
+						<button class="btn bg-dark text-light p-3 shrink-0" @click="transferMultipleTrip">
 							Transfer Trips
 						</button>
 					</div>
@@ -74,6 +79,7 @@ import { isProdEnv } from '@/composables/utils/system'
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { useDownloadTrips } from '@/composables/modules/trips/fetch'
+import { useAlert } from '@/composables/core/notification'
 
 const { downloadTrips } = useDownloadTrips()
 const { user } = useUser()
@@ -103,8 +109,17 @@ completedTripsList.value.map((i:any, index) => {
     })
 )
 
-const handleCheckedItems = (val:Record<string, any>[]) => {
-	selectedTrips.value = val.slice(0, 5)
+const handleCheckedItems = (val:Record<string, any>) => {
+	if (!selectedTrips.value.map((el) => el?.id).includes(val?.id)) {
+		if (selectedTrips.value.length === 5) {
+			useAlert().openAlert({ type: 'WARNING', msg: 'You can not select more than 5 trips' })
+			return
+		}
+		selectedTrips.value.push(val)
+	} else {
+		const index = selectedTrips.value.map((el) => el?.id).indexOf(val?.id)
+		selectedTrips.value.splice(index, 1)
+	}
 }
 
 definePageMeta({
@@ -168,7 +183,7 @@ const tableFields = ref([
 	}
 ])
 
-selectedTrip.value = []
+selectedTrips.value = []
 </script>
 
 <style scoped></style>
