@@ -12,11 +12,16 @@
 					<span class="text-grey5 text-sm">{{ data.vehicle.brand }} {{ data.vehicle.name }} ● {{ data.vehicle.registration_number }}</span>
 				</div>
 				<div class="flex flex-wrap gap-3 mt-3 items-start text-xs">
+					{{ data.driver_id }}
 					<span class="rounded-2xl bg-[#F7F7F7] text-grey3 font-bold px-3 py-1 ">{{ data.route.route_code }}</span>
 					<span class="rounded-2xl bg-[#F7F7F7] text-grey3 font-bold px-3 py-1">Started at {{ moment(data.trip_start_time).format('LL') }} {{ moment.utc(data.trip_start_time).format('LT') }}</span>
 				</div>
 			</div>
 		</article>
+
+		<!-- <button class="btn-primary">
+			Load more
+		</button> -->
 	</section>
 </template>
 
@@ -31,6 +36,10 @@ const props = defineProps({
 		type: Array as PropType<any[]>,
 		required: true
 
+	},
+	canLoadMore: {
+		type: Boolean,
+		required: true
 	}
 })
 

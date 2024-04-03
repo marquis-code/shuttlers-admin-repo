@@ -97,6 +97,7 @@ export const loadExternalDataMarkers = async (
 
 const markersArray = [] as google.maps.Marker[]
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
+    console.log(location)
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
     // @ts-ignore
     const existingMarker = markersArray.find((marker) => marker.id === location.id)
@@ -127,14 +128,30 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
 }
 
 export const useLoadMarkerOnMap = () => {
- const zoomMapInOnCoordinate = async (location: Coordinate) => {
-    if (!map) return
+    const zoomMapInOnCoordinate = async (location: Coordinate, id:string) => {
+         const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+     if (!map) return
+        const existingMarker = markersArray.find((marker: any) => marker.id === id)
+        if (existingMarker) {
+            existingMarker.setMap(null)
+        }
+         const marker = new Marker({
+            map,
+            position: location,
+            icon: {
+                url: '/bus.svg'
+                // rotation: direction
+            }
+        }) as any
     map.setCenter(location)
     map.setZoom(16)
-}
+ }
+    const VehicleMarkerExist = (id: string) => {
+        return markersArray.find((marker:any) => Number(marker!.id) === Number(id))
+    }
 
     return {
-        zoomMapInOnCoordinate
+        zoomMapInOnCoordinate, VehicleMarkerExist
     }
 }
 

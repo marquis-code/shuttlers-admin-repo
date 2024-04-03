@@ -27,7 +27,7 @@ export const useGetActiveTripsList = () => {
           trip.vehicle_status = false
           return trip
             })
-        metaObject.total.value = res.data.metadata.total_pages
+        metaObject.total.value = res.data.metadata.total
       }
       loadingActiveTrips.value = false
     }

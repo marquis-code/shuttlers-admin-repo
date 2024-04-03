@@ -1,9 +1,18 @@
 import { useLoadMarkerOnMap, loadMarkeronMap } from '@/composables/core/map'
+import { useAlert } from '@/composables/core/notification'
 
 export const useActiveTripTrackingCardClick = () => {
-    const { zoomMapInOnCoordinate } = useLoadMarkerOnMap()
+    const { zoomMapInOnCoordinate, VehicleMarkerExist } = useLoadMarkerOnMap()
     const onCardClick = (data) => {
-        zoomMapInOnCoordinate({ lat: data.lat, lng: data.lng })
+        if (data.vehicle_status) {
+            if (VehicleMarkerExist(data.driver_id)) {
+                zoomMapInOnCoordinate({ lat: data.lat, lng: data.lng }, data.driver_id)
+            } else {
+                useAlert().openAlert({ type: 'ERROR', msg: 'Help me' })
+            }
+        } else {
+            useAlert().openAlert({ type: 'ERROR', msg: 'This Vehicle is Offline' })
+        }
     }
 
     return { onCardClick }

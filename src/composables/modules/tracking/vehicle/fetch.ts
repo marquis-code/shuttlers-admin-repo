@@ -2,10 +2,13 @@ import { useTripTracking } from '../index'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 
 export const useVehicleTracking = () => {
-    const { activeTripsList, getActiveTrips, loadingActiveTrips, total, filterData } = useGetActiveTripsList()
+    const { activeTripsList, getActiveTrips, loadingActiveTrips, total, filterData, page_size } = useGetActiveTripsList()
     const { listenToSpecificTripLocationAndAddtoMap } = useTripTracking()
     const filterStatusRef = ref()
 
+    const canLoadMore = computed(() => {
+        return activeTripsList.value.length < total.value
+    })
     const filterStatus = {
         city: ref([]),
         status: ref([])
@@ -25,6 +28,7 @@ export const useVehicleTracking = () => {
     })
 
     const initializeTracking = async () => {
+        page_size.value = 20
         await getActiveTrips()
         watch(activeTripsList, () => {
             if (activeTripsList.value.length > 0) {
@@ -52,5 +56,5 @@ export const useVehicleTracking = () => {
         return res
     })
 
-    return { getActiveTrips, filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData }
+    return { getActiveTrips, filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, canLoadMore }
 }
