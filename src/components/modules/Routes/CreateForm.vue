@@ -1,7 +1,7 @@
 <template>
 	<div class="h-[84vh] overflow-auto">
-		<form class="flex flex-col gap-4 p-6 pb-0 items-start " @submit.prevent="isEdit ? update() : create()">
-			<div v-if="!isEdit" class="flex flex-col gap-4">
+		<form class="flex flex-col gap-4 p-6 pb-0 items-start" @submit.prevent="isEdit ? update() : create()">
+			<div v-if="!isEdit" class="flex flex-col gap-4 w-full items-start">
 				<LocationInput
 					id="startLocation"
 					v-model="createRouteForm.start_location.value"
@@ -9,7 +9,7 @@
 					class="input-field"
 					placeholder="Starting point"
 				/>
-				<div v-for="(n, idx) in createRouteForm.waypoints.value" :key="n" class="field relative mt-6">
+				<div v-for="(n, idx) in createRouteForm.waypoints.value" :key="n" class="field relative mt-6 w-full">
 					<label for="stops">Stop {{ idx +1 }} </label>
 					<div class="relative input-field p-0 border-none flex">
 						<LocationInput
@@ -26,7 +26,7 @@
 				</div>
 				<button
 					type="button"
-					class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium"
+					class="flex items-center gap-x-2 bg-black text-white text-xs rounded-md px-3 py-2 font-medium w-au"
 					@click="createRouteForm.waypoints.value.push({id:createRouteForm.waypoints.value.length+1, data: '' })"
 				>
 					<Icon name="plus" class="w-4 text-white " />	Add Stop
@@ -131,7 +131,7 @@
 					<label for="selected_days" class="mt-2">Selected days</label>
 				</div>
 			</div>
-			<div>
+			<div class="w-full">
 				<label>Availability Start Date</label>
 				<InputDateInput
 					id="startDate"
@@ -140,7 +140,7 @@
 					placeholder="Filter by date"
 				/>
 			</div>
-			<div>
+			<div class="w-full">
 				<label>Availability End Date</label>
 				<InputDateInput
 					id="startDate"
@@ -149,7 +149,7 @@
 					placeholder="Filter by date"
 				/>
 			</div>
-			<div>
+			<div class="w-full">
 				<label>Unavailable Dates</label>
 				<div class="flex items-center flex-wrap gap-2 mb-3">
 					<div
@@ -172,7 +172,7 @@
 				/>
 			</div>
 
-			<div v-if="createRouteForm.route_availability.value === 'selected_days'" class="field">
+			<div v-if="createRouteForm.route_availability.value === 'selected_days'" class="field w-full">
 				<label> Select days</label>
 				<section class="flex items-center flex-wrap gap-2">
 					<button v-for="n in days_of_the_week" :key="n" class="py-1 px-2 border rounded text-sm font-medium" type="button"
@@ -183,7 +183,7 @@
 				</section>
 			</div>
 
-			<div v-if="!isEdit" class="space-y-3">
+			<div v-if="!isEdit" class="space-y-3 w-full">
 				<div>
 					<label>Route Itinerary</label>
 					<div>
@@ -207,9 +207,15 @@
 				<div class="flex flex-col">
 					<label class="label">Route Owner Type</label>
 					<select v-model="createRouteForm.route_owner_type.value" class="input-field">
-						<option value="system">Shuttlers Owned</option>
-						<option value="corporate">Corporate</option>
-						<option value="user">User</option>
+						<option value="system">
+							Shuttlers Owned
+						</option>
+						<option value="corporate">
+							Corporate
+						</option>
+						<option value="user">
+							User
+						</option>
 					</select>
 				</div>
 				<div v-if="createRouteForm.route_owner_type.value !== 'system'" class="flex flex-col">
@@ -220,15 +226,23 @@
 				<div class="flex flex-col">
 					<label class="label">Who is paying for the bookings on this route?</label>
 					<select v-model="createRouteForm.payer.value" class="input-field">
-						<option value="passenger">Passenger</option>
-						<option value="owner">Route Onwer</option>
+						<option value="passenger">
+							Passenger
+						</option>
+						<option value="owner">
+							Route Onwer
+						</option>
 					</select>
 				</div>
 				<div class="flex flex-col">
 					<label class="label">When is booking payment happening?</label>
 					<select v-model="createRouteForm.payment_mode.value" class="input-field">
-						<option value="pre-trip">Before Trip Starts</option>
-						<option value="post-trip">After Trip Ends</option>
+						<option value="pre-trip">
+							Before Trip Starts
+						</option>
+						<option value="post-trip">
+							After Trip Ends
+						</option>
 					</select>
 				</div>
 			</div>
@@ -272,4 +286,5 @@ onBeforeUnmount(() => clearCreateForm())
 input{
 	width: 100% !important;
 }
+
 </style>

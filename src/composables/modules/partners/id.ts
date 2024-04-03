@@ -28,8 +28,8 @@ export const usePartnerIdDetails = () => {
 }
 
 const loadingPartnerVehicles = ref(false)
+const partnersVehiclesList = ref([] as any)
 export const useGetPartnersVehiclesList = () => {
-    const partnersVehiclesList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref('active')
@@ -65,8 +65,8 @@ export const useGetPartnersVehiclesList = () => {
 }
 
 const loadingPartnerDriver = ref(false)
+const partnersDriversList = ref([] as any)
 export const useGetPartnersDriversList = () => {
-    const partnersDriversList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
         status: ref('active')

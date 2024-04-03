@@ -6,7 +6,7 @@
 		type="text"
 		:placeholder="placeholder"
 		required
-		:value="(modelValue as Record<string, any>).name"
+		:value="(modelValue as Record<string, any>)?.name"
 		@input="isEmpty"
 	>
 </template>
@@ -20,7 +20,7 @@ const props = defineProps({
   modelValue: { type: [Object, String], default: () => {} },
   placeholder: { type: String, default: '' },
   id: { type: String, default: 'autocomplete' },
-  inputClass: { type: String, default: 'relative' },
+  inputClass: { type: String, default: 'relative w-full' },
   busStop: { type: Boolean, dafault: false }
 })
 const emit = defineEmits(['update:modelValue', 'change'])

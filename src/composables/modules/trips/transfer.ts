@@ -37,13 +37,22 @@ const enableButton = computed(() => {
 	return !!(obj.vehicle.value?.id && obj.cost_of_supply.value)
 })
 
+const generateTripText = (trips:Record<string, any>[]) => {
+	let text = ''
+	for (const x of trips) {
+		text += `<br>${x?.route?.route_code} for ${moment(x?.trip_start_time).format('LL')} from ${x.vehicle?.partner?.company_name || x?.partner} to ${obj.partner.value?.company_name}`
+	}
+	return text
+}
+
 const single_desc = computed(() => {
 	const trip = obj.trip.value[0]
 	return `Are you sure you want to transfer trip ${trip?.route?.route_code} for ${moment(trip.trip_start_time).format('LL')} from ${trip.vehicle?.partner?.company_name || trip?.partner} to ${obj.partner.value?.company_name || ''}`
 })
 
 const multiple_desc = computed(() => {
-	return `Are you sure you want to transfer trips ${obj.trip.value.map((el) => el?.route_code).join(', ')} to ${obj.partner.value?.company_name || ''}`
+	// return `Are you sure you want to transfer the trips below:<br> ${obj.trip.value.map((el) => el?.route_code).join(', ')} to ${obj.partner.value?.company_name || ''}`
+	return `Are you sure you want to transfer the trips below: ${generateTripText(obj.trip.value)}`
 })
 
 export const useTransferTrip = () => {
@@ -71,7 +80,6 @@ export const useTransferTrip = () => {
 	}
 
 	const proceedToTransferTrip = async () => {
-		// console.log(trip_ids.value)
 		const payload:Record<string, any> = {
 			trip_ids: trip_ids.value,
 			vehicle_id: obj.vehicle.value?.id,

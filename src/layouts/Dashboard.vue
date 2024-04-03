@@ -4,7 +4,7 @@
 		<LayoutsSidebar />
 
 		<div class="main-content z-50   h-[95vh] relative ">
-			<Headers id="header" class="absolute top-0 inset-x-0 z-50" />
+			<Headers id="header" class="absolute top-0 inset-x-0 " />
 			<section class="px-5  md:p-6 mt-20  relative h-[84.5vh] bg-transparent overflow-auto">
 				<div class="relative h-full">
 					<slot />
