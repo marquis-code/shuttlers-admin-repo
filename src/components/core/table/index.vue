@@ -25,9 +25,13 @@
 						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
 					]" @click.stop="option(data)">
-						<td v-if="checkbox" class="pl-4">
+						<!-- <td v-if="checkbox" class="pl-4">
 							<input v-model="checkedArray" :value="data" type="checkbox" @click.stop
 								@change="$emit('checked', checkedArray)">
+						</td> -->
+						<td v-if="checkbox" :key="key" class="pl-4">
+							<input :checked="selected.map((el:any) => el?.id).includes(data?.id)" type="checkbox" @click.stop
+								@click.prevent="$emit('checked', data)">
 						</td>
 						<td v-if="hasIndex" class="pl-4">
 							{{ (page - 1) * 10 + index + 1 }}
@@ -65,6 +69,7 @@
 defineEmits(['checked'])
 
 const checkedArray = ref([] as Record<string, any>[])
+const key = ref(0)
 
 const props = defineProps({
 	hasOverflow: {
@@ -118,8 +123,11 @@ const props = defineProps({
 	}
 })
 
-watch(() => props.selected, (value: any) => {
-	checkedArray.value = value
+// watch(() => props.selected, (value: any) => {
+// 	checkedArray.value = value
+// })
+watch(() => props.selected?.length, (value: any) => {
+	key.value++
 })
 const displayTable = computed({
 	get: () => {

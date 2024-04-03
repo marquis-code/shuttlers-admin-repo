@@ -24,7 +24,7 @@
 			</div> -->
 		</section>
 
-		<button class="btn-primary w-32" @click="resetData">
+		<button v-if="!selectedTrips.length" class="btn-primary w-32" @click="resetData">
 			Reset all
 		</button>
 	</header>
@@ -36,7 +36,9 @@ import { appendObjectToCurrentURL } from '@/composables/utils/system'
 import { useVehicleTypesList } from '@/composables/modules/configure/fetch'
 import { use_user_city } from '@/composables/auth/register'
 import { useGetTripTime } from '@/composables/modules/routes/fetch'
+import { useTransferTrip } from '@/composables/modules/trips/transfer'
 
+const { selectedTrips } = useTransferTrip()
 const { getTripTime, loadingTripTime, tripTimeList } = useGetTripTime()
 const { getVehicleTypesList, vehicleTypesList, loadingVehicleTypes } = useVehicleTypesList()
 const { cityArray, fetchCities, loading } = use_user_city()

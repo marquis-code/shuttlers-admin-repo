@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-center gap-2 w-full h-fit">
+	<div class="relative w-full h-fit" @mouseenter="hovering = true" @mouseleave="hovering = false">
 		<InputMultiSelect id="select_users_input" v-model="company" track-by="id" :placeholder="placeholder"
 			:custom-label="(data) => `${data.corporate_name}`" open-direction="bottom" :options="companiesList"
 			:multiple="false" :searchable="true" :loading="loadingQueriedCompany" :internal-search="false" :options-limit="300"
@@ -8,7 +8,7 @@
 				<div v-if="queriedCompany.length" class="multiselect__clear" @mousedown.prevent.stop="clearAll(props.search)" />
 			</template>
 		</InputMultiSelect>
-		<Icon v-if="showClearBtn" name="close" class="w-5 text-red shrink-0" @click="company = null" />
+		<Icon v-if="showClearBtn && hovering" name="closed" class="w-5 text-red shrink-0 absolute bg-light right-2 top-1/2 -translate-y-1/2" @click="company = null" />
 	</div>
 </template>
 
@@ -26,6 +26,7 @@ const companiesList = computed(() => {
   }
 })
 
+const hovering = ref(false)
 const company = ref()
 
 const emits = defineEmits(['update:modelValue', 'updated'])
@@ -76,6 +77,8 @@ watch(company, (val) => {
 const clearAll = () => {
   queriedCompany.value = []
 }
+
+queryCompany('a')
 </script>
 
 <style scoped></style>
