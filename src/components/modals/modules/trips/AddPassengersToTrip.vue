@@ -2,7 +2,7 @@
 	<main>
 		<Modal :is-large-modal="true" modal="$atts.modal" title="Add passenger to trip" :no-close-btn="true"
 			class="text-center w-0">
-			<Table v-if="addPassengerSteps == 0" :checkbox="true" :loading="loading" :headers="tableFields"
+			<Table v-if="addPassengerSteps == 0" :checkbox="true" :loading="loading" :headers="tableFields" :selected="selectedUsers"
 				:table-data="usersList" :has-options="true" @checked="handleCheckedItems">
 				<template #header>
 					<TableFilter :filter-type="{ showSearchBar: true }" :checkbox="true" @filter="onFilterUpdate" />
@@ -208,7 +208,12 @@ if (computedTableData.value) {
 }
 
 const handleCheckedItems = (val) => {
-	selectedUsers.value = val
+	if (!selectedUsers.value.map((el) => el?.id).includes(val?.id)) {
+		selectedUsers.value.push(val)
+	} else {
+		const index = selectedUsers.value.map((el) => el?.id).indexOf(val?.id)
+		selectedUsers.value.splice(index, 1)
+	}
 }
 
 const removeUser = (itm) => {
