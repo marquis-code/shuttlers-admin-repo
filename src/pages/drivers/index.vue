@@ -2,7 +2,7 @@
 	<main class="">
 		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="filterData.status.value === 'active'"
-			:has-options="true" :selected="selected_drivers" :option="onRowClicked" @checked="selected_drivers = ($event)"
+			:has-options="true" :selected="selected_drivers" :option="onRowClicked" @checked="handleCheckedItems"
 		>
 			<template #header>
 				<TableFilter
@@ -64,6 +64,15 @@ const onRowClicked = (data) => {
 	const { selectedDriver } = useDriverIdDetails()
 	useRouter().push(`/drivers/${data.id}/driver-info`)
 	selectedDriver.value = data
+}
+
+const handleCheckedItems = (val:Record<string, any>) => {
+	if (!selected_drivers.value.map((el) => el?.id).includes(val?.id)) {
+		selected_drivers.value.push(val)
+	} else {
+		const index = selected_drivers.value.map((el) => el?.id).indexOf(val?.id)
+		selected_drivers.value.splice(index, 1)
+	}
 }
 
 definePageMeta({
