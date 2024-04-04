@@ -165,7 +165,6 @@ export const useCreateRoute = () => {
         }
 
             payload = removeFalsyElement(payload)
-        console.log(payload)
 
         const res = (await routes_api.$_create_route(payload)) as CustomAxiosResponse
 
