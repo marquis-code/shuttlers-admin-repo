@@ -40,9 +40,8 @@ export const useGetAgentRouteSuggestionsById = () => {
 }
 
 const setFormInfoForCreateRouteForm = (data: Record<string, any>) => {
-    const time = getDate(`${data.departure_time} ${data.time_of_day}`)
+    const time = getDate(`${data.departure_time} ${data.time_of_day}`.toUpperCase())
 
-    console.log(time)
     const { createRouteForm } = useCreateRoute()
     const pickup_coordinate = data.pickup_coordinate.split(',')
     const destination_coordinate = data.destination_coordinate.split(',')
@@ -53,12 +52,12 @@ const setFormInfoForCreateRouteForm = (data: Record<string, any>) => {
     createRouteForm.route_availability_days.value = JSON.parse(data.route_available_days)
     createRouteForm.itinerary_time.value = time
 }
-    const getDate = (timeString) => {
-        const [hours, minutes] = timeString.split(':').map(Number)
-        const isPM = timeString.slice(-2).toLowerCase() === 'pm'
-        const date = new Date()
-        date.setHours(isPM ? hours + 12 : hours)
-        date.setMinutes(minutes)
+const getDate = (timeString) => {
+    const [hours, minutes] = timeString.split(':')
 
-        return date
+    if (hours.length === 1) {
+        timeString = `0${hours}:${minutes}`
     }
+
+    return timeString
+}

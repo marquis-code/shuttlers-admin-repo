@@ -27,10 +27,6 @@ const createRouteForm = {
     payment_mode: ref('')
 }
 
-// watch(createRouteForm.itinerary_time, (val) => {
-//     console.log(val)
-// })
-
 const clearCreateForm = () => {
     createRouteForm.start_location.value = {}
     createRouteForm.end_location.value = {}
