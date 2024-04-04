@@ -1,5 +1,5 @@
 <template>
-	<section class="flex flex-col gap-4 overflow-hidden" :class="{ 'h-full' : (!loadingActiveTrips && filteredActiveTripsList.length > 0) }">
+	<section class="flex flex-col gap-4 overflow" :class="{ 'h-full' : (!loadingActiveTrips && filteredActiveTripsList.length > 0) }">
 		<div class="flex border rounded-2xl p-4 items-center gap-4">
 			<form class="relative flex gap-3 w-full max-w-sm" autocomplete="off" @submit.prevent="">
 				<MagnifyingGlassIcon class="absolute w-4 text-gray-400 top-[16px] left-3" aria-hidden="true" />
@@ -14,7 +14,7 @@
 		</div>
 
 		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl pb-20">
-			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="canLoadMore" />
+			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="showLoadMore" @loadMore="loadMore" />
 			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" />
 		</div>
 	</section>
@@ -39,7 +39,7 @@ import { usePageHeader } from '@/composables/utils/header'
 import { useVehicleTracking } from '@/composables/modules/tracking/vehicle/fetch'
 import { use_user_city } from '@/composables/auth/register'
 
-const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, canLoadMore } = useVehicleTracking()
+const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, showLoadMore, loadMore } = useVehicleTracking()
 const { cityArray, fetchCities, loading } = use_user_city()
 
 initializeTracking()

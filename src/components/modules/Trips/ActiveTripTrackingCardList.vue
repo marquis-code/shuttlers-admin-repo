@@ -18,9 +18,9 @@
 			</div>
 		</article>
 
-		<!-- <button class="btn-primary">
+		<button class="btn-primary" :disabled="!canLoadMore" @click="$emit('loadMore')">
 			Load more
-		</button> -->
+		</button>
 	</section>
 </template>
 
@@ -29,6 +29,8 @@ import moment from 'moment'
 import { useActiveTripTrackingCardClick } from '@/composables/modules/tracking/vehicle/actions'
 
 const { onCardClick } = useActiveTripTrackingCardClick()
+
+defineEmits(['loadMore'])
 
 const props = defineProps({
 	activeTripsList: {

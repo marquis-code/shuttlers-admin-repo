@@ -8,7 +8,7 @@ export const useActiveTripTrackingCardClick = () => {
             if (VehicleMarkerExist(data.driver_id)) {
                 zoomMapInOnCoordinate({ lat: data.lat, lng: data.lng })
             } else {
-                useAlert().openAlert({ type: 'ERROR', msg: 'Help me' })
+                useAlert().openAlert({ type: 'ERROR', msg: 'Unknown error' })
             }
         } else {
             useAlert().openAlert({ type: 'ERROR', msg: 'This Vehicle is Offline' })

@@ -1,3 +1,4 @@
+import { watchDebounced } from '@vueuse/core'
 import {
   addToQueue,
   filterData,
@@ -13,10 +14,13 @@ export const useGetActiveTripsList = () => {
 
   const currentRoute = computed(() => { return useRoute().fullPath })
 
-  const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+  const { moveTo, metaObject, next, prev, setFunction, showLoadMore } = usePagination()
 
   const getActiveTrips = async () => {
-    const request = async () => {
+    const request = async (shouldReset = false) => {
+      if (shouldReset) {
+        metaObject.page.value = 1
+      }
       loadingActiveTrips.value = true
       const res = (await trips_api.$_get_active_trips(
         filterData,
@@ -36,19 +40,41 @@ export const useGetActiveTripsList = () => {
   }
   setFunction(getActiveTrips)
 
-  watch(watchArray, () => {
+  watchDebounced(watchArray, () => {
      getActiveTrips()
-  })
+  }, { debounce: 1000, maxWait: 1000 })
+
+  const loadMoreActiveTrip = async () => {
+      const request = async () => {
+      loadingActiveTrips.value = true
+      const res = (await trips_api.$_get_active_trips(
+        filterData,
+        metaObject
+      )) as CustomAxiosResponse
+      if (res.type !== 'ERROR') {
+        activeTripsList.value.push(...res.data.data.map((trip) => {
+ trip.vehicle_status = false
+          return trip
+            }))
+        metaObject.total_pages.value = res.data.metadata.total_pages
+        metaObject.total.value = res.data.metadata.total
+      }
+      loadingActiveTrips.value = false
+    }
+    addToQueue(request)
+  }
+
+  const loadMore = () => {
+    if (metaObject.page.value >= metaObject.total_pages.value) return
+    metaObject.page.value++
+    loadMoreActiveTrip()
+  }
 
   return {
-    getActiveTrips,
-    loadingActiveTrips,
-    activeTripsList,
-    filterData,
-    onFilterUpdate,
-    moveTo,
-    ...metaObject,
-    next,
-    prev
+  showLoadMore, loadMore,
+    getActiveTrips, loadingActiveTrips,
+    activeTripsList, filterData,
+    onFilterUpdate, moveTo,
+    ...metaObject, next, prev
   }
 }
