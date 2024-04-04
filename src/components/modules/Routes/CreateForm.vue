@@ -138,6 +138,7 @@
 					v-model="createRouteForm.avail_start_date.value"
 					class="font-light"
 					placeholder="Filter by date"
+					:disabled-date="()=>null"
 				/>
 			</div>
 			<div class="w-full">
@@ -147,6 +148,7 @@
 					v-model="createRouteForm.avail_end_date.value"
 					class="font-light"
 					placeholder="Filter by date"
+					:disabled-date="()=>null"
 				/>
 			</div>
 			<div class="w-full">
@@ -185,21 +187,17 @@
 
 			<div v-if="!isEdit" class="space-y-3 w-full">
 				<div>
-					<label>Route Itinerary</label>
+					<label>Time</label>
 					<div>
-						<label>Time</label>
-						<div>
-							<InputTimeInput v-model="createRouteForm.itinerary_time.value" />
-						</div>
+						<InputTimeInput v-model="createRouteForm.itinerary_time.value" />
 					</div>
 				</div>
+
 				<div>
-					<div>
-						<label>Fare</label>
-						<input v-model="createRouteForm.fare.value" type="number"
-							class="input-field"
-						>
-					</div>
+					<label>Fare</label>
+					<input v-model="createRouteForm.fare.value" type="number"
+						class="input-field"
+					>
 				</div>
 			</div>
 
