@@ -47,7 +47,7 @@
 		<div>
 			<!-- <Table :show-search-bar="true" :headers="tableFields" :table-data="tableData" :checkbox="true" /> -->
 			<Table :loading="loading" :headers="tableFields" :table-data="driversList" :checkbox="true"
-				:selected="selected_drivers" @checked="selected_drivers = ($event); all_drivers = false"
+				:selected="selected_drivers" @checked="handleCheckedItems"
 			>
 				<template #header>
 					<TableFilter
@@ -99,6 +99,16 @@ const removeSelectedDriver = (data: Record<string, any>) => {
 const onSelected = (data) => {
 	all_drivers.value = false
 	selected_drivers.value = data
+}
+
+const handleCheckedItems = (val:Record<string, any>) => {
+	all_drivers.value = false
+	if (!selected_drivers.value.map((el) => el?.id).includes(val?.id)) {
+		selected_drivers.value.push(val)
+	} else {
+		const index = selected_drivers.value.map((el) => el?.id).indexOf(val?.id)
+		selected_drivers.value.splice(index, 1)
+	}
 }
 
 clearObj()
