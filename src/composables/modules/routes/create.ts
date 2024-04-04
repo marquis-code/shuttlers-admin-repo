@@ -122,7 +122,7 @@ const loading = ref(false)
 export const useCreateRoute = () => {
     const create = async () => {
         loading.value = true
-        const payload = {
+        let payload = {
             destination: createRouteForm.end_location.value.name,
             pickup: createRouteForm.start_location.value.name,
             day_of_week: 'MON - FRI',
@@ -142,7 +142,7 @@ export const useCreateRoute = () => {
             },
             visibility: createRouteForm.visibility.value,
             is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
-            corporate_id: createRouteForm.corporate.value?.id || null,
+            corporate_id: createRouteForm.corporate.value?.id,
             route_availability_end_date: createRouteForm.avail_end_date.value,
             route_availability_start_date: createRouteForm.avail_start_date.value,
             blacklisted_availability_days: createRouteForm.unavailable_days.value,
@@ -163,6 +163,9 @@ export const useCreateRoute = () => {
         if (createRouteForm.sales_route_suggestion_id.value) {
             payload.sales_route_suggestion_id = createRouteForm.sales_route_suggestion_id.value
         }
+
+            payload = removeFalsyElement(payload)
+        console.log(payload)
 
         const res = (await routes_api.$_create_route(payload)) as CustomAxiosResponse
 
@@ -205,6 +208,7 @@ export const useCreateRoute = () => {
         if (createRouteForm.route_owner_type.value !== 'system') {
             payload.owner_id = createRouteForm.route_owner.value?.id || null
         }
+
         loading.value = true
         const routeId = useRoute().params.id as string
         const res = await routes_api.$_update_route(routeId, payload) as CustomAxiosResponse
@@ -218,4 +222,14 @@ export const useCreateRoute = () => {
     }
 
     return { createRouteForm, startPosition, endPosition, loading, polyline, create, ploylineLoading, initEditRoute, fetchingRoute, clearCreateForm, update }
+}
+
+const removeFalsyElement = (object) => {
+    const newObject = {}
+    Object.keys(object).forEach((key) => {
+        if (object[key]) {
+            newObject[key] = object[key]
+        }
+    })
+    return newObject
 }
