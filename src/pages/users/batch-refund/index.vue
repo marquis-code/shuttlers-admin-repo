@@ -2,7 +2,7 @@
 	<main class="">
 		<ButtonGoBack class="mb-6" />
 		<TableSelectedTray class="mb-12" :selected="log_ids" :loading="processLoading" :call-function="getConfirmation" :computed-name-function="formattedName" @update="log_ids = ($event)" />
-		<Table :loading="loading" :headers="tableFields" :selected="log_ids" :table-data="formatedRefundList" :checkbox="true" @checked="log_ids = ($event)">
+		<Table :loading="loading" :headers="tableFields" :selected="log_ids" :table-data="formatedRefundList" :checkbox="true" @checked="handleCheckedItems">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
@@ -88,6 +88,15 @@ const tableFields = ref([
 		width: '10%'
 	}
 ])
+
+const handleCheckedItems = (val:Record<string, any>) => {
+	if (!log_ids.value.map((el) => el?.id).includes(val?.id)) {
+		log_ids.value.push(val)
+	} else {
+		const index = log_ids.value.map((el) => el?.id).indexOf(val?.id)
+		log_ids.value.splice(index, 1)
+	}
+}
 
 </script>
 

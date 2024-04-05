@@ -1,7 +1,7 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table :checkbox="true" :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :disable-checkbox="selectedTrips.length === 5" :option="onRowClicked" :selected="selectedTrips"
+		<Table :checkbox="true" :loading="loadingCompletedTrips" :headers="tableFields" :table-data="formattedCompletedTripsList" :has-options="true" :option="onRowClicked" :selected="selectedTrips"
 			@checked="handleCheckedItems"
 		>
 			<template #header>

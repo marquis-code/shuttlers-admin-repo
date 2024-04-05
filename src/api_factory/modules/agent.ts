@@ -25,7 +25,7 @@ export const agents_api = {
 	},
 	$_get_agent_suggested_routes: (id: string, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/sales-route-suggestions?${queryParams}&agent_account_id=${id}`
+		const url = `/sales-route-suggestions?${queryParams}&sales_agent_account_id=${id}`
 
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
