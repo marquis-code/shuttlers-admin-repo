@@ -23,9 +23,9 @@
 </script>
 
 <style scoped lang='scss'>
-$sidebar-width: 17rem;
+$sidebar-width: 14rem;
 $dasboard_margin: 2rem;
-$content-area-width: calc(100vw - (17rem + 1rem));
+$content-area-width: calc(100vw - (14rem + 1rem));
 .main-content {
   background-color: #FDFDFD;
   min-height: 90vh;
