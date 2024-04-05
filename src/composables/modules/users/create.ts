@@ -41,9 +41,11 @@ export const useCreateUsers = () => {
 
 	const createUser = async () => {
 		loading.value = true
-		const res = (await users_api.$_create_users(
-			convertObjWithRefToObj(createForm)
-		)) as CustomAxiosResponse
+		const payload = convertObjWithRefToObj(createForm)
+		if (!payload?.corporate_id && payload.hasOwnProperty('corporate_id')) {
+			delete payload.corporate_id
+		}
+		const res = (await users_api.$_create_users(payload)) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			useRouter().push('/users')
 			useAlert().openAlert({
