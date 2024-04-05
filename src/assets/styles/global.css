@@ -168,7 +168,7 @@ select {
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar:horizontal {
