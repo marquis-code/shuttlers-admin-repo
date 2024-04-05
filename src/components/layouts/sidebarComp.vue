@@ -151,8 +151,8 @@ $sh-neutral-400: #acafae;
 $sh-gray-9: #e5e9f2;
 $sh-green-900: #006633;
 $sh-gray-3: #444854;
-$sidebar-width: 17rem;
-$content-area-width: calc(100vw - 17rem);
+$sidebar-width: 14rem;
+$content-area-width: calc(100vw - 14rem);
 
 .sidebar-enter-active,
 .sidebar-leave-active {

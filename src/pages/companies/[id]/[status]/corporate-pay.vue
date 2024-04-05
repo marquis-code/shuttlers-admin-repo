@@ -18,7 +18,7 @@
 							of Company Wallet.
 						</div>
 					</div>
-					<button class="flex-shrink-0 btn" @click="saveChanges">
+					<button class="flex-shrink-0 secondary-btn" @click="saveChanges">
 						Save Changes
 					</button>
 				</div>
@@ -171,7 +171,7 @@
 										</button>
 									</div>
 
-									<button v-else class="flex-shrink-0 btn" @click="isEditingExemption = true">
+									<button v-else class="flex-shrink-0 secondary-btn" @click="isEditingExemption = true">
 										Add exemption
 									</button>
 								</div>
@@ -484,5 +484,9 @@ input[type=number] {
 		cursor: not-allowed;
 		opacity: 0.5;
 	}
+}
+
+.secondary-btn{
+	@apply border bg-light text-dark px-4 py-2.5 rounded-lg font-medium
 }
 </style>
