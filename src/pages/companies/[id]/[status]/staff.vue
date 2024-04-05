@@ -35,7 +35,7 @@
 			</div>
 
 			<Table :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs"
-				:has-index="true" :page="page" @checked="selectedStaffs = ($event)">
+				:has-index="true" :page="page" @checked="handleCheckedItems">
 				<template #header>
 					<TableFilter :filter-type="{ showStatus: false, showSearchBar: true, showDownloadButton: true }" @download="downloadCorporateStaffs" @filter="onFilterUpdate">
 						<template #filter_others>
@@ -261,6 +261,15 @@ const closeFilter = (n: 'days' | 'shift' | 'branch') => {
 const clearAndCloseRouteSearch = () => {
 	selectedRoute.value = {}
 	showSearchRoute.value = false
+}
+
+const handleCheckedItems = (val:Record<string, any>) => {
+	if (!selectedStaffs.value.map((el) => el?.id).includes(val?.id)) {
+		selectedStaffs.value.push(val)
+	} else {
+		const index = selectedStaffs.value.map((el) => el?.id).indexOf(val?.id)
+		selectedStaffs.value.splice(index, 1)
+	}
 }
 
 onClickOutside(target, () => closeAllDropDown())

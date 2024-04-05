@@ -21,21 +21,22 @@
 
 <script setup lang="ts">
 import { useCommuteModal } from '@/composables/core/modals'
+import { isProdEnv } from '@/composables/utils/system'
 
-const pageTabs = [
-    {
-        name: 'Main Routes',
-        path: '/trips/routes/'
-    },
-    {
-        name: 'Routes Availability',
-        path: '/trips/routes/suspended'
-    },
-	{
-        name: 'Routes Auction',
-        path: '/trips/routes/auctions'
-    }
-]
+const pageTabs = computed(() => {
+	const links = [
+		{
+			name: 'Main Routes',
+			path: '/trips/routes/'
+		},
+		{
+			name: 'Routes Availability',
+			path: '/trips/routes/suspended'
+		}
+	]
+	if (!isProdEnv.value) links.push({ name: 'Routes Auction', path: '/trips/routes/auctions' })
+	return links
+})
 
 const handleRouteAvailabilityConfigModal = () => {
   useCommuteModal().openRouteAvailabilityConfig()

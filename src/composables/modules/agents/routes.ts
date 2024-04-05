@@ -48,7 +48,8 @@ export const useGetAgentsRoutes = () => {
 						route_available_days: pasrsed.join(', ')
 					}
 				})
-				metaObject.total.value = response.data.metadata.total_pages
+				metaObject.total.value = response.data.metadata.total
+				metaObject.total_pages.value = response.data.metadata.total_pages
 			}
         } else {
             filterData.to.value = new Date().toISOString().split('T')[0]
@@ -60,7 +61,8 @@ export const useGetAgentsRoutes = () => {
 			const response = (await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.id, filterData, metaObject)) as CustomAxiosResponse
 			if (response.type !== 'ERROR') {
 				agentsRoute.value = response.data.data
-				metaObject.total.value = response.data.metadata.total_pages
+					metaObject.total.value = response.data.metadata.total
+				metaObject.total_pages.value = response.data.metadata.total_pages
 			}
 		}
 		loading.value = false

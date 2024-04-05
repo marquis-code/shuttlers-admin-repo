@@ -25,6 +25,7 @@ module.exports = {
 		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
 		'no-tabs': 'off',
+		'no-unmodified-loop-condition': 'off',
 		'vue/max-attributes-per-line': 'off',
 		'import/no-named-as-default-member': 'off',
 		'vue/first-attribute-linebreak': 'off',

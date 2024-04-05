@@ -17,6 +17,10 @@
 				</div>
 			</div>
 		</article>
+
+		<button class="btn-primary" :disabled="!canLoadMore" @click="$emit('loadMore')">
+			Load more
+		</button>
 	</section>
 </template>
 
@@ -26,11 +30,17 @@ import { useActiveTripTrackingCardClick } from '@/composables/modules/tracking/v
 
 const { onCardClick } = useActiveTripTrackingCardClick()
 
+defineEmits(['loadMore'])
+
 const props = defineProps({
 	activeTripsList: {
 		type: Array as PropType<any[]>,
 		required: true
 
+	},
+	canLoadMore: {
+		type: Boolean,
+		required: true
 	}
 })
 

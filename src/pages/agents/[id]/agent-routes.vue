@@ -9,13 +9,15 @@
 		</span>
 	</section>
 
+	<Skeleton v-else height="56px" class="mt-4" />
+
 	<div class="flex flex-col mt-4 gap-6">
 		<section v-if="filterData.approval_status.value === 'monitoring' && !loading " class="flex gap-4 w-full ">
-			<div class="flex flex-col card min-w-[270px] px-6">
+			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Total trips taken</span>
-				<span class="text-3xl font-bold">50</span>
+				<span class="text-3xl font-bold">{{ total }}</span>
 			</div>
-			<div class="flex flex-col card min-w-[270px] px-6">
+			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Accrued earnings</span>
 				<span class="text-3xl font-bold">5,000 pts</span>
 			</div>
@@ -86,15 +88,18 @@
 								? item.data.driver.phone.replace(/^0/, '+234') : 'N/A' }}</a>
 						</span>
 					</span>
+					<span v-if="item.booking_status">
+						<StatusBadge :name="item.data.booking_status" />
+					</span>
 					<p v-if="item.vehicle" class="min-w-[100px]">
 						{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 					</p>
 					<div v-if="item.route">
-						<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
+						<RouteDescription :pickup="item.data.pickup.location" :destination="item.data.destination.location" />
 					</div>
 				</template>
 				<template #footer>
-					<TablePaginator :current-page="page" :total-pages="total" :loading="loading || AgentByIdloading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+					<TablePaginator :current-page="page" :total-pages="total_pages" :loading="loading || AgentByIdloading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 				</template>
 			</Table>
 		</main>
@@ -111,7 +116,7 @@ import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, moveTo, next, prev, agentDataRef, filterOptions, filterData } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
@@ -187,7 +192,7 @@ const tableFields = computed(() => {
     },
 	{
         text: 'STATUS',
-        value: 'status'
+        value: 'booking_status'
     },
 	{
 		text: 'EARNINGS (pts)',
