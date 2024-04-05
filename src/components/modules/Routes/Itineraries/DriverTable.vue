@@ -47,7 +47,7 @@
 				</span>
 			</template>
 		</Table>
-		<div class="p-2 flex flex-col gap-3">
+		<div v-if="!isProdEnv" class="p-2 flex flex-col gap-3">
 			<div class="p-4 bg-[#FAFAFA] rounded border flex flex-col gap-2">
 				<h3 class="text-sm font-medium text-[#101211] pb-3 border-bottom">
 					Auctions
@@ -111,6 +111,7 @@ import { useItineraries, useItineraryDrivers } from '@/composables/modules/route
 import { useAddDriver, useDeleteDriverFromItinerary, useTransferBooking } from '@/composables/modules/routes/itineraries/driver'
 import { useDriverModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { singleItinerary: itinerary } = useItineraries()
 const { loading: loading_drivers, getItineraryDrivers, page, total, moveTo, next, prev, itineraryDrivers } = useItineraryDrivers()
