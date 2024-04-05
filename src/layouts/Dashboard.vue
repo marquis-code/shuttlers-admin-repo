@@ -3,14 +3,6 @@
 		<NuxtLoadingIndicator />
 		<LayoutsSidebar />
 
-		<!-- <div class="main-content z-50   h-[95vh] relative ">
-			<Headers id="header" class="absolute top-0 inset-x-0 " />
-			<section class="px-5  md:p-6 mt-20  relative h-[84.5vh] bg-transparent overflow-auto border border-red">
-				<div class="relative h-full">
-					<slot />
-				</div>
-			</section>
-		</div> -->
 		<div class="main-content z-50 h-[95vh] flex flex-col ">
 			<Headers id="header" class="" />
 			<section class="px-5  md:p-6 relative bg-transparent overflow-auto">
