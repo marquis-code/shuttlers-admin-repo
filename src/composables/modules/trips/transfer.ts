@@ -4,6 +4,7 @@ import { useTripsModal } from '@/composables/core/modals'
 import { trips_api, partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useYesConfirmationModal } from '@/composables/core/confirmation'
+import { useTripIdDetails } from '@/composables/modules/trips/id'
 
 const selectedTrips = ref([] as Record<string, any>[])
 const obj = {
@@ -96,6 +97,10 @@ export const useTransferTrip = () => {
 				useTripsModal().closeTransferTrip()
 				selectedTrips.value = []
 				getCompletedTrips()
+				if (useRoute().fullPath.includes('trip-details')) {
+					const id = useRoute().params.id as string
+					useTripIdDetails().getTripById(id)
+				}
 			}
         }
 		loading.value = false
