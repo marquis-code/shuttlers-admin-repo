@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<section class="flex flex-col gap-6">
-			<Skeleton v-if="loading_partners || loading_earnings" height="45px" radius="10px" />
+			<Skeleton v-if="loading_partners" height="45px" radius="10px" />
 			<div v-else class="flex items-center gap-2">
 				<NuxtLink :to="backUrl" class="text-sm text-grey4">
 					Payout
@@ -80,8 +80,8 @@
 							<p class="key">
 								{{ n.key }}
 							</p>
-							<p class="value font-medium" :class="n.key === 'Deductions' || n.value === 'failed' ? '!text-red' : n.value.includes('pending') ? '!text-orange-500' : n.value === 'settled' ? '!text-green' : '' ">
-								{{ n.value }}
+							<p class="value font-medium" :class="n?.key === 'Deductions' || n.value === 'failed' ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' ? '!text-green' : '' ">
+								{{ n?.value }}
 							</p>
 						</div>
 						<div class="flex items-center justify-between">
@@ -246,9 +246,9 @@ const partner_info = computed(() => {
 
 const payout_info = computed(() => {
 	return [
-		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue) },
-		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction) },
-		{ key: 'Status', value: earningInfo.value?.status }
+		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue || 0) },
+		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
+		{ key: 'Status', value: earningInfo.value?.status || '' }
 	]
 })
 

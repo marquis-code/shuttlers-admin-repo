@@ -32,7 +32,7 @@ export const usePayoutDetails = () => {
 		loading_earnings.value = true
 		const res = await earnings_api.$_get_earnings_by_id(earningId) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-			earningInfo.value = res.data
+			earningInfo.value = res?.data
 			// useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
         }
 		loading_earnings.value = false

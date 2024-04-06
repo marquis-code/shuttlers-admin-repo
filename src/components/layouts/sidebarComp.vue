@@ -280,4 +280,11 @@ $content-area-width: calc(100vw - 14rem);
 		}
 	}
 }
+
+</style>
+
+<style scoped>
+	.sidebar::-webkit-scrollbar {
+		width: 0px;
+	}
 </style>
