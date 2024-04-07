@@ -43,7 +43,6 @@ getCurrencies()
 getRateForAgent()
 
 watch(rateData, (val:any) => {
-	console.log(val)
 	if (val.rate) {
 		rate.value = val.rate
 	} else {
