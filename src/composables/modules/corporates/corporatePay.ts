@@ -71,7 +71,7 @@ export const useCorporatePaySetting = () => {
 			corporatePaySettings.book_on_public_routes.value = data.book_on_public_routes
 			corporatePaySettings.booking_limits_active.value = data.booking_limits_active
 			corporatePaySettings.corporate_id.value = data.corporate_id
-			corporatePaySettings.staff_can_view_wallet_limit_usage.value = data.staff_can_view_wallet_limit_usage ?? 1
+			corporatePaySettings.staff_can_view_wallet_limit_usage.value = !!data.staff_can_view_wallet_limit_usage
 			corporatePaySettings.default_corporate_payment_limit.id.value = data.default_corporate_payment_limit?.id
 			corporatePaySettings.default_corporate_payment_limit.limit_type.value = data.default_corporate_payment_limit?.limit_type
 			corporatePaySettings.default_corporate_payment_limit.limit_value.value = data.default_corporate_payment_limit?.limit_value
@@ -85,7 +85,7 @@ export const useCorporatePaySetting = () => {
     const saveCorporatePaySettings = async (val: any) => {
         loading.value = true
         const { $_update_corporate_payment_settings } = corporates_api
-        const res = await $_update_corporate_payment_settings(corporate_id, convertObjWithRefToObj({ ...val })) as CustomAxiosResponse
+        const res = await $_update_corporate_payment_settings(corporate_id, val) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',

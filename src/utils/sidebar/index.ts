@@ -71,7 +71,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
-    shouldRedirect: true,
+    shouldRedirect: false,
     children: null,
     modulePermission: 'EVENTS'
   },
@@ -79,7 +79,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     title: 'Transactions',
     routePath: '/transactions',
     oldPath: '/transactions',
-    shouldRedirect: true,
+    shouldRedirect: false,
     description: '',
     iconComponent: shallowRef(transactionIcon),
     children: null,
@@ -102,7 +102,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(referralIcon),
     children: null,
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS'
   },
   {
@@ -111,7 +111,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     oldPath: '/promo-codes',
     description: '',
     iconComponent: shallowRef(promoIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'PROMOTIONS',
     children: null
   },

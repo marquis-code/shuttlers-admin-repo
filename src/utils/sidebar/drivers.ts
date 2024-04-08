@@ -5,7 +5,7 @@ export default {
     description: '',
     rootPath: '/drivers',
     iconComponent: shallowRef(driverIcon),
-    shouldRedirect: true,
+    shouldRedirect: false,
     modulePermission: 'DRIVERS'
     // children: [
     //   {
