@@ -3,10 +3,11 @@ import routePricingIcon from '@/assets/icons/src/configure/route-pricing-control
 import tripRatingSettingsIcon from '@/assets/icons/src/configure/trip-rating-settings.vue'
 import vehicleConfigIcon from '@/assets/icons/src/configure/vehicle.vue'
 import configureIcon from '@/assets/icons/src/configure.vue'
+import { isProdEnv } from '@/composables/utils/system'
 
-const isProd = computed(() => {
-  return location.host === 'v3.admin.shuttlers.africa'
-})
+// const isProd = computed(() => {
+//   return location.host === 'v3.admin.shuttlers.africa'
+// })
 
 export default {
   title: 'Configure',
@@ -43,7 +44,7 @@ export default {
     },
     {
       title: 'Route Price Control',
-      routePath: isProd.value
+      routePath: isProdEnv.value
         ? '/configuration/pricing/charges'
         : '/configuration/pricing/pricing-control',
       oldPath: '/configuration/pricing-controls/',
