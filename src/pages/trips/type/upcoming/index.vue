@@ -41,7 +41,7 @@
 					{{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
 				<span v-if="item.action">
-					<ButtonIconDropdown :children="dropdownChildren(item.data)" :data="item.data" class-name="w-56" />
+					<ButtonIconDropdown :children="dropdownChildren(item.data)" :index="item.index" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
 			<template #footer>
