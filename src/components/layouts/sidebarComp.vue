@@ -9,7 +9,7 @@
 					<component :is="data.menuIcon" class="img w-8" />
 				</button>
 			</div>
-			<label v-if="!isProd" for="redirect" class="ml-5">
+			<label v-if="!isProdEnv" for="redirect" class="ml-5">
 				<input
 					id="redirect"
 					v-model="shouldNotRedirectToExternalUrl"
@@ -76,17 +76,16 @@
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
 import routeIcon from '@/assets/icons/src/compass.vue'
-
-import { shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { isProdEnv, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
 import {
 	currentRouteObject,
 	showPrimaryMenuRef,
 	parentOfTheCurrentRouteChildren
 } from '@/utils/sidebar_controls'
 
-const isProd = computed(() => {
-	return location.host === 'v3.admin.shuttlers.africa'
-})
+// const isProd = computed(() => {
+// 	return location.host === 'v3.admin.shuttlers.africa'
+// })
 const props = defineProps({
 	data: {
 		type: Object,
