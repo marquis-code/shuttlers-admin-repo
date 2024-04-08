@@ -2,7 +2,7 @@
 	<HeadersHeaderSlot title="Additional Charges" pre-title="Overview">
 		<template #tabs>
 			<div class="flex flex-col w-full">
-				<RouterTabs :tabs="isProd ? showOnProd : pageTabs" />
+				<RouterTabs :tabs="isProdEnv ? showOnProd : pageTabs" />
 				<div v-if="$route.fullPath.includes('charges')" class="flex items-center gap-2 border-t p-2">
 					<router-link v-for="n,i in chargesTab" :key="i" :to="n.route"
 						class="text-xs text-[#ACAFAE] font-medium py-2 px-3 rounded-lg"
@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { useChargeModal } from '@/composables/core/modals'
+import { isProdEnv } from '@/composables/utils/system'
 const pageTabs = computed(() => {
 	return [
 		{
@@ -65,9 +66,9 @@ const chargesTab = computed(() => {
 	]
 })
 
-const isProd = computed(() => {
-    return location.host === 'v3.admin.shuttlers.africa'
-})
+// const isProd = computed(() => {
+//     return location.host === 'v3.admin.shuttlers.africa'
+// })
 </script>
 
 <style scoped>
