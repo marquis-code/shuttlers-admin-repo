@@ -20,6 +20,22 @@ export const useGetCurrencies = () => {
     return { currenciesList, loading, getCurrencies }
 }
 
+const rateData = ref({} as Record<string, any>)
+export const useGetCurrentRatesForAgent = () => {
+    const rateLoading = ref(false)
+
+    const getRateForAgent = async () => {
+        rateLoading.value = true
+        const res = await agents_api.$_get_rates('sales_agent', 'SHTCR', 'NGN') as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            rateData.value = res.data
+        }
+        rateLoading.value = false
+    }
+
+    return { rateData, rateLoading, getRateForAgent }
+}
+
 export const useCreateSwapConfiguration = () => {
     const loading = ref(false)
     const rate = ref()
@@ -48,7 +64,8 @@ export const useCreateSwapConfiguration = () => {
         }
 
         loading.value = true
-        const res = (await agents_api.$_currency_swap_config(payload)) as CustomAxiosResponse
+
+        const res = (await agents_api.$_currency_swap_config(payload, rateData.value?.id)) as CustomAxiosResponse
 
 		if (res.type !== 'ERROR') {
             useAlert().openAlert({

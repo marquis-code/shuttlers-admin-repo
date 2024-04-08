@@ -29,9 +29,9 @@ export const agents_api = {
 
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_Agent_trip_monitoring: (id:number, filterData?: Record<string, Ref>, metaObject?:TMetaObject) => {
-		const queryParams = useTableFilter(filterData)
-		const url = `/users/${id}/routes?${queryParams}&limit=${metaObject?.page_size.value}&page=${metaObject?.page.value}&metadata=true`
+	$_get_Agent_trip_monitoring: (id:number) => {
+		// const queryParams = useTableFilter(filterData)
+		const url = `/sales-route-suggestions/agent/${id}/trip-monitoring`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_agent: (payload: any) => {
@@ -42,12 +42,19 @@ export const agents_api = {
 		const url = `/sales-route-suggestions/${id}/decline`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_currency_swap_config: (payload: any) => {
-		const url = '/currency-swap-config'
+	$_currency_swap_config: (payload: any, id?:string) => {
+		let url = `/currency-swap-config?swap_config_id=${id}`
+		if (!id) {
+			url = '/currency-swap-config'
+		}
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_get_currencies: () => {
 		const url = '/currencies'
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_get_rates: (user_type:string, from:string, to:string) => {
+		const url = `/wallets/swap/${user_type}/${from}/${to}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	}
 }
