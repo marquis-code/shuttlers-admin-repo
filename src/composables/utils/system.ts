@@ -35,9 +35,9 @@ export const insertScriptTag = (url: string): void => {
 }
 
 export const environmental_url = {
-  test: 'https://test.admin.shuttlers.africa',
-  staging: 'https://qa.admin.shuttlers.africa',
-  prod: 'https://admin.shuttlers.africa'
+  test: 'https://v2.test.admin.shuttlers.africa',
+  staging: 'https://v2.qa.admin.shuttlers.africa',
+  prod: 'https://v2.admin.shuttlers.africa'
 }
 
 export const customer_web_app_url = {
