@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-2">
 		<label class="text-xs text-[#6E717C] font-medium">
-			{{ label }} {{ filteredVehicle?.length }}
+			{{ label }}
 		</label>
 		<Skeleton v-if="loading" height="46px" />
 		<VueMultiselect v-else v-model="selectedVehicle" placeholder="Search vehicle" select-label="" :searchable="true" :internal-search="false"
