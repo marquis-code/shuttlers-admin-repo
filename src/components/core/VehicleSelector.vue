@@ -4,9 +4,9 @@
 			{{ label }}
 		</label>
 		<Skeleton v-if="loading" height="46px" />
-		<VueMultiselect v-else v-model="selectedVehicle" placeholder="Search vehicle" select-label="" :searchable="true" :internal-search="true"
-			:options="vehicles" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" " :disabled="isDisabled"
-			@select="handleSelection" @open="is_droped_down = true" @close="is_droped_down = false"
+		<VueMultiselect v-else v-model="selectedVehicle" placeholder="Search vehicle" select-label="" :searchable="true" :internal-search="false"
+			:options="filteredVehicle" :multiple="false" :taggable="false" track-by="id" :loading="loading" label=" " :disabled="isDisabled"
+			@select="handleSelection" @open="is_droped_down = true" @close="is_droped_down = false" @search-change="onSearch"
 		>
 			<template v-if="selectedVehicle?.id && !is_droped_down" #selection="">
 				<p>
@@ -37,10 +37,24 @@ const { vehicles, loading, getVehicles, getActiveVehicles } = useAllVehicles()
 
 const is_droped_down = ref(false)
 const selectedVehicle = ref(props.modelValue) as Ref<any>
+const searchText = ref('')
 
 const handleSelection = (val:any) => {
 	emit('update:modelValue', val)
 }
+
+const onSearch = (val) => {
+	searchText.value = val
+}
+
+const filteredVehicle = computed(() => {
+	if (!searchText.value?.length) return vehicles.value
+	return vehicles.value.filter((el) => {
+		return el?.name.toLowerCase().includes(searchText.value.toLowerCase()) ||
+		el?.brand.toLowerCase().includes(searchText.value.toLowerCase()) ||
+		el?.registration_number.toLowerCase().includes(searchText.value.toLowerCase())
+	})
+})
 
 if (!vehicles.value.length) getVehicles()
 if (props.entityStatus === 'active') getActiveVehicles()
