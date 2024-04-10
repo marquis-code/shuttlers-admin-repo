@@ -17,7 +17,7 @@ import { useQueryVehicle } from '@/composables/modules/fleets/query'
 
 const { loadingQueriedVehicle, queriedVehicle, queryVehicle, fetch, page_size } = useQueryVehicle()
 
-page_size.value = 2000
+page_size.value = 10000
 fetch()
 
 watch(queriedVehicle, () => {
