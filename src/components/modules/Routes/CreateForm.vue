@@ -1,7 +1,7 @@
 <template>
 	<div class="h-[84vh] overflow-auto">
 		<form class="flex flex-col gap-4 p-6 pb-0 items-start" @submit.prevent="isEdit ? update() : create()">
-			<div v-if="!isEdit" class="flex flex-col gap-4 w-full items-start">
+			<div class="flex flex-col gap-4 w-full items-start">
 				<LocationInput
 					id="startLocation"
 					v-model="createRouteForm.start_location.value"
