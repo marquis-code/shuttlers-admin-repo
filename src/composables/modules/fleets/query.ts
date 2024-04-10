@@ -7,8 +7,8 @@ export const useQueryVehicle = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const filterData = {
-        search: ref(''),
-        has_driver: ref(true)
+        search: ref('')
+        // has_driver: ref(true)
     }
 
     const queryVehicle = async (query: string) => {
