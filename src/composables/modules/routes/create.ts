@@ -62,9 +62,19 @@ const populateRouteData = (data:Record<string, any>) => {
     createRouteForm.avail_end_date.value = data?.route_availability_end_date
     createRouteForm.unavailable_days.value = data?.blacklisted_availability_days_list
     createRouteForm.route_owner_type.value = data?.owner_type
-    createRouteForm.route_owner.value = data?.owner_id
+    createRouteForm.route_owner.value = { id: data?.owner_id }
     createRouteForm.payer.value = data?.payer
     createRouteForm.payment_mode.value = data?.payment_mode
+    createRouteForm.start_location.value = {
+        name: data?.pickup,
+        lat: data?.pickup_geometry?.y,
+        lng: data?.pickup_geometry?.x
+    }
+    createRouteForm.end_location.value = {
+        name: data?.destination,
+        lat: data?.destination_geometry?.y,
+        lng: data?.destination_geometry?.x
+    }
 }
 
 const ploylineLoading = ref(false)
@@ -202,7 +212,19 @@ export const useCreateRoute = () => {
             route_availability_end_date: createRouteForm.avail_end_date.value,
             route_availability_start_date: createRouteForm.avail_start_date.value,
             blacklisted_availability_days: createRouteForm.unavailable_days.value,
-            corporate_id: createRouteForm.corporate.value?.id || null
+            corporate_id: createRouteForm.corporate.value?.id || null,
+            start_location: {
+                lat: startPosition.value?.y,
+                lng: startPosition.value?.x
+            },
+            end_location: {
+                lat: endPosition.value?.y,
+                lng: endPosition.value?.x
+            },
+            destination: createRouteForm.end_location.value.name,
+            pickup: createRouteForm.start_location.value.name,
+            route_preview: JSON.parse(createRouteForm.overview_geojson.value),
+            bounds: createRouteForm.bounds.value
         }
         if (createRouteForm.route_owner_type.value !== 'system') {
             payload.owner_id = createRouteForm.route_owner.value?.id || null
