@@ -54,7 +54,7 @@
 				<div>
 					<div v-if="item.amenities">
 						<p v-if="item.data.amenities" class="cursor-pointer" @click="onRowClicked(item.data)">
-							{{ item.data.amenities.map((itm) => itm.name) }}
+							{{ Array.isArray(item.data?.amenities) ? item.data.amenities.map((itm) => itm.name) : item.data.amenities }}
 						</p>
 						<p v-else>
 							N/A
@@ -62,8 +62,8 @@
 					</div>
 				</div>
 				<div v-if="item.drivers">
-					<div v-if="item?.data?.drivers?.length">
-						<NuxtLink v-for="(i, index) in item.data.drivers" :key="index" :to="`/drivers/${i.id}/driver-info`" class="text-blue-600">
+					<div v-if="item?.data?.drivers?.length" class="flex flex-col">
+						<NuxtLink v-for="(i, index) in item.data.drivers" :key="index" :to="`/drivers/${i.id}/driver-info`" class="text-blue-600 whitespace-nowrap">
 							{{ i?.fname ?? 'N/A' }} {{ i?.lname ?? 'N/A' }}
 						</NuxtLink>
 					</div>
