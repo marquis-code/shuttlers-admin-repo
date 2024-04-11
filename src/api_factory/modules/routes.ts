@@ -190,5 +190,9 @@ export const routes_api = {
 	$_set_availability_configuration: (payload: any) => {
 		const url = '/routes/booking-suspensions'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_reorder_busstop: (routeId:string|number, payload: Record<string, any>) => {
+		const url = `/routes/${routeId}/busstops`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }
