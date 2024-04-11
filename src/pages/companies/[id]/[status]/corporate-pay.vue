@@ -130,8 +130,8 @@
 							for="AcceptConditions"
 							class="relative h-8 w-14 cursor-pointer [-webkit-tap-highlight-color:_transparent]"
 						>
-							<input id="AcceptConditions" :value="corporatePaySettings.staff_can_view_wallet_limit_usage.value"
-								type="checkbox" class="peer sr-only" @change="toggleStaffsAbilityToViewCorporatePayUsage">
+							<input id="AcceptConditions" v-model="corporatePaySettings.staff_can_view_wallet_limit_usage.value"
+								type="checkbox" class="peer sr-only">
 
 							<span
 								class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
@@ -362,7 +362,7 @@ const saveChanges = () => {
 	const changes = {
 		book_on_public_routes: !!book_on_public_routes.value,
 		book_on_corporate_routes: !!book_on_corporate_routes.value,
-		staff_can_view_wallet_limit_usage: corporatePaySettings.staff_can_view_wallet_limit_usage.value
+		staff_can_view_wallet_limit_usage: Boolean(corporatePaySettings.staff_can_view_wallet_limit_usage.value)
 	}
 
 	if (limitType === 'none') {

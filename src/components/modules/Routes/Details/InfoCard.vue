@@ -124,6 +124,7 @@ const handleClick = (val: any) => {
 
 const id = useRoute().params.id as string
 getRouteById(id)
+getTripStartTimeById(id)
 
 </script>
 

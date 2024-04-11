@@ -16,7 +16,7 @@ import { useQueryDriver } from '@/composables/modules/drivers/query'
 
 const { loadingQueriedDriver, queriedDriver, queryDriver, fetch, page_size } = useQueryDriver()
 
-page_size.value = 2000
+page_size.value = 10000
 fetch()
 
 watch(queriedDriver, () => {
