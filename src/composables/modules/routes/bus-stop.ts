@@ -89,5 +89,14 @@ export const useRouteBustopMap = () => {
 		adding_busstop.value = false
 	}
 
-	return { loading, path, getRouteGeometry, center, routeDetails, editBusStop, editing_busstop, initDeleteBusstop, new_busstop_position, open_new_busstop_window, adding_busstop, createBusstop, reloadBusStopMap, fetching_busstops, getRouteBusstopsById, busstopsList, can_click }
+	const reArrangebusStop = async (payload: Record<string, any>[]) => {
+		const id = useRoute().params.id as string
+		const res = await routes_api.$_reorder_busstop(id, { bus_stops: payload }) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+			useAlert().openAlert({ type: 'SUCCESS', msg: 'Busstop rearranged successfully' })
+			getRouteBusstopsById(id)
+        }
+	}
+
+	return { loading, path, getRouteGeometry, center, routeDetails, editBusStop, editing_busstop, initDeleteBusstop, new_busstop_position, open_new_busstop_window, adding_busstop, createBusstop, reloadBusStopMap, fetching_busstops, getRouteBusstopsById, busstopsList, can_click, reArrangebusStop }
 }
