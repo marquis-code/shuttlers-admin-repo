@@ -154,9 +154,9 @@ export const useRoutePaymentOptionsById = () => {
   }
 }
 
+const loadingRouteItineraries = ref(false)
+const itineraries = ref([] as any)
 export const useTripStartTimeById = () => {
-  const loadingRouteItineraries = ref(false)
-  const itineraries = ref([] as any)
   const getTripStartTimeById = async (id: string) => {
     loadingRouteItineraries.value = true
     const res = (await routes_api.$_get_trip_start_time(
