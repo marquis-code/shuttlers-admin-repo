@@ -12,7 +12,9 @@ export const useUpdateDriver = () => {
     const iti_id = useRoute().params.iti_id as string
     useItineraryDrivers().getItineraryDrivers()
     const payload: Record<string, any> = {
-      cost_of_supply: editObj.value.cost_of_supply
+      cost_of_supply: editObj.value.cost_of_supply,
+      driver_id: editObj.value.driver.id,
+      vehicle_id: editObj.value.vehicle.id
     }
     if (
       driverExportItems().singleItinerary.value.pricing_type !==
@@ -21,8 +23,6 @@ export const useUpdateDriver = () => {
       payload.break_even_utilization = editObj.value.break_even
       payload.pricing_margin_unit = editObj.value.pricing_unit
       payload.pricing_margin = editObj.value.pricing_margin
-      payload.driver_id = editObj.value.driver.id
-      payload.vehicle_id = editObj.value.vehicle.id
     }
     driverExportItems().loading.value = true
     const res = (await drivers_api.$_update_assigned_driver_to_route(
