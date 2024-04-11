@@ -71,7 +71,7 @@ export const OPS_AND_MANAGEMENT_SIDEBAR_MENUS = [
     description: '',
     iconComponent: shallowRef(eventIcon),
     rootPath: '/events',
-    shouldRedirect: false,
+    shouldRedirect: true,
     children: null,
     modulePermission: 'EVENTS'
   },
