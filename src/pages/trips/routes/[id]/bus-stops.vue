@@ -1,24 +1,29 @@
 <template>
 	<main class="relative">
 		<ButtonGoBack url="/trips/routes" class="mb-6 mt-3 ml-10" />
-		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-4 left-[240px] z-40"
+		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-10 left-[240px] z-40"
 			@click="can_click = !can_click"
 		>
 			{{ can_click ? 'Adding' : 'Add' }} Busstop
 		</button>
 		<section class="w-[220px] h-screen space-y-3 absolute   z-50 bg-gray-100">
-			<div class="w-full">
+			<div class="w-full flex flex-col gap-2 px-1">
 				<input v-model="search" class="border py-3 rounded-md w-full pl-3 text-sm outline-none" placeholder="Filter Bus Stop in route">
+				<button class="btn bg-dark text-light p-2 !rounded-md" @click="isDragDisabled = !isDragDisabled">
+					{{ !isDragDisabled ? 'Disable' : 'Enable' }} Re-order
+				</button>
 			</div>
 			<div v-if="!fetching_busstops" class="h-full overflow-auto bg-white">
-				<div v-for="(itm, idx) in filteredBusstop" :key="idx" class="flex items-center justify-between px-3 py-3.5 border-b cursor-pointer hover:bg-gray-200"
-					:class="[toShowIndex.includes(itm.id) ? 'bg-dark' : 'bg-transparent']" @click="handleMarkerClicked(itm.id)"
-				>
-					<p class="text-xs text-blue-500">
-						{{ itm.name }}
-					</p>
-					<ButtonIconDropdown class-name="w-fit min-w-[120px]" :children="dropdownChildren" :data="itm" />
-				</div>
+				<draggable v-model="busstopsList" class="dragArea list-group w-full" :disabled="isDragDisabled" @change="onBusStopDragged">
+					<div v-for="(itm, idx) in filteredBusstop" :key="idx" class="flex items-center justify-between px-3 py-3.5 border-b cursor-pointer hover:bg-gray-200"
+						:class="[toShowIndex.includes(itm.id) ? 'bg-dark' : 'bg-transparent']" @click="handleMarkerClicked(itm.id)"
+					>
+						<p class="text-xs text-blue-500">
+							{{ itm.name }}
+						</p>
+						<ButtonIconDropdown class-name="w-fit min-w-[120px]" :children="dropdownChildren" :data="itm" />
+					</div>
+				</draggable>
 			</div>
 			<Skeleton v-else height="500px" />
 		</section>
@@ -90,16 +95,36 @@
 	</main>
 </template>
 <script setup lang="ts">
+import { VueDraggableNext as draggable } from 'vue-draggable-next'
 import { useRouteBustopMap } from '@/composables/modules/routes/bus-stop'
 
-const { fetching_busstops, busstopsList, getRouteBusstopsById, loading: loading_path, path, getRouteGeometry, center, routeDetails, initDeleteBusstop, new_busstop_position, open_new_busstop_window, can_click } = useRouteBustopMap()
+const { fetching_busstops, busstopsList, getRouteBusstopsById, loading: loading_path, path, getRouteGeometry, center, routeDetails, initDeleteBusstop, new_busstop_position, open_new_busstop_window, can_click, reArrangebusStop } = useRouteBustopMap()
 const id = useRoute().params.id as string
 getRouteGeometry(id)
 getRouteBusstopsById(id)
 
+const onBusStopDragged = (e:any) => {
+	if (e?.moved) {
+		const oldIndex = e.moved.oldIndex
+        const newIndex = e.moved.newIndex
+        const limit = (newIndex > oldIndex ? newIndex : oldIndex) + 1
+        const originIndex = newIndex > oldIndex ? oldIndex : newIndex
+        const affectedBusStops = busstopsList.value.slice(originIndex, limit)
+        const payload = affectedBusStops.map((item, index) => {
+            return {
+              id: item.id,
+              currentPosition: item.position,
+              position: originIndex + index + 1
+            }
+        }).filter((i) => i.currentPosition !== i.position)
+		reArrangebusStop(payload)
+	}
+}
+
 const toShowIndex = ref([]) as Ref<number[]>
 const search = ref('')
 const myMapRef = ref()
+const isDragDisabled = ref(true)
 
 const handleMarkerClicked = (id: number) => {
 	toShowIndex.value.push(id)
