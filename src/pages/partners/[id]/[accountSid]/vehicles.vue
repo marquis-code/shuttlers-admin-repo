@@ -38,6 +38,9 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersVehiclesList } from '@/composables/modules/partners/id'
+import { useUnlinkVehicle } from '@/composables/modules/partners'
+
+const { initUnlinkVehicle } = useUnlinkVehicle()
 const { getPartnersVehiclesList, loadingPartnerVehicles, partnersVehiclesList, onFilterUpdate, moveTo, next, prev, total, page } = useGetPartnersVehiclesList()
 const id = Number(useRoute().params.id)
 getPartnersVehiclesList()
@@ -59,8 +62,8 @@ const formattedPartnersVehiclesList = computed(() => {
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'View details', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Unassign vehicle', class: '!text-red' }
+	{ name: 'View details', func: (data) => { useRouter().push(`/fleet/${data?.id}/vehicle-info`) } },
+	{ name: 'Unassign vehicle', class: '!text-red', func: (data) => { initUnlinkVehicle(data?.id) } }
 ])
 
 const tableFields = ref([
