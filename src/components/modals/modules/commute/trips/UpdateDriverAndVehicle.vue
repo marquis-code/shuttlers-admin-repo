@@ -20,7 +20,7 @@
 			<div class="flex">
 				<button class="btn-primary w-full" :disabled="selected.cost_of_supply <= 0 || !selected.vehicle_id || loading">
 					<span v-if="!loading" class="flex justify-center items-center gap-2.5">
-						update
+						Update
 					</span>
 					<Spinner v-else />
 				</button>
