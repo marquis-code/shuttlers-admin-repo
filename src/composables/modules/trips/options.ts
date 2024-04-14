@@ -41,7 +41,12 @@ export const useTripOptions = () => {
         const { getUpcomingTripById } = useUpcomingTripIdDetails()
         const { getTripById } = useTripIdDetails()
         loading.value = true
-        const res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
+        let res:CustomAxiosResponse
+        if (tripType.value === 'active') {
+            res = await trips_api.$_update_active_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
+        } else {
+            res = await trips_api.$_update_trip(selectedTrip.value.id, payload) as CustomAxiosResponse
+        }
         if (res.type !== 'ERROR') {
             (tripType.value !== 'upcoming') ? getTripById(selectedTrip.value.id) : getUpcomingTripById(selectedTrip.value.id)
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip updated successfully' })

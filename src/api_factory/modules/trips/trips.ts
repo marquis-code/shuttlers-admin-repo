@@ -26,6 +26,10 @@ export const trips_api = {
 		const url = `/upcoming-trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
+	$_update_active_trip: (id:string, payload) => {
+		const url = `/active-trips/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
 	$_get_active_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/trips/active?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
