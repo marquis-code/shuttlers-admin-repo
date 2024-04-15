@@ -8,11 +8,12 @@ export const useGetEvents = () => {
 
     const filterData = {
         search: ref(''),
-        fromDate: ref(''),
-        toDate: ref('')
+        fromdate: ref(''),
+        todate: ref('')
     }
 
-    watch([filterData.fromDate, filterData.toDate, filterData.search], (val) => {
+    watch([filterData.fromdate, filterData.todate, filterData.search], (val) => {
+        metaObject.page.value = 1
         getEventsList()
     })
 
@@ -21,7 +22,7 @@ export const useGetEvents = () => {
     const getEventsList = async () => {
         loadingEvents.value = true
 
-        const res = await $_get_events(metaObject) as CustomAxiosResponse
+        const res = await $_get_events(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             eventsList.value = res.data.data
             metaObject.total.value = res.data.metadata?.pageCount
@@ -34,8 +35,8 @@ export const useGetEvents = () => {
     const onFilterUpdate = (data) => {
         switch (data.type) {
             case 'dateRange':
-                filterData.fromDate.value = data.value
-                filterData.toDate.value = data.value
+                filterData.fromdate.value = data.value[0] ? data.value[0] : ''
+                filterData.todate.value = data.value[1] ? data.value[1] : ''
                 break
             case 'search':
                 filterData.search.value = data.value

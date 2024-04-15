@@ -58,6 +58,7 @@ const palette = {
 				break
 			case 'inactive':
 			case 'suspended':
+			case 'rejected':
 					selectPalette.value = palette.inactive
 				break
 			default :
