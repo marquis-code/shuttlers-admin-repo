@@ -13,7 +13,7 @@
 			</span>
 		</div>
 
-		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl pb-20">
+		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl ">
 			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="showLoadMore" @loadMore="loadMore" />
 			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" />
 		</div>

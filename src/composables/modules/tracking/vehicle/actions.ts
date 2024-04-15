@@ -1,4 +1,4 @@
-import { useLoadMarkerOnMap, loadMarkeronMap } from '@/composables/core/map'
+import { useLoadMarkerOnMap } from '@/composables/core/map/tracking'
 import { useAlert } from '@/composables/core/notification'
 
 export const useActiveTripTrackingCardClick = () => {

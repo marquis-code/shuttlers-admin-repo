@@ -1,16 +1,16 @@
 <template>
 	<main class="relative">
-		<div class="h-screen inset-0 z-0">
+		<div class="z-0 h-[88vh]">
 			<MapDisplay :start-point="convertLatLngStringToObj(selectedTrip.route?.pickup_coordinate)"
-				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100vh" :loading="loading" :external-markers="[]" />
+				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100%" :loading="loading" :external-markers="[]" />
 		</div>
-		<section class="absolute top-4 left-[100px] flex flex-col items-start z-40">
-			<ButtonGoBack :url="`/trips/type/${tripType}`" class="mb-6 bg-white" />
-			<div class="card p-0 !max-w-4xl md:w-[500px] z-[200000]">
+		<section class="absolute top-4 left-[100px]  flex flex-col items-start z-40">
+			<ButtonGoBack :url="`/trips/type/${tripType}`" class="mb-4 mt-8 " />
+			<div class="card p-0 !max-w-4xl md:w-[500px] z-[200000] ">
 				<div class="card-header p-4">
 					Trip Information
 				</div>
-				<div class="card-body p-4 overflow-auto h-[calc(100vh-180px)]">
+				<div class="card-body p-4 overflow-auto h-[calc(100vh-300px)]">
 					<h5 v-if="Object.keys(selectedTrip).length === 0 && !loading" class="text-small text-center">
 						No Trip Detail available
 					</h5>
