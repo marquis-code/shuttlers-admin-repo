@@ -15,30 +15,30 @@
 				</ul>
 
 				<ul class="py-5 border-b mt-5">
-					<li class="flex flex-wrap gap-4 justify-between items-center px-4 py-2 text-sm">
+					<li class="flex gap-4 justify-between items-center px-4 py-2 text-sm">
 						<div class="font-medium flex gap-4 items-start">
 							<svg_template code="pickup-sm" class="mt-0.5" />
 							<span>
 								<p class="font-bold">Pick-up</p>
-								<p class="text-grey5">{{ truncateString(pastBooking?.route?.pickup, 40) }}</p>
+								<p class="text-grey5">{{ truncateString(pastBooking?.userRoute?.origin_label, 40) }}</p>
 
 							</span>
 						</div>
-						<span class="text-gray-500">
+						<span class="text-gray-500 shrink-0">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
 							<p>{{ pastBooking?.itinerary?.trip_time }}</p>
 						</span>
 					</li>
-					<li class="flex flex-wrap gap-4 justify-between items-center px-4 py-2 text-sm">
+					<li class="flex gap-4 justify-between items-center px-4 py-2 text-sm">
 						<div class="font-medium flex gap-4 items-start">
 							<svg_template code="destination-sm" />
 							<span>
 								<p class="font-bold">Drop off</p>
-								<p class="text-gray-500">{{ pastBooking.route.destination_label }}</p>
+								<p class="text-gray-500">{{ pastBooking?.userRoute?.destination_label }}</p>
 
 							</span>
 						</div>
-						<span class="text-gray-500">
+						<span class="text-gray-500 shrink-0">
 							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
 						</span>
 					</li>
