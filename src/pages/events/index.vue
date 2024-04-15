@@ -27,7 +27,11 @@
 					{{ useDateFormat(item.data.createdAt, "MMMM d, YYYY").value }}
 				</span>
 				<div v-if="item.status">
-					<span class="text-white text-xs px-2.5 py-2 rounded-lg font-medium" :class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : '']">{{ item.data.status }}</span>
+					<span class="text-white text-sm px-2.5 py-2 rounded-lg font-medium"
+						:class="[item.data.status === 'accepted' ? 'bg-green-500' : item.data.status === 'pending' ? 'bg-yellow-600' : item.data.status === 'cancelled' ? 'bg-gray-400' : item.data.status === 'queried' ? 'bg-blue-500' : item.data.status === 'rejected' ? 'bg-red' : '']"
+					>
+						{{ item.data.status }}
+					</span>
 				</div>
 			</template>
 			<template #footer>
@@ -41,7 +45,7 @@ import { useDateFormat } from '@vueuse/core'
 import { useGetEvents } from '@/composables/modules/events/fetch'
 import { useEventIdDetails } from '@/composables/modules/events/id'
 
-const { getEventsList, loadingEvents, eventsList, filterData, onFilterUpdate, total, page, next, prev, moveTo } = useGetEvents()
+const { getEventsList, loadingEvents, eventsList, onFilterUpdate, total, page, next, prev, moveTo } = useGetEvents()
 getEventsList()
 const onRowClicked = (data) => {
 	const { selectedEvent } = useEventIdDetails()

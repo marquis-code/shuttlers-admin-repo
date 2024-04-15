@@ -84,6 +84,8 @@ import BatchLinkVehicle from '@/components/modals/modules/partners/BatchLinkVehi
 import LinkDriver from '@/components/modals/modules/partners/LinkDriver.vue'
 import BatchLinkDriver from '@/components/modals/modules/partners/BatchLinkDriver.vue'
 import ResyncRevenue from '@/components/modals/modules/partners/payouts/ResyncRevenue.vue'
+import EventFeedback from '@/components/modals/modules/events/EventFeedback.vue'
+import AssignRoutes from '@/components/modals/modules/events/assignRoutes.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -101,6 +103,7 @@ type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid' | 'ResyncRevenue'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver'
 type PromotionTypes = 'NewReward'
+type EventTypes = 'EventFeedback' | 'AssignRoutes'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
 const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
@@ -118,6 +121,7 @@ const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditV
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid, ResyncRevenue } as Record<PayoutTypes, any>
 const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
 const PromotionModals = { NewReward } as Record<PromotionTypes, any>
+const EventModals = { EventFeedback, AssignRoutes } as Record<EventTypes, any>
 
 export const modal = useModal(ref([] as any))
 
@@ -137,6 +141,7 @@ const vehicleModal = modal.register('Vehicles', VehicleModals)
 const payoutModal = modal.register('Payout', PayoutModals)
 const partnerModal = modal.register('Partner', PartnerModals)
 const promotionModal = modal.register('Promotion', PromotionModals)
+const eventModal = modal.register('Event', EventModals)
 
 export const useAuthModal = () => authModal
 export const useUserModal = () => userModal
@@ -154,3 +159,4 @@ export const useVehicleModal = () => vehicleModal
 export const usePayoutModal = () => payoutModal
 export const usePartnerModal = () => partnerModal
 export const usePromotionModal = () => promotionModal
+export const useEventModal = () => eventModal
