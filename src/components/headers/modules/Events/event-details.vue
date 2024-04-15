@@ -1,24 +1,39 @@
 <template>
 	<HeadersHeaderSlot title="Event Request" pre-title="OVERVIEW">
-		<template #tabs>
-			<div class="flex items-center gap-x-3 py-1">
-				<p class="text-gray-600 text-sm">
-					Events
-				</p>
-				<img src="@/assets/icons/source/breadcrum.svg" alt="">
-				<p class="font-semibold text-gray-900 text-sm">
-					Event information
-				</p>
-			</div>
-		</template>
+		<!-- <template #tabs>
+		</template> -->
 		<template #actions>
-			<div class="flex items-center space-x-2">
-				<button class="px-4 bg-black text-white py-2 border-2 rounded-lg border-gray-950">
-					Actions
-				</button>
-			</div>
+			<ButtonIconDropdown v-if="showActionBtn" class="bg-black font-medium text-white px-3 py-1 rounded-lg" button-text="Actions" :children="dropdownChildren" :data="selectedEvent" class-name="w-40" />
 		</template>
 	</HeadersHeaderSlot>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useEventIdDetails, useAcceptEvent, useQueryOrRejectEvent, useNotifyEvent } from '@/composables/modules/events'
+import { useEventModal } from '@/composables/core/modals'
+
+const { loading, selectedEvent } = useEventIdDetails()
+const { initQueryOrReject } = useQueryOrRejectEvent()
+const { initNotifyEvent } = useNotifyEvent()
+
+const dropdownChildren = computed(() => {
+	if (selectedEvent.value?.status !== 'accepted') {
+		return [
+			{ name: 'Accept', func: () => useAcceptEvent().initAcceptEvent() },
+			{ name: 'Query', func: () => { initQueryOrReject('query') } },
+			{ name: 'Reject', func: () => { initQueryOrReject('reject') } }
+		]
+	} else {
+		return [
+			{ name: 'Notify Attendees', func: () => initNotifyEvent('attendees') },
+			{ name: 'Assign Route', func: () => { useEventModal().openAssignRoutes() } }
+		]
+	}
+})
+
+const showActionBtn = computed(() => {
+	if (selectedEvent.value?.status === 'rejected') return false
+	if (selectedEvent.value?.status === 'cancelled') return false
+	return true
+})
+</script>
