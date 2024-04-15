@@ -5,7 +5,7 @@
 
 		<div class="main-content z-50 h-[95vh] flex flex-col ">
 			<Headers id="header" class="" />
-			<section class="px-5  md:p-6 relative bg-transparent overflow-auto">
+			<section class="px-5  md:p-6 relative bg-transparent overflow-auto h-full">
 				<div class="relative h-full">
 					<slot />
 				</div>

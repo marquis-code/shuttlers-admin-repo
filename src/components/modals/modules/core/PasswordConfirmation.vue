@@ -27,7 +27,7 @@
 			</p>
 			<div class="field relative">
 				<label for="password" class="w-full">Enter password</label>
-				<input id="password" v-model="password" autocomplete="false" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
+				<input id="password" v-model="password" autocomplete="off" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
 				<icon name="eye" class="w-6 absolute top-[53%] right-4" @click="toggleShow" />
 			</div>
 			<div class="grid grid-cols-2 gap-4  w-full">

@@ -49,7 +49,7 @@
 				<span class="text-lg font-medium">Location information</span>
 				<div class="field relative">
 					<label for="address">Address</label>
-					<input id="address" v-model="createForm.address.value" type="tel" name="" class="input-field" required>
+					<LocationInput id="address" v-model="createForm.address.value" class="input-field" required autocomplete="off" />
 				</div>
 			</div>
 

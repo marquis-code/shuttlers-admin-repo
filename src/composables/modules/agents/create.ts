@@ -20,7 +20,15 @@ export const useCreateAgents = () => {
 
 	const createAgent = async () => {
 		loading.value = true
-		const res = (await agents_api.$_create_agent(convertObjWithRefToObj(createForm))) as CustomAxiosResponse
+		const shouldIgnoreKeys = computed(() => {
+			if (!createForm.avatar.value) {
+				return ['avatar']
+			} else {
+				return []
+		}
+		})
+		console.log(shouldIgnoreKeys.value)
+		const res = (await agents_api.$_create_agent(convertObjWithRefToObj(createForm, shouldIgnoreKeys.value))) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			useRouter().push('/agents')
 			useAlert().openAlert({
