@@ -1,8 +1,8 @@
 import { useTripTracking } from '../index'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 
+const { activeTripsList, getActiveTrips, loadingActiveTrips, total, filterData, page_size, showLoadMore, loadMore } = useGetActiveTripsList()
 export const useVehicleTracking = () => {
-    const { activeTripsList, getActiveTrips, loadingActiveTrips, total, filterData, page_size, showLoadMore, loadMore } = useGetActiveTripsList()
     const { listenToSpecificTripLocationAndAddtoMap } = useTripTracking()
     const filterStatusRef = ref()
 
@@ -54,4 +54,8 @@ export const useVehicleTracking = () => {
     })
 
     return { getActiveTrips, filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, showLoadMore, loadMore }
+}
+
+export const getTripByDriverId = (driver_id: string|number) => {
+    return activeTripsList.value.find((trip) => Number(trip.driver_id) === Number(driver_id))
 }

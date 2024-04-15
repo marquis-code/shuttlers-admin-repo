@@ -1,5 +1,4 @@
 import { useSocketIo } from '@/api_factory/socket.config'
-import { loadMarkeronMap } from '@/composables/core/map'
 
 type PassagerType = {
 	position_latitude: number;

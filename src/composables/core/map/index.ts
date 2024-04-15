@@ -1,6 +1,6 @@
 import { Loader } from '@googlemaps/js-api-loader'
+import { Coordinate } from './types'
 
-import { ref } from 'vue'
 // import { insertScriptTag } from '../utils/system'
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
@@ -11,19 +11,9 @@ export const loader = new Loader({
   version: 'beta'
 })
 
-let map: google.maps.Map
+export let map: google.maps.Map
 
 export const loading = ref(false)
-
-interface Coordinate {
-    lat: number;
-    lng: number;
-}
-interface UserCoordinate {
-    id: number;
-    lat: number;
-    lng: number;
-}
 
 export const calculateCenterAndZoom = async (
     coord1: Coordinate,
@@ -93,56 +83,6 @@ export const loadExternalDataMarkers = async (
 
     //    const markerCluster = new window.markerClusterer.MarkerClusterer({ markers, map })
     //  const markerCluster = new MarkerClusterer({ markers, map })
-}
-
-const markersArray = [] as google.maps.Marker[]
-export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
-    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
-
-    // @ts-ignore
-    while (!map) {
-        await new Promise((resolve) => setTimeout(resolve, 100)) // Wait for 100 milliseconds before checking again
-    }
-    // @ts-ignore
-    const existingMarker = markersArray.find((marker) => marker.id === location.id)
-    if (existingMarker) {
-        existingMarker.setPosition(location)
-         existingMarker.setIcon({
-            url: imgString,
-            rotation: direction
-        })
-    } else {
-        const marker = new Marker({
-            map,
-            position: location,
-            icon: {
-                url: imgString,
-                rotation: direction
-            }
-        }) as any
-
-        marker.id = location.id
-
-        marker.addListener('click', () => {
-            clickFunc(location)
-        })
-        markersArray.push(marker)
-         map.setCenter(location)
-    }
-}
-
-export const useLoadMarkerOnMap = () => {
-    const zoomMapInOnCoordinate = async (location: Coordinate) => {
-    map.setCenter(location)
-    map.setZoom(16)
- }
-    const VehicleMarkerExist = (id: string) => {
-        return markersArray.find((marker:any) => Number(marker!.id) === Number(id))
-    }
-
-    return {
-        zoomMapInOnCoordinate, VehicleMarkerExist
-    }
 }
 
 export const getPathFromPolyline = async (overviewPolyline) => {

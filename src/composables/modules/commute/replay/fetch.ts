@@ -1,6 +1,7 @@
 import { useAlert } from '@/composables/core/notification'
 import { telemetry_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { loadMarkeronMap, loadPolyline } from '@/composables/core/map'
+import { loadPolyline } from '@/composables/core/map'
+import { loadMarkeronMap } from '@/composables/core/map/tracking'
 
 const selectedVehicle = ref({} as any)
 const positionList = ref([] as Record<string, any>[])

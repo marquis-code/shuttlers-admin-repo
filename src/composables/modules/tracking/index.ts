@@ -1,5 +1,5 @@
 import { useSocketIo } from '@/api_factory/socket.config'
-import { loadMarkeronMap } from '@/composables/core/map'
+import { loadMarkeronMap } from '@/composables/core/map/tracking'
 import { useGetActiveTripsList } from '@/composables/modules/trips/fetch/activeTrips'
 
 type PassagerType = {
