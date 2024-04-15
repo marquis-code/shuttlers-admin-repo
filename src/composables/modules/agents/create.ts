@@ -27,7 +27,6 @@ export const useCreateAgents = () => {
 				return []
 		}
 		})
-		console.log(shouldIgnoreKeys.value)
 		const res = (await agents_api.$_create_agent(convertObjWithRefToObj(createForm, shouldIgnoreKeys.value))) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			useRouter().push('/agents')
