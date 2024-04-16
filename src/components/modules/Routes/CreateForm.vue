@@ -171,7 +171,8 @@
 					id="startDate"
 					class="font-light"
 					placeholder="Filter by date"
-					@update:model-value="($event) => createRouteForm.unavailable_days.value.push($event)"
+					:clearable="true"
+					@update:model-value="($event) => {$event ? createRouteForm.unavailable_days.value.push($event): null}"
 				/>
 			</div>
 
