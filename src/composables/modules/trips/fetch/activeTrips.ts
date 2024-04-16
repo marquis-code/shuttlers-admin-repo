@@ -11,6 +11,7 @@ import { trips_api, CustomAxiosResponse } from '@/api_factory/modules'
   const activeTripsList = ref([] as Record<string, any>[])
 export const useGetActiveTripsList = () => {
   const loadingActiveTrips = ref(false)
+  const loadingMoreActiveTrips = ref(false)
 
   const currentRoute = computed(() => { return useRoute().fullPath })
 
@@ -46,7 +47,7 @@ export const useGetActiveTripsList = () => {
 
   const loadMoreActiveTrip = async () => {
       const request = async () => {
-      loadingActiveTrips.value = true
+      loadingMoreActiveTrips.value = true
       const res = (await trips_api.$_get_active_trips(
         filterData,
         metaObject
@@ -59,7 +60,7 @@ export const useGetActiveTripsList = () => {
         metaObject.total_pages.value = res.data.metadata.total_pages
         metaObject.total.value = res.data.metadata.total
       }
-      loadingActiveTrips.value = false
+      loadingMoreActiveTrips.value = false
     }
     addToQueue(request)
   }
@@ -71,7 +72,7 @@ export const useGetActiveTripsList = () => {
   }
 
   return {
-  showLoadMore, loadMore,
+  showLoadMore, loadMore, loadingMoreActiveTrips,
     getActiveTrips, loadingActiveTrips,
     activeTripsList, filterData,
     onFilterUpdate, moveTo,
