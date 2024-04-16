@@ -85,7 +85,6 @@ const y = ref(0)
 const getPosition = (event:any) => {
 	x.value = event.clientX
     y.value = event.clientY
-	console.log(x.value, y.value)
 }
 
 const positionStyle = computed(() => {
