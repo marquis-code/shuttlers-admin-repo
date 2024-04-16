@@ -3,7 +3,7 @@
 		<Popover v-slot="{ open }" class="relative">
 			<PopoverButton
 				class=" flex outline-none items-center px-3 py-2.5 font-normal"
-
+				@click="getPosition"
 			>
 				<h1>{{ buttonText }}</h1>
 				<EllipsisVerticalIcon
@@ -21,9 +21,9 @@
 				leave-from-class="translate-y-0 opacity-100"
 				leave-to-class="translate-y-1 opacity-0"
 			>
-				<PopoverPanel class="absolute right-0 z-10 mt-1">
+				<PopoverPanel class="fixed z-10 mt-1" :style="{ left: positionStyle.left + 'px', top: positionStyle.top + 'px' }">
 					<div
-						class="absolute end-0 z-10 mt-2  rounded-md border border-gray-100 bg-white shadow-lg"
+						class=" end-0 z-10 mt-2  rounded-md border border-gray-100 bg-white shadow-lg"
 						:class="[className, index > 1 ? 'bottom-8' : '']" role="menu"
 					>
 						<div class="p-2 w-full">
@@ -78,6 +78,40 @@ defineProps({
 		default: '',
 		required: false
 	}
+})
+const x = ref(0)
+const y = ref(0)
+
+const getPosition = (event:any) => {
+	x.value = event.clientX
+    y.value = event.clientY
+}
+
+const positionStyle = computed(() => {
+	const { innerWidth, innerHeight } = window
+	const elementWidth = 200
+	const elementHeight = 250
+	const maxX = innerWidth - elementWidth
+	const maxY = innerHeight - elementHeight
+
+	let left = x.value
+	let top = y.value
+
+	// Check if the element is too close to the right edge
+	if (left > maxX) {
+	left = maxX
+	}
+
+	// Check if the element is too close to the bottom edge
+	if (top > maxY) {
+	top = maxY
+	}
+
+	// return {
+	// left: `${left}px`,
+	// top: `${top}px`
+	// }
+	return { left, top }
 })
 </script>
 

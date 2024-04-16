@@ -16,7 +16,7 @@
 			</div>
 			<div class="flex justify-between items-center gap-x-10">
 				<button type="submit" class="btn btn-primary py-3 text-xs w-full disabled:cursor-not-allowed disabled:opacity-25" :disabled="!isButtonEnabled">
-					<span v-if="!createLoading" class="text-sm">Change passwordr</span>
+					<span v-if="!createLoading" class="text-sm">Change password</span>
 					<Spinner v-else />
 				</button>
 				<button type="submit" class="bg-gray-600 py-3 rounded-md text-xs text-white w-full" @click="useAdminModal().closeChangePassword()">
