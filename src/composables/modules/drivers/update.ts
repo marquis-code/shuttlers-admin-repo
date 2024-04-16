@@ -23,7 +23,7 @@ export const useUpdateDriver = () => {
 		const payload = {
 			fname: obj.fname.value,
 			lname: obj.lname.value,
-			phone: obj.phone.value,
+			phone: String(obj.phone.value),
 			email: obj.email.value
 		}
 		updating.value = true
@@ -52,7 +52,7 @@ export const useUpdateDriver = () => {
 	}
 
 	const enableButton = computed(() => {
-		return !!(obj.fname.value && obj.lname.value && obj.phone.value.length >= 10 && obj.email.value.includes('@'))
+		return !!(obj.fname.value && obj.lname.value && String(obj?.phone?.value).length >= 10 && obj.email.value.includes('@'))
 	})
 
 	return { loading, updating, ...obj, updateDriver, getDriverDetails, enableButton }
