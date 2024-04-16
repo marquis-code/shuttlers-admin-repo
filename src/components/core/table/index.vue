@@ -24,7 +24,7 @@
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
 						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
-					]" @click.capture="optioxn(data)">
+					]" @click.capture="option(data)">
 						<td v-if="checkbox" :key="key" class="pl-4">
 							<input :checked="selected.map((el:any) => el?.id).includes(data?.id)" type="checkbox" @click.stop
 								@click.prevent="$emit('checked', data)">
