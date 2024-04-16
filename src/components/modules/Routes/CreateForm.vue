@@ -149,6 +149,7 @@
 					class="font-light"
 					placeholder="Filter by date"
 					:disabled-date="()=>null"
+					:clearable="true"
 				/>
 			</div>
 			<div class="w-full">
