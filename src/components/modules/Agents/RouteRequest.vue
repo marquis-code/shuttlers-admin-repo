@@ -10,7 +10,7 @@
 			<section v-if="suggestedRoutes.length" class="flex flex-col gap-4 w-full">
 				<article v-for="route in suggestedRoutes" :key="route.id" class="p-3 flex flex-col w-full">
 					<div class="flex justify-between items-center w-full">
-						<RouteDescription :pickup="route.pickup" :destination="route.destination" />
+						<RouteDescription :pickup="route.pickup" :destination="route.destination" class="w-8/12" />
 						<div class="text-sm flex flex-col justify-between h-full py-2 font-medium">
 							<span>{{ route.is_return_trip ? 'Round-trip' : 'One-way trip' }}</span>
 							<span>{{ route.departure_time }} {{ route.time_of_day }}</span>

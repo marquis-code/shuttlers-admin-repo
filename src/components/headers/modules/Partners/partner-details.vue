@@ -5,7 +5,7 @@
 		</template>
 		<template #actions>
 			<div class="flex items-center gap-3">
-				<ButtonIconDropdown v-if="!isProdEnv && (isVehiclePage || isDriverPage)"
+				<ButtonIconDropdown v-if="(isVehiclePage || isDriverPage)"
 					class="bg-black font-medium text-white rounded-lg" :button-text="isVehiclePage ? 'Link Vehicle' : 'Link Driver'"
 					:children="isVehiclePage ? vehicleDropdownChildren : driverDropdownChildren"
 					class-name="w-fit"

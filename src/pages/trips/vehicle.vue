@@ -14,7 +14,7 @@
 		</div>
 
 		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl ">
-			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="showLoadMore" @loadMore="loadMore" />
+			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="showLoadMore" :loading="loadingMoreActiveTrips" @loadMore="loadMore" />
 			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" />
 		</div>
 	</section>
@@ -39,7 +39,7 @@ import { usePageHeader } from '@/composables/utils/header'
 import { useVehicleTracking } from '@/composables/modules/tracking/vehicle/fetch'
 import { use_user_city } from '@/composables/auth/register'
 
-const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, showLoadMore, loadMore } = useVehicleTracking()
+const { filteredActiveTripsList, loadingActiveTrips, initializeTracking, total, filterStatus, filterData, showLoadMore, loadMore, loadingMoreActiveTrips } = useVehicleTracking()
 const { cityArray, fetchCities, loading } = use_user_city()
 
 initializeTracking()

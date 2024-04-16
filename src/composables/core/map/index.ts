@@ -62,29 +62,6 @@ export const initMap = async (mapDiv: Ref) => {
     })
 }
 
-export const loadExternalDataMarkers = async (
-    dataArray: Record<string, any>[]
-) => {
-    const markers = [] as google.maps.Marker[]
-    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
-
-    for (const data of dataArray) {
-        const dataLocation = {
-            lat: data['location.lat'],
-            lng: data['location.lng']
-        }
-        const marker = new Marker({
-            map,
-            position: dataLocation,
-            icon: '/shopLocation.svg'
-        })
-        markers.push(marker)
-    }
-
-    //    const markerCluster = new window.markerClusterer.MarkerClusterer({ markers, map })
-    //  const markerCluster = new MarkerClusterer({ markers, map })
-}
-
 export const getPathFromPolyline = async (overviewPolyline) => {
     if (typeof overviewPolyline !== 'string') return
     const encodedPolyline = JSON.parse(overviewPolyline)

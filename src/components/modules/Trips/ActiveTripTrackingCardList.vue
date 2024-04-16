@@ -19,8 +19,9 @@
 			</div>
 		</article>
 
-		<button class="btn-primary" :disabled="!canLoadMore" @click="$emit('loadMore')">
-			Load more
+		<button class="btn-primary" :disabled="!canLoadMore || loading" @click="$emit('loadMore')">
+			<span v-if="!loading">	Load more</span>
+			<Spinner v-else />
 		</button>
 	</section>
 </template>
@@ -40,6 +41,10 @@ const props = defineProps({
 
 	},
 	canLoadMore: {
+		type: Boolean,
+		required: true
+	},
+	loading: {
 		type: Boolean,
 		required: true
 	}

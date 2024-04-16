@@ -24,7 +24,7 @@
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
 						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
-					]" @click.capture="optioxn(data)">
+					]" @click="option(data)">
 						<td v-if="checkbox" :key="key" class="pl-4">
 							<input :checked="selected.map((el:any) => el?.id).includes(data?.id)" type="checkbox" @click.stop
 								@click.prevent="$emit('checked', data)">
@@ -33,7 +33,7 @@
 							{{ (page - 1) * 10 + index + 1 }}
 						</td>
 						<td v-for="(value, key) of populateTable(data)" :key="key + 1" class="px-4"
-							:data-label="headers[value]" @click.stop
+							:data-label="headers[value]"
 						>
 							<slot name="item" :item="({ [key]: key, data, index: index } as any)">
 								<span>{{ value }}</span>
@@ -120,6 +120,9 @@ const props = defineProps({
 	}
 })
 
+// watch(() => props.selected, (value: any) => {
+// 	checkedArray.value = value
+// })
 watch(() => props.selected?.length, (value: any) => {
 	key.value++
 })
