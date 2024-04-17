@@ -128,7 +128,7 @@ export const ADMIN_SIDEBAR_MENUS = computed(() => {
       children: null,
       rootPath: '/admin',
       oldPath: '/admin/list',
-      shouldRedirect: true,
+      shouldRedirect: false,
       modulePermission: 'STAFF',
       requiredAdmin: true
     },
