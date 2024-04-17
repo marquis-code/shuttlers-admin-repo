@@ -17,8 +17,12 @@ export const stats_api = {
 		const url = '/stats/transactions-count'
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_trip_rating_info: () => {
-		const url = '/rating/reports/all-time/c7366d8b-f92b-41bb-8887-733e15f9a294'
+	$_get_trip_rating_service_id: () => {
+		const url = '/rating/settings/service-id/trip_rating_service'
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
+	$_trip_rating_info: (serviceId:string) => {
+		const url = `/rating/reports/all-time/${serviceId}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
 	$_trip_rating_info_by_date: (payload:{from : string, to: string}) => {

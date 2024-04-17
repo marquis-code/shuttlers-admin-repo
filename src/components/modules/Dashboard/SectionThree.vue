@@ -8,7 +8,7 @@
 					</h3>
 				</div>
 				<div class="flex justify-end items-end">
-					<InputDateInput id="startDate" v-model="form.rate" :disabled-date="() => { }" :range="true"
+					<InputDateInput id="startDate" v-model="form.rate" :disabled-date="() => { }" :range="true" :clearable="true"
 						class="font-light" placeholder="Filter by date" />
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 				</p>
 			</div>
 			<Skeleton v-if="loadingRatingByDate" height="150px" width="400px" />
-			<div v-if="loadingRatingByDate === false && isFilterUpdated === true"
+			<div v-if="!loadingRatingByDate && form.rate[0] && form.rate[1]"
 				class="rounded-md border bg-white shadow-sm space-y-4 p-6 lg:w-6/12">
 				<div class="flex justify-between items-center">
 					<div>
@@ -74,11 +74,11 @@
 				</p>
 			</div>
 		</div>
-		<header>
+		<!-- <header>
 			<h3 class="font-medium pb-3.5 px-6">
 				Summary
 			</h3>
-		</header>
+		</header> -->
 		<!-- <div class="p-5">
 			<ChartsBarChart class="!h-72" :loading="loadingTripRatingInfo" :data="getRatingsChartData(tripRatingData)" />
 		</div> -->
@@ -97,16 +97,11 @@ const { getFilteredTripRating, loadingRatingByDate, filteredRatingData, payload 
 const form = reactive({
 	rate: []
 })
-const isFilterUpdated = ref(false)
 
-payload.from.value = useDateFormat(form.rate[0], 'YYYY-MM-D').value
-payload.to.value = useDateFormat(form.rate[1], 'YYYY-MM-D').value
-
-watch(
-	() => form,
-	(currentValue, oldValue) => {
-		getFilteredTripRating()
-		isFilterUpdated.value = true
+watch(() => form, () => {
+		payload.from.value = form.rate[0]
+		payload.to.value = form.rate[1]
+		if (form.rate[1])getFilteredTripRating()
 	},
 	{ deep: true }
 )
