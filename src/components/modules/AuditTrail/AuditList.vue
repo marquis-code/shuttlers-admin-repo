@@ -2,9 +2,9 @@
 	<div class="lg:w-7/12 space-y-8">
 		<div class="space-y-3 relative">
 			<div class="flex items-center justify-between">
-				<button class="flex items-center gap-3 p-2 bg-light text-dark border text-sm rounded-md" @click="filter = true">
+				<button class="flex items-center gap-3 p-2 px-4 bg-light text-dark border text-sm rounded-md" @click="filter = true">
 					Filter
-					<img src="@/assets/icons/source/add.svg" alt="" class="">
+					<Icon name="plus" class="w-5" />
 				</button>
 				<div class="flex items-center gap-x-2">
 					<div v-if="!loading">
@@ -58,7 +58,7 @@
 					<button class="filter text-left bg-transparent p-2 border-t" @click="openActorFilter">
 						Actor
 					</button>
-					<button v-if="!isProdEnv" class="filter text-left bg-transparent p-2 border-t" @click="openOperationTypeFilter">
+					<button class="filter text-left bg-transparent p-2 border-t" @click="openOperationTypeFilter">
 						Operation type
 					</button>
 				</div>
