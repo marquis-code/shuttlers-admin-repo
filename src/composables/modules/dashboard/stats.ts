@@ -39,7 +39,6 @@ export const useGetTripRatingInfo = () => {
         const service_id = ref('')
         const resp = await stats_api.$_get_trip_rating_service_id() as CustomAxiosResponse
         if (resp.type !== 'ERROR') {
-            console.log(resp.data)
             service_id.value = resp.data?.data?.reference || ''
         } else {
             useAlert().openAlert({ type: 'ERROR', msg: 'Could not get rating service id' })
