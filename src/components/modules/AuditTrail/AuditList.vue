@@ -187,7 +187,7 @@ const onRowClicked = (item) => {
 getAudits()
 getFeatureFlaggedAudits()
 getAllAdmins()
-if (!isProdEnv.value) getAuditOperationType()
+getAuditOperationType()
 onMounted(() => {
 	auditStatus.value = featureFlaggedAuditStatus.value
 })
