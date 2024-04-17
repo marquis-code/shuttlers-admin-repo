@@ -1,4 +1,5 @@
 import { stats_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const useGetDashboardStats = () => {
     const loading = ref(false)
@@ -35,8 +36,17 @@ export const useGetTripRatingInfo = () => {
 
     const getTripRatingData = async () => {
         loadingTripRatingInfo.value = true
+        const service_id = ref('')
+        const resp = await stats_api.$_get_trip_rating_service_id() as CustomAxiosResponse
+        if (resp.type !== 'ERROR') {
+            console.log(resp.data)
+            service_id.value = resp.data?.data?.reference || ''
+        } else {
+            useAlert().openAlert({ type: 'ERROR', msg: 'Could not get rating service id' })
+            return
+        }
 
-        const res = await $_trip_rating_info() as CustomAxiosResponse
+        const res = await $_trip_rating_info(service_id.value) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             tripRatingData.value = res.data.data
         }
@@ -68,10 +78,6 @@ export const useGetRatingInfoByDate = () => {
         }
         loadingRatingByDate.value = false
     }
-
-    watch([payload.from, payload.to], (val) => {
-        getFilteredTripRating()
-    })
 
     return { getFilteredTripRating, loadingRatingByDate, filteredRatingData, payload }
 }
