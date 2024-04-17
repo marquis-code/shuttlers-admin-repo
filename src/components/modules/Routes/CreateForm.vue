@@ -131,6 +131,16 @@
 					<label for="selected_days" class="mt-2">Selected days</label>
 				</div>
 			</div>
+			<div v-if="createRouteForm.route_availability.value === 'selected_days'" class="field w-full">
+				<label> Select days</label>
+				<section class="flex items-center flex-wrap gap-2">
+					<button v-for="n in days_of_the_week" :key="n" class="py-1 px-2 border rounded text-sm font-medium" type="button"
+						:class="[createRouteForm.route_availability_days.value.includes(n) ? 'border-blue-500 bg-blue-100 text-gray-900' : 'border-gray-200']" @click="handleSelectedDay(n)"
+					>
+						{{ Capitalize(n).slice(0,3) }}
+					</button>
+				</section>
+			</div>
 			<div class="w-full">
 				<label for="">Availability Start Date</label>
 				<InputDateInput
@@ -175,17 +185,6 @@
 					:clearable="true"
 					@update:model-value="($event) => {$event ? createRouteForm.unavailable_days.value.push($event): null}"
 				/>
-			</div>
-
-			<div v-if="createRouteForm.route_availability.value === 'selected_days'" class="field w-full">
-				<label> Select days</label>
-				<section class="flex items-center flex-wrap gap-2">
-					<button v-for="n in days_of_the_week" :key="n" class="py-1 px-2 border rounded text-sm font-medium" type="button"
-						:class="[createRouteForm.route_availability_days.value.includes(n) ? 'border-blue-500 bg-blue-100 text-gray-900' : 'border-gray-200']" @click="handleSelectedDay(n)"
-					>
-						{{ Capitalize(n).slice(0,3) }}
-					</button>
-				</section>
 			</div>
 
 			<div v-if="!isEdit" class="space-y-3 w-full">
