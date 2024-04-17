@@ -62,9 +62,9 @@
 					</div>
 				</div>
 				<div v-if="item.drivers">
-					<div v-if="item?.data?.drivers?.length" class="flex flex-col">
-						<NuxtLink v-for="(i, index) in item.data.drivers" :key="index" :to="`/drivers/${i.id}/driver-info`" class="text-blue-600 whitespace-nowrap">
-							{{ i?.fname ?? 'N/A' }} {{ i?.lname ?? 'N/A' }}
+					<div v-if="item?.data?.driver?.id" class="flex flex-col">
+						<NuxtLink :to="`/drivers/${item?.data?.driver?.id}/driver-info`" class="text-blue-600 whitespace-nowrap">
+							{{ item?.data?.driver?.fname ?? 'N/A' }} {{ item?.data?.driver?.lname ?? 'N/A' }}
 						</NuxtLink>
 					</div>
 					<p v-else class="text-sm text-gray-500">
