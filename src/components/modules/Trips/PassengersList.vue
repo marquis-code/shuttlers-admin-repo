@@ -3,10 +3,10 @@
 		<button v-if="isScreenLg" class="btn-controls" @click="$emit('prev')">
 			<Icon name="prev" class="w-7" />
 		</button>
-		<div v-if="routePassengers.length" class="space-y-8 w-full lg:w-[calc(100%-130px)]">
+		<div v-if="routePassengers.length" :key="key" class="space-y-8 w-full lg:w-[calc(100%-130px)]">
 			<div class="flex items-center gap-x-6">
 				<div class="flex items-center gap-x-2">
-					<input id="all" v-model="form.all" name="all" type="checkbox">
+					<input id="all" v-model="selected_all_passengers" name="all" type="checkbox">
 					<label for="all" class="font-medium pt-2">Select all passengers</label>
 				</div>
 				<div class="flex items-center gap-x-3">
@@ -20,8 +20,8 @@
 					</div>
 				</div>
 			</div>
-			<div v-if="form.all" class="flex justify-between items-center">
-				<button v-if="!hasCheckboxSelected" class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="handleNotification(routePassengers, 'bulk')">
+			<div v-if="selected_all_passengers || selectedCheckboxes?.length" class="flex justify-between items-center">
+				<button v-if="selected_all_passengers" class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="handleNotification(routePassengers, 'bulk')">
 					Notify Selected
 				</button>
 				<button v-else class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="notifySelectedUsers">
@@ -55,7 +55,7 @@
 						>
 							<div class="">
 								<label :for="item.id">
-									<input :id="item.id" :checked="isChecked" type="checkbox" name="checked_all" @change="toggleSelection($event, item)">
+									<input :id="item.id" :checked="selectedCheckboxes.includes(item?.user_id) || selected_all_passengers" type="checkbox" name="checked_all" @click.prevent="toggleSelection(item)">
 								</label>
 							</div>
 							<div class="flex items-center gap-x-2">
@@ -107,7 +107,7 @@
 						<div v-for="(item, idx) in val.passengers" :key="idx" class="flex justify-between items-center gap-4 px-6 py-3 min-w-[800px]">
 							<div class="">
 								<label :for="item.id">
-									<input :id="item.id" :checked="isChecked" type="checkbox" name="checked_all" @change="toggleSelection($event, item)">
+									<input :id="item.id" :checked="selectedCheckboxes.includes(item?.user_id) || selected_all_passengers" type="checkbox" name="checked_all" @click.prevent="toggleSelection(item)">
 								</label>
 							</div>
 							<div class="space-y-2">
@@ -209,6 +209,7 @@ const computedGroupByDestination = computed(() => {
 })
 
 const handleNotification = (item: any, type: string) => {
+	busstopUsersIds.value = []
 	switch (type) {
 		case 'bulk':
 			busstopUsersIds.value = item.map((passenger: any) => passenger.user_id)
@@ -235,24 +236,26 @@ const notifySelectedUsers = () => {
 	busstopUsersIds.value = selectedCheckboxes.value
 	useTripsModal().openNotifyPassengers()
 }
-const toggleSelection = (e, val) => {
-	form.all = true
-	selectedCheckboxes.value.push(val.user_id)
+const toggleSelection = (val) => {
+	selected_all_passengers.value = false
+	if (!selectedCheckboxes.value.includes(val?.user_id)) {
+		selectedCheckboxes.value.push(val?.user_id)
+	} else {
+		const index = selectedCheckboxes.value.indexOf(val?.user_id)
+		selectedCheckboxes.value.splice(index, 1)
+	}
+	key.value++
 }
 
-const form = reactive({
-	all: false
-})
+const selected_all_passengers = ref(false)
+const key = ref(0)
 
-watch(() => form.all, (val) => {
-	isChecked.value = val
-	// form.all = true
+watch(selected_all_passengers, () => {
+	if (selected_all_passengers.value) selectedCheckboxes.value = []
 })
 
 const filterType = ref('pickup')
 const selectedCheckboxes = ref([]) as any
-const hasCheckboxSelected = ref(false)
-const isChecked = ref(false)
 </script>
 
 <style scoped>
