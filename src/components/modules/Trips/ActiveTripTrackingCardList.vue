@@ -1,6 +1,6 @@
 <template>
 	<section class="w-5/12 p-4 flex flex-col gap-3 h-full overflow-auto ">
-		<article v-for="data in activeTripsList" :key="data.id" class="bg-grey10 p-1.5 rounded-2xl flex-col gap-1.5 flex cursor-pointer" @click="onCardClick(data)">
+		<article v-for="data in activeTripsList" :key="data.id" class="bg-grey10 p-1.5 rounded-2xl flex-col gap-1.5 flex cursor-pointer" :class="{'border-2 border-green' : activeVehicleDriver_id === data.driver_id}" @click="onCardClick(data)">
 			<div class="flex justify-between flex-wrap md:flex-nowrap gap-1">
 				<RouteDescription :destination="data.route.destination" :pickup="data.route.pickup" class="w-7/12" />
 				<AvailabiltyBadge :available="data.vehicle_status" class=" ml-auto" />
@@ -12,9 +12,9 @@
 					<span class="text-grey5 text-sm">{{ data.vehicle.brand }} {{ data.vehicle.name }} ● {{ data.vehicle.registration_number }}</span>
 				</div>
 				<div class="flex flex-wrap gap-3 mt-3 items-start text-xs">
-					{{ data.driver_id }}
 					<span class="rounded-2xl bg-[#F7F7F7] text-grey3 font-bold px-3 py-1 ">{{ data.route.route_code }}</span>
 					<span class="rounded-2xl bg-[#F7F7F7] text-grey3 font-bold px-3 py-1">Started at {{ moment(data.trip_start_time).format('LL') }} {{ moment.utc(data.trip_start_time).format('LT') }}</span>
+					<Spinner v-if="fetchRouteLoading && activeVehicleDriver_id === data.driver_id" :light="false" />
 				</div>
 			</div>
 		</article>
@@ -30,7 +30,7 @@
 import moment from 'moment'
 import { useActiveTripTrackingCardClick } from '@/composables/modules/tracking/vehicle/actions'
 
-const { onCardClick } = useActiveTripTrackingCardClick()
+const { onCardClick, activeVehicleDriver_id, fetchRouteLoading } = useActiveTripTrackingCardClick()
 
 defineEmits(['loadMore'])
 

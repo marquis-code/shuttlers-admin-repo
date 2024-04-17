@@ -13,6 +13,7 @@ import { useCreateRoute } from '@/composables/modules/routes/create'
 const { endPosition, startPosition, loading, polyline, ploylineLoading, initEditRoute, fetchingRoute } = useCreateRoute()
 
 initEditRoute()
+
 definePageMeta({
   layout: 'dashboard-zero',
   middleware: ['is-authenticated']

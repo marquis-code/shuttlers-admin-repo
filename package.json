@@ -47,6 +47,7 @@
 	},
 	"dependencies": {
 		"@fawmi/vue-google-maps": "^0.9.79",
+		"@googlemaps/google-maps-services-js": "^3.4.0",
 		"@googlemaps/js-api-loader": "^1.15.1",
 		"@headlessui/vue": "^1.7.16",
 		"@heroicons/vue": "^2.0.18",

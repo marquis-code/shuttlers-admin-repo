@@ -254,3 +254,7 @@ const removeFalsyElement = (object) => {
     })
     return newObject
 }
+
+export const getRouteById = async (id: string) => {
+    return await routes_api.$_get_route_by_id(id)
+}

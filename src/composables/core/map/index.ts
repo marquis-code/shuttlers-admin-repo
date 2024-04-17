@@ -70,26 +70,58 @@ export const getPathFromPolyline = async (overviewPolyline) => {
     return encoding.decodePath(encodedPolyline.points)
 }
 
-let currentPolyline = null as any
+let currentPolyline: google.maps.Polyline | null = null
+let currentStartMarker: google.maps.Marker | null = null
+let currentEndMarker: google.maps.Marker | null = null
 
-export const loadPolyline = async (pathLine: google.maps.LatLng[]) => {
-    const { Polyline } = (await google.maps.importLibrary('maps')) as google.maps.MapsLibrary
+export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void> => {
+    const { Polyline, Marker } = (await google.maps.importLibrary('maps')) as typeof google.maps
 
+    // Clear existing polyline
     if (currentPolyline) {
-        currentPolyline.setMap(null) // Step 2: Clear the existing polyline if any
+        currentPolyline.setMap(null)
+        currentPolyline = null
     }
 
+    // Clear existing markers
+    if (currentStartMarker) {
+        currentStartMarker.setMap(null)
+        currentStartMarker = null
+    }
+    if (currentEndMarker) {
+        currentEndMarker.setMap(null)
+        currentEndMarker = null
+    }
+
+    // Create new polyline
     const polyline = new Polyline({
         path: pathLine,
         geodesic: true,
-        strokeColor: '#000000',
+        strokeColor: '#4848ED',
         strokeOpacity: 1.0,
-        strokeWeight: 3.5
+        strokeWeight: 3
     })
 
     polyline.setMap(map)
     currentPolyline = polyline // Update the reference to the current polyline
 
+    // Create a new start marker
+    currentStartMarker = new Marker({
+        position: pathLine[0],
+        icon: '/pickup.svg',
+        map,
+        title: 'Start'
+    })
+
+    // Create a new end marker
+    currentEndMarker = new Marker({
+        position: pathLine[pathLine.length - 1],
+        icon: '/dropoff.svg',
+        map,
+        title: 'End'
+    })
+
+    // Fit map to polyline
     const bounds = new google.maps.LatLngBounds()
     pathLine.forEach((point) => bounds.extend(point))
     map.fitBounds(bounds)
