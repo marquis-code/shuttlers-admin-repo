@@ -56,6 +56,7 @@ const populateRouteData = (data:Record<string, any>) => {
     createRouteForm.desc.value = data?.info?.description
     createRouteForm.visibility.value = data?.visibility
     createRouteForm.is_exclusive.value = data?.is_exclusive ? 'exclusive' : 'shared'
+    createRouteForm.corporate.value = data?.corporate?.id ? data?.corporate : null
     createRouteForm.route_availability.value = JSON.parse(data?.route_availability_days).length !== 7 ? 'selected_days' : 'everyday'
     createRouteForm.route_availability_days.value = JSON.parse(data?.route_availability_days)
     createRouteForm.avail_start_date.value = data?.route_availability_start_date
