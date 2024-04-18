@@ -54,7 +54,7 @@
 						</p>
 						<p>
 							<span class="text-3xl font-bold">{{
-								filteredRatingData?.rating
+								(filteredRatingData?.rating)?.toFixed(1)
 							}}</span>/5
 						</p>
 					</div>
