@@ -1,10 +1,13 @@
 import { UserCoordinate, Coordinate } from './types'
-import { map } from './index'
+import { busMarker } from './svg_icon'
+import { loadPolyline, map, getPathFromPolyline } from './index'
+import { getRouteById } from '@/composables/modules/routes/create'
 import { getTripByDriverId } from '@/composables/modules/tracking/vehicle/fetch'
 
 const markersArray: google.maps.Marker[] = []
 let openInfoWindow: google.maps.InfoWindow | null = null // Keep track of the open InfoWindow
 let bounds: google.maps.LatLngBounds | null = null
+const activeVehicleDriver_id = ref<string | null>()
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
     const { Marker, InfoWindow } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
     const { LatLngBounds } = await google.maps.importLibrary('core') as google.maps.CoreLibrary
@@ -18,21 +21,25 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
         await new Promise((resolve) => setTimeout(resolve, 100)) // Wait for map to be initialized
     }
     // @ts-ignore
-    const existingMarker = markersArray.find((marker) => marker.id === location.id)
+    const existingMarker = markersArray.find((marker) => marker.id === location.id) as any
     if (existingMarker) {
         existingMarker.setPosition(location)
         existingMarker.setIcon({
-            url: imgString,
+            url: busMarker(direction),
             rotation: direction
         })
+
         bounds.extend(existingMarker.getPosition()!)
-        map.fitBounds(bounds)
+        if (Number(existingMarker.id) === Number(activeVehicleDriver_id.value)) {
+            map.panTo(existingMarker.getPosition()!)
+        }
+        // map.fitBounds(bounds)
     } else {
         const marker = new Marker({
             map,
             position: location,
             icon: {
-                url: imgString,
+                url: busMarker(direction),
                 rotation: direction
             }
         }) as google.maps.Marker as any
@@ -75,21 +82,33 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
 
         markersArray.push(marker)
         bounds.extend(marker.getPosition()!)
-        map.fitBounds(bounds)
-        // map.setCenter(location)
+        if (!activeVehicleDriver_id.value) {
+            map.fitBounds(bounds)
+        }
     }
 }
 
 export const useLoadMarkerOnMap = () => {
+    const fetchRouteLoading = ref(false)
     const zoomMapInOnCoordinate = async (location: Coordinate) => {
-    map.setCenter(location)
-    map.setZoom(16)
- }
+        map.setCenter(location)
+        map.setZoom(15)
+    }
     const VehicleMarkerExist = (id: string) => {
-        return markersArray.find((marker:any) => Number(marker!.id) === Number(id))
+        return markersArray.find((marker: any) => Number(marker!.id) === Number(id))
+    }
+
+    const setActiveTrip = async (id: string) => {
+        activeVehicleDriver_id.value = id
+        fetchRouteLoading.value = true
+        const trip = getTripByDriverId(id)
+        const route = await getRouteById(trip?.route_id)
+        const poly = await getPathFromPolyline(JSON.stringify(route.data.overview_polyline)) as google.maps.LatLng[]
+        loadPolyline(poly)
+        fetchRouteLoading.value = false
     }
 
     return {
-        zoomMapInOnCoordinate, VehicleMarkerExist
+        zoomMapInOnCoordinate, VehicleMarkerExist, setActiveTrip, activeVehicleDriver_id, fetchRouteLoading
     }
 }

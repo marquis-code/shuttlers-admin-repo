@@ -21,11 +21,12 @@ import { useRoutePassengers } from '@/composables/modules/routes/booking-passeng
 import { useTripsModal } from '@/composables/core/modals'
 import { usePageHeader } from '@/composables/utils/header'
 import { useActiveTripIdDetails, useCancelledTripIdDetails } from '@/composables/modules/trips/id'
-const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
+const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers, fetchUpcomingRoutePassengers } = useRoutePassengers()
 const { selectedTrip, loading, getCancelledTripById, handleNext, handlePrev } = useCancelledTripIdDetails()
 
 const id = useRoute().params.id as string
 getCancelledTripById(id)
+fetchUpcomingRoutePassengers(id, true)
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
@@ -42,14 +43,14 @@ watch(selectedTrip, () => {
         title: computedTitle.value
     })
 
-	const days = ref([] as Record<string, any>)
-	days.value.push(selectedTrip.value?.trip_date)
-	const payload = {
-		booking_days: days.value,
-		driver_id: selectedTrip.value?.driver?.id
-	}
-	populateRoutePassengers(payload)
-	getRoutePassengers(selectedTrip?.value?.route?.id, true)
+	// const days = ref([] as Record<string, any>)
+	// days.value.push(selectedTrip.value?.trip_date)
+	// const payload = {
+	// 	booking_days: days.value,
+	// 	driver_id: selectedTrip.value?.driver?.id
+	// }
+	// populateRoutePassengers(payload)
+	// getRoutePassengers(selectedTrip?.value?.route?.id, true)
 })
 
 definePageMeta({

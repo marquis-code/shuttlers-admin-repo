@@ -39,7 +39,7 @@ export const useGetFleetTripHistory = () => {
         const res = await $_get_fleet_history_by_id(selectedVehicleId.value, metaObject) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            fleeTripHistory.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle.brand}  ${item.vehicle.name}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, inspectionSite: item?.inspectionSite.name, partner: item.partner.company_name, inspectionDateAndTime: `${item.date} (${item.time})`, created_at: item?.created_at }))
+            fleeTripHistory.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle?.brand || 'N/A'}  ${item.vehicle?.name || ''}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, partner: item?.partner?.company_name || 'N/A', created_at: item?.created_at }))
             metaObject.total.value = res.data.metadata.total_pages
         }
         loadingTripHistory.value = false

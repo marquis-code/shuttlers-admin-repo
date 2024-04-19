@@ -1,18 +1,38 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table :loading="loadingTripHistory" :headers="tableFields" :table-data="fleeTripHistory" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
+		<Table :loading="loadingTripHistory" :headers="tableFields" :table-data="fleeTripHistory" :has-index="true" :page="page" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
 			<template #header>
 				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.fname" class="flex items-center gap-4">
-					<div>
-						<Avatar :name="item.data.fname" bg="#B1C2D9" />
-					</div>
-
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
-				</span>
+				<p v-if="item.trip_date" class="whitespace-nowrap">
+					{{ moment(item.data.start_trip).format('ll') }}
+				</p>
+				<div v-if="item.route_code" class="flex flex-col">
+					<p>{{ item.data.route?.route_code }}</p>
+					<p>{{ moment(item.data.start_trip).format('LT') }}</p>
+				</div>
+				<div v-if="item.route">
+					<RouteDescription :pickup="item.data?.route?.pickup" :destination="item.data?.route?.destination" />
+				</div>
+				<div v-if="item.driver" class="flex flex-col text-purp7">
+					<p>{{ item.data?.driver?.fname }} {{ item.data?.driver?.lname }}</p>
+					<p>{{ item.data?.driver?.phone }}</p>
+				</div>
+				<div v-if="item.rating" class="flex items-center gap-0">
+					<Icon name="star" class="w-5 text-dark" />
+					<p class="text-sm">
+						0
+					</p>
+				</div>
+				<ButtonIconDropdown v-if="item.action" :data="item.data" :children="[]" />
+				<div v-if="item.passengers" class="flex items-center gap-2">
+					<p class="whitespace-nowrap">{{ item.data?.checkins?.length }} / 0</p>
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="() => {}">
+						View
+					</button>
+				</div>
 			</template>
 			<template #footer>
 				<TablePaginator :current-page="page" :total-pages="total" :loading="loadingTripHistory" @move-to="moveTo($event)" @next="next" @prev="prev" />
@@ -22,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import moment from 'moment'
 import { useGetFleetTripHistory } from '@/composables/modules/fleets/id'
 
 const { getFleetsTripHistory, loadingTripHistory, fleeTripHistory, moveTo, page, total, next, prev, onFilterUpdate } = useGetFleetTripHistory()
@@ -33,44 +54,40 @@ definePageMeta({
 })
 const tableFields = ref([
     {
-        text: 'S/N',
-        value: 'fname'
-    },
-    {
         text: 'TRIP DATE',
-        value: 'phone'
+        value: 'trip_date'
     },
     {
         text: 'ROUTE CODE (START TIME)',
-        value: 'email'
+        value: 'route_code'
     },
     {
         text: 'ROUTE',
-        value: 'active'
+        value: 'route'
     },
     {
         text: 'PARTNERS NAME',
-        value: 'role'
+        value: 'partner'
     },
     {
         text: 'VEHICLE NAME',
-        value: 'created_at'
+        value: 'vehicle'
     },
     {
         text: 'DRIVER',
-        value: 'updated_at'
+        value: 'driver'
     },
     {
         text: 'AVERAGE RATING',
-        value: 'updated_at'
+        value: 'rating'
     },
     {
         text: 'ACTION',
-        value: 'updated_at'
+        value: 'action'
     },
     {
         text: 'PASSENGERS',
-        value: 'updated_at'
+        value: 'passengers'
     }
 ])
 

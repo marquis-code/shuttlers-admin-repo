@@ -67,8 +67,8 @@
 					<p class="text-gray-500 text-sm">
 						AMENITIES
 					</p>
-					<div v-if="selectedVehicle?.amenities" class="text-sm">
-						<p v-for="(itm, idx) in selectedVehicle?.amenities" :key="idx">
+					<div v-if="selectedVehicle?.amenity_list?.length" class="text-sm">
+						<p v-for="(itm, idx) in selectedVehicle?.amenity_list" :key="idx" class="text-right ">
 							{{ itm.name }}
 						</p>
 					</div>

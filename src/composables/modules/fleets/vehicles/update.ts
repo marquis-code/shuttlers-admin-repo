@@ -2,6 +2,7 @@ import { useVehicleModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
 import { vehicles_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useDriverIdDetails } from '@/composables/modules/drivers'
+import { useVehicleIdDetails } from '@/composables/modules/fleets/id'
 
 const update_source = ref('driver')
 const obj = {
@@ -42,7 +43,7 @@ export const useEditVehicles = () => {
 		obj.capacity.value = data.seats
 		obj.type.value = data.type
 		obj.code.value = data.code
-		obj.amenities.value = data.amenity_list
+		obj.amenities.value = data.amenity_list.map((el) => el?.id)
 		obj.inventory_type.value = data.inventory_type
 		useVehicleModal().openEditBus()
 	}
@@ -52,10 +53,10 @@ export const useEditVehicles = () => {
 			name: obj.name.value,
 			brand: obj.brand.value,
 			registration_number: obj.plate_no.value,
-			capacity: obj.capacity.value,
+			seats: obj.capacity.value,
 			type: obj.type.value,
 			code: obj.code.value,
-			amenities: obj.amenities.value,
+			amenity_ids: obj.amenities.value,
 			inventory_type: obj.inventory_type.value
 		}
 
@@ -65,9 +66,9 @@ export const useEditVehicles = () => {
 			loading.value = false
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Vehicle information has been updated successfully' })
 			useVehicleModal().closeEditBus()
-			if (useRoute().fullPath.includes('driver-info')) {
+			if (useRoute().fullPath.includes('vehicle-info')) {
 				const id = useRoute().params.id as string
-				useDriverIdDetails().getDriverById(id)
+				useVehicleIdDetails().getVehicleById(Number(id))
 			}
 		}
 		loading.value = false
