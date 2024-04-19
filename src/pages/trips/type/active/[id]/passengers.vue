@@ -21,11 +21,12 @@ import { useRoutePassengers } from '@/composables/modules/routes/booking-passeng
 import { useTripsModal } from '@/composables/core/modals'
 import { usePageHeader } from '@/composables/utils/header'
 import { useActiveTripIdDetails } from '@/composables/modules/trips/id'
-const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
+const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers, fetchRoutePassengers } = useRoutePassengers()
 const { selectedTrip, loading, getActiveTripById, handleNext, handlePrev } = useActiveTripIdDetails()
 
 const id = useRoute().params.id as string
 getActiveTripById(id)
+fetchRoutePassengers(id)
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
@@ -42,15 +43,6 @@ watch(computedTitle, (val:string) => {
             preTitle: 'OVERVIEW',
             title: val
 		})
-
-			const days = ref([] as Record<string, any>)
-	days.value.push(selectedTrip.value?.route_day?.trip_date)
-	const payload = {
-		booking_days: days.value,
-		driver_id: selectedTrip.value?.driver?.id
-	}
-	populateRoutePassengers(payload)
-	getRoutePassengers(selectedTrip?.value?.route?.id)
     }
 }, { immediate: true })
 

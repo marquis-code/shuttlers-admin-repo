@@ -24,13 +24,14 @@ import { useRoutePassengers } from '@/composables/modules/routes/booking-passeng
 import { useTripsModal } from '@/composables/core/modals'
 import { useUpcomingTripIdDetails } from '@/composables/modules/trips/id'
 
-const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
+const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers, fetchUpcomingRoutePassengers } = useRoutePassengers()
 
 const { selectedTrip, loading, getUpcomingTripById, handleNext, handlePrev } = useUpcomingTripIdDetails()
 
 const tripTimeHasPassed = ref(false)
 const id = useRoute().params.id as string
 getUpcomingTripById(id)
+fetchUpcomingRoutePassengers(id)
 
 const computedTitle = computed(() => {
 	if (selectedTrip.value.route?.route_code) {
@@ -48,14 +49,14 @@ watch(computedTitle, (val:string) => {
             title: val
 		})
 
-		const days = ref([] as Record<string, any>)
-	days.value.push(selectedTrip.value.trip_date)
-	const payload = {
-		booking_days: days.value,
-		driver_id: selectedTrip.value.driver.id
-	}
-	populateRoutePassengers(payload)
-	getRoutePassengers(selectedTrip?.value?.route?.id)
+	// 	const days = ref([] as Record<string, any>)
+	// days.value.push(selectedTrip.value.trip_date)
+	// const payload = {
+	// 	booking_days: days.value,
+	// 	driver_id: selectedTrip.value.driver.id
+	// }
+	// populateRoutePassengers(payload)
+	// getRoutePassengers(selectedTrip?.value?.route?.id)
     }
 }, { immediate: true })
 

@@ -27,8 +27,8 @@
 				<button v-else class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="notifySelectedUsers">
 					Notify Selected
 				</button>
-				<button class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="useTripsModal().openTransferBooking()">
-					Transfer Booking
+				<button class="border-black border font-medium bg-white text-black px-3 py-2 text-xs rounded-md" @click="transferBooking">
+					Transfer Bookings
 				</button>
 			</div>
 			<div v-if="filterType === 'pickup'" class="space-y-6">
@@ -166,7 +166,9 @@ import moment from 'moment'
 import { useTripsModal } from '@/composables/core/modals'
 import { useNotifyPassenger } from '@/composables/modules/trips/passengers'
 import { isScreenLg } from '@/composables/utils/window'
+import { useTransferBookings } from '@/composables/modules/trips'
 
+const { initTransferBooking } = useTransferBookings()
 const { busstopUsersIds } = useNotifyPassenger()
 
 defineEmits(['next', 'prev'])
@@ -181,8 +183,8 @@ const props = defineProps({
 
 const computedGroupByPickup = computed(() => {
 	return props.routePassengers.reduce((accumulator:any, currentObject:any) => {
-		const pickupKey = currentObject?.pickupRouteBusStop?.id || currentObject?.pickup.location
-		const busstopname = currentObject?.pickupRouteBusStop?.name || currentObject?.pickup.location
+		const pickupKey = currentObject?.pickupRouteBusStop?.id || currentObject?.pickup?.location
+		const busstopname = currentObject?.pickupRouteBusStop?.name || currentObject?.pickup?.location
 
 		if (!accumulator[pickupKey]) {
 			accumulator[pickupKey] = { busstopname, passengers: [] }
@@ -245,6 +247,18 @@ const toggleSelection = (val) => {
 		selectedCheckboxes.value.splice(index, 1)
 	}
 	key.value++
+}
+
+const transferBooking = () => {
+	if (selected_all_passengers.value) {
+		initTransferBooking(props.routePassengers as Record<string, any>[])
+	} else {
+		const all = props.routePassengers as Record<string, any>[]
+		const passengers = all.filter((el:any) => {
+			return selectedCheckboxes.value.includes(el?.user_id)
+		})
+		initTransferBooking(passengers)
+	}
 }
 
 const selected_all_passengers = ref(false)

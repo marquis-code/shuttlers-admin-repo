@@ -37,8 +37,8 @@ export const routes_api = {
 		const url = `/routes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_route_busstops_by_id: (id:string) => {
-		const url = `/routes/${id}/busstops`
+	$_get_route_busstops_by_id: (route_id:string) => {
+		const url = `/routes/${route_id}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_route_direction: (payload:Record<string, any>) => {
