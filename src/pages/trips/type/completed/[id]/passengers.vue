@@ -14,11 +14,12 @@ import { usePageHeader } from '@/composables/utils/header'
 import { useRoutePassengers } from '@/composables/modules/routes/booking-passengers'
 import { useTripsModal } from '@/composables/core/modals'
 import { useCompletedTripIdDetails } from '@/composables/modules/trips/id'
-const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers } = useRoutePassengers()
+const { routePassengersPayload, loadingRoutePassengers, getRoutePassengers, routePassengers, populateRoutePassengers, fetchRoutePassengers } = useRoutePassengers()
 const { selectedTrip, loading, getCompletedTripById, handleNext, handlePrev } = useCompletedTripIdDetails()
 
 const id = useRoute().params.id as string
 getCompletedTripById(id)
+fetchRoutePassengers(id)
 definePageMeta({
 	layout: 'dashboard-zero',
 	middleware: ['is-authenticated']
@@ -49,14 +50,14 @@ watch(computedTitle, (val:string) => {
             title: val
 		})
 
-		const days = ref([] as Record<string, any>)
-	days.value.push(convertDateFormat(selectedTrip.value.trip_date_time))
-	const payload = {
-		booking_days: days.value,
-		driver_id: selectedTrip.value.driver.id
-	}
-		populateRoutePassengers(payload)
-		getRoutePassengers(selectedTrip?.value?.route?.id)
+	// 	const days = ref([] as Record<string, any>)
+	// days.value.push(convertDateFormat(selectedTrip.value.trip_date_time))
+	// const payload = {
+	// 	booking_days: days.value,
+	// 	driver_id: selectedTrip.value.driver.id
+	// }
+	// 	populateRoutePassengers(payload)
+	// 	getRoutePassengers(selectedTrip?.value?.route?.id)
     }
 }, { immediate: true })
 </script>
