@@ -55,7 +55,7 @@ export const trips_api = {
 		const url = `/bus-captains?${queryParams}&related=user,route,itinerary&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_trip_by_id: (id:string) => {
+	$_get_trip_by_id: (id:string|number) => {
 		const url = `/trips/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -83,7 +83,7 @@ export const trips_api = {
 		const url = `trips/${id}/passengers`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_upcoming_trip_passengers: (id:string) => {
+	$_get_upcoming_trip_passengers: (id:string|number) => {
 		const url = `/trips/${id}/passengers?isUpcomingTrip=1`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},

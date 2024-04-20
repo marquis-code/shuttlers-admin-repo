@@ -26,7 +26,8 @@ export const useGetFleetTripHistory = () => {
     const fleeTripHistory = ref([] as any)
     const filterData = {
         start_date_filter: ref(''),
-        end_date_filter: ref('')
+        end_date_filter: ref(''),
+        search: ref('')
     }
 
     const { $_get_fleet_history_by_id } = fleets_api
@@ -36,25 +37,25 @@ export const useGetFleetTripHistory = () => {
 
         if (!selectedVehicleId.value && id) selectedVehicleId.value = id
 
-        const res = await $_get_fleet_history_by_id(selectedVehicleId.value, metaObject) as CustomAxiosResponse
+        const res = await $_get_fleet_history_by_id(selectedVehicleId.value, metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            fleeTripHistory.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle.brand}  ${item.vehicle.name}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, inspectionSite: item?.inspectionSite.name, partner: item.partner.company_name, inspectionDateAndTime: `${item.date} (${item.time})`, created_at: item?.created_at }))
+            fleeTripHistory.value = res.data.data.map((item : Record<string, any>) => ({ ...item, vehicle: `${item.vehicle?.brand || 'N/A'}  ${item.vehicle?.name || ''}`, registrationNumber: item?.vehicle?.registration_number, seats: item?.vehicle?.seats, partner: item?.partner?.company_name || 'N/A', created_at: item?.created_at }))
             metaObject.total.value = res.data.metadata.total_pages
         }
         loadingTripHistory.value = false
     }
     setFunction(getFleetsTripHistory)
 
-    watch([filterData.start_date_filter, filterData.end_date_filter], (val) => {
+    watch([filterData.search], (val) => {
+        metaObject.page.value = 1
         getFleetsTripHistory()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
-            case 'dateRange':
-                filterData.start_date_filter.value = data.value[0]
-                filterData.end_date_filter.value = data.value[1]
+            case 'search':
+                filterData.search.value = data.value
                 break
         }
     }

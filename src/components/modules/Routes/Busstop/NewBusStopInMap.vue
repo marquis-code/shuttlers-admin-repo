@@ -51,9 +51,7 @@ const onSave = () => {
 		is_dropoff: dropoff.value,
 		geometry: `${new_busstop_position.value.lat},${new_busstop_position.value.lng}`
     }
-	createBusstop(payload).then(() => {
-		reloadBusStopMap()
-	})
+	createBusstop(payload)
 }
 </script>
 
