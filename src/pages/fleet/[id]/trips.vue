@@ -1,9 +1,9 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table :loading="loadingTripHistory" :headers="tableFields" :table-data="fleeTripHistory" :has-index="true" :page="page" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
+		<Table :loading="loadingTripHistory" :headers="tableFields" :table-data="fleeTripHistory" :has-index="true" :page="page" :has-options="true" :option="(data)=>$router.push(`/trips/type/completed/${data?.id}/trip-details`)">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showStatus:false, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.trip_date" class="whitespace-nowrap">
@@ -17,8 +17,10 @@
 					<RouteDescription :pickup="item.data?.route?.pickup" :destination="item.data?.route?.destination" />
 				</div>
 				<div v-if="item.driver" class="flex flex-col text-purp7">
-					<p>{{ item.data?.driver?.fname }} {{ item.data?.driver?.lname }}</p>
-					<p>{{ item.data?.driver?.phone }}</p>
+					<NuxtLink :to="`/drivers/${item.data?.driver?.id}/driver-info`" @click.stop>
+						{{ item.data?.driver?.fname }} {{ item.data?.driver?.lname }}
+					</NuxtLink>
+					<p @click.stop>{{ item.data?.driver?.phone }}</p>
 				</div>
 				<div v-if="item.rating" class="flex items-center gap-0">
 					<Icon name="star" class="w-5 text-dark" />
@@ -26,10 +28,12 @@
 						0
 					</p>
 				</div>
-				<ButtonIconDropdown v-if="item.action" :data="item.data" :children="[]" />
+				<ButtonIconDropdown v-if="item.action" :data="item.data" :children="dropdownChildren" />
 				<div v-if="item.passengers" class="flex items-center gap-2">
-					<p class="whitespace-nowrap">{{ item.data?.checkins?.length }} / 0</p>
-					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="() => {}">
+					<p class="whitespace-nowrap">
+						{{ item.data?.checkins?.length }} / 0
+					</p>
+					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="$router.push(`/trips/type/completed/${item?.data?.id}/passengers`)">
 						View
 					</button>
 				</div>
@@ -90,6 +94,12 @@ const tableFields = ref([
         value: 'passengers'
     }
 ])
+
+const dropdownChildren = computed(() => {
+	return [
+		{ name: 'View Financials', func: (data) => { useRouter().push(`/trips/type/completed/${data?.id}/financials`) } }
+    ]
+})
 
 </script>
 

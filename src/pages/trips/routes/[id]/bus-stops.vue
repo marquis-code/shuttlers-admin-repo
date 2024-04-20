@@ -28,7 +28,7 @@
 			<Skeleton v-else height="500px" />
 		</section>
 		<!-- <MapDisplay height="670px" class="" /> -->
-		<GMapMap v-if="!loading_path && !fetching_busstops" ref="myMapRef" map-type-id="terrain" class="h-screen"
+		<GMapMap v-if="!loading_path" ref="myMapRef" map-type-id="terrain" class="h-screen"
 			:options="{
 				zoomControl: true,
 				mapTypeControl: false,
