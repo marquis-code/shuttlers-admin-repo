@@ -1,14 +1,14 @@
 <template>
 	<div class="w-full gap-4 flex flex-col">
-		<div class="relative w-full">
-			<input v-model.trim="search" type="text" placeholder="Search users" class="input-field " @keyup.enter.prevent="getUsersList()">
+		<div class="relative flex items-center justify-end gap-4">
+			<input v-if="type === 'all'" v-model.trim="filterData.search.value" type="text" placeholder="Search users" class="input-field flex-grow border">
 
-			<div class="absolute top-1.5 right-3 w-auto">
+			<div class="w-fit shrink-0">
 				<div class="flex w-full items-center gap-2.5">
 					<span class="text-sm w-32">
 						Filter by:
 					</span>
-					<select v-model="sortDirection" class="px-3 py-2 border text-xs rounded-lg outline-none w-full">
+					<select v-model="type" class="px-3 py-2 border text-xs rounded-lg outline-none w-full">
 						<option value="all" class="text-xs">
 							All
 						</option>
@@ -20,31 +20,28 @@
 			</div>
 		</div>
 		<div class="bg-white rounded-lg">
-			<div v-if="sortDirection === 'all'" class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
+			<div v-if="type === 'all'" class="flex items-center justify-end pt-6 pb-6 pr-6 border-b gap-x-3">
 				<p class="text-sm text-green-500">
 					select all users
 				</p>
-				<input id="notify-all" v-model="credentials.notifyAll.value" type="checkbox" class="form-checkbox rounded-full text-green7" @change="handleAllUsersSelection($event)">
+				<input id="notify-all" v-model="credentials.notifyAll.value" type="checkbox" class="form-checkbox rounded-full text-green7" @change="() => {}">
 			</div>
-			<div v-if="sortDirection === 'company'" class="flex items-center justify-between  pt-6 pb-6 px-10 border-b gap-x-3 w-full">
+			<div v-if="type === 'company'" class="flex items-center justify-between  pt-6 pb-6 px-4 border-b gap-x-3 w-full">
 				<div class="w-4/12">
-					<label for="corporates" class="block mb-2 text-sm">Select Company {{ corporateId }}</label>
+					<label for="corporates" class="block mb-2 text-sm">Select Company</label>
 				</div>
 				<div class="w-8/12">
-					<select id="companies" v-model="corporateId" class="outline-none bg-gray-50 w-full border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  placeholder-gray-400 text-gray-900">
-						<option v-for="(item, index) in corporatesList" :key="index" :value="item.id">
-							{{ item.corporate_name }}
-						</option>
-					</select>
+					<InputMultiSelectCompanies v-model="selectedCompany" :show-clear-btn="true" />
 				</div>
 			</div>
-			<Skeleton v-if="loading" height="119px" />
+			<Skeleton v-if="loading_users" height="119px" />
 
-			<div v-else-if="showTable" class="px-10 pb-10 h-96 overflow-y-auto">
-				<div v-for="(item, index) in usersList" :key="index" class="flex items-center justify-between py-6 border-b">
+			<div v-else-if="showTable" :key="key" class="px-10 pb-10 h-96 overflow-y-auto">
+				<div v-for="(item, index) in users" :key="index" class="flex items-center justify-between py-6 border-b">
 					<div class="flex items-center gap-x-3">
 						<Avatar :name="item.fname" bg="#B1C2D9" />
 						<div>
+							<p>{{ item?.fname || '' }} {{ item?.lname || '' }}</p>
 							<p class="text-sm font-medium">
 								{{ item.email }}
 							</p>
@@ -54,7 +51,7 @@
 						</div>
 					</div>
 					<div>
-						<input :id="item.email" v-model="selectedUsers" :checked="notificationType === 'all'" :disabled="sortDirection === 'company' || notificationType === 'all'" type="checkbox" :value="item" class="form-checkbox rounded-full text-green7">
+						<input :id="item.email" :disabled="type === 'company'" :checked="selectedUsers.map(el => el?.id).includes(item?.id) || credentials.notifyAll.value || type === 'company'" type="checkbox" class="form-checkbox rounded-full text-green7" @click.prevent="handleUserClicked(item)">
 					</div>
 				</div>
 			</div>
@@ -68,6 +65,48 @@
 </template>
 
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core'
+import { useUserNotifyFilter } from '@/composables/modules/users/notify-filter'
+import { useCreateNotification } from '@/composables/modules/users/notification'
+
+const key = ref(0)
+const { credentials, selectedUsers, notificationType } = useCreateNotification()
+const { loading_users, users, getUsers, filterData, selectedCompany, type } = useUserNotifyFilter()
+
+const showTable = computed(() => {
+	if (type.value === 'all') return true
+	else if (type.value === 'company' && selectedCompany.value?.id) return true
+	else return false
+})
+
+const handleUserClicked = (item:Record<string, any>) => {
+	credentials.notifyAll.value = false
+	key.value++
+	if (!selectedUsers.value.map((el) => el?.id).includes(item?.id)) {
+		selectedUsers.value.push(item)
+	} else {
+		const index = selectedUsers.value.indexOf(item)
+		selectedUsers.value.splice(index, 1)
+	}
+}
+
+watch(type, () => {
+	selectedUsers.value = []
+	if (type.value === 'company') users.value = []
+	if (type.value === 'all') {
+		getUsers()
+		selectedCompany.value = {}
+	}
+})
+
+watchDebounced(filterData.search, () => {
+	getUsers()
+}, { debounce: 500 })
+
+getUsers()
+</script>
+
+<!-- <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
 import { useCreateNotification } from '@/composables/modules/users/notification'
 import { useGetUsersList, useGetUserByCorporateId } from '@/composables/modules/users/fetch'
@@ -110,6 +149,12 @@ watchDebounced(corporateId, async () => {
 	await getUsersList()
 })
 
+watch(usersList, () => {
+	if (sortDirection.value === 'company') {
+		selectedUsers.value = [...usersList.value]
+	}
+})
+
 watch(sortDirection, () => {
 	if (sortDirection.value === 'all') {
 		page_size.value = 10
@@ -132,6 +177,6 @@ const showTable = computed(() => {
 	else return false
 })
 
-</script>
+</script> -->
 
 <style scoped></style>
