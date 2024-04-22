@@ -23,16 +23,23 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
     // @ts-ignore
     const existingMarker = markersArray.find((marker) => marker.id === location.id) as any
     if (existingMarker) {
+        if (Number(existingMarker.id) === Number(activeVehicleDriver_id.value)) {
+            map.panTo(existingMarker.getPosition()!)
+        existingMarker.setPosition(location)
+        existingMarker.setIcon({
+            url: busMarker(direction, 'green'),
+            rotation: direction
+        })
+        } else {
         existingMarker.setPosition(location)
         existingMarker.setIcon({
             url: busMarker(direction),
             rotation: direction
         })
+        }
 
         bounds.extend(existingMarker.getPosition()!)
-        if (Number(existingMarker.id) === Number(activeVehicleDriver_id.value)) {
-            map.panTo(existingMarker.getPosition()!)
-        }
+
         // map.fitBounds(bounds)
     } else {
         const marker = new Marker({
@@ -100,6 +107,7 @@ export const useLoadMarkerOnMap = () => {
 
     const setActiveTrip = async (id: string) => {
         activeVehicleDriver_id.value = id
+
         fetchRouteLoading.value = true
         const trip = getTripByDriverId(id)
         const route = await getRouteById(trip?.route_id)
