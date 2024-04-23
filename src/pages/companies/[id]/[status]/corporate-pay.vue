@@ -285,7 +285,7 @@
 														</button>
 														<button class="bg-transparent border-none"
 															@click="onDeleteExemption(n.id)">
-															<img src="@/assets/icons/source/edit.svg" alt="">
+															<img src="@/assets/icons/source/delete.svg" alt="">
 														</button>
 													</div>
 												</td>
