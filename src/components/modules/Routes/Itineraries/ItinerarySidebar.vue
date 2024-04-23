@@ -7,21 +7,23 @@
 			<Skeleton v-for="n in 3" :key="n" height="45px" radius="10px" />
 		</div>
 		<template v-if="itineraries.length && !loading">
-			<router-link v-for="n in itineraries" :key="n.id" class="relative w-full h-[50px] border rounded-md flex items-center pl-3" :to="`/trips/routes/${$route.params.id}/itineraries/${n.id}`" active-class="bg-dark text-white">
-				{{ n.trip_time }}
-
-				<button class="text-sm absolute bottom-1 right-2 font-medium" :class="[Number($route.params.iti_id) === n.id ? '!text-light' : 'text-dark']">
+			<div v-for="n in itineraries" :key="n.id" class="relative w-full h-[50px] border rounded-md overflow-hidden">
+				<router-link class="w-full h-full flex items-center pl-4" :to="`/trips/routes/${$route.params.id}/itineraries/${n.id}`" active-class="bg-dark text-white">
+					{{ n.trip_time }}
+				</router-link>
+				<button type="button" class="text-sm absolute bottom-1 right-2 font-medium" :class="[Number($route.params.iti_id) === n.id ? '!text-light' : 'text-dark']" @click.stop="initDeleteItinerary(n.id)">
 					Delete
 				</button>
-			</router-link>
+			</div>
 		</template>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useItineraries } from '@/composables/modules/routes/itineraries'
+import { useItineraries, useDeleteItinerary } from '@/composables/modules/routes/itineraries'
 import { useRouteModal } from '@/composables/core/modals'
 
 const { loading, itineraries, getItineraries } = useItineraries()
+const { initDeleteItinerary } = useDeleteItinerary()
 getItineraries()
 </script>
