@@ -18,6 +18,8 @@ export const useDeleteItinerary = () => {
         if (res.type !== 'ERROR') {
 			useConfirmationModal().closeAlert()
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Itinerary deleted successfully' })
+			const id = useRoute().params.id as string
+			useRouter().push(`/trips/routes/${id}/itineraries`)
 			getItineraries()
         }
 		loading.value = false

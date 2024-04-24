@@ -36,9 +36,10 @@
 			</div>
 			<Skeleton v-if="loading_users" height="119px" />
 
-			<div v-else-if="showTable" :key="key" class="px-10 pb-10 h-96 overflow-y-auto">
+			<div v-else-if="showTable" :key="key" class="px-4 h-auto max-h-[700px] overflow-y-auto">
 				<div v-for="(item, index) in users" :key="index" class="flex items-center justify-between py-6 border-b">
 					<div class="flex items-center gap-x-3">
+						<p class="text-sm text-dark">{{ (page - 1) * 10 + index + 1 }}</p>
 						<Avatar :name="item.fname" bg="#B1C2D9" />
 						<div>
 							<p>{{ item?.fname || '' }} {{ item?.lname || '' }}</p>
@@ -54,6 +55,14 @@
 						<input :id="item.email" :disabled="type === 'company'" :checked="selectedUsers.map(el => el?.id).includes(item?.id) || credentials.notifyAll.value || type === 'company'" type="checkbox" class="form-checkbox rounded-full text-green7" @click.prevent="handleUserClicked(item)">
 					</div>
 				</div>
+				<TablePaginator
+					:current-page="page"
+					:total-pages="total"
+					:loading="loading_users"
+					@move-to="moveTo($event)"
+					@next="next"
+					@prev="prev"
+				/>
 			</div>
 			<div v-else class="flex items-center justify-center py-10">
 				<p class="text-sm text-gray-400">
@@ -71,7 +80,7 @@ import { useCreateNotification } from '@/composables/modules/users/notification'
 
 const key = ref(0)
 const { credentials, selectedUsers, notificationType } = useCreateNotification()
-const { loading_users, users, getUsers, filterData, selectedCompany, type } = useUserNotifyFilter()
+const { loading_users, users, getUsers, filterData, selectedCompany, type, page, total, moveTo, next, prev } = useUserNotifyFilter()
 
 const showTable = computed(() => {
 	if (type.value === 'all') return true
@@ -100,6 +109,7 @@ watch(type, () => {
 })
 
 watchDebounced(filterData.search, () => {
+	page.value = 1
 	getUsers()
 }, { debounce: 500 })
 
