@@ -194,5 +194,9 @@ export const routes_api = {
 	$_reorder_busstop: (routeId:string|number, payload: Record<string, any>) => {
 		const url = `/routes/${routeId}/busstops`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
-	}
+	},
+	$_delete_itinerary: (itinerary_id: number) => {
+        const url = `/route-itineraries/${itinerary_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+    }
 }

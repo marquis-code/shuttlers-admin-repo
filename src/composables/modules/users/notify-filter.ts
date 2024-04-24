@@ -8,6 +8,7 @@ const type = ref('all') as Ref<'all'|'company'>
 const selectedCompany = ref({} as Record<string, any>)
 const loading_users = ref(false)
 const all_users_selected = ref(false)
+const companyTotalStaff = ref(0)
 // const { selectedUsers } = useCreateNotification()
 
 const filterData = {
@@ -25,21 +26,19 @@ export const useUserNotifyFilter = () => {
         const res = await users_api.$_get_users(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             users.value = res.data.data?.length ? res.data?.data : []
-            // if (type.value === 'company' && selectedCompany.value?.id) selectedUsers.value = res.data.data?.length ? res.data?.data : []
+            metaObject.total.value = res.data.metadata?.total_pages
+            companyTotalStaff.value = res.data?.metadata?.total
         }
         loading_users.value = false
     }
 
+    setFunction(getUsers)
+
     watch(selectedCompany, () => {
+        filterData.search.value = ''
+        metaObject.page.value = 1
         getUsers()
     })
 
-    // const getCorporates = async () => {
-    //     const res = await corporates_api.$_get(metaObject, userFilterData) as CustomAxiosResponse
-    //     if (res.type !== 'ERROR') {
-    //         users.value = res.data.data
-    //     }
-    // }
-
-    return { users, type, filterData, selectedCompany, loading_users, getUsers, all_users_selected }
+    return { users, type, filterData, selectedCompany, loading_users, getUsers, all_users_selected, moveTo, ...metaObject, next, prev, companyTotalStaff }
 }
