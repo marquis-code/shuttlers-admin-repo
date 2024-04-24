@@ -37,7 +37,16 @@ export const useCreateNotification = () => {
     })
 
     const sendNotification = async () => {
-            useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${credentials.notifyAll.value ? 'All' : selectedUsers.value.length} users?`, loading: creatingNotification, call_function: () => createNotifications() })
+        const { selectedCompany } = useUserNotifyFilter()
+        const normal_desc = computed(() => `Are you sure you want to notify ${credentials.notifyAll.value ? 'All' : selectedUsers.value.length} users?`)
+        const company_desc = computed(() => `Are you sure you want to notify all "${selectedCompany.value?.corporate_name}" users`)
+            useConfirmationModal().openAlert({
+                type: 'NORMAL',
+                title: 'Please Confirm',
+                desc: selectedCompany.value?.id ? company_desc.value : normal_desc.value,
+                loading: creatingNotification,
+                call_function: () => createNotifications()
+            })
     }
 
     const createNotifications = async () => {

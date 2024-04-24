@@ -18,7 +18,9 @@
 				<div class="flex justify-between items-center border-b py-4 px-3">
 					<div class="flex items-center gap-4 list-group-item">
 						<div class="w-28 rounded-md bg-white border">
-							<div><FullscreenImage :src="qrCodeImageUrl" alt="QR Code" /></div>
+							<div>
+								<FullscreenImage :src="qrCodeImageUrl" alt="QR Code" />
+							</div>
 						</div>
 						<span class="cursor-pointer text-sm" @click="showAllQrCode">Export QR code</span>
 					</div>
@@ -79,7 +81,8 @@
 						DRIVER
 					</p>
 					<div class="text-sm">
-						<span>{{ selectedVehicle?.driver ? `${selectedVehicle?.driver.fname} ${selectedVehicle?.driver.lname}`: 'Unassigned' }}</span>
+						<span>{{ selectedVehicle?.driver ? `${selectedVehicle?.driver.fname}
+							${selectedVehicle?.driver.lname}` : 'Unassigned' }}</span>
 					</div>
 				</div>
 				<div class="flex justify-between items-center border-b py-4 px-3">
@@ -90,7 +93,7 @@
 						{{ useDateFormat(selectedVehicle.created_at, "MMMM d, YYYY").value }}
 					</p>
 				</div>
-				<div class="flex justify-between items-center py-4 px-3">
+				<div class="flex justify-between items-center border-b py-4 px-3">
 					<p class="text-gray-500 text-sm">
 						PARTNER
 					</p>
@@ -104,6 +107,12 @@
 							<span class="text-muted">No partner assigned</span>
 						</div>
 					</div>
+				</div>
+				<div class="flex justify-between items-center py-4 px-3">
+					<p class="text-gray-500 text-sm">
+						STATUS
+					</p>
+					<StatusBadge :name="selectedVehicle?.status" />
 				</div>
 			</div>
 			<Skeleton v-else height="300px" />
@@ -171,62 +180,60 @@ const dropdownChildren = computed(() => [
 ])
 
 const vehicleEarning = computed(() => {
-			return fleetEarnings.value.reduce((accumulator, currentValue) => {
-				return accumulator + currentValue.finalPartnersRevenue
-			}, 0)
-		})
+	return fleetEarnings.value.reduce((accumulator, currentValue) => {
+		return accumulator + currentValue.finalPartnersRevenue
+	}, 0)
+})
 
 const formattedEarnings = computed(() => {
-      return !vehicleEarning.value
-        ? '₦0.00'
-        : `₦${parseFloat(vehicleEarning.value)
-            .toFixed(2)
-            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
-    })
+	return !vehicleEarning.value
+		? '₦0.00'
+		: `₦${parseFloat(vehicleEarning.value)
+			.toFixed(2)
+			.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`
+})
 
-	const breadcrum = computed(() => {
-		return [
-            {
-                name: `${selectedVehicle?.value?.brand} ${selectedVehicle?.value?.name}`,
-                link: '#'
-            },
-            {
-                name: `${selectedVehicle?.value?.registration_number}`,
-                link: '#'
-            }
-        ]
-	})
+const breadcrum = computed(() => {
+	return [
+		{
+			name: `${selectedVehicle?.value?.brand} ${selectedVehicle?.value?.name}`,
+			link: '#'
+		},
+		{
+			name: `${selectedVehicle?.value?.registration_number}`,
+			link: '#'
+		}
+	]
+})
 const openDropdown = ref(false)
 const qrCodeImageUrl = computed(() => {
-			return `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
-		})
+	return `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+})
 
-		const showAllQrCode = () => {
-			const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
-			window.open(link, '_blank')
-		}
+const showAllQrCode = () => {
+	const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${selectedVehicle?.value.id}/qrimage.png`
+	window.open(link, '_blank')
+}
 
-		const handleDecomission = (itm) => {
-			useConfirmationModal().openAlert({
-        title: 'Please Confirm',
+const handleDecomission = (itm) => {
+	useConfirmationModal().openAlert({
+		title: 'Please Confirm',
 		type: 'NORMAL',
-        desc: 'Are you sure you want to delete this vehicle?',
+		desc: `Are you sure you want to ${itm?.status === 'active' ? 'deactivate' : 'activate'} this vehicle?`,
 		loading: processing_decommision,
-		call_function: () => handleDecommisionVehicle(itm.id)
-    })
-		}
+		call_function: () => handleDecommisionVehicle(itm)
+	})
+}
 
-		const editVehicle = (data) => {
-			openEditBus(data)
-			useVehicleModal().openEditBus()
-		}
+const editVehicle = (data) => {
+	openEditBus(data)
+	useVehicleModal().openEditBus()
+}
 
-		const exportQrCode = (data) => {
-			const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${data.id}/qrimage.png`
-			window.open(link, '_blank')
-		}
+const exportQrCode = (data) => {
+	const link = `${import.meta.env.VITE_BASE_URL}/v1/vehicles/${data.id}/qrimage.png`
+	window.open(link, '_blank')
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

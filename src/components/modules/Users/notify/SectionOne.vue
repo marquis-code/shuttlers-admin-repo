@@ -9,7 +9,7 @@
 					<input v-model="search" type="text" placeholder="Add users" class="pl-4 bg-white outline-none">
 				</div>
 				<p v-if="selectedCompany?.id && !loading_users" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium whitespace-nowrap">
-					All<span class="underline mx-2">{{ selectedCompany?.corporate_name }} ({{ users.length }})</span>users selected
+					All<span class="underline mx-2">{{ selectedCompany?.corporate_name }} ({{ companyTotalStaff }})</span>users selected
 				</p>
 				<p v-if="!credentials.notifyAll.value && !selectedCompany?.id" class="bg-gray-200 rounded-full px-3 py-2.5 text-xs font-medium">
 					{{ selectedUsers.length }} user{{ selectedUsers.length > 0 ? 's' : '' }} selected
@@ -65,12 +65,13 @@ import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
 import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserNotifyFilter } from '@/composables/modules/users/notify-filter'
 
-const { selectedCompany, loading_users, users, type } = useUserNotifyFilter()
+const { selectedCompany, loading_users, users, type, companyTotalStaff } = useUserNotifyFilter()
 const { sendNotification, creatingNotification, credentials, removeSelectedUser, selectedUsers, search } = useCreateNotification()
 const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
 // const { usersList, loading } = useGetUsersList()
 
 const isButtonEnable = computed(() => {
+	if (!credentials.sms.value && !credentials.email.value) return false
 	if (!credentials.title.value) return false
 	if (!credentials.description.value) return false
 	if (type.value === 'all' && credentials.notifyAll.value) return true
