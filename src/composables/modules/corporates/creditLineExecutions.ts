@@ -108,7 +108,7 @@ export const useBatchScheduleCreditSystem = () => {
                 type: 'SUCCESS',
                 msg: 'Credit system has been scheduled successfully'
               })
-             router.push(`/companies/${route.params.id}/${route.params.status}/credit-line`)
+             useRouter().push(`/companies/${route.params.id}/${route.params.status}/credit-line`)
         }
         loading.value = false
     }
