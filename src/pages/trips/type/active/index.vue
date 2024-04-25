@@ -42,7 +42,7 @@
 				<p v-if="item.vehicle" class="min-w-[100px]">
 					{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 				</p>
-				<div v-if="item.route">
+				<div v-if="item.route" @click.stop>
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.destination" />
 				</div>
 				<div v-if="item.action" class="w-20">
