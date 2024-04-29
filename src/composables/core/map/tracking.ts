@@ -9,7 +9,7 @@ let openInfoWindow: google.maps.InfoWindow | null = null // Keep track of the op
 let bounds: google.maps.LatLngBounds | null = null
 const activeVehicleDriver_id = ref<string | null>()
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
-    const { Marker, InfoWindow } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
+    const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
     const { LatLngBounds } = await google.maps.importLibrary('core') as google.maps.CoreLibrary
 
     if (!bounds) {
