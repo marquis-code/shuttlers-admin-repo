@@ -75,7 +75,8 @@ let currentStartMarker: google.maps.Marker | null = null
 let currentEndMarker: google.maps.Marker | null = null
 
 export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void> => {
-    const { Polyline, Marker } = (await google.maps.importLibrary('maps')) as typeof google.maps
+    const { Polyline } = (await google.maps.importLibrary('maps')) as typeof google.maps
+    const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
 
     // Clear existing polyline
     if (currentPolyline) {

@@ -51,7 +51,7 @@
 				>
 					{{ item.data?.trip_id ? 'Completed' : 'Upcoming' }}
 				</p>
-				<div v-if="item.route">
+				<div v-if="item.route" @click.stop>
 					<RouteDescription :pickup="item.data.route?.pickup" :destination="item.data?.route?.destination" />
 				</div>
 				<span v-if="item.action">
