@@ -42,7 +42,7 @@
 			<p class="text-gray-500 text-sm">
 				NIN
 			</p>
-			<p class="text-sm truncate w-1/2">
+			<p class="text-sm truncate max-w-[50%]">
 				{{ selectedUser.nin ?? 'N/A' }}
 			</p>
 		</div>
@@ -98,6 +98,9 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useSuspendAgent } from '@/composables/modules/agents/suspend'
+import { useReverseGeoocoding } from '@/composables/core/map/geocoding'
+
+// const { getAddress, address } = useReverseGeoocoding()
 
 const { suspendAgent, suspend } = useSuspendAgent()
 

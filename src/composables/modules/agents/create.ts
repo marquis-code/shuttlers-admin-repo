@@ -1,7 +1,7 @@
 import { CustomAxiosResponse } from '@/api_factory/modules'
 import { agents_api } from '@/api_factory/modules/agent'
 import { useAlert } from '@/composables/core/notification'
-import { convertObjWithRefToObj, convertToCurrency } from '@/composables/utils/formatter'
+import { convertObjWithRefToObj, isValidEmail } from '@/composables/utils/formatter'
 
 const createForm = {
 	fname: ref(''),
@@ -10,7 +10,7 @@ const createForm = {
 	// nin: ref(''),
 	avatar: ref(''),
 	phone: ref(''),
-	address: ref(''),
+	location: ref({} as any),
 	password: ref(''),
 	account_type: ref('sales_agent')
 }
@@ -19,7 +19,10 @@ export const useCreateAgents = () => {
 	const loading = ref(false)
 
 	const createAgent = async () => {
-		loading.value = true
+			if (!isValidEmail(createForm.email.value)) {
+			useAlert().openAlert({ type: 'ERROR', msg: 'invalid email' })
+			return
+		}
 		const shouldIgnoreKeys = computed(() => {
 			if (!createForm.avatar.value) {
 				return ['avatar']
@@ -27,6 +30,7 @@ export const useCreateAgents = () => {
 				return []
 		}
 		})
+		loading.value = true
 		const res = (await agents_api.$_create_agent(convertObjWithRefToObj(createForm, shouldIgnoreKeys.value))) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			useRouter().push('/agents')

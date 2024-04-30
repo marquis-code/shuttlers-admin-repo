@@ -19,7 +19,11 @@ export const useGetAgentsRoutes = () => {
         to: ref(''),
         status: ref('active')
 	}
-	watch([filterData.approval_status], (val) => {
+
+	const filterData_monitoring = {
+		trip_type: ref('completed')
+	}
+	watch([filterData.approval_status, filterData_monitoring.trip_type], (val) => {
 		getAgentsRoute()
 	})
 
@@ -58,7 +62,7 @@ export const useGetAgentsRoutes = () => {
             date.setDate(date.getDate() - 30)
             filterData.from.value = date.toISOString().split('T')[0]
 
-			const response = (await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.sales_agent_account_id)) as CustomAxiosResponse
+			const response = (await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.sales_agent_account_id, filterData_monitoring)) as CustomAxiosResponse
 			if (response.type !== 'ERROR') {
 				agentsRoute.value = response.data.data
 					metaObject.total.value = response.data.metadata.total
@@ -70,7 +74,7 @@ export const useGetAgentsRoutes = () => {
 	setFunction(getAgentsRoute)
 
 	return {
-		getAgentsRoute,
+		getAgentsRoute, filterData_monitoring,
 		loading,
 		agentsRoute,
 		moveTo,

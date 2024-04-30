@@ -128,6 +128,25 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void
     map.fitBounds(bounds)
 }
 
+let busStopMarkers: google.maps.Marker[] = []
+
+export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> => {
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+
+    busStopMarkers.forEach((marker) => marker.setMap(null))
+    busStopMarkers = []
+
+    stops.forEach((stop) => {
+        const marker = new Marker({
+            position: { lat: stop.geometry.y, lng: stop.geometry.x },
+            icon: '/busstop.svg',
+            map,
+            title: stop.name
+        })
+         busStopMarkers.push(marker)
+    })
+}
+
 export const addPointOnMap = async (location: Coordinate) => {
     if (!map) return
     if (!location.lat) return
