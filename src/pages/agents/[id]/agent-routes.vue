@@ -17,10 +17,10 @@
 				<span class="text-sm text-grey5">Total trips taken</span>
 				<span class="text-3xl font-bold">{{ total }}</span>
 			</div>
-			<!-- <div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
+			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Accrued earnings</span>
 				<span class="text-3xl font-bold">0 pts</span>
-			</div> -->
+			</div>
 		</section>
 		<main class="flex flex-col gap-6">
 			<Table v-if="filterData.approval_status.value !== 'monitoring'" :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true" class="mb-12">
