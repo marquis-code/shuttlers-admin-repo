@@ -4,7 +4,7 @@
 			<p class="flex justify-center items-center gap-x-2">
 				<img src="@/assets/icons/source/upload.svg" alt="preview icon" class="rounded-full border p-2 h-10 w-10">
 				{{ selectedFileName ? selectedFileName : '' }}</p>
-			<input id="image" class="hidden" type="file" accept=".csv" @change="handleFileChange">
+			<input id="image" ref="inputFileCsv" class="hidden" type="file" accept=".csv" @change="handleFileChange">
 			<span>Choose File</span>
 		</label>
 		<div v-if="errorMessage" class="error">
@@ -13,12 +13,17 @@
 	</div>
 </template>
 
-  <script setup lang="ts">
+<script setup lang="ts">
   import { useAlert } from '@/composables/core/notification'
+
+const emits = defineEmits(['emails', 'onFileSelected'])
+const inputFileCsv = ref(null as any)
+
   const errorMessage = ref(null) as any
   const userEmails = ref([])
   const selectedFileName = ref('')
   const handleFileChange = (event) => {
+    emits('onFileSelected', event)
     const file = event.target.files[0]
 
     if (!file) {
@@ -60,7 +65,6 @@
 
   return headers.some((header) => header.trim().toLowerCase() === 'email')
 }
-const emits = defineEmits(['emails'])
 
 const extractUserEmails = (csvData) => {
   const rows = csvData.split('\n')

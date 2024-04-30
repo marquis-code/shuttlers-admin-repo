@@ -3,25 +3,12 @@
 		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="fleetDocuments" :has-options="true" :option="(data)=>$router.push(`/admin/${data.id}/info`)">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" />
+				<TableFilter :filter-type="{showStatus:false, showSearchBar:false}" />
 			</template>
 			<template #item="{ item }">
-				<span v-if="item.fname" class="flex items-center gap-4">
-					<div>
-						<Avatar :name="item.data.fname" bg="#B1C2D9" />
-					</div>
-
-					<span>{{ item.data.fname }} {{ item.data.lname }}</span>
-				</span>
-				<span v-else-if="item.active" :class="[item.data.active == 1 ? 'text-green-500' : 'text-red-500']">
-					{{ item.data.active == 1 ? 'Active' : 'Inactive' }}
-				</span>
-				<span v-else-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-				</span>
-				<span v-else-if="item.updated_at">
-					{{ useDateFormat(item.data.updated_at, "MMMM d, YYYY").value }}
-				</span>
+				<p v-if="item.type" class="flex items-center gap-4">
+					{{ item?.data?.document_type }}
+				</p>
 			</template>
 		</Table>
 	</main>
@@ -41,23 +28,23 @@ definePageMeta({
 const tableFields = ref([
     {
         text: 'TYPE',
-        value: 'fname'
+        value: 'type'
     },
     {
         text: 'CATEGORY',
-        value: 'phone'
+        value: 'category'
     },
     {
         text: 'DOCUMENT',
-        value: 'email'
+        value: 'document'
     },
     {
         text: 'EXPIRY DATE',
-        value: 'active'
+        value: 'expiry_date'
     },
     {
         text: 'STATUS',
-        value: 'role'
+        value: 'status'
     },
     {
         text: 'DATE CREATED',
@@ -65,7 +52,7 @@ const tableFields = ref([
     },
     {
         text: 'ACTIONS',
-        value: 'updated_at'
+        value: 'actions'
     }
 ])
 
