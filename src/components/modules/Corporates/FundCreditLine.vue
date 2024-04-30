@@ -35,7 +35,7 @@
 					</button>
 				</h1>
 				<div>
-					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
+					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" @on-file-selected="handleEvent" />
 				</div>
 			</div>
 			<div>
@@ -98,9 +98,19 @@ const isFormEmpty = computed(() => {
 
 const employeeCreditOption = ref('select_from_dropdown')
 const selectedUser = ref()
+const selectedFile = ref(null as any)
 const handleUploadedEmails = (item: any) => {
 	const result = item.filter((itm: any) => itm !== '')
 	form.uploadedUsers = result
+}
+
+const handleEvent = (event:Record<string, any>) => {
+	const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = function(e) {
+        const binaryData = e.target!.result
+		selectedFile.value = binaryData
+    }
 }
 
 const submitForm = () => {
@@ -117,6 +127,9 @@ const submitForm = () => {
 	}
 	if (is_schedule_later_application.value) {
 		payload.scheduled_for = form.application_date
+	}
+	if (employeeCreditOption.value === 'csv_upload') {
+		payload.selected_employee = selectedFile.value
 	}
 	populateBatchCreditSystemScheduleForm(payload)
 	scheduleBatchCreditSystem(creditSystem.value.id)
