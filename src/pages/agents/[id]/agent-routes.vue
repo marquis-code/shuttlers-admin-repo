@@ -19,7 +19,7 @@
 			</div>
 			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
 				<span class="text-sm text-grey5">Accrued earnings</span>
-				<span class="text-3xl font-bold">0 pts</span>
+				<span class="text-3xl font-bold">{{ total_commissions }} pts</span>
 			</div>
 		</section>
 		<main class="flex flex-col gap-6">
@@ -127,7 +127,7 @@ import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData, filterData_monitoring } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData, filterData_monitoring, total_commissions } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
@@ -206,11 +206,11 @@ const tableFields = computed(() => {
 	{
         text: 'DRIVER’S NAME',
         value: 'driver'
-    },
-	{
-        text: 'STATUS',
-        value: 'status'
     }
+	// {
+    //     text: 'STATUS',
+    //     value: 'status'
+    // }
 	// {
 	// 	text: 'EARNINGS (pts)',
 	// 	value: 'action'
