@@ -9,7 +9,7 @@ const AgentByIdloading = ref(false)
 
 export const useAgentIdDetails = () => {
     const getAgentById = async (id: string) => {
-        if (selectedId.value === id) return selectedAgent.value
+        // if (selectedId.value === id) return selectedAgent.value
         selectedId.value = id
         AgentByIdloading.value = true
         const res = await agents_api.$_get_agent_by_id(id) as CustomAxiosResponse
