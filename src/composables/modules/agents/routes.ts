@@ -5,6 +5,7 @@ import { isValidJsonString } from '@/composables/utils/formatter'
 
 const agentsRoute = ref([] as any)
 const agentDataRef = ref()
+const total_commissions = ref(0)
 
 export const useGetAgentsRoutes = () => {
 	const filterOptions = [
@@ -65,7 +66,10 @@ export const useGetAgentsRoutes = () => {
 			const response = (await agents_api.$_get_Agent_trip_monitoring(agentDataRef.value.sales_agent_account_id, filterData_monitoring)) as CustomAxiosResponse
 			if (response.type !== 'ERROR') {
 				agentsRoute.value = response.data.data
-					metaObject.total.value = response.data.metadata.total
+				if (response.data.total_commissions) {
+					total_commissions.value = response.data.total_commissions
+				}
+				metaObject.total.value = response.data.metadata.total
 				metaObject.total_pages.value = response.data.metadata.total_pages
 			}
 		}
@@ -75,7 +79,7 @@ export const useGetAgentsRoutes = () => {
 
 	return {
 		getAgentsRoute, filterData_monitoring,
-		loading,
+		loading, total_commissions,
 		agentsRoute,
 		moveTo,
 		...metaObject,
