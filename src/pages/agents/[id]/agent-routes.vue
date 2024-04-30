@@ -77,16 +77,16 @@
 						<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">
 							{{ item?.data?.route?.route_code }}
 						</NuxtLink> <br>
-						({{ moment.utc(item.data.trip_start_time).format('LT') }})
+						({{ moment.utc(item.data?.trip_start_time).format('LT') }})
 					</div>
 
 					<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap">
-						<NuxtLink :to="`/drivers/${item.data.driver.id}/driver-info`" class="">
+						<NuxtLink :to="`/drivers/${item?.data?.driver?.id}/driver-info`" class="">
 							{{
-								item.data.driver
-									? `${item.data.driver.fname} ${item.data.driver.lname}`
-									: item.data.route.driver
-										? `${item.data.route.driver.fname} ${item.data.route.driver.lname}`
+								item?.data?.driver
+									? `${item?.data?.driver?.fname} ${item.data?.driver?.lname}`
+									: item.data?.route?.driver
+										? `${item.data?.route?.driver?.fname} ${item.data?.route?.driver?.lname}`
 										: 'N/A'
 							}}
 						</NuxtLink>
@@ -96,17 +96,18 @@
 						</span>
 					</span>
 					<span v-if="item.status">
-						<StatusBadge :name="item.data.status" />
+						<StatusBadge :name="item?.data?.status" />
 					</span>
 
 					<span v-else-if="item.user" class="space-y-4 text-base">
-						{{ item?.data?.user.fname }} {{ item?.data?.user.lname }}
+						{{ item?.data?.user?.fname }} {{ item?.data?.user?.lname }}
 					</span>
 					<p v-if="item.vehicle" class="min-w-[100px]">
 						{{ item.data.vehicle }} <br> {{ item.data?.cost_of_supply ? convertToCurrency(item.data?.cost_of_supply) : 'N/A' }}
 					</p>
 					<div v-if="item.route">
-						<RouteDescription :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+						<RouteDescription v-if="item.data.route.pickup" :pickup="item.data.route.pickup" :destination="item.data.route.destination" />
+						<span v-else>N/A</span>
 					</div>
 				</template>
 				<template #footer>
