@@ -9,11 +9,30 @@ export const useGetAgentsList = () => {
 
     const { $_get_agents } = agents_api
 
+        const filterData = {
+        search: ref('')
+        // status: ref('1')
+    }
+    const onFilterUpdate = (data) => {
+        switch (data.type) {
+        case 'search':
+            filterData.search.value = data.value
+            break
+        // case 'status':
+        //     filterData.status.value = data.value
+        //     break
+    }
+    }
+
+    watch(filterData.search, (val) => {
+        getAgentsList()
+    })
+
     const getAgentsList = async () => {
         agentsList.value = []
         loading.value = true
 
-        const response = await $_get_agents(metaObject) as CustomAxiosResponse
+        const response = await $_get_agents(metaObject, filterData) as CustomAxiosResponse
 
         if (response.type !== 'ERROR') {
             agentsList.value = response.data.data
@@ -23,5 +42,5 @@ export const useGetAgentsList = () => {
     }
     setFunction(getAgentsList)
 
-    return { getAgentsList, loading, agentsList, moveTo, ...metaObject, next, prev }
+    return { getAgentsList, loading, agentsList, moveTo, ...metaObject, next, prev, onFilterUpdate }
 }

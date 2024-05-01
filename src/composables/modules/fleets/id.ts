@@ -76,8 +76,8 @@ export const useGetFleetDocuments = () => {
         const res = await $_get_fleet_documents_by_id(selectedVehicleId.value, selectedVehicle?.value?.partner?.id) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-            fleetDocuments.value = res.data.data
-            metaObject.total.value = res.data.metadata.total_pages
+            fleetDocuments.value = res.data?.vehicleDocuments
+            metaObject.total.value = res.data.metadata?.total_pages || 1
         }
         loading.value = false
     }

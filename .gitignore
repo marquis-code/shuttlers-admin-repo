@@ -197,6 +197,7 @@ node_modules
 .vercel
 .env
 .env.*
+.DS_Store
 
 # End of https://www.toptal.com/developers/gitignore/api/nuxtjs,vercel,macos,node
 /test-results/

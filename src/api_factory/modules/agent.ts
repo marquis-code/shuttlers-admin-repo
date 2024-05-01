@@ -29,9 +29,9 @@ export const agents_api = {
 
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_Agent_trip_monitoring: (id:number) => {
-		// const queryParams = useTableFilter(filterData)
-		const url = `/sales-route-suggestions/agent/${id}/trip-monitoring`
+	$_get_Agent_trip_monitoring: (id:number, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/sales-route-suggestions/agent/${id}/trip-monitoring/?${queryParams}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_create_agent: (payload: any) => {

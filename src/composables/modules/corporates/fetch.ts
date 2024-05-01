@@ -74,7 +74,8 @@ export const useGetCorporateList = () => {
     const filterData = {
         search: ref(''),
         query: ref(''),
-        active: ref(1)
+        active: ref(1),
+        'sort[created_at]': ref('desc')
     }
 
     watch([filterData.search, filterData.active], (val) => {
