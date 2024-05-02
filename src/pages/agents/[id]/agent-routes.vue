@@ -71,13 +71,13 @@
 				</template>
 				<template #item="{ item }">
 					<p v-if="item.start_date" class="min-w-[100px]">
-						{{ moment.utc(item.data.start_date).format('ll') }}
+						{{ item.data?.trip ? moment.utc(item.data?.trip?.start_trip).format('ll') : moment.utc(item.data?.trip_date).format('ll') }}
 					</p>
 					<div v-if="item.route_code" class="whitespace-nowrap min-w-[80px]" @click.stop>
 						<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">
 							{{ item?.data?.route?.route_code }}
 						</NuxtLink> <br>
-						({{ moment.utc(item.data?.trip_start_time).format('LT') }})
+						({{ item.data?.trip ? moment.utc(item.data?.trip?.start_trip).format('LT') : item.data?.itinerary?.trip_time }})
 					</div>
 
 					<span v-if="item.driver" class="text-blue-500 flex gap-1 flex-wrap">
