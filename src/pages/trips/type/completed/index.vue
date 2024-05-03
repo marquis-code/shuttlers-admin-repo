@@ -51,7 +51,7 @@
 						View
 					</button>
 				</div>
-				<div v-if="item.route">
+				<div v-if="item.route" @click.stop>
 					<RouteDescription :pickup="item.data.pickup" :destination="item.data.dropoff" />
 				</div>
 				<p v-if="item.vehicle" class="min-w-[100px]">

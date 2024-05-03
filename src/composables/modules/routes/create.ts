@@ -259,3 +259,6 @@ const removeFalsyElement = (object) => {
 export const getRouteById = async (id: string) => {
     return await routes_api.$_get_route_by_id(id)
 }
+export const getRouteBusstopsById = async (id: string) => {
+    return await routes_api.$_get_routes_busstops(id)
+}

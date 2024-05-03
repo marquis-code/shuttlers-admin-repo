@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div v-if="employeeCreditOption === 'select_from_dropdown'">
-				<InputMultiSelectUsers v-model="form.selected_employee" />
+				<InputMultiSelectCorporateUsers v-model="form.selected_employee" :multiple="false" :corporate-id="($route.params.id as string)" />
 			</div>
 			<div v-if="employeeCreditOption === 'csv_upload'">
 				<h1>
@@ -35,7 +35,7 @@
 					</button>
 				</h1>
 				<div>
-					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
+					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" @on-file-selected="handleEvent" />
 				</div>
 			</div>
 			<div>
@@ -49,14 +49,11 @@
 				<label for="startDate">Choose Date</label>
 				<InputTimeInput v-model="form.application_date" format="YYYY-MM-DD hh:mm A" date-type="datetime" class="font-light" placeholder="select date" />
 			</div>
-			<div>
-				<label>
-					<label>
-						<input type="checkbox">
-						Clear previous balance</label>
-				</label>
+			<div class="flex items-center gap-2">
+				<input id="clear_prev_bal" v-model="form.clear_prev_bal" type="checkbox">
+				<label for="clear_prev_bal" class="m-0">Clear previous balance</label>
 			</div>
-			<button :disabled="!isFormEmpty" class="text-white bg-black rounded-md py-3 px-6 disabled:opacity-25 disabled:cursor-not-allowed">
+			<button :disabled="!isFormEmpty && loading" class="text-white bg-black rounded-md py-3 px-6 disabled:opacity-25 disabled:cursor-not-allowed min-w-[100px]">
 				<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 					Fund Credit Wallet
 				</span>
@@ -91,7 +88,8 @@ const form = reactive({
 	application_date: '',
 	credit_amount: '',
 	credit_narration: '',
-	uploadedUsers: []
+	uploadedUsers: [],
+	clear_prev_bal: false
 })
 
 const isFormEmpty = computed(() => {
@@ -100,25 +98,40 @@ const isFormEmpty = computed(() => {
 
 const employeeCreditOption = ref('select_from_dropdown')
 const selectedUser = ref()
+const selectedFile = ref(null as any)
 const handleUploadedEmails = (item: any) => {
 	const result = item.filter((itm: any) => itm !== '')
 	form.uploadedUsers = result
 }
 
+const handleEvent = (event:Record<string, any>) => {
+	const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = function(e) {
+        const binaryData = e.target!.result
+		selectedFile.value = binaryData
+    }
+}
+
 const submitForm = () => {
 	const staffArray = [] as any
-	staffArray.push(form.selected_employee.id)
-	const payload = {
-    narration: form.credit_narration,
-    amount: form.credit_amount,
-    increment_credit_wallet: 0,
-    is_topup: true,
-    selected_employee: null,
-    scheduled: is_schedule_later_application.value,
-	scheduled_for: convertDateFormat(form.application_date),
-    only_selected_staff: staffArray || null
-}
-populateBatchCreditSystemScheduleForm(payload)
-scheduleBatchCreditSystem(creditSystem.value.id)
+	staffArray.push(form.selected_employee?.id)
+	const payload:Record<string, any> = {
+		narration: form.credit_narration,
+		amount: form.credit_amount,
+		increment_credit_wallet: Number(!form.clear_prev_bal),
+		is_topup: true,
+		selected_employee: null,
+		scheduled: is_schedule_later_application.value,
+		only_selected_staff: staffArray || null
+	}
+	if (is_schedule_later_application.value) {
+		payload.scheduled_for = form.application_date
+	}
+	if (employeeCreditOption.value === 'csv_upload') {
+		payload.selected_employee = selectedFile.value
+	}
+	populateBatchCreditSystemScheduleForm(payload)
+	scheduleBatchCreditSystem(creditSystem.value.id)
 }
 </script>

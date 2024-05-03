@@ -1,7 +1,7 @@
 import { UserCoordinate, Coordinate } from './types'
 import { busMarker } from './svg_icon'
-import { loadPolyline, map, getPathFromPolyline } from './index'
-import { getRouteById } from '@/composables/modules/routes/create'
+import { loadPolyline, map, getPathFromPolyline, loadBusstops } from './index'
+import { getRouteById, getRouteBusstopsById } from '@/composables/modules/routes/create'
 import { getTripByDriverId } from '@/composables/modules/tracking/vehicle/fetch'
 
 const markersArray: google.maps.Marker[] = []
@@ -9,7 +9,7 @@ let openInfoWindow: google.maps.InfoWindow | null = null // Keep track of the op
 let bounds: google.maps.LatLngBounds | null = null
 const activeVehicleDriver_id = ref<string | null>()
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
-    const { Marker, InfoWindow } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
+    const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
     const { LatLngBounds } = await google.maps.importLibrary('core') as google.maps.CoreLibrary
 
     if (!bounds) {
@@ -113,6 +113,8 @@ export const useLoadMarkerOnMap = () => {
         const route = await getRouteById(trip?.route_id)
         const poly = await getPathFromPolyline(JSON.stringify(route.data.overview_polyline)) as google.maps.LatLng[]
         loadPolyline(poly)
+        const busstops = await getRouteBusstopsById(trip?.route_id)
+        loadBusstops(busstops.data.data)
         fetchRouteLoading.value = false
     }
 

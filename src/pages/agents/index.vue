@@ -16,8 +16,7 @@
 		</section>
 		<Table :loading="loading" :headers="tableFields" :table-data="agentsList" :has-options="true" :option="onRowClicked" :has-index="true" :page="page">
 			<template #header>
-				<TableFilter :filter-type="{ showSearchBar:true, showDownloadButton: true,}"
-				/>
+				<TableFilter :filter-type="{ showSearchBar:true, showDownloadButton: true,}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.fname">
@@ -67,7 +66,7 @@ import { useGetSalesAgentsStats } from '@/composables/modules/agents/stats'
 
 const { getSalesAgentsStats, loading: statLoading, statsData } = useGetSalesAgentsStats()
 
-const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page } = useGetAgentsList()
+const { getAgentsList, loading, agentsList, moveTo, next, prev, total, page, onFilterUpdate } = useGetAgentsList()
 
 getSalesAgentsStats()
 getAgentsList()

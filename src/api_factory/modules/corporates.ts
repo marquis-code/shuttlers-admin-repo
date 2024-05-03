@@ -85,9 +85,13 @@ export const corporates_api = {
 		const url = `/corporates/${corporateId}/groups?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_credit_system: (corporateId: number) => {
+	$_get_credit_system: (corporateId: number|string) => {
 		const url = `/corporates/${corporateId}/credit-system`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_create_credit_line: (corporateId: number|string, payload: Record<string, any>) => {
+		const url = `/corporates/${corporateId}/credit-system`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_create_company_settings: (corporateId: number, payload: any) => {
 		const url = `/corporates/${corporateId}/settings`
