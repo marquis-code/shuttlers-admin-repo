@@ -8,6 +8,58 @@ const markersArray: google.maps.Marker[] = []
 let openInfoWindow: google.maps.InfoWindow | null = null // Keep track of the open InfoWindow
 let bounds: google.maps.LatLngBounds | null = null
 const activeVehicleDriver_id = ref<string | null>()
+
+const animateMarkerTo = (marker, newPosition) => {
+    if (!marker) return
+    const options = {
+        duration: 1000,
+        easing: function (x, t, b, c, d) {
+            return -c * (t /= d) * (t - 2) + b
+        }
+    }
+    // @ts-ignore
+    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+    // @ts-ignore
+    window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame
+
+    marker.AT_startPosition_lat = marker.position.lat()
+    marker.AT_startPosition_lng = marker.position.lng()
+    const newPosition_lat = newPosition.lat
+    let newPosition_lng = newPosition.lng
+
+    if (Math.abs(newPosition_lng - marker.AT_startPosition_lng) > 180) {
+        if (newPosition_lng > marker.AT_startPosition_lng) {
+            newPosition_lng -= 360
+        } else {
+            newPosition_lng += 360
+        }
+    }
+
+    const animateStep = function(startTime) {
+        const ellapsedTime = (new Date()).getTime() - startTime
+        const durationRatio = ellapsedTime / options.duration
+        const easingDurationRatio = options.easing(durationRatio, ellapsedTime, 0, 1, options.duration)
+
+        if (durationRatio < 1) {
+            marker.setPosition({
+                lat: marker.AT_startPosition_lat + (newPosition_lat - marker.AT_startPosition_lat) * easingDurationRatio,
+                lng: marker.AT_startPosition_lng + (newPosition_lng - marker.AT_startPosition_lng) * easingDurationRatio
+            })
+            marker.AT_animationHandler = window.requestAnimationFrame(() => animateStep(startTime))
+        } else {
+            marker.setPosition(newPosition)
+        }
+    }
+
+    if (window.cancelAnimationFrame) {
+        window.cancelAnimationFrame(marker.AT_animationHandler)
+    } else {
+        clearTimeout(marker.AT_animationHandler)
+    }
+
+    animateStep((new Date()).getTime())
+}
+
 export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (location: UserCoordinate) => void, imgString = '/user.svg', direction = 0) => {
     const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
     const { LatLngBounds } = await google.maps.importLibrary('core') as google.maps.CoreLibrary
@@ -25,13 +77,13 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
     if (existingMarker) {
         if (Number(existingMarker.id) === Number(activeVehicleDriver_id.value)) {
             map.panTo(existingMarker.getPosition()!)
-        existingMarker.setPosition(location)
+        animateMarkerTo(existingMarker, location)
         existingMarker.setIcon({
             url: busMarker(direction, 'green'),
             rotation: direction
         })
         } else {
-        existingMarker.setPosition(location)
+    animateMarkerTo(existingMarker, location)
         existingMarker.setIcon({
             url: busMarker(direction),
             rotation: direction
@@ -52,6 +104,7 @@ export const loadMarkeronMap = async (location: UserCoordinate, clickFunc: (loca
         }) as google.maps.Marker as any
 
         marker.id = location.id
+        animateMarkerTo(existingMarker, location)
 
         // Create an InfoWindow
         const infoWindow = new google.maps.InfoWindow({
