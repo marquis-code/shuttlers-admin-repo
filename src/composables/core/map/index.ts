@@ -129,12 +129,19 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void
 }
 
 let busStopMarkers: google.maps.Marker[] = []
+let infoWindow: google.maps.InfoWindow
 
 export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> => {
     const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
     busStopMarkers.forEach((marker) => marker.setMap(null))
     busStopMarkers = []
+
+    if (!infoWindow) {
+        infoWindow = new google.maps.InfoWindow({
+            content: ''
+        })
+    }
 
     stops.forEach((stop) => {
         const marker = new Marker({
@@ -143,6 +150,16 @@ export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> 
             map,
             title: stop.name
         })
+
+         marker.addListener('click', () => {
+            infoWindow.setContent(`<div style="min-width: 150px; text-align: center;">${stop.name}</div>`)
+            infoWindow.open({
+                anchor: marker,
+                map,
+                shouldFocus: false
+            })
+        })
+
          busStopMarkers.push(marker)
     })
 }
