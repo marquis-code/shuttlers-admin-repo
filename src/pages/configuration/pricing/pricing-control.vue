@@ -19,7 +19,7 @@
 						downloading: downloading
 					}"
 					:align-end="true"
-					@filter="onFilterUpdate"
+					@download="downloadRoutePriceControl"
 				>
 					<template #filter_others>
 						<div class="flex gap-3 py-2">
@@ -133,7 +133,7 @@ import { useRoutePricesList, useAllVehicleType } from '@/composables/modules/con
 const {
   getRoutePricesList, loadingRoutePrices, routePricesList, moveTo, next, prev, total, page, updateRouteOtherPricing,
   vehicleId, routeType, updateRouteCostOfSupply, loading_cost_of_supply, updateRouteSellingPrice, loading_selling_price,
-  downloadRoutePriceControl, downloading, onFilterUpdate
+  downloadRoutePriceControl, downloading
 } = useRoutePricesList()
 const { allVehicles, getAllVehicleWithoutLimit } = useAllVehicleType()
 
