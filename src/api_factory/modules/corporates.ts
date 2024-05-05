@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITH_AUTH_FORM_DATA } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
 
 export const corporates_api = {
@@ -182,7 +182,12 @@ export const corporates_api = {
 		const url = `/credit-systems/${creditLineId}/executions`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
 	},
-	$_schedule_credit_system: (creditLineId: number, payload: any) => {
+	$_schedule_credit_system_form_data: (creditLineId: number, payload: FormData) => {
+		const url = `/credit-systems/${creditLineId}/executions`
+		// return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITH_AUTH_FORM_DATA.post(url, payload)
+	},
+	$_schedule_credit_system: (creditLineId: number, payload: Record<string, any>) => {
 		const url = `/credit-systems/${creditLineId}/executions`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
