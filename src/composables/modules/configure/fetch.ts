@@ -119,14 +119,7 @@ export const useRoutePricesList = () => {
 			const newArr:any[] = []
 			for (let i = 0; i < datas.length; i++) {
 				const data = datas[i]
-				// const y = {
-				// 	Name: `${el.user?.fname || ''} ${el.user?.lname || ''}`,
-				// 	Email: el?.user?.email || 'N/A',
-				// 	Route: el?.route?.route_code || 'N/A',
-				// 	Total_amount: el?.userRouteSchedule?.unit_cost || 'N/A',
-				// 	Charge_Amount: el?.amount || 'N/A',
-				// 	Date: el.created_at ? moment(el.created_at).format('LL') : 'N/A'
-				// }
+
                 const y = {
                     Route_code: data?.route?.route_code,
                     Itinerary: data?.route_itinerary?.trip_time || 'N/A',
