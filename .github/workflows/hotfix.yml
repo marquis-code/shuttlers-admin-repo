@@ -12,7 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0 # Important for accessing all history
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Use PAT here
 
       - name: Set up Git
         run: |
