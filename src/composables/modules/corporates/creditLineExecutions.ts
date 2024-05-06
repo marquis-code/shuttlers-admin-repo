@@ -102,7 +102,19 @@ export const useBatchScheduleCreditSystem = () => {
     const { $_schedule_credit_system } = corporates_api
     const scheduleBatchCreditSystem = async (creditLineId:number) => {
         loading.value = true
-        const res = await $_schedule_credit_system(Number(creditLineId), convertObjWithRefToObj(batchCreditSystemScheduleForm)) as CustomAxiosResponse
+        const payload = convertObjWithRefToObj(batchCreditSystemScheduleForm)
+        const formData = new FormData()
+        for (const key in payload) {
+            if (payload[key]) {
+                formData.append(key, payload[key])
+            }
+        }
+        let res:CustomAxiosResponse
+        if (payload?.only_selected_staff?.length) {
+            res = await $_schedule_credit_system(Number(creditLineId), payload) as CustomAxiosResponse
+        } else {
+            res = await corporates_api.$_schedule_credit_system_form_data(Number(creditLineId), formData) as CustomAxiosResponse
+        }
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
                 type: 'SUCCESS',

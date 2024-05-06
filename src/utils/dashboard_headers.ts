@@ -63,6 +63,8 @@ import SalesAgent from '@/components/headers/modules/Agents/index.vue'
 import AgentDetails from '@/components/headers/modules/Agents/agent-details.vue'
 import PastPayouts from '@/components/headers/modules/Pastpayouts/index.vue'
 import TicketBookingDetails from '@/components/headers/modules/Users/booking-details.vue'
+import bannerDetails from '@/components/headers/modules/Campaigns/Promotions/banner-details.vue'
+import BannerDetails from '@/components/headers/modules/Campaigns/Promotions/banner-details.vue'
 
 export const headerComponentRouteArray = [
     { routes: ['dashboard'], component: Dashboard },
@@ -123,7 +125,8 @@ export const headerComponentRouteArray = [
             'trips-type-cancelled-id-trip-details', 'trips-type-cancelled-id-passengers'], component: TripDetails
     },
     { routes: ['users-id-past-bookings-b_id', 'users-add', 'users-add-id', 'trips-sos-id', 'trips-routes-rid', 'trips-replay', 'events-create', 'trips-rental-id', 'partners-notify', 'trips-vehicle'], component: GenericHeader },
-    { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel'], component: PromotionalCampaigns },
+    { routes: ['campaigns-promotions-banner', 'campaigns-promotions-carousel', 'campaigns-promotions-banner-create', 'campaigns-promotions-carousel-create'], component: PromotionalCampaigns },
+    { routes: ['campaigns-promotions-banner-id'], component: BannerDetails },
     { routes: ['campaigns-valentine'], component: ValentineCampaign },
     { routes: ['campaigns-valentine-id'], component: ValentineCampaignDetails },
     { routes: ['configuration-pricing-pricing-control', 'configuration-pricing-payment-option', 'configuration-pricing-charges', 'configuration-pricing-charges-types', 'configuration-pricing-charges-configurations-id'], component: RoutePriceControl },

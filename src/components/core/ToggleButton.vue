@@ -1,12 +1,12 @@
 <template>
 	<label :for="name" class="flex items-center cursor-pointer">
 		<div id="toggle" class="relative">
-			<input :id="name" type="checkbox" class="sr-only" :disabled="disabled" :checked="modelValue" @change="test">
+			<input :id="name" type="checkbox" class="sr-only disabled:cursor-not-allowed" :disabled="disabled" :checked="modelValue" @change="test">
 			<div id="line" class="block bg-[#F9FBFA] border border-[#E5E5EA] w-14 h-[36px] rounded-full line" />
 			<div id="dot" class="dot absolute left-0 top-1 bg-white shadow-mode w-7 h-7 rounded-full transition" />
 		</div>
 
-		<div id="label" class="ml-3 text-dark font-medium ">
+		<div v-if="showLabel" id="label" class="ml-3 text-dark font-medium ">
 			{{ label }}
 		</div>
 	</label>
@@ -18,6 +18,11 @@ const props = defineProps({
 	label: {
 		type: String,
 		default: 'default string'
+	},
+	showLabel: {
+		type: Boolean,
+		default: true,
+		required: false
 	},
 	name: {
 		type: String,
@@ -32,9 +37,10 @@ const props = defineProps({
 
 const test = (e: any) => {
 	emit('update:modelValue', e.target.checked)
+	emit('onToggle', e.target.checked)
 }
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'onToggle'])
 </script>
 
 <style scoped>

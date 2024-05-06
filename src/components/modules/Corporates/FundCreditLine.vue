@@ -106,11 +106,7 @@ const handleUploadedEmails = (item: any) => {
 
 const handleEvent = (event:Record<string, any>) => {
 	const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onload = function(e) {
-        const binaryData = e.target!.result
-		selectedFile.value = binaryData
-    }
+	selectedFile.value = file
 }
 
 const submitForm = () => {
@@ -122,14 +118,15 @@ const submitForm = () => {
 		increment_credit_wallet: Number(!form.clear_prev_bal),
 		is_topup: true,
 		selected_employee: null,
-		scheduled: is_schedule_later_application.value,
-		only_selected_staff: staffArray || null
+		scheduled: is_schedule_later_application.value
 	}
 	if (is_schedule_later_application.value) {
 		payload.scheduled_for = form.application_date
 	}
 	if (employeeCreditOption.value === 'csv_upload') {
 		payload.selected_employee = selectedFile.value
+	} else {
+		payload.only_selected_staff = staffArray || null
 	}
 	populateBatchCreditSystemScheduleForm(payload)
 	scheduleBatchCreditSystem(creditSystem.value.id)

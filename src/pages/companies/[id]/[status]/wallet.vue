@@ -43,7 +43,7 @@
 					<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true">
 						<template #header>
 							<div class="bg-white border-x border-gray-100">
-								<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" />
+								<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" @download="downloadWalletHistory" />
 								<div class="flex justify-end gap-x-3 items-end pr-3 py-3">
 									<div>
 										<CorporatesStaffMultiSelect class="w-full" label="" @update:modelValue="handleSelectedCorporates" />
@@ -238,7 +238,7 @@ import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/compos
 import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
-const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData, staff_ids } = useCorporateWalletHistory()
+const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData, staff_ids, downloadWalletHistory } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 const { copyToClipboard } = useClipboard()

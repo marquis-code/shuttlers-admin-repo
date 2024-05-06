@@ -24,6 +24,14 @@ export const GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
 	}
 })
 
+export const GATEWAY_ENDPOINT_WITH_AUTH_FORM_DATA = axios.create({
+	baseURL: $GATEWAY_ENDPOINT,
+	headers: {
+		Authorization: `Bearer ${token.value}`,
+		'Content-Type': 'multipart/form-data'
+	}
+})
+
 export const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API = axios.create({
 	baseURL: $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE,
 	headers: {
