@@ -200,14 +200,6 @@ export const useRoutePricesList = () => {
         }
     }
 
-    // const onFilterUpdate = (data) => {
-    //     switch (data.type) {
-	// 		case 'download':
-	// 			downloadRoutePriceControl()
-	// 			break
-    //     }
-    // }
-
     return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType, updateRouteCostOfSupply, loading_selling_price, updateRouteSellingPrice, loading_cost_of_supply, updateRouteOtherPricing, downloadRoutePriceControl, downloading }
 }
 

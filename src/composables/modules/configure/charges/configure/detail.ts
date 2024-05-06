@@ -85,9 +85,6 @@ export const useDetails = () => {
 			case 'search':
 				filterData.search.value = data.value
 				break
-			case 'download':
-				downloadHistory()
-				break
         }
     }
 

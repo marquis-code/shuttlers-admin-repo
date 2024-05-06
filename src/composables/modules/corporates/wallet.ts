@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import {
   useCorporateIdDetails,
@@ -8,7 +9,9 @@ import { useAlert } from '@/composables/core/notification'
 import { usePagination } from '@/composables/utils/table'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { insertScriptTag } from '@/composables/utils/system'
+import { useDownloadReport, exportAsCsv } from '@/composables/utils/csv'
 
+const { loading: downloading } = useDownloadReport()
 const walletActivationForm = {
   bvn: ref(''),
   provider: ref('')
@@ -93,6 +96,32 @@ export const useCorporateWalletHistory = () => {
     }
   )
 
+  const downloadWalletHistory = async () => {
+    const { selectedCorporate } = useCorporateIdDetails()
+    downloading.value = true
+    const name = ref(`${selectedCorporate.value?.corporate_name}-all-${filterData['filters[type]'].value}-wallet-transaction`)
+    const res = await corporates_api.$_download_corporate_wallet_transaction_history(Number(selectedCorporate.value?.wallet?.id), filterData) as CustomAxiosResponse
+    if (res && res?.type !== 'ERROR') {
+    const datas = res.data.data
+    const newArr:any[] = []
+    for (let i = 0; i < datas.length; i++) {
+      const data = datas[i]
+      const y = {
+        Date: moment(data?.created_at).format('lll'),
+        Description: data?.description || 'N/A',
+        Type: data?.direction || 'N/A',
+        Amount: data?.amount_formatted || 'N/A',
+        Balance_before: data?.available_balance_before_formatted || 'N/A',
+        Status: data.status === 'posted' ? 'Successful' : data?.status
+      }
+      newArr.push(y)
+    }
+    if (filterData['filters[start_date]'].value && filterData['filters[end_date]'].value) name.value = `${name.value}-from-${filterData['filters[start_date]'].value}-to-${filterData['filters[end_date]'].value}`
+    exportAsCsv(newArr, name.value)
+      }
+      downloading.value = false
+  }
+
   const onFilterUpdate = (data: any) => {
     switch (data.type) {
       case 'dateRange':
@@ -112,7 +141,8 @@ export const useCorporateWalletHistory = () => {
     onFilterUpdate,
     filterData,
     ...metaObject,
-    staff_ids
+    staff_ids,
+    downloadWalletHistory
   }
 }
 
