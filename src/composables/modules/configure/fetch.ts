@@ -1,8 +1,9 @@
 import { configure_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { useAlert } from '@/composables/core/notification'
-import { exportAsCsv } from '@/composables/utils/csv'
+import { exportAsCsv, useDownloadReport } from '@/composables/utils/csv'
 
+const { loading: downloading } = useDownloadReport()
 const creatingAmenities = ref(false)
 const payloads = {
     name: ref(''),
@@ -84,7 +85,6 @@ export const useRoutePricesList = () => {
     const routePricesList = ref([] as Record<string, any>[])
     const loading_selling_price = ref(false)
     const loading_cost_of_supply = ref(false)
-    const downloading = ref(false)
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const { $_get_route_prices } = configure_api
 
@@ -200,15 +200,15 @@ export const useRoutePricesList = () => {
         }
     }
 
-    const onFilterUpdate = (data) => {
-        switch (data.type) {
-			case 'download':
-				downloadRoutePriceControl()
-				break
-        }
-    }
+    // const onFilterUpdate = (data) => {
+    //     switch (data.type) {
+	// 		case 'download':
+	// 			downloadRoutePriceControl()
+	// 			break
+    //     }
+    // }
 
-    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType, updateRouteCostOfSupply, loading_selling_price, updateRouteSellingPrice, loading_cost_of_supply, updateRouteOtherPricing, downloadRoutePriceControl, downloading, onFilterUpdate }
+    return { getRoutePricesList, loadingRoutePrices, routePricesList, prev, ...metaObject, next, moveTo, vehicleId, routeType, updateRouteCostOfSupply, loading_selling_price, updateRouteSellingPrice, loading_cost_of_supply, updateRouteOtherPricing, downloadRoutePriceControl, downloading }
 }
 
 export const useGeneralPaymentOptionsList = () => {

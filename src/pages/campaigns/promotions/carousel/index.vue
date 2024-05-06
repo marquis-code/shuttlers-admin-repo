@@ -3,7 +3,7 @@
 		<ButtonGoBack class="mb-6" />
 		<Table :loading="loading_carousels" :headers="tableFields" :table-data="carouselsList" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
+				<TableFilter :filter-type="{showStatus:false}" />
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.id">
@@ -19,8 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { use_get_carousels } from '@/composables/modules/campaigns/fetch'
-// import { useDriverIdDetails } from '@/composables/modules/drivers/id'
+import { use_get_carousels } from '@/composables/modules/campaigns/carousels/fetch'
 
 const { getCarousels, loading_carousels, carouselsList, moveTo, next, prev, total, page } = use_get_carousels()
 getCarousels()

@@ -1,7 +1,12 @@
 <template>
-	<HeadersHeaderSlot :title="`Promotional ${computedPageTitle}`" pre-title="Overview">
-		<template #tabs>
+	<HeadersHeaderSlot :title="$route.fullPath.includes('/banner/create') ? 'Create New Banner' : `Promotional ${computedPageTitle}`" pre-title="Overview">
+		<template v-if="!$route.fullPath.includes('create')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
+		</template>
+		<template v-if="!$route.fullPath.includes('create')" #actions>
+			<NuxtLink class="btn-primary" to="/campaigns/promotions/banner/create">
+				Create New Banner
+			</NuxtLink>
 		</template>
 	</HeadersHeaderSlot>
 </template>

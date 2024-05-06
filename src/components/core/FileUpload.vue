@@ -1,10 +1,10 @@
 <template>
 	<section class="relative w-auto flex ">
-		<label class="flex gap-5 mb-4 !cursor-pointer" for="upload">
-			<img :src="image_ref || `/user2.svg`" name="user" class="w-32 border rounded-full max-h-[126px] max-w-[126px] min-h-[126px] min-w-[126px] cursor-pointer">
+		<label class="flex items-center gap-5 mb-4 !cursor-pointer" for="upload">
+			<img v-if="showPreview" :src="image_ref || `/user2.svg`" name="user" class="w-32 border rounded-full max-h-[126px] max-w-[126px] min-h-[126px] min-w-[126px] cursor-pointer">
 			<div
 
-				class="flex center  border py-4 px-6 rounded-lg cursor-pointer   max-w-[366px]"
+				class="flex center  border py-4 px-6 rounded-lg cursor-pointer max-w-[366px]"
 			>
 				<div class="flex flex-col items-center">
 					<Icon name="upload" class="w-12" />
@@ -32,11 +32,21 @@
 <script setup lang="ts">
 import { use_file_upload } from '@/composables/core/upload'
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'onFileChange'])
 const props = defineProps({
 	modelValue: {
 		type: String,
 		default: null
+	},
+	showPreview: {
+		type: Boolean,
+		default: true,
+		required: false
+	},
+	emitActualFile: {
+		type: Boolean,
+		default: false,
+		requried: false
 	}
 })
 
@@ -47,6 +57,10 @@ watch(props, () => {
 }, { immediate: true })
 
 const onChange = (e) => {
+	if (props.emitActualFile) {
+		emit('onFileChange', e)
+		return
+	}
 	const files = e.target?.files
 	if (files.length > 0) {
 		const file = files[0]
