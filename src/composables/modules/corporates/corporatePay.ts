@@ -15,7 +15,7 @@ const corporatePaySettings = {
         limit_value: ref(0),
         limit_value_unit: ref('none')
     },
-    exemptions: ref([]),
+    exemptions: ref([] as Record<string, any>[]),
     id: ref(),
     staff_can_view_wallet_limit_usage: ref()
 }
@@ -48,8 +48,6 @@ const getPeriod = (str) => {
     }
 }
 
-const corporate_id = Number(useRoute().params.id)
-
 const getExemptionLimitWriteUp = (data) => {
     if (data.limit_type === 'trip') {
         return `Allow an employee book ${data.limit_value} trips per ${getPeriod(data.limit_value_unit)}`
@@ -64,6 +62,7 @@ export const useCorporatePaySetting = () => {
     const fetchCorporatePaySetting = async () => {
         loading.value = true
         const { $_fetch_corporate_payment_settings } = corporates_api
+        const corporate_id = Number(useRoute().params.id)
         const res = await $_fetch_corporate_payment_settings(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             const data = res?.data
@@ -85,6 +84,7 @@ export const useCorporatePaySetting = () => {
     const saveCorporatePaySettings = async (val: any) => {
         loading.value = true
         const { $_update_corporate_payment_settings } = corporates_api
+        const corporate_id = Number(useRoute().params.id)
         const res = await $_update_corporate_payment_settings(corporate_id, val) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
