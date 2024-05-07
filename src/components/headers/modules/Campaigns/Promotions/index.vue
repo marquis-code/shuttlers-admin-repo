@@ -1,11 +1,11 @@
 <template>
-	<HeadersHeaderSlot :title="$route.fullPath.includes('/banner/create') ? 'Create New Banner' : `Promotional ${computedPageTitle}`" pre-title="Overview">
+	<HeadersHeaderSlot :title="$route.fullPath.includes('/banner/create') ? 'Create New Banner' : $route.fullPath.includes('/carousel/create') ? 'Create New Carousel' : `Promotional ${computedPageTitle}`" pre-title="Overview">
 		<template v-if="!$route.fullPath.includes('create')" #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
 		<template v-if="!$route.fullPath.includes('create')" #actions>
-			<NuxtLink class="btn-primary" to="/campaigns/promotions/banner/create">
-				Create New Banner
+			<NuxtLink class="btn-primary" :to="`/campaigns/promotions/${isBanner ? 'banner' : 'carousel'}/create`">
+				Create New {{ isBanner ? 'Banner' : 'Carousel' }}
 			</NuxtLink>
 		</template>
 	</HeadersHeaderSlot>
@@ -26,8 +26,12 @@ const pageTabs = [
 
 const route = useRoute()
 
+const isBanner = computed(() => {
+    return useRoute().fullPath.includes('banner')
+})
+
 const computedPageTitle = computed(() => {
-    const componentName = route?.name?.split('-')[2]
+    const componentName = (route?.name as string).split('-')[2]
    if (componentName === 'banner') {
     return 'Banner'
    }
