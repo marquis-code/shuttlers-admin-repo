@@ -8,12 +8,18 @@
 					<input v-model="title" type="text" required placeholder="Enter title" class="input-field">
 				</div>
 				<div class="flex flex-col gap-0">
-					<FileUpload class="mx-auto" :emit-actual-file="true" :show-preview="false" @on-file-change="handleFileChange" />
+					<FileUpload class="mx-auto" :emit-actual-file="true" :show-preview="false" :height="2021" :width="724" @on-file-change="handleFileChange" @invalid-dimension="dimensionError = true" />
 					<div class="flex items-center justify-center gap-2">
 						<Icon name="info" class="w-4" />
 						<p class="text-xs text-grey5">
 							Images to be uploaded must have a dimension of 2021 x 724px
 						</p>
+					</div>
+					<div v-if="dimensionError" class="bg-red text-light flex items-start justify-between gap-4 mt-4 p-3 rounded-md">
+						<p class="text-sm">
+							Image does not meet the size requirements, upload a new image
+						</p>
+						<icon name="close" class="w-4 text-light" @click="dimensionError = false" />
 					</div>
 				</div>
 				<div class="flex flex-col">
@@ -65,6 +71,7 @@ import { useBase64 } from '@vueuse/core'
 import { useCreateBanner } from '@/composables/modules/campaigns/banner'
 import { use_get_carousels } from '@/composables/modules/campaigns/carousels/fetch'
 
+const dimensionError = ref(false)
 const file = ref() as Ref<File>
 const { base64: fileBase64 } = useBase64(file)
 const { getCarousels, carouselsList } = use_get_carousels()
