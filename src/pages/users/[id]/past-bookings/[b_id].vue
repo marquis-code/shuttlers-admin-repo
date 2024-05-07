@@ -117,7 +117,7 @@ const tripDays = computed(() => {
 	const uniqueDays = new Set(pastBooking.value.userRoute.selected_days || [])
 	  return pastBooking.value.userRoute.selected_days.length
           ? Array.from(uniqueDays)
-            .map((obj:any) => obj.slice(0, 3))
+            .map((obj:any) => typeof obj === 'number' ? obj : obj.slice(0, 3))
             .join(', ')
           : ''
 })
