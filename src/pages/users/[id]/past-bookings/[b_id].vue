@@ -25,7 +25,7 @@
 							</span>
 						</div>
 						<span class="text-gray-500 shrink-0">
-							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
+							<p>{{ useDateFormat(pastBooking.userRoute?.start_date, 'MM-DD-YY').value }} </p>
 							<p>{{ pastBooking?.itinerary?.trip_time }}</p>
 						</span>
 					</li>
@@ -39,7 +39,7 @@
 							</span>
 						</div>
 						<span class="text-gray-500 shrink-0">
-							<p>{{ useDateFormat(pastBooking.userRoute.start_date, 'MM-DD-YY').value }} </p>
+							<p>{{ useDateFormat(pastBooking.userRoute?.start_date, 'MM-DD-YY').value }} </p>
 						</span>
 					</li>
 				</ul>
@@ -89,7 +89,7 @@
 				</button>
 			</div>
 
-			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" :props-loading="loading" />
+			<MapDisplay :start-point="pastBooking?.userRoute?.pickupRouteBusStop?.geometry" :end-point="pastBooking?.userRoute?.destinationRouteBusStop?.geometry" :props-loading="loading" />
 		</section>
 		<Skeleton v-else height="500px" radius="10px" />
 	</main>
@@ -114,8 +114,8 @@ getUserPastBookingsById(id, true)
 
 const tripDays = computed(() => {
 	if (!pastBooking.value) return ''
-	const uniqueDays = new Set(pastBooking.value.userRoute.selected_days || [])
-	  return pastBooking.value.userRoute.selected_days.length
+	const uniqueDays = new Set(pastBooking.value?.userRoute?.selected_days || [])
+	  return pastBooking.value?.userRoute?.selected_days?.length
           ? Array.from(uniqueDays)
             .map((obj:any) => typeof obj === 'number' ? obj : obj.slice(0, 3))
             .join(', ')
@@ -129,12 +129,12 @@ const firstCol = computed(() => {
 		{ name: 'Ticket Number', value: pastBooking.value.bus_pass },
 		{ name: 'Trip days', value: tripDays.value },
 		{ name: 'Route Code', value: pastBooking.value.route.route_code },
-		{ name: 'Trip Amount', value: pastBooking.value.userRoute.cost }
+		{ name: 'Trip Amount', value: pastBooking.value.userRoute?.cost }
 	]
-	 if (pastBooking.value.userRoute.recurring) {
+	 if (pastBooking.value.userRoute?.recurring) {
     const validityItem = {
       name: 'Validity',
-      value: `${useDateFormat(pastBooking.value.userRoute.start_date, 'MM-dd-yy').value} to ${useDateFormat(pastBooking.value.userRoute.end_date, 'MM-dd-yy').value}`
+      value: `${useDateFormat(pastBooking.value.userRoute?.start_date, 'MM-dd-yy').value} to ${useDateFormat(pastBooking.value.userRoute?.end_date, 'MM-dd-yy').value}`
     }
     items.splice(3, 0, validityItem)
 	 }
