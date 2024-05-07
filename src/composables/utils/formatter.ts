@@ -18,6 +18,7 @@ export const convertToCurrency = (value: number) => {
 }
 
 export const truncateString = (input: string, maxLength = 80): string => {
+    if (!input) return ''
     if (input?.length <= maxLength) {
         return input
     } else {
