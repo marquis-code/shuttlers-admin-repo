@@ -71,7 +71,6 @@ const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
 // const { usersList, loading } = useGetUsersList()
 
 const isButtonEnable = computed(() => {
-	if (!credentials.sms.value && !credentials.email.value) return false
 	if (!credentials.title.value) return false
 	if (!credentials.description.value) return false
 	if (type.value === 'all' && credentials.notifyAll.value) return true
