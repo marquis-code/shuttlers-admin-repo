@@ -20,7 +20,7 @@
 							<svg_template code="pickup-sm" class="mt-0.5" />
 							<span>
 								<p class="font-bold">Pick-up</p>
-								<p class="text-grey5">{{ truncateString(pastBooking?.userRoute?.origin_label, 40) }}</p>
+								<p class="text-grey5">{{ truncateString(pastBooking?.userRoute?.origin_label || '', 40) }}</p>
 
 							</span>
 						</div>
