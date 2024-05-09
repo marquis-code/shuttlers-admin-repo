@@ -18,13 +18,27 @@ export const useGetAgentsRoutes = () => {
 		approval_status: ref('pending_review'),
 		from: ref(''),
         to: ref(''),
-        status: ref('active')
+		status: ref('active'),
+		start_date: ref(''),
+		end_date: ref(''),
+		search: ref('')
 	}
 
+		const onFilterUpdate = (data) => {
+        switch (data.type) {
+            case 'dateRange':
+				filterData.start_date.value = data.value[0] ? data.value[0] : ''
+				filterData.end_date.value = data.value[1] ? data.value[1] : ''
+                break
+			case 'search':
+				filterData.search.value = data.value
+				break
+        }
+    }
 	const filterData_monitoring = {
 		trip_type: ref('completed')
 	}
-	watch([filterData.approval_status, filterData_monitoring.trip_type], (val) => {
+	watch([filterData.approval_status, filterData_monitoring.trip_type, filterData.end_date, filterData.start_date, filterData.search], (val) => {
 		getAgentsRoute()
 	})
 
@@ -78,7 +92,7 @@ export const useGetAgentsRoutes = () => {
 	setFunction(getAgentsRoute)
 
 	return {
-		getAgentsRoute, filterData_monitoring,
+		getAgentsRoute, filterData_monitoring, onFilterUpdate,
 		loading, total_commissions,
 		agentsRoute,
 		moveTo,
