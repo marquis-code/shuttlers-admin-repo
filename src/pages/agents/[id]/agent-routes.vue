@@ -14,7 +14,7 @@
 	<div class="flex flex-col mt-4 gap-6">
 		<section v-if="filterData.approval_status.value === 'monitoring' && !loading" class="flex gap-4 w-full ">
 			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
-				<span class="text-sm text-grey5">Total trips taken</span>
+				<span class="text-sm text-grey5">{{ filterData_monitoring.trip_type.value === 'completed' ? "Total trips taken" :'Total trip' }}</span>
 				<span class="text-3xl font-bold">{{ total }}</span>
 			</div>
 			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
@@ -25,8 +25,8 @@
 		<main class="flex flex-col gap-6">
 			<Table v-if="filterData.approval_status.value !== 'monitoring'" :loading="loading || AgentByIdloading" :headers="tableFields" :table-data="agentsRoute" :has-options="true" class="mb-12">
 				<template #header>
-					<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: true, showDateRange: false}"
-
+					<TableFilter :filter-type="{showStatus:false, showSearchBar:true, showDownloadButton: false, showDateRange: true}"
+						@filter="onFilterUpdate"
 					/>
 				</template>
 				<template #item="{ item }">
@@ -128,7 +128,7 @@ import { useAcceptRouteSuggestion } from '@/composables/modules/agents/accept'
 import { convertToCurrency } from '@/composables/utils/formatter'
 
 const { AgentByIdloading, selectedAgent } = useAgentIdDetails()
-const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData, filterData_monitoring, total_commissions } = useGetAgentsRoutes()
+const { agentsRoute, getAgentsRoute, loading, page, total, total_pages, moveTo, next, prev, agentDataRef, filterOptions, filterData, filterData_monitoring, total_commissions, onFilterUpdate } = useGetAgentsRoutes()
 
 const { setAcceptRoute } = useAcceptRouteSuggestion()
 const { setDeclineRoute } = useDeclineRouteSuggestion()
