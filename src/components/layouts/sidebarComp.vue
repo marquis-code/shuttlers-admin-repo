@@ -1,6 +1,6 @@
 <template>
 	<section class="flex iten-center justify-between px-4 fixed top h-[80px]  inset-x-0 md:hidden">
-		<Icon class="w-12 cursor-pointer" name="menu" @click="showSidebar" />
+		<Icon class="w-12 cursor-pointer" name="menu" @click="showSidebarOnMobile = true" />
 		<router-link class="flex items-center" :to="`/admin/${currentUser.id}/info`" title="View your profile">
 			<div class="w-10 h-10 flex-1 ">
 				<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-full">
@@ -10,91 +10,85 @@
 			</div>
 		</router-link>
 	</section>
-	<transition name="sidebar" appear>
-		<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-hidden  md:block fixed  z-[90]" aria-label="Sidebar">
-			<div class="sidebar-header">
-				<router-link to="/">
-					<component :is="data.logoIcon" class="img" />
-				</router-link>
-				<button ref="menuToggle" type="button" class="hidden">
-					<component :is="data.menuIcon" class="img w-8" />
-				</button>
-			</div>
-			<label v-if="!isProdEnv" for="redirect" class="ml-5 flex">
-				<input
-					id="redirect"
-					v-model="shouldNotRedirectToExternalUrl"
-					type="checkbox"
-					class="form-checkbox"
-				>
-				<span>Shouldn't Redirect</span>
-			</label>
-			<div class="sidebar-menus">
-				<ul class="nav">
-					<li v-for="main in data.menuList" :key="main.menus">
-						<label v-if="main.title" class="navbar-label">{{
-							main.title
-						}}</label>
-						<!-- eslint-disable-next-line vue/no-v-for-template-key -->
-						<template v-for="(menu, index) in main.menus.value" :key="`${index}_system`">
-							<sidebar-menu :menu="menu" :route="route" />
-						</template>
-					</li>
-				</ul>
-			</div>
-			<layouts-sidebar-footer
-				:current-user="currentUser"
-				:sign-out-function="signOutFunction"
-			/>
-		</aside>
+	<transition name="fade" appear>
+		<section v-if="showSidebarOnMobile || largerThanMd">
+			<div class="bg-black bg-opacity-30 fixed inset-0 z-[60] md:hidden" @click="showSidebarOnMobile = false" />
+			<transition name="sidebar" appear>
+				<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-hidden  md:block fixed  z-[90]" aria-label="Sidebar">
+					<div class="sidebar-header">
+						<router-link to="/">
+							<component :is="data.logoIcon" class="img" />
+						</router-link>
+						<button ref="menuToggle" type="button" class="md:hidden">
+							<Icon class="w-7 cursor-pointer" name="closed" @click="showSidebarOnMobile = false" />
+						</button>
+					</div>
 
-		<aside v-else class="sidebar h-full flex flex-col md:block fixed z-[90]" aria-label="Sidebar">
-			<button
-				class="sidebar-header flex gap-1 items-center !justify-normal"
-				@click="showPrimaryMenuRef = true"
-			>
-				<icon name="down" class="w-6 rotate-90" />
-				<span class="font-bold text-xl">{{
-					currentRouteObject?.parentName || currentRouteObject?.title
-				}}</span>
-			</button>
-			<ul class="nav-menu">
-				<span
-					v-for="(menu, submenuIndex) in parentOfTheCurrentRouteChildren"
-					:key="submenuIndex"
-				>
-					<li class="nav-menu transite">
-						<nuxt-link :to="menu.routePath">
-							<div class="nav-title">
-								<span class="flex items-center">
-									<component :is="menu.iconComponent ?? routeIcon" class="img" />
-									<span class="text-sm">{{ menu.title }}</span>
-								</span>
-							</div>
-						</nuxt-link>
-					</li>
-				</span>
-			</ul>
-			<layouts-sidebar-footer
-				:current-user="currentUser"
-				:sign-out-function="signOutFunction"
-			/>
-		</aside>
+					<div class="sidebar-menus">
+						<ul class="nav">
+							<li v-for="main in data.menuList" :key="main.menus">
+								<label v-if="main.title" class="navbar-label">{{
+									main.title
+								}}</label>
+								<!-- eslint-disable-next-line vue/no-v-for-template-key -->
+								<template v-for="(menu, index) in main.menus.value" :key="`${index}_system`">
+									<sidebar-menu :menu="menu" :route="route" />
+								</template>
+							</li>
+						</ul>
+					</div>
+					<layouts-sidebar-footer
+						:current-user="currentUser"
+						:sign-out-function="signOutFunction"
+					/>
+				</aside>
+
+				<aside v-else class="sidebar h-full flex flex-col md:block fixed z-[90]" aria-label="Sidebar">
+					<button
+						class="sidebar-header flex gap-1 items-center !justify-normal"
+						@click="showPrimaryMenuRef = true"
+					>
+						<icon name="down" class="w-6 rotate-90" />
+						<span class="font-bold text-xl">{{
+							currentRouteObject?.parentName || currentRouteObject?.title
+						}}</span>
+					</button>
+					<ul class="nav-menu">
+						<span
+							v-for="(menu, submenuIndex) in parentOfTheCurrentRouteChildren"
+							:key="submenuIndex"
+						>
+							<li class="nav-menu transite">
+								<nuxt-link :to="menu.routePath">
+									<div class="nav-title">
+										<span class="flex items-center">
+											<component :is="menu.iconComponent ?? routeIcon" class="img" />
+											<span class="text-sm">{{ menu.title }}</span>
+										</span>
+									</div>
+								</nuxt-link>
+							</li>
+						</span>
+					</ul>
+					<layouts-sidebar-footer
+						:current-user="currentUser"
+						:sign-out-function="signOutFunction"
+					/>
+				</aside>
+			</transition>
+		</section>
 	</transition>
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import SidebarMenu from './SidebarMenuItem.vue'
 import routeIcon from '@/assets/icons/src/compass.vue'
-import { isProdEnv, shouldNotRedirectToExternalUrl, useSidebar } from '@/composables/utils/system'
-import {
-	currentRouteObject,
-	showPrimaryMenuRef,
-	parentOfTheCurrentRouteChildren
-} from '@/utils/sidebar_controls'
+import { isProdEnv, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { currentRouteObject, showPrimaryMenuRef, showSidebarOnMobile, parentOfTheCurrentRouteChildren } from '@/utils/sidebar_controls'
 
-const { showSidebar } = useSidebar()
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const largerThanMd = breakpoints.greater('md')
 
 const props = defineProps({
 	data: {
@@ -210,7 +204,7 @@ $content-area-width: calc(100vw - 14rem);
 }
 
 .sidebar {
-	@apply border-r-2 md:border-0 shadow-md md:shadow-none;
+	@apply border-r-2 md:border-0 shadow-md md:shadow-none w-9/12;
 	background-color: var(--grey11);
 	border-bottom: 1px solid $sh-neutral-400;
 
