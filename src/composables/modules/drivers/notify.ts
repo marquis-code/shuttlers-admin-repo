@@ -41,10 +41,12 @@ export const useNotifyDriver = () => {
 		})
 	}
 	const notifyDriver = async () => {
-		const payload = {
+		const payload:Record<string, any> = {
 			title: obj.title.value,
-			description: obj.desc.value,
-			driver_ids: obj.all_drivers.value ? 'all' : selected_drivers_ids.value
+			description: obj.desc.value
+		}
+		if (!obj.all_drivers.value) {
+			payload.driver_ids = selected_drivers_ids.value
 		}
 		loading.value = true
 		const res = await drivers_api.$_notify_driver(payload) as CustomAxiosResponse

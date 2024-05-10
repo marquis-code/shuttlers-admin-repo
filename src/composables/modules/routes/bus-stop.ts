@@ -84,7 +84,10 @@ export const useRouteBustopMap = () => {
 		const res = await routes_api.$_create_busstop(id, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Busstop created successfully' })
-			reloadBusStopMap()
+			// reloadBusStopMap()
+			open_new_busstop_window.value = false
+			// can_click.value = false
+			getRouteBusstopsById(id)
         }
 		adding_busstop.value = false
 	}

@@ -1,78 +1,65 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
-		<Table :loading="loading" :headers="tableFields" :table-data="driversList" :has-options="true" :option="onRowClicked">
-			<template #header>
-				<TableFilter :filter-type="{showStatus:true, showSearchBar:true, showDownloadButton: true, showDatePicker: true}" :selected="log_ids" :checkbox="true" @filter="onFilterUpdate" @checked="log_ids = ($event)" />
-			</template>
-			<template #item="{ item }">
-				<div v-if="item.fname" class="space-y-1 text-blue-600 py-2">
-					<span class="block">{{ item.data.fname }} {{ item.data.lname }}</span>
-					<span class="block">{{ item.data.email }}</span>
-					<span class="block">{{ item.data.phone }}</span>
+		<ButtonGoBack class="mb-6" url="/campaigns/promotions/banner" />
+		<Skeleton v-if="loading" height="300px" radius="15px" />
+		<div v-else class="w-full max-w-[1500px] flex flex-col lg:flex-row gap-4 lg:items-start">
+			<div class="flex w-full lg:w-1/2 flex-col rounded-lg border">
+				<h3 class="p-4 text-sm text-dark font-bold">
+					Banner Information
+				</h3>
+				<div class="flex flex-col">
+					<div v-for="n, i in info" :key="i" class="flex items-center gap-4 justify-between p-3 border-b">
+						<p class="uppercase text-sm text-grey5 font-medium">
+							{{ n.title }}
+						</p>
+						<p class="text-dark text-sm font-medium">
+							{{ n.value }}
+						</p>
+					</div>
 				</div>
-				<span v-if="item.rating" class="flex items-center gap-4">
-					<span>{{ item.data.rating ?? 'N/A' }}</span>
-				</span>
-				<span v-if="item.avatar" class="flex items-center gap-4">
-					<Avatar :name="item.data.fname" bg="#B1C2D9" />
-				</span>
-				<span v-if="item.created_at">
-					{{ useDateFormat(item.data.created_at, "MMMM d, YYYY").value }}
-				</span>
-				<span v-else-if="item.active">
-					<StatusBadge :name="item.data.active === '1' ? 'active' : 'inactive'" />
-				</span>
-			</template>
+			</div>
 
-			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
-			</template>
-		</Table>
+			<div class="flex w-full lg:w-1/2 flex-col rounded-lg border">
+				<h3 class="p-4 text-sm text-dark font-bold">
+					Banner Image
+				</h3>
+				<div class="p-4">
+					<img :src="banner_details?.image_url" class="w-full object-cover" alt="">
+				</div>
+			</div>
+		</div>
 	</main>
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from '@vueuse/core'
-import { useGetDriversList } from '@/composables/modules/drivers/fetch'
-import { useDriverIdDetails } from '@/composables/modules/drivers/id'
+import moment from 'moment'
+import { useBannerDetails } from '@/composables/modules/campaigns/banner'
 
-const { getDriversList, loading, driversList, filterData, onFilterUpdate, moveTo, next, prev, total, page } = useGetDriversList()
+const { loading, getBannerDetails, banner_details } = useBannerDetails()
+const banner_id = useRoute().params.id as string
+getBannerDetails(banner_id)
 
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
-getDriversList()
-
-const onRowClicked = (data) => {
-	const { selectedDriver } = useDriverIdDetails()
-	useRouter().push(`/drivers/${data.id}/driver-info`)
-	selectedDriver.value = data
-}
+const info = computed(() => {
+	const res = [
+		{ title: 'title', value: banner_details.value?.title },
+		{ title: 'date created', value: moment(banner_details.value?.created_at).format('ll') },
+		{ title: 'status', value: banner_details.value?.status === 'active' ? 'Enabled' : 'Disabled' }
+	]
+	if (banner_details.value?.action_type === 'open_link') {
+		res.push({ title: 'embed link', value: banner_details.value?.action_value })
+	}
+	if (banner_details.value?.action_type === 'open_route') {
+		res.push({ title: 'route', value: banner_details.value?.action_value })
+	}
+	if (banner_details.value?.action_type === 'open_carousel') {
+		res.push({ title: 'carousel', value: 'YES' })
+	}
+	return res
+})
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
 })
-const tableFields = ref([
-    {
-        text: 'User',
-        value: 'fname'
-    },
-    {
-        text: 'Average Rating',
-        value: 'rating'
-    },
-    {
-        text: 'Avatar',
-        value: 'avatar'
-    },
-    {
-        text: 'Date Joined',
-        value: 'created_at'
-    },
-    {
-        text: 'STATUS',
-        value: 'active'
-    }
-])
 
 </script>

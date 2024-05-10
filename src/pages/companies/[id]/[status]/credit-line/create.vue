@@ -15,35 +15,31 @@
 			<div class=" space-y-6">
 				<div class="field relative">
 					<label for="First">How much credit line do you want to give each employee?</label>
-					<input id="First" v-model="form.amount" type="number" class="input-field" required>
+					<input id="First" v-model="amount" type="number" class="input-field" required>
 				</div>
 
 				<div class="field relative">
 					<label for="exployeesToInclude">Which employees do you want to apply the credit to?</label>
-					<select id="exployeesToInclude" v-model="form.option" class="input-field py-3">
+					<select id="exployeesToInclude" v-model="applicable_to" class="input-field py-3">
 						<option v-for="(itm, idx) in reasonForCreditLine" :key="idx" :value="itm.value">
 							{{ itm.name }}
 						</option>
 					</select>
 				</div>
-				<div v-if="showEmployeeList" class="field relative">
-					<label for="Last">Select the Employees to include</label>
-					<select v-model="form.employee" class="input-field py-3">
-						<option v-for="(itm, idx) in employeeList" :key="idx" :value="itm?.value">
-							{{ itm?.name }}
-						</option>
-					</select>
+				<div v-if="applicable_to !== 'all'" class="field relative">
+					<label for="Last">Select the Employees to {{ applicable_to === 'some' ? 'include' : 'exempt' }}</label>
+					<InputMultiSelectCorporateUsers v-model="users" :multiple="true" :corporate-id="($route.params.id as string)" />
 				</div>
 				<div>
 					<label for="applyCreditLineOption" class="text-sm">
-						<input id="applyCreditLineOption" v-model="form.applyCreditLineImmediatly" type="checkbox">
+						<input id="applyCreditLineOption" v-model="apply_immediately" type="checkbox">
 						Apply credit line to staff immediately
 					</label>
 				</div>
 			</div>
 			<div>
-				<button type="submit" class="btn-primary ml-auto mt-12" :disabled="createLoading">
-					<span v-if="!createLoading">Activate Credit Line</span>
+				<button type="submit" class="btn-primary ml-auto mt-12" :disabled="processing || !enableButton">
+					<span v-if="!processing">Activate Credit Line</span>
 					<Spinner v-else />
 				</button>
 			</div>
@@ -52,36 +48,31 @@
 </template>
 
 <script lang="ts" setup>
+import { useCreateCreditLine } from '@/composables/modules/corporates/creditLine'
+
+const { processing, createCreditLine, users, apply_immediately, applicable_to, amount } = useCreateCreditLine()
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
-const form = reactive({
-    amount: '',
-    applyCreditLineImmediatly: true,
-    option: '',
-    employee: ''
-})
-const employeeList = ref([])
-const createLoading = ref(false)
 const reasonForCreditLine = ref([
     {
         name: 'All Employees',
-        value: 'all_employees'
+        value: 'all'
     },
     {
         name: 'All Employees except some',
-        value: 'all_employees_except_some'
+        value: 'all_except'
     },
     {
         name: 'Only some select employees',
-        value: 'only_some_select_employees'
+        value: 'some'
     }
 ])
 
-const createCreditLine = () => {}
-
-const showEmployeeList = computed(() => {
-    return !!(form.option === 'all_employees_except_some' || form.option === 'only_some_select_employees')
+const enableButton = computed(() => {
+	if (applicable_to.value !== 'all' && !users.value.length) return false
+	return !!(amount.value, applicable_to.value)
 })
+
 </script>

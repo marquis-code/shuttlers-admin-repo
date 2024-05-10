@@ -93,5 +93,33 @@ export const campaigns_api = {
     $_get_campaign_details: (id: string) => {
         const url = `campaigns/${id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_create_banner: (payload:Record<string, any>) => {
+        const url = '/dynamic-dashboard/banners'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    },
+    $_update_banner: (banner_id: number, payload:Record<string, any>) => {
+        const url = `/dynamic-dashboard/banners/${banner_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+    },
+    $_get_banner_details: (banner_id: number) => {
+        const url = `/dynamic-dashboard/banners/${banner_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_create_carousel: (payload:Record<string, any>) => {
+        const url = '/dynamic-dashboard/carousels'
+        return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+    },
+    $_update_carousel: (carousel_id: number, payload:Record<string, any>) => {
+        const url = `/dynamic-dashboard/carousels/${carousel_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+    },
+    $_get_carousel_details: (carousel_id: number) => {
+        const url = `/dynamic-dashboard/carousels/${carousel_id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_get_dynamic_urls: () => {
+        const url = '/dynamic-dashboard/dynamic-urls'
+        return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     }
 }

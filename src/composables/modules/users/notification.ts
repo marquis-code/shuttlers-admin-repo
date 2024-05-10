@@ -1,10 +1,7 @@
+import { useUserNotifyFilter } from './notify-filter'
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'
-import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
-const { getCorporatesList } = useGetCorporateList()
-const { getUsersList } = useGetUsersList()
 
 const credentials = {
     title: ref(''),
@@ -28,6 +25,10 @@ interface NotificationInterface {
   user_ids?: Record<string, any>
 }
 
+watch(credentials.notifyAll, () => {
+    if (credentials.notifyAll.value) selectedUsers.value = []
+})
+
 export const useCreateNotification = () => {
     const creatingNotification = ref(false)
     const message = ref('')
@@ -36,7 +37,16 @@ export const useCreateNotification = () => {
     })
 
     const sendNotification = async () => {
-            useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${credentials.notifyAll.value ? 'All' : selectedUsers.value.length} users?`, loading: creatingNotification, call_function: () => createNotifications() })
+        const { selectedCompany } = useUserNotifyFilter()
+        const normal_desc = computed(() => `Are you sure you want to notify ${credentials.notifyAll.value ? 'All' : selectedUsers.value.length} users?`)
+        const company_desc = computed(() => `Are you sure you want to notify all "${selectedCompany.value?.corporate_name}" users`)
+            useConfirmationModal().openAlert({
+                type: 'NORMAL',
+                title: 'Please Confirm',
+                desc: selectedCompany.value?.id ? company_desc.value : normal_desc.value,
+                loading: creatingNotification,
+                call_function: () => createNotifications()
+            })
     }
 
     const createNotifications = async () => {
@@ -51,8 +61,15 @@ export const useCreateNotification = () => {
                 ...payload, all: true
             }
         } else {
-            payload = {
-                ...payload, user_ids: selectedUsers.value.map((user:any) => user.id)
+            const { type, users } = useUserNotifyFilter()
+            if (type.value === 'all') {
+                payload = {
+                    ...payload, user_ids: selectedUsers.value.map((user:any) => user.id)
+                }
+            } else {
+                payload = {
+                    ...payload, user_ids: users.value.map((user:any) => user.id)
+                }
             }
         }
         creatingNotification.value = true
@@ -62,8 +79,6 @@ export const useCreateNotification = () => {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
             useConfirmationModal().closeAlert()
             resetCredentials()
-            getCorporatesList()
-            getUsersList()
         }
         creatingNotification.value = false
         useConfirmationModal().closeAlert()

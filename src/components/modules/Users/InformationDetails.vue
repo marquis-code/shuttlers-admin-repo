@@ -105,8 +105,11 @@ import { useUserModal } from '@/composables/core/modals'
 import { useCreateUsers } from '@/composables/modules/users/create'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useDeleteBusCaptains } from '@/composables/modules/users/id'
+import { useBlockUser } from '@/composables/modules/users/block'
+import { isProdEnv } from '@/composables/utils/system'
 
 const { suspendUsers, updateUserWallet, loading, setUpdateWalletActionType } = useCreateUsers()
+const { initBlockUser } = useBlockUser()
 const { deleteBusCaptain, loading: loadingBusCaptains } = useDeleteBusCaptains()
 const props = defineProps({
     selectedUser: {
@@ -136,7 +139,8 @@ const dropdownChildren = computed(() => [
 	{ name: 'Add Profile Picture', func: () => { useUserModal().openChangeProfile() } },
 	{ name: 'Make bus captain', func: () => { makeBusCaptain() } },
 	{ name: 'Debit User Wallet', func: () => { handleWalletUpdate('debit') }, class: '!text-red' },
-	{ name: `${props.selectedUser.active === '1' ? 'Suspend' : 'Un-suspend'}`, func: (data) => { suspendUser(data) }, class: '!text-red' }
+	{ name: `${props.selectedUser.active === '1' ? 'Suspend' : 'Un-suspend'}`, func: (data) => { suspendUser(data) }, class: '!text-red' },
+	{ name: `${props.selectedUser.is_blocked === 1 ? 'Unblock' : 'Block'} user`, func: (data) => { initBlockUser(!(props.selectedUser.is_blocked)) }, class: '!text-red', hide: isProdEnv.value }
 ])
 
 const suspendUser = (data: any) => {

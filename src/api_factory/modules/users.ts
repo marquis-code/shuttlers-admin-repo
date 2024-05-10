@@ -169,5 +169,9 @@ export const users_api = {
 	$_cancel_booking: (userId:number|string, payload: Record<string, any>) => {
 		const url = `/users/${userId}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
+	},
+	$_block_user: (user_id:string|number, payload:{isBlocked: boolean}) => {
+		const url = `/users/${user_id}/blocked`
+		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}
 }

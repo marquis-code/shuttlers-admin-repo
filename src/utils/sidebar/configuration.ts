@@ -44,9 +44,7 @@ export default {
     },
     {
       title: 'Route Price Control',
-      routePath: isProdEnv.value
-        ? '/configuration/pricing/charges'
-        : '/configuration/pricing/pricing-control',
+      routePath: '/configuration/pricing/pricing-control',
       oldPath: '/configuration/pricing-controls/',
       shouldRedirect: true,
       iconComponent: routePricingIcon,

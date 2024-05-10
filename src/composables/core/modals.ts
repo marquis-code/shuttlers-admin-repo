@@ -86,6 +86,7 @@ import ResyncRevenue from '@/components/modals/modules/partners/payouts/ResyncRe
 import EventFeedback from '@/components/modals/modules/events/EventFeedback.vue'
 import AssignRoutes from '@/components/modals/modules/events/assignRoutes.vue'
 import TransferBookings from '@/components/modals/modules/trips/TransferBookings.vue'
+import UpdateBanner from '@/components/modals/modules/campaigns/banner/updateBanner.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
@@ -102,7 +103,7 @@ type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid' | 'ResyncRevenue'
 type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver'
-type PromotionTypes = 'NewReward'
+type PromotionTypes = 'NewReward' | 'UpdateBanner'
 type EventTypes = 'EventFeedback' | 'AssignRoutes'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
@@ -120,7 +121,7 @@ const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, Confi
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid, ResyncRevenue } as Record<PayoutTypes, any>
 const PartnerModals = { UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
-const PromotionModals = { NewReward } as Record<PromotionTypes, any>
+const PromotionModals = { NewReward, UpdateBanner } as Record<PromotionTypes, any>
 const EventModals = { EventFeedback, AssignRoutes } as Record<EventTypes, any>
 
 export const modal = useModal(ref([] as any))

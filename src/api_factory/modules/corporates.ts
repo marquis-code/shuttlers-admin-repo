@@ -1,5 +1,7 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH, GATEWAY_ENDPOINT_WITH_AUTH_FORM_DATA } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { CustomAxiosResponse } from '@/api_factory/modules'
+import { useAlert } from '@/composables/core/notification'
 
 export const corporates_api = {
 	$_get_graph: () => {
@@ -85,9 +87,13 @@ export const corporates_api = {
 		const url = `/corporates/${corporateId}/groups?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_credit_system: (corporateId: number) => {
+	$_get_credit_system: (corporateId: number|string) => {
 		const url = `/corporates/${corporateId}/credit-system`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_create_credit_line: (corporateId: number|string, payload: Record<string, any>) => {
+		const url = `/corporates/${corporateId}/credit-system`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
 	$_create_company_settings: (corporateId: number, payload: any) => {
 		const url = `/corporates/${corporateId}/settings`
@@ -146,6 +152,21 @@ export const corporates_api = {
 		const url = `/corporate-wallets/${walletId}/transactions?${queryParams}&metadata=true&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
+	$_download_corporate_wallet_transaction_history: async (walletId: number, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/corporate-wallets/${walletId}/transactions?${queryParams}&metadata=true&limit=${5}&page=${1}`
+		// return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+		const res = await GATEWAY_ENDPOINT_WITH_AUTH.get(url) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			if (res.data?.data?.length) {
+				const total = res.data.metadata.total
+				return GATEWAY_ENDPOINT_WITH_AUTH.get(`/corporate-wallets/${walletId}/transactions?${queryParams}&metadata=true&limit=${total}&page=${1}`)
+			} else {
+				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
+				return null
+			}
+        }
+	},
 	$_get_corporate_wallet_info: (corporateId: number) => {
 		const url = `/corporates/${Number(corporateId)}/wallets`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
@@ -178,7 +199,12 @@ export const corporates_api = {
 		const url = `/credit-systems/${creditLineId}/executions`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url)
 	},
-	$_schedule_credit_system: (creditLineId: number, payload: any) => {
+	$_schedule_credit_system_form_data: (creditLineId: number, payload: FormData) => {
+		const url = `/credit-systems/${creditLineId}/executions`
+		// return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+		return GATEWAY_ENDPOINT_WITH_AUTH_FORM_DATA.post(url, payload)
+	},
+	$_schedule_credit_system: (creditLineId: number, payload: Record<string, any>) => {
 		const url = `/credit-systems/${creditLineId}/executions`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},

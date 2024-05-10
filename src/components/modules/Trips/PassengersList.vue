@@ -32,7 +32,7 @@
 				</button>
 			</div>
 			<div v-if="filterType === 'pickup'" class="space-y-6">
-				<section v-for="(val, key, idx) in computedGroupByPickup" :key="idx" class="shadow-sm border rounded-md bg-white w-full">
+				<section v-for="(val, idx) in sortedPickupGroup" :key="idx" class="shadow-sm border rounded-md bg-white w-full">
 					<div class="flex justify-between items-center border-b py-3 px-6">
 						<div class="space-y-2">
 							<div class="flex items-center">
@@ -86,7 +86,7 @@
 			</div>
 
 			<div v-if="filterType === 'dropoff'" class="space-y-6">
-				<section v-for="(val, key, idx) in computedGroupByDestination" :key="idx" class="shadow-sm border rounded-md bg-white w-full">
+				<section v-for="(val, idx) in sortedDropoffGroup" :key="idx" class="shadow-sm border rounded-md bg-white w-full">
 					<div class="flex justify-between items-center border-b py-3 px-6">
 						<div class="space-y-2">
 							<div class="flex items-center">
@@ -187,12 +187,16 @@ const computedGroupByPickup = computed(() => {
 		const busstopname = currentObject?.pickupRouteBusStop?.name || currentObject?.pickup?.location
 
 		if (!accumulator[pickupKey]) {
-			accumulator[pickupKey] = { busstopname, passengers: [] }
+			accumulator[pickupKey] = { busstopname, passengers: [], sort_id: currentObject?.pickupRouteBusStop?.position }
 		}
 		accumulator[pickupKey].passengers.push(currentObject)
 
 		return accumulator
 	}, {} as Record<string, any>) as any[]
+})
+
+const sortedPickupGroup = computed(() => {
+	return Object.values(computedGroupByPickup.value).sort((a, b) => a.sort_id - b.sort_id)
 })
 
 const computedGroupByDestination = computed(() => {
@@ -201,13 +205,17 @@ const computedGroupByDestination = computed(() => {
 		const busstopname = currentObject?.destinationRouteBusStop?.name || currentObject?.destination.location
 
 		if (!accumulator[destinationKey]) {
-			accumulator[destinationKey] = { busstopname, passengers: [] }
+			accumulator[destinationKey] = { busstopname, passengers: [], sort_id: currentObject?.destinationRouteBusStop?.position }
 		}
 
 		accumulator[destinationKey].passengers.push(currentObject)
 
 		return accumulator
 	}, {} as Record<string, any>) as any[]
+})
+
+const sortedDropoffGroup = computed(() => {
+	return Object.values(computedGroupByDestination.value).sort((a, b) => a.sort_id - b.sort_id)
 })
 
 const handleNotification = (item: any, type: string) => {
