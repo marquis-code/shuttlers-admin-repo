@@ -1,6 +1,17 @@
 <template>
+	<section class="flex iten-center justify-between px-4 fixed top h-[80px]  inset-x-0 md:hidden">
+		<Icon class="w-12 cursor-pointer" name="menu" @click="showSidebar" />
+		<router-link class="flex items-center" :to="`/admin/${currentUser.id}/info`" title="View your profile">
+			<div class="w-10 h-10 flex-1 ">
+				<img v-if="currentUser.avatar" :src="currentUser.avatar" alt="Avatar" class="avatar-img rounded-full">
+				<div v-else class="avatar-title rounded-full w-10 h-10 !bg-purp02 !text-black">
+					{{ getInitials(currentUser.fname, currentUser.lname) }}
+				</div>
+			</div>
+		</router-link>
+	</section>
 	<transition name="sidebar" appear>
-		<aside v-if="showPrimaryMenuRef" class="sidebar overflow-hidden" aria-label="Sidebar">
+		<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-hidden  md:block fixed  z-[90]" aria-label="Sidebar">
 			<div class="sidebar-header">
 				<router-link to="/">
 					<component :is="data.logoIcon" class="img" />
@@ -9,7 +20,7 @@
 					<component :is="data.menuIcon" class="img w-8" />
 				</button>
 			</div>
-			<label v-if="!isProdEnv" for="redirect" class="ml-5">
+			<label v-if="!isProdEnv" for="redirect" class="ml-5 flex">
 				<input
 					id="redirect"
 					v-model="shouldNotRedirectToExternalUrl"
@@ -37,7 +48,7 @@
 			/>
 		</aside>
 
-		<aside v-else class="sidebar h-full flex flex-col">
+		<aside v-else class="sidebar h-full flex flex-col md:block fixed z-[90]" aria-label="Sidebar">
 			<button
 				class="sidebar-header flex gap-1 items-center !justify-normal"
 				@click="showPrimaryMenuRef = true"
@@ -76,16 +87,15 @@
 import { watch } from 'vue'
 import SidebarMenu from './SidebarMenuItem.vue'
 import routeIcon from '@/assets/icons/src/compass.vue'
-import { isProdEnv, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
+import { isProdEnv, shouldNotRedirectToExternalUrl, useSidebar } from '@/composables/utils/system'
 import {
 	currentRouteObject,
 	showPrimaryMenuRef,
 	parentOfTheCurrentRouteChildren
 } from '@/utils/sidebar_controls'
 
-// const isProd = computed(() => {
-// 	return location.host === 'v3.admin.shuttlers.africa'
-// })
+const { showSidebar } = useSidebar()
+
 const props = defineProps({
 	data: {
 		type: Object,
@@ -143,6 +153,14 @@ const resetMenus = () => {
 		})
 	})
 }
+
+const getInitials = (string1, string2) => {
+    if (!string1 || !string2) {
+        return ''
+    }
+    const initials = string1[0] + string2[0]
+    return initials.toUpperCase()
+}
 </script>
 
 <style lang="scss">
@@ -192,6 +210,7 @@ $content-area-width: calc(100vw - 14rem);
 }
 
 .sidebar {
+	@apply border-r-2 md:border-0 shadow-md md:shadow-none;
 	background-color: var(--grey11);
 	border-bottom: 1px solid $sh-neutral-400;
 

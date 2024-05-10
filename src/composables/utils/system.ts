@@ -81,3 +81,11 @@ export const removeDuplicates = (array, key) => {
     index === self.findIndex((el) => el[key] === obj[key])
   )
 }
+
+export const useSidebar = () => {
+  const showSidebar = () => {
+    const sidebar = document.querySelector('#sidebar')
+    console.log(sidebar)
+  }
+ return { showSidebar }
+}
