@@ -88,7 +88,7 @@ const transactionRow = computed(() => {
 })
 
 const unit_cost_before_additional_charges = computed(() => {
-	return Number(transaction.value?.booking_history[0]?.cost_before_additional_charges || 0) / transaction.value?.booking_history.length
+	return Number(transaction.value?.booking_history[0]?.cost_before_additional_charges || 0)
 })
 
 const additional_charges_on_fare = computed(() => {
@@ -111,6 +111,7 @@ const total_additional_charges = computed(() => {
 	}
 	return x || 0
 	}
+	return 0
 })
 
 const transactionCol = computed(() => {

@@ -6,7 +6,7 @@
 		</div>
 		<section class="absolute top-4 left-[100px]  flex flex-col items-start z-40">
 			<ButtonGoBack :url="`/trips/type/${tripType}`" class="mb-4 mt-8 " />
-			<div class="card p-0 !max-w-4xl md:w-[500px] z-[200000] ">
+			<div class="card p-0 !max-w-4xl md:w-[500px] z-[20] ">
 				<div class="card-header p-4">
 					Trip Information
 				</div>

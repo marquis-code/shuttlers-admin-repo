@@ -25,6 +25,7 @@ const computedSidebarMenus = computed(() => {
 })
 
 export const showPrimaryMenuRef = ref(true)
+export const showSidebarOnMobile = ref(false)
 
 export const isCurrentRouteAChild = computed(() => {
   const currentRouteUrl = useRoute().path
