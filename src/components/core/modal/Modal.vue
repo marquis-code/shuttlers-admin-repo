@@ -109,7 +109,7 @@ const closeModal = () => {
 
 <style scoped lang="scss">
 .bg-modal {
-	@apply fixed top-0 left-0 w-screen max-w-[100vw] min-h-full z-50 flex justify-center items-center;
+	@apply fixed top-0 left-0 w-screen max-w-[100vw] min-h-full z-[7000000] flex justify-center items-center;
 	backdrop-filter: blur(1.5px);
 	background-color: rgba(0, 0, 0, 0.5);
 }
