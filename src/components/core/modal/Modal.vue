@@ -8,7 +8,7 @@
 		@click.self="autoClose ? close($el) : null"
 	>
 		<transition name="modal" appear>
-			<div v-if="type == 'popup'" :class="{'modal': baseModal, 'large_modal': isLargeModal, 'medium_modal': isMediumModal}" class="w-[8000px]">
+			<div v-if="type == 'popup'" :class="[modalClass]" class="modal flex flex-col">
 				<header class="modal-title flex justify-between w-full items-center">
 					<span v-if="showTitle" class="text-center w-full">{{ title }}</span>
 					<icon
@@ -18,7 +18,7 @@
 						@click="closeModal()"
 					/>
 				</header>
-				<div class="w-full relative">
+				<div class="w-full relative h-full">
 					<slot />
 				</div>
 			</div>
@@ -41,6 +41,10 @@ watch(useRoute(), (from, to) => {
 })
 type modalTypes = 'popup' | 'sidebar';
 const props = defineProps({
+	modalClass: {
+		default: '',
+		type: String
+	},
 	baseModal: {
 		default: true,
 		type: Boolean,

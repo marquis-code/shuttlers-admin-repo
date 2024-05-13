@@ -1,7 +1,8 @@
 import { useUserNotifyFilter } from './notify-filter'
-import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useAlert } from '@/composables/core/notification'
+import { CustomAxiosResponse, users_api } from '@/api_factory/modules'
 import { useConfirmationModal } from '@/composables/core/confirmation'
+import { useUserModal } from '@/composables/core/modals'
+import { useAlert } from '@/composables/core/notification'
 
 const credentials = {
     title: ref(''),
@@ -45,7 +46,7 @@ export const useCreateNotification = () => {
                 title: 'Please Confirm',
                 desc: selectedCompany.value?.id ? company_desc.value : normal_desc.value,
                 loading: creatingNotification,
-                call_function: () => createNotifications()
+                call_function: () => useUserModal().openConfirmNotifications()
             })
     }
 
@@ -78,6 +79,7 @@ export const useCreateNotification = () => {
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
             useConfirmationModal().closeAlert()
+            useUserModal().closeConfirmNotifications()
             resetCredentials()
         }
         creatingNotification.value = false

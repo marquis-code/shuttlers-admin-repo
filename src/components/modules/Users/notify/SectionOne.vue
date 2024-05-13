@@ -38,7 +38,7 @@
 			</div>
 			<div class="p-6">
 				<ClientOnly>
-					<QuillEditor v-model:content="credentials.description.value" content="html" content-type="html" :edit="true" theme="snow" placeholder="Enter notification description" />
+					<QuillEditor v-model:content="credentials.description.value" content-type="html" :edit="true" theme="snow" placeholder="Enter notification description" />
 				</ClientOnly>
 			</div>
 			<div class="flex flex-col gap-4 px-6 pb-6">
@@ -61,13 +61,11 @@
 import { QuillEditor } from '@vueup/vue-quill'
 import { useCreateNotification } from '@/composables/modules/users/notification'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { useGetCorporateList } from '@/composables/modules/corporates/fetch'
-import { useGetUsersList } from '@/composables/modules/users/fetch'
 import { useUserNotifyFilter } from '@/composables/modules/users/notify-filter'
 
 const { selectedCompany, loading_users, users, type, companyTotalStaff } = useUserNotifyFilter()
 const { sendNotification, creatingNotification, credentials, removeSelectedUser, selectedUsers, search } = useCreateNotification()
-const { corporatesList, page_size: corporate_page_size } = useGetCorporateList()
+
 // const { usersList, loading } = useGetUsersList()
 
 const isButtonEnable = computed(() => {
