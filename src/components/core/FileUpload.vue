@@ -55,13 +55,13 @@ const props = defineProps({
 		required: false
 	},
 	height: {
-		type: Number,
-		default: 0,
+		type: [Array],
+		default: () => [0],
 		required: false
 	},
 	width: {
-		type: Number,
-		default: 0,
+	type: [Array],
+	default: () => [0],
 		required: false
 	}
 })
@@ -72,52 +72,49 @@ watch(props, () => {
 	image_ref.value = props.modelValue
 }, { immediate: true })
 
-const isFileDimensionOkay = (event: Record<string, any>) => {
-	const width = ref(0)
-	const height = ref(0)
-	const file = event.target?.files[0]
-    if (file) {
-        const img = new Image()
-        img.onload = function() {
-            width.value = img.width
-            height.value = img.height
-			if (height.value !== props.height || width.value !== props.width) {
-				useAlert().openAlert({ type: 'ERROR', msg: 'Invalid image dimension' })
-				emit('invalidDimension')
-				return false
-			} else {
-				return true
-			}
-        }
-        img.src = URL.createObjectURL(file)
-    } else {
-		return false
-	}
+// Async function to check image dimensions
+const isFileDimensionOkay = (file) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = function() {
+      const width = img.width
+      const height = img.height
+      // Check if the dimensions match the criteria
+      if (props.height.includes(height) || props.width.includes(width)) {
+        resolve(true)
+      } else {
+        useAlert().openAlert({ type: 'ERROR', msg: 'Invalid image dimension' })
+        emit('invalidDimension')
+        resolve(false)
+      }
+    }
+    img.onerror = reject
+    img.src = URL.createObjectURL(file)
+  })
 }
 
-const onChange = (e) => {
-	if (props.height || props.width) {
-		if (!isFileDimensionOkay(e)) return
-	}
+const onChange = async (e) => {
+  const file = e.target.files[0]
+  if (!file) return
 
-	if (props.emitActualFile) {
-		emit('onFileChange', e)
-		return
-	}
+  // Wait for dimension check to complete
+  const dimensionsOkay = await isFileDimensionOkay(file)
+  if (!dimensionsOkay) return
 
-	const files = e.target?.files
-	if (files.length > 0) {
-		const file = files[0]
-		const reader = new FileReader()
-		reader.onloadend = async (e) => {
-			const image = e.target?.result
-			const url = await use_file_upload().upload(image as string)
-			image_ref.value = url
-			emit('onUploadFile', url)
-			emit('update:modelValue', url)
-		}
-		reader.readAsDataURL(file)
-	}
+  if (props.emitActualFile) {
+    emit('onFileChange', e)
+    return
+  }
+
+  const reader = new FileReader()
+  reader.onloadend = async (e) => {
+    const image = e.target?.result
+    const url = await use_file_upload().upload(image)
+    image_ref.value = url
+    emit('onUploadFile', url)
+    emit('update:modelValue', url)
+  }
+  reader.readAsDataURL(file)
 }
 </script>
 

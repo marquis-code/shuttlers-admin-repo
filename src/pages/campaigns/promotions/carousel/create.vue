@@ -9,7 +9,7 @@
 				</div>
 				<div class="flex flex-col gap-0">
 					<label class="label">You can add multiple carousel at a time</label>
-					<FileUpload class="mx-auto" dimension="max. 2480 x 1146px" :height="2480" :width="1146" :show-preview="false" @on-upload-file="handleImageUrl" @invalid-dimension="dimensionError = true" />
+					<FileUpload class="mx-auto" dimension="max. 2480 x 1146px" :height="[2480, 724]" :width="[2021, 1146]" :show-preview="false" @on-upload-file="handleImageUrl" @invalid-dimension="dimensionError = true" />
 					<div class="flex items-center justify-center gap-2">
 						<Icon name="info" class="w-4" />
 						<p class="text-xs text-grey5">
