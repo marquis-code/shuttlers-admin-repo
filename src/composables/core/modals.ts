@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { useModal } from './modal'
 import Logout from '@/components/modals/modules/auth/Logout.vue'
 import UserRefund from '@/components/modals/modules/users/Refund.vue'
+import ConfirmNotifications from '@/components/modals/modules/users/ConfirmNotifications.vue'
 import RefundLogger from '@/components/modals/modules/users/RefundLogger.vue'
 import Confirm from '@/components/modals/modules/core/Confirmation.vue'
 import PasswordConfirm from '@/components/modals/modules/core/PasswordConfirmation.vue'
@@ -89,7 +90,7 @@ import TransferBookings from '@/components/modals/modules/trips/TransferBookings
 import UpdateBanner from '@/components/modals/modules/campaigns/banner/updateBanner.vue'
 
 type AuthTypes = 'Logout'
-type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain'
+type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain' | 'ConfirmNotifications'
 type CoreTypes = 'Confirm' | 'PasswordConfirm' | 'YesConfirm' | 'ImageCropper'
 type CampaignTypes = 'ConfigurePoints' | 'CreateReward' | 'CreateManualReward'
 type CommuteTypes = 'SosNotifier' | 'UpdateVehicle' | 'UpdateDriverAndVehicle' | 'RouteAvailabilityConfig'
@@ -107,7 +108,7 @@ type PromotionTypes = 'NewReward' | 'UpdateBanner'
 type EventTypes = 'EventFeedback' | 'AssignRoutes'
 
 const AuthModals = { Logout } as Record<AuthTypes, any>
-const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain } as Record<UserTypes, any>
+const UserModals = { UserRefund, CancelBooking, RefundLogger, ChangeUserPassword, WalletUpdate, ChangeProfile, BookTrip, MakeBusCaptain, ConfirmNotifications } as Record<UserTypes, any>
 const CoreModals = { Confirm, PasswordConfirm, YesConfirm, ImageCropper } as Record<CoreTypes, any>
 const CampaignModals = { ConfigurePoints, CreateReward, CreateManualReward } as Record<CampaignTypes, any>
 const CommuteModals = { SosNotifier, UpdateVehicle, RouteAvailabilityConfig, UpdateDriverAndVehicle } as Record<CommuteTypes, any>
