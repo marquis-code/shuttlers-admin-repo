@@ -47,7 +47,7 @@ export const calculateCenterAndZoom = async (
     loading.value = false
 }
 
-export const initMap = async (mapDiv: Ref) => {
+export const initMap = async (mapDiv: Ref, mapId:string|null = null) => {
     const { Map } = (await loader.importLibrary(
         'maps'
     )) as google.maps.MapsLibrary
@@ -57,7 +57,7 @@ export const initMap = async (mapDiv: Ref) => {
     map = new Map(mapDiv.value as HTMLElement, {
         zoom: 16,
         disableDefaultUI: true,
-        mapId: '33d190257c86f190',
+        mapId: mapId ?? '33d190257c86f190',
         center: { lat: 6.447809299999999, lng: 3.4723495 }
     })
 }

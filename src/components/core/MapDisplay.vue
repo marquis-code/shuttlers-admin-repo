@@ -42,11 +42,15 @@ const props = defineProps({
     externalMarkers: {
         type: Array,
         default: () => []
+    },
+    mapId: {
+        type: String,
+        default: ''
     }
 })
 
 onMounted(async () => {
-    initMap(mapRef)
+    initMap(mapRef, props.mapId)
     // calculateCenterAndZoom(props.startPoint, props.endPoint)
 
     if (props.encodedPolyline && typeof props.encodedPolyline === 'string') {
