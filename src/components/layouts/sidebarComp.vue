@@ -14,7 +14,7 @@
 		<section v-if="showSidebarOnMobile || largerThanMd">
 			<div class="bg-black bg-opacity-30 fixed inset-0 z-[60] md:hidden" @click="showSidebarOnMobile = false" />
 			<transition name="sidebar" appear>
-				<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-hidden  md:block fixed  z-[90]" aria-label="Sidebar">
+				<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-auto h-full min-h-screen md:block fixed  z-[90]" aria-label="Sidebar">
 					<div class="sidebar-header">
 						<router-link to="/">
 							<component :is="data.logoIcon" class="img" />

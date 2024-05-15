@@ -7,7 +7,7 @@ import { useUserModal } from '@/composables/core/modals'
 const bookUserTripObj = {
     pickup: ref({}) as Ref<Record<string, any>>,
     destination: ref({}) as Ref<Record<string, any>>,
-    start_date: ref(''),
+    start_date: ref(),
     end_date: ref(''),
     itinerary_id: ref(null) as Ref<null|number>,
     has_luggage: ref(false),
