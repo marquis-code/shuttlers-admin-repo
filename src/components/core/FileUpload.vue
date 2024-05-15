@@ -79,7 +79,6 @@ const isFileDimensionOkay = (file) => {
     img.onload = function() {
       const width = img.width
 		const height = img.height
-	  console.log(width, height)
       // Check if the dimensions match the criteria
       if (props.height.includes(height) || props.width.includes(width)) {
         resolve(true)
