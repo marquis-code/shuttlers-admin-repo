@@ -8,7 +8,7 @@
 					<input v-model="title" type="text" required placeholder="Enter title" class="input-field">
 				</div>
 				<div class="flex flex-col gap-0">
-					<FileUpload class="mx-auto" :emit-actual-file="true" :show-preview="false" :height="[2021, 2480]" :width="[724, 1146, 1147]" @on-file-change="handleFileChange" @invalid-dimension="dimensionError = true" />
+					<FileUpload class="mx-auto" :emit-actual-file="true" :show-preview="false" :height="[2021, 2480, 724]" :width="[724, 1146, 2021]" @on-file-change="handleFileChange" @invalid-dimension="dimensionError = true" />
 					<div class="flex items-center justify-center gap-2">
 						<Icon name="info" class="w-4" />
 						<p class="text-xs text-grey5">
