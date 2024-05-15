@@ -94,14 +94,9 @@
 				</select>
 				<Skeleton v-else height="50px" />
 			</div>
-			<div class="">
+			<div class="z-[1000000]">
 				<label for="startDate">Choose Date</label>
-				<InputDateInput
-					id="startDate"
-					v-model="start_date"
-					class="font-light"
-					placeholder="Filter by date"
-				/>
+				<input v-model="start_date" type="date" class="input-field">
 			</div>
 			<div class="field relative">
 				<label for="route">Select Payment Source</label>
