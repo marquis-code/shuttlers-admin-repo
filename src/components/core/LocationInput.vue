@@ -24,6 +24,7 @@ const props = defineProps({
   busStop: { type: Boolean, dafault: false }
 })
 const emit = defineEmits(['update:modelValue', 'change'])
+const inStoreLatLng = ref({})
 
 const options = {
      componentRestrictions: { country: ['NG'] },
@@ -33,7 +34,14 @@ const options = {
 const autocompleteInput = ref(null)
 const autocomplete = ref()
 const isEmpty = () => {
-	if (!(document.getElementById(props.id)as HTMLInputElement).value) return emit('update:modelValue', {})
+	if (!(document.getElementById(props.id) as HTMLInputElement).value) return emit('update:modelValue', {})
+	else {
+		const emitter = {
+			name: (document.getElementById(props.id) as HTMLInputElement).value, ...inStoreLatLng.value
+		}
+		emit('update:modelValue', emitter)
+		emit('change', emitter)
+	}
 }
 const modelValueProp = toRef(props, 'modelValue')
 
@@ -44,6 +52,7 @@ onMounted(async () => {
 		const lng = place.geometry.location.lng()
 
 		const latlng = { lat, lng }
+		inStoreLatLng.value = { lat, lng }
 
 		const emitter = {
 			name: (document.getElementById(props.id) as HTMLInputElement).value, ...latlng
