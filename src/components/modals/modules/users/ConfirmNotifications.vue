@@ -29,8 +29,8 @@
 						<span class="font-bold">{{ credentials.notifyAll.value ? 'All users' : selectedUsers.length }} Selected</span>
 					</div>
 					<div class="flex w-full justify-between text-sm">
-						<span class="fd">External notification</span>
-						<span class="font-bold capitalize">{{ credentials.sms.value ? 'SMS' : '' }} {{ credentials.email.value ? 'Email' : '' }} </span>
+						<span class="fd">Channels</span>
+						<span class="font-bold capitalize">In-app {{ credentials.sms.value ? 'SMS' : '' }} {{ credentials.email.value ? 'Email' : '' }} </span>
 					</div>
 				</div>
 			</section>

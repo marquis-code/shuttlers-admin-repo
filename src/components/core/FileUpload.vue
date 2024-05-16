@@ -108,7 +108,7 @@ const onChange = async (e) => {
 
   const reader = new FileReader()
   reader.onloadend = async (e) => {
-    const image = e.target?.result
+    const image = e.target?.result as string
     const url = await use_file_upload().upload(image)
     image_ref.value = url
     emit('onUploadFile', url)
