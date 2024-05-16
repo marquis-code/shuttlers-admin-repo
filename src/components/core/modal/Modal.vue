@@ -113,7 +113,7 @@ const closeModal = () => {
 
 <style scoped lang="scss">
 .bg-modal {
-	@apply fixed top-0 left-0 w-screen max-w-[100vw] min-h-full z-[7000000] flex justify-center items-center;
+	@apply fixed top-0 left-0 w-screen max-w-[100vw] min-h-full z-[100] flex justify-center items-center;
 	backdrop-filter: blur(1.5px);
 	background-color: rgba(0, 0, 0, 0.5);
 }
@@ -149,14 +149,14 @@ const closeModal = () => {
 	transform: translateX(-500px);
 }
 .modal {
-	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:w-[440px] md:max-h-[90vh];
+	@apply bg-white z-[100] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:w-[440px] md:max-h-[90vh];
 }
 .large_modal {
-	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh];
+	@apply bg-white z-[100] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh];
 }
 
 .medium_modal {
-	@apply bg-white z-[10000] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh] md:w-[900px];
+	@apply bg-white z-[100] flex flex-col items-start gap-4 px-6 rounded-xl w-[90%] h-auto  max-w-[100%] max-h-screen overflow-y-auto  md:px-9 py-8 md:rounded-2xl md:max-h-[90vh] md:w-[900px];
 }
 .modal-title {
 	@apply font-bold text-lg text-center w-full text-black ;

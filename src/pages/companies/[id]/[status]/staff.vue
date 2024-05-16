@@ -212,7 +212,10 @@ const showDays = {
 	dropDown: ref(false)
 }
 const tableFields = ref([
-	{ text: 'Name', value: 'name' },
+	{ text: 'First name', value: 'fname' },
+	{ text: 'Last name', value: 'lname' },
+	{ text: 'email', value: 'email' },
+	{ text: 'Phone', value: 'phone' },
 	{ text: 'Home address', value: 'home' },
 	{ text: 'Nearest Bus stop', value: 'busstop' },
 	{ text: 'Office Branch', value: 'branch' },

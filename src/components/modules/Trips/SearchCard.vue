@@ -19,7 +19,7 @@
 			>
 				<PopoverPanel
 					v-slot="{ close }"
-					class="absolute left-0 z-[500] mt-1"
+					class="absolute left-0 z-[100] mt-1"
 				>
 					<div
 						class="absolute start-0 z-10 mt-2 w-80 h-[800px] max-h-[75vh] rounded-md border border-gray-100 bg-white shadow-lg overflow-auto"
