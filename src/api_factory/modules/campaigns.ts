@@ -40,7 +40,7 @@ export const campaigns_api = {
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
 
-    $_edit_pilot_points: (payload: {points: number, event_name: string}) => {
+    $_edit_pilot_points: (payload: {points: number, event_name: string, active?:boolean}) => {
         const url = '/compliance-events'
         return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
     },
