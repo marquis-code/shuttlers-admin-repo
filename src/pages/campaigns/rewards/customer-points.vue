@@ -38,9 +38,8 @@
 									{{ !lookupTable[item.data.id] ? 'Edit' : 'Save' }}
 								</button>
 								<div class="w-full">
-									<button v-if="!lookupTable[item.data.id]" :disabled="item.data.points === 0" :class="[item.data.points === 0 ? 'opacity-25 cursor-not-allowed' : null]" @click="handleDelete(item.data)">
-										<img src="@/assets/icons/source/delete.svg" alt="delete icon">
-									</button>
+									<ToggleButton v-if="!lookupTable[item.data.id]" v-model="item.data.active" :name="item.data.id" label="" class="w-14" @onToggle="updatePointStatus(item.data, $event)" />
+
 									<button v-else class="text-black font-medium" @click="lookupTable[item.data.id] = false">
 										Cancel
 									</button>
@@ -60,7 +59,7 @@ import { useCampaignModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
 import { use_get_pilot_point_list, use_edit_point, use_get_points_rate } from '@/composables/modules/campaigns/fetch'
 const { getPilotPoints, loadingPointsList, pointsList, page, total, moveTo, next, prev } = use_get_pilot_point_list()
-const { payloads, editPoint, loading } = use_edit_point()
+const { payloads, editPoint, updatePointStatus } = use_edit_point()
 const { getPilotPointsRate, loading_points_rate, pointsRateObject } = use_get_points_rate()
 const userType = 'user'
 getPilotPoints(userType)
@@ -116,15 +115,6 @@ const handleEdit = async (item, action) => {
 		useAlert().openAlert({ type: 'SUCCESS', msg: 'Points was updated successfully' })
 		lookupTable.value[item.id] = false
 	}
-}
-
-const handleDelete = async (item) => {
-		const { payloads, editPoint, loading } = use_edit_point()
-		payloads.min_point.value = ''
-		payloads.name.value = item.event_name
-		await editPoint(item.id)
-		getPilotPoints(userType)
-		useAlert().openAlert({ type: 'SUCCESS', msg: 'Point was deleted successfully' })
 }
 
 </script>
