@@ -6,7 +6,7 @@
 		:placeholder="placeholder"
 		:range="range"
 		:disabled-date="disabledDate"
-		class="w-full min-w-[230px] z-[90000]"
+		class="w-full min-w-[230px]"
 		:value-type="valueType"
 		:disabled="disabled"
 		:editable="editable"

@@ -94,7 +94,7 @@
 				</select>
 				<Skeleton v-else height="50px" />
 			</div>
-			<div class="z-[1000000]">
+			<div class="">
 				<label for="startDate">Choose Date</label>
 				<input v-model="start_date" type="date" class="input-field">
 			</div>

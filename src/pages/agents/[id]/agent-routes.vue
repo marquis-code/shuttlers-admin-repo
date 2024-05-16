@@ -14,7 +14,7 @@
 	<div class="flex flex-col mt-4 gap-6">
 		<section v-if="filterData.approval_status.value === 'monitoring' && !loading" class="flex gap-4 w-full ">
 			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
-				<span class="text-sm text-grey5">{{ filterData_monitoring.trip_type.value === 'completed' ? "Total trips taken" :'Total trip' }}</span>
+				<span class="text-sm text-grey5">{{ filterData_monitoring.trip_type.value === 'completed' ? "Total trips taken" :'Total trips' }}</span>
 				<span class="text-3xl font-bold">{{ total }}</span>
 			</div>
 			<div v-if="agentsRoute.length" class="flex flex-col card min-w-[270px] px-6">
@@ -54,6 +54,9 @@
 					</span>
 					<span v-else-if="item.active" class="text-base">
 						<StatusBadge :name="item?.data?.active === '1' ? 'active' : 'inactive'" />
+					</span>
+					<span v-else-if="item.created_at" class="flex items-center gap-4 py-4">
+						{{ useDateFormat(item.data.created_at, "hh:mm, MMMM d, YYYY").value }}
 					</span>
 				</template>
 
@@ -119,6 +122,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import moment from 'moment'
 import { useAgentIdDetails } from '@/composables/modules/agents/id'
 import { useGetAgentsRoutes } from '@/composables/modules/agents/routes'
@@ -175,6 +179,10 @@ const tableFields = computed(() => {
 		{
 			text: 'TIME',
 			value: 'departure_time'
+		},
+		{
+			text: 'Date',
+			value: 'created_at'
 		},
 		{
 			text: 'PASSENGERS',

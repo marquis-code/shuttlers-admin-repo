@@ -50,7 +50,10 @@ export const useCorporateStaff = () => {
 			const data = res.data.data
             const newArr = data.map((el) => {
                 return {
-                    name: `${el?.fname || ''} ${el?.lname || ''} ${el?.email || ''}`,
+					first_name: el?.fname || 'N/A',
+					last_name: el?.lname || 'N/A',
+					email: el?.email || 'N/A',
+					phone: el?.phone || 'N/A',
 					home_address: el?.address?.address || 'N/A',
 					nearest_busstop: el?.address?.closestBusstop?.address || 'N/A',
 					office_branch: el?.workShift?.officeBranch?.address || 'N/A',
