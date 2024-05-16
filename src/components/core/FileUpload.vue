@@ -78,7 +78,7 @@ const isFileDimensionOkay = (file) => {
     const img = new Image()
     img.onload = function() {
       const width = img.width
-      const height = img.height
+		const height = img.height
       // Check if the dimensions match the criteria
       if (props.height.includes(height) || props.width.includes(width)) {
         resolve(true)
@@ -108,7 +108,7 @@ const onChange = async (e) => {
 
   const reader = new FileReader()
   reader.onloadend = async (e) => {
-    const image = e.target?.result
+    const image = e.target?.result as string
     const url = await use_file_upload().upload(image)
     image_ref.value = url
     emit('onUploadFile', url)

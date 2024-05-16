@@ -24,7 +24,6 @@ export const useEditAgents = () => {
     }
 
 	const editAgent = async () => {
-		loading.value = true
 		if (!isValidEmail(createForm.email.value)) {
 			useAlert().openAlert({ type: 'ERROR', msg: 'invalid email' })
 			return
@@ -37,6 +36,7 @@ export const useEditAgents = () => {
 		}
 		})
 		createForm.location.value = `${createForm.location.value?.lat}, ${createForm.location.value?.lng}` ?? null
+		loading.value = true
 		const res = (await users_api.$_edit_users(convertObjWithRefToObj(createForm, shouldIgnoreKeys.value), selectedId.value)) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			useRouter().push(`/agents/${selectedId.value}/agent-info`)

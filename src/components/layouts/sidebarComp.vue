@@ -12,9 +12,9 @@
 	</section>
 	<transition name="fade" appear>
 		<section v-if="showSidebarOnMobile || largerThanMd">
-			<div class="bg-black bg-opacity-30 fixed inset-0 z-[60] md:hidden" @click="showSidebarOnMobile = false" />
+			<div class="bg-black bg-opacity-30 fixed inset-0 z-[50] md:hidden" @click="showSidebarOnMobile = false" />
 			<transition name="sidebar" appear>
-				<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-auto h-full min-h-screen md:block fixed  z-[90]" aria-label="Sidebar">
+				<aside v-if="showPrimaryMenuRef" id="sidebar_main" class="sidebar overflow-auto h-full min-h-screen md:block fixed  z-[50]" aria-label="Sidebar">
 					<div class="sidebar-header">
 						<router-link to="/">
 							<component :is="data.logoIcon" class="img" />
@@ -43,7 +43,7 @@
 					/>
 				</aside>
 
-				<aside v-else class="sidebar h-full flex flex-col md:block fixed z-[90]" aria-label="Sidebar">
+				<aside v-else class="sidebar h-full flex flex-col md:block fixed z-[50]" aria-label="Sidebar">
 					<button
 						class="sidebar-header flex gap-1 items-center !justify-normal"
 						@click="showPrimaryMenuRef = true"

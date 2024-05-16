@@ -1,5 +1,5 @@
 <template>
-	<div class="sidebar-footer  md:block mt-auto z-[90]">
+	<div class="sidebar-footer  md:block mt-auto z-[50]">
 		<div v-if="currentUser" id="sidebarUser" class="user-box">
 			<div class="avatar avatar-sm w-auto">
 				<router-link class="flex items-center" :to="`/admin/${currentUser.id}/info`" title="View your profile">
