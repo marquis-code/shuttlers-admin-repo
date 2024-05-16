@@ -29,7 +29,6 @@ const inStoreLatLng = ref({})
 const options = {
      componentRestrictions: { country: ['NG'] },
     fields: ['address_components', 'geometry', 'name']
-
 }
 const autocompleteInput = ref(null)
 const autocomplete = ref()
@@ -46,6 +45,9 @@ const isEmpty = () => {
 const modelValueProp = toRef(props, 'modelValue')
 
 onMounted(async () => {
+	if (props.modelValue?.lat || props.modelValue?.lng) {
+		inStoreLatLng.value = { lat: props.modelValue?.lat, lng: props.modelValue?.lng }
+	}
 	const fillInAddress = () => {
 		const place = autocomplete.value.getPlace()
 		const lat = place.geometry.location.lat()

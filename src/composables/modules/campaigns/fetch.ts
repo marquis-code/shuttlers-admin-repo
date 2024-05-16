@@ -1,6 +1,7 @@
 import { campaigns_api } from '@/api_factory/modules/campaigns'
 import { CustomAxiosResponse } from '@/api_factory/axios.config'
 import { usePagination } from '@/composables/utils/table'
+import { useAlert } from '@/composables/core/notification'
 
 const payloads = {
     name: ref(''),
@@ -52,7 +53,7 @@ const rewardsList = ref([])
 export const use_get_pilot_reward_list = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
     const loadingPilotRewardList = ref(false)
-    const getPilotRewards = async (userType:string) => {
+    const getPilotRewards = async (userType: string) => {
         loadingPilotRewardList.value = true
         const res = await campaigns_api.$_get_pilot_reward_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -73,7 +74,7 @@ export const use_get_pilot_point_list = () => {
 
     const { $_pilot_points_list } = campaigns_api
 
-    const getPilotPoints = async (userType:string) => {
+    const getPilotPoints = async (userType: string) => {
         loadingPointsList.value = true
         const res = await $_pilot_points_list(metaObject, userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -92,7 +93,7 @@ export const use_get_pilot_hightest_lowest_points = () => {
     const loading_pilot_rate_points = ref(false)
     const pointsObject = ref({} as Record<string, any>)
 
-    const getPointsRate = async (userType:string) => {
+    const getPointsRate = async (userType: string) => {
         loading_pilot_rate_points.value = true
         const res = await campaigns_api.$_get_pilot_leaderboard_points(userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -148,7 +149,7 @@ export const use_configure_point = () => {
 export const use_edit_point = () => {
     const loading = ref(false)
 
-    const editPoint = async (id:number) => {
+    const editPoint = async (id: number) => {
         loading.value = true
         const payload = {
             points: Number(payloads?.min_point?.value),
@@ -160,7 +161,19 @@ export const use_edit_point = () => {
             // location.assign('/campaigns/rewards/')
         }
     }
-    return { payloads, editPoint, loading }
+
+    const updatePointStatus = async (data: Record<string, any>, status: boolean) => {
+        loading.value = true
+        const res = (await campaigns_api.$_edit_pilot_points({
+            points: data.points,
+            event_name: data.event_name,
+            active: status
+        })) as any
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Points was updated successfully' })
+        }
+    }
+    return { payloads, editPoint, loading, updatePointStatus }
 }
 
 export const use_get_leaderboard_point_list = () => {
@@ -189,7 +202,7 @@ export const use_get_leaderboard_point_list = () => {
 export const use_update_reward = () => {
     const loadingRewardUpdate = ref(false)
 
-    const editReward = async (id:number) => {
+    const editReward = async (id: number) => {
         loadingRewardUpdate.value = true
         const payload = {
             status: payloads?.status?.value,
@@ -208,7 +221,7 @@ const loading_points_rate = ref(false)
 const pointsRateObject = ref({} as Record<string, any>)
 
 export const use_get_points_rate = () => {
-    const getPilotPointsRate = async (userType:string) => {
+    const getPilotPointsRate = async (userType: string) => {
         loading_points_rate.value = true
         const res = await campaigns_api.$_get_point_rate(userType) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -221,14 +234,14 @@ export const use_get_points_rate = () => {
 }
 
 export const use_get_campaigns = () => {
-        const { prev, metaObject, next, moveTo, setFunction } = usePagination()
-        const loading_campaigns = ref(false)
-        const campaignsList = ref([])
-        const filterData = {
-                search: ref(''),
-                start_date: ref(''),
-                end_date: ref('')
-            }
+    const { prev, metaObject, next, moveTo, setFunction } = usePagination()
+    const loading_campaigns = ref(false)
+    const campaignsList = ref([])
+    const filterData = {
+        search: ref(''),
+        start_date: ref(''),
+        end_date: ref('')
+    }
     const getCampaigns = async () => {
         loading_campaigns.value = true
         const res = await campaigns_api.$_get_campaigns(metaObject, filterData) as CustomAxiosResponse
@@ -249,9 +262,9 @@ export const use_get_campaigns = () => {
                 break
         }
     }
-   setFunction(getCampaigns)
-   watch([filterData.end_date, filterData.start_date, filterData.search], () => {
-    getCampaigns()
-})
+    setFunction(getCampaigns)
+    watch([filterData.end_date, filterData.start_date, filterData.search], () => {
+        getCampaigns()
+    })
     return { getCampaigns, loading_campaigns, campaignsList, prev, ...metaObject, onFilterUpdate, next, moveTo }
 }
