@@ -60,7 +60,7 @@
         box-shadow: 0px 0px 64px rgba(0, 0, 0, 0.05);
     }
     .modal-btn {
-        @apply flex justify-center w-full px-4 py-[11px] mt-6 font-bold border rounded-lg cursor-pointer border-grey6 text-dark disabled:bg-gray-500 disabled:cursor-not-allowed;
+        @apply flex justify-center w-full px-4 py-[11px] mt-6 font-bold border rounded-xl cursor-pointer bg-dark disabled:cursor-not-allowed text-sm text-white disabled:bg-[#B9BCC8]; 
     }
 
     .profile-inner {

@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Update Partner Password"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="updatePartnerPassword">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="updatePartnerPassword">
 			<div class="flex flex-col gap-2">
 				<label class="label">Password</label>
 				<div class="w-full h-[50px] relative">

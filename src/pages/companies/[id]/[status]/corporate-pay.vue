@@ -156,7 +156,7 @@
 							</div>
 						</div>
 						<section class="flex-grow flex flex-col gap-[12px] border rounded-lg p-[16px] w-full">
-							<header class="flex items-center justify-between gap-[16px] w-full border_b pb-[8px]">
+							<header class="flex items-center justify-between gap-4 w-full border_b pb-[8px]">
 								<span>Create new exemption for your staff</span>
 								<div class="flex items-center gap-4">
 									<div v-if="isEditingExemption" class="flex items-center gap-4">

@@ -13,8 +13,8 @@
 						{{ config.additionChargeType?.name || '' }}
 					</p>
 				</div>
-				<div class="bg-white border rounded-lg p-[16px] flex flex-col gap-[16px]">
-					<div class="flex flex-col gap-[16px] lg:flex-row lg:items-center lg:justify-between">
+				<div class="bg-white border rounded-lg p-[16px] flex flex-col gap-4">
+					<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 						<div class="flex flex-col gap-1">
 							<p class="text-lg text-[#000005] font-medium">
 								{{ config.additionChargeType?.short_name }}-{{ config.additionChargeType?.name }}
@@ -40,7 +40,7 @@
 						</div>
 					</div>
 					<div class="border" />
-					<div class="flex items-center flex-wrap gap-6 md:gap-[16px] justify-between">
+					<div class="flex items-center flex-wrap gap-6 md:gap-4 justify-between">
 						<div class="flex flex-col gap-1 text-sm text-[#101211] font-medium">
 							<p>{{ config.country_currently_active_in.name }}</p>
 							<ModulesConfigureChargesCityList :cities="config.cities_currently_active_in || []" />

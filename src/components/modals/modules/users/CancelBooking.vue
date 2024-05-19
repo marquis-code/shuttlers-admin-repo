@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Cancel Booking"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="cancelBooking">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="cancelBooking">
 			<div class="flex flex-col gap-2">
 				<label class="label">Select days to cancel</label>
 				<Skeleton v-if="loading" height="60px" radius="10px" />
