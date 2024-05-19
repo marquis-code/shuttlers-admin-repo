@@ -28,21 +28,21 @@ const clearObj = () => {
 }
 const isFromDetailsPage = ref(false)
 
+const WHT_deducted_amount = computed(() => {
+	return Number((((partnerDeductionObj.percentage.value || 0) / 100) * partnerDeductionObj.data.value.netRevenue!).toFixed(2))
+})
+
 watch([partnerDeductionObj.type, partnerDeductionObj.percentage], (val) => {
 	if (val[0] === 'wht') {
-		partnerDeductionObj.desc.value = `WHT Deduction for ${moment(partnerDeductionObj.data.value.referenceTime).format('MMMM, YYYY')} `
+		partnerDeductionObj.desc.value = `WHT Deduction for ${moment(partnerDeductionObj.data.value.referenceTime).format('MMMM, YYYY')}`
 	} else {
 		partnerDeductionObj.desc.value = ''
 	}
 	if (val[1]) {
-		partnerDeductionObj.amount.value = 0
+		partnerDeductionObj.amount.value = WHT_deducted_amount.value
 	} else {
 		partnerDeductionObj.amount.value = 0
 	}
-})
-
-const WHT_deducted_amount = computed(() => {
-	return Number((((partnerDeductionObj.percentage.value || 0) / 100) * partnerDeductionObj.amount.value!).toFixed(2))
 })
 
 export const useDeductPayout = () => {

@@ -53,7 +53,7 @@
 			<section v-if="form_step === 2" class="flex flex-col gap-4 w-full">
 				<span class="flex items-center justify-between">
 					<p class="text-sm">Amount:</p>
-					<p class="text-sm">{{ partnerDeductionObj.amount.value }}% of {{ convertToCurrency(partnerDeductionObj.amount.value!) }}</p>
+					<p class="text-sm">{{ partnerDeductionObj.percentage.value }}% of {{ convertToCurrency(partnerDeductionObj.data.value.netRevenue!) }}</p>
 				</span>
 
 				<hr class="w-full ">
@@ -67,7 +67,7 @@
 					WHT should be the last deduction on a monthly earning. Please confirm that you have deducted other necessary deductions before proceeding as you will not be able to deduct from this earning after making a WHT deduction.
 				</div>
 
-				<div v-if="partnerDeductionObj.type.value === 'default'" class="flex flex-col gap-2">
+				<div class="flex flex-col gap-2">
 					<label class="label font-bold">Type in YES to confirm this action</label>
 					<input v-model="partnerDeductionObj.yes_text.value" required type="text" class="input-field">
 					<p v-if="partnerDeductionObj.yes_text.value.length && partnerDeductionObj.yes_text.value !== 'YES'" class="text-xs font-medium text-red">
@@ -75,7 +75,10 @@
 					</p>
 				</div>
 			</section>
-			<footer class="flex w-full mt-6 border-t pt-3">
+			<footer class="flex w-full mt-6 border-t pt-5 gap-4">
+				<button type="button" class="btn-outline w-full" @click="form_step === 1 ? usePayoutModal().closeDeductPayout() : (form_step = 1)">
+					Go back
+				</button>
 				<button v-if="partnerDeductionObj.type.value === 'default' || form_step === 2" type="submit" :disabled="loading || !enableButton" class="modal-btn">
 					{{ loading ? 'processing...' : `${partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct Revenue' : 'Deduct'}` }}
 				</button>
@@ -92,6 +95,7 @@
 <script setup lang="ts">
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { convertToCurrency } from '@/composables/utils/formatter'
+import { usePayoutModal } from '@/composables/core/modals'
 
 const form_step = ref(1)
 
