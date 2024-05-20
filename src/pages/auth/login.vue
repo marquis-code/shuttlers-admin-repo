@@ -15,15 +15,6 @@
 					@click="auth_type = 'phone'">Phone number</span>
 			</div>
 			<form class="auth-form" @submit.prevent="login">
-				<div class="flex flex-col mb-2 mobile">
-					<h1 class="text-[32px] font-bold">
-						Login to your Shuttlers Account
-					</h1>
-					<p class="text-gray-500">
-						Please login to your Shuttlers account with your email address and password.
-					</p>
-				</div>
-
 				<div v-if="auth_type == 'email'" class="field relative">
 					<label for="email">Email address</label>
 					<input id="email" v-model="credential.email.value" autocomplete="true" type="email"
