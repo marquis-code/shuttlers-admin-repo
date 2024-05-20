@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col gap-[8px] w-full" @click="$emit('clicked')">
-		<div class="flex p-[16px] items-center gap-[16px] justify-between rounded-lg cursor-pointer"
+		<div class="flex p-[16px] items-center gap-4 justify-between rounded-lg cursor-pointer"
 			:class="active ? 'bg-[#EDFDF5] border border-green-600' : 'border'"
 		>
 			<div class="gap-[8px] w-full flex items-center">

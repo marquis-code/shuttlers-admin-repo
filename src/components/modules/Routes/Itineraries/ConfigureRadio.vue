@@ -3,7 +3,7 @@
 		<p class="text-sm font-medium text-[#6E717C] m-0">
 			{{ obj.title }}
 		</p>
-		<div class="flex gap-[16px] items-center">
+		<div class="flex gap-4 items-center">
 			<div v-for="n in obj.radios" :key="n.id" class="flex gap-2 items-center radio-container" @click="$emit('changed', {key: n.name, val:n.id})">
 				<div :class="obj.model === n.id ? '!border-[#4848ED]' : '!border-[#D3DCE6]'" class="w-[16px] h-[16px] rounded-full border flex items-center justify-center shrink-0">
 					<div v-if="obj.model === n.id" class="bg-[#4848ED] w-[70%] h-[70%] rounded-full" />

@@ -1,6 +1,6 @@
 <template>
 	<Modal modal="$atts.modal" title="Add Bank Account">
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="addNewBankAccount">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="addNewBankAccount">
 			<div class="flex flex-col gap-2">
 				<label class="label">Bank Name</label>
 				<select v-model="bankObj" required class="input-field">
