@@ -16,6 +16,7 @@ const featureForm = {
 export const useGetStaffs = () => {
     const loading = ref(false)
     const staffsData = ref([] as any[])
+
     const { metaObject, moveTo, next, prev, setFunction } = usePagination()
 
     const filterKeys = {
