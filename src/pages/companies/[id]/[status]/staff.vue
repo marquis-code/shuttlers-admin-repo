@@ -3,8 +3,8 @@
 		<section class="flex flex-col gap-4">
 			<div class="flex items-stretch gap-4">
 				<ButtonGoBack url="/companies" />
-				<button class="bg-black text-white rounded-lg py-2 px-4 text-sm">
-					Map view
+				<button class="bg-black text-white rounded-lg py-2 px-4 text-xs" @click="isMapView = !isMapView">
+					{{ isMapView ? 'List View' :'Map View' }}
 				</button>
 			</div>
 			<div v-if="selectedStaffs.length" class="bg-white rounded-lg flex flex-col border overflow-hidden">
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 
-			<Table :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs"
+			<Table v-if="!isMapView" :loading="loading" :headers="tableFields" :table-data="staffs" :checkbox="true" :selected="selectedStaffs"
 				:has-index="true" :page="page" @checked="handleCheckedItems">
 				<template #header>
 					<TableFilter :filter-type="{ showStatus: false, showSearchBar: true, showDownloadButton: true }" @download="downloadCorporateStaffs" @filter="onFilterUpdate">
@@ -174,6 +174,8 @@
 						@next="next" @prev="prev" />
 				</template>
 			</Table>
+
+			<MapDisplay v-else height="540px" />
 		</section>
 	</main>
 </template>
@@ -186,9 +188,10 @@ import { useCorporateStaff, useSelectedStaff } from '@/composables/modules/corpo
 import { useCorporateBranches } from '@/composables/modules/corporates/branch'
 import { useCorporateWorkShifts } from '@/composables/modules/corporates/shift'
 import { useCompaniesModal } from '@/composables/core/modals'
+
 const { selectedStaffToAssign, selectedStaffPreferredRoutes } = useAssignStaffToRoute()
 
-const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs, downloadCorporateStaffs } = useCorporateStaff()
+const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs, downloadCorporateStaffs, isMapView } = useCorporateStaff()
 const { handleStaffSelection, selectedStaffs, selectedDays, selectedBranches, selectedShifts, handleBranchSelection, handleDaysSelection, handleShiftSelection, selectedRoute, routeSelected } = useSelectedStaff()
 const { loading: loading_branches, getBranches, branches } = useCorporateBranches()
 const { loading: loading_shifts, getShifts, shifts } = useCorporateWorkShifts()
@@ -196,6 +199,7 @@ definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']
 })
+
 const target = ref(null)
 const showFilters = ref(false)
 const showSearchRoute = ref(false)
@@ -278,8 +282,8 @@ const handleCheckedItems = (val:Record<string, any>) => {
 onClickOutside(target, () => closeAllDropDown())
 selectedStaffs.value = []
 getCorporateStaff()
-getBranches(useRoute().params.id as string)
-getShifts(useRoute().params.id as string)
+getBranches(Number(useRoute().params.id))
+getShifts(Number(useRoute().params.id))
 
 const viewRouteList = (item:any) => {
 	selectedStaffPreferredRoutes.value = item.preferredRoutes
