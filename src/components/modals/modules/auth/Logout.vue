@@ -15,11 +15,11 @@
 				Are you sure you want to logout?
 			</p>
 
-			<div class="flex flex-col w-full">
+			<div class="flex flex-col w-full gap-4 mt-4">
 				<button class="w-full modal-btn border-red bg-red text-light hover:bg-red" @click="logOut">
 					Logout
 				</button>
-				<button class="w-full mt-3 modal-btn text-dark" @click="useAuthModal().closeLogout()">
+				<button class="w-full  modal-btn " @click="useAuthModal().closeLogout()">
 					Cancel
 				</button>
 			</div>
