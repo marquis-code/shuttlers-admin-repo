@@ -48,7 +48,6 @@ export const useCreateBanner = () => {
                 useAlert().openAlert({ type: 'SUCCESS', msg: 'Error converting image' })
         }
 
-        payload
         loading.value = true
         const res = await campaigns_api.$_create_banner(payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
