@@ -1,5 +1,5 @@
-import moment from 'moment'
 import { useSelectedStaff } from './select-staff'
+import { useWorkBranches } from '@/composables/modules/corporates/workBranches'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
 import { useDownloadReport, exportAsCsv } from '@/composables/utils/csv'
@@ -19,6 +19,7 @@ const filters = {
 }
 
 export const useCorporateStaff = () => {
+		const { selectedCorporate } = useCorporateIdDetails()
 	const isMapView = ref(false)
 
 	const { metaObject, moveTo, next, prev, setFunction } = usePagination()
@@ -36,10 +37,9 @@ export const useCorporateStaff = () => {
 	}
 
 		watch(isMapView, (val) => {
-  if (val) {
-	  metaObject.page_size.value = metaObject.total.value
-
-	//   console.log(metaObject.page_size.value)
+			if (val) {
+				metaObject.page_size.value = totalStaffs.value!
+				const { fetchWorkBranches, loading, workBranches } = useWorkBranches()
     getCorporateStaff()
   }
 		})
@@ -53,7 +53,6 @@ export const useCorporateStaff = () => {
     }
 
 	const downloadCorporateStaffs = async () => {
-		const { selectedCorporate } = useCorporateIdDetails()
 		downloading.value = true
 		const id = useRoute().params.id as string
 		const name = ref(`${selectedCorporate?.value?.corporate_name} Corporate Staffs'`)
