@@ -19,7 +19,10 @@ const filters = {
 }
 
 export const useCorporateStaff = () => {
+	const isMapView = ref(false)
+
 	const { metaObject, moveTo, next, prev, setFunction } = usePagination()
+
 	const getCorporateStaff = async () => {
 		const id = useRoute().params.id as string
 		loading.value = true
@@ -31,6 +34,15 @@ export const useCorporateStaff = () => {
         }
         loading.value = false
 	}
+
+		watch(isMapView, (val) => {
+  if (val) {
+	  metaObject.page_size.value = metaObject.total.value
+
+	//   console.log(metaObject.page_size.value)
+    getCorporateStaff()
+  }
+		})
 
 	const onFilterUpdate = (data) => {
         switch (data.type) {
@@ -75,5 +87,5 @@ export const useCorporateStaff = () => {
 
 	setFunction(getCorporateStaff)
 
-	return { loading, staffs, downloadCorporateStaffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate }
+	return { loading, staffs, downloadCorporateStaffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate, isMapView }
 }

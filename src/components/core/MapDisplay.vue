@@ -1,6 +1,6 @@
 <template>
 	<Skeleton v-if="loading || propsLoading" :height="height" width="100%" />
-	<div v-show="!loading && !propsLoading" ref="mapRef" class="map-container z-0" :style="{ height: height }" v-bind="$attrs" />
+	<div v-show="!loading && !propsLoading" ref="mapRef" class="map-container z-0 max-h-[100%]" :style="{ height: height }" v-bind="$attrs" />
 </template>
 
 <script setup>
