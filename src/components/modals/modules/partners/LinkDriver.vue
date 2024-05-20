@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Link Driver"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="initlinkDriver">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="initlinkDriver">
 			<div class="flex flex-col gap-2">
 				<p class="text-base text-dark font-medium">
 					Select driver to link

@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Link Vehicle"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="initlinkVehicle">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="initlinkVehicle">
 			<div class="flex flex-col gap-2">
 				<p class="text-base text-dark font-medium">
 					Select vehicle to link

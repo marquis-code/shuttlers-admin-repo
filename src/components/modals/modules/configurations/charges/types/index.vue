@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		:title="!isEditChargeType ? 'Add new charge type' : 'Edit charge type'"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="isEditChargeType ? updateCharge() : createCharge()">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="isEditChargeType ? updateCharge() : createCharge()">
 			<div class="flex flex-col gap-2">
 				<label class="text-xs text-[#6E717C] font-medium">Charge name</label>
 				<input v-model.trim="name" required placeholder="e.g Value Added Tax" class="input-field">

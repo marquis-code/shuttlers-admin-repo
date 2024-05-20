@@ -34,7 +34,8 @@ const { initRetry } = useRetry()
 const deduct = () => {
 	const data = {
 		id: useRoute().params.earningId as string,
-		amount: earningInfo.value.netRevenue
+		amount: earningInfo.value.netRevenue,
+		earningInfo: earningInfo.value
 	}
 	initDeduct(data, true)
 }

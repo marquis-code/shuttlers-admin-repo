@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Update Partner"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="updatePartner">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="updatePartner">
 			<div class="flex flex-col gap-2">
 				<label class="label">First name</label>
 				<input v-model="fname" required type="text" class="input-field">

@@ -1,4 +1,5 @@
 import { Ref, ref } from 'vue'
+import moment from 'moment'
 import { usePendingPayouts } from './pending'
 import { usePayoutDetails, useEarningsRevenues } from './details/fetch'
 import { earnings_api, CustomAxiosResponse } from '@/api_factory/modules'
@@ -6,7 +7,10 @@ import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
 
 const loading = ref(false)
-const obj = {
+const partnerDeductionObj = {
+	data: ref(),
+	type: ref('default'),
+	percentage: ref(null) as Ref<number|null>,
 	amount: ref(null) as Ref<number|null>,
 	desc: ref(''),
 	yes_text: ref(''),
@@ -16,29 +20,47 @@ const obj = {
 }
 
 const clearObj = () => {
-	obj.amount.value = null
-	obj.desc.value = ''
-	obj.yes_text.value = ''
-	obj.total_amount.value = null
-	obj.id.value = null
+	partnerDeductionObj.amount.value = null
+	partnerDeductionObj.desc.value = ''
+	partnerDeductionObj.yes_text.value = ''
+	partnerDeductionObj.total_amount.value = null
+	partnerDeductionObj.id.value = null
 }
 const isFromDetailsPage = ref(false)
 
+const WHT_deducted_amount = computed(() => {
+	return Number((((partnerDeductionObj.percentage.value || 0) / 100) * partnerDeductionObj.data.value.netRevenue!).toFixed(2))
+})
+
+watch([partnerDeductionObj.type, partnerDeductionObj.percentage], (val) => {
+	if (val[0] === 'wht') {
+		partnerDeductionObj.desc.value = `WHT Deduction for ${moment(partnerDeductionObj.data.value.referenceTime).format('MMMM, YYYY')}`
+	} else {
+		partnerDeductionObj.desc.value = ''
+	}
+	if (val[1]) {
+		partnerDeductionObj.amount.value = WHT_deducted_amount.value
+	} else {
+		partnerDeductionObj.amount.value = 0
+	}
+})
+
 export const useDeductPayout = () => {
 	const initDeduct = (_data: Record<string, any>, from_details_page = false, isRevenue = false) => {
-		obj.id.value = _data.id
-		obj.total_amount.value = isRevenue ? _data.finalPartnersRevenue : _data.amount
+		partnerDeductionObj.data.value = _data.earningInfo
+		partnerDeductionObj.id.value = _data.id
+		partnerDeductionObj.total_amount.value = isRevenue ? _data.finalPartnersRevenue : _data.amount
 		isFromDetailsPage.value = from_details_page
-		obj.isDeductFromRevenue.value = isRevenue
+		partnerDeductionObj.isDeductFromRevenue.value = isRevenue
 		usePayoutModal().openDeductPayout()
 	}
 	const deduct = async () => {
 		const payload = {
-			amount: Number(obj.amount.value),
-			description: obj.desc.value
+			amount: Number(partnerDeductionObj.amount.value),
+			description: partnerDeductionObj.desc.value
 		}
 		loading.value = true
-		const res = await earnings_api.$_deduct_earnings(obj.id.value!, payload) as CustomAxiosResponse
+		const res = await earnings_api.$_deduct_earnings(partnerDeductionObj.id.value!, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
 			usePayoutModal().closeDeductPayout()
@@ -55,11 +77,11 @@ export const useDeductPayout = () => {
 
 	const deductRevenue = async () => {
 		const payload = {
-			amount: Number(obj.amount.value),
-			description: obj.desc.value
+			amount: Number(partnerDeductionObj.amount.value),
+			description: partnerDeductionObj.desc.value
 		}
 		loading.value = true
-		const res = await earnings_api.$_deduct_revenue(obj.id.value!, payload) as CustomAxiosResponse
+		const res = await earnings_api.$_deduct_revenue(partnerDeductionObj.id.value!, payload) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
 			usePayoutModal().closeDeductPayout()
@@ -70,5 +92,5 @@ export const useDeductPayout = () => {
 		loading.value = false
 	}
 
-	return { loading, ...obj, clearObj, deduct, initDeduct, deductRevenue }
+	return { loading, partnerDeductionObj, clearObj, deduct, initDeduct, deductRevenue, WHT_deducted_amount }
 }
