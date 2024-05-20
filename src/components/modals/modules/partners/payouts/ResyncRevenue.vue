@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Resync Revenue"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="resyncRevenue">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="resyncRevenue">
 			<Skeleton v-if="loading_vehicles" height="100px" radius="10px" />
 			<div v-else class="flex flex-col gap-2">
 				<div v-for="n in vehicles" :key="n.id" class="flex items-center gap-4 p-3 border shadow rounded-lg" @click="handleClick(n.id)">

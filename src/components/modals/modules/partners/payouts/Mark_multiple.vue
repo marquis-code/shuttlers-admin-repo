@@ -3,7 +3,7 @@
 		modal="$atts.modal"
 		title="Mark multiple revenue as paid"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="markMultipleRevenueAsPaid">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="markMultipleRevenueAsPaid">
 			<div class="flex flex-col gap-2">
 				<label class="label">Select date range</label>
 				<InputDateInput v-model="dateRange" range placeholder="Filter by date" :disabled-date="()=>null" clearable />

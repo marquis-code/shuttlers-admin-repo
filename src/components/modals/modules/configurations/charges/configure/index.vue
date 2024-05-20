@@ -3,12 +3,12 @@
 		modal="$atts.modal"
 		:title="!isEditConfigureCharge ? 'Configure new charge' : 'Edit configuration'"
 	>
-		<form class="flex flex-col gap-[16px] w-full" @submit.prevent="isEditConfigureCharge ? updateConfigureCharge() : configureCharge()">
+		<form class="flex flex-col gap-4 w-full" @submit.prevent="isEditConfigureCharge ? updateConfigureCharge() : configureCharge()">
 			<p class="text-sm text-center bg-[#2C8EED] text-light py-2">
 				You can only create Percent-type charges. Flat fee charges will be available soon
 			</p>
 			<div class="flex flex-col gap-2">
-				<div class="flex items-center gap-[16px] justify-between">
+				<div class="flex items-center gap-4 justify-between">
 					<label class="text-xs text-[#6E717C] font-medium">Select charge type</label>
 					<button class="shrink-0 border-none outline-none flex items-center gap-2 font-medium justify-center bg-transparent text-[#0DAC5C]"
 						type="button" @click="useChargeModal().openCreateChargeTypes()"

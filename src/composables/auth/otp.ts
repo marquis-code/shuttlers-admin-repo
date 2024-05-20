@@ -32,7 +32,8 @@ export const use_confirm_otp = () => {
 		loading.value = true
 		const res = (await auth_api.$_confirm_otp({
 			id: credential.id.value,
-			otp_code: credential.otp.value
+			otp_code: credential.otp.value,
+			type: 'staff'
 		})) as any
 
 		loading.value = false
