@@ -1,5 +1,5 @@
 import { useSelectedStaff } from './select-staff'
-import { loadstaffBranches, markerType } from './staffMap'
+import { loadstaffBranches, markerType, loadStaffHomeAddresses } from './staffMap'
 import { useWorkBranches } from '@/composables/modules/corporates/workBranches'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
@@ -39,12 +39,11 @@ export const useCorporateStaff = () => {
 
 	watch(isMapView, async (val) => {
 		if (val) {
-			console.log(selectedCorporate)
 			metaObject.page_size.value = totalStaffs.value!
 			const { fetchWorkBranches, loading, workBranches } = useWorkBranches()
 			await getCorporateStaff()
+			loadStaffHomeAddresses(staffs.value)
 			await fetchWorkBranches(selectedCorporate.value.id)
-
 			loadstaffBranches(workBranches.value)
 		}
 	})
