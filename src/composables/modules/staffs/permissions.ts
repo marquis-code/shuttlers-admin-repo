@@ -27,8 +27,6 @@ export const useStaffPermission = () => {
     }
 
     const selectedPermission = async ($event, permission) => {
-        console.log($event, permission)
-
         const found = staffPermission.value.find((perm) => perm.id === permission.id)
         const staff_permission_id = found?.staff_permission_id
 
