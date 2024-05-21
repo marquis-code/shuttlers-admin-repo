@@ -1,4 +1,5 @@
 import { useSelectedStaff } from './select-staff'
+import { loadstaffBranches, markerType } from './staffMap'
 import { useWorkBranches } from '@/composables/modules/corporates/workBranches'
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { usePagination } from '@/composables/utils/table'
@@ -9,7 +10,7 @@ const { download, loading: downloading } = useDownloadReport()
 const { selectedBranchIds, selectedShiftIds, selectedDays, selectedRoute } = useSelectedStaff()
 const loading = ref(false)
 const staffs = ref([]) as Ref<any[]>
-const totalStaffs = ref(null) as Ref<number|null>
+const totalStaffs = ref(null) as Ref<number | null>
 const filters = {
 	search: ref(''),
 	shift_ids: computed(() => selectedShiftIds.value),
@@ -19,7 +20,7 @@ const filters = {
 }
 
 export const useCorporateStaff = () => {
-		const { selectedCorporate } = useCorporateIdDetails()
+	const { selectedCorporate } = useCorporateIdDetails()
 	const isMapView = ref(false)
 
 	const { metaObject, moveTo, next, prev, setFunction } = usePagination()
@@ -28,39 +29,43 @@ export const useCorporateStaff = () => {
 		const id = useRoute().params.id as string
 		loading.value = true
 		const res = await corporates_api.$_get_corporate_staffs(Number(id), metaObject, filters) as CustomAxiosResponse
-        if (res.type !== 'ERROR') {
-            staffs.value = res.data.data?.length ? res.data.data : []
-            metaObject.total.value = res.data.metadata?.total_pages
+		if (res.type !== 'ERROR') {
+			staffs.value = res.data.data?.length ? res.data.data : []
+			metaObject.total.value = res.data.metadata?.total_pages
 			totalStaffs.value = res.data.metadata?.total
-        }
-        loading.value = false
+		}
+		loading.value = false
 	}
 
-		watch(isMapView, (val) => {
-			if (val) {
-				metaObject.page_size.value = totalStaffs.value!
-				const { fetchWorkBranches, loading, workBranches } = useWorkBranches()
-    getCorporateStaff()
-  }
-		})
+	watch(isMapView, async (val) => {
+		if (val) {
+			console.log(selectedCorporate)
+			metaObject.page_size.value = totalStaffs.value!
+			const { fetchWorkBranches, loading, workBranches } = useWorkBranches()
+			await getCorporateStaff()
+			await fetchWorkBranches(selectedCorporate.value.id)
+
+			loadstaffBranches(workBranches.value)
+		}
+	})
 
 	const onFilterUpdate = (data) => {
-        switch (data.type) {
-            case 'search':
+		switch (data.type) {
+			case 'search':
 				filters.search.value = data.value
-                break
-        }
-    }
+				break
+		}
+	}
 
 	const downloadCorporateStaffs = async () => {
 		downloading.value = true
 		const id = useRoute().params.id as string
 		const name = ref(`${selectedCorporate?.value?.corporate_name} Corporate Staffs'`)
 		const res = await corporates_api.$_download_corporate_staffs(Number(id), filters) as CustomAxiosResponse
-        if (res && res?.type !== 'ERROR') {
+		if (res && res?.type !== 'ERROR') {
 			const data = res.data.data
-            const newArr = data.map((el) => {
-                return {
+			const newArr = data.map((el) => {
+				return {
 					first_name: el?.fname || 'N/A',
 					last_name: el?.lname || 'N/A',
 					email: el?.email || 'N/A',
@@ -69,13 +74,13 @@ export const useCorporateStaff = () => {
 					nearest_busstop: el?.address?.closestBusstop?.address || 'N/A',
 					office_branch: el?.workShift?.officeBranch?.address || 'N/A',
 					work_shift: el?.workShift?.corporate_work_shift?.description || 'N/A',
-                    work_days: el?.workShift?.work_days.map((itm) => itm) || 'N/A',
+					work_days: el?.workShift?.work_days.map((itm) => itm) || 'N/A',
 					credit_balance: el?.wallet?.amount || 'N/A',
-					preferred_routes: el?.preferredRoutes.map((itm:any) => itm?.route?.route_code) || 'N/A'
-                }
-            })
+					preferred_routes: el?.preferredRoutes.map((itm: any) => itm?.route?.route_code) || 'N/A'
+				}
+			})
 			download(newArr, name.value)
-        }
+		}
 		downloading.value = false
 	}
 
@@ -86,5 +91,5 @@ export const useCorporateStaff = () => {
 
 	setFunction(getCorporateStaff)
 
-	return { loading, staffs, downloadCorporateStaffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate, isMapView }
+	return { loading, staffs, downloadCorporateStaffs, getCorporateStaff, ...metaObject, moveTo, next, prev, totalStaffs, onFilterUpdate, isMapView, markerType }
 }
