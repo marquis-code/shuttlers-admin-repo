@@ -1,5 +1,5 @@
 <template>
-	<ul class="flex mb-2 md:flex-wrap">
+	<ul class="flex mb-2 md:flex-wrap gap-y-2">
 		<li v-for="tab in tabs" :key="tab.path" class="nav-item">
 			<nuxt-link :to="tab.path" class="nav-link" exact-active-class="active" :class="tab.active ? 'active' : ''">
 				{{ tab.name }}
@@ -19,7 +19,7 @@ defineProps({
 
 <style scoped>
 .nav-link{
-@apply text-sm font-medium text-grey5_5 leading-[20px] px-5 py-4 w-auto;
+@apply text-sm font-medium text-grey5_5 leading-[20px] px-5 py-4 w-auto hover:text-shuttlersGreen;
 }
 .nav-item .active{
 @apply border-b-[3px] border-shuttlersGreen font-medium text-shuttlersGreen py-2;

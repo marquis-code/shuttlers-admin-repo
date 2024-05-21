@@ -6,6 +6,19 @@
 				<button class="bg-black text-white rounded-lg py-2 px-4 text-xs" @click="isMapView = !isMapView">
 					{{ isMapView ? 'List View' :'Map View' }}
 				</button>
+				<div v-if="isMapView" class="flex items-center ml-4 ">
+					<input id="home" v-model="markerType" type="radio" value="home" class="ml-2">
+					<label for="home" class="mb-0 ml-2">Home Address</label>
+
+					<input id="bus_stop" v-model="markerType" type="radio" value="bus_stop" class="ml-5">
+					<label for="bus_stop" class="mb-0 ml-2">Closest Bus Stop</label>
+
+					<input id="both" v-model="markerType" type="radio" value="both" class="ml-5">
+					<label for="both" class="mb-0 ml-2">Both</label>
+
+					<input id="both_with_line" v-model="markerType" type="radio" value="both_with_line" class="ml-5">
+					<label for="both_with_line" class="mb-0 ml-2">Both With Lines</label>
+				</div>
 			</div>
 			<div v-if="selectedStaffs.length" class="bg-white rounded-lg flex flex-col border overflow-hidden">
 				<transition-group appear tag="div" class="p-4 flex flex-wrap gap-y-2 gap-x-2 overflow-auto max-h-[120px]"
@@ -191,7 +204,7 @@ import { useCompaniesModal } from '@/composables/core/modals'
 
 const { selectedStaffToAssign, selectedStaffPreferredRoutes } = useAssignStaffToRoute()
 
-const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs, downloadCorporateStaffs, isMapView } = useCorporateStaff()
+const { loading, staffs, getCorporateStaff, prev, next, total, page, moveTo, onFilterUpdate, totalStaffs, downloadCorporateStaffs, isMapView, markerType } = useCorporateStaff()
 const { handleStaffSelection, selectedStaffs, selectedDays, selectedBranches, selectedShifts, handleBranchSelection, handleDaysSelection, handleShiftSelection, selectedRoute, routeSelected } = useSelectedStaff()
 const { loading: loading_branches, getBranches, branches } = useCorporateBranches()
 const { loading: loading_shifts, getShifts, shifts } = useCorporateWorkShifts()
