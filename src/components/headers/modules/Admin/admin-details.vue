@@ -9,16 +9,22 @@
 <script setup lang="ts">
 import { useAdminIdDetails } from '@/composables/modules/staffs/id'
 
-const { selectedAdmin, loading } = useAdminIdDetails()
+const { selectedAdmin, loading, getAdminById } = useAdminIdDetails()
+
+if (!selectedAdmin.value?.id) {
+    const id = useRoute().params.id as string
+    selectedAdmin.value.id = id
+    getAdminById(id)
+}
 
 const pageTabs = computed(() => [
     {
         name: 'Staff Information',
-        path: `/admin/${selectedAdmin.value.id}/info`
+        path: `/admin/${selectedAdmin.value?.id}/info`
     },
     {
         name: 'Permissions',
-        path: `/admin/${selectedAdmin.value.id}/permissions`
+        path: `/admin/${selectedAdmin.value?.id}/permissions`
     }
 ])
 </script>
