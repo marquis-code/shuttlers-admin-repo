@@ -22,19 +22,3 @@ export const useAdminIdDetails = () => {
     }
     return { selectedAdmin, loading, getAdminById }
 }
-
-// export const useAdminPermissionsById = () => {
-//     const loading = ref(false)
-//     const adminPermissionsList = ref([] as any)
-//     const getAdminPermissionsById = async (id: string) => {
-//         selectedAdminId.value = id
-//         loading.value = true
-//         const res = await staffs_api.$_get_staff_details_by_id(id) as CustomAxiosResponse
-//         if (res.type !== 'ERROR') {
-//             adminPermissionsList.value = res.data.data
-//         }
-//         loading.value = false
-//         return res.data
-//     }
-//     return { adminPermissionsList, loading, getAdminPermissionsById, selectedAdmin }
-// }
