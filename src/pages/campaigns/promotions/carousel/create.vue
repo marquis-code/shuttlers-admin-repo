@@ -56,9 +56,9 @@
 						</p>
 					</div>
 				</div>
-				<div v-else class="p-3 flex flex-col gap-2 w-full">
+				<div v-else class="p-3 grid grid-cols-2 gap-2 w-full">
 					<div v-for="n,i in images" :key="i" class="flex items-center gap-2 w-full">
-						<img :src="n" alt="" class="flex-grow max-h-[200px] object-cover rounded-lg">
+						<img :src="n" alt="" class="object-contain">
 						<Icon name="close" class="w-5 shrink-0 text-red cursor-pointer" @click="removeImage(i)" />
 					</div>
 				</div>

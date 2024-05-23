@@ -12,7 +12,7 @@ export const use_get_baners = () => {
         loading_banners.value = true
         const res = await campaigns_api.$_get_baners(metaObject) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
-            banersList.value = res.data.data
+            banersList.value = res.data
             metaObject.total_pages.value = res.data?.metadata?.total_pages
         }
         loading_banners.value = false

@@ -39,7 +39,9 @@
 			<div v-else-if="showTable" :key="key" class="px-4 h-auto max-h-[700px] overflow-y-auto">
 				<div v-for="(item, index) in users" :key="index" class="flex items-center justify-between py-6 border-b">
 					<div class="flex items-center gap-x-3">
-						<p class="text-sm text-dark">{{ (page - 1) * 10 + index + 1 }}</p>
+						<p class="text-sm text-dark">
+							{{ (page - 1) * 10 + index + 1 }}
+						</p>
 						<Avatar :name="item.fname" bg="#B1C2D9" />
 						<div>
 							<p>{{ item?.fname || '' }} {{ item?.lname || '' }}</p>

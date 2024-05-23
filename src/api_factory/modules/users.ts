@@ -170,7 +170,7 @@ export const users_api = {
 		const url = `/users/${userId}/routes`
 		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url, payload)
 	},
-	$_block_user: (user_id:string|number, payload:{isBlocked: boolean}) => {
+	$_block_user: (user_id:string|number, payload:{isBlocked: boolean, userType:string}) => {
 		const url = `/users/${user_id}/blocked`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	}

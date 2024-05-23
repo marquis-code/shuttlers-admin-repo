@@ -2,6 +2,7 @@
 	<Modal
 		modal="$atts.modal"
 		:title="partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct from Revenue' : 'Deduct Payout'"
+		@close="clearObj()"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="partnerDeductionObj.isDeductFromRevenue.value ? deductRevenue() : deduct()">
 			<section v-if="form_step === 1" class="flex flex-col gap-4 w-full">
@@ -14,7 +15,7 @@
 						</label>
 						<label for="wht" class="flex-1">
 							<input id="wht" v-model="partnerDeductionObj.type.value" type="radio" value="wht" name="type">
-							WHT
+							Withholding Tax Deduction
 						</label>
 					</div>
 				</div>
@@ -38,7 +39,7 @@
 				</div>
 
 				<div v-if="partnerDeductionObj.type.value === 'wht'" class="border border-[#FFED80] bg-[#FFFCEB] text-[#B89E00] p-4 text-sm rounded-lg">
-					WHT should be the last deduction on a monthly earning. Please confirm that you have deducted other necessary deductions before proceeding as you will not be able to deduct from this earning after making a WHT deduction.
+					WHT should be the last deduction on a monthly earning. Please confirm that you have deducted other necessary deductions before proceeding.
 				</div>
 
 				<div v-if="partnerDeductionObj.type.value === 'default'" class="flex flex-col gap-2">
@@ -64,7 +65,7 @@
 				</span>
 
 				<div class="border border-[#FFED80] bg-[#FFFCEB] text-[#B89E00] p-4 text-sm rounded-lg">
-					WHT should be the last deduction on a monthly earning. Please confirm that you have deducted other necessary deductions before proceeding as you will not be able to deduct from this earning after making a WHT deduction.
+					WHT should be the last deduction on a monthly earning. Please confirm that you have deducted other necessary deductions before proceeding.
 				</div>
 
 				<div class="flex flex-col gap-2">

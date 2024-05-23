@@ -30,7 +30,11 @@
 					</div>
 					<div class="flex w-full justify-between text-sm">
 						<span class="fd">Channels</span>
-						<span class="font-bold capitalize">In-app {{ credentials.sms.value ? 'SMS' : '' }} {{ credentials.email.value ? 'Email' : '' }} </span>
+						<div class="flex flex-col">
+							<span class="font-bold capitalize">In-app  </span>
+							<span v-if="credentials.sms.value " class="font-bold capitalize">SMS </span>
+							<span v-if="credentials.email.value " class="font-bold capitalize">Email</span>
+						</div>
 					</div>
 				</div>
 			</section>
