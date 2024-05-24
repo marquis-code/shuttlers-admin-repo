@@ -41,6 +41,20 @@
 						</option>
 					</select>
 				</div>
+				<div class="field">
+					<label for="role">Staff Role</label>
+					<select v-model="selectedAdmin.ab_testing_role" :disabled="user.role === 'user'" name="ab-testing" class="input-field">
+						<option v-if="user.role === 'super_admin'" value="A">
+							A
+						</option>
+						<option v-if="user.role === 'super_admin'" value="B">
+							B
+						</option>
+						<option value="">
+							None
+						</option>
+					</select>
+				</div>
 			</div>
 			<div>
 				<button type="submit" class="btn-primary py-2.5 ml-auto mt-12">
@@ -57,6 +71,9 @@
 import { useCreateAdmin } from '@/composables/modules/staffs/create'
 import { useGetStaffs } from '@/composables/modules/staffs/fetch'
 import { useAdminIdDetails } from '@/composables/modules/staffs/id'
+import { useUser } from '@/composables/auth/user'
+
+const { user } = useUser()
 
 const { selectedAdmin, loading } = useAdminIdDetails()
 const { createForm, loading: createLoading, editAdmin, prePopulateForm } = useCreateAdmin()
@@ -68,7 +85,8 @@ watch(() => selectedAdmin, (val) => {
         lname: val?.value?.lname,
         email: val?.value?.email,
         phone: val?.value?.phone,
-        role: val?.value?.role
+        role: val?.value?.role,
+        ab_testing_role: val?.value?.ab_testing_role
 	}
 	prePopulateForm(payload)
 }, { deep: true })

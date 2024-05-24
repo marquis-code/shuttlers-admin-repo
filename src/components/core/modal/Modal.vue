@@ -36,8 +36,11 @@ import gsap from 'gsap'
 import { PropType } from 'vue'
 import { modal } from '@/composables/core/modals'
 
+const emit = defineEmits(['close'])
+
 watch(useRoute(), (from, to) => {
 	closeModal()
+	emit('close')
 })
 type modalTypes = 'popup' | 'sidebar';
 const props = defineProps({
@@ -102,6 +105,7 @@ const close = (e: any) => {
 		typeof e.className === 'string' &&
 		e.className.includes('modal-background')
 	) {
+		emit('close')
 	return closeModal()
 	}
 }

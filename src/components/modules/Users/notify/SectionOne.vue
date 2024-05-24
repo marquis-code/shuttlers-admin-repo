@@ -69,7 +69,7 @@ const { sendNotification, creatingNotification, credentials, removeSelectedUser,
 // const { usersList, loading } = useGetUsersList()
 
 const isButtonEnable = computed(() => {
-	if (!credentials.sms.value && !credentials.email.value) return false
+	// if (!credentials.sms.value && !credentials.email.value) return false
 	if (!credentials.title.value) return false
 	if (!credentials.description.value) return false
 	if (type.value === 'all' && credentials.notifyAll.value) return true

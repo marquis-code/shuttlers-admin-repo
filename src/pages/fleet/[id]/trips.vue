@@ -20,7 +20,9 @@
 					<NuxtLink :to="`/drivers/${item.data?.driver?.id}/driver-info`" @click.stop>
 						{{ item.data?.driver?.fname }} {{ item.data?.driver?.lname }}
 					</NuxtLink>
-					<p @click.stop>{{ item.data?.driver?.phone }}</p>
+					<p @click.stop>
+						{{ item.data?.driver?.phone }}
+					</p>
 				</div>
 				<div v-if="item.rating" class="flex items-center gap-0">
 					<Icon name="star" class="w-5 text-dark" />
