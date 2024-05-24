@@ -34,6 +34,7 @@ const onRowClicked = (data: Record<string, any>) => {
 }
 
 const computedBannerList = computed(() => {
+    if (!banersList.value) return
     return banersList.value.map((el) => {
         return {
             ...el,

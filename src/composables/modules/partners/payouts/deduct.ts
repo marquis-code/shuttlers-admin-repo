@@ -25,6 +25,8 @@ const clearObj = () => {
 	partnerDeductionObj.yes_text.value = ''
 	partnerDeductionObj.total_amount.value = null
 	partnerDeductionObj.id.value = null
+	partnerDeductionObj.type.value = 'default'
+	partnerDeductionObj.percentage.value = null
 }
 const isFromDetailsPage = ref(false)
 

@@ -11,7 +11,8 @@ export const useBlockUser = () => {
     const handleUserBlocking = async () => {
         const user_id = useRoute().params.id as string
 		const payload = {
-            isBlocked: block_user.value
+            isBlocked: block_user.value,
+            userType: 'user'
         }
 		loading.value = true
 		const res = await users_api.$_block_user(user_id, payload) as CustomAxiosResponse

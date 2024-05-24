@@ -11,11 +11,11 @@ const bookingType = ref('')
 export const useUserIdDetails = () => {
     const loading = ref(false)
 
-    const getUserById = async () => {
+    const getUserById = async (id?:string) => {
         // selectedUserId.value = id
-        const id = String(useRoute().params.id)
+        const used_id = id || String(useRoute().params.id)
         loading.value = true
-        const res = await users_api.$_get_user_by_id(id) as CustomAxiosResponse
+        const res = await users_api.$_get_user_by_id(used_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             selectedUser.value = res.data
         }

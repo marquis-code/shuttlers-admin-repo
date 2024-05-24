@@ -122,7 +122,7 @@ export const useCreateAdmin = () => {
 		createForm.phone.value = data.phone || ''
 		createForm.email.value = data.email || ''
         createForm.role.value = data.role || ''
-        createForm.ab_testing_role.value || null
+        createForm.ab_testing_role.value = data.ab_testing_role || null
 	}
 
 	const populatePasswordUpdateForm = (data) => {
