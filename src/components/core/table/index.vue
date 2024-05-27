@@ -152,14 +152,11 @@ const getItemsWithColWidth = computed({
 
 const defaultColWidth = computed({
 	get: () => {
-		return roundToTwo(100 / getItemsWithColWidth.value)
+		return (100 / getItemsWithColWidth.value).toFixed(2)
 	},
 	set: () => { }
 })
 
-const roundToTwo = (num) => {
-	return +(Math.round(parseFloat(num + 'e+2')) + 'e-2')
-}
 const paginate = (data) => {
 	const page: any = props.page
 	const perPage: any = props.itemPerPage
