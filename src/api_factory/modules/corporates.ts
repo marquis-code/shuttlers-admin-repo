@@ -245,11 +245,11 @@ export const corporates_api = {
 		const url = `/shuttle-requests/${requestId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_update_corporate_payment_settings: (corporateId: number, payload: any) => {
+	$_update_corporate_payment_settings: (corporateId: number| string, payload: any) => {
 		const url = `/corporates/${corporateId}/payment-settings`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_fetch_corporate_payment_settings: (corporateId: number) => {
+	$_fetch_corporate_payment_settings: (corporateId: number|string) => {
 		const url = `/corporates/${corporateId}/payment-settings`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},

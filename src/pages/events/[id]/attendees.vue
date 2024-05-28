@@ -70,8 +70,8 @@ watch(selectedEvent, (val) => {
 	}
 }, { immediate: true })
 const onRowClicked = (data) => {
-	useRouter().push(`/events/${data.id}/event-info`)
-	selectedEvent.value = data
+	// useRouter().push(`/events/${data.id}/event-info`)
+	// selectedEvent.value = data
 }
 
 definePageMeta({

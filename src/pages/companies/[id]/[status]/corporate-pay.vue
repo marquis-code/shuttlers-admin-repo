@@ -166,7 +166,7 @@
 										</button>
 										<button class="py-2 btn"
 											:disabled="!exemption_obj.subject_type.value || !exemption_obj.subject_ids.value"
-											@click="updateExemptions()">
+											@click="updateExemptions(corporate_id)">
 											Save
 										</button>
 									</div>
@@ -193,16 +193,6 @@
 								</div>
 
 								<div v-if="exemption_obj.subject_type.value === 'user'" class="max-w-[400px]">
-									<!-- <v-select v-model="exemption_obj.subject_ids.value" :filterable="false"
-										:options="filteredStaff" label="fname" placeholder="Select staff"
-										:reduce="(option) => option.id" @search="searchUser">
-										<template #option="option">
-											{{ option.fname }} {{ option.lname }}
-										</template>
-										<template #selected-option="{ fname, lname }">
-											<span> {{ fname }} {{ lname }}</span>
-										</template>
-									</v-select> -->
 									<select v-model="exemption_obj.subject_ids.value" class="outline-none border border-gray-400 py-2.5 px-4 rounded-md w-full">
 										<option value="" disabled>
 											Please select
@@ -213,8 +203,6 @@
 									</select>
 								</div>
 								<div v-if="exemption_obj.subject_type.value === 'group'" class="max-w-[400px]">
-									<!-- <v-select v-model="exemption_obj.subject_ids.value" :options="groups" label="name"
-										placeholder="Select group" :reduce="(option) => option.id" /> -->
 									<select v-model="exemption_obj.subject_ids.value" class="outline-none border border-gray-400 py-2.5 px-4 rounded-md w-full">
 										<option value="" disabled>
 											Please select
@@ -312,10 +300,8 @@ const { selectedCorporate } = useCorporateIdDetails()
 const { loading: loadingCorporateStaffs, staffs, getCorporateStaff } = useCorporateStaff()
 const search = ref('')
 const { groups, fetchGroup } = useGroup()
-onMounted(() => {
-	getCorporateStaff()
-	fetchGroup(Number(selectedCorporate.value.id))
-})
+
+const corporate_id = computed(() => useRoute().params.id as string)
 
 const {
 	book_on_public_routes,
@@ -329,6 +315,9 @@ const {
 	isEditingExemption, clear_exemption_obj, getExemptionLimitWriteUp, exemption_obj,
 	editExemption, deleteExemption, updateExemptions, toggleStaffsAbilityToViewCorporatePayUsage
 } = useCorporatePaySetting()
+
+	getCorporateStaff()
+	fetchGroup(Number(selectedCorporate.value.id))
 
 const defaultLimitValueForTrip = ref(default_corporate_payment_limit.limit_value.value || 0)
 const defaultLimitValueUnitForTrip = ref(default_corporate_payment_limit.limit_value_unit.value || 'per_day')
@@ -363,7 +352,7 @@ const saveChanges = () => {
 		book_on_public_routes: !!book_on_public_routes.value,
 		book_on_corporate_routes: !!book_on_corporate_routes.value,
 		staff_can_view_wallet_limit_usage: Boolean(corporatePaySettings.staff_can_view_wallet_limit_usage.value)
-	}
+	} as Record<string, any>
 
 	if (limitType === 'none') {
 		changes.default_corporate_payment_limit = {
@@ -386,7 +375,7 @@ const saveChanges = () => {
 		type: 'NORMAL',
 		desc: 'You are about to save changes',
 		loading,
-		call_function: () => saveCorporatePaySettings(changes)
+		call_function: () => saveCorporatePaySettings(corporate_id.value, changes)
 	})
 }
 
@@ -437,7 +426,7 @@ definePageMeta({
     middleware: ['is-authenticated']
 })
 
-fetchCorporatePaySetting()
+fetchCorporatePaySetting(corporate_id.value)
 isEditingExemption.value = false
 </script>
 
