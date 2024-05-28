@@ -39,9 +39,16 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetUpcomingEvents } from '@/composables/modules/events/fetch'
+import { useEventIdDetails } from '@/composables/modules/events/id'
 
 const { getUpcomingEventsList, loadingUpcomingEvents, upcomingEventsList, filterData, onFilterUpdate, next, prev, moveTo, total, page } = useGetUpcomingEvents()
 getUpcomingEventsList()
+
+const onRowClicked = (data) => {
+	const { selectedEvent } = useEventIdDetails()
+	useRouter().push(`/events/${data.id}/event-info`)
+	selectedEvent.value = data
+}
 
 definePageMeta({
     layout: 'dashboard',
