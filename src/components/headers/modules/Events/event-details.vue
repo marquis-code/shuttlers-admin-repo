@@ -13,9 +13,13 @@
 import { useEventIdDetails, useAcceptEvent, useQueryOrRejectEvent, useNotifyEvent } from '@/composables/modules/events'
 import { useEventModal } from '@/composables/core/modals'
 
-const { loading, selectedEvent } = useEventIdDetails()
+const { loading, selectedEvent, getEventById } = useEventIdDetails()
 const { initQueryOrReject } = useQueryOrRejectEvent()
 const { initNotifyEvent } = useNotifyEvent()
+
+if (!selectedEvent.value.id) {
+getEventById()
+}
 
 const pageTabs = computed(() => [
 	{
