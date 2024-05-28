@@ -1,7 +1,8 @@
 <template>
-	<HeadersHeaderSlot title="Event Request" pre-title="OVERVIEW">
-		<!-- <template #tabs>
-		</template> -->
+	<HeadersHeaderSlot title="Event Request" pre-title="OVERVIEW" :loading="loading">
+		<template #tabs>
+			<RouterTabs :tabs="pageTabs" />
+		</template>
 		<template #actions>
 			<ButtonIconDropdown v-if="showActionBtn" class="bg-black font-medium text-white px-3 py-1 rounded-lg" button-text="Actions" :children="dropdownChildren" :data="selectedEvent" class-name="w-40" />
 		</template>
@@ -15,6 +16,18 @@ import { useEventModal } from '@/composables/core/modals'
 const { loading, selectedEvent } = useEventIdDetails()
 const { initQueryOrReject } = useQueryOrRejectEvent()
 const { initNotifyEvent } = useNotifyEvent()
+
+const pageTabs = computed(() => [
+	{
+		name: 'Event information',
+		path: `/events/${selectedEvent.value.id}/event-info`
+	},
+	{
+		name: 'Attendees list',
+		path: `/events/${selectedEvent.value.id}/attendees`
+	}
+
+])
 
 const dropdownChildren = computed(() => {
 	if (selectedEvent.value?.status !== 'accepted') {
