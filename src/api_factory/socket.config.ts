@@ -10,17 +10,16 @@ const globalData = {
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 
+let primarySocketIo = null as any
+
 const _connectToSocket = async () => {
-    const primarySocketIo = io($GATEWAY_ENDPOINT_WITHOUT_VERSION, { path: '/telemetry/socket.io', auth: { token: `Bearer ${token.value}` } })
-    try {
-        await primarySocketIo.connect()
-        globalData.socketIsConnected.value = true
-    } catch (error) {
-        globalData.socketIsConnected.value = false
-        setTimeout(() => {
-            _connectToSocket()
-        }, 1000)
+    if (!primarySocketIo) {
+        primarySocketIo = io($GATEWAY_ENDPOINT_WITHOUT_VERSION, { path: '/telemetry/socket.io', auth: { token: `Bearer ${token.value}` } })
     }
+
+    primarySocketIo.on('connect', () => {
+        globalData.socketIsConnected.value = true
+    })
 
     primarySocketIo.on('disconnect', () => {
         globalData.socketIsConnected.value = false
@@ -28,17 +27,30 @@ const _connectToSocket = async () => {
             _connectToSocket()
         }, 1000)
     })
+
+    try {
+        await new Promise((resolve, reject) => {
+            primarySocketIo.once('connect', resolve)
+            primarySocketIo.once('connect_error', reject)
+        })
+    } catch (error) {
+        globalData.socketIsConnected.value = false
+        setTimeout(() => {
+            _connectToSocket()
+        }, 1000)
+    }
 }
 
 export const useSocketIo = () => {
-    const primarySocketIo = io($GATEWAY_ENDPOINT_WITHOUT_VERSION, { path: '/telemetry/socket.io', auth: { token: `Bearer ${token.value}` } })
-    const listenToEvent = async (event: string, Func: (item: any) => void) => {
-        if (primarySocketIo.connected) {
-             primarySocketIo.on(event, Func)
-        } else {
-            await _connectToSocket()
+    const listenToEvent = (event, Func) => {
+        const ensureConnected = async () => {
+            if (!primarySocketIo || !primarySocketIo.connected) {
+                await _connectToSocket()
+            }
             primarySocketIo.on(event, Func)
         }
+
+        ensureConnected()
     }
 
     return { listenToEvent, _connectToSocket }
