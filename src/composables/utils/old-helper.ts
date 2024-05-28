@@ -166,10 +166,6 @@ export const filterVehicleBy = (option: VehicleOption, label: string, search: st
   )
 }
 
-export function loadRouteComponent(path: string): () => Promise<any> {
-  return () => import(/* webpackChunkName: "app-view-[request]" */ `@/views/${path}.vue`)
-}
-
 export const monitizeValue = (amount: number | string, currency = 'NGN'): string => {
   if (typeof amount === 'string') amount = Number(amount)
   const currencySymbol = '₦' // TODO: Get symbol based on currency parameter
