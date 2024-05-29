@@ -1,0 +1,29 @@
+name: Auto Merge from test to staging and main
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  merge-to-staging-and-main:
+    runs-on: ubuntu-lastaging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Use PAT here
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'kromate'
+          git config --global user.email 'akpananthony33@gmail.com'
+
+      - name: Merge test branch into staging
+        run: |
+          git fetch origin staging
+          git checkout staging
+          git merge --no-ff origin/test -m "Merging changes from test to staging"
+          git push origin staging
+
