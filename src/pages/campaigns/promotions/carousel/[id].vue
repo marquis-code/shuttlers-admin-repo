@@ -33,8 +33,8 @@
 						</p>
 					</div>
 				</div>
-				<div v-else class="p-3 flex flex-col gap-2 w-full">
-					<img v-for="n,i in carousel_details?.assets" :key="i" :src="n?.url" alt="" class="w-1/2 object-cover rounded-lg">
+				<div v-else class="p-3 grid grid-cols-2 gap-2 w-full">
+					<img v-for="n,i in carousel_details?.assets" :key="i" :src="n?.url" alt="" class=" object-contain h-full">
 				</div>
 			</div>
 		</div>

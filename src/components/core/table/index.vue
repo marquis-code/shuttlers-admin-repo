@@ -24,7 +24,7 @@
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
 						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
-					]" @click="option(data)">
+					]" @click="handleRowClick($event, data)">
 						<td v-if="checkbox" :key="key" class="pl-4">
 							<input :checked="selected.map((el:any) => el?.id).includes(data?.id)" type="checkbox" @click.stop
 								@click.prevent="$emit('checked', data)">
@@ -152,14 +152,11 @@ const getItemsWithColWidth = computed({
 
 const defaultColWidth = computed({
 	get: () => {
-		return roundToTwo(100 / getItemsWithColWidth.value)
+		return (100 / getItemsWithColWidth.value).toFixed(2)
 	},
 	set: () => { }
 })
 
-const roundToTwo = (num) => {
-	return +(Math.round(parseFloat(num + 'e+2')) + 'e-2')
-}
 const paginate = (data) => {
 	const page: any = props.page
 	const perPage: any = props.itemPerPage
@@ -185,6 +182,12 @@ const populateTable = (data: any) => {
 	})
 
 	return element
+}
+
+const handleRowClick = (event: MouseEvent, data) => {
+  if (!window.getSelection()?.toString()) {
+    props.option(data)
+  }
 }
 
 </script>
