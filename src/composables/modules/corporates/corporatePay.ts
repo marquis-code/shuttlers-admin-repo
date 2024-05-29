@@ -15,6 +15,7 @@ const corporatePaySettings = {
         limit_value: ref(0),
         limit_value_unit: ref('none')
     },
+
     exemptions: ref([] as any[]),
     id: ref(),
     staff_can_view_wallet_limit_usage: ref()
@@ -61,7 +62,6 @@ export const useCorporatePaySetting = () => {
     const { selectedCorporate } = useCorporateIdDetails()
     const fetchCorporatePaySetting = async (corporate_id:string) => {
         loading.value = true
-
         const res = await corporates_api.$_fetch_corporate_payment_settings(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             const data = res?.data
@@ -84,6 +84,7 @@ export const useCorporatePaySetting = () => {
         loading.value = true
 
         const res = await corporates_api.$_update_corporate_payment_settings(corporate_id, val) as CustomAxiosResponse
+
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',

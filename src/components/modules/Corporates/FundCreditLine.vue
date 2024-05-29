@@ -6,11 +6,11 @@
 		<form class="space-y-6" @submit.prevent="submitForm">
 			<div>
 				<label class="text-gray-700">How much credit do you want to apply?</label>
-				<input v-model="form.credit_amount" class="w-full rounded-md py-2.5 px-4 bg-gray-50 outline-none border" type="number">
+				<input v-model="form.credit_amount" required class="w-full rounded-md py-2.5 px-4 bg-gray-50 outline-none border" type="number">
 			</div>
 			<div>
 				<label class="text-gray-700">Narration for this credit</label>
-				<textarea v-model="form.credit_narration" class="w-full rounded-md bg-gray-50 py-2.5 px-4 resize-none outline-none border" rows="4" cols="4" />
+				<textarea v-model="form.credit_narration" required class="w-full rounded-md bg-gray-50 py-2.5 px-4 resize-none outline-none border" rows="4" cols="4" />
 			</div>
 			<div>
 				<label>Which employees do you want to give this credit to?</label>
@@ -53,7 +53,7 @@
 				<input id="clear_prev_bal" v-model="form.clear_prev_bal" type="checkbox">
 				<label for="clear_prev_bal" class="m-0">Clear previous balance</label>
 			</div>
-			<button :disabled="!isFormEmpty && loading" class="text-white bg-black rounded-md py-3 px-6 disabled:opacity-25 disabled:cursor-not-allowed min-w-[100px]">
+			<button :disabled="!isButtonEnabled || loading" type="submit" class="text-white bg-black rounded-md py-3 px-6 disabled:opacity-25 disabled:cursor-not-allowed min-w-[100px]">
 				<span v-if="!loading" class="flex justify-center items-center gap-2.5">
 					Fund Credit Wallet
 				</span>
@@ -92,17 +92,13 @@ const form = reactive({
 	clear_prev_bal: false
 })
 
-const isFormEmpty = computed(() => {
-    return !!(form.selected_employee && form.credit_amount && form.credit_narration && form.uploadedUsers)
+const isButtonEnabled = computed(() => {
+    return !!(form.credit_amount && form.credit_narration)
 })
 
 const employeeCreditOption = ref('select_from_dropdown')
 const selectedUser = ref()
 const selectedFile = ref(null as any)
-const handleUploadedEmails = (item: any) => {
-	const result = item.filter((itm: any) => itm !== '')
-	form.uploadedUsers = result
-}
 
 const handleEvent = (event:Record<string, any>) => {
 	const file = event.target.files[0]
