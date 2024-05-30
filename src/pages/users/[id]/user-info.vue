@@ -25,7 +25,6 @@ const id = Number(useRoute().params.id)
 
 watch(selectedUser, (val) => {
 	if (val) {
-		console.log(val)
 		const corporate_id = val.corporate_id
 		getBusCaptainRoutesById(val.id)
 		if (corporate_id) {
