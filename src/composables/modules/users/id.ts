@@ -28,9 +28,7 @@ export const useUserIdDetails = () => {
 export const useUserCorporateWalletLimitUsageInfo = () => {
     const loading = ref(false)
     const corporateWalletInfo = ref({} as Record<string, any>)
-    const getUserCorporateWalletLimitUsageInfo = async () => {
-        const id = Number(useRoute().params.id)
-        // selectedUserId.value = id
+    const getUserCorporateWalletLimitUsageInfo = async (id:string) => {
         loading.value = true
         const res = await users_api.$_get_user_corporate_wallet_limit_usage_by_id(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
@@ -101,9 +99,8 @@ export const useUserBookings = () => {
 export const useGetBusCaptainRoutes = () => {
     const loading = ref(false)
      const busCaptainRoutes = ref([] as any)
-    const getBusCaptainRoutesById = async () => {
+    const getBusCaptainRoutesById = async (id) => {
         // selectedUserId.value = id
-        const id = String(useRoute().params.id)
         loading.value = true
         const res = await users_api.$_load_bus_captain_routes(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

@@ -27,6 +27,13 @@ jobs:
           git merge --no-ff origin/hotfix -m "Merging changes from hotfix to test"
           git push origin test
 
+      - name: Merge hotfix branch into staging
+        run: |
+          git fetch origin staging
+          git checkout staging
+          git merge --no-ff origin/hotfix -m "Merging changes from hotfix to staging"
+          git push origin staging
+
       - name: Merge hotfix branch into main
         run: |
           git fetch origin main

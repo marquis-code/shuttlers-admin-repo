@@ -32,7 +32,7 @@ export default {
       oldPath: '/trips/track-vehicle',
       shouldRedirect: true,
       description: '',
-      iconComponent: commuteTrackVehicleIcon
+      iconComponent: markRaw(commuteTrackVehicleIcon)
     },
     {
       title: 'Routes',
@@ -41,14 +41,14 @@ export default {
       description: 'All routes',
       shouldRedirect: true,
       excludedPaths: ['/routes/suggested-routes'],
-      iconComponent: commuteRoutesIcon
+      iconComponent: markRaw(commuteRoutesIcon)
     },
     {
       title: 'Routes Replay',
       routePath: '/trips/replay',
       oldPath: '/routes',
       description: 'All routes',
-      iconComponent: commuteRouteReplayIcon
+      iconComponent: markRaw(commuteRouteReplayIcon)
     },
     {
       title: 'Suggested routes',
@@ -56,7 +56,7 @@ export default {
       oldPath: '/routes/suggested-routes',
       shouldRedirect: true,
       description: '',
-      iconComponent: commuteSuggestedRouteIcon
+      iconComponent: markRaw(commuteSuggestedRouteIcon)
     },
     {
       title: 'Waitlist',
@@ -64,27 +64,27 @@ export default {
       oldPath: '/waitlist',
       shouldRedirect: true,
       description: '',
-      iconComponent: commuteWaitListIcon
+      iconComponent: markRaw(commuteWaitListIcon)
     },
     {
       title: 'Rental',
       routePath: '/trips/rental',
       description: 'Handle shuttlers charter requests',
-      iconComponent: commuteRentalIcon
+      iconComponent: markRaw(commuteRentalIcon)
     },
     {
       title: 'Emergency report',
       routePath: '/trips/sos',
       oldPath: '/trips/sos',
       description: 'Handle shuttlers sos requests',
-      iconComponent: commuteEmergencyReportIcon
+      iconComponent: markRaw(commuteEmergencyReportIcon)
     },
     {
       title: 'Trip issues',
       routePath: '/trips/trip-issues',
       oldPath: '/trips/trips-issues',
       description: 'Handle shuttlers trip issues',
-      iconComponent: commuteTripIssuesIcon
+      iconComponent: markRaw(commuteTripIssuesIcon)
     }
   ]
 }
