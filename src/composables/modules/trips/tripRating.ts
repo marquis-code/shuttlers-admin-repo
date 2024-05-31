@@ -6,9 +6,10 @@ export const useGetTripRatingData = () => {
   const loadingRatingData = ref(false)
   const getRatingData = async () => {
     loadingRatingSetting.value = true
-    const res = (await configure_api.$_get_fleet_trip_rating_settings(
-      import.meta.env.VITE_TRIP_RATING_SERVICE_ID
-    )) as CustomAxiosResponse
+    // const res = (await configure_api.$_get_fleet_trip_rating_settings(
+    //   import.meta.env.VITE_TRIP_RATING_SERVICE_ID
+    // )) as CustomAxiosResponse
+    const res = {} as any
     const ratingReference = res?.data?.data?.reference
     const ratingsPayload = {
       settings_id: ratingReference,

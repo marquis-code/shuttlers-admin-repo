@@ -8,9 +8,24 @@ const banersList = ref([] as Record<string, any>[])
 export const use_get_baners = () => {
     const { prev, metaObject, next, moveTo, setFunction } = usePagination()
 
+        const filterData = {
+        status: ref('active')
+
+    }
+    const onFilterUpdate = (data: any) => {
+        switch (data.type) {
+            case 'status':
+                filterData.status.value = data.value === '0' ? 'inactive' : 'active'
+                break
+        }
+    }
+
+    watch([filterData.status], () => {
+        getBaners()
+    })
     const getBaners = async () => {
         loading_banners.value = true
-        const res = await campaigns_api.$_get_baners(metaObject) as CustomAxiosResponse
+        const res = await campaigns_api.$_get_banners(metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             banersList.value = res.data
             metaObject.total_pages.value = res.data?.metadata?.total_pages
@@ -18,5 +33,5 @@ export const use_get_baners = () => {
         loading_banners.value = false
     }
     setFunction(getBaners)
-    return { getBaners, loading_banners, banersList, prev, ...metaObject, next, moveTo }
+    return { getBaners, loading_banners, banersList, prev, ...metaObject, next, moveTo, onFilterUpdate }
 }

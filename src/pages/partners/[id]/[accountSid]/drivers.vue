@@ -35,6 +35,7 @@
 					{{ item.data.date_created }}
 				</span>
 				<span v-else-if="item.action">
+					{{ item.data.user }}
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
