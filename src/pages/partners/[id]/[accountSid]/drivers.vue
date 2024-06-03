@@ -58,7 +58,7 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'View driver information', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
+	{ name: 'View driver information', func: (data) => { useRouter().push(`/drivers/${data.driver_id}/driver-info`) } },
 	{ name: 'Suspend driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },
 	{ name: 'Unlink driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
 ])
