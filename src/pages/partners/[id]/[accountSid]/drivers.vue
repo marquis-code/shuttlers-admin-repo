@@ -48,9 +48,12 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersDriversList } from '@/composables/modules/partners/id'
+import { useSuspendDriver } from '@/composables/modules/drivers'
 const { getPartnersDriversList, loadingPartnerDriver, partnersDriversList, onFilterUpdate, moveTo, total, page, next, prev } = useGetPartnersDriversList()
 const id = useRoute().params.accountSid as string
 getPartnersDriversList()
+
+const { initSuspension } = useSuspendDriver()
 
 definePageMeta({
     layout: 'dashboard',
@@ -59,8 +62,14 @@ definePageMeta({
 
 const dropdownChildren = computed(() => [
 	{ name: 'View driver information', func: (data) => { useRouter().push(`/drivers/${data.driver_id}/driver-info`) } },
-	{ name: 'Suspend driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },
-	{ name: 'Unlink driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{
+ name: 'Suspend driver', func: (data) => {
+		data.active = '1'
+		data.id = data.driver_id
+			initSuspension(data)
+		getPartnersDriversList()
+	}, class: '!text-red'
+}
 ])
 
 const formattedPartnersDriversList = computed(() => {

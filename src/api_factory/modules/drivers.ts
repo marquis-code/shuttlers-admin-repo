@@ -63,7 +63,7 @@ export const drivers_api = {
 		const url = `/ratings/drivers/${driverId}?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}&metadata=true`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_update_driver: (driverId:number|string, payload: Record<string, any>) => {
+	 $_update_driver: (driverId:number|string, payload: Record<string, any>) => {
 		const url = `/drivers/${driverId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
