@@ -9,7 +9,6 @@ const loading = ref(false)
 
 export const useSuspendDriver = () => {
 	const initSuspension = (data: Record<string, any>) => {
-		console.log(data)
 		driver.value = data
 		useConfirmationModal().openAlert({
 			call_function: suspendDriver,
