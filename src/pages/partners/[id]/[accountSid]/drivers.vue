@@ -63,10 +63,10 @@ definePageMeta({
 const dropdownChildren = computed(() => [
 	{ name: 'View driver information', func: (data) => { useRouter().push(`/drivers/${data.driver_id}/driver-info`) } },
 	{
- name: 'Suspend driver', func: (data) => {
+ name: 'Suspend driver', func: async (data) => {
 		data.active = '1'
 		data.id = data.driver_id
-			initSuspension(data)
+		await initSuspension(data)
 		getPartnersDriversList()
 	}, class: '!text-red'
 }
