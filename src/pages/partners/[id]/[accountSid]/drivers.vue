@@ -35,6 +35,7 @@
 					{{ item.data.date_created }}
 				</span>
 				<span v-else-if="item.action">
+					{{ item.data.user }}
 					<ButtonIconDropdown :children="dropdownChildren" :data="item.data" class-name="w-56" />
 				</span>
 			</template>
@@ -47,9 +48,12 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { useGetPartnersDriversList } from '@/composables/modules/partners/id'
+import { useSuspendDriver } from '@/composables/modules/drivers'
 const { getPartnersDriversList, loadingPartnerDriver, partnersDriversList, onFilterUpdate, moveTo, total, page, next, prev } = useGetPartnersDriversList()
 const id = useRoute().params.accountSid as string
 getPartnersDriversList()
+
+const { initSuspension } = useSuspendDriver()
 
 definePageMeta({
     layout: 'dashboard',
@@ -57,9 +61,15 @@ definePageMeta({
 })
 
 const dropdownChildren = computed(() => [
-	{ name: 'View driver information', func: (data) => { useRouter().push(`/fleets/${data.user_id}/past-bookings/${data.trip_id}`) } },
-	{ name: 'Suspend driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' },
-	{ name: 'Unlink driver', func: (data) => setDeleteRefundId(data.id), class: '!text-red' }
+	{ name: 'View driver information', func: (data) => { useRouter().push(`/drivers/${data.driver_id}/driver-info`) } },
+	{
+ name: 'Suspend driver', func: async (data) => {
+		data.active = '1'
+		data.id = data.driver_id
+		await initSuspension(data)
+		getPartnersDriversList()
+	}, class: '!text-red'
+}
 ])
 
 const formattedPartnersDriversList = computed(() => {

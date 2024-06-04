@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loading_banners" :headers="tableFields" :table-data="computedBannerList" :has-index="true" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showStatus:false}" />
+				<TableFilter :filter-type="{showStatus:true, showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.date">
@@ -24,10 +24,13 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { use_get_baners, useUpdateBanner } from '@/composables/modules/campaigns/banner'
+import { useDeleteBanner } from '@/composables/modules/campaigns/banner/delete'
 
-const { getBaners, loading_banners, banersList, moveTo, next, prev, total, page, total_pages } = use_get_baners()
+const { getBaners, loading_banners, banersList, moveTo, next, prev, total, page, total_pages, onFilterUpdate } = use_get_baners()
 const { initUpdateBanner } = useUpdateBanner()
 getBaners()
+
+const { initDelete } = useDeleteBanner()
 
 const onRowClicked = (data: Record<string, any>) => {
 	useRouter().push(`/campaigns/promotions/banner/${data?.id}`)
@@ -45,7 +48,8 @@ const computedBannerList = computed(() => {
 
 const dropdownChildren = computed(() => {
     return [
-        { name: 'Update Banner', func: (data:any) => { initUpdateBanner(data, true) } }
+        { name: 'Update Banner', func: (data:any) => { initUpdateBanner(data, true) } },
+        { name: 'Delete Banner', func: (data:any) => { initDelete(data) } }
     ]
 })
 

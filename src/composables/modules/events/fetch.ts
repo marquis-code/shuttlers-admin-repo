@@ -80,9 +80,6 @@ export const useGetUpcomingEvents = () => {
 
     const onFilterUpdate = (data) => {
         switch (data.type) {
-            case 'status':
-                filterData.status.value = data.value
-                break
             case 'search':
                 filterData.search.value = data.value
                 break

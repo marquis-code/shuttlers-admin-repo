@@ -15,7 +15,8 @@ const corporatePaySettings = {
         limit_value: ref(0),
         limit_value_unit: ref('none')
     },
-    exemptions: ref([]),
+
+    exemptions: ref([] as any[]),
     id: ref(),
     staff_can_view_wallet_limit_usage: ref()
 }
@@ -48,8 +49,6 @@ const getPeriod = (str) => {
     }
 }
 
-const corporate_id = Number(useRoute().params.id)
-
 const getExemptionLimitWriteUp = (data) => {
     if (data.limit_type === 'trip') {
         return `Allow an employee book ${data.limit_value} trips per ${getPeriod(data.limit_value_unit)}`
@@ -61,10 +60,9 @@ const getExemptionLimitWriteUp = (data) => {
 export const useCorporatePaySetting = () => {
     const loading = ref(false)
     const { selectedCorporate } = useCorporateIdDetails()
-    const fetchCorporatePaySetting = async () => {
+    const fetchCorporatePaySetting = async (corporate_id:string) => {
         loading.value = true
-        const { $_fetch_corporate_payment_settings } = corporates_api
-        const res = await $_fetch_corporate_payment_settings(corporate_id) as CustomAxiosResponse
+        const res = await corporates_api.$_fetch_corporate_payment_settings(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             const data = res?.data
 			corporatePaySettings.book_on_corporate_routes.value = data.book_on_corporate_routes
@@ -82,22 +80,23 @@ export const useCorporatePaySetting = () => {
         loading.value = false
     }
 
-    const saveCorporatePaySettings = async (val: any) => {
+    const saveCorporatePaySettings = async (corporate_id:string, val: any) => {
         loading.value = true
-        const { $_update_corporate_payment_settings } = corporates_api
-        const res = await $_update_corporate_payment_settings(corporate_id, val) as CustomAxiosResponse
+
+        const res = await corporates_api.$_update_corporate_payment_settings(corporate_id, val) as CustomAxiosResponse
+
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
 				type: 'SUCCESS',
 				msg: 'Settings saved successfully.'
 			})
-            fetchCorporatePaySetting()
+            fetchCorporatePaySetting(corporate_id)
             useConfirmationModal().closeAlert()
         }
         loading.value = false
     }
 
-	const updateExemptions = async () => {
+	const updateExemptions = async (id:string) => {
         loading.value = true
         const { $_update_corporate_payment_settings } = corporates_api
         const payload = {
@@ -117,7 +116,7 @@ export const useCorporatePaySetting = () => {
 				type: 'SUCCESS',
 				msg: 'Settings saved successfully'
 			})
-            fetchCorporatePaySetting()
+            fetchCorporatePaySetting(id)
             useConfirmationModal().closeAlert()
         }
         loading.value = false

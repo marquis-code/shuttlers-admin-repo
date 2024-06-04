@@ -21,7 +21,7 @@
 					Main Balance
 				</p>
 				<p class="">
-					{{ convertToCurrency(selectedUser?.wallet?.main_balance) }}
+					{{ convertToCurrency(selectedUser?.wallet?.amount) }}
 				</p>
 			</div>
 			<div class="flex justify-between items-center border-b py-4 px-6">

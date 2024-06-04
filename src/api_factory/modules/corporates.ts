@@ -45,7 +45,7 @@ export const corporates_api = {
 		const url = `/corporates/${corporateId}/staff?limit=100000&search=${filterData.search.value}${filterData.branch_ids.value.length ? `&branch_ids=${JSON.stringify(filterData.branch_ids.value)}` : ''}${filterData.shift_ids.value.length ? `&shift_ids=${JSON.stringify(filterData.shift_ids.value)}` : ''}${filterData.work_days.value.length ? `&work_days=${JSON.stringify(filterData.work_days.value)}` : ''}${filterData.route.value.id ? `&route_ids=${JSON.stringify([filterData.route.value.id])}` : ''}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_company_wallet_info_by_id: (id: number) => {
+	$_get_company_wallet_info_by_id: (id: number|string) => {
 		const url = `/corporates/${id}/wallets`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
@@ -245,11 +245,11 @@ export const corporates_api = {
 		const url = `/shuttle-requests/${requestId}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_update_corporate_payment_settings: (corporateId: number, payload: any) => {
+	$_update_corporate_payment_settings: (corporateId: number| string, payload: any) => {
 		const url = `/corporates/${corporateId}/payment-settings`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
 	},
-	$_fetch_corporate_payment_settings: (corporateId: number) => {
+	$_fetch_corporate_payment_settings: (corporateId: number|string) => {
 		const url = `/corporates/${corporateId}/payment-settings`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},

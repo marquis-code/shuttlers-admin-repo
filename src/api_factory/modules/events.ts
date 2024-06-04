@@ -7,6 +7,11 @@ export const events_api = {
 		const url = `/event/admin/events?metadata=true&page=${metaObject.page.value}&size=${metaObject.page_size.value}&related=itineraries&${queryParams}`
 		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
 	},
+	$_get_event_attendees: (eventId, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
+		const url = `/event/${eventId}/attendee?metadata=true&page=${metaObject.page.value}&size=${metaObject.page_size.value}&related=itineraries&${queryParams}`
+		return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.get(url)
+	},
 	$_create_event: (credentials: any) => {
         const url = '/event/create'
         return GATEWAY_ENDPOINT_WITHOUT_VERSION_WITH_AUTH.post(url, credentials)
