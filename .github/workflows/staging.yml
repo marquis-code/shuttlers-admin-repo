@@ -7,7 +7,7 @@ on:
 
 jobs:
   merge-to-staging-and-main:
-    runs-on: ubuntu-lastaging
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
