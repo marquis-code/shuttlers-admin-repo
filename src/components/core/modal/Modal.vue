@@ -8,7 +8,7 @@
 		@click.self="autoClose ? close($el) : null"
 	>
 		<transition name="modal" appear>
-			<div v-if="type == 'popup'" :class="[modalClass]" class="modal flex flex-col">
+			<div v-if="type == 'popup'" :class="[modalClass]" :style="modalStyle" class="modal flex flex-col">
 				<header class="modal-title flex justify-between w-full items-center">
 					<span v-if="showTitle" class="text-center w-full">{{ title }}</span>
 					<icon
@@ -53,16 +53,7 @@ const props = defineProps({
 		type: Boolean,
 		required: false
 	},
-	isLargeModal: {
-		default: false,
-		type: Boolean,
-		required: false
-	},
-	isMediumModal: {
-		default: false,
-		type: Boolean,
-		required: false
-	},
+
 	autoClose: {
 		default: true,
 		type: Boolean,
@@ -95,6 +86,11 @@ const props = defineProps({
 	},
 	modalWidth: {
 		default: '100%',
+		type: String,
+		required: false
+	},
+	modalStyle: {
+		default: '',
 		type: String,
 		required: false
 	}

@@ -56,9 +56,14 @@ export const campaigns_api = {
         const url = `/reward-point-rate?user_type=${user_type}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
-    $_get_baners: (meta:TMetaObject) => {
-        const url = `/dynamic-dashboard/banners?limit=${meta.page_size.value}&page=${meta.page.value}`
+    $_get_banners: (meta: TMetaObject, filterData) => {
+        const queryParams = useTableFilter(filterData)
+        const url = `/dynamic-dashboard/banners?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+    },
+    $_delete_banner: (id) => {
+        const url = `/dynamic-dashboard/banners/${id}`
+        return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
     },
     $_get_carousels: (meta:TMetaObject) => {
         const url = `/dynamic-dashboard/carousels?limit=${meta.page_size.value}&page=${meta.page.value}`
@@ -66,7 +71,7 @@ export const campaigns_api = {
     },
     $_get_campaigns: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
         const queryParams = useTableFilter(filterData)
-        const url = `/campaigns?${queryParams}limit=${meta.page_size.value}&page=${meta.page.value}`
+        const url = `/campaigns?${queryParams}&limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
     $_get_valentine_campaign_by_id: (id: string, meta:TMetaObject) => {

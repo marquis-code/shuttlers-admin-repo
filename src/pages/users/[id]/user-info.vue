@@ -22,16 +22,17 @@ const { getUserById, loading, selectedUser } = useUserIdDetails()
 const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletLimitUsageInfo } = useUserCorporateWalletLimitUsageInfo()
 const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
 const id = Number(useRoute().params.id)
-const corporate_id = Number(selectedUser?.value.corporate_id)
 
-onMounted(() => {
-	getUserById()
-    getBusCaptainRoutesById()
-	if (corporate_id) {
-		getCorporateWalletObject()
-        getUserCorporateWalletLimitUsageInfo()
+watch(selectedUser, (val) => {
+	if (val) {
+		const corporate_id = val.corporate_id
+		getBusCaptainRoutesById(val.id)
+		if (corporate_id) {
+		getCorporateWalletObject(corporate_id)
+        getUserCorporateWalletLimitUsageInfo(val.id)
 	}
-})
+	}
+}, { immediate: true })
 
 definePageMeta({
 	layout: 'dashboard',

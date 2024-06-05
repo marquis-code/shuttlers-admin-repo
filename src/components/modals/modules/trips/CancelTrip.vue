@@ -4,9 +4,16 @@
 		title="Cancel trip"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="cancelTrip">
-			<div class="flex flex-col gap-2">
-				<label class="label">Reason</label>
-				<input v-model="reason" type="text" required class="input-field">
+			<div class="field relative">
+				<label for="reason" class="w-full">Select Reason</label>
+				<select id="reason" v-model="reason" class="input-field">
+					<option value="">
+						Select Event
+					</option>
+					<option v-for="event in events" :key="event" :value="event">
+						{{ event }}
+					</option>
+				</select>
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="label">Enter your password</label>
@@ -33,6 +40,19 @@ import { useCancelTrip } from '@/composables/modules/trips/cancel'
 const { loading, clearObj, reason, password, cancelTrip, enableButton } = useCancelTrip()
 const show = ref(false)
 onBeforeUnmount(() => clearObj())
+
+const events = ref([
+            'No Supply',
+            'Zero bookings',
+            'Pilot Unavailable',
+            'Bookings below 30%',
+            'Route Merging',
+            'Vehicle issues',
+            'Accident',
+            'Users no show',
+            'Apprehension',
+            'Pilot No show'
+        ])
 </script>
 
 <style scoped>

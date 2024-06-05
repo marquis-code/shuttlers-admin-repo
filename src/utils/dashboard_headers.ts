@@ -96,7 +96,7 @@ export const headerComponentRouteArray = [
     { routes: ['drivers-add', 'drivers-notify', 'drivers-edit-id'], component: AddDrivers },
     { routes: ['drivers-id-driver-info', 'drivers-id-customer-rating'], component: DriverDetails },
     { routes: ['events', 'events-upcoming'], component: Events },
-    { routes: ['events-id-event-info'], component: EventDetails },
+    { routes: ['events-id-event-info', 'events-id-attendees'], component: EventDetails },
     { routes: ['transactions'], component: Transactions },
     { routes: ['transactions-id'], component: Transactions_id },
     { routes: ['fleet', 'fleet-inspection-days'], component: Fleets },

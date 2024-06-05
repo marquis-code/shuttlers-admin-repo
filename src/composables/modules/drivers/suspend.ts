@@ -23,8 +23,7 @@ export const useSuspendDriver = () => {
 			active: driver.value.active === '1' ? 0 : 1
 		}
 		loading.value = true
-		const id = useRoute().params.id as string
-		const res = await drivers_api.$_update_driver(id, payload) as CustomAxiosResponse
+		const res = await drivers_api.$_update_driver(driver.value.id, payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
 			useConfirmationModal().closeAlert()
@@ -32,8 +31,8 @@ export const useSuspendDriver = () => {
 				type: 'SUCCESS',
 				msg: `Driver was ${driver.value.active === '1' ? 'suspended' : 'unsuspended'} successfully`
 			})
-			// useRouter().push(`/drivers/${id}/driver-info`)
-			getDriverById(id)
+			// useRouter().push(`/drivers/${id}/-info`)
+			getDriverById(driver.value.id)
         }
         loading.value = false
 	}

@@ -1,10 +1,21 @@
 <template>
-	<Modal :is-medium-modal="true" modal="$atts.modal" title="Transfer Booking" :no-close-btn="true">
+	<Modal :modal-style="`width:1024px`" modal="$atts.modal" title="Transfer Booking" :no-close-btn="true">
 		<form class="flex flex-col gap-4" @submit.prevent="transferBooking">
 			<p v-if="route?.id">
 				Transfer bookings to {{ route?.route_code }} ( {{ route?.pickup }} to {{ route?.destination }} ) {{ itinerary?.trip_time }}
 			</p>
 			<div v-show="step === 1" class="flex flex-col gap-4">
+				<div class="field relative">
+					<label for="reason" class="w-full">Select Reason</label>
+					<select id="reason" v-model="reason" class="input-field">
+						<option value="">
+							Select Event
+						</option>
+						<option v-for="event in events" :key="event" :value="event">
+							{{ event }}
+						</option>
+					</select>
+				</div>
 				<RouteSelector @selected="onRouteSelected" />
 				<div v-if="route?.id" class="flex flex-col">
 					<label class="label">Assign itinerary</label>
@@ -111,7 +122,7 @@
 import moment from 'moment'
 import { useTransferBookings } from '@/composables/modules/trips'
 
-const { loading, route, itinerary, route_itineraries, route_vehicles, vehicle, for_today, start_date, end_date, pickupLocations, dropoffLocations, computedTableData, transferBooking, enableStepOneBtn, clearObj } = useTransferBookings()
+const { loading, route, itinerary, route_itineraries, reason, for_today, start_date, end_date, pickupLocations, dropoffLocations, computedTableData, transferBooking, enableStepOneBtn, clearObj } = useTransferBookings()
 const onRouteSelected = (val) => {
     route.value = val
 }
@@ -124,6 +135,19 @@ const tableFields = ref([
     { text: 'NEW DROPOFF', value: 'new_dropoff' }
 
 ])
+
+const events = ref([
+            'No Supply',
+            'Zero bookings',
+            'Pilot Unavailable',
+            'Bookings below 30%',
+            'Route Merging',
+            'Vehicle issues',
+            'Accident',
+            'Users no show',
+            'Apprehension',
+            'Pilot No show'
+        ])
 
 const getVehicleName = (data:Record<string, any>) => {
     return `${data?.vehicle?.brand} ${data?.vehicle?.name} ${data?.vehicle?.registration_number} - ${data?.vehicle?.seats} seater - ${data?.driver?.fname} ${data?.driver?.lname}`

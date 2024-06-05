@@ -103,7 +103,7 @@ export const users_api = {
 		const url = `user-route-schedules/${id}/refund`
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
 	},
-	$_get_user_corporate_wallet_limit_usage_by_id: (id:number) => {
+	$_get_user_corporate_wallet_limit_usage_by_id: (id) => {
 		const url = `/users/${id}/corporate-wallet-limit-usage`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
