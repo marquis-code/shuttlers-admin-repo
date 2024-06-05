@@ -13,7 +13,8 @@ const obj = {
 	vehicle: ref({}) as Ref<Record<string, any>>,
 	driver_id: ref(null) as Ref<null|number>,
 	cost_of_supply: ref(null) as Ref<number|null>,
-	is_multiple: ref(false)
+	is_multiple: ref(false),
+	reason: ref()
 }
 const vehicles = ref([]) as Ref<Record<string, any>[]>
 const drivers = ref([]) as Ref<Record<string, any>[]>
@@ -86,7 +87,8 @@ export const useTransferTrip = () => {
 			vehicle_id: obj.vehicle.value?.id,
 			cost_of_supply: obj.cost_of_supply.value,
 			cost_of_supply_currency: 'NGN',
-			driver_id: obj.driver_id.value
+			driver_id: obj.driver_id.value,
+			reason: obj.reason.value
 		}
 		loading.value = true
 		const res = await trips_api.$_transfer_trip(payload) as CustomAxiosResponse

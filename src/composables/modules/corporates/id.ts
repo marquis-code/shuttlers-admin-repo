@@ -21,10 +21,8 @@ export const useCorporateIdDetails = () => {
 
 const corporateWalletDetails = ref({} as any)
 export const useCorporateWalletDetails = () => {
-    const { selectedUser } = useUserIdDetails()
     const loading = ref(false)
-    const getCorporateWalletObject = async () => {
-        const corporate_id = Number(useRoute().params.id)
+    const getCorporateWalletObject = async (corporate_id:string) => {
         loading.value = true
         const res = await corporates_api.$_get_company_wallet_info_by_id(corporate_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

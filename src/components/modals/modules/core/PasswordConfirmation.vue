@@ -25,6 +25,17 @@
 			<p class="text-start">
 				Provide your admin password in order to proceed
 			</p>
+			<div v-if="reason !== null" class="field relative">
+				<label for="reason" class="w-full">Select Reason</label>
+				<select id="reason" v-model="reason" class="input-field">
+					<option value="">
+						Select Event
+					</option>
+					<option v-for="event in events" :key="event" :value="event">
+						{{ event }}
+					</option>
+				</select>
+			</div>
 			<div class="field relative">
 				<label for="password" class="w-full">Enter password</label>
 				<input id="password" v-model="password" autocomplete="off" :type="showPassword ? 'text' : 'Password'" class="input-field" required>
@@ -46,7 +57,7 @@
 <script setup lang="ts">
 import { usePasswordConfirmationModal } from '@/composables/core/confirmation'
 
-const { call_function, closeAlert, description, title, loading, type, password } = usePasswordConfirmationModal()
+const { call_function, closeAlert, description, title, loading, type, password, reason } = usePasswordConfirmationModal()
 
 const showPassword = ref(false)
 const toggleShow = () => {
@@ -56,6 +67,19 @@ const buttonStyle = computed(() => {
 	if (type.value === 'DANGER') return 'border-red bg-[#fda29bb0] text-[#B01C23]'
 	if (type.value === 'NORMAL') return 'border-dark bg-black text-light'
 })
+
+const events = ref([
+            'No Supply',
+            'Zero bookings',
+            'Pilot Unavailable',
+            'Bookings below 30%',
+            'Route Merging',
+            'Vehicle issues',
+            'Accident',
+            'Users no show',
+            'Apprehension',
+            'Pilot No show'
+        ])
 
 </script>
 

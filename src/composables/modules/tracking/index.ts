@@ -18,7 +18,7 @@ export const useTripTracking = () => {
 
 	const listenToSpecificTripLocationAndAddtoMap = (
 		tripId: string, clickFunc:(data:any)=>void
-    ) => {
+	) => {
 		listenToEvent(`trips:${tripId}`, (data: PassagerType) => {
 			activeTripsList.value.filter((i) => i.id === tripId)[0].vehicle_status = true
 			activeTripsList.value.filter((i) => i.id === tripId)[0].lat = data.position_latitude
