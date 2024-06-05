@@ -13,7 +13,7 @@
 							<input id="default" v-model="partnerDeductionObj.type.value" value="default" type="radio" name="type">
 							Default deduction
 						</label>
-						<label for="wht" class="flex-1">
+						<label v-if="!partnerDeductionObj.isDeductFromRevenue.value" for="wht" class="flex-1">
 							<input id="wht" v-model="partnerDeductionObj.type.value" type="radio" value="wht" name="type">
 							Withholding Tax Deduction
 						</label>

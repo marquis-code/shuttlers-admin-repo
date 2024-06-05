@@ -35,6 +35,17 @@
 				<label class="label">Cost of supply</label>
 				<input v-model="cost_of_supply" type="number" required class="input-field">
 			</div>
+			<div class="field relative">
+				<label for="reason" class="w-full">Select Reason</label>
+				<select id="reason" v-model="reason" class="input-field">
+					<option value="">
+						Select Event
+					</option>
+					<option v-for="event in events" :key="event" :value="event">
+						{{ event }}
+					</option>
+				</select>
+			</div>
 
 			<button type="submit" :disabled="loading || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ loading ? 'processing...' : 'Transfer trip' }}
@@ -46,11 +57,23 @@
 <script setup lang="ts">
 import { useTransferTrip } from '@/composables/modules/trips/transfer'
 
-const { loading, vehicle, partner, clearObj, vehicles, transferTrip, loading_vehicles, enableButton, loading_drivers, drivers, driver_id, cost_of_supply, is_multiple } = useTransferTrip()
+const { loading, vehicle, partner, clearObj, vehicles, transferTrip, loading_vehicles, enableButton, loading_drivers, drivers, driver_id, cost_of_supply, is_multiple, reason } = useTransferTrip()
 const handleSelectedPartner = (val:Record<string, any>) => {
 	partner.value = val
 }
 onBeforeUnmount(() => clearObj())
+const events = ref([
+            'No Supply',
+            'Zero bookings',
+            'Pilot Unavailable',
+            'Bookings below 30%',
+            'Route Merging',
+            'Vehicle issues',
+            'Accident',
+            'Users no show',
+            'Apprehension',
+            'Pilot No show'
+        ])
 </script>
 
 <style scoped>

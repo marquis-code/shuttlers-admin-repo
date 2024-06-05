@@ -16,6 +16,17 @@
 					</button>
 				</div>
 			</div>
+			<div class="field relative">
+				<label for="reason" class="w-full">Select Reason</label>
+				<select id="reason" v-model="reason" class="input-field">
+					<option value="">
+						Select Event
+					</option>
+					<option v-for="event in events" :key="event" :value="event">
+						{{ event }}
+					</option>
+				</select>
+			</div>
 
 			<button type="submit" :disabled="cancelling || !enableButton" class="text-sm bg-black p-[16px] text-white text-center w-full mt-2 rounded disabled:cursor-not-allowed disabled:bg-[#E0E6ED]">
 				{{ cancelling ? 'processing...' : 'Cancel booking' }}
@@ -27,7 +38,7 @@
 <script setup lang="ts">
 import { useCancelBooking } from '@/composables/modules/users/booking-ticket/cancel'
 
-const { loading, booked_days, selected_days, fetchBookedDays, cancelBooking, cancelling } = useCancelBooking()
+const { loading, booked_days, selected_days, fetchBookedDays, cancelBooking, cancelling, reason } = useCancelBooking()
 
 const enableButton = computed(() => {
 	return !!(selected_days.value.length)
@@ -41,6 +52,16 @@ const onSelectDates = (date:string) => {
 		selected_days.value.splice(index, 1)
 	}
 }
+
+   const events = ref([
+            'Shuttle Breakdown',
+            'Delayed Pick up',
+            'Driver Arrested',
+            'Shuttle No Show',
+            'User Left Behind',
+            'AC Compensation',
+            'Wrong Booking'
+        ])
 
 fetchBookedDays()
 onBeforeUnmount(() => selected_days.value = [])
