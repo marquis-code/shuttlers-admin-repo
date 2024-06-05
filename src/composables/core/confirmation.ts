@@ -16,7 +16,8 @@ const passwordConfirmationState = {
     type: ref('Alert'),
     call_function: ref(() => { }),
     loading: ref(false),
-    password: ref('')
+    password: ref(''),
+    reason: ref(null as string|null)
 }
 
 const YesConfirmationState = {
@@ -34,6 +35,7 @@ interface AlertTypes {
     call_function: () => void
     loading: Ref<boolean>,
     password?: Ref<string>,
+    reason?: Ref<string | null>,
     proceedText?: string,
     cancelText?: string
 }
@@ -64,13 +66,14 @@ export const useConfirmationModal = () => {
 }
 export const usePasswordConfirmationModal = () => {
     const { openPasswordConfirm, closePasswordConfirm } = useCoreModal()
-    const openAlert = ({ type, desc, call_function, title, loading, password = ref('') }: AlertTypes) => {
+    const openAlert = ({ type, desc, call_function, title, loading, password = ref(''), reason = ref(null) }: AlertTypes) => {
 		passwordConfirmationState.type.value = type
         passwordConfirmationState.description.value = desc
         passwordConfirmationState.title.value = title
         passwordConfirmationState.call_function.value = call_function
         passwordConfirmationState.loading = loading
         passwordConfirmationState.password = password
+        passwordConfirmationState.reason = reason
 
         openPasswordConfirm()
 	}

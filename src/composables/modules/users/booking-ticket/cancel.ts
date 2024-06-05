@@ -6,6 +6,7 @@ import { useAlert } from '@/composables/core/notification'
 const { ticketDetails, fetchTicketDetails } = useBookingTicket()
 const booked_days = ref([]) as Ref<Record<string, any>[]>
 const selected_days = ref([]) as Ref<string[]>
+const reason = ref()
 const loading = ref(false)
 const cancelling = ref(false)
 
@@ -32,7 +33,8 @@ export const useCancelBooking = () => {
                 user_id: ticketDetails.value?.user_id,
                 user_route_id: ticketId,
                 booked_days: selected_days.value,
-                booking_days: selected_days.value
+                booking_days: selected_days.value,
+                cancellation_reason: reason.value
             }
         }
         cancelling.value = true
@@ -47,5 +49,5 @@ export const useCancelBooking = () => {
         cancelling.value = false
     }
 
-    return { fetchBookedDays, loading, booked_days, cancelBooking, selected_days, cancelling }
+    return { fetchBookedDays, loading, booked_days, cancelBooking, selected_days, cancelling, reason }
 }

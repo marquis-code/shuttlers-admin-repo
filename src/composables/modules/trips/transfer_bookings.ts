@@ -11,7 +11,8 @@ const transferBookingObj = {
     start_date: ref(''),
     end_date: ref(''),
     vehicle: ref({} as Record<string, any>),
-    for_today: ref(true)
+    for_today: ref(true),
+    reason: ref()
 }
 const route_itineraries = ref([] as Record<string, any>[])
 const route_vehicles = ref([] as Record<string, any>[])
@@ -123,7 +124,8 @@ export const useTransferBookings = () => {
             source_itinerary_id: computedTableData.value[0].route_itinerary_id,
             destination_itinerary_id: transferBookingObj.itinerary.value?.id,
             start_date: computedTableData.value[0].trip_date,
-            end_date: computedTableData.value[0].trip_date
+            end_date: computedTableData.value[0].trip_date,
+            reason: transferBookingObj.reason.value
         }
         if (!transferBookingObj.for_today.value) {
             payload.start_date = transferBookingObj.start_date.value
