@@ -14,6 +14,7 @@ const tripType = ref('upcoming') as Ref<TripType>
 export const useTripOptions = () => {
     const loading = ref(false)
     const password = ref('')
+    const reason = ref('')
 
     const initializeTripUpdate = (tripObj, type:TripType) => {
         selectedTrip.value = tripObj
@@ -26,7 +27,7 @@ export const useTripOptions = () => {
     }
     const initializeCancelTrips = (tripObj) => {
         selectedTrip.value = tripObj
-        usePasswordConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: 'Are you sure you want to cancel this trip ?', loading, password, call_function: () => cancelTrip() })
+        usePasswordConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: 'Are you sure you want to cancel this trip ?', loading, reason, password, call_function: () => cancelTrip() })
     }
     const initializeCompleteTrips = (tripObj) => {
         selectedTrip.value = tripObj
@@ -82,7 +83,7 @@ export const useTripOptions = () => {
 
     const cancelTrip = async () => {
         loading.value = true
-        const res = await trips_api.$_cancel_trip(selectedTrip.value.id, { password: password.value }) as CustomAxiosResponse
+        const res = await trips_api.$_cancel_trip(selectedTrip.value.id, { password: password.value, cancellation_reason: reason.value }) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Trip Cancelled successfully' })
             usePasswordConfirmationModal().closeAlert()
