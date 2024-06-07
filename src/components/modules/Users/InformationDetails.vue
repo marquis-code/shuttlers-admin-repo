@@ -140,7 +140,7 @@ const dropdownChildren = computed(() => [
 	{ name: 'Make bus captain', func: () => { makeBusCaptain() } },
 	{ name: 'Debit User Wallet', func: () => { handleWalletUpdate('debit') }, class: '!text-red' },
 	{ name: `${props.selectedUser.active === '1' ? 'Suspend' : 'Un-suspend'}`, func: (data) => { suspendUser(data) }, class: '!text-red' },
-	{ name: `${props.selectedUser.is_blocked === 1 ? 'Unblock' : 'Block'} user`, func: (data) => { initBlockUser(!(props.selectedUser.is_blocked)) }, class: '!text-red' }
+	{ name: 'Unblock user', hide: props.selectedUser.is_blocked === 0, func: (data) => { initBlockUser(!(props.selectedUser.is_blocked)) }, class: '!text-red' }
 ])
 
 const suspendUser = (data: any) => {
