@@ -22,7 +22,9 @@
 							<div class="w-full">
 								<button class="text-white text-sm bg-black px-3 py-2.5 w-fit rounded-md flex items-center gap-x-3" @click="useCompaniesModal().openFundWallet()">
 									<span class="rounded-full bg-white p-1">
-										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg>
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M12 19V6M5 12l7-7 7 7" />
+										</svg>
 									</span>
 									Fund wallet
 								</button>
@@ -43,7 +45,7 @@
 					<Table :loading="loadingWalletHistory" :headers="tableFields" :table-data="coprorateWalletHistory" :has-options="true">
 						<template #header>
 							<div class="bg-white border-x border-gray-100">
-								<TableFilter :filter-type="{showDownloadButton: true, showDateRange: true}" @filter="onFilterUpdate" @download="downloadWalletHistory" />
+								<TableFilter :filter-type="{ showDownloadButton: true, showDateRange: true }" @filter="onFilterUpdate" @download="downloadWalletHistory" />
 								<div class="flex justify-end gap-x-3 items-end pr-3 py-3">
 									<div>
 										<CorporatesStaffMultiSelect class="w-full" label="" @update:modelValue="handleSelectedCorporates" />
@@ -235,19 +237,22 @@
 import moment from 'moment'
 import { useClipboard } from '@/composables/core/useClipboard'
 import { useCorporateWalletHistory, useCorporateOverdreftUpdate } from '@/composables/modules/corporates/wallet'
-import { useCorporateWalletDetails } from '@/composables/modules/corporates/id'
+import { useCorporateWalletDetails, useCorporateIdDetails } from '@/composables/modules/corporates/id'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { convertToCurrency } from '@/composables/utils/formatter'
+
 const { getCorporateWalletHistory, coprorateWalletHistory, onFilterUpdate, next, prev, moveTo, page, total, loadingWalletHistory, filterData, staff_ids, downloadWalletHistory } = useCorporateWalletHistory()
 const { corporateWalletDetails, loading: loadingCorporateWallet, getCorporateWalletObject } = useCorporateWalletDetails()
 const { updateCorporateWalletOverdraft, updating, populateOverdraftForm } = useCorporateOverdreftUpdate()
 const { copyToClipboard } = useClipboard()
+const { selectedCorporate } = useCorporateIdDetails()
+
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 
-const handleSelectedCorporates = (val:any) => {
+const handleSelectedCorporates = (val: any) => {
 	staff_ids.value = val.map((el) => { return el?.id })
 }
 const hideBalance = ref(true)
@@ -261,49 +266,55 @@ const maximumOverDraftAmount = computed(() => {
 	return convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value)
 })
 const isUpdatingOverdraft = ref(false)
-getCorporateWalletHistory()
-getCorporateWalletObject()
+
 const handleUpdate = () => {
 	isUpdatingOverdraft.value = !isUpdatingOverdraft.value
 }
 
 const computedOverdraft = computed(() => {
 	return {
-	max_over_draw_value: convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value) as string,
-	supports_over_draw: isOverDrawSupported.value || false
-}
+		max_over_draw_value: convertToCurrency(corporateWalletDetails?.value?.wallet?.max_over_draw_value) as string,
+		supports_over_draw: isOverDrawSupported.value || false
+	}
 })
 const handleOverdraftUpdate = async () => {
-  const numericValue = parseFloat(computedOverdraft?.value?.max_over_draw_value.replace(/₦|,/g, ''))
-  const payload = {
-	max_over_draw_value: numericValue,
-	supports_over_draw: computedOverdraft.value.supports_over_draw
-  }
-  populateOverdraftForm(payload)
-  await updateCorporateWalletOverdraft()
-  isUpdatingOverdraft.value = false
+	const numericValue = parseFloat(computedOverdraft?.value?.max_over_draw_value.replace(/₦|,/g, ''))
+	const payload = {
+		max_over_draw_value: numericValue,
+		supports_over_draw: computedOverdraft.value.supports_over_draw
+	}
+	populateOverdraftForm(payload)
+	await updateCorporateWalletOverdraft()
+	isUpdatingOverdraft.value = false
 }
 
+watch(selectedCorporate, () => {
+	if (selectedCorporate.value?.wallet?.corporate_id) {
+		getCorporateWalletHistory()
+		getCorporateWalletObject(selectedCorporate.value.wallet.corporate_id)
+	}
+}, { immediate: true })
+
 const tableFields = ref([
-    {
-        text: 'TRANSACTION',
-        value: 'description'
-    },
-    {
-        text: 'TYPE',
-        value: 'direction'
-    },
-    {
-        text: 'AMOUNT',
-        value: 'amount_formatted'
-    },
-    {
-        text: 'BALANCE BEFORE',
-        value: 'ledger_balance_before_formatted'
-    },
-    {
-        text: 'STATUS',
-        value: 'status'
-    }
+	{
+		text: 'TRANSACTION',
+		value: 'description'
+	},
+	{
+		text: 'TYPE',
+		value: 'direction'
+	},
+	{
+		text: 'AMOUNT',
+		value: 'amount_formatted'
+	},
+	{
+		text: 'BALANCE BEFORE',
+		value: 'ledger_balance_before_formatted'
+	},
+	{
+		text: 'STATUS',
+		value: 'status'
+	}
 ])
 </script>
