@@ -199,6 +199,7 @@ export const useFlutterWave = () => {
     )) as CustomAxiosResponse
     if (res.type !== 'ERROR' && res.data.reference) {
       loading.value = false
+      // @ts-ignore
       const flutterModal = window.FlutterwaveCheckout({
         amount: Number(amount.value),
         callback: () => {
@@ -209,7 +210,7 @@ export const useFlutterWave = () => {
           })
           useCompaniesModal().closeFundWallet()
           useCorporateWalletHistory().getCorporateWalletHistory()
-          useCorporateWalletDetails().getCorporateWalletObject()
+          useCorporateWalletDetails().getCorporateWalletObject(selectedCorporate.value?.wallet?.id)
         },
         country: 'NG',
         currency: 'NGN',
