@@ -119,7 +119,7 @@
 						</div>
 					</div>
 				</div>
-				<button class="py-3 rounded-md text-white bg-black px-3 text-sm">
+				<button class="py-3 rounded-md text-white bg-black px-3 text-sm" @click="useDeletePromo().initDelete()">
 					End promo code
 				</button>
 			</div>
@@ -143,8 +143,10 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { usePromoIdDetails } from '@/composables/modules/promocodes/id'
+import { useDeletePromo } from '@/composables/modules/promocodes/delete'
 const { selectedPromotion, loading, getPromoById } = usePromoIdDetails()
 const id = useRoute().params.id as string
+
 getPromoById(id)
 
 definePageMeta({

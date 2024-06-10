@@ -51,14 +51,12 @@ const props = defineProps({
 
 onMounted(async () => {
     initMap(mapRef, props.mapId)
-    // calculateCenterAndZoom(props.startPoint, props.endPoint)
 
     if (props.encodedPolyline && typeof props.encodedPolyline === 'string') {
         const poly = await getPathFromPolyline(props.encodedPolyline)
         loadPolyline(poly)
-    } else if (props.startPoint?.x && props.endPoint?.x) {
-            // calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
-    } else if (props.startPoint || props.endPoint) {
+    }
+    if (props.startPoint || props.endPoint) {
             if (props.startPoint) {
                 addPointOnMap({ lat: props.startPoint.y, lng: props.startPoint.x })
             } else {
@@ -73,9 +71,7 @@ watchEffect(async () => {
         const poly = await getPathFromPolyline(end_poly)
         loadPolyline(poly)
     }
-    if (props.startPoint?.x && props.endPoint?.x) {
-            // calculateCenterAndZoom({ lat: props.startPoint.y, lng: props.startPoint.x }, { lat: props.endPoint.y, lng: props.endPoint.x })
-    } else if (props.startPoint?.x || props.endPoint?.x) {
+  if (props.startPoint?.x || props.endPoint?.x) {
         if (props.startPoint) {
             addPointOnMap({ lat: props.startPoint.y, lng: props.startPoint.x })
         } else {
