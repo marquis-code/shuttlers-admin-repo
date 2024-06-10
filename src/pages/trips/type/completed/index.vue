@@ -100,7 +100,7 @@ completedTripsList.value.map((i:any, index) => {
 			 trip_time: i?.route_itinerary?.trip_time ?? 'N/A',
 			 pickup: i?.route?.pickup ?? 'N/A',
 			 dropoff: i?.route?.destination ?? 'N/A',
-			 partner: i?.vehicle?.partner?.company_name ?? 'N/A',
+			 partner: i?.vehicle?.partner?.company_name ? `${i?.vehicle?.partner?.company_name} (${i?.vehicle?.partner?.company_phone})` : 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',

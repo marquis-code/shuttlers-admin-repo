@@ -101,7 +101,8 @@ const tripCol = computed(() => {
 		{ name: 'Driver', value: `${props.selectedTrip.driver.fname} ${props.selectedTrip.driver.lname}` },
 		{ name: 'Driver\'s Phone', value: `${props.selectedTrip.driver.phone}` },
 		{ name: 'Vehicle', value: `${vehicleData.value?.brand} ${vehicleData.value?.name} (${vehicleData.value?.registration_number})` },
-		{ name: 'Partner', value: `${props.selectedTrip?.vehicle?.partner?.company_name}` }
+		{ name: 'Partner', value: `${props.selectedTrip?.vehicle?.partner?.company_name}` },
+		{ name: 'Partner Phone', value: `${props.selectedTrip?.vehicle?.partner?.company_phone}` }
 	]
 })
 
