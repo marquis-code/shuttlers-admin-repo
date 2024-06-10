@@ -81,7 +81,7 @@ const formattedActiveTripsList = computed(() =>
              route_code: `${i?.route?.route_code}`,
 			 pickup: i?.route?.pickup,
 			 destination: i?.route?.destination,
-			 partner: i?.vehicle?.partner?.company_name ?? 'N/A',
+			 partner: i?.vehicle?.partner?.company_name ? `${i?.vehicle?.partner?.company_name} (${i?.vehicle?.partner?.company_phone})` : 'N/A',
              vehicle: `${i?.vehicle?.brand} ${i?.vehicle?.name}  (${i?.vehicle?.registration_number})`,
 			 passengers: `${i?.passengers_count}/${i?.vehicle.seats}`,
              action: '',

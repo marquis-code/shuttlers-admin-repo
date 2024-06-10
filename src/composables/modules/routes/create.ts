@@ -79,6 +79,7 @@ const populateRouteData = (data:Record<string, any>) => {
 }
 
 const ploylineLoading = ref(false)
+
 const startPosition = computed(() => {
     if (createRouteForm.start_location.value) {
         return { y: createRouteForm.start_location.value.lat, x: createRouteForm.start_location.value.lng }
@@ -86,13 +87,15 @@ const startPosition = computed(() => {
         return null
     }
 })
+
 const endPosition = computed(() => {
-    if (createRouteForm.start_location.value) {
+    if (createRouteForm.end_location.value) {
         return { y: createRouteForm.end_location.value.lat, x: createRouteForm.end_location.value.lng }
     } else {
         return null
     }
 })
+
 const waypoints = computed(() => {
     if (createRouteForm.waypoints.value.length > 0) {
         return createRouteForm.waypoints.value.map((i) => {
@@ -102,31 +105,56 @@ const waypoints = computed(() => {
             return null
         }).filter((i) => i !== null)
     } else {
-        return null
+        return []
     }
 })
+
+// Refs to store previous coordinates
+const prevStartPosition = ref({ x: null, y: null })
+const prevEndPosition = ref({ x: null, y: null })
+const prevWaypointsLength = ref(0)
 
 const polyline = computed(async () => {
     if (startPosition.value?.x && endPosition.value?.x) {
-        const sent_data = {
-            endPoint: `${endPosition.value.y} ${endPosition.value.x}`,
-            startPoint: `${startPosition.value.y} ${startPosition.value.x}`
-        } as Record<string, any>
-        if (waypoints.value && waypoints.value.length > 0) {
-            sent_data.waypoints = waypoints.value
-        }
-        ploylineLoading.value = true
-        const res = (await routes_api.$_get_route_direction(sent_data)) as CustomAxiosResponse
-        if (res.type !== 'ERROR' && res.data.data?.routes[0]?.overview_polyline) {
-            ploylineLoading.value = false
-            createRouteForm.overview_geojson.value = res.data.data.routes[0].overview_geojson
-            createRouteForm.bounds.value = res.data.data.routes[0].bounds
-            return JSON.stringify(res.data.data.routes[0].overview_polyline)
-        }
+        // Check if coordinates are different from previous ones
+        if (
+            startPosition.value.x !== prevStartPosition.value.x ||
+            startPosition.value.y !== prevStartPosition.value.y ||
+            endPosition.value.x !== prevEndPosition.value.x ||
+            endPosition.value.y !== prevEndPosition.value.y || waypoints.value.length !== prevWaypointsLength.value
+        ) {
+            const sent_data = {
+                endPoint: `${endPosition.value.y} ${endPosition.value.x}`,
+                startPoint: `${startPosition.value.y} ${startPosition.value.x}`
+            } as Record<string, any>
+            if (waypoints.value && waypoints.value.length > 0) {
+                sent_data.waypoints = waypoints.value
+            }
+            prevWaypointsLength.value = waypoints.value.length
+            ploylineLoading.value = true
+            const res = (await routes_api.$_get_route_direction(sent_data)) as CustomAxiosResponse
+            if (res.type !== 'ERROR' && res.data.data?.routes[0]?.overview_polyline) {
+                ploylineLoading.value = false
+                createRouteForm.overview_geojson.value = res.data.data.routes[0].overview_geojson
+                createRouteForm.bounds.value = res.data.data.routes[0].bounds
 
-        return null
+                // Update previous coordinates
+                prevStartPosition.value = { ...startPosition.value }
+                prevEndPosition.value = { ...endPosition.value }
+
+                return JSON.stringify(res.data.data.routes[0].overview_polyline)
+            }
+
+            // Update previous coordinates even if API call fails or returns no route
+            prevStartPosition.value = { ...startPosition.value }
+            prevEndPosition.value = { ...endPosition.value }
+
+            return null
+        }
     }
+    return null
 })
+
 const fetchingRoute = ref(false)
 const loading = ref(false)
 

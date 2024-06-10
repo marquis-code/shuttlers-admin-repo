@@ -9,5 +9,9 @@ export const promotions_api = {
 	$_get_promotions_by_id: (id:string) => {
 		const url = `/promo-codes/${id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
+	},
+	$_delete_promotions_by_id: (id:string) => {
+		const url = `/promo-codes/${id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
 	}
 }
