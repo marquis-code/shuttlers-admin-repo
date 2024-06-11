@@ -78,7 +78,9 @@ const events = ref([
             'Accident',
             'Users no show',
             'Apprehension',
-            'Pilot No show'
+			'Pilot No show',
+			'Public Holidays',
+			'Based on client’s request'
         ])
 
 </script>

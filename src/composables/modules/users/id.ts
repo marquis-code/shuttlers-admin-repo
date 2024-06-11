@@ -99,8 +99,7 @@ export const useUserBookings = () => {
 export const useGetBusCaptainRoutes = () => {
     const loading = ref(false)
      const busCaptainRoutes = ref([] as any)
-    const getBusCaptainRoutesById = async (id) => {
-        // selectedUserId.value = id
+    const getBusCaptainRoutesById = async (id: string|null = null) => {
         loading.value = true
         const res = await users_api.$_load_bus_captain_routes(id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {

@@ -60,7 +60,9 @@ const onSelectDates = (date:string) => {
             'Shuttle No Show',
             'User Left Behind',
             'AC Compensation',
-            'Wrong Booking'
+			'Wrong Booking',
+			'Shift Change',
+			'Route Change'
         ])
 
 fetchBookedDays()
