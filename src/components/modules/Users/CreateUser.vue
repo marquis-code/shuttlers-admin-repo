@@ -28,8 +28,14 @@
 
 					<div class="field relative">
 						<label for="Phone">Phone</label>
-						<input id="Phone" v-model="createForm.phone.value" name="phone" type="tel" class="input-field"
-							required>
+
+						<input id="Phone" v-model="createForm.phone.value" type="text" name="" class="input-field" required
+							pattern="^(07|08|09)[0-9]{9}$"
+							oninvalid="this.setCustomValidity('Please enter a valid 11-digit Nigerian phone number')"
+							oninput="this.setCustomValidity('')"
+							:maxlength="13"
+							:minlength="10"
+						>
 					</div>
 				</div>
 				<div class="grid lg:grid-cols-2 gap-8">
