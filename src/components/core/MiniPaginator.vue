@@ -44,8 +44,14 @@
   <script>
   export default {
     props: {
-      currentPage: Number,
-      totalPages: Number
+		  currentPage: {
+			type: Number,
+		required: true
+	  },
+		totalPages: {
+	type: Number,
+		required: true
+	  }
     },
     methods: {
       goToPage(page) {

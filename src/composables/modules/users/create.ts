@@ -1,6 +1,6 @@
 import { users_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { convertObjWithRefToObj, convertToCurrency } from '@/composables/utils/formatter'
+import { convertObjWithRefToObj, convertToCurrency, isValidEmail } from '@/composables/utils/formatter'
 import { useConfirmationModal } from '@/composables/core/confirmation'
 import { useUserModal } from '@/composables/core/modals'
 import { useUserIdDetails, useGetBusCaptainRoutes } from '@/composables/modules/users/id'
@@ -40,6 +40,10 @@ export const useCreateUsers = () => {
 	const loading = ref(false)
 
 	const createUser = async () => {
+				if (!isValidEmail(createForm.email.value)) {
+			useAlert().openAlert({ type: 'ERROR', msg: 'invalid email' })
+			return
+		}
 		loading.value = true
 		const payload = convertObjWithRefToObj(createForm)
 		if (!payload?.corporate_id && payload.hasOwnProperty('corporate_id')) {
