@@ -31,7 +31,7 @@
 					<option value="">
 						Select Event
 					</option>
-					<option v-for="event in events" :key="event" :value="event">
+					<option v-for="event in cancellation_reason_events" :key="event" :value="event">
 						{{ event }}
 					</option>
 				</select>
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { usePasswordConfirmationModal } from '@/composables/core/confirmation'
+import { cancellation_reason_events } from '@/composables/utils/businesLogic'
 
 const { call_function, closeAlert, description, title, loading, type, password, reason } = usePasswordConfirmationModal()
 
@@ -67,21 +68,6 @@ const buttonStyle = computed(() => {
 	if (type.value === 'DANGER') return 'border-red bg-[#fda29bb0] text-[#B01C23]'
 	if (type.value === 'NORMAL') return 'border-dark bg-black text-light'
 })
-
-const events = ref([
-            'No Supply',
-            'Zero bookings',
-            'Pilot Unavailable',
-            'Bookings below 30%',
-            'Route Merging',
-            'Vehicle issues',
-            'Accident',
-            'Users no show',
-            'Apprehension',
-			'Pilot No show',
-			'Public Holidays',
-			'Based on client’s request'
-        ])
 
 </script>
 
