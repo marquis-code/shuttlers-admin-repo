@@ -11,7 +11,7 @@
 						<option value="">
 							Select Event
 						</option>
-						<option v-for="event in events" :key="event" :value="event">
+						<option v-for="event in cancellation_reason_events" :key="event" :value="event">
 							{{ event }}
 						</option>
 					</select>
@@ -121,6 +121,7 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { useTransferBookings } from '@/composables/modules/trips'
+import { cancellation_reason_events } from '@/composables/utils/businesLogic'
 
 const { loading, route, itinerary, route_itineraries, reason, for_today, start_date, end_date, pickupLocations, dropoffLocations, computedTableData, transferBooking, enableStepOneBtn, clearObj } = useTransferBookings()
 const onRouteSelected = (val) => {
@@ -135,21 +136,6 @@ const tableFields = ref([
     { text: 'NEW DROPOFF', value: 'new_dropoff' }
 
 ])
-
-const events = ref([
-            'No Supply',
-            'Zero bookings',
-            'Pilot Unavailable',
-            'Bookings below 30%',
-            'Route Merging',
-            'Vehicle issues',
-            'Accident',
-            'Users no show',
-            'Apprehension',
-			'Pilot No show',
-			'Public Holidays',
-			'Based on client’s request'
-        ])
 
 const getVehicleName = (data:Record<string, any>) => {
     return `${data?.vehicle?.brand} ${data?.vehicle?.name} ${data?.vehicle?.registration_number} - ${data?.vehicle?.seats} seater - ${data?.driver?.fname} ${data?.driver?.lname}`
