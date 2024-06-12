@@ -6,7 +6,7 @@
 		<div class="main-content z-50 md:h-[95vh] h-[calc(100vh-80px)] flex flex-col">
 			<Headers id="header" class="" />
 			<section class="px-5  md:p-6 relative bg-transparent overflow-auto h-full">
-				<div class="relative h-full h-">
+				<div class="relative h-full ">
 					<slot />
 				</div>
 			</section>
