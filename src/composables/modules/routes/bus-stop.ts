@@ -88,6 +88,7 @@ export const useRouteBustopMap = () => {
 			open_new_busstop_window.value = false
 			// can_click.value = false
 			getRouteBusstopsById(id)
+			getRouteGeometry(id)
         }
 		adding_busstop.value = false
 	}
@@ -98,6 +99,7 @@ export const useRouteBustopMap = () => {
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'Busstop rearranged successfully' })
 			getRouteBusstopsById(id)
+			getRouteGeometry(id)
         }
 	}
 
