@@ -10,7 +10,7 @@
 					<option value="">
 						Select Event
 					</option>
-					<option v-for="event in events" :key="event" :value="event">
+					<option v-for="event in cancellation_reason_events" :key="event" :value="event">
 						{{ event }}
 					</option>
 				</select>
@@ -36,25 +36,12 @@
 
 <script setup lang="ts">
 import { useCancelTrip } from '@/composables/modules/trips/cancel'
+import { cancellation_reason_events } from '@/composables/utils/businesLogic'
 
 const { loading, clearObj, reason, password, cancelTrip, enableButton } = useCancelTrip()
 const show = ref(false)
 onBeforeUnmount(() => clearObj())
 
-const events = ref([
-            'No Supply',
-            'Zero bookings',
-            'Pilot Unavailable',
-            'Bookings below 30%',
-            'Route Merging',
-            'Vehicle issues',
-            'Accident',
-            'Users no show',
-            'Apprehension',
-			'Pilot No show',
-			'Public Holidays',
-			'Based on client’s request'
-        ])
 </script>
 
 <style scoped>

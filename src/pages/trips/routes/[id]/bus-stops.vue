@@ -1,19 +1,13 @@
 <template>
-	<main class="relative">
-		<ButtonGoBack url="/trips/routes" class="mb-6 mt-3 ml-10" />
-		<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-10 left-[240px] z-40"
-			@click="can_click = !can_click"
-		>
-			{{ can_click ? 'Adding' : 'Add' }} Busstop
-		</button>
-		<section class="w-[220px] h-screen space-y-3 absolute   z-50 bg-gray-100">
+	<main class="relative flex">
+		<section class="w-2/12 min-w-[250px] z-50 bg-gray-100  h-[calc(100vh-144px)] mt-11 overflow-auto">
 			<div class="w-full flex flex-col gap-2 px-1">
 				<input v-model="search" class="border py-3 rounded-md w-full pl-3 text-sm outline-none" placeholder="Filter Bus Stop in route">
 				<button class="btn bg-dark text-light p-2 !rounded-md" @click="isDragDisabled = !isDragDisabled">
 					{{ !isDragDisabled ? 'Disable' : 'Enable' }} Re-order
 				</button>
 			</div>
-			<div v-if="!fetching_busstops" class="h-full overflow-auto bg-white">
+			<div v-if="!fetching_busstops" class="h-auto  overflow-auto bg-white">
 				<draggable v-model="busstopsList" class="dragArea list-group w-full" :disabled="isDragDisabled" @change="onBusStopDragged">
 					<div v-for="(itm, idx) in filteredBusstop" :key="idx" class="flex items-center justify-between px-3 py-3.5 border-b cursor-pointer hover:bg-gray-200"
 						:class="[toShowIndex.includes(itm.id) ? 'bg-dark' : 'bg-transparent']" @click="handleMarkerClicked(itm.id)"
@@ -27,71 +21,78 @@
 			</div>
 			<Skeleton v-else height="500px" />
 		</section>
-		<!-- <MapDisplay height="670px" class="" /> -->
-		<GMapMap v-if="!loading_path" ref="myMapRef" map-type-id="terrain" class="h-screen"
-			:options="{
-				zoomControl: true,
-				mapTypeControl: false,
-				scaleControl: true,
-				streetViewControl: false,
-				rotateControl: false,
-				fullscreenControl: false
-			}"
-			:center="center" :zoom="13" @click="handleMapClick"
-		>
-			<GMapPolyline ref="polyline" :path="path" />
-			<GMapInfoWindow v-if="open_new_busstop_window" :options="infoWindowOptions" :opened="open_new_busstop_window"
-				:position="{
-					lat: new_busstop_position.lat,
-					lng: new_busstop_position.lng
-				}"
-				@closeclick="open_new_busstop_window = false"
+		<section id="Map" class="w-10/12 relative">
+			<button v-if="!loading_path && !fetching_busstops" class="bg-green7 text-white border-2 border-black text-sm px-2 py-1 rounded absolute top-16 left-[20px] z-40"
+				@click="can_click = !can_click"
 			>
-				<div class="flex flex-col gap-2">
-					<p class="text-sm">
-						New bus stop
-					</p>
-					<ModulesRoutesBusstopNewBusStopInMap :position="new_busstop_position" />
-				</div>
-			</GMapInfoWindow>
-			<GMapMarker v-for="(n, index) in busstopsList" :key="index"
-				:position="{
-					lat: n.geometry.y,
-					lng: n.geometry.x,
+				{{ can_click ? 'Adding' : 'Add' }} Busstop
+			</button>
+
+			<GMapMap v-if="!loading_path" ref="myMapRef" map-type-id="terrain" class=" h-[calc(100vh-100px)]"
+				:options="{
+					zoomControl: true,
+					mapTypeControl: false,
+					scaleControl: true,
+					streetViewControl: false,
+					rotateControl: false,
+					fullscreenControl: false
 				}"
-				:clickable="true"
-				@click="handleMarkerClicked(n.id)"
+				:center="center" :zoom="13" @click="handleMapClick"
 			>
-				<GMapInfoWindow v-if="index === 0" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
-					<div>
-						<h4 class="text-base font-bold text-dark">
-							Starting Point
-						</h4>
-						<p class="text-sm mb-2">
-							{{ routeDetails.pickup }}
-						</p>
-						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
-					</div>
-				</GMapInfoWindow>
-				<GMapInfoWindow v-if="index === busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
-					<div>
-						<h4>Ending Point</h4>
-						<p class="text-sm mb-2">
-							{{ routeDetails.destination }}
-						</p>
-						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
-					</div>
-				</GMapInfoWindow>
-				<GMapInfoWindow v-if="index !== 0 && index !== busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
+				<GMapPolyline ref="polyline" :path="path" />
+				<GMapInfoWindow v-if="open_new_busstop_window" :options="infoWindowOptions" :opened="open_new_busstop_window"
+					:position="{
+						lat: new_busstop_position.lat,
+						lng: new_busstop_position.lng
+					}"
+					@closeclick="open_new_busstop_window = false"
+				>
 					<div class="flex flex-col gap-2">
 						<p class="text-sm">
-							{{ n.name }}
+							New bus stop
 						</p>
-						<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
+						<ModulesRoutesBusstopNewBusStopInMap :position="new_busstop_position" />
 					</div>
 				</GMapInfoWindow>
-			</GMapMarker>
-		</GMapMap>
+				<GMapMarker v-for="(n, index) in busstopsList" :key="index"
+					:position="{
+						lat: n.geometry.y,
+						lng: n.geometry.x,
+					}"
+					:clickable="true"
+					@click="handleMarkerClicked(n.id)"
+				>
+					<GMapInfoWindow v-if="index === 0" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
+						<div>
+							<h4 class="text-base font-bold text-dark">
+								Starting Point
+							</h4>
+							<p class="text-sm mb-2">
+								{{ routeDetails.pickup }}
+							</p>
+							<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
+						</div>
+					</GMapInfoWindow>
+					<GMapInfoWindow v-if="index === busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
+						<div>
+							<h4>Ending Point</h4>
+							<p class="text-sm mb-2">
+								{{ routeDetails.destination }}
+							</p>
+							<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" :disable-check-box="true" />
+						</div>
+					</GMapInfoWindow>
+					<GMapInfoWindow v-if="index !== 0 && index !== busstopsList.length - 1" :options="infoWindowOptions" :opened="toShowIndex.includes(n.id)" @closeclick="closeInfoWindow(n.id)">
+						<div class="flex flex-col gap-2">
+							<p class="text-sm">
+								{{ n.name }}
+							</p>
+							<ModulesRoutesBusstopEditBusStopInMap :bus-stop="n" />
+						</div>
+					</GMapInfoWindow>
+				</GMapMarker>
+			</GMapMap>
+		</section>
 	</main>
 </template>
 <script setup lang="ts">
