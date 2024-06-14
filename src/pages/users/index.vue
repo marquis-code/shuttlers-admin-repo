@@ -49,9 +49,9 @@ const { getUsersList, loading, usersList, filterData, onFilterUpdate, moveTo, ne
 
 getUsersList()
 const onRowClicked = (data) => {
-	const { selectedUser } = useUserIdDetails()
+	// const { selectedUser } = useUserIdDetails()
 	useRouter().push(`/users/${data.id}/user-info`)
-	selectedUser.value = data
+	// selectedUser.value = data
 }
 
 definePageMeta({

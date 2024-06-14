@@ -37,11 +37,10 @@
 					</span>
 					<Spinner v-else />
 				</button>
-				<NuxtLink to="/auth/forgot-password"
+				<!-- <NuxtLink to="/auth/forgot-password"
 					class="text-center flex justify-center items-center font-semibold text-gray-500 text-sm">
-					Forgot
-					password?
-				</NuxtLink>
+					Forgot password?
+				</NuxtLink> -->
 			</form>
 		</section>
 	</main>
@@ -56,9 +55,8 @@ import { use_auth_login } from '@/composables/auth/index'
 const { credential, disabled, loading, login, auth_type, sign_in_with_otp } = use_auth_login()
 
 const showPassword = ref(false)
-const toggleShow = () => {
-	showPassword.value = !showPassword.value
-}
+const toggleShow = () => showPassword.value = !showPassword.value
+
 definePageMeta({
 	layout: 'auth',
 	middleware: 'is-not-authenticated'
