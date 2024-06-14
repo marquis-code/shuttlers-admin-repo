@@ -62,7 +62,9 @@ const onSelectDates = (date:string) => {
             'AC Compensation',
 			'Wrong Booking',
 			'Shift Change',
-			'Route Change'
+			'Route Change',
+			'Public Holidays',
+            'Based on client’s request'
         ])
 
 fetchBookedDays()
