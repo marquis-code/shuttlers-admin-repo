@@ -1,5 +1,5 @@
 <template>
-	<label :for="name" class="flex items-center cursor-pointer">
+	<label :for="name" class="flex items-center cursor-pointer m-0">
 		<div id="toggle" class="relative">
 			<input :id="name" type="checkbox" class="sr-only" :value="modelValue" @change="test">
 			<div id="line" class="block bg-[#F9FBFA] border border-[#E5E5EA] w-8 h-[20px] rounded-full line" />

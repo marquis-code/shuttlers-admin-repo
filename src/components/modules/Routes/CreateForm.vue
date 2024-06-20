@@ -81,9 +81,9 @@
 					<label for="private" class="mt-2">Private</label>
 				</div>
 			</div>
-			<div>
+			<div class="flex flex-col w-full">
 				<label>Route Type</label>
-				<div class="flex items-center gap-x-2">
+				<div class="flex items-center gap-x-2 w-full">
 					<input
 						id="shared"
 						v-model="createRouteForm.is_exclusive.value"
@@ -93,7 +93,11 @@
 					>
 					<label for="shared" class="mt-2">Shared</label>
 				</div>
-				<div class="flex items-center gap-x-2">
+				<span v-if="createRouteForm.is_exclusive.value === 'shared'" class="p-2 bg-grey w-full flex justify-between items-center rounded-lg">
+					<span class="text-sm">Allow Zero Booking Shared Trips</span>
+					<ToggleButtonSmall v-model="createRouteForm.is_exclusive.value" label="" />
+				</span>
+				<div class="flex items-center gap-x-2 w-full">
 					<input
 						id="exclusive"
 						v-model="createRouteForm.is_exclusive.value"
@@ -283,7 +287,7 @@ onBeforeUnmount(() => clearCreateForm())
 </script>
 
 <style scoped>
-input{
+input[type='text']{
 	width: 100% !important;
 }
 
