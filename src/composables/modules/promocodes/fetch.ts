@@ -5,7 +5,7 @@ const loadingPromotions = ref(false)
 const promotionsList = ref([] as any)
 
 export const useGetPromotionsList = () => {
-    const { moveTo, metaObject, next, prev } = usePagination()
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_promotions } = promotions_api
 
@@ -19,6 +19,8 @@ export const useGetPromotionsList = () => {
         }
         loadingPromotions.value = false
     }
+
+    setFunction(getPromotionsList)
 
     return { getPromotionsList, loadingPromotions, promotionsList, moveTo, ...metaObject, next, prev }
 }
