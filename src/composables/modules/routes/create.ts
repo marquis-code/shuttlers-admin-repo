@@ -12,6 +12,7 @@ const createRouteForm = {
     desc: ref(''),
     visibility: ref('public') as Ref<'public' | 'private'>,
     is_exclusive: ref('shared') as Ref<'shared' | 'exclusive'>,
+    is_zero_booked_shared_route: ref(false),
     corporate: ref({}) as Ref<Record<string, any>>,
     route_availability: ref('everyday') as Ref<'everyday' | 'selected_days'>,
     avail_start_date: ref(''),
@@ -56,6 +57,7 @@ const populateRouteData = (data:Record<string, any>) => {
     createRouteForm.desc.value = data?.info?.description
     createRouteForm.visibility.value = data?.visibility
     createRouteForm.is_exclusive.value = data?.is_exclusive ? 'exclusive' : 'shared'
+    createRouteForm.is_zero_booked_shared_route.value = data?.is_zero_booked_shared_route === 1
     createRouteForm.corporate.value = data?.corporate?.id ? data?.corporate : null
     createRouteForm.route_availability.value = JSON.parse(data?.route_availability_days).length !== 7 ? 'selected_days' : 'everyday'
     createRouteForm.route_availability_days.value = JSON.parse(data?.route_availability_days)
@@ -181,6 +183,7 @@ export const useCreateRoute = () => {
             },
             visibility: createRouteForm.visibility.value,
             is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
+            is_zero_booked_shared_route: createRouteForm.is_zero_booked_shared_route.value,
             corporate_id: createRouteForm.corporate.value?.id,
             route_availability_end_date: createRouteForm.avail_end_date.value,
             route_availability_start_date: createRouteForm.avail_start_date.value,
@@ -232,6 +235,7 @@ export const useCreateRoute = () => {
             payment_mode: createRouteForm.payment_mode.value,
             owner_type: createRouteForm.route_owner_type.value,
             is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
+            is_zero_booked_shared_route: createRouteForm.is_zero_booked_shared_route.value,
             visibility: createRouteForm.visibility.value,
             route_availability_days: createRouteForm.route_availability_days.value,
             route_code: createRouteForm.route_code.value,

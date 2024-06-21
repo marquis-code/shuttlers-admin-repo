@@ -42,6 +42,7 @@ const routeDetails = computed(() => {
 		{ name: 'Distance', value: selectedRoute?.value?.distance, class: 'text-gray-600', func: () => { } },
 		{ name: 'Trip start time', value: computedTripStartTime.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Duration', value: selectedRoute?.value?.duration, class: 'text-gray-600', func: () => { } },
+		{ name: 'Zero Booking', value: selectedRoute?.value?.is_zero_booked_shared_route === 1 ? 'true' : 'false', class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability', value: selectedRoute?.value?.visibility, class: `text-white px-2 py-1 rounded-md ${selectedRoute?.value?.visibility === 'public' ? 'bg-shuttlersGreen' : 'bg-black'}`, func: () => { } },
 		{ name: 'Business user', value: selectedRoute?.value?.corporate ? selectedRoute?.value?.corporate?.corporate_name : 'Not Available', class: 'text-gray-600', func: () => { } },
 		{ name: 'City', value: selectedRoute?.value?.city ? selectedRoute?.value?.city?.name : '-' }
