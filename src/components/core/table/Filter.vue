@@ -55,10 +55,6 @@ const onDownload = () => {
 	emit('download')
 }
 
-const handleSearch = () => {
-
-}
-
 type FilterKeys = 'type' | 'value'
 const onFilter = (data: Record<FilterKeys, string | string[] | number[]>) => {
 	emit('filter', data)
