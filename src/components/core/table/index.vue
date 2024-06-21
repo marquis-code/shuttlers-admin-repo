@@ -123,6 +123,7 @@ const props = defineProps({
 // watch(() => props.selected, (value: any) => {
 // 	checkedArray.value = value
 // })
+
 watch(() => props.selected?.length, (value: any) => {
 	key.value++
 })
