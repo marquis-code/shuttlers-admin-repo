@@ -2,7 +2,7 @@
 	<main class="">
 		<Table :loading="loadingEventAttendees" :headers="tableFields" :table-data="eventAttendeesList" :option="onRowClicked">
 			<template #header>
-				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true}" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true, showDownloadButton:true}" @filter="onFilterUpdate" @download="downloadAttendees" />
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.user">
@@ -62,7 +62,7 @@ import { getDatesInRange, formatToWeekDay } from '@/composables/utils/old-helper
 
 const { selectedEvent } = useEventIdDetails()
 
-const { getEventAttendeesList, loadingEventAttendees, eventAttendeesList, onFilterUpdate, total, page, next, prev, moveTo } = useGetEventAttendees()
+const { getEventAttendeesList, loadingEventAttendees, eventAttendeesList, onFilterUpdate, total, page, next, prev, moveTo, downloadAttendees } = useGetEventAttendees()
 
 watch(selectedEvent, (val) => {
 	if (val.id) {
