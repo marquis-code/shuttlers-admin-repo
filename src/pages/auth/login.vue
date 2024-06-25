@@ -48,8 +48,6 @@
 
 <script setup lang="ts">
 
-import { ShPhoneInput } from '@shuttlershq/shuttlers-ui'
-
 import { use_auth_login } from '@/composables/auth/index'
 
 const { credential, disabled, loading, login, auth_type, sign_in_with_otp } = use_auth_login()
