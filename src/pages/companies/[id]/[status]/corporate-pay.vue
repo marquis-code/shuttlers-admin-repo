@@ -348,7 +348,7 @@ const clearExemptLimitAndPeriod = () => {
 const saveChanges = () => {
 	const limitType = default_corporate_payment_limit.limit_type.value || 'none'
 
-	const changes = {
+	const changes:Record<string, any> = {
 		book_on_public_routes: !!book_on_public_routes.value,
 		book_on_corporate_routes: !!book_on_corporate_routes.value,
 		staff_can_view_wallet_limit_usage: Boolean(corporatePaySettings.staff_can_view_wallet_limit_usage.value)

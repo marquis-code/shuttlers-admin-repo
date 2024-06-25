@@ -11,7 +11,7 @@ import { useCompaniesModal } from '@/composables/core/modals'
 import { insertScriptTag } from '@/composables/utils/system'
 import { useDownloadReport, exportAsCsv } from '@/composables/utils/csv'
 
-const { loading: downloading } = useDownloadReport()
+const { loading: downloading, download } = useDownloadReport()
 const walletActivationForm = {
   bvn: ref(''),
   provider: ref('')
@@ -96,6 +96,12 @@ export const useCorporateWalletHistory = () => {
     }
   )
 
+  const getAmountFigure = (amount: string) => {
+    const newStr = amount.substring(4)
+    const x = newStr.replace(/,/g, '')
+    return Number(x) || 0
+  }
+
   const downloadWalletHistory = async () => {
     const { selectedCorporate } = useCorporateIdDetails()
     downloading.value = true
@@ -110,14 +116,16 @@ export const useCorporateWalletHistory = () => {
         Date: moment(data?.created_at).format('lll'),
         Description: data?.description || 'N/A',
         Type: data?.direction || 'N/A',
-        Amount: data?.amount_formatted || 'N/A',
-        Balance_before: data?.available_balance_before_formatted || 'N/A',
+        Currency: 'NGN',
+        Amount: getAmountFigure(data?.amount_formatted) || 0,
+        Balance_before: getAmountFigure(data?.available_balance_before_formatted) || 0,
         Status: data.status === 'posted' ? 'Successful' : data?.status
       }
       newArr.push(y)
     }
     if (filterData['filters[start_date]'].value && filterData['filters[end_date]'].value) name.value = `${name.value}-from-${filterData['filters[start_date]'].value}-to-${filterData['filters[end_date]'].value}`
-    exportAsCsv(newArr, name.value)
+    // exportAsCsv(newArr, name.value)
+    download(newArr, name.value)
       }
       downloading.value = false
   }

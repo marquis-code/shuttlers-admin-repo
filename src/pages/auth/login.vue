@@ -20,7 +20,7 @@
 					<input id="email" v-model="credential.email.value" autocomplete="true" type="email"
 						class="input-field" required>
 				</div>
-				<ShPhoneInput v-else v-model="credential.phone.value" />
+				<PhoneInput v-else v-model="credential.phone.value" />
 				<div class="field relative">
 					<label for="password" class="w-full">Password
 						<span class="text-green7 text-xs ml-auto font-normal cursor-pointer"
@@ -47,8 +47,6 @@
 </template>
 
 <script setup lang="ts">
-
-import { ShPhoneInput } from '@shuttlershq/shuttlers-ui'
 
 import { use_auth_login } from '@/composables/auth/index'
 

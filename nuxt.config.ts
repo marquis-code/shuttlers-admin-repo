@@ -50,6 +50,12 @@ export default {
 		cssPath: '@/assets/css/main.css'
 	},
 	vite: {
+		 vue: {
+            script: {
+                defineModel: true,
+                propsDestructure: true
+            }
+        },
 		ssr: {
 			noExternal: ['@googlemaps/js-api-loader']
 		},
