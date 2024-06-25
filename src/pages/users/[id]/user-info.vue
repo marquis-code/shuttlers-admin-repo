@@ -23,13 +23,14 @@ const { corporateWalletInfo, loading: loadingUserWallet, getUserCorporateWalletL
 const { corporateWalletDetails, loading: loadingUserCorporateWalletInfo, getCorporateWalletObject } = useCorporateWalletDetails()
 const id = Number(useRoute().params.id)
 
-watch(selectedUser, (val) => {
+watch(() => useRoute().params.id as string, async (val) => {
 	if (val) {
-		const corporate_id = val.corporate_id
-		getBusCaptainRoutesById(val.id)
+		await getUserById(val.id)
+		const corporate_id = selectedUser.value.corporate_id
+		getBusCaptainRoutesById(selectedUser.value.id)
 		if (corporate_id) {
 		getCorporateWalletObject(corporate_id)
-        getUserCorporateWalletLimitUsageInfo(val.id)
+        getUserCorporateWalletLimitUsageInfo(selectedUser.value.id)
 	}
 	}
 }, { immediate: true })
