@@ -20,7 +20,7 @@
 					<input id="email" v-model="credential.email.value" autocomplete="true" type="email"
 						class="input-field" required>
 				</div>
-				<ShPhoneInput v-else v-model="credential.phone.value" />
+				<PhoneInput v-else v-model="credential.phone.value" />
 				<div class="field relative">
 					<label for="password" class="w-full">Password
 						<span class="text-green7 text-xs ml-auto font-normal cursor-pointer"
