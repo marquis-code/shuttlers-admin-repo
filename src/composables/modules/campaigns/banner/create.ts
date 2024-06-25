@@ -29,9 +29,8 @@ export const useCreateBanner = () => {
             location: null,
             title: createBannerObj.title.value,
             image_url: createBannerObj.image.value,
-            action_type: createBannerObj.banner_cta.value,
-            action_value: ''
-        }
+            action_type: createBannerObj.banner_cta.value
+        } as any
         if (createBannerObj.banner_cta.value === 'open_link') {
             payload.action_value = createBannerObj.link.value
         }
