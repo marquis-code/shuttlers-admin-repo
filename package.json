@@ -51,7 +51,7 @@
 		"@googlemaps/js-api-loader": "^1.15.1",
 		"@headlessui/vue": "^1.7.16",
 		"@heroicons/vue": "^2.0.18",
-		"@shuttlershq/shuttlers-ui": "^0.0.14",
+
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.6",
 		"@types/papaparse": "^5.3.11",
@@ -73,6 +73,7 @@
 		"papaparse": "5.3.2",
 		"postcss-custom-properties": "^12.1.11",
 		"quill-blot-formatter": "^1.0.5",
+		"radix-vue": "^1.8.5",
 		"socket.io": "^4.7.2",
 		"socket.io-client": "^4.7.2",
 		"uuid": "^9.0.1",

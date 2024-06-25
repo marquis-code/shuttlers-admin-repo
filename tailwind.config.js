@@ -2,7 +2,6 @@
 
 module.exports = {
     content: [
-	'./node_modules/@shuttlershq/shuttlers-ui/src/stories/atoms/**/*',
 	'./src/components/**/*.{js,vue,ts}',
     './src/layouts/**/*.vue',
 	'./src/pages/**/*.vue'

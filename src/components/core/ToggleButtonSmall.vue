@@ -1,7 +1,7 @@
 <template>
-	<label :for="name" class="flex items-center cursor-pointer">
+	<label :for="name" class="flex items-center cursor-pointer m-0">
 		<div id="toggle" class="relative">
-			<input :id="name" type="checkbox" class="sr-only" :value="modelValue" @change="test">
+			<input :id="name" v-model="model" type="checkbox" class="sr-only">
 			<div id="line" class="block bg-[#F9FBFA] border border-[#E5E5EA] w-8 h-[20px] rounded-full line" />
 			<div id="dot" class="dot absolute left-0 top-0.5 bg-white shadow-mode w-4 h-4 rounded-full transition" />
 		</div>
@@ -13,8 +13,9 @@
 </template>
 
 <script setup lang="ts">
+
+const model = defineModel()
 const props = defineProps({
-	modelValue: { type: Boolean, default: false },
 	label: {
 		type: String,
 		default: 'default string'
@@ -25,11 +26,6 @@ const props = defineProps({
 	}
 })
 
-const test = (e: any) => {
-	emit('update:modelValue', e.target.checked)
-}
-
-const emit = defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
