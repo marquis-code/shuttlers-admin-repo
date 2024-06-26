@@ -15,7 +15,7 @@
 
 		<div v-if="!loadingActiveTrips && filteredActiveTripsList.length > 0" class="flex h-full border rounded-2xl ">
 			<ModulesTripsActiveTripTrackingCardList :active-trips-list="filteredActiveTripsList" :can-load-more="showLoadMore" :loading="loadingMoreActiveTrips" @loadMore="loadMore" />
-			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" />
+			<MapDisplay class="w-7/12 !h-full rounded-r-2xl" map-id="33d190257c86f190" />
 		</div>
 	</section>
 

@@ -3,7 +3,7 @@
 		<ModulesRoutesCreateForm v-if="!suggestionLoading" class="md:min-w-[360px] w-4/12" />
 		<Skeleton v-else class="md:min-w-[360px]" />
 
-		<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading || suggestionLoading" :encoded-polyline="polyline" class="w-8/12 rounded-br-xl" height="87vh" />
+		<MapDisplay :start-point="startPosition" :end-point="endPosition" :props-loading="ploylineLoading || suggestionLoading" :encoded-polyline="polyline" class="w-8/12 rounded-br-xl" height="87vh" map-id="DEMO_ID" />
 	</div>
 </template>
 

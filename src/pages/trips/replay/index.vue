@@ -1,7 +1,7 @@
 <template>
 	<main class=" relative">
 		<div class="inset-0 z-0">
-			<MapDisplay height="90vh" :loading="loadingVehicle" :external-markers="[]" />
+			<MapDisplay height="90vh" :loading="loadingVehicle" :external-markers="[]" map-id="DEMO_ID" />
 			<div class="absolute top-8 flex items-center justify-center w-full">
 				<section v-if="!loadingVehicle && vehicleList.length > 0" class="w-10/12 mx-auto flex gap-4 items-end z-40 bg-light p-3 card">
 					<div class="field relative">
