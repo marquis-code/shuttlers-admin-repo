@@ -25,7 +25,7 @@ const id = Number(useRoute().params.id)
 
 watch(() => useRoute().params.id as string, async (val) => {
 	if (val) {
-		await getUserById(val.id)
+		await getUserById(val)
 		const corporate_id = selectedUser.value.corporate_id
 		getBusCaptainRoutesById(selectedUser.value.id)
 		if (corporate_id) {
