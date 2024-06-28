@@ -188,7 +188,7 @@
 				</template>
 			</Table>
 
-			<MapDisplay v-else height="540px" />
+			<MapDisplay v-else height="540px" map-id="DEMO_ID" />
 		</section>
 	</main>
 </template>

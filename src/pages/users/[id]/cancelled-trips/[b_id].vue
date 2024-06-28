@@ -73,7 +73,7 @@
 				<Skeleton v-else height="100px" />
 			</div>
 
-			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" :props-loading="loading" />
+			<MapDisplay :start-point="pastBooking.userRoute.pickupRouteBusStop.geometry" :end-point="pastBooking.userRoute.destinationRouteBusStop.geometry" :props-loading="loading" map-id="DEMO_ID" />
 		</section>
 		<Skeleton v-else height="500px" radius="10px" />
 	</main>
