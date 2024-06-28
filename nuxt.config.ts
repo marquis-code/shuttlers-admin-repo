@@ -7,10 +7,7 @@ export default {
 	app: {
 		head: {
 			title: 'Shuttlers Admin',
-			script: [
-				{ src: 'https://cdn.quilljs.com/1.1.6/quill.js/', async: true }
 
-			],
 			htmlAttrs: { lang: 'en' },
 			meta: [
 				{ charset: 'utf-8' },
