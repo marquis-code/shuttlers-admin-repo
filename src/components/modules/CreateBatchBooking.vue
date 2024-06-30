@@ -120,7 +120,7 @@
 					</div>
 					<div class="">
 						<label for="startDate">End Date</label>
-						<InputDateInput id="startDate" v-model="start_date" class="font-light" placeholder="Filter by date" :disabled-date="()=>null" />
+						<InputDateInput id="startDate" v-model="end_date" class="font-light" placeholder="Filter by date" :disabled-date="()=>null" />
 					</div>
 				</div>
 
@@ -262,7 +262,7 @@ import { useBatchBookTrip } from '@/composables/modules/batchBooking/create'
 import { days_of_the_week } from '@/composables/utils/constant'
 
 const { downloadCsv, downloading } = useCsvDownload()
-const { selectedRoute, itineraries, selectedItinerary, loading, pickup, destination, has_subscription, payment_source, pickupBusstops, dropoff_busstops, start_date, days_ids, has_luggage, luggage_quantity, num_of_weeks, loading_iti, loading_bus_stops, total_fare, total_pay, selectedRoute_charges, batchBookTrip, clearBatchBookTripObj, enableButton, has_return, emails, returnTripItinerary, returnTripLoading } = useBatchBookTrip()
+const { selectedRoute, itineraries, selectedItinerary, loading, pickup, destination, has_subscription, payment_source, pickupBusstops, dropoff_busstops, start_date, end_date, days_ids, has_luggage, luggage_quantity, num_of_weeks, loading_iti, loading_bus_stops, total_fare, total_pay, selectedRoute_charges, batchBookTrip, clearBatchBookTripObj, enableButton, has_return, emails, returnTripItinerary, returnTripLoading } = useBatchBookTrip()
 
 const payment_source_types = reactive([
 	{ value: 'main_balance', name: 'Main Balance' },
