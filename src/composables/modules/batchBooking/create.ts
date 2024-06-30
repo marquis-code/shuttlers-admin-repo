@@ -7,6 +7,7 @@ const batchBookTripObj = {
     pickup: ref({}) as Ref<Record<string, any>>,
     destination: ref({}) as Ref<Record<string, any>>,
     start_date: ref(''),
+    end_date: ref(''),
     emails: ref([]) as Ref<string[]>,
     selectedItinerary: ref({}) as Ref<Record<string, any>>,
     has_luggage: ref(false),
@@ -154,16 +155,6 @@ const getReturnTripDetails = async (itinerary_id: number) => {
     returnTripLoading.value = false
 }
 
-const endDate = computed(() => {
-    if (batchBookTripObj.has_subscription.value && batchBookTripObj.num_of_weeks.value) {
-      const _date = addWeeks(batchBookTripObj.start_date.value, batchBookTripObj.num_of_weeks.value)
-    //   return useDateFormat(subDays(_date, 1), 'YYYY-MM-DD').value
-      return moment(subDays(_date, 1)).format('YYYY-MM-DD')
-    }
-
-    return batchBookTripObj.start_date.value
-})
-
 watch(batchBookTripObj.selectedRoute, () => {
     itineraries.value = []
     bus_stops.value = []
@@ -221,7 +212,7 @@ export const useBatchBookTrip = () => {
             days_ids: batchBookTripObj.has_subscription.value ? batchBookTripObj.days_ids.value : [(new Date(batchBookTripObj.start_date.value).getDay()) + 1],
             meta: JSON.stringify(batchBookTripObj.selectedRoute.value),
             start_date: batchBookTripObj?.start_date.value,
-            end_date: endDate.value,
+            end_date: batchBookTripObj?.end_date.value,
             recurring: batchBookTripObj?.has_subscription.value ? 1 : 0,
             payment_source: batchBookTripObj?.payment_source.value,
             additional_charges_id: selectedRoute_charges.value.filter((el) => el.selected).map((obj) => obj.id)
