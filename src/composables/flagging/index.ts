@@ -12,17 +12,18 @@ export function useFeatureFlag() {
 
   onMounted(() => {
  unleash = new UnleashClient({
-    url: 'https://unleash.shuttlers.africa/api/',
+    url: 'https://unleash.shuttlers.africa/',
     clientKey: UNLEASH_KEY,
-    appName: 'shuttlers'
-})
+   appName: 'shuttlers'
+
+ })
 
     unleash.on('synchronized', () => {
       featureFlags.value = unleash.getFeatureToggleDefinitions()
       unleashInitialized.value = true
     })
 
-    unleash.start()
+    // unleash.start()
   })
 
   const getFeatureFlag = (name) => {

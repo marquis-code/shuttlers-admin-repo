@@ -37,7 +37,7 @@
 							</li>
 						</ul>
 					</div>
-					<span>	ell {{ getFeatureFlag('update') }}</span>
+					<!-- <span>	ell {{ getFeatureFlag('update') }}</span> -->
 					<layouts-sidebar-footer
 						:current-user="currentUser"
 						:sign-out-function="signOutFunction"
