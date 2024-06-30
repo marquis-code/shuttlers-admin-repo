@@ -26,8 +26,10 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change'])
 const inStoreLatLng = ref({})
 
+const africanCountries = ['DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CM', 'CV', 'CF', 'TD', 'KM', 'CG', 'CD', 'DJ', 'EG', 'GQ', 'ER', 'SZ', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'CI', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'YT', 'MA', 'MZ', 'NA', 'NE', 'NG', 'RE', 'RW', 'SH', 'ST', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SS', 'SD', 'TZ', 'TG', 'TN', 'UG', 'EH', 'ZM', 'ZW']
+
 const options = {
-     componentRestrictions: { country: ['NG'] },
+     componentRestrictions: { country: africanCountries },
     fields: ['address_components', 'geometry', 'name']
 }
 const autocompleteInput = ref(null)
