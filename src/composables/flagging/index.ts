@@ -4,11 +4,11 @@ import { UnleashClient } from 'unleash-proxy-client'
 
 const UNLEASH_KEY = import.meta.env.VITE_UNLEASH_KEY as string
 
-export const useFeatureFlag = () => {
   const unleashInitialized = ref(false)
   const featureFlags = ref({})
-  let unleash
+let unleash
 
+export const useFeatureFlag = () => {
 const initializeUnleash = () => {
     return new Promise((resolve, reject) => {
       try {

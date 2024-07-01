@@ -1,6 +1,5 @@
 import { useFeatureFlag } from '@/composables/flagging'
 
-const { getFeatureFlag, initializeUnleash } = useFeatureFlag()
+const { getFeatureFlag } = useFeatureFlag()
 
-await initializeUnleash()
-export const ZeroBookingFlag = getFeatureFlag('ZeroBookingSharedRouteWeb')
+export const ZeroBookingFlag = () => getFeatureFlag('ZeroBookingSharedRouteWeb')
