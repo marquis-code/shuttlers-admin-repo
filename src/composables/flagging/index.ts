@@ -4,7 +4,6 @@ import { UnleashClient } from 'unleash-proxy-client'
 
 const UNLEASH_KEY = import.meta.env.VITE_UNLEASH_KEY as string
 
-console.log(UNLEASH_KEY)
 export const useFeatureFlag = () => {
   const unleashInitialized = ref(false)
   const featureFlags = ref({})
