@@ -10,33 +10,44 @@ export const useFeatureFlag = () => {
   const featureFlags = ref({})
   let unleash
 
-  onMounted(() => {
- unleash = new UnleashClient({
-    url: 'https://unleash.shuttlers.africa/api/frontend',
-    clientKey: UNLEASH_KEY,
-   appName: 'shuttlers'
+const initializeUnleash = () => {
+    return new Promise((resolve, reject) => {
+      try {
+        unleash = new UnleashClient({
+          url: 'https://unleash.shuttlers.africa/api/frontend',
+          clientKey: UNLEASH_KEY,
+          appName: 'shuttlers-admin'
+        })
 
- })
+        unleash.on('ready', () => {
+          unleashInitialized.value = true
+          resolve(true)
+        })
 
-    unleash.on('synchronized', () => {
-      featureFlags.value = unleash.getFeatureToggleDefinitions()
-      unleashInitialized.value = true
+        unleash.start()
+      } catch (error) {
+        reject(error)
+      }
     })
+  }
 
-    unleash.start()
-  })
-
-  const getFeatureFlag = (name) => {
-    if (!unleashInitialized.value) {
-      console.warn('Unleash is not initialized yet')
-      return null
+ const getFeatureFlag = (name, retryInterval = 1000, maxRetries = 50) => {
+    const tryGetFeatureFlag = (retries) => {
+      if (unleashInitialized.value) {
+        return unleash.isEnabled(name)
+      }
+      if (retries <= 0) {
+        console.warn('Unleash is not initialized yet, and max retries reached')
+        return null
+      }
+      console.warn('Unleash is not initialized yet, retrying...')
+      setTimeout(() => tryGetFeatureFlag(retries - 1), retryInterval)
     }
-    console.log(name)
-    console.log(unleash.isEnabled(name))
-    return unleash.isEnabled(name)
+
+    return tryGetFeatureFlag(maxRetries)
   }
 
   return {
-    getFeatureFlag
+    getFeatureFlag, initializeUnleash
   }
 }

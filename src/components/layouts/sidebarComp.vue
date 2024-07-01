@@ -37,7 +37,6 @@
 							</li>
 						</ul>
 					</div>
-					<span>	ell {{ getFeatureFlag('newUpcomingTripEndpoing') }}</span>
 					<layouts-sidebar-footer
 						:current-user="currentUser"
 						:sign-out-function="signOutFunction"
@@ -86,9 +85,6 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import SidebarMenu from './SidebarMenuItem.vue'
 import routeIcon from '@/assets/icons/src/compass.vue'
 import { currentRouteObject, showPrimaryMenuRef, showSidebarOnMobile, parentOfTheCurrentRouteChildren } from '@/utils/sidebar_controls'
-import { useFeatureFlag } from '@/composables/flagging'
-
-const { getFeatureFlag } = useFeatureFlag()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const largerThanMd = breakpoints.greater('md')
