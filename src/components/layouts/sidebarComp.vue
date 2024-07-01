@@ -84,7 +84,6 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import SidebarMenu from './SidebarMenuItem.vue'
 import routeIcon from '@/assets/icons/src/compass.vue'
-import { isProdEnv, shouldNotRedirectToExternalUrl } from '@/composables/utils/system'
 import { currentRouteObject, showPrimaryMenuRef, showSidebarOnMobile, parentOfTheCurrentRouteChildren } from '@/utils/sidebar_controls'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
