@@ -1,5 +1,6 @@
 import { GATEWAY_ENDPOINT_WITH_AUTH, $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API } from '@/api_factory/axios.config'
 import { TMetaObject, useTableFilter } from '@/composables/utils/table'
+import { ZeroBookingFlag } from '@/composables/flagging/flags'
 
 export const trips_api = {
 	$_get_graph: () => {
@@ -37,8 +38,10 @@ export const trips_api = {
 	},
 	$_get_upcoming_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
-		// const url = `/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
-		const url = `/tripsV2/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const old_url = `/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const new_url = `/tripsV2/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+console.log(ZeroBookingFlag)
+		const url = ZeroBookingFlag ? new_url : old_url
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_cancelled_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {

@@ -1,6 +1,7 @@
 import { routes_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { days_of_the_week } from '@/composables/utils/constant'
+import { ZeroBookingFlag } from '@/composables/flagging/flags'
 
 const createRouteForm = {
     start_location: ref({} as Record<string, any>),
@@ -183,7 +184,6 @@ export const useCreateRoute = () => {
             },
             visibility: createRouteForm.visibility.value,
             is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
-            is_zero_booked_shared_route: createRouteForm.is_zero_booked_shared_route.value,
             corporate_id: createRouteForm.corporate.value?.id,
             route_availability_end_date: createRouteForm.avail_end_date.value,
             route_availability_start_date: createRouteForm.avail_start_date.value,
@@ -199,6 +199,9 @@ export const useCreateRoute = () => {
             ]
 
         } as Record<string, any>
+        if (ZeroBookingFlag) {
+            payload.is_zero_booked_shared_route = createRouteForm.is_zero_booked_shared_route.value
+        }
         if (createRouteForm.waypoints.value.length > 0) {
             payload.waypoints = createRouteForm.waypoints.value
         }
@@ -235,7 +238,7 @@ export const useCreateRoute = () => {
             payment_mode: createRouteForm.payment_mode.value,
             owner_type: createRouteForm.route_owner_type.value,
             is_exclusive: createRouteForm.is_exclusive.value === 'exclusive' ? 1 : 0,
-            is_zero_booked_shared_route: createRouteForm.is_zero_booked_shared_route.value,
+
             visibility: createRouteForm.visibility.value,
             route_availability_days: createRouteForm.route_availability_days.value,
             route_code: createRouteForm.route_code.value,
@@ -258,6 +261,10 @@ export const useCreateRoute = () => {
             pickup: createRouteForm.start_location.value.name,
             route_preview: JSON.parse(createRouteForm.overview_geojson.value),
             bounds: createRouteForm.bounds.value
+        }
+
+        if (ZeroBookingFlag) {
+            payload.is_zero_booked_shared_route = createRouteForm.is_zero_booked_shared_route.value
         }
         if (createRouteForm.route_owner_type.value !== 'system') {
             payload.owner_id = createRouteForm.route_owner.value?.id || null

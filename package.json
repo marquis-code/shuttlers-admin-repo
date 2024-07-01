@@ -75,6 +75,8 @@
 		"radix-vue": "^1.8.5",
 		"socket.io": "^4.7.2",
 		"socket.io-client": "^4.7.2",
+		"unleash-client": "^5.5.5",
+		"unleash-proxy-client": "^3.5.1",
 		"uuid": "^9.0.1",
 		"vue-advanced-cropper": "^2.8.8",
 		"vue-chartjs": "^5.2.0",
