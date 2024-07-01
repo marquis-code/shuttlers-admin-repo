@@ -1,18 +1,18 @@
 // composables/useFeatureFlag.js
 
-import { ref, onMounted } from 'vue'
 import { UnleashClient } from 'unleash-proxy-client'
 
 const UNLEASH_KEY = import.meta.env.VITE_UNLEASH_KEY as string
 
-export function useFeatureFlag() {
+console.log(UNLEASH_KEY)
+export const useFeatureFlag = () => {
   const unleashInitialized = ref(false)
   const featureFlags = ref({})
   let unleash
 
   onMounted(() => {
  unleash = new UnleashClient({
-    url: 'https://unleash.shuttlers.africa/',
+    url: 'https://unleash.shuttlers.africa/api/frontend',
     clientKey: UNLEASH_KEY,
    appName: 'shuttlers'
 
@@ -23,7 +23,7 @@ export function useFeatureFlag() {
       unleashInitialized.value = true
     })
 
-    // unleash.start()
+    unleash.start()
   })
 
   const getFeatureFlag = (name) => {
