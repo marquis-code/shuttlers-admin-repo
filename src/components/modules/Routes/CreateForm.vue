@@ -93,7 +93,7 @@
 					>
 					<label for="shared" class="mt-2">Shared</label>
 				</div>
-				<span v-if="createRouteForm.is_exclusive.value === 'shared' && ZeroBookingFlag" class="p-2 bg-grey w-full flex justify-between items-center rounded-lg">
+				<span v-if="createRouteForm.is_exclusive.value === 'shared' && ZeroBookingFlag()" class="p-2 bg-grey w-full flex justify-between items-center rounded-lg">
 					<span class="text-sm">Allow Zero Booking Shared Trips</span>
 					<ToggleButtonSmall v-model="createRouteForm.is_zero_booked_shared_route.value" label="" name="zero_booking" />
 				</span>
