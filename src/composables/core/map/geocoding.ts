@@ -13,7 +13,6 @@ export const useReverseGeoocoding = async () => {
             address.value = 'Unable to geocode. Please try again later.'
         }
     } catch (error) {
-        console.error('Error:', error)
         address.value = 'Unable to fetch data. Please try again later.'
     }
     }
