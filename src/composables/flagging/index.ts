@@ -36,10 +36,8 @@ const initializeUnleash = () => {
         return unleash.isEnabled(name)
       }
       if (retries <= 0) {
-        console.warn('Unleash is not initialized yet, and max retries reached')
         return null
       }
-      console.warn('Unleash is not initialized yet, retrying...')
       setTimeout(() => tryGetFeatureFlag(retries - 1), retryInterval)
     }
 
