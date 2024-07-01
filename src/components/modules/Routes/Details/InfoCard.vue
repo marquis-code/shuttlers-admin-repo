@@ -49,7 +49,7 @@ const routeDetails = computed(() => {
 		{ name: 'City', value: selectedRoute?.value?.city ? selectedRoute?.value?.city?.name : '-' }
 	]
 
-	if (ZeroBookingFlag) {
+	if (ZeroBookingFlag()) {
 		res.push({ name: 'Zero Booking', value: selectedRoute?.value?.is_zero_booked_shared_route === 1 ? 'true' : 'false', class: 'text-gray-600', func: () => { } })
 	}
 	return res

@@ -199,7 +199,7 @@ export const useCreateRoute = () => {
             ]
 
         } as Record<string, any>
-        if (ZeroBookingFlag) {
+        if (ZeroBookingFlag()) {
             payload.is_zero_booked_shared_route = createRouteForm.is_zero_booked_shared_route.value
         }
         if (createRouteForm.waypoints.value.length > 0) {
@@ -263,7 +263,7 @@ export const useCreateRoute = () => {
             bounds: createRouteForm.bounds.value
         }
 
-        if (ZeroBookingFlag) {
+        if (ZeroBookingFlag()) {
             payload.is_zero_booked_shared_route = createRouteForm.is_zero_booked_shared_route.value
         }
         if (createRouteForm.route_owner_type.value !== 'system') {
