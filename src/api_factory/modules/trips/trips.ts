@@ -40,7 +40,6 @@ export const trips_api = {
 		const queryParams = useTableFilter(filterData)
 		const old_url = `/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		const new_url = `/tripsV2/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
-console.log(ZeroBookingFlag)
 		const url = ZeroBookingFlag ? new_url : old_url
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
