@@ -23,11 +23,12 @@
 import { useAlert } from '@/composables/core/notification'
 import { useRouteIdDetails, useTripStartTimeById } from '@/composables/modules/routes/id'
 import { customer_web_app_url } from '@/composables/utils/system'
+import { ZeroBookingFlag } from '@/composables/flagging/flags'
 
 const { loadingRouteItineraries, getTripStartTimeById, itineraries } = useTripStartTimeById()
 const { selectedRoute, loadingRouteDetails: loading, getRouteById } = useRouteIdDetails()
 const routeDetails = computed(() => {
-	return [
+	 const res = [
 		{ name: 'Status', value: selectedRoute.value.status === 1 ? 'Active' : 'Inactive', class: `text-white text-xs px-2 py-1 rounded-md ${selectedRoute.value.status === 1 ? 'bg-shuttlersGreen' : 'bg-rose-500'}`, func: () => { } },
 		{ name: 'Route Code', value: selectedRoute.value.route_code, class: 'text-gray-600', func: () => { } },
 		{ name: 'Route Description', value: selectedRoute?.value?.info?.description || 'Not Available', class: 'text-gray-600', func: () => { } },
@@ -42,11 +43,16 @@ const routeDetails = computed(() => {
 		{ name: 'Distance', value: selectedRoute?.value?.distance, class: 'text-gray-600', func: () => { } },
 		{ name: 'Trip start time', value: computedTripStartTime.value, class: 'text-gray-600', func: () => { } },
 		{ name: 'Duration', value: selectedRoute?.value?.duration, class: 'text-gray-600', func: () => { } },
-		{ name: 'Zero Booking', value: selectedRoute?.value?.is_zero_booked_shared_route === 1 ? 'true' : 'false', class: 'text-gray-600', func: () => { } },
+		// { name: 'Zero Booking', value: selectedRoute?.value?.is_zero_booked_shared_route === 1 ? 'true' : 'false', class: 'text-gray-600', func: () => { } },
 		{ name: 'Availability', value: selectedRoute?.value?.visibility, class: `text-white px-2 py-1 rounded-md ${selectedRoute?.value?.visibility === 'public' ? 'bg-shuttlersGreen' : 'bg-black'}`, func: () => { } },
 		{ name: 'Business user', value: selectedRoute?.value?.corporate ? selectedRoute?.value?.corporate?.corporate_name : 'Not Available', class: 'text-gray-600', func: () => { } },
 		{ name: 'City', value: selectedRoute?.value?.city ? selectedRoute?.value?.city?.name : '-' }
 	]
+
+	if (ZeroBookingFlag) {
+		res.push({ name: 'Zero Booking', value: selectedRoute?.value?.is_zero_booked_shared_route === 1 ? 'true' : 'false', class: 'text-gray-600', func: () => { } })
+	}
+	return res
 })
 
 const routeUrl = computed(() => {
