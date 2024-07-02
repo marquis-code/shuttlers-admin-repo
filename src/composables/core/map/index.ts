@@ -1,12 +1,14 @@
 import { Loader } from '@googlemaps/js-api-loader'
 import { Coordinate } from './types'
 
+// import { insertScriptTag } from '../utils/system'
+
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
 
 export const loader = new Loader({
-    apiKey: GOOGLE_MAPS_API_KEY as string,
-    libraries: ['places', 'marker', 'drawing'],
-    version: 'beta'
+	apiKey: GOOGLE_MAPS_API_KEY as string,
+	  libraries: ['places', 'marker', 'drawing'],
+  version: 'beta'
 })
 
 export let map: google.maps.Map
@@ -24,6 +26,7 @@ export const calculateCenterAndZoom = async (
         strokeColor: '#000000',
         strokeWeight: 3,
         strokeOpacity: 1
+
     }
     const directionsService = new DirectionsService()
     const directionsRenderer = new DirectionsRenderer({ polylineOptions })
@@ -54,7 +57,7 @@ export const initMap = async (mapDiv: Ref, mapId:string|null = null) => {
     map = new Map(mapDiv.value as HTMLElement, {
         zoom: 16,
         disableDefaultUI: true,
-        mapId: mapId || '33d190257c86f190',
+        mapId: mapId ?? '33d190257c86f190',
         center: { lat: 6.447809299999999, lng: 3.4723495 }
     })
 }
@@ -68,13 +71,12 @@ export const getPathFromPolyline = async (overviewPolyline) => {
 }
 
 let currentPolyline: google.maps.Polyline | null = null
-let currentStartMarker: google.maps.marker.AdvancedMarkerElement | null = null
-let currentEndMarker: google.maps.marker.AdvancedMarkerElement | null = null
+let currentStartMarker: google.maps.Marker | null = null
+let currentEndMarker: google.maps.Marker | null = null
 
 export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void> => {
     const { Polyline } = (await google.maps.importLibrary('maps')) as typeof google.maps
-    // @ts-ignore
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
+    const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
 
     // Clear existing polyline
     if (currentPolyline) {
@@ -84,11 +86,11 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void
 
     // Clear existing markers
     if (currentStartMarker) {
-        currentStartMarker.map = null
+        currentStartMarker.setMap(null)
         currentStartMarker = null
     }
     if (currentEndMarker) {
-        currentEndMarker.map = null
+        currentEndMarker.setMap(null)
         currentEndMarker = null
     }
 
@@ -105,19 +107,19 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void
     currentPolyline = polyline // Update the reference to the current polyline
 
     // Create a new start marker
-    currentStartMarker = new AdvancedMarkerElement({
+    currentStartMarker = new Marker({
         position: pathLine[0],
-        gmpDraggable: false,
-        title: 'Start',
-        map
+        icon: '/pickup.svg',
+        map,
+        title: 'Start'
     })
 
     // Create a new end marker
-    currentEndMarker = new AdvancedMarkerElement({
+    currentEndMarker = new Marker({
         position: pathLine[pathLine.length - 1],
-        gmpDraggable: false,
-        title: 'End',
-        map
+        icon: '/dropoff.svg',
+        map,
+        title: 'End'
     })
 
     // Fit map to polyline
@@ -126,13 +128,13 @@ export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void
     map.fitBounds(bounds)
 }
 
-let busStopMarkers: google.maps.marker.AdvancedMarkerElement[] = []
+let busStopMarkers: google.maps.Marker[] = []
 let infoWindow: google.maps.InfoWindow
 
 export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> => {
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
-    busStopMarkers.forEach((marker) => marker.map = null)
+    busStopMarkers.forEach((marker) => marker.setMap(null))
     busStopMarkers = []
 
     if (!infoWindow) {
@@ -142,13 +144,14 @@ export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> 
     }
 
     stops.forEach((stop) => {
-        const marker = new AdvancedMarkerElement({
+        const marker = new Marker({
             position: { lat: stop.geometry.y, lng: stop.geometry.x },
-            title: stop.name,
-            map
+            icon: '/busstop.svg',
+            map,
+            title: stop.name
         })
 
-        marker.addListener('click', () => {
+         marker.addListener('click', () => {
             infoWindow.setContent(`<div style="min-width: 150px; text-align: center;">${stop.name}</div>`)
             infoWindow.open({
                 anchor: marker,
@@ -157,18 +160,18 @@ export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> 
             })
         })
 
-        busStopMarkers.push(marker)
+         busStopMarkers.push(marker)
     })
 }
 
 export const addPointOnMap = async (location: Coordinate) => {
     if (!map) return
     if (!location.lat) return
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
 
-    const marker = new AdvancedMarkerElement({
-        position: location,
-        map
+    const marker = new Marker({
+        map,
+        position: location
     })
-    map.setCenter(location)
+      map.setCenter(location)
 }
