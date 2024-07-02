@@ -1,22 +1,25 @@
 import axios, { AxiosResponse } from 'axios'
 import { useAlert } from '@/composables/core/notification'
 import { useUser } from '@/composables/auth/user'
+import { NewEarningsFlag } from '@/composables/flagging/flags'
 
 const { token, logOut } = useUser()
 
 const $GATEWAY_ENDPOINT_WITHOUT_VERSION = import.meta.env.VITE_BASE_URL as string
 const $GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/v1'
 const $AUDIT_GATEWAY_ENDPOINT = import.meta.env.VITE_BASE_URL + '/audit/v1'
-const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + '/partner-payout/v1'
+const $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE = import.meta.env.VITE_BASE_URL + `${NewEarningsFlag() ? '/partner-payout/v1' : '/cost-revenue/v1'}`
 const $IMAGE_UPLOAD_ENDPOINT = import.meta.env.VITE_IMAGE_UPLOAD_BASE_URL as string
 const $TELEMETRY_ENDPOINT = 'https://api.shuttlers.africa/telemetry'
 
 export const GATEWAY_ENDPOINT = axios.create({
 	baseURL: $GATEWAY_ENDPOINT
 })
+
 export const TELEMETRY_ENDPOINT = axios.create({
 	baseURL: $TELEMETRY_ENDPOINT
 })
+
 export const GATEWAY_ENDPOINT_WITH_AUTH = axios.create({
 	baseURL: $GATEWAY_ENDPOINT,
 	headers: {
