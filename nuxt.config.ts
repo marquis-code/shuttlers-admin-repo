@@ -47,12 +47,12 @@ export default {
 		cssPath: '@/assets/css/main.css'
 	},
 	vite: {
-		 vue: {
-            script: {
-                defineModel: true,
-                propsDestructure: true
-            }
-        },
+		vue: {
+			script: {
+				defineModel: true,
+				propsDestructure: true
+			}
+		},
 		ssr: {
 			noExternal: ['@googlemaps/js-api-loader']
 		},
@@ -74,6 +74,9 @@ export default {
 				'@': fileURLToPath(new URL('./src', import.meta.url)),
 				'@public': fileURLToPath(new URL('./public', import.meta.url))
 			}
+		},
+		build: {
+			target: 'ES2022'
 		}
 	}
 }

@@ -10,7 +10,10 @@ let unleash
 
 export const useFeatureFlag = () => {
 const initializeUnleash = () => {
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+      if (unleashInitialized.value) {
+        resolve(true)
+      }
       try {
         unleash = new UnleashClient({
           url: 'https://unleash.shuttlers.africa/api/frontend',
@@ -31,9 +34,10 @@ const initializeUnleash = () => {
   }
 
  const getFeatureFlag = (name, retryInterval = 1000, maxRetries = 50) => {
-    const tryGetFeatureFlag = (retries) => {
-      if (unleashInitialized.value) {
-        return unleash.isEnabled(name)
+   const tryGetFeatureFlag = (retries) => {
+     if (unleashInitialized.value) {
+       featureFlags.value[name] = unleash.isEnabled(name)
+        return featureFlags.value[name]
       }
       if (retries <= 0) {
         return null
@@ -45,6 +49,6 @@ const initializeUnleash = () => {
   }
 
   return {
-    getFeatureFlag, initializeUnleash
+    getFeatureFlag, initializeUnleash, unleashInitialized
   }
 }
