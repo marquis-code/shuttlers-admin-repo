@@ -21,21 +21,18 @@ const polylineOptions = ref({
   strokeWeight: 2
 })
 
-export const loadstaffBranches = async (branches) => {
-    // @ts-ignore
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
-
+export const loadstaffBranches = (branches) => {
     for (const data of branches) {
         const x = data?.location.y
         const y = data?.location.x
         const dataLocation = { lat: x, lng: y }
-        const infowindow = new google.maps.InfoWindow({
+        const infowindow = new window.google.maps.InfoWindow({
             content: `
           <div class="text-sm font-medium"> ${data?.address} </div>
           `,
             ariaLabel: 'Shuttlers'
         })
-        const marker = new AdvancedMarkerElement({
+        const marker = new window.google.maps.Marker({
             position: dataLocation,
             map,
             icon: office_svg
@@ -49,10 +46,7 @@ export const loadstaffBranches = async (branches) => {
     }
 }
 
-export const loadStaffHomeAddresses = async (staff_data) => {
-  // @ts-ignore
-    const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
-
+export const loadStaffHomeAddresses = (staff_data) => {
     for (const [inx, data] of staff_data.entries()) {
       polyline_markers.value[inx] = []
       if (data?.address?.location) {
@@ -61,7 +55,7 @@ export const loadStaffHomeAddresses = async (staff_data) => {
         const dataLocation = { lat: x, lng: y }
         polyline_markers.value[inx].push(dataLocation)
 
-        const infowindow = new google.maps.InfoWindow({
+        const infowindow = new window.google.maps.InfoWindow({
           content: `
               <div class="flex flex-col items-start"> <span class="text-sm font-medium">Address:</span> <span>${data?.address?.address || 'N/A'}</span> </div>
               <div class="flex flex-col items-start"> <span class="text-sm font-medium">Staff Name:</span> <span>${data?.fname} ${data?.lname}</span> </div>
@@ -70,7 +64,7 @@ export const loadStaffHomeAddresses = async (staff_data) => {
               `,
           ariaLabel: 'Shuttlers'
         })
-        const marker = new AdvancedMarkerElement({
+        const marker = new window.google.maps.Marker({
           position: dataLocation,
           map,
           icon: marker_svg
@@ -89,7 +83,7 @@ export const loadStaffHomeAddresses = async (staff_data) => {
         const y = data?.address?.closestBusstop?.location.x
         const dataLocation = { lat: x, lng: y }
         polyline_markers.value[inx].push(dataLocation)
-        const infowindow = new google.maps.InfoWindow({
+        const infowindow = new window.google.maps.InfoWindow({
           content: `
               <div class="flex flex-col items-start"> <span class="text-sm font-medium">closest bus stop:</span> <span> ${data?.address?.closestBusstop?.address || 'N/A'}</span> </div>
               <div class="flex flex-col items-start"> <span class="text-sm font-medium">Staff Name:</span> <span>${data?.fname} ${data?.lname}</span> </div>
@@ -98,7 +92,7 @@ export const loadStaffHomeAddresses = async (staff_data) => {
               `,
           ariaLabel: 'Shuttlers'
         })
-        const marker = new AdvancedMarkerElement({
+        const marker = new window.google.maps.Marker({
           position: dataLocation,
           map,
           icon: busstop_marker_svg
@@ -113,57 +107,57 @@ export const loadStaffHomeAddresses = async (staff_data) => {
       }
     }
 
-    for (const polyline of polyline_markers.value) {
-      if (polyline.length > 1) {
-        const updatedPolylineOptions = {
-          path: polyline,
-          ...polylineOptions.value
-        }
-        const google_polyline_ref = new google.maps.Polyline(updatedPolylineOptions)
-        polyline_trace_markers.value.push(google_polyline_ref)
+      for (const polyline of polyline_markers.value) {
+    if (polyline.length > 1) {
+      const updatedPolylineOptions = {
+        path: polyline,
+        ...polylineOptions.value
       }
+      const google_polyline_ref = new window.google.maps.Polyline(updatedPolylineOptions)
+      polyline_trace_markers.value.push(google_polyline_ref)
     }
+  }
 
-    setMapOnAll(map)
+  setMapOnAll(map)
 }
 
 const setMapOnAll = (map) => {
   if (markerType.value === 'home') {
     for (const element of home_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of bus_stop_markers.value) {
-      element.map = null
+      element.setMap(null)
     }
     for (const element of polyline_trace_markers.value) {
       element.setMap(null)
     }
   } else if (markerType.value === 'bus_stop') {
     for (const element of bus_stop_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of home_markers.value) {
-      element.map = null
+      element.setMap(null)
     }
     for (const element of polyline_trace_markers.value) {
       element.setMap(null)
     }
   } else if (markerType.value === 'both') {
     for (const element of bus_stop_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of home_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of polyline_trace_markers.value) {
       element.setMap(null)
     }
   } else if (markerType.value === 'both_with_line') {
     for (const element of bus_stop_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of home_markers.value) {
-      element.map = map
+      element.setMap(map)
     }
     for (const element of polyline_trace_markers.value) {
       element.setMap(map)
