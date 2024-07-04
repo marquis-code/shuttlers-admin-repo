@@ -1,7 +1,7 @@
 <template>
 	<Modal
 		modal="$atts.modal"
-		:title="partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct from Revenue' : 'Deduct Payout'"
+		:title="partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct from Revenue' : 'Earnings deduction'"
 		@close="clearObj()"
 	>
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="partnerDeductionObj.isDeductFromRevenue.value ? deductRevenue() : deduct()">
