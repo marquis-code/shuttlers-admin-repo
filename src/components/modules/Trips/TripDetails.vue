@@ -5,7 +5,7 @@
 				:end-point="convertLatLngStringToObj(selectedTrip.route?.destination_coordinate)" :encoded-polyline="selectedTrip.route?.overview_polyline" height="100%" :loading="loading" :external-markers="[]" map-id="DEMO_ID" />
 		</div>
 		<section class="absolute top-4 left-[100px]  flex flex-col items-start z-40">
-			<ButtonGoBack :url="`/trips/type/${tripType}`" class="mb-4 mt-8 " />
+			<ButtonGoBack class="mb-4 mt-8 " />
 			<div class="card p-0 !max-w-4xl md:w-[500px] z-[20] ">
 				<div class="card-header p-4">
 					Trip Information

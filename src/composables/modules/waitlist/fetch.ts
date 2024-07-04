@@ -11,14 +11,9 @@ export const useGetwaitlistList = () => {
     todate: ref('')
   }
 
-  const { $_get_waitlist } = waitlist_api
-
   const getWaitlist = async () => {
     loadingWaitlist.value = true
-    const res = (await $_get_waitlist(
-      metaObject,
-      filterData
-    )) as CustomAxiosResponse
+    const res = (await waitlist_api.$_get_waitlist(metaObject, filterData)) as CustomAxiosResponse
     if (res.type !== 'ERROR') {
       waitlistList.value = res.data.data
       const { pageCount: total_pages } = res.data.metadata
@@ -26,7 +21,7 @@ export const useGetwaitlistList = () => {
     }
     loadingWaitlist.value = false
   }
-  setFunction(waitlistList)
+  setFunction(getWaitlist)
 
   watch([filterData.sort, filterData.fromdate, filterData.todate], (val) => {
     getWaitlist()

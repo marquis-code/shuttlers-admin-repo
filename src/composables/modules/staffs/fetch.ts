@@ -134,7 +134,7 @@ export const useGetAudits = () => {
 
 export const useFeatureFlaggedAudits = () => {
     const loading = ref(false)
-    const featureFlaggedAuditStatus = ref([] as any)
+    const featureFlaggedAuditStatus = ref()
     const { metaObject, moveTo, next, prev } = usePagination()
 
     const getFeatureFlaggedAudits = async () => {
@@ -142,6 +142,7 @@ export const useFeatureFlaggedAudits = () => {
         const res = await staffs_api.$_feature_flag_flagged_audits() as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             featureFlaggedAuditStatus.value = res.data.active
+
             metaObject.total.value = res.data.metadata?.pageCount
         }
         loading.value = false

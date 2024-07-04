@@ -9,7 +9,7 @@
 					</h1>
 					<div v-for="(item, key, index) in bookingRequest" :key="index" class="flex justify-between items-center last:border-b-0 border-b py-5 text-sm">
 						<p>{{ key }}</p>
-						<p :class="[item === 'processed' ? 'bg-green-500 text-white rounded-md text-xs px-3 py-1.5' : null]">
+						<p :class="[item === 'processed' ? 'bg-green text-white rounded-md text-xs px-3 py-1.5' : null]">
 							{{ item }}
 						</p>
 					</div>
@@ -30,7 +30,7 @@
 						</button>
 					</div>
 					<div v-if="selectedBooking?.processing_result && !selectedBooking?.processing_result?.success"
-						class="text-white bg-red-500"
+						class="text-white bg-red"
 					>
 						<p>
 							Encountered error while processing batch booking.
