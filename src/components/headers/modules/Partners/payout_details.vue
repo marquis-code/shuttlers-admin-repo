@@ -27,7 +27,6 @@ import { usePayoutDetails, useApprove, useRetry } from '@/composables/modules/pa
 
 const { loading_partners, partnerInfo, earningInfo } = usePayoutDetails()
 
-console.log(earningInfo)
 const { initDeduct } = useDeductPayout()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initApprove } = useApprove()
