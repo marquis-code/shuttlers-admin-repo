@@ -7,19 +7,7 @@
 					<Icon name="plus" class="w-5" />
 				</button>
 				<div class="flex items-center gap-x-2">
-					<div v-if="!loading">
-						<label for="AcceptConditions" class="relative h-8 w-14 cursor-pointer">
-							<input id="AcceptConditions" v-model="auditStatus" type="checkbox" class="peer sr-only" @change="handleToggle">
-
-							<span
-								class="absolute inset-0 rounded-full bg-gray-300 transition peer-checked:bg-shuttlersGreen"
-							/>
-
-							<span
-								class="absolute inset-y-0 start-0 m-1 h-6 w-6 rounded-full bg-white transition-all peer-checked:start-6"
-							/>
-						</label>
-					</div>
+					<Toggle v-if="!loading" v-model="featureFlaggedAuditStatus" name="auditTrailStaff" @change="handleToggle" />
 					<p v-else class="text-sm">
 						Loading...
 					</p>
@@ -169,10 +157,10 @@ const tableFields = ref([
 	{ value: 'activity', text: 'Activity' }
 ])
 
-const handleToggle = (e:Record<string, any>) => {
+const handleToggle = (e: Record<string, any>) => {
 	const payload = {
 		name: 'get-all-audits',
-		active: e.target.value === 'on'
+		active: featureFlaggedAuditStatus.value
 	}
 	prePopulateFeatureForm(payload)
 	featureFlagAudits()
@@ -188,9 +176,7 @@ getAudits()
 getFeatureFlaggedAudits()
 getAllAdmins()
 getAuditOperationType()
-onMounted(() => {
-	auditStatus.value = featureFlaggedAuditStatus.value
-})
+
 definePageMeta({
 	layout: 'dashboard',
 	middleware: ['is-authenticated']

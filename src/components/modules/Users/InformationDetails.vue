@@ -92,9 +92,18 @@
 				STATUS
 			</p>
 			<p :class="[selectedUser.active === '1' ? 'text-green-500' : 'text-orange-700']" class="text-sm">
-				{{
-					selectedUser.active === '1' ? 'Active' : 'Inactive'
-				}}
+				{{ selectedUser.active === '1' ? 'Active' : 'Inactive' }}
+			</p>
+		</div>
+		<div class="flex justify-between items-center border-b py-4 px-3">
+			<p class="text-gray-500 text-sm">
+				REFFERED BY
+			</p>
+			<nuxt-link v-if="selectedUser.referred_by_id" :to="`/users/${selectedUser.referredBy.id}/user-info`" class="text-sm link">
+				{{ selectedUser.referredBy.id }}
+			</nuxt-link>
+			<p v-else class="text-sm">
+				N/A
 			</p>
 		</div>
 	</section>

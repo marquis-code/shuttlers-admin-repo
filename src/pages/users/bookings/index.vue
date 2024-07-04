@@ -5,6 +5,7 @@
 			<template #header>
 				<TableFilter :filter-type="{showStatus:false}" />
 			</template>
+
 			<template #item="{ item }">
 				<span v-if="item.pickup" class="flex items-center gap-4">
 					<span>{{ item.data.pickup }}</span>
@@ -18,12 +19,11 @@
 				<span v-if="item.userCount" class="flex items-center gap-4">
 					<span>{{ item.data.userCount }}</span>
 				</span>
-				<span v-if="item.status" class="text-white text-xs rounded-lg" :class="[item.data.status === 'processed' ? 'bg-green-500 px-3 py-1' : 'bg-red-500 px-3 py-1']">
-					{{ item.data.status }}
+				<span v-if="item.processing_completed_at" class="text-xs rounded-lg text-white" :class="[item.data.processing_completed_at ? '!bg-green px-3 py-1' : '!bg-red px-3 py-1']">
+					{{ item.data.processing_completed_at ? "processed" : "pending" }}
 				</span>
 				<span v-else-if="item.created_at">
 					{{ moment.utc(item.data.created_at).format('ll, hh:mm:ss A') }}
-					<!-- {{ useDateFormat(item.data.created_at, "MMMM d, YYYY, hh:mm:ss A").value }} -->
 				</span>
 			</template>
 			<template #footer>
@@ -72,7 +72,7 @@ const tableFields = ref([
     },
     {
         text: 'STATUS',
-        value: 'status'
+        value: 'processing_completed_at'
     },
     {
         text: 'CREATED AT',
