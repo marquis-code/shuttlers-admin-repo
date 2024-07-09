@@ -126,7 +126,7 @@
 										{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
 									</p>
 									<p v-if="item.type" class="text-sm whitespace-nowrap">
-										{{ item.data?.tripRevenueId ? 'Revenue' : 'Earning' }} deduction
+										{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 									</p>
 								</template>
 							</Table>
@@ -195,7 +195,7 @@
 							{{ item.data?.isSettled ? 'Settled' : 'Not settled' }}
 						</p>
 						<span v-if="item.action">
-							<ButtonIconDropdown :index="item.index" :children="dropdownChildren" :data="item.data" class-name="w-40" />
+							<ButtonIconDropdown :index="item.index" :children="dropdownChildren(item.data)" :data="item.data" class-name="w-40" />
 						</span>
 					</template>
 
@@ -276,10 +276,10 @@ const revenueFields = ref([
 	{ text: 'Action', value: 'action' }
 ])
 
-const dropdownChildren = computed(() => [
-	{ name: 'Mark as paid', func: (data) => { initMarkRevenueAsPaid(data) } },
+const dropdownChildren = (option) => [
+	{ name: 'Mark as paid', func: (data) => { initMarkRevenueAsPaid(data) }, hide: option.isSettled },
 	{ name: 'Deduct from revenue', func: (data) => { initDeduct(data, true, true) }, class: '!text-red' }
-])
+]
 
 const markMultiple = () => {
 	if (revenues.value.length) {

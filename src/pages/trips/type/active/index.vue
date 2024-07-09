@@ -1,6 +1,5 @@
 <template>
 	<main class="">
-		<ButtonGoBack class="mb-6" />
 		<Table :loading="loadingActiveTrips" :headers="tableFields" :table-data="formattedActiveTripsList" :has-index="true" :has-options="true" :option="(data)=>$router.push(`/trips/type/active/${data.id}/trip-details`)">
 			<template #header>
 				<section class="flex items-center flex-col gap-4 z-50">

@@ -7,7 +7,7 @@
 				<button class="text-sm text-dark p-2 px-4 border border-dark rounded font-medium" @click="deduct()">
 					Deduct from earnings
 				</button>
-				<button class="text-sm text-dark p-2 px-4 border border-dark rounded font-medium" @click="markAsPaid()">
+				<button v-if="earningInfo.status !== 'settled'" class="text-sm text-dark p-2 px-4 border border-dark rounded font-medium" @click="markAsPaid()">
 					Mark as paid
 				</button>
 				<button v-if="canApprove" class="text-sm bg-dark text-light p-2 px-4 rounded font-medium" @click="initApprove()">
@@ -26,6 +26,7 @@ import { useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/p
 import { usePayoutDetails, useApprove, useRetry } from '@/composables/modules/partners/payouts/details'
 
 const { loading_partners, partnerInfo, earningInfo } = usePayoutDetails()
+
 const { initDeduct } = useDeductPayout()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initApprove } = useApprove()
