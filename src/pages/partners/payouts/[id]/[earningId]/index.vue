@@ -126,7 +126,7 @@
 										{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
 									</p>
 									<p v-if="item.type" class="text-sm whitespace-nowrap">
-										{{ item.data?.tripRevenueId ? 'Revenue' : 'Earning' }} deduction
+										{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 									</p>
 								</template>
 							</Table>
