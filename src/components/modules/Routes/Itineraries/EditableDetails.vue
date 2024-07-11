@@ -172,6 +172,56 @@
 				</div>
 			</div>
 		</div>
+
+		<div v-if="itinerary?.id && itinerary?.pricing_type === 'route_price_table_lookup'" class="bg-light border rounded-lg p-4 flex flex-col gap-4">
+			<p class="text-sm text-dark font-medium">
+				Pricing
+			</p>
+
+			<table class="w-full text-left">
+				<thead>
+					<tr class="bg-[#f9fbfd]">
+						<th v-for="n in ['From', 'To', 'Charge', '']" :key="n" class="p-4 text-xs font-medium text-left text-gray-900 uppercase">
+							{{ n }}
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr v-for="price,i in lookupTablePrices" :key="i" class="border-b">
+						<td class="px-2 pb-2">
+							<select v-model="price.start_route_bus_stop_id" class="input-field">
+								<option v-for="n in busStops" :key="n.id" :value="n.id">
+									{{ n.name }}
+								</option>
+							</select>
+						</td>
+						<td class="px-2">
+							<select v-model="price.end_route_bus_stop_id" class="input-field">
+								<option v-for="n in busStopAfterStartPoint(price.start_route_bus_stop_id)" :key="n.id" :value="n.id">
+									{{ n.name }}
+								</option>
+							</select>
+						</td>
+						<td class="px-2">
+							<input v-model.number="price.fare" class="input-field" type="number">
+						</td>
+						<td>
+							<Icon v-if="i" name="close" class="w-5 text-red" @click="removePriceBound(i, price)" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="flex items-center justify-between gap-4">
+				<button class="flex items-center gap-2 text-sm font-medium p-2 border rounded-md" @click="addNewPriceBound()">
+					<Icon name="plus" class="w-4" />
+					Add Price Bound
+				</button>
+				<button :disabled="loading_lookup_price" class="text-sm bg-dark text-light p-2 rounded-md font-medium disabled:bg-[#B9BCC8] disabled:cursor-not-allowed" @click="updatePriceBound(toDeleteLookupPrices)">
+					{{ loading_lookup_price ? 'Processing' : 'Save Changes' }}
+				</button>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -181,7 +231,7 @@ import { useRouteModal } from '@/composables/core/modals'
 
 const { initRemovePairedTrip } = usePairReturnTrip()
 const { loading_busstop, busStops, getRouteBusstops } = useCreateItinerary()
-const { singleItinerary: itinerary, returnTripItinerary } = useItineraries()
+const { singleItinerary: itinerary, returnTripItinerary, lookupTablePrices, updatePriceBound, loading_lookup_price } = useItineraries()
 const { time, resetObj, busstop_id, loading: updating, updateItineraries, default_fare, pricing_type, pricing_margin, pricing_scheme, pricing_margin_unit } = useUpdateItineraries()
 const editTime = ref(false)
 const editBusStop = ref(false)
@@ -196,6 +246,40 @@ const closeEdit = (val:'time'|'busStop') => {
 const updateFare = (val:Record<'new'|'old', number>) => {
 	default_fare.value = val.new
 	updateItineraries()
+}
+
+const busStopAfterStartPoint = (start_point_id:number) => {
+	const busStop = busStops.value?.find((i) => i.id === start_point_id)
+      if (!busStop) return
+	return busStops.value?.filter((el) => el.position > busStop?.position)
+}
+
+const computedLookupTablePrices = computed(() => {
+	return itinerary.value?.prices.map((el) => {
+		return {
+			id: el?.id,
+			fare: el?.fare,
+			start_busstop_id: ref(el?.start_route_bus_stop_id),
+			end_busstop_id: ref(el?.end_route_bus_stop_id)
+		}
+	})
+})
+
+const addNewPriceBound = () => {
+	lookupTablePrices.value.push({
+		fare: 0,
+		start_route_bus_stop_id: 0,
+		end_route_bus_stop_id: 0
+	})
+}
+const toDeleteLookupPrices = ref([] as Record<string, any>[])
+
+const removePriceBound = (index:number, bound_price: Record<string, any>) => {
+	// const index = selected_drivers.value.map((el) => el?.id).indexOf(val?.id)
+	// 	selected_drivers.value.splice(index, 1)
+	// const idx = lookupTablePrices.value.indexOf(index)
+	toDeleteLookupPrices.value.push(bound_price)
+	lookupTablePrices.value.splice(index, 1)
 }
 
 getRouteBusstops()
