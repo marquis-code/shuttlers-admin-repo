@@ -177,7 +177,7 @@
 			<p class="text-sm text-dark font-medium">
 				Pricing
 			</p>
-			{{ lookupTablePrices }}
+
 			<table class="w-full text-left">
 				<thead>
 					<tr class="bg-[#f9fbfd]">
@@ -207,7 +207,7 @@
 							<input v-model.number="price.fare" class="input-field" type="number">
 						</td>
 						<td>
-							<Icon name="close" class="w-5 text-red" @click="removePriceBound(i)" />
+							<Icon v-if="i" name="close" class="w-5 text-red" @click="removePriceBound(i, price)" />
 						</td>
 					</tr>
 				</tbody>
@@ -217,8 +217,8 @@
 					<Icon name="plus" class="w-4" />
 					Add Price Bound
 				</button>
-				<button class="text-sm bg-dark text-light p-2 rounded-md font-medium" @click="updatePriceBound">
-					Save Changes
+				<button :disabled="loading_lookup_price" class="text-sm bg-dark text-light p-2 rounded-md font-medium disabled:bg-[#B9BCC8] disabled:cursor-not-allowed" @click="updatePriceBound(toDeleteLookupPrices)">
+					{{ loading_lookup_price ? 'Processing' : 'Save Changes' }}
 				</button>
 			</div>
 		</div>
@@ -231,7 +231,7 @@ import { useRouteModal } from '@/composables/core/modals'
 
 const { initRemovePairedTrip } = usePairReturnTrip()
 const { loading_busstop, busStops, getRouteBusstops } = useCreateItinerary()
-const { singleItinerary: itinerary, returnTripItinerary, lookupTablePrices, updatePriceBound } = useItineraries()
+const { singleItinerary: itinerary, returnTripItinerary, lookupTablePrices, updatePriceBound, loading_lookup_price } = useItineraries()
 const { time, resetObj, busstop_id, loading: updating, updateItineraries, default_fare, pricing_type, pricing_margin, pricing_scheme, pricing_margin_unit } = useUpdateItineraries()
 const editTime = ref(false)
 const editBusStop = ref(false)
@@ -272,11 +272,13 @@ const addNewPriceBound = () => {
 		end_route_bus_stop_id: 0
 	})
 }
+const toDeleteLookupPrices = ref([] as Record<string, any>[])
 
-const removePriceBound = (index:number) => {
+const removePriceBound = (index:number, bound_price: Record<string, any>) => {
 	// const index = selected_drivers.value.map((el) => el?.id).indexOf(val?.id)
 	// 	selected_drivers.value.splice(index, 1)
 	// const idx = lookupTablePrices.value.indexOf(index)
+	toDeleteLookupPrices.value.push(bound_price)
 	lookupTablePrices.value.splice(index, 1)
 }
 
