@@ -1,5 +1,4 @@
 <template>
-	{{ busstopUsersIds }}
 	<section class="flex gap-5 w-full items-center justify-between pb-[100px]">
 		<button v-if="isScreenLg" class="btn-controls" @click="$emit('prev')">
 			<Icon name="prev" class="w-7" />
