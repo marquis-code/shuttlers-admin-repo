@@ -1,4 +1,5 @@
 <template>
+	{{ busstopUsersIds }}
 	<section class="flex gap-5 w-full items-center justify-between pb-[100px]">
 		<button v-if="isScreenLg" class="btn-controls" @click="$emit('prev')">
 			<Icon name="prev" class="w-7" />
@@ -6,7 +7,7 @@
 		<div v-if="routePassengers.length" :key="key" class="space-y-8 w-full lg:w-[calc(100%-130px)]">
 			<div class="flex items-center gap-x-6">
 				<div class="flex items-center gap-x-2">
-					<input id="all" v-model="selected_all_passengers" name="all" type="checkbox">
+					<input id="all" v-model="selected_all_passengers" name="all" type="checkbox" @click="selectAllBoxClicked">
 					<label for="all" class="font-medium pt-2">Select all passengers</label>
 				</div>
 				<div class="flex items-center gap-x-3">
@@ -273,8 +274,15 @@ const selected_all_passengers = ref(false)
 const key = ref(0)
 
 watch(selected_all_passengers, () => {
-	if (selected_all_passengers.value) selectedCheckboxes.value = []
+	// if (selected_all_passengers.value) selectedCheckboxes.value = []
+	if (selected_all_passengers.value) {
+		selectedCheckboxes.value = props.routePassengers.map((passenger: any) => passenger.user_id)
+	}
 })
+
+const selectAllBoxClicked = () => {
+	if (selected_all_passengers.value) selectedCheckboxes.value = []
+}
 
 const filterType = ref('pickup')
 const selectedCheckboxes = ref([]) as any
