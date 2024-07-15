@@ -26,6 +26,17 @@
 				<span v-if="item.route_code" @click.stop>
 					<NuxtLink :to="`/trips/routes/${item.data.route.id}/details`" class="text-blue-500">{{ item?.data?.route_code }}</NuxtLink> <span>({{ item?.data?.trip_time }})</span>
 				</span>
+				<div v-if="item?.route_type" class="flex flex-col gap-0 text-sm font-medium">
+					<p :class="item?.data?.route?.is_exclusive ? 'text-purp7' : 'text-yellow01'">
+						{{ item?.data?.route?.is_exclusive ? 'Exclusive' : 'Shared' }}
+					</p>
+					<p class="capitalize">
+						{{ item?.data?.route?.visibility }}
+					</p>
+					<p v-if="item?.data?.route?.is_zero_booked_shared_route" class="whitespace-nowrap text-green7">
+						Zero-booking
+					</p>
+				</div>
 				<div v-if="item.passengers" class="flex items-center gap-x-2 flex-col justify-center gap--y-2">
 					<p>{{ item.data.passengers }}</p>
 					<button class="bg-white text-shuttlersGreen border px-2 border-shuttlersGreen rounded-full" @click.stop="router.push(`/trips/type/upcoming/${item.data.id}/passengers`)">
@@ -50,6 +61,7 @@
 	</main>
 </template>
 <script setup lang="ts">
+import moment from 'moment'
 import { useGetUpcomingTripsList } from '@/composables/modules/trips/fetch/upcomingTrips'
 import { useTripOptions } from '@/composables/modules/trips/options'
 import { dayIsInThePast, convertToCurrency } from '@/composables/utils/formatter'
@@ -71,7 +83,8 @@ upcomingTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: i?.route?.route_code ?? 'N/A',
-			 trip_time: i?.itinerary?.trip_time ?? 'N/A',
+			//  trip_time: i?.itinerary?.trip_time ?? 'N/A',
+			trip_time: i?.route?.itineraries![0]?.trip_time ?? 'N/A',
 			 pickup: i?.route?.pickup ?? 'N/A',
 			 dropoff: i?.route?.destination ?? 'N/A',
 			 partner: i?.vehicle?.partner?.company_name ? `${i?.vehicle?.partner?.company_name} (${i?.vehicle?.partner?.company_phone})` : 'N/A',
@@ -113,6 +126,10 @@ const tableFields = ref([
     {
         text: 'ROUTE CODE ( START TIME)',
         value: 'route_code'
+    },
+	{
+        text: 'ROUTE TYPE',
+        value: 'route_type'
     },
     {
         text: 'ROUTE',
