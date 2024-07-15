@@ -137,6 +137,10 @@ export const partners_api = {
 		const url = '/settlement-accounts'
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
 	},
+	$_assign_partner_account: (accountId: number, payload: Record<string, any>) => {
+		const url = `/settlement-accounts/${accountId}`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.patch(url, payload)
+	},
 	$_validate_account_number: (bank_code: string| number, account_number: string| number) => {
 		const url = `/banks/resolve-accounts?bank_code=${bank_code}&account_number=${account_number}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
