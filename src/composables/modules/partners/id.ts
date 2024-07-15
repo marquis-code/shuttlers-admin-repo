@@ -273,10 +273,12 @@ export const useGetPartnerEarningSummary = () => {
     return { getPartnerEarning, loadingEarnings, partnersEarningInformation }
 }
 
+const partnerAccountId = ref(null as null|number)
+const loadingAccounts = ref(false)
+const processingDeleteAccount = ref(false)
+const partnersAccountInformation = ref([] as Record<string, any>[])
+const assigningAccount = ref(false)
 export const useGetPartnerAccount = () => {
-    const loadingAccounts = ref(false)
-    const processingDeleteAccount = ref(false)
-    const partnersAccountInformation = ref([])
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 
     const { $_get_partner_accounts_by_id } = partners_api
@@ -291,28 +293,55 @@ export const useGetPartnerAccount = () => {
         loadingAccounts.value = false
     }
 
-    const handleRemoveAccount = (account_sid) => {
+    const handleRemoveAccount = (account_id) => {
         useConfirmationModal().openAlert({
             title: 'Please Confirm',
             type: 'NORMAL',
             desc: 'Are you sure you want to delete this account?',
             loading: processingDeleteAccount,
-            call_function: () => deletePartnerAccount(account_sid)
+            call_function: () => deletePartnerAccount(account_id)
         })
     }
 
-    const deletePartnerAccount = async (account_sid) => {
+    const deletePartnerAccount = async (account_id) => {
         processingDeleteAccount.value = true
-        const res = await partners_api.$_delete_partner_account(account_sid) as CustomAxiosResponse
+        const res = await partners_api.$_delete_partner_account(account_id) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Account was successfully deleted' })
             useConfirmationModal().closeAlert()
+            const account_sid = useRoute().params.accountSid as string
             getPartnerAccount(account_sid)
         }
         processingDeleteAccount.value = false
     }
 
+    const initAssignPartnerAccount = (accountId:number) => {
+        partnerAccountId.value = accountId
+        useConfirmationModal().openAlert({
+            title: 'Please Confirm',
+            type: 'NORMAL',
+            desc: 'Are you sure you want to assign this account?',
+            loading: assigningAccount,
+            call_function: assignPartnerAccount
+        })
+    }
+
+    const assignPartnerAccount = async () => {
+        const payload = {
+            isDefault: true
+        }
+        assigningAccount.value = true
+        const res = await partners_api.$_assign_partner_account(partnerAccountId.value!, payload) as CustomAxiosResponse
+        if (res.type !== 'ERROR') {
+            useAlert().openAlert({ type: 'SUCCESS', msg: 'Account was successfully assigned' })
+            useConfirmationModal().closeAlert()
+            const account_sid = useRoute().params.accountSid as string
+            getPartnerAccount(account_sid)
+        }
+        assigningAccount.value = false
+    }
+
     setFunction(getPartnerAccount)
 
-    return { getPartnerAccount, loadingAccounts, partnersAccountInformation, handleRemoveAccount, moveTo, ...metaObject, next, prev, processingDeleteAccount, deletePartnerAccount }
+    return { getPartnerAccount, loadingAccounts, partnersAccountInformation, handleRemoveAccount, moveTo, ...metaObject, next, prev, processingDeleteAccount, deletePartnerAccount, initAssignPartnerAccount }
 }

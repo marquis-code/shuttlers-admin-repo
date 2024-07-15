@@ -67,7 +67,7 @@ const addNewBankAccount = () => {
 }
 
 watch(() => form.accountNumber, (val) => {
-    validateAccountNumber(bankObj.value.code, val)
+    if (String(form.accountNumber).length === 10) validateAccountNumber(bankObj.value.code, val)
 })
 
 const loadBanks = () => {

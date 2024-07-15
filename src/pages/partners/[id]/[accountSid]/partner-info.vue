@@ -46,8 +46,11 @@
 						<Skeleton height="200px" />
 					</div>
 					<div v-else>
-						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
-							IDENTITY
+						<div class="bg-gray-100 py-3 rounded-md text-sm px-4 flex items-center justify-between my-3">
+							<p>IDENTITY</p>
+							<!-- <button class="font-bold text-purp7 underline">
+								Edit
+							</button> -->
 						</div>
 						<p v-if="!partnersKycInformation?.identity?.status" class="text-sm text-center py-2 text-grey6">
 							Partner Identity information not submitted

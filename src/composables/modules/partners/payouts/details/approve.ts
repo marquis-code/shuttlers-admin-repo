@@ -6,7 +6,7 @@ import { useAlert } from '@/composables/core/notification'
 
 const loading = ref(false)
 const password = ref('')
-const { partnerInfo } = usePayoutDetails()
+const { partnerInfo, fetchApprovers } = usePayoutDetails()
 
 export const useApprove = () => {
 	const initApprove = () => {
@@ -30,6 +30,7 @@ export const useApprove = () => {
 			usePasswordConfirmationModal().closeAlert()
 			useAlert().openAlert({ type: 'SUCCESS', msg: 'You have successfully approved payouts for this partner.' })
 			usePayoutDetails().fetchEarningInfo()
+			usePayoutDetails().fetchApprovers()
         }
 		loading.value = false
 	}
