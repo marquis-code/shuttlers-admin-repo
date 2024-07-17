@@ -3,7 +3,7 @@ import { useAlert } from '@/composables/core/notification'
 import { useGetPartnerAccount } from '@/composables/modules/partners/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { usePartnerModal } from '@/composables/core/modals'
-const { getPartnerAccount } = useGetPartnerAccount()
+
 const loading = ref(false)
 
 const payload = {
@@ -17,6 +17,7 @@ const payload = {
 export const useAddBankAccount = () => {
     const sid = useRoute().params.accountSid as string
   const addBankAccount = async () => {
+    const { getPartnerAccount } = useGetPartnerAccount()
     loading.value = true
     const res = (await partners_api.$_add_bank_account(
         convertObjWithRefToObj(payload)

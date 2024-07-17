@@ -80,11 +80,21 @@
 							<p class="key">
 								{{ n.key }}
 							</p>
-							<p class="value font-medium" :class="n?.key === 'Deductions' || n.value === 'failed' ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' ? '!text-green' : '' ">
+							<p class="value font-medium"
+								:class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : '' "
+							>
 								{{ n?.value }}
 							</p>
 						</div>
-						<div class="flex items-center justify-between">
+						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-3 border-b">
+							<p class="key">
+								Marked by
+							</p>
+							<router-link :to="`/admin/${earningInfo?.markedAsPaidUserInfo?.userID}/info`" class="value font-medium !text-[#7493CB]">
+								{{ earningInfo?.markedAsPaidUserInfo?.name || 'N/A' }}
+							</router-link>
+						</div>
+						<div class="flex items-center justify-between py-2">
 							<div class="flex items-center gap-2">
 								<p class="key">
 									Approvals
@@ -245,11 +255,12 @@ const partner_info = computed(() => {
 })
 
 const payout_info = computed(() => {
-	return [
+	const data = [
 		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue || 0) },
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
 		{ key: 'Status', value: earningInfo.value?.status || '' }
 	]
+	return data
 })
 
 const backUrl = computed(() => {

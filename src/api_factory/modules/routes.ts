@@ -198,5 +198,9 @@ export const routes_api = {
 	$_delete_itinerary: (itinerary_id: number) => {
         const url = `/route-itineraries/${itinerary_id}`
         return GATEWAY_ENDPOINT_WITH_AUTH.delete(url)
+    },
+	$_update_itinerary_price_bound: (itinerary_id: number, payload: Record<string, any>) => {
+        const url = `/route-itineraries/${itinerary_id}/price`
+        return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
     }
 }

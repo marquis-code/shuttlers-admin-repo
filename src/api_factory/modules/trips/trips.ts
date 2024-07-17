@@ -39,7 +39,8 @@ export const trips_api = {
 	$_get_upcoming_trips: (filterData: Record<string, Ref>, metaObject: TMetaObject) => {
 		const queryParams = useTableFilter(filterData)
 		const old_url = `/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
-		const new_url = `/tripsV2/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		// const new_url = `/tripsV2/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
+		const new_url = `/v2/trips/upcoming?${queryParams}${queryParams ? '&' : ''}limit=${metaObject.page_size.value}&page=${metaObject.page.value}&metadata=true&sort[created_at]=desc&`
 		const url = ZeroBookingFlag() ? new_url : old_url
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
