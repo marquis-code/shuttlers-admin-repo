@@ -4,7 +4,7 @@ import { auth_api } from '@/api_factory/modules/auth'
 
 	const credential = {
 		email: ref(''),
-		phone: ref<{phone:string, country_code:string}>({ phone: '', country_code: 'NG' }),
+		phone: ref(''),
 		password: ref('')
 
 	}
@@ -16,9 +16,11 @@ export const use_auth_login = () => {
 	const auth_type = ref<'email' | 'phone'>('email')
 
 	const disabled = computed({
+
 		get: () => {
+				console.log(credential.phone.value)
 			if (credential.email.value !== '' && !credential.email.value.includes('@')) return true
-			if (credential.phone.value.phone !== '' && credential.phone.value.phone.length <= 8) return true
+			if (credential.phone.value !== '' && credential.phone.value.length <= 8) return true
 			if (credential.password.value === '') return true
 			 return false
 		},
@@ -36,7 +38,8 @@ export const use_auth_login = () => {
 		})) as any
 		} else {
 			 res = (await auth_api.$_login({
-			...credential.phone.value,
+				 phone: credential.phone.value,
+				 country_code: 'NG',
 			password: credential.password.value,
 			type: 'staff'
 		})) as any
@@ -53,7 +56,7 @@ export const use_auth_login = () => {
 
 	const sign_in_with_otp = async () => {
 		if (auth_type.value === 'email' && (credential.email.value === '' || !credential.email.value.includes('@'))) return useAlert().openAlert({ type: 'ERROR', msg: 'Please enter a valid email address' })
-		if (auth_type.value === 'phone' && (credential.phone.value.phone.length <= 8)) return useAlert().openAlert({ type: 'ERROR', msg: 'Please enter a valid phone number' })
+		if (auth_type.value === 'phone' && (credential.phone.value.length <= 8)) return useAlert().openAlert({ type: 'ERROR', msg: 'Please enter a valid phone number' })
 		loading.value = true
 
 			let res
@@ -64,7 +67,8 @@ export const use_auth_login = () => {
 		})) as any
 		} else {
 			 res = (await auth_api.$_otp_login({
-				 ...credential.phone.value,
+					 phone: credential.phone.value,
+				 country_code: 'NG',
 				 type: 'staff'
 		})) as any
 		}
@@ -72,7 +76,7 @@ export const use_auth_login = () => {
 		loading.value = false
 		if (res.type !== 'ERROR') {
 			if (auth_type.value === 'email') Router.push(`/auth/confirm?id=${res.data.reference_id}&type=email&value=${credential.email.value}`)
-			else Router.push(`/auth/confirm?id=${res.data.reference_id}&type=${auth_type.value}&value=${credential.phone.value.phone}&country_code=${credential.phone.value.country_code}`)
+			else Router.push(`/auth/confirm?id=${res.data.reference_id}&type=${auth_type.value}&value=${credential.phone.value}&country_code=NG`)
 		}
 	}
 
