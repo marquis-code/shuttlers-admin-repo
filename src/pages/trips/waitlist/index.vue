@@ -27,7 +27,7 @@
 			</template>
 			<template #item="{ item }">
 				<span v-if="item.date">
-					{{ useDateFormat(item.data.date, "MMMM d, YYYY, HH:MM A").value }}
+					{{ useDateFormat(item.data.date, "MMMM Do, YYYY HH:MM A").value }}
 				</span>
 			</template>
 

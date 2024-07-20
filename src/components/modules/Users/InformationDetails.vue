@@ -97,10 +97,10 @@
 		</div>
 		<div class="flex justify-between items-center border-b py-4 px-3">
 			<p class="text-gray-500 text-sm">
-				REFFERED BY
+				REFERRED BY
 			</p>
 			<nuxt-link v-if="selectedUser.referred_by_id" :to="`/users/${selectedUser.referredBy.id}/user-info`" class="text-sm link">
-				{{ selectedUser.referredBy.id }}
+				{{ selectedUser.referred_by.fname }} {{ selectedUser.referred_by.lname }}
 			</nuxt-link>
 			<p v-else class="text-sm">
 				N/A

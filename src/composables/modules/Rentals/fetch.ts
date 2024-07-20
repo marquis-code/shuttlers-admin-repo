@@ -7,6 +7,7 @@ export const useGetRentalList = () => {
 
     const filterData = {
         status: ref(''),
+        booking_status: ref(''),
         search: ref(''),
         from: ref(''),
         to: ref('')
@@ -28,7 +29,7 @@ export const useGetRentalList = () => {
 
     setFunction(getRentalList)
 
-    watch([filterData.search, filterData.from, filterData.to], (val) => {
+    watch([filterData.search, filterData.from, filterData.to, filterData.status, filterData.booking_status], (val) => {
         getRentalList()
     })
 
