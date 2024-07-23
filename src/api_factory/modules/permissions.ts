@@ -1,4 +1,4 @@
-import { GATEWAY_ENDPOINT_WITH_AUTH, AUDIT_GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
+import { GATEWAY_ENDPOINT_WITH_AUTH } from '@/api_factory/axios.config'
 
 export const permissions_api = {
     $_delete_all_staff_permission: (id) => {
