@@ -18,7 +18,6 @@ export const use_auth_login = () => {
 	const disabled = computed({
 
 		get: () => {
-				console.log(credential.phone.value)
 			if (credential.email.value !== '' && !credential.email.value.includes('@')) return true
 			if (credential.phone.value !== '' && credential.phone.value.length <= 8) return true
 			if (credential.password.value === '') return true
