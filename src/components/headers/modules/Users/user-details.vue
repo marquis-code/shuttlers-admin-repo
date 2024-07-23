@@ -44,6 +44,10 @@ const pageTabs = computed(() => [
     {
         name: 'Creditline Usages',
         path: `/users/${selectedUser.value.id}/credit-line-usage`
+    },
+    {
+        name: 'Rewards',
+        path: `/users/${selectedUser.value.id}/rewards`
     }
 ])
 </script>

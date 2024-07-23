@@ -83,7 +83,7 @@ export const headerComponentRouteArray = [
     { routes: ['users-notify'], component: NotifyUsers },
     { routes: ['users-insights'], component: UsersInsights },
     { routes: ['users-bookings'], component: BatchBooking },
-    { routes: ['users-id-active-bookings', 'users-id-cancelled-trips', 'users-id-credit-line-usage', 'users-id-past-bookings', 'users-id-rides', 'users-id-transactions', 'users-id-user-info'], component: UserDetails },
+    { routes: ['users-id-active-bookings', 'users-id-cancelled-trips', 'users-id-credit-line-usage', 'users-id-past-bookings', 'users-id-rides', 'users-id-transactions', 'users-id-user-info', 'users-id-rewards'], component: UserDetails },
     { routes: ['users-bookings-create-batch-booking'], component: CreateBatchBooking },
     { routes: ['users-bookings-id-booking-info'], component: BatchBookingDetails },
     { routes: ['users-id-booking-ticket-ticket_id', 'users-id-cancelled-trips-b_id'], component: TicketBookingDetails },
