@@ -35,7 +35,7 @@ export const campaigns_api = {
         const url = '/compliance-rewards'
         return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
      },
-    $_get_reward_histories_by_driver_id: (meta:TMetaObject, user_type:string, userId:number) => {
+    $_get_reward_histories: (meta:TMetaObject, user_type:string, userId:number|string) => {
         const url = `/compliance-reward-histories/${user_type}/${userId}?limit=${meta.page_size.value}&page=${meta.page.value}`
         return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
     },
