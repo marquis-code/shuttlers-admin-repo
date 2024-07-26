@@ -1,177 +1,135 @@
-import { Loader } from '@googlemaps/js-api-loader'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import polyline from '@mapbox/polyline'
 import { Coordinate } from './types'
 
-// import { insertScriptTag } from '../utils/system'
-
-const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string
-
-export const loader = new Loader({
-	apiKey: GOOGLE_MAPS_API_KEY as string,
-	  libraries: ['places', 'marker', 'drawing'],
-  version: 'beta'
-})
-
-export let map: google.maps.Map
+export let map: L.Map
 
 export const loading = ref(false)
 
 export const calculateCenterAndZoom = async (
-    coord1: Coordinate,
-    coord2: Coordinate
+  coord1: Coordinate,
+  coord2: Coordinate
 ) => {
-    loading.value = true
-    const { DirectionsService, DirectionsRenderer } = (await google.maps.importLibrary('routes')) as google.maps.RoutesLibrary
+  loading.value = true
 
-    const polylineOptions = {
-        strokeColor: '#000000',
-        strokeWeight: 3,
-        strokeOpacity: 1
+  // Create a polyline between the two points
+  const polyline = L.polyline([
+    [coord1.lat, coord1.lng],
+    [coord2.lat, coord2.lng]
+  ], {
+    color: '#000000',
+    weight: 3,
+    opacity: 1
+  }).addTo(map)
 
-    }
-    const directionsService = new DirectionsService()
-    const directionsRenderer = new DirectionsRenderer({ polylineOptions })
+  // Fit the map to the polyline
+  map.fitBounds(polyline.getBounds())
 
-    const lekki = new google.maps.LatLng(6.447809299999999, 3.4723495)
-
-    map.setCenter(lekki)
-    map.setZoom(7)
-    directionsRenderer.setMap(map)
-    const directionData = await directionsService.route({
-        origin: `${coord1.lat},${coord1.lng}`,
-        destination: `${coord2.lat},${coord2.lng}`,
-        travelMode: google.maps.TravelMode.DRIVING
-    })
-
-    directionsRenderer.setDirections(directionData)
-
-    loading.value = false
+  loading.value = false
 }
 
-export const initMap = async (mapDiv: Ref, mapId:string|null = null) => {
-    const { Map } = (await loader.importLibrary(
-        'maps'
-    )) as google.maps.MapsLibrary
+export const initMap = async (mapDiv: Ref, mapId: string | null = null) => {
+  if (!mapDiv.value) return
 
-    if (!mapDiv.value) return
+  map = L.map(mapDiv.value as HTMLElement).setView([6.447809299999999, 3.4723495], 16)
 
-    map = new Map(mapDiv.value as HTMLElement, {
-        zoom: 16,
-        disableDefaultUI: true,
-        mapId: mapId ?? '33d190257c86f190',
-        center: { lat: 6.447809299999999, lng: 3.4723495 }
-    })
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map)
 }
 
-export const getPathFromPolyline = async (overviewPolyline) => {
-    if (typeof overviewPolyline !== 'string') return
-    const encodedPolyline = JSON.parse(overviewPolyline)
+export const getPathFromPolyline = async (encodedPolyline: string) => {
+  try {
+    // Parse the encoded polyline string
+    const decodedCoords = polyline.decode(encodedPolyline)
 
-    const { encoding } = await google.maps.importLibrary('geometry') as google.maps.GeometryLibrary
-    return encoding.decodePath(encodedPolyline.points)
+    // Convert the decoded coordinates to Leaflet LatLng objects
+    const path = decodedCoords.map((coord) => L.latLng(coord[0], coord[1]))
+
+    return path
+  } catch (error) {
+    console.error('Error decoding polyline:', error)
+    return []
+  }
 }
 
-let currentPolyline: google.maps.Polyline | null = null
-let currentStartMarker: google.maps.Marker | null = null
-let currentEndMarker: google.maps.Marker | null = null
+let currentPolyline: L.Polyline | null = null
+let currentStartMarker: L.Marker | null = null
+let currentEndMarker: L.Marker | null = null
 
-export const loadPolyline = async (pathLine: google.maps.LatLng[]): Promise<void> => {
-    const { Polyline } = (await google.maps.importLibrary('maps')) as typeof google.maps
-    const { Marker } = (await google.maps.importLibrary('marker')) as typeof google.maps & { MarkerLibrary: any }
+export const loadPolyline = async (pathLine: L.LatLng[]): Promise<void> => {
+  // Clear existing polyline
+  if (currentPolyline) {
+    map.removeLayer(currentPolyline)
+    currentPolyline = null
+  }
 
-    // Clear existing polyline
-    if (currentPolyline) {
-        currentPolyline.setMap(null)
-        currentPolyline = null
-    }
+  // Clear existing markers
+  if (currentStartMarker) {
+    map.removeLayer(currentStartMarker)
+    currentStartMarker = null
+  }
+  if (currentEndMarker) {
+    map.removeLayer(currentEndMarker)
+    currentEndMarker = null
+  }
 
-    // Clear existing markers
-    if (currentStartMarker) {
-        currentStartMarker.setMap(null)
-        currentStartMarker = null
-    }
-    if (currentEndMarker) {
-        currentEndMarker.setMap(null)
-        currentEndMarker = null
-    }
+  // Create new polyline
+  currentPolyline = L.polyline(pathLine, {
+    color: '#4848ED',
+    weight: 3,
+    opacity: 1
+  }).addTo(map)
 
-    // Create new polyline
-    const polyline = new Polyline({
-        path: pathLine,
-        geodesic: true,
-        strokeColor: '#4848ED',
-        strokeOpacity: 1.0,
-        strokeWeight: 3
+  // Create a new start marker
+  currentStartMarker = L.marker(pathLine[0], {
+    icon: L.icon({
+      iconUrl: '/pickup.svg',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41]
     })
+  }).addTo(map)
 
-    polyline.setMap(map)
-    currentPolyline = polyline // Update the reference to the current polyline
-
-    // Create a new start marker
-    currentStartMarker = new Marker({
-        position: pathLine[0],
-        icon: '/pickup.svg',
-        map,
-        title: 'Start'
+  // Create a new end marker
+  currentEndMarker = L.marker(pathLine[pathLine.length - 1], {
+    icon: L.icon({
+      iconUrl: '/dropoff.svg',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41]
     })
+  }).addTo(map)
 
-    // Create a new end marker
-    currentEndMarker = new Marker({
-        position: pathLine[pathLine.length - 1],
-        icon: '/dropoff.svg',
-        map,
-        title: 'End'
-    })
-
-    // Fit map to polyline
-    const bounds = new google.maps.LatLngBounds()
-    pathLine.forEach((point) => bounds.extend(point))
-    map.fitBounds(bounds)
+  // Fit map to polyline
+  map.fitBounds(currentPolyline.getBounds())
 }
 
-let busStopMarkers: google.maps.Marker[] = []
-let infoWindow: google.maps.InfoWindow
+let busStopMarkers: L.Marker[] = []
+let infoWindow: L.Popup
 
 export const loadBusstops = async (stops: Record<string, any>[]): Promise<void> => {
-    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+  busStopMarkers.forEach((marker) => map.removeLayer(marker))
+  busStopMarkers = []
 
-    busStopMarkers.forEach((marker) => marker.setMap(null))
-    busStopMarkers = []
+  stops.forEach((stop) => {
+    const marker = L.marker([stop.geometry.y, stop.geometry.x], {
+      icon: L.icon({
+        iconUrl: '/busstop.svg',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
+      })
+    }).addTo(map)
 
-    if (!infoWindow) {
-        infoWindow = new google.maps.InfoWindow({
-            content: ''
-        })
-    }
+    marker.bindPopup(`<div style="min-width: 150px; text-align: center;">${stop.name}</div>`)
 
-    stops.forEach((stop) => {
-        const marker = new Marker({
-            position: { lat: stop.geometry.y, lng: stop.geometry.x },
-            icon: '/busstop.svg',
-            map,
-            title: stop.name
-        })
-
-         marker.addListener('click', () => {
-            infoWindow.setContent(`<div style="min-width: 150px; text-align: center;">${stop.name}</div>`)
-            infoWindow.open({
-                anchor: marker,
-                map,
-                shouldFocus: false
-            })
-        })
-
-         busStopMarkers.push(marker)
-    })
+    busStopMarkers.push(marker)
+  })
 }
 
 export const addPointOnMap = async (location: Coordinate) => {
-    if (!map) return
-    if (!location.lat) return
-    const { Marker } = (await google.maps.importLibrary('marker')) as google.maps.MarkerLibrary
+  if (!map) return
+  if (!location.lat) return
 
-    const marker = new Marker({
-        map,
-        position: location
-    })
-      map.setCenter(location)
+  L.marker([location.lat, location.lng]).addTo(map)
+  map.setView([location.lat, location.lng])
 }

@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { isObject } from '@vue/shared'
-import { loader } from '@/composables/core/map'
+import { loader } from '@/composables/core/map/index_v1'
 
 const props = defineProps({
   modelValue: { type: [Object, String], default: () => {} },
