@@ -53,10 +53,10 @@
 				<Skeleton v-else height="50px" />
 			</div>
 			<div class="field relative">
-				<label for="route">Select Pickup Point</label>
+				<label for="pickup">Select Pickup Point</label>
 				<select
 					v-if="!loading_bus_stops"
-					id="route"
+					id="pickup"
 					v-model="pickup"
 					class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3"
 				>
@@ -74,10 +74,10 @@
 				<Skeleton v-else height="50px" />
 			</div>
 			<div class="field relative">
-				<label for="route">Select Drop Off Point</label>
+				<label for="dropoff">Select Drop Off Point</label>
 				<select
 					v-if="!loading_bus_stops"
-					id="route"
+					id="dropoff"
 					v-model="destination"
 					class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3"
 				>
@@ -99,9 +99,9 @@
 				<input v-model="start_date" type="date" class="input-field">
 			</div>
 			<div class="field relative">
-				<label for="route">Select Payment Source</label>
+				<label for="payment_source">Select Payment Source</label>
 				<select
-					id="itinerary"
+					id="payment_source"
 					v-model="payment_source"
 					class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3"
 				>
@@ -119,9 +119,9 @@
 			</div>
 			<div class="">
 				<div class="flex items-center gap-x-2">
-					<label class="block text-sm" for="route">Is Subscription?</label
+					<label class="block text-sm" for="is_sub">Is Subscription?</label
 					><input
-						id="route"
+						id="is_sub"
 						v-model="has_subscription"
 						class="block mb-1"
 						type="checkbox"
@@ -157,7 +157,7 @@
 									class="flex items-center gap-x-3"
 								>
 									<input
-										:id="`item${i}`"
+										:id="`week_${i}`"
 										v-model="num_of_weeks"
 										class="block"
 										type="radio"
@@ -173,9 +173,9 @@
 				</div>
 			</div>
 			<div class="flex items-center gap-x-3">
-				<label for="route" class="block text-sm">With Luggage?</label>
+				<label for="luggage" class="block text-sm">With Luggage?</label>
 				<input
-					id="route"
+					id="luggage"
 					v-model="has_luggage"
 					type="checkbox"
 					class="block"

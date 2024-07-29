@@ -3,6 +3,48 @@
 		<Table :loading="loadingRental" :headers="tableFields" :table-data="rentalList" :has-index="true" :page="page" :has-options="true" :option="(data)=> $router.push(`/trips/rental/${data.id}`)">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true, showDateRange: true, showDownloadButton: true}" @download="handleDownload" @filter="onFilterUpdate" />
+				<div class="bg-white border-x border-gray-200">
+					<div class="flex justify-end items-end p-3 gap-4">
+						<div class="flex items-center gap-x-2">
+							<label class="font-medium text-base my-0">
+								Status:
+							</label>
+							<select v-model="filterData.status.value" class="input-field w-36">
+								<option value="">
+									Select Status
+								</option>
+								<option v-for="status in [
+									{ name: 'Pending', value: 'pending' },
+									{ name: 'Accepted', value: 'accepted' },
+									{ name: 'Rejected', value: 'rejected' },
+									{ name: 'Cancelled', value: 'cancelled' }
+								]" :key="status.value" :value="status.value">
+									{{ status.name }}
+								</option>
+							</select>
+						</div>
+						<div class="flex items-center gap-x-2">
+							<label class="font-medium text-base my-0">
+								Booking Status:
+							</label>
+							<select v-model="filterData.booking_status.value" class="input-field w-36">
+								<option value="">
+									Select Booking Status
+								</option>
+								<option v-for="status in [
+									{ name: 'Pending', value: 'pending' },
+									{ name: 'Active', value: 'active' },
+									{ name: 'Cancelled', value: 'cancelled' },
+									{ name: 'Completed', value: 'completed' },
+									{ name: 'Expired', value: 'expired' },
+									{ name: 'Pending Cancellation', value: 'pending_cancellation' }
+								]" :key="status.value" :value="status.value">
+									{{ status.name }}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.pickup_address">
@@ -44,7 +86,7 @@ import { useDownloadReport } from '@/composables/utils/csv'
 import { useGetRentalList } from '@/composables/modules/Rentals/fetch'
 const { download, loading } = useDownloadReport()
 
-const { getRentalList, loadingRental, onFilterUpdate, rentalList, page, moveTo, next, prev, total } = useGetRentalList()
+const { getRentalList, loadingRental, onFilterUpdate, rentalList, page, moveTo, next, prev, total, filterData } = useGetRentalList()
 
 getRentalList()
 

@@ -58,8 +58,8 @@
 					<Skeleton v-else height="100px" />
 				</div>
 				<div class="field relative">
-					<label for="route">Select Pickup Point</label>
-					<select v-if="!loading_bus_stops" id="route" v-model="pickup"
+					<label for="pickup">Select Pickup Point</label>
+					<select v-if="!loading_bus_stops" id="pickup" v-model="pickup"
 						class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
 						<option class="" disabled>
 							--- select ---
@@ -71,8 +71,8 @@
 					<Skeleton v-else height="100px" />
 				</div>
 				<div class="field relative">
-					<label for="route">Select Drop Off Point</label>
-					<select v-if="!loading_bus_stops" id="route" v-model="destination"
+					<label for="dropoff">Select Drop Off Point</label>
+					<select v-if="!loading_bus_stops" id="dropoff" v-model="destination"
 						class="border-red-500 text-sm w-full border outline-none py-2.5 rounded-md px-3">
 						<option class="" disabled>
 							--- select ---
@@ -125,8 +125,8 @@
 				</div>
 
 				<div class="field relative">
-					<label for="route">Select Payment Source</label>
-					<select id="itinerary" v-model="payment_source"
+					<label for="payment_source">Select Payment Source</label>
+					<select id="payment_source" v-model="payment_source"
 						class="border-red-500 w-full text-sm border outline-none py-2.5 rounded-md px-3">
 						<option value="" class="" disabled>
 							--- select ---
@@ -138,7 +138,7 @@
 				</div>
 				<div class="">
 					<div class="flex items-center gap-x-2">
-						<label class="block" for="route">Is Subscription?</label><input id="route" v-model="has_subscription" class="block mb-1" type="checkbox">
+						<label class="block" for="is_sub">Is Subscription?</label><input id="is_sub" v-model="has_subscription" class="block mb-1" type="checkbox">
 					</div>
 					<div v-if="has_subscription" class="mb-4">
 						<div class="space-y-4">
@@ -170,7 +170,7 @@
 										class="flex items-center gap-x-3"
 									>
 										<input
-											:id="`item${item}`"
+											:id="`week_${item}`"
 											v-model="num_of_weeks"
 											class="block"
 											type="radio"
@@ -186,8 +186,8 @@
 					</div>
 				</div>
 				<div class="flex items-center gap-x-3">
-					<label for="route" class="block">With Luggage?</label>
-					<input id="route" v-model="has_luggage" type="checkbox" class="block">
+					<label for="luggage" class="block">With Luggage?</label>
+					<input id="luggage" v-model="has_luggage" type="checkbox" class="block">
 				</div>
 				<div v-if="has_luggage" class="flex justify-start items-start flex-col">
 					<div><label for="route" class="block">Luggage Quantity</label></div>
