@@ -25,7 +25,7 @@ import { useAddCorporateGroupMembers } from '@/composables/modules/corporates/cr
 import { useCompaniesModal } from '@/composables/core/modals'
 const { createCorporateGroupMembers, loading: processing, payload } = useAddCorporateGroupMembers()
 const handleSelectedCorporates = (val: any) => {
-	payload.staff_ids.value.push(val.id)
+	payload.staff_ids.value = val.map((item: any) => item.id)
 }
 
 const isFormEmpty = computed(() => {

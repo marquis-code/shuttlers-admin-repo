@@ -25,9 +25,12 @@ export const useCorporateStaff = () => {
 
 	const { metaObject, moveTo, next, prev, setFunction } = usePagination()
 
-	const getCorporateStaff = async () => {
+	const getCorporateStaff = async (total?:number) => {
 		const id = useRoute().params.id as string
 		loading.value = true
+		if (total) {
+			metaObject.page_size.value = total
+		}
 		const res = await corporates_api.$_get_corporate_staffs(Number(id), metaObject, filters) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			staffs.value = res.data.data?.length ? res.data.data : []
