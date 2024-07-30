@@ -185,8 +185,7 @@
 											value="group">
 									</div>
 									<div class="flex items-center gap-4">
-										<label for="user" class="text-sm font-medium text-[#09090F]">Create exemption for
-											individual users in your company</label>
+										<label for="user" class="text-sm font-medium text-[#09090F]">Create exemption for individual users in your company</label>
 										<input id="user" v-model="exemption_obj.subject_type.value" type="radio"
 											value="user">
 									</div>
@@ -316,7 +315,7 @@ const {
 	editExemption, deleteExemption, updateExemptions, toggleStaffsAbilityToViewCorporatePayUsage
 } = useCorporatePaySetting()
 
-	getCorporateStaff()
+	getCorporateStaff(100000)
 	fetchGroup(Number(selectedCorporate.value.id))
 
 const defaultLimitValueForTrip = ref(default_corporate_payment_limit.limit_value.value || 0)
