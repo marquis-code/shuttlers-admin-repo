@@ -94,6 +94,14 @@
 								{{ earningInfo?.markedAsPaidUserInfo?.name || 'N/A' }}
 							</router-link>
 						</div>
+						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-3 border-b">
+							<p class="key">
+								Marked at
+							</p>
+							<router-link :to="`/admin/${earningInfo?.markedAsPaidUserInfo?.userID}/info`" class="value font-medium !text-[#7493CB]">
+								{{ moment(earningInfo.markedAsPaidUserInfo.createdAt).format('LL') }}
+							</router-link>
+						</div>
 						<div class="flex items-center justify-between py-2">
 							<div class="flex items-center gap-2">
 								<p class="key">
