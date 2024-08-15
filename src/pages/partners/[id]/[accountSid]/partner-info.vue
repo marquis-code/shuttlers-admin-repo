@@ -319,12 +319,14 @@ const partnerAssetStats = computed(() => {
 
 getPartnerById(id)
 getPartnerKyc(account_sid)
-getPartnerConfigs()
 // getPartnerEarning(account_sid)
 
 watch(() => selectedPartner.value?.account_sid, () => {
 	const sid = selectedPartner.value?.account_sid
-	if (sid) getPartnerEarning(sid)
+	if (sid) {
+		getPartnerEarning(sid)
+		getPartnerConfigs(sid)
+	}
 })
 
 definePageMeta({
