@@ -70,7 +70,7 @@
 						</h3>
 						<div class="flex flex-col gap-1 py-4">
 							<h1 class="text-3xl font-bold text-dark text-center">
-								₦ {{ earningInfo?.netRevenue || 0 }}
+								{{ convertToCurrency(earningInfo?.netRevenue || 0) }}
 							</h1>
 							<h3 class="text-grey4 text-base text-center font-medium">
 								PARTNERS PAYOUT
@@ -84,6 +84,14 @@
 								:class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : '' "
 							>
 								{{ n?.value }}
+							</p>
+						</div>
+						<div class="flex items-center justify-between gap-4 py-4 border-b">
+							<p class="key">
+								Payout type
+							</p>
+							<p class="text-sm capitalize" :class="earningInfo?.payoutType === 'weekly' ? 'badge-green' : 'badge-blue'">
+								{{ earningInfo?.payoutType }}
 							</p>
 						</div>
 						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-4 border-b">
@@ -288,8 +296,8 @@ const payout_info = computed(() => {
 		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
 		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
-		{ key: 'Status', value: earningInfo.value?.status || '' },
-		{ key: 'Payout type', value: '' }
+		{ key: 'Status', value: earningInfo.value?.status || '' }
+		// { key: 'Payout type', value: '' }
 	]
 	return data
 })
