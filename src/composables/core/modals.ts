@@ -88,6 +88,7 @@ import EventFeedback from '@/components/modals/modules/events/EventFeedback.vue'
 import AssignRoutes from '@/components/modals/modules/events/assignRoutes.vue'
 import TransferBookings from '@/components/modals/modules/trips/TransferBookings.vue'
 import UpdateBanner from '@/components/modals/modules/campaigns/banner/updateBanner.vue'
+import UpdateSettlementAccount from '@/components/modals/modules/partners/UpdateSettlementAccount.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain' | 'ConfirmNotifications'
@@ -103,7 +104,7 @@ type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBookings' 
 type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason' | 'ConfigureAgentPoints'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid' | 'ResyncRevenue'
-type PartnerTypes = 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver' | 'AddBankAccount'
+type PartnerTypes = 'UpdateSettlementAccount' | 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver' | 'AddBankAccount'
 type PromotionTypes = 'NewReward' | 'UpdateBanner'
 type EventTypes = 'EventFeedback' | 'AssignRoutes'
 
@@ -121,7 +122,7 @@ const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBookings, Not
 const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason, ConfigureAgentPoints } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid, ResyncRevenue } as Record<PayoutTypes, any>
-const PartnerModals = { AddBankAccount, UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
+const PartnerModals = { UpdateSettlementAccount, AddBankAccount, UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>
 const PromotionModals = { NewReward, UpdateBanner } as Record<PromotionTypes, any>
 const EventModals = { EventFeedback, AssignRoutes } as Record<EventTypes, any>
 

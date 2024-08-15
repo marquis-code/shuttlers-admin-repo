@@ -36,7 +36,8 @@ const deduct = () => {
 	const data = {
 		id: useRoute().params.earningId as string,
 		amount: earningInfo.value.netRevenue,
-		earningInfo: earningInfo.value
+		earningInfo: earningInfo.value,
+		account_sid: partnerInfo.value?.account_sid
 	}
 	initDeduct(data, true)
 }
