@@ -152,5 +152,13 @@ export const partners_api = {
 	$_link_drivers: (payload:Record<string, any>[]) => {
 		const url = '/partners/batch-assign-drivers'
 		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_set_earning_cycle: (partnerId: number|string, payload:Record<string, any>) => {
+		const url = `/partnerconfigs/partners/${partnerId}`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)
+	},
+	$_get_partner_config: (partnerId:string|number) => {
+		const url = `/partnerconfigs/partners/${partnerId}`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	}
 }

@@ -200,7 +200,42 @@
 					</div>
 				</div>
 
-				<div class="px-6 py-6 bg-white rounded-md shadow-sm space-y-3">
+				<div class="flex flex-col rounded-xl border">
+					<div class="border-b p-4 py-2 flex items-center gap-4 justify-between">
+						<p class="text-sm font-medium text-dark">
+							Settlement details
+						</p>
+						<button class="btn border font-medium p-2" @click="initUpdateSettlementAccount(configs?.earningCycle || '')">
+							Update Info
+						</button>
+					</div>
+					<Skeleton v-if="loadingEarnings || loading || fetching_configs" height="100px" />
+					<div v-else class="flex flex-col px-4">
+						<div class="flex items-center gap-4 text-sm justify-between border-b py-4">
+							<p class="uppercase text-grey5 whitespace-nowrap">
+								Default Account
+							</p>
+							<div class="flex flex-col text-right">
+								<p class="text-dark font-medium">
+									{{ partnersEarningInformation?.settlementAccount?.accountNumber || 'N/A' }}
+								</p>
+								<p class="text-grey5 text-xs">
+									{{ partnersEarningInformation?.settlementAccount?.bankName }} - {{ partnersEarningInformation?.settlementAccount?.accountName }}
+								</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-4 text-sm justify-between py-4">
+							<p class="uppercase text-grey5">
+								Earning cycle
+							</p>
+							<p class="capitalize" :class="configs?.earningCycle === 'monthly' ? 'badge-blue' : 'badge-green'">
+								{{ configs?.earningCycle }}
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="px-6 py-6 bg-white rounded-xl shadow-sm space-y-3 border">
 					<p class="text-sm text-gray-900">
 						Default settlement account
 					</p>
@@ -221,7 +256,7 @@
 					<p v-else class="text-gray-500 text-sm">
 						No settlement account available
 					</p>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</main>
@@ -230,10 +265,15 @@
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, useVerifyPartnerKyc } from '@/composables/modules/partners/id'
+import { useUpdateSettlementAccount, usePartnerConfigs } from '@/composables/modules/partners'
+
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
 const { getPartnerEarning, loadingEarnings, partnersEarningInformation } = useGetPartnerEarningSummary()
 const { initVerifyKyc, initVerifyAddress } = useVerifyPartnerKyc()
+const { initUpdateSettlementAccount } = useUpdateSettlementAccount()
+const { configs, getPartnerConfigs, loading: fetching_configs } = usePartnerConfigs()
+
 const id = useRoute().params.id as string
 const account_sid = useRoute().params.accountSid as string
 const verifingAddress = ref(false)
@@ -279,7 +319,13 @@ const partnerAssetStats = computed(() => {
 
 getPartnerById(id)
 getPartnerKyc(account_sid)
-getPartnerEarning(account_sid)
+getPartnerConfigs()
+// getPartnerEarning(account_sid)
+
+watch(() => selectedPartner.value?.account_sid, () => {
+	const sid = selectedPartner.value?.account_sid
+	if (sid) getPartnerEarning(sid)
+})
 
 definePageMeta({
 	layout: 'dashboard',

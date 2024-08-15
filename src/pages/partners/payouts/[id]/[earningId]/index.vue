@@ -76,7 +76,7 @@
 								PARTNERS PAYOUT
 							</h3>
 						</div>
-						<div v-for="n in payout_info" :key="n.key" class="flex items-center justify-between gap-4 py-3 border-b">
+						<div v-for="n in payout_info" :key="n.key" class="flex items-center justify-between gap-4 py-4 border-b">
 							<p class="key">
 								{{ n.key }}
 							</p>
@@ -86,7 +86,7 @@
 								{{ n?.value }}
 							</p>
 						</div>
-						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-3 border-b">
+						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-4 border-b">
 							<p class="key">
 								Marked by
 							</p>
@@ -94,26 +94,54 @@
 								{{ earningInfo?.markedAsPaidUserInfo?.name || 'N/A' }}
 							</router-link>
 						</div>
-						<div class="flex items-center justify-between py-2">
-							<div class="flex items-center gap-2">
-								<p class="key">
-									Approvals
-								</p>
-								<VTooltip>
-									<a class="cursor-pointer">
-										<img src="@/assets/icons/source/help.svg" class="w-4" alt="">
-									</a>
+						<div class="flex flex-col py-4 gap-1">
+							<div class="flex items-center justify-between gap-4 w-full">
+								<div class="flex items-center gap-2">
+									<p class="key">
+										Approvals
+									</p>
+									<VTooltip>
+										<a class="cursor-pointer">
+											<img src="@/assets/icons/source/help.svg" class="w-4" alt="">
+										</a>
 
-									<template #popper>
-										Two approvals are needed to initiate this payout
-									</template>
-								</VTooltip>
-							</div>
-							<div class="flex flex-col gap-1 text-sm text-dark">
-								<p v-for="n in approvers" :key="n.id">
-									{{ n.staffName }}
+										<template #popper>
+											Two approvals are needed to initiate this payout
+										</template>
+									</VTooltip>
+								</div>
+								<p class="text-sm text-dark font-medium">
+									{{ approvers?.length }}/2
 								</p>
 							</div>
+							<div class="flex flex-col gap-1 text-sm text-dark border-l-4 pl-2">
+								<div v-for="n in approvers" :key="n?.id" class="flex items-center gap-4 justify-between text-sm">
+									<router-link :to="`/admin/${n?.staffId}/info`" class="text-green7 font-medium underline">
+										{{ n?.staffName }}
+									</router-link>
+									<p class="text-grey5">
+										{{ moment(n?.createdAt).format('lll') }}
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div v-if="earningInfo?.status === 'settled'" class="flex items-center justify-between gap-4 py-4 border-t">
+							<p class="key">
+								Session ID
+							</p>
+							<p class="value">
+								{{ earningInfo?.reference || 'N/A' }}
+							</p>
+						</div>
+
+						<div v-if="earningInfo?.status === 'settled'" class="flex items-center justify-between gap-4 py-4 border-t">
+							<p class="key">
+								Settlement date
+							</p>
+							<p class="value">
+								{{ earningInfo?.settlementDate ? moment(earningInfo?.settlementDate).format('lll') : 'N/A'}}
+							</p>
 						</div>
 					</div>
 					<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
@@ -257,8 +285,11 @@ const partner_info = computed(() => {
 const payout_info = computed(() => {
 	const data = [
 		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue || 0) },
+		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
-		{ key: 'Status', value: earningInfo.value?.status || '' }
+		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
+		{ key: 'Status', value: earningInfo.value?.status || '' },
+		{ key: 'Payout type', value: '' }
 	]
 	return data
 })

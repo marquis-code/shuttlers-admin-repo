@@ -82,4 +82,14 @@
     .link {
         @apply text-[#4848ED] underline;
     }
+
+    .badge {
+        @apply w-fit p-1 px-2 rounded font-medium
+    }
+    .badge-blue {
+        @apply badge text-[#2323F0] bg-[#F0F0FF]
+    }
+    .badge-green {
+        @apply badge text-green7 bg-[#CCFEE4]
+    }
 }

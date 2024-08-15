@@ -33,9 +33,9 @@
 					<input v-model="partnerDeductionObj.percentage.value" required type="number" class="input-field" minlength="3" min="1" max="100">
 				</div>
 
-				<div class="flex flex-col gap-2">
+				<div v-if="partnerDeductionObj.type.value === 'default'" class="flex flex-col gap-2">
 					<label class="label">Description</label>
-					<textarea v-model.trim="partnerDeductionObj.desc.value" :disabled="partnerDeductionObj.type.value === 'wht'" required placeholder="Write a short description about this deduction" class="input-field max-h-[100px]" cols="20" rows="10" />
+					<textarea v-model.trim="partnerDeductionObj.desc.value" required placeholder="Write a short description about this deduction" class="input-field max-h-[100px]" cols="20" rows="10" />
 				</div>
 
 				<div v-if="partnerDeductionObj.type.value === 'wht'" class="border border-[#FFED80] bg-[#FFFCEB] text-[#B89E00] p-4 text-sm rounded-lg">
@@ -54,7 +54,7 @@
 			<section v-if="form_step === 2" class="flex flex-col gap-4 w-full">
 				<span class="flex items-center justify-between">
 					<p class="text-sm">Amount:</p>
-					<p class="text-sm">{{ partnerDeductionObj.percentage.value }}% of {{ convertToCurrency(partnerDeductionObj.data.value.netRevenue!) }}</p>
+					<p class="text-sm">{{ partnerDeductionObj.percentage.value }}% of {{ convertToCurrency(partnerDeductionObj?.data?.value?.netRevenue!) }}</p>
 				</span>
 
 				<hr class="w-full ">
@@ -84,8 +84,11 @@
 					{{ loading ? 'processing...' : `${partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct Revenue' : 'Deduct'}` }}
 				</button>
 				<div v-else class="flex w-full">
-					<button type="button" class="modal-btn" @click="form_step = 2">
+					<!-- <button type="button" class="modal-btn" @click="form_step = 2">
 						Continue
+					</button> -->
+					<button type="submit" class="modal-btn">
+						Set WHT
 					</button>
 				</div>
 			</footer>
