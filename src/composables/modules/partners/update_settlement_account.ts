@@ -1,6 +1,6 @@
 import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
-import { usePartnerConfigs } from '@/composables/modules/partners'
+import { usePartnerConfigs, usePartnerIdDetails } from '@/composables/modules/partners'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { usePartnerModal } from '@/composables/core/modals'
 
@@ -23,7 +23,8 @@ export const useUpdateSettlementAccount = () => {
         const payload = {
             earningCycle: obj?.cycle.value
         }
-        const res = await partners_api.$_set_earning_cycle(partnerId, payload) as CustomAxiosResponse
+        const { selectedPartner } = usePartnerIdDetails()
+        const res = await partners_api.$_set_earning_cycle(selectedPartner.value?.account_sid, payload) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             useAlert().openAlert({
@@ -31,7 +32,7 @@ export const useUpdateSettlementAccount = () => {
                 msg: res?.data?.message || 'Partner earning cycle updated successfully'
             })
             usePartnerModal().closeUpdateSettlementAccount()
-            usePartnerConfigs().getPartnerConfigs()
+            usePartnerConfigs().getPartnerConfigs(selectedPartner.value?.account_sid)
         }
         loading.value = false
     }

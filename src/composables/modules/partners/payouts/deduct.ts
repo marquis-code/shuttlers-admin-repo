@@ -29,7 +29,7 @@ const clearObj = () => {
 	partnerDeductionObj.percentage.value = null
 }
 const isFromDetailsPage = ref(false)
-const partnerId = ref('')
+const partnerSid = ref('')
 
 const WHT_deducted_amount = computed(() => {
 	return Number((((partnerDeductionObj.percentage.value || 0) / 100) * partnerDeductionObj.data.value.netRevenue!).toFixed(2))
@@ -50,7 +50,7 @@ watch([partnerDeductionObj.type, partnerDeductionObj.percentage], (val) => {
 
 export const useDeductPayout = () => {
 	const initDeduct = (_data: Record<string, any>, from_details_page = false, isRevenue = false) => {
-		partnerId.value = _data?.partnerId || ''
+		partnerSid.value = _data?.account_sid || ''
 		partnerDeductionObj.data.value = _data.earningInfo
 		partnerDeductionObj.id.value = _data.id
 		partnerDeductionObj.total_amount.value = isRevenue ? _data.finalPartnersRevenue : _data.amount
@@ -71,14 +71,14 @@ export const useDeductPayout = () => {
 		if (partnerDeductionObj.type.value === 'default') {
 			res = await earnings_api.$_deduct_earnings(partnerDeductionObj.id.value!, payload) as CustomAxiosResponse
 		} else {
-			if (!partnerId.value) {
+			if (!partnerSid.value) {
 				useAlert().openAlert({
 					type: 'ERROR',
 					msg: 'Partner id is required'
 				})
 				return
 			}
-			res = await partners_api.$_set_earning_cycle(partnerId.value, wthPayload) as CustomAxiosResponse
+			res = await partners_api.$_set_earning_cycle(partnerSid.value, wthPayload) as CustomAxiosResponse
 		}
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
