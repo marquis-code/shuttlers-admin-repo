@@ -2,7 +2,7 @@ import { Ref, ref } from 'vue'
 import moment from 'moment'
 import { usePendingPayouts } from './pending'
 import { usePayoutDetails, useEarningsRevenues } from './details/fetch'
-import { earnings_api, CustomAxiosResponse } from '@/api_factory/modules'
+import { earnings_api, CustomAxiosResponse, partners_api } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
 
@@ -29,6 +29,7 @@ const clearObj = () => {
 	partnerDeductionObj.percentage.value = null
 }
 const isFromDetailsPage = ref(false)
+const partnerId = ref('')
 
 const WHT_deducted_amount = computed(() => {
 	return Number((((partnerDeductionObj.percentage.value || 0) / 100) * partnerDeductionObj.data.value.netRevenue!).toFixed(2))
@@ -49,6 +50,7 @@ watch([partnerDeductionObj.type, partnerDeductionObj.percentage], (val) => {
 
 export const useDeductPayout = () => {
 	const initDeduct = (_data: Record<string, any>, from_details_page = false, isRevenue = false) => {
+		partnerId.value = _data?.partnerId || ''
 		partnerDeductionObj.data.value = _data.earningInfo
 		partnerDeductionObj.id.value = _data.id
 		partnerDeductionObj.total_amount.value = isRevenue ? _data.finalPartnersRevenue : _data.amount
@@ -61,8 +63,23 @@ export const useDeductPayout = () => {
 			amount: Number(partnerDeductionObj.amount.value),
 			description: partnerDeductionObj.desc.value
 		}
+		const wthPayload = {
+			withholdingTax: partnerDeductionObj.percentage.value
+		}
 		loading.value = true
-		const res = await earnings_api.$_deduct_earnings(partnerDeductionObj.id.value!, payload) as CustomAxiosResponse
+		let res: CustomAxiosResponse
+		if (partnerDeductionObj.type.value === 'default') {
+			res = await earnings_api.$_deduct_earnings(partnerDeductionObj.id.value!, payload) as CustomAxiosResponse
+		} else {
+			if (!partnerId.value) {
+				useAlert().openAlert({
+					type: 'ERROR',
+					msg: 'Partner id is required'
+				})
+				return
+			}
+			res = await partners_api.$_set_earning_cycle(partnerId.value, wthPayload) as CustomAxiosResponse
+		}
         if (res.type !== 'ERROR') {
 			useAlert().openAlert({ type: 'SUCCESS', msg: res.data?.message || 'Deduction successful' })
 			usePayoutModal().closeDeductPayout()
