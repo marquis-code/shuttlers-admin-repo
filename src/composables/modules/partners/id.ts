@@ -120,7 +120,7 @@ export const useGetPartnersCompletedTripsList = () => {
 
         if (res.type !== 'ERROR') {
             partnersCompletedTripsList.value = res.data.result
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.pages
         }
         loading.value = false
 
