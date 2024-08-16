@@ -71,8 +71,8 @@ const filterData = {
     search: ref('')
 }
 
+const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 export const useEarningsRevenues = () => {
-	const { moveTo, metaObject, next, prev, setFunction } = usePagination()
 	const fetchRevenues = async () => {
 		revenues.value = []
 		const earningId = useRoute().params.earningId as string
@@ -80,7 +80,7 @@ export const useEarningsRevenues = () => {
 		const res = await earnings_api.$_get_partner_revenue(partnerInfo.value.account_sid, earningId, metaObject, filterData) as CustomAxiosResponse
         if (res.type !== 'ERROR') {
 			revenues.value = res.data.result?.length ? res.data.result : []
-            metaObject.total.value = res.data.metadata?.pages || 0
+            metaObject.total.value = res.data.metadata?.pages || 1
 			revenueMeta.value = res.data.metadata?.revenue
         }
         loading.value = false

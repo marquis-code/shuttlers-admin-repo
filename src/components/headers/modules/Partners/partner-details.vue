@@ -1,5 +1,15 @@
 <template>
-	<HeadersHeaderSlot :title="`${selectedPartner?.owner?.fname} ${selectedPartner?.owner?.lname}`" pre-title="VEHICLE PARTNER OVERVIEW" :loading="Object.keys(selectedPartner).length === 0">
+	<HeadersHeaderSlot pre-title="VEHICLE PARTNER OVERVIEW" :loading="Object.keys(selectedPartner).length === 0">
+		<template #title>
+			<div class="flex items-center gap-2">
+				<h3>
+					{{ selectedPartner?.owner?.fname || 'N/A' }} {{ selectedPartner?.owner?.lname }}
+				</h3>
+				<p class="badge-blue text-sm capitalize">
+					{{ selectedPartner?.mode }}
+				</p>
+			</div>
+		</template>
 		<template #tabs>
 			<RouterTabs :tabs="pageTabs" />
 		</template>
@@ -49,7 +59,7 @@ const pageTabs = computed(() => [
         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/drivers`
     },
     {
-        name: 'Completed Trips',
+        name: 'Unsettled Revenues',
         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/completed-trips`
     },
     {
