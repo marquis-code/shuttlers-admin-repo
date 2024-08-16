@@ -33,6 +33,12 @@
 				<p v-if="item.payout_month" class="text-sm whitespace-nowrap">
 					{{ item?.data?.referenceTime ? moment(item?.data?.referenceTime).format('MMMM, YYYY') : 'N/A' }}
 				</p>
+				<p v-if="item.earning_cycle" class="text-sm whitespace-nowrap capitalize" :class="item.data?.payoutType === 'monthly' ? 'badge-blue' : 'badge-green'">
+					{{ item.data?.payoutType }}
+				</p>
+				<p v-if="item.period" class="text-sm min-w-[100px]">
+					{{ item?.data?.earningPeriod?.start ? moment(item?.data?.earningPeriod?.start).format('ll') : 'N/A' }} - {{ item?.data?.earningPeriod?.end ? moment(item?.data?.earningPeriod?.end).format('ll') : 'N/A' }}
+				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
 					{{ item?.data?.approvalsCount || 0 }}/2
 				</p>
@@ -76,8 +82,10 @@ definePageMeta({
 
 const tableFields = ref([
 	{ text: 'PARTNER NAME', value: 'name' },
-	{ text: 'PAYOUT MONTH', value: 'payout_month' },
+	// { text: 'PAYOUT MONTH', value: 'payout_month' },
 	{ text: 'COMPANY NAME', value: 'company_name', width: '50%' },
+	{ text: 'Earning cycle', value: 'earning_cycle' },
+	{ text: 'PAYOUT PERIOD', value: 'period' },
 	{ text: 'EMAIL', value: 'company_email' },
 	{ text: 'Net Revenue (₦)', value: 'net' },
 	{ text: 'Deduction (₦)', value: 'deduction' },

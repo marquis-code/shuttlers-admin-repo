@@ -148,7 +148,7 @@
 								Settlement date
 							</p>
 							<p class="value">
-								{{ earningInfo?.settlementDate ? moment(earningInfo?.settlementDate).format('lll') : 'N/A'}}
+								{{ earningInfo?.settlementDate ? moment(earningInfo?.settlementDate).format('lll') : 'N/A' }}
 							</p>
 						</div>
 					</div>
