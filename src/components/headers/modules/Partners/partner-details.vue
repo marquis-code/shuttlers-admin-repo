@@ -59,7 +59,7 @@ const pageTabs = computed(() => [
         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/drivers`
     },
     {
-        name: 'Completed Trips',
+        name: 'Unsettled Revenues',
         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/completed-trips`
     },
     {
