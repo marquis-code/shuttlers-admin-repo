@@ -107,7 +107,7 @@ export const useGetPartnersCompletedTripsList = () => {
     const partnersCompletedTripsList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref(''),
+        // status: ref('active'),
         search: ref(''),
         isSettled: ref(false)
     }
@@ -124,23 +124,23 @@ export const useGetPartnersCompletedTripsList = () => {
         }
         loading.value = false
 
-            watch([filterData.status], (val) => {
-        getPartnersCompletedTrips(account_sid)
-    })
+        watch([filterData.search], (val) => {
+            getPartnersCompletedTrips(account_sid)
+        })
     }
     setFunction(getPartnersCompletedTrips)
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
-            case 'status':
-                filterData.status.value = data.value
-                break
+            // case 'status':
+            //     filterData.status.value = Number(data.value) === 1 ? 'active' : 'inactive'
+            //     break
             case 'search':
                     filterData.search.value = data.value
                 break
-            case 'isSettled':
-                    filterData.isSettled.value = data.value
-                break
+            // case 'isSettled':
+            //         filterData.isSettled.value = data.value
+            //     break
         }
     }
 

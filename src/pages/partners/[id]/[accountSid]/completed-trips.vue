@@ -3,7 +3,7 @@
 		<ButtonGoBack url="/partners" class="mb-6" />
 		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersCompletedTripsList" class="cursor-pointer">
 			<template #header>
-				<TableFilter :filter-type="{ showStatus: true, showSearchBar: true }" @filter="onFilterUpdate" />
+				<TableFilter :filter-type="{ showStatus: false, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
 			<template #item="{ item }">
 				<p v-if="item.status" class="text-xs text-white rounded-lg py-1.5 w-14 text-center" :class="[item.data.status ? 'bg-green-500 py-1' : 'bg-yellow-500 py-1 ']">
@@ -56,9 +56,9 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { useGetPartnersCompletedTripsList } from '@/composables/modules/partners/id'
 const { getPartnersCompletedTrips, loading, partnersCompletedTripsList, filterData, onFilterUpdate, moveTo, next, prev, page, total } = useGetPartnersCompletedTripsList()
 const id = useRoute().params.accountSid as string
-filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
+// filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
 getPartnersCompletedTrips(id)
-filterData.isSettled.value = true
+filterData.isSettled.value = false
 
 definePageMeta({
     layout: 'dashboard',
