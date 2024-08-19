@@ -114,7 +114,8 @@ export const useGetPartnersCompletedTripsList = () => {
 
     const { $_get_partner_completed_trips_by_id } = partners_api
 
-    const getPartnersCompletedTrips = async (account_sid:string) => {
+    const getPartnersCompletedTrips = async () => {
+        const account_sid = useRoute().params.accountSid as string
         loading.value = true
         const res = await $_get_partner_completed_trips_by_id(account_sid, metaObject, filterData) as CustomAxiosResponse
 
@@ -125,7 +126,7 @@ export const useGetPartnersCompletedTripsList = () => {
         loading.value = false
 
         watch([filterData.search], (val) => {
-            getPartnersCompletedTrips(account_sid)
+            getPartnersCompletedTrips()
         })
     }
     setFunction(getPartnersCompletedTrips)
