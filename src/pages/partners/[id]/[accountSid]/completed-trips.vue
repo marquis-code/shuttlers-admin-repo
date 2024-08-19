@@ -1,7 +1,7 @@
 <template>
 	<main>
 		<ButtonGoBack url="/partners" class="mb-6" />
-		<Table :loading="loading" :headers="tableFields" :table-data="formattedPartnersCompletedTripsList" class="cursor-pointer">
+		<Table :loading="loading" :headers="tableFields" :has-index="true" :table-data="formattedPartnersCompletedTripsList" :page="page" class="cursor-pointer">
 			<template #header>
 				<TableFilter :filter-type="{ showStatus: false, showSearchBar: true }" @filter="onFilterUpdate" />
 			</template>
@@ -57,7 +57,7 @@ import { useGetPartnersCompletedTripsList } from '@/composables/modules/partners
 const { getPartnersCompletedTrips, loading, partnersCompletedTripsList, filterData, onFilterUpdate, moveTo, next, prev, page, total } = useGetPartnersCompletedTripsList()
 const id = useRoute().params.accountSid as string
 // filterData.status.value = useRoute().query.status === '1' ? 'active' : 'inactive'
-getPartnersCompletedTrips(id)
+getPartnersCompletedTrips()
 filterData.isSettled.value = false
 
 definePageMeta({
@@ -92,11 +92,11 @@ const formattedPartnersCompletedTripsList = computed(() => {
 })
 
 const tableFields = ref([
-	{
-		text: 'S/N',
-		value: 'table_index',
-		width: '10%'
-	},
+	// {
+	// 	text: 'S/N',
+	// 	value: 'table_index',
+	// 	width: '10%'
+	// },
 	{
 		text: 'TRIP DATE',
 		value: 'createdAt'
