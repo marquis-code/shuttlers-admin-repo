@@ -83,8 +83,8 @@ upcomingTripsList.value.map((i:any, index) => {
          return {
              ...i,
              route_code: i?.route?.route_code ?? 'N/A',
-			//  trip_time: i?.itinerary?.trip_time ?? 'N/A',
-			trip_time: i?.route?.itineraries![0]?.trip_time ?? 'N/A',
+
+			trip_time: i?.route?.itineraries.filter((b) => b.id === i.route_itinerary_id)[0].trip_time ?? 'N/A',
 			 pickup: i?.route?.pickup ?? 'N/A',
 			 dropoff: i?.route?.destination ?? 'N/A',
 			 partner: i?.vehicle?.partner?.company_name ? `${i?.vehicle?.partner?.company_name} (${i?.vehicle?.partner?.company_phone})` : 'N/A',
