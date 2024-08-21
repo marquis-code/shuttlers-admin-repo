@@ -107,40 +107,41 @@ export const useGetPartnersCompletedTripsList = () => {
     const partnersCompletedTripsList = ref([] as any)
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
-        status: ref(''),
+        // status: ref('active'),
         search: ref(''),
         isSettled: ref(false)
     }
 
     const { $_get_partner_completed_trips_by_id } = partners_api
 
-    const getPartnersCompletedTrips = async (account_sid:string) => {
+    const getPartnersCompletedTrips = async () => {
+        const account_sid = useRoute().params.accountSid as string
         loading.value = true
         const res = await $_get_partner_completed_trips_by_id(account_sid, metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
             partnersCompletedTripsList.value = res.data.result
-            metaObject.total.value = res.data.metadata.total
+            metaObject.total.value = res.data.metadata.pages
         }
         loading.value = false
 
-            watch([filterData.status], (val) => {
-        getPartnersCompletedTrips(account_sid)
-    })
+        watch([filterData.search], (val) => {
+            getPartnersCompletedTrips()
+        })
     }
     setFunction(getPartnersCompletedTrips)
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
-            case 'status':
-                filterData.status.value = data.value
-                break
+            // case 'status':
+            //     filterData.status.value = Number(data.value) === 1 ? 'active' : 'inactive'
+            //     break
             case 'search':
                     filterData.search.value = data.value
                 break
-            case 'isSettled':
-                    filterData.isSettled.value = data.value
-                break
+            // case 'isSettled':
+            //         filterData.isSettled.value = data.value
+            //     break
         }
     }
 
