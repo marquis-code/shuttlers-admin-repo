@@ -77,6 +77,7 @@ export const useCorporateTripReport = () => {
     return { corporateTripReport, loading, getCorporateTripReport, filterData, onFilterUpdate, next, prev, moveTo, ...metaObject }
 }
 
+const corporateGroupList = ref([] as any)
 export const useCorporateGroups = () => {
     const { moveTo, metaObject, next, prev, setFunction } = usePagination()
     const filterData = {
@@ -86,7 +87,6 @@ export const useCorporateGroups = () => {
         getCorporateGroups()
     })
     const loading = ref(false)
-    const corporateGroupList = ref([] as any)
     const getCorporateGroups = async () => {
         loading.value = true
         const res = await corporates_api.$_get_trips_groups(Number(selectedCorporateId.value), metaObject, filterData) as CustomAxiosResponse

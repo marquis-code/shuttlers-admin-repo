@@ -84,7 +84,7 @@ export const corporates_api = {
 	},
 	$_get_trips_groups: (corporateId: number, metaObject: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/corporates/${corporateId}/groups?query=${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
+		const url = `/corporates/${corporateId}/groups?${queryParams}&limit=${metaObject.page_size.value}&page=${metaObject.page.value}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_get_credit_system: (corporateId: number|string) => {
@@ -277,13 +277,17 @@ export const corporates_api = {
 		const url = `/corporates/${corporateId}/staff?limit=${20}&page=${1}&search=${search}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
-	$_get_corporate_group_by_id: (id: string | number) => {
-		const url = `/corporate-groups/${id}/members?related=corporateGroup,staff`
+	$_get_corporate_group_by_id: (group_id: string | number) => {
+		const url = `/corporate-groups/${group_id}/members?related=corporateGroup,staff`
 		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_edit_corporate_group_by_id: (corporate_id: string | number, group_id: string | number, payload: any) => {
 		const url = `/corporates/${corporate_id}/groups/${group_id}`
 		return GATEWAY_ENDPOINT_WITH_AUTH.patch(url, payload)
+	},
+	$_get_corporate_group_detail_by_id: (corporate_id: string | number, group_id: string | number) => {
+		const url = `/corporates/${corporate_id}/groups/${group_id}`
+		return GATEWAY_ENDPOINT_WITH_AUTH.get(url)
 	},
 	$_add_corporate_group_members: (group_id: string | number, payload) => {
 		const url = `/corporate-groups/${group_id}/members`
