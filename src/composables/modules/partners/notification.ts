@@ -1,6 +1,7 @@
 import { partners_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 import { useConfirmationModal } from '@/composables/core/confirmation'
+import { usePartnerModal } from '@/composables/core/modals'
 
 const credentials = {
     title: ref(''),
@@ -10,6 +11,15 @@ const credentials = {
     notifyAll: ref(false)
 }
 
+const clearObj = () => {
+    credentials.title.value = ''
+    credentials.description.value = ''
+    credentials.sms.value = false
+    credentials.email.value = false
+    credentials.notifyAll.value = false
+    selectedPartners.value = []
+}
+
 const selectedPartners = ref([] as any[])
 const notificationType = ref('regular')
 const search = ref('')
@@ -17,13 +27,23 @@ const search = ref('')
 export const useCreateNotification = () => {
     const creatingNotification = ref(false)
     const message = ref('')
-    // const isFormEmpty = computed(() => {
-    //     return !!(credentials.description && credentials.title)
-    //     // return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
-    // })
+    const isFormEmpty = computed(() => {
+        return !!(credentials.description && credentials.title)
+        // return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
+    })
 
-        const sendNotification = async () => {
-            useConfirmationModal().openAlert({ type: 'NORMAL', title: 'Please Confirm', desc: `Are you sure you want to notify ${selectedPartners.value.length} partners?`, loading: creatingNotification, call_function: () => createNotifications() })
+    const showPreview = () => {
+        usePartnerModal().openConfirmPartnerNotification()
+    }
+
+    const sendNotification = async () => {
+        useConfirmationModal().openAlert({
+            type: 'NORMAL',
+            title: 'Confirm action',
+            desc: `Are you sure you want this message sent to ${credentials.notifyAll.value ? 'all users' : `${selectedPartners.value?.length} partners`}?`,
+            loading: creatingNotification,
+            call_function: () => createNotifications()
+        })
     }
 
     const createNotifications = async () => {
@@ -39,8 +59,9 @@ export const useCreateNotification = () => {
 
         if (res.type !== 'ERROR') {
             useAlert().openAlert({ type: 'SUCCESS', msg: 'Notification sent successfully' })
+            usePartnerModal().closeConfirmPartnerNotification()
             useConfirmationModal().closeAlert()
-            credentials.description.value = ''
+            clearObj()
         }
         creatingNotification.value = false
     }
@@ -50,7 +71,7 @@ export const useCreateNotification = () => {
         selectedPartners.value.splice(index, 1)
     }
 
-    return { createNotifications, sendNotification, creatingNotification, message, credentials, notificationType, selectedPartners, removeSelectedPartner, search }
+    return { createNotifications, sendNotification, creatingNotification, message, credentials, notificationType, selectedPartners, removeSelectedPartner, search, isFormEmpty, showPreview }
 }
 
 const resetCredentials = () => {
