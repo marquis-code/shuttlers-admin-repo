@@ -1,5 +1,5 @@
 import { corporates_api, CustomAxiosResponse } from '@/api_factory/modules'
-import { useCorporateIdDetails } from '@/composables/modules/corporates/id'
+import { useCorporateIdDetails, useCorporateGroups } from '@/composables/modules/corporates/id'
 import { convertObjWithRefToObj } from '@/composables/utils/formatter'
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useAlert } from '@/composables/core/notification'
@@ -22,7 +22,8 @@ export const useCreateCorporateGroup = () => {
                 msg: 'Corporate group was successfully created'
               })
             useCompaniesModal().closeCreateCorporateGroup()
-              fetchGroup(Number(selectedCorporate.value.id))
+              // fetchGroup(Number(selectedCorporate.value.id))
+              useCorporateGroups().getCorporateGroups()
         }
         loading.value = false
 	}

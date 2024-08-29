@@ -1,7 +1,7 @@
 <template>
 	<main class="">
 		<ButtonGoBack url="/companies" class="mb-6" />
-		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="corporateGroupList" :option="onRowClicked">
+		<Table :loading="loading" :headers="tableFields" :page="page" :has-index="true" :table-data="groups" :option="onRowClicked">
 			<template #header>
 				<TableFilter :filter-type="{showSearchBar:true}" @filter="onFilterUpdate" />
 			</template>
@@ -11,7 +11,7 @@
 				</span>
 			</template>
 			<template #footer>
-				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+				<TablePaginator :current-page="page" :total-pages="total_pages" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -21,8 +21,12 @@
 import { useDateFormat } from '@vueuse/core'
 import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
 import { useCorporateGroups } from '@/composables/modules/corporates/id'
-const { corporateGroupList, loading, getCorporateGroups, filterData, onFilterUpdate, next, prev, moveTo, total, page } = useCorporateGroups()
-getCorporateGroups()
+import { useFetchGroup } from '@/composables/modules/corporates/group'
+// const { corporateGroupList, loading, getCorporateGroups, filterData, onFilterUpdate, next, prev, moveTo, total, page } = useCorporateGroups()
+const { loading, fetchGroup, groups, onFilterUpdate, next, prev, moveTo, total_pages, page } = useFetchGroup()
+// getCorporateGroups()
+fetchGroup()
+
 definePageMeta({
     layout: 'dashboard',
     middleware: ['is-authenticated']
