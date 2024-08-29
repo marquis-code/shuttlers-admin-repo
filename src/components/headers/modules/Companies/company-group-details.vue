@@ -1,9 +1,12 @@
 <template>
-	<HeadersHeaderSlot :title="`${pageTitle}`" pre-title="Overview" :loading="loading" />
+	<HeadersHeaderSlot :loading="loading_detail" :title="`${groupDetails?.name}`" pre-title="Overview" />
 </template>
 
 <script setup lang="ts">
 import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
+import { useCreateGroup, useCorporateGroupDetails } from '@/composables/modules/corporates/group'
+
+const { groupDetails, loading: loading_detail } = useCorporateGroupDetails()
 const router = useRouter()
 const route = useRoute()
 const { loading, selectedCorporateGroup, getCorporateGroupByGroupId } = useCorporateGroupByGroupId()

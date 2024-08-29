@@ -1,9 +1,9 @@
 <template>
 	<main class="space-y-4">
-		<ButtonGoBack class="mb-6" />
+		<ButtonGoBack class="mb-6" :url="`/companies/${$route.params.id}/${$route.params.status}/company-groups`" />
 		<div class="flex justify-end items-end">
 			<div class="flex items-center gap-x-3">
-				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5" @click="handleChangeGroup">
+				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5" @click="initEditGroup(groupDetails)">
 					Change group
 				</button>
 				<button class="text-xs bg-black text-white rounded-md px-3 py-2.5" @click="handleAddStaff">
@@ -59,6 +59,10 @@
 <script setup lang="ts">
 import { useCompaniesModal } from '@/composables/core/modals'
 import { useCorporateGroupByGroupId } from '@/composables/modules/corporates/getCorporateGroupByGroupId'
+import { useCreateGroup, useCorporateGroupDetails } from '@/composables/modules/corporates/group'
+
+const { initEditGroup } = useCreateGroup()
+const { getGroupDetails, groupDetails } = useCorporateGroupDetails()
 const {
 	handleChangeGroup,
 	handleDelete,
@@ -103,6 +107,15 @@ const tableFields = ref([
   { text: 'Action', value: 'id' }
 ])
 
+const editGroup = () => {
+	const q = useRoute().query
+	const obj = {
+		id: useRoute().params.group_id as string,
+		name: useRoute().query?.title as string
+	}
+	initEditGroup(obj)
+}
+
 const handleAddStaff = () => {
 	useCompaniesModal().openBatchAddCorporateGroupMembers()
 }
@@ -112,6 +125,8 @@ const deleteMember = (item: any) => {
 		getCorporateGroupByGroupId()
 	})
 }
+
+getGroupDetails()
 </script>
 
 <style scoped></style>
