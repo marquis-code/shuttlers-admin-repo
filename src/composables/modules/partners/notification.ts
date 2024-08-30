@@ -28,8 +28,7 @@ export const useCreateNotification = () => {
     const creatingNotification = ref(false)
     const message = ref('')
     const isFormEmpty = computed(() => {
-        return !!(credentials.description && credentials.title)
-        // return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
+        return !!(credentials.description.value && credentials.title.value && (selectedPartners.value.length || notificationType.value === 'all'))
     })
 
     const showPreview = () => {
@@ -71,7 +70,7 @@ export const useCreateNotification = () => {
         selectedPartners.value.splice(index, 1)
     }
 
-    return { createNotifications, sendNotification, creatingNotification, message, credentials, notificationType, selectedPartners, removeSelectedPartner, search, isFormEmpty, showPreview }
+    return { createNotifications, sendNotification, creatingNotification, message, credentials, notificationType, selectedPartners, removeSelectedPartner, search, isFormEmpty, showPreview, clearObj }
 }
 
 const resetCredentials = () => {

@@ -54,8 +54,9 @@ import { QuillEditor } from '@vueup/vue-quill'
 import { useCreateNotification } from '@/composables/modules/partners/notification'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
-const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedPartner, selectedPartners, search, showPreview } = useCreateNotification()
+const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedPartner, selectedPartners, search, showPreview, clearObj } = useCreateNotification()
 
+clearObj()
 </script>
 
 <style scoped>
