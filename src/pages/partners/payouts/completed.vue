@@ -40,7 +40,7 @@
 					{{ item?.data?.earningPeriod?.start ? moment(item?.data?.earningPeriod?.start).format('ll') : 'N/A' }} - {{ item?.data?.earningPeriod?.end ? moment(item?.data?.earningPeriod?.end).format('ll') : 'N/A' }}
 				</p>
 				<p v-if="item.approval" class="text-sm whitespace-nowrap">
-					{{ item?.data?.approvalsCount || 0 }}/2
+					{{ item?.data?.approvalsCount || 0 }}/3
 				</p>
 				<p v-if="item.amount" class="text-sm whitespace-nowrap">
 					{{ item.data?.amount ? convertToCurrency(item.data?.amount) : 0 }}
