@@ -1,93 +1,53 @@
 <template>
-	<section class="card w-6/12">
+	<section class="card w-full md:w-6/12 rounded-2xl">
 		<h1 class="card-header">
-			Customer Information
+			Rental Information
 		</h1>
 		<section class="flex flex-col gap-3">
-			<div class="flex justify-between text-sm">
-				<span class="labe">FULLNAME</span>
+			<div class="flex justify-between text-sm box">
+				<span class="label">Requested by</span>
 				<nuxt-link :to="`/users/${rentalDetails.user.id}/user-info`" class="link">
 					{{ rentalDetails.user.fname }} {{ rentalDetails.user.lname }}
 				</nuxt-link>
 			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">EMAIL ADDRESS</span>
-				<nuxt-link :to="`/users/${rentalDetails.user.id}/user-info`" class="link">
-					{{ rentalDetails.user.email }}
-				</nuxt-link>
+			<div class="flex justify-between text-sm box">
+				<span class="label">Departure date & time</span>
+				<span>{{ rentalDetails.pickup_date }}, {{ rentalDetails.pickup_time }}</span>
 			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">PHONE NUMBER</span>
-				<span>{{ rentalDetails.user.phone }}  </span>
+			<div class="flex justify-between text-sm box">
+				<span class="label">Date created</span>
+				<span>{{ useDateFormat(rentalDetails.created_at, "MM/DD/YYYY HH:mm A").value }}</span>
 			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">DATE CREATED</span>
-				<span>{{ useDateFormat(rentalDetails.created_at, "MMMM d, YYYY, HH:MM A").value }} </span>
+			<div class="flex justify-between text-sm box">
+				<span class="label">Auctioning to partner?</span>
+				<span class="text-red-500">No</span>
 			</div>
-		</section>
+			<!-- <div class="flex justify-between text-sm items-center">
+				<span class="label">Shuttlers Margin</span>
+				<div class="flex items-center gap-2">
+					<span>3%</span>
+					<button class="btn btn-outline-xs">
+						Update Margin
+					</button>
+				</div>
+			</div> -->
 
-		<h1 class="card-header mt-7">
-			Pickup Information
-		</h1>
-		<section class="flex flex-col gap-3">
-			<div class="flex justify-between text-sm">
-				<span class="labe">NUMBER OF VEHICLES</span>
-				<span>{{ rentalDetails.vehicle_orders.length }}  </span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">ESTIMATED NO. OF PASSENGERS</span>
-				<span>{{ rentalDetails.passengers }} </span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">PICKUP ADDRESS</span>
-				<span>{{ rentalDetails.pickup_address }} </span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">PICKUP DATE</span>
-				<span>{{ rentalDetails.pickup_date }},  {{ rentalDetails.pickup_time }}</span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">DROP OFF</span>
-				<span>{{ rentalDetails.dropoff_address }} </span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">NUMBER OF STOPS</span>
-				<span>{{ rentalDetails.stops.length }} </span>
-			</div>
-		</section>
-
-		<h1 class="card-header mt-7">
-			Stops
-		</h1>
-		<section class="flex flex-col gap-3">
-			<div v-for="(stop, idx) in rentalDetails.stops" :key="stop.address" class="flex justify-between text-sm">
-				<span class="labe">STOP {{ idx +1 }}</span>
-				<span>{{ stop.address }}  </span>
-			</div>
-		</section>
-
-		<section v-if="rentalDetails.return_date" class="flex flex-col gap-3">
-			<h1 class="card-header mt-7">
-				Return Trip
-			</h1>
-			<div class="flex justify-between text-sm">
-				<span class="labe">RETURN ADDRESS</span>
-				<span>{{ rentalDetails.return_address }}  </span>
-			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">PICKUP DATE</span>
-				<span>{{ rentalDetails.return_date }} {{ rentalDetails.return_time }} </span>
-			</div>
-		</section>
-
-		<section class="flex flex-col gap-3 mt-7">
-			<div class="flex justify-between text-sm">
-				<span class="labe">STATUS</span>
+			<div class="flex justify-between text-sm items-center box">
+				<span class="label">Rental Status</span>
 				<StatusBadge :name="rentalDetails.status" />
 			</div>
-			<div class="flex justify-between text-sm">
-				<span class="labe">PAYMENT STATUS</span>
+			<div class="flex justify-between text-sm items-center box">
+				<span class="label">Payment Status</span>
 				<StatusBadge :name="rentalDetails?.userRoute?.booking_status || 'false'" />
+			</div>
+			<div class="flex justify-between text-sm items-end mt-4">
+				<span class=" flex flex-col">
+					<span>Amount to be paid</span>
+					<span class="font-bold text-lg text-dark">₦0.00</span>
+				</span>
+				<button class="link">
+					View cost information
+				</button>
 			</div>
 		</section>
 	</section>
@@ -96,16 +56,22 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 
- defineProps({
-     rentalDetails: {
-         type: Object,
-         required: true
-     }
- })
+defineProps({
+	rentalDetails: {
+		type: Object,
+		required: true
+	}
+})
 </script>
 
 <style scoped>
-.labe{
-    @apply text-grey5 font-bold
+.box {
+	@apply border-b border-gray-200 pb-2;
+}
+.label {
+	@apply text-gray-500 font-medium;
+}
+.card-header {
+	@apply text-lg font-semibold mb-4;
 }
 </style>

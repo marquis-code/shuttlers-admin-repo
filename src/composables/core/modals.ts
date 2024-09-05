@@ -90,6 +90,7 @@ import TransferBookings from '@/components/modals/modules/trips/TransferBookings
 import UpdateBanner from '@/components/modals/modules/campaigns/banner/updateBanner.vue'
 import UpdateSettlementAccount from '@/components/modals/modules/partners/UpdateSettlementAccount.vue'
 import ConfirmPartnerNotification from '@/components/modals/modules/partners/ConfirmNotification.vue'
+import RejectRental from '@/components/modals/modules/Routes/RentalRejection.vue'
 
 type AuthTypes = 'Logout'
 type UserTypes = 'UserRefund' | 'CancelBooking' | 'RefundLogger' | 'ChangeUserPassword' | 'WalletUpdate' | 'ChangeProfile' | 'BookTrip' | 'MakeBusCaptain' | 'ConfirmNotifications'
@@ -102,7 +103,7 @@ type CompaniesTypes = 'AssignStaff' | 'WalletNotification' | 'ViewStaffRoutesLis
 type ConfigureVehicleTypes = 'ConfigureInspectionSite' | 'ConfigureVehicleCategory' | 'DeleteVehicleCategory'
 type DriverTypes = 'AddDriver' | 'AssignDriver' | 'ItineraryTransferBooking' | 'AssignBus' | 'AssignRoute' | 'ControlTrip' | 'ChangeDriverPassword' | 'ChangeDriverPicture'
 type TripsTypes = 'DeductEarning' | 'AddPassengersToTrips' | 'TransferBookings' | 'NotifyPassengers' | 'LogIssues' | 'ResolveIssues' | 'CreateIssues' | 'TransferTrip' | 'CancelTrip'
-type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason' | 'ConfigureAgentPoints'
+type RouteTypes = 'RouteDuplicationModal' | 'AddItinerary' | 'PairReturnTrip' | 'ConfigureAgentCommission' | 'DeclineReason' | 'ConfigureAgentPoints' | 'RejectRental'
 type VehicleTypes = 'EditBus' | 'UpdateVehicleTracking' | 'ChangeFleetDriver' | 'EditVehicleBus'
 type PayoutTypes = 'DeductPayout' | 'MarkMultipleAsPaid' | 'ResyncRevenue'
 type PartnerTypes = 'ConfirmPartnerNotification' | 'UpdateSettlementAccount' | 'UpdatePartnerInfo' | 'UpdatePartnerPassword' | 'LinkVehicle' | 'BatchLinkVehicle' | 'LinkDriver' | 'BatchLinkDriver' | 'AddBankAccount'
@@ -120,7 +121,7 @@ const CompaniesModals = { AssignStaff, WalletNotification, ViewStaffRoutesList, 
 const VehicleConfigurationModals = { ConfigureInspectionSite, ConfigureVehicleCategory, DeleteVehicleCategory } as Record<ConfigureVehicleTypes, any>
 const DriverModals = { AddDriver, AssignDriver, ItineraryTransferBooking, AssignBus, AssignRoute, ControlTrip, ChangeDriverPassword, ChangeDriverPicture } as Record<DriverTypes, any>
 const TripsModals = { DeductEarning, AddPassengersToTrips, TransferBookings, NotifyPassengers, LogIssues, ResolveIssues, CreateIssues, TransferTrip, CancelTrip } as Record<TripsTypes, any>
-const RoutesModal = { RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason, ConfigureAgentPoints } as Record<RouteTypes, any>
+const RoutesModal = { RejectRental, RouteDuplicationModal, AddItinerary, PairReturnTrip, ConfigureAgentCommission, DeclineReason, ConfigureAgentPoints } as Record<RouteTypes, any>
 const VehicleModals = { EditBus, UpdateVehicleTracking, ChangeFleetDriver, EditVehicleBus } as Record<VehicleTypes, any>
 const PayoutModals = { DeductPayout, MarkMultipleAsPaid, ResyncRevenue } as Record<PayoutTypes, any>
 const PartnerModals = { ConfirmPartnerNotification, UpdateSettlementAccount, AddBankAccount, UpdatePartnerInfo, UpdatePartnerPassword, LinkVehicle, BatchLinkVehicle, LinkDriver, BatchLinkDriver } as Record<PartnerTypes, any>

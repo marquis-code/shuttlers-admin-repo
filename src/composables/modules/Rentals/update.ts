@@ -1,12 +1,14 @@
 import { useAlert } from '@/composables/core/notification'
 import { rental_api, CustomAxiosResponse } from '@/api_factory/modules'
 import { useGetRentalById } from '@/composables/modules/Rentals/id'
-import { useCommuteModal } from '@/composables/core/modals'
+import { useCommuteModal, useRouteModal } from '@/composables/core/modals'
 
 const selectedVehicleRental = ref({} as Record<string, any>)
 const loading = ref(false)
 const charterStatus = ref('')
+const rejection_reason = ref('')
 const charterVehicleOrder = ref([] as Record<string, any>[])
+const globalRentalDetails = ref({} as Record<string, any>)
 
 export const useUpdateCharter = () => {
     const updateVehicle = (route) => {
@@ -30,19 +32,20 @@ export const useUpdateCharter = () => {
         return charterVehicleOrder.value.every((item) => item.main_vehicle?.driver?.id)
     })
 
-    const updateCharterOrder = async (rentalDetails) => {
+    const updateCharterOrder = async (rentalDetails = globalRentalDetails.value) => {
         loading.value = true
         const payload = ref({} as Record<string, any>)
 
         try {
             if (charterStatus.value === 'rejected') {
                 payload.value = {
-                    status: charterStatus.value
+                    status: charterStatus.value,
+                    reason: rejection_reason.value
                 }
             } else if (checkMainVehicleDriverExists) {
                         payload.value = {
                 status: charterStatus.value,
-                            vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle?.driver?.id, cost_of_supply: item?.cost }))
+                            vehicle_orders: charterVehicleOrder.value.map((item: any) => ({ id: item.id, vehicle_id: item.main_vehicle?.id, driver_id: item.main_vehicle?.driver?.id, cost_of_supply: item?.cost_of_supply, margin: item?.margin }))
                                 // .filter((item: any) => item.vehicle_id && item.driver_id)
                         }
                 } else {
@@ -65,6 +68,7 @@ export const useUpdateCharter = () => {
                 useAlert().openAlert({ type: 'SUCCESS', msg: 'Rental Request Updated' })
                 loading.value = false
             }
+            useRouteModal().closeRejectRental()
             loading.value = false
         } catch (e:any) {
             useAlert().openAlert({ type: 'ERROR', msg: e.message || 'Something went wrong' })
@@ -74,5 +78,5 @@ export const useUpdateCharter = () => {
         // const res = await rental_api.$_update_charter_order({ charter_id: null, vehicle_id: null, cost: 0 }) as CustomAxiosResponse
     }
 
-    return { updateCharterOrder, loading, charterStatus, updateVehicle, selectedVehicleRental, addVehicle, charterVehicleOrder, checkMainVehicleIdExists }
+    return { updateCharterOrder, rejection_reason, loading, charterStatus, updateVehicle, selectedVehicleRental, addVehicle, charterVehicleOrder, checkMainVehicleIdExists, globalRentalDetails }
 }
