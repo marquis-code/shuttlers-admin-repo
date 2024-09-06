@@ -8,13 +8,9 @@
 				<label for="Vehicle">Vehicle</label>
 				<InputMultiSelectVehicle :value="selected.main_vehicle" @updated="selected.main_vehicle = $event" />
 			</div>
-			<div class="field relative">
-				<label for="Cost">Cost</label>
-				<input v-model="selected.cost" type="number" class="input-field">
-			</div>
 
 			<div class="flex">
-				<button class="btn-primary w-full" :disabled="selected.cost <= 0 || Object.keys(selected.main_vehicle).length <= 0">
+				<button class="btn-primary w-full" :disabled="Object.keys(selected.main_vehicle).length <= 0">
 					<span class="flex justify-center items-center gap-2.5">
 						add
 					</span>
