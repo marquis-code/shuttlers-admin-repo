@@ -48,7 +48,7 @@
 			</template>
 			<template #item="{ item }">
 				<div v-if="item.pickup_address">
-					<RouteDescription :pickup="item.data.pickup_address" :destination="item.data.return_address" />
+					<RouteDescription :pickup="item.data.pickup_address" :destination="item.data.dropoff_address" />
 				</div>
 				<div v-if="item.return_date">
 					{{ item.data.return_date ? 'Round Trip' : 'One Way' }}
