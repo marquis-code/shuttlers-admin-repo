@@ -119,7 +119,7 @@
 									</VTooltip>
 								</div>
 								<p class="text-sm text-dark font-medium">
-									{{ approvers?.length }}/2
+									{{ approvers?.length }}/3
 								</p>
 							</div>
 							<div class="flex flex-col gap-1 text-sm text-dark border-l-4 pl-2">
