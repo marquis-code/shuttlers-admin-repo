@@ -48,7 +48,7 @@
 					<div v-else>
 						<div class="bg-gray-100 py-3 rounded-md text-sm px-4 flex items-center justify-between my-3">
 							<p>IDENTITY</p>
-							<button class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openIdentity()">
+							<button v-if="AdminCanUpdatePartnerKYC()" class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openIdentity()">
 								Update Identity
 							</button>
 						</div>
@@ -77,7 +77,7 @@
 						</template>
 						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
 							<p>ADDRESS</p>
-							<button class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openAddress()">
+							<button v-if="AdminCanUpdatePartnerKYC()" class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openAddress()">
 								Update Address
 							</button>
 						</div>
@@ -271,6 +271,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, useVerifyPartnerKyc } from '@/composables/modules/partners/id'
 import { useUpdateSettlementAccount, usePartnerConfigs, useUpdateKyc } from '@/composables/modules/partners'
 import { usePartnerModal } from '@/composables/core/modals'
+import { AdminCanUpdatePartnerKYC } from '@/composables/flagging/flags'
 
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
