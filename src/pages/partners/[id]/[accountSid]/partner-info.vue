@@ -48,9 +48,9 @@
 					<div v-else>
 						<div class="bg-gray-100 py-3 rounded-md text-sm px-4 flex items-center justify-between my-3">
 							<p>IDENTITY</p>
-							<!-- <button class="font-bold text-purp7 underline">
-								Edit
-							</button> -->
+							<button class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openIdentity()">
+								Update Identity
+							</button>
 						</div>
 						<p v-if="!partnersKycInformation?.identity?.status" class="text-sm text-center py-2 text-grey6">
 							Partner Identity information not submitted
@@ -75,8 +75,11 @@
 								</p>
 							</div>
 						</template>
-						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3">
-							ADDRESS
+						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
+							<p>ADDRESS</p>
+							<button class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openAddress()">
+								Update Address
+							</button>
 						</div>
 						<p v-if="!partnersKycInformation?.address?.status" class="text-sm text-center py-2 text-grey6">
 							Partner address information not submitted
@@ -266,7 +269,8 @@
 import moment from 'moment'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePartnerIdDetails, useGetPartnerKyc, useGetPartnerEarningSummary, useVerifyPartnerKyc } from '@/composables/modules/partners/id'
-import { useUpdateSettlementAccount, usePartnerConfigs } from '@/composables/modules/partners'
+import { useUpdateSettlementAccount, usePartnerConfigs, useUpdateKyc } from '@/composables/modules/partners'
+import { usePartnerModal } from '@/composables/core/modals'
 
 const { getPartnerById, loading, selectedPartner } = usePartnerIdDetails()
 const { getPartnerKyc, loadingKycDetails, partnersKycInformation } = useGetPartnerKyc()
