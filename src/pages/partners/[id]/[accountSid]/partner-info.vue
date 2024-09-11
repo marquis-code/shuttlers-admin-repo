@@ -302,7 +302,8 @@ const kycIdentityInformation = computed(() => {
 	return [
 		{ name: 'MEANS OF IDENTIFICATION', value: partnersKycInformation?.value?.identity?.document_type.toUpperCase() ?? 'N/A', class: '' },
 		{ name: 'DOCUMENT NUMBER', value: partnersKycInformation?.value?.identity?.document_id ?? 'N/A', class: '' },
-		{ name: 'DATE OF BIRTH', value: selectedPartner.value?.owner?.dob ? moment(selectedPartner.value?.owner?.dob).format('LL') : 'N/A', class: '' },
+		// { name: 'DATE OF BIRTH', value: selectedPartner.value?.owner?.dob ? moment(selectedPartner.value?.owner?.dob).format('LL') : 'N/A', class: '' },
+		{ name: 'DATE OF BIRTH', value: partnersKycInformation?.value?.identity?.dob ? moment(partnersKycInformation?.value?.identity?.dob).format('LL') : 'N/A', class: '' },
 		{ name: 'STATUS', value: 'verify', class: 'bg-black text-white rounded-md px-2 py-1.5 text-xs' }
 	]
 })
