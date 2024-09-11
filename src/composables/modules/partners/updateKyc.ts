@@ -53,7 +53,8 @@ export const useUpdateKyc = () => {
             document: {
                 document_id: String(kycObj?.id_number.value),
                 type: kycObj.identification.value,
-                dob: moment(new Date(kycObj.dob.value)).format('YYYY-MM-DD HH:mm:ss'),
+                // dob: moment.utc(new Date(kycObj.dob.value)).format('DD-MM-YYYY'),
+                dob: kycObj.dob.value,
                 fname: selectedPartner.value?.owner?.fname || '',
                 lname: selectedPartner.value?.owner?.lname || ''
             }

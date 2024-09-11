@@ -10,7 +10,7 @@
 				<div class="grid grid-cols-2 gap-2 items-stretch relative">
 					<input id="addressKycFileInput" type="file" class="hidden absolute -top-10" accept="image/*,application/pdf" @change="handleFileChange">
 					<p class="bg-[#EFF2F7] rounded-lg flex items-center p-2">
-						{{ truncateString(file, 20 ) }}
+						{{ file ? truncateString(file, 20 ) : 'N/A' }}
 					</p>
 					<button type="button" class="p-2 rounded-lg border text-dark" @click="triggerInputFile">
 						Update document
