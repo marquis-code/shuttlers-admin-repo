@@ -18,7 +18,7 @@
 			</div>
 			<div class="flex flex-col gap-2">
 				<label class="label">Date of birth</label>
-				<InputDateInput v-model="dob" />
+				<InputDateInput v-model="dob" :disabled-date="(date) => date > new Date()" />
 			</div>
 
 			<div class="pt-6">
