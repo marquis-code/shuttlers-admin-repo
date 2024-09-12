@@ -10,8 +10,8 @@
 				<p>{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}</p>
 			</div>
 			<Skeleton v-if="loading_partners || loading_earnings" height="300px" radius="10px" />
-			<div v-else class="flex flex-col gap-6">
-				<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-lg">
+			<div v-else class="flex flex-col gap-3">
+				<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-2xl">
 					<div class="flex flex-col">
 						<p class="text-grey5 text-sm font-medium">
 							Name
@@ -63,8 +63,16 @@
 						View Details
 					</NuxtLink>
 				</div>
-				<div class="flex flex-col lg:flex-row lg:items-start gap-6">
-					<div class="bg-light rounded-md p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px]shrink-0">
+				<div v-if="AdminCanAttachPartnerDeductions()" class="flex items-center justify-end">
+					<p class="text-sm font-medium text-[#364152] flex gap-2 items-center">
+						WALLET BALLANCE:
+						<span class="text-dark text-base font-bold">
+							{{ convertToCurrency(1500000) }}
+						</span>
+					</p>
+				</div>
+				<div class="flex flex-col lg:flex-row lg:items-start gap-4">
+					<div class="bg-light rounded-2xl p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px] shrink-0">
 						<h3 class="text-base font-medium text-dark border-b py-3">
 							Payout
 						</h3>
@@ -152,30 +160,72 @@
 							</p>
 						</div>
 					</div>
-					<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
-						<h3 class="p-4 text-dark font-medium border-b">
-							Deductions
-						</h3>
-						<div>
-							<Table
-								:loading="loading_deductions"
-								:has-index="true"
-								:headers="tableFields"
-								:table-data="deductions"
-								:page="1"
-							>
-								<template #item="{ item }">
-									<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
-										-₦{{ item.data?.amount || 0 }}
-									</p>
-									<p v-if="item.date" class="text-sm whitespace-nowrap">
-										{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
-									</p>
-									<p v-if="item.type" class="text-sm whitespace-nowrap">
-										{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
-									</p>
-								</template>
-							</Table>
+					<div class="flex flex-col gap-4 flex-grow">
+						<div v-if="AdminCanAttachPartnerDeductions()" class="bg-light rounded-2xl border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="px-4 py-3 text-base text-dark font-bold border-b">
+								Attached Deductions
+							</h3>
+							<div>
+								<Table
+									:loading="loading_deductions"
+									:has-index="true"
+									:headers="tableFields"
+									:table-data="[]"
+									:page="1"
+									row-class="!py-2 !h-[60px]"
+								>
+									<template #item="{ item }">
+										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
+											-₦{{ item.data?.amount || 0 }}
+										</p>
+										<p v-if="item.date" class="text-sm whitespace-nowrap">
+											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+										</p>
+										<p v-if="item.type" class="text-sm whitespace-nowrap">
+											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+										</p>
+										<p v-if="item.description" class="text-sm whitespace-nowrap">
+											{{ item.data?.description || 'N/A' }}
+										</p>
+										<button v-if="item.action" class="attach-btn">
+											Detach
+										</button>
+									</template>
+								</Table>
+							</div>
+						</div>
+						<div class="bg-light rounded-2xl border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="px-4 py-3 text-base text-dark font-bold border-b">
+								Partner's deductions
+							</h3>
+							<div>
+								<Table
+									:loading="loading_deductions"
+									:has-index="true"
+									:headers="tableFields"
+									:table-data="deductions"
+									:page="1"
+									row-class="!py-2 !h-[60px]"
+								>
+									<template #item="{ item }">
+										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
+											-₦{{ item.data?.amount || 0 }}
+										</p>
+										<p v-if="item.date" class="text-sm whitespace-nowrap">
+											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+										</p>
+										<p v-if="item.type" class="text-sm whitespace-nowrap">
+											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+										</p>
+										<p v-if="item.description" class="text-sm whitespace-nowrap">
+											{{ item.data?.description || 'N/A' }}
+										</p>
+										<button v-if="item.action && AdminCanAttachPartnerDeductions()" class="attach-btn">
+											Attach
+										</button>
+									</template>
+								</Table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -268,6 +318,7 @@ import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
+import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions, approvers, fetchApprovers } = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
@@ -310,7 +361,8 @@ const tableFields = ref([
 	{ text: 'DATE CREATED', value: 'date' },
 	{ text: 'DEDUCTION', value: 'amount' },
 	{ text: 'REASON', value: 'description' },
-	{ text: 'TYPE', value: 'type' }
+	{ text: 'TYPE', value: 'type' },
+	{ text: '', value: 'action' }
 ])
 
 const revenueFields = ref([
@@ -351,5 +403,9 @@ definePageMeta({
 }
 .value{
 	@apply text-sm text-dark text-right
+}
+
+.attach-btn{
+	@apply border border-[#D0D5DD] text-[#344054] rounded-xl text-sm py-2 px-3 font-bold
 }
 </style>

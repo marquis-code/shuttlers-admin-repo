@@ -13,15 +13,25 @@
 				</select>
 			</div> -->
 
-			<div class="flex flex-col gap-2">
+			<div class="flex flex-col gap-4">
 				<label class="label">Payout type</label>
-				<div class="grid grid-cols-2 rounded-xl border">
+				<!-- <div class="grid grid-cols-2 rounded-xl border">
 					<button v-for="n, i in type" :key="i" type="button" class="flex items-center justify-center gap-2 py-2.5" :class="i === 0 ? 'border-r' : ''" @click="cycle = n">
 						<div class="w-[18px] h-[18px] rounded-full flex items-center justify-center" :class="cycle === n ? 'bg-[#BDFDDC]' : 'border'">
 							<div v-if="cycle === n" class="w-[12px] h-[12px] bg-green7 rounded-full" />
 						</div>
 						<p class="text-sm text-[#475467] font-medium capitalize">
 							{{ n }}
+						</p>
+					</button>
+				</div> -->
+				<div class="flex flex-col gap-3">
+					<button v-for="n, i in types" :key="i" type="button" class="flex items-center gap-2" @click="cycle = n?.value">
+						<div class="w-[18px] h-[18px] rounded-full flex items-center justify-center" :class="cycle === n?.value ? 'bg-[#BDFDDC]' : 'border'">
+							<div v-if="cycle === n?.value" class="w-[12px] h-[12px] bg-green7 rounded-full" />
+						</div>
+						<p class="text-sm text-[#475467] font-medium capitalize">
+							{{ n?.text }}
 						</p>
 					</button>
 				</div>
@@ -36,9 +46,18 @@
 
 <script setup lang="ts">
 import { useUpdateSettlementAccount } from '@/composables/modules/partners'
+import { AllowWeeklyAndMonthlyEarningPeriod } from '@/composables/flagging/flags'
 
 const { loading, updateSettlementAccount, clearObj, cycle } = useUpdateSettlementAccount()
-const type = ['weekly', 'monthly']
+
+const types = computed(() => {
+	const arr = [
+		{ text: 'Weekly', value: 'weekly' },
+		{ text: 'Monthly', value: 'monthly' }
+	]
+	if (AllowWeeklyAndMonthlyEarningPeriod()) arr.push({ text: 'Monthly & Weekly', value: 'weeklymonthly' })
+	return arr
+})
 
 const enableButton = computed(() => {
     return !!(cycle.value)
