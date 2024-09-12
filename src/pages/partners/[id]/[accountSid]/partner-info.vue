@@ -75,7 +75,7 @@
 								</p>
 							</div>
 						</template>
-						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
+						<div class="bg-gray-100 py-3 px-4 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
 							<p>ADDRESS</p>
 							<button v-if="AdminCanUpdatePartnerKYC()" class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openAddress()">
 								Update Address
