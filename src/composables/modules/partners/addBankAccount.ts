@@ -14,6 +14,15 @@ const payload = {
   partnerId: ref('')
 }
 
+const allBanks = ref([] as Record<string, any>[])
+
+const getBanks = async () => {
+  const res = await partners_api.$_get_banks() as CustomAxiosResponse
+  if (res.type !== 'ERROR') {
+    allBanks.value = res?.data?.data?.length ? res.data?.data : []
+  }
+}
+
 export const useAddBankAccount = () => {
     const sid = useRoute().params.accountSid as string
   const addBankAccount = async () => {
@@ -42,5 +51,5 @@ export const useAddBankAccount = () => {
     payload.partnerId.value = data.partnerId
   }
 
-  return { addBankAccount, loading, payload, setAccountCreationPayload }
+  return { addBankAccount, loading, payload, setAccountCreationPayload, getBanks, allBanks }
 }

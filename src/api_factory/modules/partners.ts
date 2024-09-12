@@ -160,5 +160,17 @@ export const partners_api = {
 	$_get_partner_config: (partner_sid:string|number) => {
 		const url = `/partnerconfigs/partners/${partner_sid}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_update_partner_identity_info: (partner_sid:string|number, payload: Record<string, any>) => {
+		const url = `/partners/${partner_sid}/identity-verification`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_update_partner_address_info: (partner_sid:string|number, payload: Record<string, any>) => {
+		const url = `/partners/${partner_sid}/address-verification`
+		return GATEWAY_ENDPOINT_WITH_AUTH.post(url, payload)
+	},
+	$_get_banks: () => {
+		const url = '/bankinfolist'
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	}
 }

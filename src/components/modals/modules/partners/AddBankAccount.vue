@@ -42,9 +42,10 @@
 import banks from 'ng-banks'
 import { useValidateAccountNumber } from '@/composables/modules/partners/validateAccountNumber'
 import { useAddBankAccount } from '@/composables/modules/partners/addBankAccount'
+
 const { validateAccountNumber, loading: validating, accName } = useValidateAccountNumber()
-const { addBankAccount, loading, setAccountCreationPayload } = useAddBankAccount()
-const allBanks = ref([]) as any
+const { addBankAccount, loading, setAccountCreationPayload, getBanks, allBanks } = useAddBankAccount()
+
 const bankObj = ref({}) as any
 const form = reactive({
         accountNumber: '',
@@ -70,14 +71,12 @@ watch(() => form.accountNumber, (val) => {
     if (String(form.accountNumber).length === 10) validateAccountNumber(bankObj.value.code, val)
 })
 
-const loadBanks = () => {
-    const ngBanks = banks.getBanks()
-    allBanks.value = ngBanks || []
-}
+// const loadBanks = () => {
+//     const ngBanks = banks.getBanks()
+//     allBanks.value = ngBanks || []
+// }
 
-onMounted(() => {
-    loadBanks()
-})
+getBanks()
 
 const isFormEmpty = computed(() => {
     return !!(bankObj.value.name && form.accountNumber && accName.value)
