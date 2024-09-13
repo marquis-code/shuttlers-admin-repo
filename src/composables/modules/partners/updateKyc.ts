@@ -37,7 +37,7 @@ const openIdentity = () => {
 const openAddress = () => {
     const { partnersKycInformation } = useGetPartnerKyc()
     kycObj.address.value = { name: partnersKycInformation.value?.address?.address }
-    kycObj.file.value = partnersKycInformation.value?.address?.document_files![0] || ''
+    kycObj.file.value = partnersKycInformation.value?.address?.document_files?.[0] || ''
     usePartnerModal().openUpdateAddress()
 }
 
