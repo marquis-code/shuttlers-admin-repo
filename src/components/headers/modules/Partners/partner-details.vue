@@ -34,6 +34,7 @@
 import { usePartnerModal } from '@/composables/core/modals'
 import { usePartnerIdDetails, useSuspendPartner, useUpdatePartnerInfo, useUpdatePartnerPassword } from '@/composables/modules/partners'
 import { isProdEnv } from '@/composables/utils/system'
+import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const { selectedPartner, getPartnerById } = usePartnerIdDetails()
 const { initSuspension } = useSuspendPartner()
@@ -45,28 +46,62 @@ if (Object.keys(selectedPartner.value).length === 0) {
     getPartnerById(id)
 }
 
-const pageTabs = computed(() => [
-    {
-        name: 'Partner Information',
-        path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/partner-info`
-    },
-    {
-        name: 'Vehicles',
-        path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/vehicles`
-    },
-    {
-        name: 'Drivers',
-        path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/drivers`
-    },
-    {
-        name: 'Unsettled Revenues',
-        path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/completed-trips`
-    },
-    {
-        name: 'Account & Payslip',
-        path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/accounts`
-    }
-])
+// const pageTabs = computed(() => [
+//     {
+//         name: 'Partner Information',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/partner-info`
+//     },
+//     {
+//         name: 'Vehicles',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/vehicles`
+//     },
+//     {
+//         name: 'Drivers',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/drivers`
+//     },
+//     {
+//         name: 'Unsettled Revenues',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/completed-trips`
+//     },
+//     {
+//         name: 'Account & Payslip',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/accounts`
+//     },
+// 	{
+//         name: 'Deductions',
+//         path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/deductions`
+//     }
+// ])
+
+const pageTabs = computed(() => {
+	const arr = [
+		{
+			name: 'Partner Information',
+			path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/partner-info`
+		},
+		{
+			name: 'Vehicles',
+			path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/vehicles`
+		},
+		{
+			name: 'Drivers',
+			path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/drivers`
+		},
+		{
+			name: 'Unsettled Revenues',
+			path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/completed-trips`
+		},
+		{
+			name: 'Account & Payslip',
+			path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/accounts`
+		}
+	]
+	if (AdminCanAttachPartnerDeductions()) arr.push({
+		name: 'Deductions',
+		path: `/partners/${selectedPartner.value.id}/${selectedPartner.value.account_sid}/deductions`
+	})
+	return arr
+})
 
 const isVehiclePage = computed(() => {
 	return useRoute().fullPath.includes('vehicles')

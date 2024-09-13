@@ -75,7 +75,7 @@
 								</p>
 							</div>
 						</template>
-						<div class="bg-gray-100 py-3 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
+						<div class="bg-gray-100 py-3 px-4 rounded-md text-sm font-light pl-4 my-3 flex items-center justify-between gap-4">
 							<p>ADDRESS</p>
 							<button v-if="AdminCanUpdatePartnerKYC()" class="font-medium text-dark border border-dark px-2 py-1.5 rounded-md" @click="useUpdateKyc().openAddress()">
 								Update Address
@@ -302,7 +302,8 @@ const kycIdentityInformation = computed(() => {
 	return [
 		{ name: 'MEANS OF IDENTIFICATION', value: partnersKycInformation?.value?.identity?.document_type.toUpperCase() ?? 'N/A', class: '' },
 		{ name: 'DOCUMENT NUMBER', value: partnersKycInformation?.value?.identity?.document_id ?? 'N/A', class: '' },
-		{ name: 'DATE OF BIRTH', value: selectedPartner.value?.owner?.dob ? moment(selectedPartner.value?.owner?.dob).format('LL') : 'N/A', class: '' },
+		// { name: 'DATE OF BIRTH', value: selectedPartner.value?.owner?.dob ? moment(selectedPartner.value?.owner?.dob).format('LL') : 'N/A', class: '' },
+		{ name: 'DATE OF BIRTH', value: partnersKycInformation?.value?.identity?.dob ? moment(partnersKycInformation?.value?.identity?.dob).format('LL') : 'N/A', class: '' },
 		{ name: 'STATUS', value: 'verify', class: 'bg-black text-white rounded-md px-2 py-1.5 text-xs' }
 	]
 })

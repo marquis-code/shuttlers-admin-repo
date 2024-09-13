@@ -1,6 +1,9 @@
 <template>
-	<main class="">
-		<ButtonGoBack class="mb-6" />
+	<main class="flex flex-col gap-4">
+		<ButtonGoBack class="" />
+
+		<ModulesPartnersPayoutsAccountGrid v-if="AdminCanAttachPartnerDeductions()" :data="payoutsMeta" :fields="gridField" :loading="loading" />
+		<ModulesPartnersPayoutsEarningsGrid v-else :obj="payoutsMeta" :loading="loading" />
 		<Table
 			:loading="loading"
 			:has-index="true"
@@ -36,9 +39,9 @@
 					</template>
 				</TableFilter>
 			</template>
-			<template #sub_header>
+			<!-- <template #sub_header>
 				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading" />
-			</template>
+			</template> -->
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
 					{{ item.data?.owner?.fname || '' }} {{ item.data?.owner?.lname || 'N/A' }}
@@ -87,6 +90,7 @@
 import moment from 'moment'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
+import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
@@ -116,6 +120,13 @@ const tableFields = ref([
 	{ text: 'APPROVAL', value: 'approval' },
 	{ text: 'ACTIONS', value: 'action' }
 ])
+
+const gridField = [
+	{ text: 'Total Revenue', key: 'totalRevenue', class: '' },
+	{ text: 'Other Deduction', key: 'totalDeductions', class: '!text-[#E97A35]' },
+	{ text: 'Attached Deduction', key: '', class: '!text-red' },
+	{ text: 'Amount Payable', key: 'netRevenue', class: '' }
+]
 
 const onRowClicked = (data:Record<string, any>) => {
 	useRouter().push(`/partners/payouts/${data.partnerNumber}/${data.id}`)
