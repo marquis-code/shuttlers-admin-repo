@@ -13,35 +13,36 @@ const filterData = {
     status: ref('settled'),
     startDate: ref(''),
     endDate: ref(''),
-    search: ref('')
+    search: ref(''),
+    cycle: ref('all')
 }
 
 export const useCompletedPayouts = () => {
-	const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-	const fetchCompletedPayouts = async () => {
-		loading.value = true
-		const res = await earnings_api.$_get_earnings(metaObject, filterData) as CustomAxiosResponse
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const fetchCompletedPayouts = async () => {
+        loading.value = true
+        const res = await earnings_api.$_get_earnings(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-			payouts.value = res.data.result?.length ? res.data.result : []
+            payouts.value = res.data.result?.length ? res.data.result : []
             metaObject.total.value = res.data.metadata?.pages || 0
             payoutsMeta.value = res.data.metadata?.revenue
         }
         loading.value = false
-	}
+    }
 
-	setFunction(fetchCompletedPayouts)
+    setFunction(fetchCompletedPayouts)
 
-    watch([filterData.endDate, filterData.search], () => {
-		metaObject.page.value = 1
+    watch([filterData.endDate, filterData.search, filterData.cycle], () => {
+        metaObject.page.value = 1
         fetchCompletedPayouts()
     })
 
     const onFilterUpdate = (data: any) => {
         switch (data.type) {
             case 'dateRange':
-				filterData.startDate.value = data.value[0] ? `${data.value[0]}-01` : ''
-				filterData.endDate.value = data.value[1] ? formatDateToGetTheLastDay(data.value[1]) : ''
+                filterData.startDate.value = data.value[0] ? `${data.value[0]}-01` : ''
+                filterData.endDate.value = data.value[1] ? formatDateToGetTheLastDay(data.value[1]) : ''
                 break
             case 'search':
                 filterData.search.value = data.value
@@ -76,5 +77,5 @@ export const useCompletedPayouts = () => {
         downloading.value = false
     }
 
-	return { loading, payouts, payoutsMeta, fetchCompletedPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadPayouts }
+    return { loading, payouts, payoutsMeta, fetchCompletedPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadPayouts, filterData }
 }

@@ -1,33 +1,21 @@
 <template>
 	<main class="">
 		<ButtonGoBack class="mb-6" />
-		<Table
-			:loading="loading"
-			:has-index="true"
-			:headers="tableFields"
-			:table-data="payouts"
-			:page="page"
-			:has-options="true"
-			:option="onRowClicked"
-		>
+		<Table :loading="loading" :has-index="true" :headers="tableFields" :table-data="payouts" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter
-					:filter-type="{
-						showSearchBar: true,
-						showDateRange: true,
-						showDownloadButton: true,
-						dateType: 'month',
-						dateFormat: 'YYYY-MM'
-					}"
-					@filter="onFilterUpdate"
-					@download="downloadPayouts"
-				>
+				<TableFilter :filter-type="{
+					showSearchBar: true,
+					showDateRange: true,
+					showDownloadButton: true,
+					dateType: 'month',
+					dateFormat: 'YYYY-MM'
+				}" @filter="onFilterUpdate" @download="downloadPayouts">
 					<template #filter_others>
 						<div class="flex items-stretch border rounded-xl text-grey5_5 overflow-hidden">
 							<p class="p-3 text-sm border-r">
 								Earning cycle
 							</p>
-							<select class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
+							<select @change="filterData.cycle.value = $event.target.value" class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
 								<option v-for="n in ['all', 'weekly', 'monthly']" :key="n" :value="n">
 									{{ n }}
 								</option>
@@ -70,14 +58,7 @@
 			</template>
 
 			<template #footer>
-				<TablePaginator
-					:current-page="page"
-					:total-pages="total"
-					:loading="loading"
-					@move-to="moveTo($event)"
-					@next="next"
-					@prev="prev"
-				/>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -88,7 +69,7 @@ import moment from 'moment'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 
-const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts, filterData } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
@@ -117,7 +98,7 @@ const tableFields = ref([
 	{ text: 'ACTIONS', value: 'action' }
 ])
 
-const onRowClicked = (data:Record<string, any>) => {
+const onRowClicked = (data: Record<string, any>) => {
 	useRouter().push(`/partners/payouts/${data.partnerNumber}/${data.id}`)
 }
 
