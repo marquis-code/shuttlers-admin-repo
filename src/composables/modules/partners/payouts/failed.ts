@@ -13,27 +13,28 @@ const filterData = {
     status: ref('failed'),
     startDate: ref(''),
     endDate: ref(''),
-    search: ref('')
+    search: ref(''),
+    cycle: ref('all')
 }
 
 export const useFailedPayouts = () => {
-	const { moveTo, metaObject, next, prev, setFunction } = usePagination()
-	const fetchFailedPayouts = async () => {
-		loading.value = true
-		const res = await earnings_api.$_get_earnings(metaObject, filterData) as CustomAxiosResponse
+    const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+    const fetchFailedPayouts = async () => {
+        loading.value = true
+        const res = await earnings_api.$_get_earnings(metaObject, filterData) as CustomAxiosResponse
 
         if (res.type !== 'ERROR') {
-			payouts.value = res.data.result?.length ? res.data.result : []
+            payouts.value = res.data.result?.length ? res.data.result : []
             metaObject.total.value = res.data.metadata?.pages || 0
             payoutsMeta.value = res.data.metadata?.revenue
         }
         loading.value = false
-	}
+    }
 
-	setFunction(fetchFailedPayouts)
+    setFunction(fetchFailedPayouts)
 
-    watch([filterData.endDate, filterData.search], () => {
-		metaObject.page.value = 1
+    watch([filterData.endDate, filterData.search, filterData.cycle], (val) => {
+        metaObject.page.value = 1
         fetchFailedPayouts()
     })
 
@@ -41,7 +42,7 @@ export const useFailedPayouts = () => {
         switch (data.type) {
             case 'dateRange':
                 filterData.startDate.value = data.value[0] ? `${data.value[0]}-01` : ''
-				filterData.endDate.value = data.value[1] ? formatDateToGetTheLastDay(data.value[1]) : ''
+                filterData.endDate.value = data.value[1] ? formatDateToGetTheLastDay(data.value[1]) : ''
                 break
             case 'search':
                 filterData.search.value = data.value
@@ -76,5 +77,5 @@ export const useFailedPayouts = () => {
         downloading.value = false
     }
 
-	return { loading, payouts, payoutsMeta, fetchFailedPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadPayouts }
+    return { loading, payouts, payoutsMeta, fetchFailedPayouts, onFilterUpdate, moveTo, ...metaObject, next, prev, downloadPayouts, filterData }
 }
