@@ -57,9 +57,7 @@
 							</p>
 						</div>
 					</div>
-					<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`"
-						class="text-sm p-2 border rounded-md font-medium px-4 text-grey7"
-					>
+					<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`" class="text-sm p-2 border rounded-md font-medium px-4 text-grey7">
 						View Details
 					</NuxtLink>
 				</div>
@@ -80,9 +78,7 @@
 							<p class="key">
 								{{ n.key }}
 							</p>
-							<p class="value font-medium"
-								:class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : '' "
-							>
+							<p class="value font-medium" :class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : ''">
 								{{ n?.value }}
 							</p>
 						</div>
@@ -157,13 +153,7 @@
 							Deductions
 						</h3>
 						<div>
-							<Table
-								:loading="loading_deductions"
-								:has-index="true"
-								:headers="tableFields"
-								:table-data="deductions"
-								:page="1"
-							>
+							<Table :loading="loading_deductions" :has-index="true" :headers="tableFields" :table-data="deductions" :page="1">
 								<template #item="{ item }">
 									<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
 										-₦{{ item.data?.amount || 0 }}
@@ -190,23 +180,13 @@
 						Mark multiple revenues as paid
 					</button>
 				</div>
-				<Table
-					:loading="loading"
-					:has-index="true"
-					:headers="revenueFields"
-					:table-data="revenues"
-					:page="page"
-				>
+				<Table :loading="loading" :has-index="true" :headers="revenueFields" :table-data="revenues" :page="page">
 					<template #header>
-						<TableFilter
-							:filter-type="{
-								showSearchBar: false,
-								showDateRange: true,
-								showDownloadButton: true
-							}"
-							@filter="onFilterUpdate"
-							@download="downloadRevenues"
-						/>
+						<TableFilter :filter-type="{
+							showSearchBar: false,
+							showDateRange: true,
+							showDownloadButton: true
+						}" @filter="onFilterUpdate" @download="downloadRevenues" />
 					</template>
 					<template #sub_header>
 						<ModulesPartnersPayoutsEarningsGrid :obj="revenueMeta" :loading="loading" />
@@ -227,7 +207,7 @@
 							{{ item.data?.metadata?.routeCode || 'N/A' }}
 						</p>
 						<p v-if="item.partnersRevenue" class="text-sm whitespace-nowrap">
-							{{ convertToCurrency(item.data?.partnersRevenue ) }}
+							{{ convertToCurrency(item.data?.partnersRevenue) }}
 						</p>
 						<p v-if="item.deduction" class="text-sm whitespace-nowrap text-red">
 							{{ convertToCurrency(item.data?.totalDeductedAmount) }}
@@ -235,9 +215,7 @@
 						<p v-if="item.finalPartnersRevenue" class="text-sm whitespace-nowrap">
 							{{ convertToCurrency(item.data?.finalPartnersRevenue) }}
 						</p>
-						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit"
-							:class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'"
-						>
+						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit" :class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'">
 							{{ item.data?.isSettled ? 'Settled' : 'Not settled' }}
 						</p>
 						<span v-if="item.action">
@@ -246,14 +224,7 @@
 					</template>
 
 					<template #footer>
-						<TablePaginator
-							:current-page="page"
-							:total-pages="total"
-							:loading="loading"
-							@move-to="moveTo($event)"
-							@next="next"
-							@prev="prev"
-						/>
+						<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 					</template>
 				</Table>
 			</div>
@@ -296,9 +267,17 @@ const payout_info = computed(() => {
 		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
 		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
-		{ key: 'Status', value: earningInfo.value?.status || '' }
-		// { key: 'Payout type', value: '' }
+		{ key: 'Status', value: earningInfo.value?.status || '' },
+		{ key: 'Reference', value: earningInfo.value?.reference || 'N/A' }
 	]
+
+	if (earningInfo.value?.status === 'failed') {
+		const formattedMessages = earningInfo.value?.statusMessages?.map((msg) =>
+			msg.charAt(0).toUpperCase() + msg.slice(1)
+		).join('. ') || 'N/A'
+		data.push({ key: 'Reason for failure', value: formattedMessages })
+	}
+
 	return data
 })
 
@@ -346,10 +325,11 @@ definePageMeta({
 </script>
 
 <style scoped>
-.key{
+.key {
 	@apply uppercase font-medium text-grey5 text-sm
 }
-.value{
+
+.value {
 	@apply text-sm text-dark text-right
 }
 </style>
