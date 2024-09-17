@@ -20,12 +20,7 @@
 
 		<!-- New table section -->
 		<section v-if="!loadingRental && charterVehicleOrder.length" class="w-full">
-			<Table
-				:loading="loading"
-				:headers="tableFields"
-				:table-data="charterVehicleOrder"
-				:has-index="true"
-			>
+			<Table :loading="loading" :headers="tableFields" :table-data="charterVehicleOrder" :has-index="true">
 				<template #header>
 					<div v-if="!shouldDisableTable" class="flex justify-end border border-grey8 p-4 gap-4 rounded-t-2xl">
 						<button class="btn-outline border-red text-red" :disabled="shouldDisableTable" @click="rejectRental">
@@ -43,29 +38,20 @@
 					<span v-if="item.charterVehicle">{{ item.data.charterVehicle?.name }}</span>
 					<span v-if="item.stops">{{ JSON.parse(item.data.stops)?.length || 0 }}</span>
 					<span v-if="item.margin">
-						<input
-							type="number"
-							:value="item.data.margin || ''"
-							placeholder="Enter amount"
-							class="input-field"
-							:disabled="shouldDisableTable"
-							@input="updateMargin($event, item.data)"
-						>
+						<input type="number" :value="item.data.margin || ''" placeholder="Enter amount" class="input-field" :disabled="shouldDisableTable" @input="updateMargin($event, item.data)">
 					</span>
 					<span v-if="item.assigned_vehicle">
 						<button :disabled="shouldDisableTable" class="link" @click.prevent="updateVehicle(item.data)">
-							{{ item.data.main_vehicle ? `${item.data.main_vehicle.brand} - ${item.data.main_vehicle.name}` : 'Click to add' }}
+							<span v-if="!shouldDisableTable">
+								{{ item.data.main_vehicle ? `${item.data.main_vehicle.brand} - ${item.data.main_vehicle.name}` : 'Click to add' }}
+							</span>
+							<span v-else>
+								{{ item.data?.userRoute?.driver?.vehicle?.id ? `${item.data.userRoute?.driver?.vehicle?.brand} - ${item.data.userRoute?.driver?.vehicle?.name}` : 'N/A' }}
+							</span>
 						</button>
 					</span>
 					<span v-if="item.cost_of_supply">
-						<input
-							type="number"
-							:value="item.data.cost_of_supply || ''"
-							placeholder="Enter amount"
-							class="input-field"
-							:disabled="shouldDisableTable"
-							@input="updateCostOfSupply($event, item.data)"
-						>
+						<input type="number" :value="item.data.cost_of_supply || item.data.cost || ''" placeholder="Enter amount" class="input-field" :disabled="shouldDisableTable" @input="updateCostOfSupply($event, item.data)">
 					</span>
 					<span v-if="item.actions">
 						<button class="btn-outline py-2" :disabled="shouldDisableTable" @click="saveOrder(item.data)">
@@ -122,8 +108,8 @@ watch(rentalDetails, () => {
 })
 
 definePageMeta({
-    layout: 'dashboard',
-    middleware: ['is-authenticated']
+	layout: 'dashboard',
+	middleware: ['is-authenticated']
 })
 
 usePageHeader().setPageHeader({
@@ -162,7 +148,7 @@ const saveOrder = (order) => {
 </script>
 
 <style scoped>
-.badge{
+.badge {
 	@apply rounded-md bg-[#EFF2F7] p-2
 }
 </style>
