@@ -64,7 +64,7 @@
 				</div>
 
 				<span v-else-if="item.userRoute">
-					<StatusBadge :name=" item.data?.userRoute?.booking_status || 'false'" />
+					<StatusBadge :name=" item.data?.payment_status || 'false'" />
 				</span>
 				<span v-else-if="item.created_at">
 					{{ useDateFormat(item.data.created_at, "MMMM DD, YYYY, HH:MM A").value }}

@@ -87,7 +87,7 @@
 			</div>
 			<div class="flex justify-between text-sm">
 				<span class="labe">PAYMENT STATUS</span>
-				<StatusBadge :name="rentalDetails?.userRoute?.booking_status || 'false'" />
+				<StatusBadge :name="rentalDetails?.payment_status || 'false'" />
 			</div>
 		</section>
 	</section>

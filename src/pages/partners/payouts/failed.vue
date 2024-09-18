@@ -15,7 +15,7 @@
 							<p class="p-3 text-sm border-r">
 								Earning cycle
 							</p>
-							<select @change="filterData.cycle.value = $event.target.value" class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
+							<select @change="filterData.cycle.value = ($event.target as HTMLSelectElement)?.value || ''" class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
 								<option v-for="n in ['all', 'weekly', 'monthly']" :key="n" :value="n">
 									{{ n }}
 								</option>

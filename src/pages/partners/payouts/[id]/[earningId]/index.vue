@@ -148,24 +148,46 @@
 							</p>
 						</div>
 					</div>
-					<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
-						<h3 class="p-4 text-dark font-medium border-b">
-							Deductions
-						</h3>
-						<div>
-							<Table :loading="loading_deductions" :has-index="true" :headers="tableFields" :table-data="deductions" :page="1">
-								<template #item="{ item }">
-									<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
-										-₦{{ item.data?.amount || 0 }}
-									</p>
-									<p v-if="item.date" class="text-sm whitespace-nowrap">
-										{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
-									</p>
-									<p v-if="item.type" class="text-sm whitespace-nowrap">
-										{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
-									</p>
-								</template>
-							</Table>
+					<div class="flex flex-col gap-4 w-full">
+						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="p-4 text-dark font-medium border-b">
+								Attached Deductions
+							</h3>
+							<div>
+								<Table :loading="loading_applied_deductions" :has-index="true" :headers="tableFields" :table-data="appliedDeductions" :page="1">
+									<template #item="{ item }">
+										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
+											-₦{{ item.data?.amount || 0 }}
+										</p>
+										<p v-if="item.date" class="text-sm whitespace-nowrap">
+											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+										</p>
+										<p v-if="item.type" class="text-sm whitespace-nowrap">
+											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+										</p>
+									</template>
+								</Table>
+							</div>
+						</div>
+						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="p-4 text-dark font-medium border-b">
+								Partner’s deduction
+							</h3>
+							<div>
+								<Table :loading="loading_unapplied_deductions" :has-index="true" :headers="tableFields" :table-data="unappliedDeductions" :page="1">
+									<template #item="{ item }">
+										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
+											-₦{{ item.data?.amount || 0 }}
+										</p>
+										<p v-if="item.date" class="text-sm whitespace-nowrap">
+											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+										</p>
+										<p v-if="item.type" class="text-sm whitespace-nowrap">
+											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+										</p>
+									</template>
+								</Table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -240,7 +262,13 @@ import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
 
-const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions, approvers, fetchApprovers } = usePayoutDetails()
+const {
+ loading_partners, loading_earnings, fetchParnersInfo,
+	fetchEarningInfo, partnerInfo, earningInfo, fetchUnappliedDeductions,
+	unappliedDeductions, loading_unapplied_deductions, approvers,
+	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
+
+} = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
@@ -250,7 +278,7 @@ const id = useRoute().params.id as string
 
 fetchParnersInfo()
 fetchEarningInfo()
-fetchDeductions()
+fetchUnappliedDeductions()
 fetchApprovers()
 const partner_info = computed(() => {
 	return [

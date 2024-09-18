@@ -4,13 +4,13 @@ import { CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 
 export const earnings_api = {
-    $_get_earnings: (meta:TMetaObject, filterData?: Record<string, Ref>) => {
-        const queryParams = useTableFilter(filterData)
+	$_get_earnings: (meta: TMetaObject, filterData?: Record<string, Ref>) => {
+		const queryParams = useTableFilter(filterData)
 		// &filterDateBy=referenceTime
-        const url = `/earnings?${queryParams}&perPage=${meta.page_size.value}&page=${meta.page.value}&filterDateBy=referenceTime`
-        return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
-    },
-	$_download_earnings: (total:number, filterData?: Record<string, Ref>) => {
+		const url = `/earnings?${queryParams}&perPage=${meta.page_size.value}&page=${meta.page.value}&filterDateBy=referenceTime`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_download_earnings: (total: number, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/earnings?${queryParams}&perPage=${total}&page=${1}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
@@ -31,11 +31,15 @@ export const earnings_api = {
 		const url = `/earnings/${earningId}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	},
-	$_get_earnings_deductions: (earningId: string) => {
+	$_get_earnings_unapplied_deductions: (partnerId: string) => {
+		const url = `/deductions?partnerId=${partnerId}&applied=false`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
+	$_get_earnings_applied_deductions: (earningId: string) => {
 		const url = `/deductions?earningId=${earningId}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	},
-	$_get_partner_revenue: (partnerSid: string, earningId: string, meta:TMetaObject, filterData?: Record<string, Ref>) => {
+	$_get_partner_revenue: (partnerSid: string, earningId: string, meta: TMetaObject, filterData?: Record<string, Ref>) => {
 		const queryParams = useTableFilter(filterData)
 		const url = `/partners/${partnerSid}/revenues?${queryParams}&earningId=${earningId}&page=${meta.page.value}&perPage=${meta.page_size.value}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
@@ -53,7 +57,7 @@ export const earnings_api = {
 				useAlert().openAlert({ type: 'ERROR', msg: 'No data to download' })
 				return null
 			}
-        }
+		}
 	},
 	$_approve_revenue: (partnerSid: string, earningId: string, payload: Record<string, any>) => {
 		const url = `/partners/${partnerSid}/earnings/${earningId}`
