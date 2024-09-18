@@ -57,9 +57,7 @@
 							</p>
 						</div>
 					</div>
-					<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`"
-						class="text-sm p-2 border rounded-md font-medium px-4 text-grey7"
-					>
+					<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`" class="text-sm p-2 border rounded-md font-medium px-4 text-grey7">
 						View Details
 					</NuxtLink>
 				</div>
@@ -88,9 +86,7 @@
 							<p class="key">
 								{{ n.key }}
 							</p>
-							<p class="value font-medium"
-								:class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : '' "
-							>
+							<p class="value font-medium" :class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : ''">
 								{{ n?.value }}
 							</p>
 						</div>
@@ -160,20 +156,13 @@
 							</p>
 						</div>
 					</div>
-					<div class="flex flex-col gap-4 flex-grow">
-						<div v-if="AdminCanAttachPartnerDeductions()" class="bg-light rounded-2xl border d-flex flex-col w-full flex-grow overflow-auto">
-							<h3 class="px-4 py-3 text-base text-dark font-bold border-b">
+					<div class="flex flex-col gap-4 w-full">
+						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="p-4 text-dark font-medium border-b">
 								Attached Deductions
 							</h3>
 							<div>
-								<Table
-									:loading="loading_deductions"
-									:has-index="true"
-									:headers="tableFields"
-									:table-data="[]"
-									:page="1"
-									row-class="!py-2 !h-[60px]"
-								>
+								<Table :loading="loading_applied_deductions" :has-index="true" :headers="tableFields" :table-data="appliedDeductions" :page="1">
 									<template #item="{ item }">
 										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
 											-₦{{ item.data?.amount || 0 }}
@@ -184,29 +173,21 @@
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 										</p>
-										<p v-if="item.description" class="text-sm whitespace-nowrap">
-											{{ item.data?.description || 'N/A' }}
+										<p v-if="item.id" class="text-sm whitespace-nowrap">
+											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, false)">
+												Detach
+											</button>
 										</p>
-										<button v-if="item.action" class="attach-btn">
-											Detach
-										</button>
 									</template>
 								</Table>
 							</div>
 						</div>
-						<div class="bg-light rounded-2xl border d-flex flex-col w-full flex-grow overflow-auto">
-							<h3 class="px-4 py-3 text-base text-dark font-bold border-b">
-								Partner's deductions
+						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+							<h3 class="p-4 text-dark font-medium border-b">
+								Partner’s deduction
 							</h3>
 							<div>
-								<Table
-									:loading="loading_deductions"
-									:has-index="true"
-									:headers="tableFields"
-									:table-data="deductions"
-									:page="1"
-									row-class="!py-2 !h-[60px]"
-								>
+								<Table :loading="loading_unapplied_deductions" :has-index="true" :headers="tableFields" :table-data="unappliedDeductions" :page="1">
 									<template #item="{ item }">
 										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
 											-₦{{ item.data?.amount || 0 }}
@@ -217,12 +198,11 @@
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 										</p>
-										<p v-if="item.description" class="text-sm whitespace-nowrap">
-											{{ item.data?.description || 'N/A' }}
+										<p v-if="item.id" class="text-sm whitespace-nowrap">
+											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, true)">
+												Attach
+											</button>
 										</p>
-										<button v-if="item.action && AdminCanAttachPartnerDeductions()" class="attach-btn">
-											Attach
-										</button>
 									</template>
 								</Table>
 							</div>
@@ -240,23 +220,13 @@
 						Mark multiple revenues as paid
 					</button>
 				</div>
-				<Table
-					:loading="loading"
-					:has-index="true"
-					:headers="revenueFields"
-					:table-data="revenues"
-					:page="page"
-				>
+				<Table :loading="loading" :has-index="true" :headers="revenueFields" :table-data="revenues" :page="page">
 					<template #header>
-						<TableFilter
-							:filter-type="{
-								showSearchBar: false,
-								showDateRange: true,
-								showDownloadButton: true
-							}"
-							@filter="onFilterUpdate"
-							@download="downloadRevenues"
-						/>
+						<TableFilter :filter-type="{
+							showSearchBar: false,
+							showDateRange: true,
+							showDownloadButton: true
+						}" @filter="onFilterUpdate" @download="downloadRevenues" />
 					</template>
 					<template #sub_header>
 						<ModulesPartnersPayoutsEarningsGrid :obj="revenueMeta" :loading="loading" />
@@ -277,7 +247,7 @@
 							{{ item.data?.metadata?.routeCode || 'N/A' }}
 						</p>
 						<p v-if="item.partnersRevenue" class="text-sm whitespace-nowrap">
-							{{ convertToCurrency(item.data?.partnersRevenue ) }}
+							{{ convertToCurrency(item.data?.partnersRevenue) }}
 						</p>
 						<p v-if="item.deduction" class="text-sm whitespace-nowrap text-red">
 							{{ convertToCurrency(item.data?.totalDeductedAmount) }}
@@ -285,9 +255,7 @@
 						<p v-if="item.finalPartnersRevenue" class="text-sm whitespace-nowrap">
 							{{ convertToCurrency(item.data?.finalPartnersRevenue) }}
 						</p>
-						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit"
-							:class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'"
-						>
+						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit" :class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'">
 							{{ item.data?.isSettled ? 'Settled' : 'Not settled' }}
 						</p>
 						<span v-if="item.action">
@@ -296,14 +264,7 @@
 					</template>
 
 					<template #footer>
-						<TablePaginator
-							:current-page="page"
-							:total-pages="total"
-							:loading="loading"
-							@move-to="moveTo($event)"
-							@next="next"
-							@prev="prev"
-						/>
+						<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 					</template>
 				</Table>
 			</div>
@@ -320,7 +281,13 @@ import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
 import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
-const { loading_partners, loading_earnings, fetchParnersInfo, fetchEarningInfo, partnerInfo, earningInfo, fetchDeductions, deductions, loading_deductions, approvers, fetchApprovers } = usePayoutDetails()
+const {
+ loading_partners, loading_earnings, fetchParnersInfo,
+	fetchEarningInfo, partnerInfo, earningInfo, fetchUnappliedDeductions,
+	unappliedDeductions, loading_unapplied_deductions, approvers, updateDeduction,
+	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
+
+} = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
@@ -330,7 +297,8 @@ const id = useRoute().params.id as string
 
 fetchParnersInfo()
 fetchEarningInfo()
-fetchDeductions()
+fetchUnappliedDeductions()
+fetchAppliedDeductions()
 fetchApprovers()
 const partner_info = computed(() => {
 	return [
@@ -347,9 +315,17 @@ const payout_info = computed(() => {
 		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
 		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
 		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
-		{ key: 'Status', value: earningInfo.value?.status || '' }
-		// { key: 'Payout type', value: '' }
+		{ key: 'Status', value: earningInfo.value?.status || '' },
+		{ key: 'Reference', value: earningInfo.value?.reference || 'N/A' }
 	]
+
+	if (earningInfo.value?.status === 'failed') {
+		const formattedMessages = earningInfo.value?.statusMessages?.map((msg) =>
+			msg.charAt(0).toUpperCase() + msg.slice(1)
+		).join('. ') || 'N/A'
+		data.push({ key: 'Reason for failure', value: formattedMessages })
+	}
+
 	return data
 })
 
@@ -360,9 +336,9 @@ const backUrl = computed(() => {
 const tableFields = ref([
 	{ text: 'DATE CREATED', value: 'date' },
 	{ text: 'DEDUCTION', value: 'amount' },
-	{ text: 'REASON', value: 'description' },
+	{ text: 'REASON', value: 'descriptio,n' },
 	{ text: 'TYPE', value: 'type' },
-	{ text: '', value: 'action' }
+	{ text: '', value: 'id' }
 ])
 
 const revenueFields = ref([
@@ -398,10 +374,11 @@ definePageMeta({
 </script>
 
 <style scoped>
-.key{
+.key {
 	@apply uppercase font-medium text-grey5 text-sm
 }
-.value{
+
+.value {
 	@apply text-sm text-dark text-right
 }
 
