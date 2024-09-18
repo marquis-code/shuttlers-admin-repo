@@ -165,6 +165,11 @@
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 										</p>
+										<p v-if="item.id" class="text-sm whitespace-nowrap">
+											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, false)">
+												Detach
+											</button>
+										</p>
 									</template>
 								</Table>
 							</div>
@@ -184,6 +189,11 @@
 										</p>
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+										</p>
+										<p v-if="item.id" class="text-sm whitespace-nowrap">
+											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, true)">
+												Attach
+											</button>
 										</p>
 									</template>
 								</Table>
@@ -265,7 +275,7 @@ import { usePayoutModal } from '@/composables/core/modals'
 const {
  loading_partners, loading_earnings, fetchParnersInfo,
 	fetchEarningInfo, partnerInfo, earningInfo, fetchUnappliedDeductions,
-	unappliedDeductions, loading_unapplied_deductions, approvers,
+	unappliedDeductions, loading_unapplied_deductions, approvers, updateDeduction,
 	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
 
 } = usePayoutDetails()
@@ -279,6 +289,7 @@ const id = useRoute().params.id as string
 fetchParnersInfo()
 fetchEarningInfo()
 fetchUnappliedDeductions()
+fetchAppliedDeductions()
 fetchApprovers()
 const partner_info = computed(() => {
 	return [
@@ -316,8 +327,9 @@ const backUrl = computed(() => {
 const tableFields = ref([
 	{ text: 'DATE CREATED', value: 'date' },
 	{ text: 'DEDUCTION', value: 'amount' },
-	{ text: 'REASON', value: 'description' },
-	{ text: 'TYPE', value: 'type' }
+	{ text: 'REASON', value: 'descriptio,n' },
+	{ text: 'TYPE', value: 'type' },
+	{ text: '', value: 'id' }
 ])
 
 const revenueFields = ref([

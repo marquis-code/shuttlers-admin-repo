@@ -59,7 +59,7 @@ export const usePayoutDetails = () => {
 		const res = await earnings_api.$_get_earnings_applied_deductions(earningId) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			const arr = res.data.result?.length ? res.data.result : []
-			unappliedDeductions.value = arr
+			appliedDeductions.value = arr
 		}
 		loading_applied_deductions.value = false
 	}
@@ -72,8 +72,25 @@ export const usePayoutDetails = () => {
 		}
 	}
 
+	const updateDeduction = async (deductionId: string, add: boolean) => {
+		const earningId = useRoute().params.earningId as string
+		const payload = {
+			deductionIds: [deductionId],
+			add
+		}
+
+		const res = await earnings_api.$_attach_deduction(earningId, payload) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			fetchEarningInfo()
+			fetchParnersInfo()
+			fetchApprovers()
+			fetchAppliedDeductions()
+			fetchUnappliedDeductions()
+		}
+	}
+
 	return {
-		loading_earnings, loading_partners, loading_unapplied_deductions, partnerInfo,
+		loading_earnings, loading_partners, loading_unapplied_deductions, partnerInfo, updateDeduction,
 		earningInfo, unappliedDeductions, approvers, fetchUnappliedDeductions, fetchApprovers,
 		fetchParnersInfo, fetchEarningInfo, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
 	}
@@ -89,6 +106,7 @@ const filterData = {
 }
 
 const { moveTo, metaObject, next, prev, setFunction } = usePagination()
+
 export const useEarningsRevenues = () => {
 	const fetchRevenues = async () => {
 		revenues.value = []
