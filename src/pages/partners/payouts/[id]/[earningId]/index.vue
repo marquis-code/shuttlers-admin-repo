@@ -10,8 +10,8 @@
 				<p>{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}</p>
 			</div>
 			<Skeleton v-if="loading_partners || loading_earnings" height="300px" radius="10px" />
-			<div v-else class="flex flex-col gap-6">
-				<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-lg">
+			<div v-else class="flex flex-col gap-3">
+				<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-2xl">
 					<div class="flex flex-col">
 						<p class="text-grey5 text-sm font-medium">
 							Name
@@ -61,8 +61,16 @@
 						View Details
 					</NuxtLink>
 				</div>
-				<div class="flex flex-col lg:flex-row lg:items-start gap-6">
-					<div class="bg-light rounded-md p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px]shrink-0">
+				<div v-if="AdminCanAttachPartnerDeductions()" class="flex items-center justify-end">
+					<p class="text-sm font-medium text-[#364152] flex gap-2 items-center">
+						WALLET BALLANCE:
+						<span class="text-dark text-base font-bold">
+							{{ convertToCurrency(1500000) }}
+						</span>
+					</p>
+				</div>
+				<div class="flex flex-col lg:flex-row lg:items-start gap-4">
+					<div class="bg-light rounded-2xl p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px] shrink-0">
 						<h3 class="text-base font-medium text-dark border-b py-3">
 							Payout
 						</h3>
@@ -271,6 +279,7 @@ import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
+import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const {
  loading_partners, loading_earnings, fetchParnersInfo,
@@ -371,5 +380,9 @@ definePageMeta({
 
 .value {
 	@apply text-sm text-dark text-right
+}
+
+.attach-btn{
+	@apply border border-[#D0D5DD] text-[#344054] rounded-xl text-sm py-2 px-3 font-bold
 }
 </style>

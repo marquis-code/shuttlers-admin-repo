@@ -1,5 +1,5 @@
 <template>
-	<form class="w-full gap-4 flex flex-col" @submit.prevent="sendNotification">
+	<form class="w-full gap-4 flex flex-col" @submit.prevent="showPreview">
 		<div class="w-full">
 			<input v-model="credentials.title.value" type="text" placeholder="Enter notification title" class="input-field">
 		</div>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="p-6">
 				<ClientOnly>
-					<QuillEditor v-model:content="credentials.description.value" content-type="text" theme="snow" placeholder="Enter notification description" />
+					<QuillEditor v-model:content="credentials.description.value" :edit="true" content-type="html" theme="snow" placeholder="Enter notification description" />
 				</ClientOnly>
 			</div>
 			<div class="flex flex-col gap-4 px-6 pb-6">
@@ -54,8 +54,9 @@ import { QuillEditor } from '@vueup/vue-quill'
 import { useCreateNotification } from '@/composables/modules/partners/notification'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
-const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedPartner, selectedPartners, search } = useCreateNotification()
+const { sendNotification, creatingNotification, message, credentials, isFormEmpty, notificationType, removeSelectedPartner, selectedPartners, search, showPreview, clearObj } = useCreateNotification()
 
+clearObj()
 </script>
 
 <style scoped>

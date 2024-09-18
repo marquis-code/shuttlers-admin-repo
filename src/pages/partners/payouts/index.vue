@@ -15,7 +15,7 @@
 							<p class="p-3 text-sm border-r">
 								Earning cycle
 							</p>
-							<select @change="filterData.cycle.value = ($event.target as HTMLSelectElement)?.value || ''" class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
+							<select class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6" @change="filterData.cycle.value = ($event.target as HTMLSelectElement)?.value || ''">
 								<option v-for="n in ['all', 'weekly', 'monthly']" :key="n" :value="n">
 									{{ n }}
 								</option>
@@ -24,9 +24,9 @@
 					</template>
 				</TableFilter>
 			</template>
-			<template #sub_header>
+			<!-- <template #sub_header>
 				<ModulesPartnersPayoutsEarningsGrid :obj="payoutsMeta" :loading="loading" />
-			</template>
+			</template> -->
 			<template #item="{ item }">
 				<p v-if="item.name" class="text-sm whitespace-nowrap">
 					{{ item.data?.owner?.fname || '' }} {{ item.data?.owner?.lname || 'N/A' }}
@@ -68,6 +68,7 @@
 import moment from 'moment'
 import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
+import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts, filterData } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
