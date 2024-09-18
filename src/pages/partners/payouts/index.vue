@@ -1,36 +1,21 @@
 <template>
-	<main class="flex flex-col gap-4">
-		<ButtonGoBack class="" />
-
-		<ModulesPartnersPayoutsAccountGrid v-if="AdminCanAttachPartnerDeductions()" :data="payoutsMeta" :fields="gridField" :loading="loading" />
-		<ModulesPartnersPayoutsEarningsGrid v-else :obj="payoutsMeta" :loading="loading" />
-		<Table
-			:loading="loading"
-			:has-index="true"
-			:headers="tableFields"
-			:table-data="payouts"
-			:page="page"
-			:has-options="true"
-			:option="onRowClicked"
-		>
+	<main class="">
+		<ButtonGoBack class="mb-6" />
+		<Table :loading="loading" :has-index="true" :headers="tableFields" :table-data="payouts" :page="page" :has-options="true" :option="onRowClicked">
 			<template #header>
-				<TableFilter
-					:filter-type="{
-						showSearchBar: true,
-						showDateRange: true,
-						showDownloadButton: true,
-						dateType: 'month',
-						dateFormat: 'YYYY-MM'
-					}"
-					@filter="onFilterUpdate"
-					@download="downloadPayouts"
-				>
+				<TableFilter :filter-type="{
+					showSearchBar: true,
+					showDateRange: true,
+					showDownloadButton: true,
+					dateType: 'month',
+					dateFormat: 'YYYY-MM'
+				}" @filter="onFilterUpdate" @download="downloadPayouts">
 					<template #filter_others>
 						<div class="flex items-stretch border rounded-xl text-grey5_5 overflow-hidden">
 							<p class="p-3 text-sm border-r">
 								Earning cycle
 							</p>
-							<select class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6">
+							<select class="capitalize w-fit px-2 bg-white font-medium focus:outline-none pr-6" @change="filterData.cycle.value = ($event.target as HTMLSelectElement)?.value || ''">
 								<option v-for="n in ['all', 'weekly', 'monthly']" :key="n" :value="n">
 									{{ n }}
 								</option>
@@ -73,14 +58,7 @@
 			</template>
 
 			<template #footer>
-				<TablePaginator
-					:current-page="page"
-					:total-pages="total"
-					:loading="loading"
-					@move-to="moveTo($event)"
-					@next="next"
-					@prev="prev"
-				/>
+				<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
 			</template>
 		</Table>
 	</main>
@@ -92,7 +70,7 @@ import { convertToCurrency } from '@/composables/utils/formatter'
 import { usePendingPayouts, useMarkAsPaid, useDeductPayout } from '@/composables/modules/partners/payouts'
 import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
-const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts } = usePendingPayouts()
+const { loading, payouts, payoutsMeta, onFilterUpdate, moveTo, page, total, next, prev, fetchPendingPayouts, downloadPayouts, filterData } = usePendingPayouts()
 const { initMarkAsPaid } = useMarkAsPaid()
 const { initDeduct } = useDeductPayout()
 fetchPendingPayouts()
@@ -121,14 +99,7 @@ const tableFields = ref([
 	{ text: 'ACTIONS', value: 'action' }
 ])
 
-const gridField = [
-	{ text: 'Total Revenue', key: 'totalRevenue', class: '' },
-	{ text: 'Other Deduction', key: 'totalDeductions', class: '!text-[#E97A35]' },
-	{ text: 'Attached Deduction', key: '', class: '!text-red' },
-	{ text: 'Amount Payable', key: 'netRevenue', class: '' }
-]
-
-const onRowClicked = (data:Record<string, any>) => {
+const onRowClicked = (data: Record<string, any>) => {
 	useRouter().push(`/partners/payouts/${data.partnerNumber}/${data.id}`)
 }
 

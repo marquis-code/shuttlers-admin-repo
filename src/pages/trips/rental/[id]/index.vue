@@ -38,7 +38,8 @@
 					<span v-if="item.charterVehicle">{{ item.data.charterVehicle?.name }}</span>
 					<span v-if="item.stops">{{ JSON.parse(item.data.stops)?.length || 0 }}</span>
 					<span v-if="item.margin">
-						<input type="number" :value="item.data.margin || ''" placeholder="Enter amount" class="input-field" :disabled="shouldDisableTable" @input="updateMargin($event, item.data)">
+						<input type="number" :value="item.data.margin || ''" placeholder="Enter amount" class="input-field" min="0"
+							oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" :disabled="shouldDisableTable" @input="updateMargin($event, item.data)">
 					</span>
 					<span v-if="item.assigned_vehicle">
 						<button :disabled="shouldDisableTable" class="link" @click.prevent="updateVehicle(item.data)">
@@ -51,7 +52,8 @@
 						</button>
 					</span>
 					<span v-if="item.cost_of_supply">
-						<input type="number" :value="item.data.cost_of_supply || item.data.cost || ''" placeholder="Enter amount" class="input-field" :disabled="shouldDisableTable" @input="updateCostOfSupply($event, item.data)">
+						<input type="number" :value="item.data.cost_of_supply || item.data.cost || ''" placeholder="Enter amount" class="input-field" min="0" :disabled="shouldDisableTable"
+							oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" @input="updateCostOfSupply($event, item.data)">
 					</span>
 					<span v-if="item.actions">
 						<button class="btn-outline py-2" :disabled="shouldDisableTable" @click="saveOrder(item.data)">

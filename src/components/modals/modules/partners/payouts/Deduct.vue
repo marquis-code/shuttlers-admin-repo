@@ -1,9 +1,5 @@
 <template>
-	<Modal
-		modal="$atts.modal"
-		:title="partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct from Revenue' : 'Earnings deduction'"
-		@close="clearObj()"
-	>
+	<Modal modal="$atts.modal" :title="partnerDeductionObj.isDeductFromRevenue.value ? 'Deduct from Revenue' : 'Earnings deduction'" @close="clearObj()">
 		<form class="flex flex-col gap-4 w-full" @submit.prevent="partnerDeductionObj.isDeductFromRevenue.value ? deductRevenue() : deduct()">
 			<section v-if="form_step === 1" class="flex flex-col gap-4 w-full">
 				<div class="field gap-2">
@@ -22,7 +18,7 @@
 
 				<div v-if="partnerDeductionObj.type.value === 'default'" class="flex flex-col gap-2 mt-4">
 					<label class="label">Deducted amount</label>
-					<input v-model="partnerDeductionObj.amount.value" required type="number" class="input-field">
+					<input v-model="partnerDeductionObj.amount.value" required type="float" class="input-field" step=".01">
 					<p v-if="partnerDeductionObj.amount.value && partnerDeductionObj.amount.value > partnerDeductionObj.total_amount.value!" class="text-xs font-medium text-red">
 						Amount is larger than payslip total
 					</p>
@@ -111,7 +107,7 @@ onBeforeUnmount(() => clearObj())
 </script>
 
 <style scoped>
-label{
+label {
 	margin: 0;
 }
 </style>

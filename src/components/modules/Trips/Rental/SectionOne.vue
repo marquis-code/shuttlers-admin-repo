@@ -36,9 +36,9 @@
 				<span class="label">Rental Status</span>
 				<StatusBadge :name="rentalDetails.status" />
 			</div>
-			<div class="flex justify-between text-sm items-center box">
-				<span class="label">Payment Status</span>
-				<StatusBadge :name="rentalDetails?.userRoute?.booking_status || 'false'" />
+			<div class="flex justify-between text-sm">
+				<span class="labe">PAYMENT STATUS</span>
+				<StatusBadge :name="rentalDetails?.payment_status || 'false'" />
 			</div>
 			<div class="flex justify-between text-sm items-end mt-4">
 				<span class=" flex flex-col">
