@@ -48,9 +48,9 @@ export const earnings_api = {
 		const url = `/partners/${partnerSid}/revenues?${queryParams}&earningId=${earningId}&page=${meta.page.value}&perPage=${meta.page_size.value}`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 	},
-	$_download_partner_revenue: async (partnerSid: string, earningId: string, filterData?: Record<string, Ref>) => {
+	$_download_partner_revenue: async (partnerSid: string, earningId: string, filterData?: Record<string, Ref>, total?: number) => {
 		const queryParams = useTableFilter(filterData)
-		const url = `/partners/${partnerSid}/revenues?${queryParams}&earningId=${earningId}&page=${1}&perPage=${10}`
+		const url = `/partners/${partnerSid}/revenues?${queryParams}&earningId=${earningId}&page=${1}&perPage=${total || 10}`
 		// return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
 		const res = await $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {

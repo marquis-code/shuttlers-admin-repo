@@ -145,14 +145,14 @@ export const useEarningsRevenues = () => {
 		const earningId = useRoute().params.earningId as string
 		const name = ref('all-revenues')
 		const total = metaObject.page_size.value * metaObject.total.value
-		const res = await earnings_api.$_download_partner_revenue(partnerInfo.value.account_sid, earningId, filterData) as CustomAxiosResponse
+		const res = await earnings_api.$_download_partner_revenue(partnerInfo.value.account_sid, earningId, filterData, total) as CustomAxiosResponse
 		if (res?.type !== 'ERROR') {
 			if (res.data.result.length) {
 				const data = res.data.result
 				const newArr = data.map((el) => {
 					return {
 						Trip_date: el?.tripStartTime ? moment(el?.tripStartTime).format('LLL') : 'N/A',
-						Time_of_creation: moment(el?.created_at).format('LL'),
+						Time_of_creation: moment(el?.createdAt).format('LL'),
 						Pickup: el?.metadata?.pickup || 'N/A',
 						Destination: el?.metadata?.dropoff || 'N/A',
 						Route_code: el?.metadata?.routeCode || 'N/A',
