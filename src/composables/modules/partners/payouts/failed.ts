@@ -63,7 +63,7 @@ export const useFailedPayouts = () => {
                         Partner_name: `${el?.owner?.fname || ''} ${el?.owner?.lname || ''}`,
                         Company_name: el?.company_name || 'N/A',
                         Email: el?.company_email || 'N/A',
-                        Payout_date: el?.referenceTime ? moment(el.referenceTime).format('LL') : 'N/A',
+                        Payout_period: el?.earningPeriod?.start ? `${moment(el.earningPeriod.start).format('ll')} - ${moment(el.earningPeriod.end).format('ll')}` : 'N/A',
                         Amount: `NGN ${el?.amount || 0}`,
                         Approval: `${el?.approvalsCount || 0} of 2`
                     }
