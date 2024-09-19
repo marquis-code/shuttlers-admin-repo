@@ -38,6 +38,7 @@ export const useUpdateSettlementAccount = () => {
     }
 
     const initUpdateSettlementAccount = (current_earning_cycle = '') => {
+        console.log(current_earning_cycle)
         obj.cycle.value = current_earning_cycle
         usePartnerModal().openUpdateSettlementAccount()
     }

@@ -65,7 +65,7 @@
 					<p class="text-sm font-medium text-[#364152] flex gap-2 items-center">
 						WALLET BALLANCE:
 						<span class="text-dark text-base font-bold">
-							{{ convertToCurrency(1500000) }}
+							{{ walletBalance.formattedBalance }}
 						</span>
 					</p>
 				</div>
@@ -159,7 +159,7 @@
 					<div class="flex flex-col gap-4 w-full">
 						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
 							<h3 class="p-4 text-dark font-medium border-b">
-								Attached Deductions
+								Deductions applied to this earning
 							</h3>
 							<div>
 								<Table :loading="loading_applied_deductions" :has-index="true" :headers="tableFields" :table-data="appliedDeductions" :page="1">
@@ -184,7 +184,7 @@
 						</div>
 						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
 							<h3 class="p-4 text-dark font-medium border-b">
-								Partner’s deduction
+								Other Partner's deduction
 							</h3>
 							<div>
 								<Table :loading="loading_unapplied_deductions" :has-index="true" :headers="tableFields" :table-data="unappliedDeductions" :page="1">
@@ -284,8 +284,8 @@ import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 const {
  loading_partners, loading_earnings, fetchParnersInfo,
 	fetchEarningInfo, partnerInfo, earningInfo, fetchUnappliedDeductions,
-	unappliedDeductions, loading_unapplied_deductions, approvers, updateDeduction,
-	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
+	unappliedDeductions, loading_unapplied_deductions, approvers, updateDeduction, fetchWalletBalance,
+	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions, walletBalance
 
 } = usePayoutDetails()
 const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
@@ -295,11 +295,14 @@ const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
 const earningId = useRoute().params.earningId as string
 const id = useRoute().params.id as string
 
-fetchParnersInfo()
-fetchEarningInfo()
-fetchUnappliedDeductions()
-fetchAppliedDeductions()
-fetchApprovers()
+onMounted(async () => {
+	await fetchParnersInfo()
+	fetchEarningInfo()
+	fetchUnappliedDeductions()
+	fetchAppliedDeductions()
+	fetchApprovers()
+	fetchWalletBalance()
+})
 const partner_info = computed(() => {
 	return [
 		{ key: 'Name', value: `${partnerInfo.value.owner?.fname || ''} ${partnerInfo.value.owner?.lname || ''}` },
@@ -313,7 +316,7 @@ const payout_info = computed(() => {
 	const data = [
 		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue || 0) },
 		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
-		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.totalDeduction || 0) },
+		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.appliedDeduction || 0) },
 		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
 		{ key: 'Status', value: earningInfo.value?.status || '' },
 		{ key: 'Reference', value: earningInfo.value?.reference || 'N/A' }

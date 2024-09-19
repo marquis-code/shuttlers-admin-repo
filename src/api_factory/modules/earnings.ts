@@ -4,6 +4,10 @@ import { CustomAxiosResponse } from '@/api_factory/modules'
 import { useAlert } from '@/composables/core/notification'
 
 export const earnings_api = {
+	$_get_earnings_wallet_balance: (partnerSId: string) => {
+		const url = `/partners/${partnerSId}/wallets`
+		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.get(url)
+	},
 	$_attach_deduction: (earningId: string, payload: Record<string, any>) => {
 		const url = `/earnings/${earningId}/deductions/apply`
 		return $GATEWAY_ENDPOINT_WITH_AUTH_WITH_COST_REVENUE_SERVICE_API.post(url, payload)

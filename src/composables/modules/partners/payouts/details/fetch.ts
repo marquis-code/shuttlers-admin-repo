@@ -14,6 +14,7 @@ const loading_partners = ref(false)
 const loading_earnings = ref(false)
 const loading_unapplied_deductions = ref(false)
 const loading_applied_deductions = ref(false)
+const walletBalance = ref({}) as Ref<Record<string, any>>
 
 export const usePayoutDetails = () => {
 	const fetchParnersInfo = async () => {
@@ -43,7 +44,7 @@ export const usePayoutDetails = () => {
 	const fetchUnappliedDeductions = async () => {
 		unappliedDeductions.value = []
 		loading_unapplied_deductions.value = true
-		const partnerId = useRoute().params.id as string
+		const partnerId = partnerInfo.value?.account_sid
 		const res = await earnings_api.$_get_earnings_unapplied_deductions(partnerId) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			const arr = res.data.result?.length ? res.data.result : []
@@ -81,17 +82,24 @@ export const usePayoutDetails = () => {
 
 		const res = await earnings_api.$_attach_deduction(earningId, payload) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
+			await fetchParnersInfo()
 			fetchEarningInfo()
-			fetchParnersInfo()
 			fetchApprovers()
 			fetchAppliedDeductions()
 			fetchUnappliedDeductions()
 		}
 	}
 
+	const fetchWalletBalance = async () => {
+		const res = await earnings_api.$_get_earnings_wallet_balance(partnerInfo.value.account_sid) as CustomAxiosResponse
+		if (res.type !== 'ERROR') {
+			walletBalance.value = res.data.data[0]
+		}
+	}
+
 	return {
 		loading_earnings, loading_partners, loading_unapplied_deductions, partnerInfo, updateDeduction,
-		earningInfo, unappliedDeductions, approvers, fetchUnappliedDeductions, fetchApprovers,
+		earningInfo, unappliedDeductions, approvers, fetchUnappliedDeductions, fetchApprovers, walletBalance, fetchWalletBalance,
 		fetchParnersInfo, fetchEarningInfo, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions
 	}
 }
