@@ -53,7 +53,8 @@ const { loading, updateSettlementAccount, clearObj, cycle } = useUpdateSettlemen
 const types = computed(() => {
 	const arr = [
 		{ text: 'Weekly', value: 'weekly' },
-		{ text: 'Monthly', value: 'monthly' }
+		{ text: 'Monthly', value: 'monthly' },
+		{ text: 'Monthly & Weekly', value: 'weeklymonthly' }
 	]
 	if (AllowWeeklyAndMonthlyEarningPeriod()) arr.push({ text: 'Monthly & Weekly', value: 'weeklymonthly' })
 	return arr
