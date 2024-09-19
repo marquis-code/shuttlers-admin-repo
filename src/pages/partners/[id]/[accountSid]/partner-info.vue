@@ -231,8 +231,8 @@
 							<p class="uppercase text-grey5">
 								Earning cycle
 							</p>
-							<p class="capitalize" :class="configs?.earningCycle === 'monthly' ? 'badge-blue' : 'badge-green'">
-								{{ configs?.earningCycle }}
+							<p class="capitalize" :class="configs?.cycleView === 'monthly' ? 'badge-blue' : 'badge-green'">
+								{{ configs?.cycleView }}
 							</p>
 						</div>
 					</div>

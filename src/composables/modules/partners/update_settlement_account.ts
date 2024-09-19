@@ -21,7 +21,7 @@ export const useUpdateSettlementAccount = () => {
         loading.value = true
         const partnerId = useRoute().params.id as string
         const payload = {
-            cycleView: obj?.cycle.value
+            earningCycle: obj?.cycle.value
         }
         const { selectedPartner } = usePartnerIdDetails()
         const res = await partners_api.$_set_earning_cycle(selectedPartner.value?.account_sid, payload) as CustomAxiosResponse
