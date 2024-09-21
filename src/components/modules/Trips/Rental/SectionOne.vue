@@ -43,11 +43,11 @@
 			<div class="flex justify-between text-sm items-end mt-4">
 				<span class=" flex flex-col">
 					<span>Amount to be paid</span>
-					<span class="font-bold text-lg text-dark">₦0.00</span>
+					<span class="font-bold text-lg text-dark">{{ convertToCurrency(rentalDetails.cost) }}</span>
 				</span>
-				<button class="link">
+				<!-- <button class="link">
 					View cost information
-				</button>
+				</button> -->
 			</div>
 		</section>
 	</section>
@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
+import { convertToCurrency } from '@/composables/utils/formatter'
 
 defineProps({
 	rentalDetails: {

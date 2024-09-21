@@ -174,7 +174,7 @@
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 										</p>
 										<p v-if="item.id" class="text-sm whitespace-nowrap">
-											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, false)">
+											<button :disabled="earningInfo.status !== 'pending-payout'" class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, false)">
 												Detach
 											</button>
 										</p>
@@ -182,7 +182,7 @@
 								</Table>
 							</div>
 						</div>
-						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+						<div v-if="earningInfo.status === 'pending-payout'" class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
 							<h3 class="p-4 text-dark font-medium border-b">
 								Other Partner's deduction
 							</h3>
@@ -199,7 +199,7 @@
 											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
 										</p>
 										<p v-if="item.id" class="text-sm whitespace-nowrap">
-											<button class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, true)">
+											<button :disabled="earningInfo.status !== 'pending-payout'" class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, true)">
 												Attach
 											</button>
 										</p>

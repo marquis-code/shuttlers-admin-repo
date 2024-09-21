@@ -24,7 +24,8 @@ export const usePayoutDetails = () => {
 		const res = await partners_api.$_get_partner_by_id(partnerId) as CustomAxiosResponse
 		if (res.type !== 'ERROR') {
 			partnerInfo.value = res.data?.id ? res.data : {}
-			if (partnerInfo.value?.account_sid) useEarningsRevenues().fetchRevenues()
+			const earningId = useRoute().params.earningId as string
+			if (partnerInfo.value?.account_sid && earningId) useEarningsRevenues().fetchRevenues()
 		}
 		loading_partners.value = false
 	}

@@ -6,7 +6,7 @@
 				<p class="text-sm font-medium text-[#364152] flex gap-2 items-center">
 					WALLET BALLANCE:
 					<span class="text-dark text-base font-bold">
-						{{ convertToCurrency(1500000) }}
+						{{ walletBalance?.formattedBalance ?? convertToCurrency(0) }}
 					</span>
 				</p>
 				<button class="text-[#475467] border py-2 px-3 font-bold border-[#EAECF0] text-sm rounded-xl">
@@ -79,10 +79,20 @@
 </template>
 <script setup lang="ts">
 import { convertToCurrency } from '@/composables/utils/formatter'
+import { usePayoutDetails } from '@/composables/modules/partners/payouts/details'
+
+const { walletBalance, fetchWalletBalance, fetchParnersInfo } = usePayoutDetails()
+
+fetchWalletBalance()
 
 const loading = ref(false)
 const page = ref(1)
 const type = ref('all')
+
+onMounted(async () => {
+	await fetchParnersInfo()
+	fetchWalletBalance()
+})
 
 definePageMeta({
     layout: 'dashboard',
