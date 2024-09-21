@@ -89,7 +89,7 @@ export const headerComponentRouteArray = [
     { routes: ['users-id-booking-ticket-ticket_id', 'users-id-cancelled-trips-b_id'], component: TicketBookingDetails },
     { routes: ['partners', 'partners-new-partners', 'partners-interested-partners', 'partners-create'], component: Partners },
     { routes: ['partners-payouts', 'partners-payouts-completed', 'partners-payouts-failed'], component: PartnerPayout },
-    { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts'], component: PartnerDetails },
+    { routes: ['partners-id-accountSid-partner-info', 'partners-id-accountSid-vehicles', 'partners-id-accountSid-drivers', 'partners-id-accountSid-completed-trips', 'partners-id-accountSid-accounts', 'partners-id-accountSid-deductions'], component: PartnerDetails },
     { routes: ['partners-payouts-id-earningId'], component: PayoutDetails },
     { routes: ['pastpayouts-id-accountSid'], component: PastPayouts },
     { routes: ['drivers'], component: Drivers },

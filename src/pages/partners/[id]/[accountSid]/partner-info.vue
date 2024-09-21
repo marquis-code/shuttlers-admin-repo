@@ -208,7 +208,7 @@
 						<p class="text-sm font-medium text-dark">
 							Settlement details
 						</p>
-						<button class="btn border font-medium p-2" @click="initUpdateSettlementAccount(configs?.earningCycle || '')">
+						<button class="btn border font-medium p-2" @click="initUpdateSettlementAccount(configs?.cycleView || '')">
 							Update Info
 						</button>
 					</div>
@@ -231,8 +231,8 @@
 							<p class="uppercase text-grey5">
 								Earning cycle
 							</p>
-							<p class="capitalize" :class="configs?.earningCycle === 'monthly' ? 'badge-blue' : 'badge-green'">
-								{{ configs?.earningCycle }}
+							<p class="capitalize" :class="configs?.cycleView === 'monthly' ? 'badge-blue' : 'badge-green'">
+								{{ configs?.cycleView === 'weeklymonthly' ? 'Monthly & Weekly' : configs?.cycleView }}
 							</p>
 						</div>
 					</div>

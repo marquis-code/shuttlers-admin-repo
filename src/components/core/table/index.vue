@@ -4,7 +4,7 @@
 		<slot name="sub_header" />
 		<div class="border-gray-300 border" :class="[hasOverflow ? 'overflow-auto' : '']">
 			<table class="table w-full">
-				<thead class="px-4">
+				<thead class="px-4 bg-[#F9FAFB]">
 					<tr class="h-[52px] border-b px-4">
 						<th v-if="checkbox" class="pl-4 text-light">
 							<div />
@@ -24,6 +24,7 @@
 					<tr v-for="(data, index) in displayTable" :key="index + 1" :data-index="index" :class="[
 						'py-8 font-normal border-t text-sm h-[89px] bg-light',
 						hasOptions ? 'cursor-pointer' : '',
+						rowClass
 					]" @click="handleRowClick($event, data)">
 						<td v-if="checkbox" :key="key" class="pl-4">
 							<input :checked="selected.map((el:any) => el?.id).includes(data?.id)" type="checkbox" @click.stop
@@ -117,6 +118,11 @@ const props = defineProps({
 	page: {
 		type: Number,
 		default: 1
+	},
+	rowClass: {
+		type: String,
+		default: '',
+		required: false
 	}
 })
 
