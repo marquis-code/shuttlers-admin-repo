@@ -129,7 +129,7 @@ const tableFields = ref([
 	{ text: 'ROUTES', value: 'dropoff_address' },
 	{ text: 'VEHICLE TYPE', value: 'charterVehicle' },
 	{ text: 'STOPS', value: 'stops' },
-	{ text: 'MARGIN', value: 'margin' },
+	{ text: 'MARGIN(%)', value: 'margin' },
 	{ text: 'ASSIGNED VEHICLE', value: 'assigned_vehicle' },
 	{ text: 'COST OF SUPPLY', value: 'cost_of_supply' },
 	{ text: 'ACTIONS', value: 'actions' }

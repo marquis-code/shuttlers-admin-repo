@@ -61,6 +61,9 @@ export const useUpdateCharter = () => {
             if (rentalDetails.status === 'rejected' || rentalDetails.status === 'accepted') {
                 delete payload.value.status
             }
+            if (!payload.value.status) {
+                payload.value.status = 'draft'
+            }
 
             const res = await rental_api.$_update_rental_status(rentalDetails.id, payload.value) as CustomAxiosResponse
             if (res.type !== 'ERROR') {
