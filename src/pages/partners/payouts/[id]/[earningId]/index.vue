@@ -7,17 +7,23 @@
 					Payout
 				</NuxtLink>
 				<img src="@/assets/icons/source/caret-greater-than.svg" alt="">
-				<p>{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}</p>
+				<p>{{ `${partnerInfo.owner?.fname || ""} ${partnerInfo.owner?.lname || ""}` }}</p>
 			</div>
-			<Skeleton v-if="loading_partners || loading_earnings" height="300px" radius="10px" />
+			<Skeleton
+				v-if="loading_partners || loading_earnings"
+				height="300px"
+				radius="10px"
+			/>
 			<div v-else class="flex flex-col gap-3">
-				<div class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-2xl">
+				<div
+					class="p-4 flex items-center gap-4 justify-between flex-wrap bg-light border rounded-2xl"
+				>
 					<div class="flex flex-col">
 						<p class="text-grey5 text-sm font-medium">
 							Name
 						</p>
 						<p class="text-base text-grey1 font-medium">
-							{{ `${partnerInfo.owner?.fname || ''} ${partnerInfo.owner?.lname || ''}` }}
+							{{ `${partnerInfo.owner?.fname || ""} ${partnerInfo.owner?.lname || ""}` }}
 						</p>
 					</div>
 					<div class="flex flex-col">
@@ -25,7 +31,7 @@
 							Company Name
 						</p>
 						<p class="text-base text-grey1 font-medium">
-							{{ partnerInfo.company_name || 'N/A' }}
+							{{ partnerInfo.company_name || "N/A" }}
 						</p>
 					</div>
 					<div class="flex flex-col">
@@ -33,7 +39,7 @@
 							Partner's Email
 						</p>
 						<p class="text-base text-[#7493CB] font-medium">
-							{{ partnerInfo.owner?.email || 'N/A' }}
+							{{ partnerInfo.owner?.email || "N/A" }}
 						</p>
 					</div>
 					<div class="flex flex-col">
@@ -41,7 +47,7 @@
 							Company Email
 						</p>
 						<p class="text-base text-[#7493CB] font-medium">
-							{{ partnerInfo?.company_email || 'N/A' }}
+							{{ partnerInfo?.company_email || "N/A" }}
 						</p>
 					</div>
 					<div class="flex flex-col gap-1">
@@ -53,15 +59,22 @@
 								{{ earningInfo.settlementAccount?.accountNumber }}
 							</p>
 							<p class="text-xs font-medium text-grey5">
-								{{ earningInfo.settlementAccount?.bankName }} - {{ earningInfo.settlementAccount?.accountName }}
+								{{ earningInfo.settlementAccount?.bankName }} -
+								{{ earningInfo.settlementAccount?.accountName }}
 							</p>
 						</div>
 					</div>
-					<NuxtLink :to="`/partners/${id}/${earningId}/partner-info`" class="text-sm p-2 border rounded-md font-medium px-4 text-grey7">
+					<NuxtLink
+						:to="`/partners/${id}/${earningId}/partner-info`"
+						class="text-sm p-2 border rounded-md font-medium px-4 text-grey7"
+					>
 						View Details
 					</NuxtLink>
 				</div>
-				<div v-if="AdminCanAttachPartnerDeductions()" class="flex items-center justify-end">
+				<div
+					v-if="AdminCanAttachPartnerDeductions()"
+					class="flex items-center justify-end"
+				>
 					<p class="text-sm font-medium text-[#364152] flex gap-2 items-center">
 						WALLET BALLANCE:
 						<span class="text-dark text-base font-bold">
@@ -70,7 +83,9 @@
 					</p>
 				</div>
 				<div class="flex flex-col lg:flex-row lg:items-start gap-4">
-					<div class="bg-light rounded-2xl p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px] shrink-0">
+					<div
+						class="bg-light rounded-2xl p-4 border flex flex-col w-full max-w-[400px] lg:min-w-[300px] shrink-0"
+					>
 						<h3 class="text-base font-medium text-dark border-b py-3">
 							Payout
 						</h3>
@@ -82,11 +97,26 @@
 								PARTNERS PAYOUT
 							</h3>
 						</div>
-						<div v-for="n in payout_info" :key="n.key" class="flex items-center justify-between gap-4 py-4 border-b">
+						<div
+							v-for="n in payout_info"
+							:key="n.key"
+							class="flex items-center justify-between gap-4 py-4 border-b"
+						>
 							<p class="key">
 								{{ n.key }}
 							</p>
-							<p class="value font-medium" :class="n?.key === 'Deductions' || n.value === 'failed' || n.value === false ? '!text-red' : String(n?.value).includes('pending') ? '!text-orange-500' : n.value === 'settled' || n.value === true ? '!text-green' : ''">
+							<p
+								class="value font-medium"
+								:class="
+									n?.key === 'Deductions' || n.value === 'failed' || n.value === false
+										? '!text-red'
+										: String(n?.value).includes('pending')
+											? '!text-orange-500'
+											: n.value === 'settled' || n.value === true
+												? '!text-green'
+												: ''
+								"
+							>
 								{{ n?.value }}
 							</p>
 						</div>
@@ -94,16 +124,27 @@
 							<p class="key">
 								Payout type
 							</p>
-							<p class="text-sm capitalize" :class="earningInfo?.payoutType === 'weekly' ? 'badge-green' : 'badge-blue'">
+							<p
+								class="text-sm capitalize"
+								:class="
+									earningInfo?.payoutType === 'weekly' ? 'badge-green' : 'badge-blue'
+								"
+							>
 								{{ earningInfo?.payoutType }}
 							</p>
 						</div>
-						<div v-if="earningInfo.markedAsPaid" class="flex items-center justify-between gap-4 py-4 border-b">
+						<div
+							v-if="earningInfo.markedAsPaid"
+							class="flex items-center justify-between gap-4 py-4 border-b"
+						>
 							<p class="key">
 								Marked by
 							</p>
-							<router-link :to="`/admin/${earningInfo?.markedAsPaidUserInfo?.userID}/info`" class="value font-medium !text-[#7493CB]">
-								{{ earningInfo?.markedAsPaidUserInfo?.name || 'N/A' }}
+							<router-link
+								:to="`/admin/${earningInfo?.markedAsPaidUserInfo?.userID}/info`"
+								class="value font-medium !text-[#7493CB]"
+							>
+								{{ earningInfo?.markedAsPaidUserInfo?.name || "N/A" }}
 							</router-link>
 						</div>
 						<div class="flex flex-col py-4 gap-1">
@@ -127,54 +168,87 @@
 								</p>
 							</div>
 							<div class="flex flex-col gap-1 text-sm text-dark border-l-4 pl-2">
-								<div v-for="n in approvers" :key="n?.id" class="flex items-center gap-4 justify-between text-sm">
-									<router-link :to="`/admin/${n?.staffId}/info`" class="text-green7 font-medium underline">
+								<div
+									v-for="n in approvers"
+									:key="n?.id"
+									class="flex items-center gap-4 justify-between text-sm"
+								>
+									<router-link
+										:to="`/admin/${n?.staffId}/info`"
+										class="text-green7 font-medium underline"
+									>
 										{{ n?.staffName }}
 									</router-link>
 									<p class="text-grey5">
-										{{ moment(n?.createdAt).format('lll') }}
+										{{ moment(n?.createdAt).format("lll") }}
 									</p>
 								</div>
 							</div>
 						</div>
 
-						<div v-if="earningInfo?.status === 'settled'" class="flex items-center justify-between gap-4 py-4 border-t">
+						<div
+							v-if="earningInfo?.status === 'settled'"
+							class="flex items-center justify-between gap-4 py-4 border-t"
+						>
 							<p class="key">
 								Session ID
 							</p>
 							<p class="value">
-								{{ earningInfo?.reference || 'N/A' }}
+								{{ earningInfo?.reference || "N/A" }}
 							</p>
 						</div>
 
-						<div v-if="earningInfo?.status === 'settled'" class="flex items-center justify-between gap-4 py-4 border-t">
+						<div
+							v-if="earningInfo?.status === 'settled'"
+							class="flex items-center justify-between gap-4 py-4 border-t"
+						>
 							<p class="key">
 								Settlement date
 							</p>
 							<p class="value">
-								{{ earningInfo?.settlementDate ? moment(earningInfo?.settlementDate).format('lll') : 'N/A' }}
+								{{
+									earningInfo?.settlementDate
+										? moment(earningInfo?.settlementDate).format("lll")
+										: "N/A"
+								}}
 							</p>
 						</div>
 					</div>
 					<div class="flex flex-col gap-4 w-full">
-						<div class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+						<div
+							class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto"
+						>
 							<h3 class="p-4 text-dark font-medium border-b">
 								Deductions applied to this earning
 							</h3>
 							<div>
-								<Table :loading="loading_applied_deductions" :has-index="true" :headers="tableFields" :table-data="appliedDeductions" :page="1">
+								<Table
+									:loading="loading_applied_deductions"
+									:has-index="true"
+									:headers="tableFields"
+									:table-data="appliedDeductions"
+									:page="1"
+								>
 									<template #item="{ item }">
 										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
 											-₦{{ item.data?.amount || 0 }}
 										</p>
 										<p v-if="item.date" class="text-sm whitespace-nowrap">
-											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+											{{
+												item.data.createdAt
+													? moment(item.data.createdAt).format("LL")
+													: "N/A"
+											}}
 										</p>
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
-											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+											{{ item.data?.type === "trip" ? "Revenue" : "Earning" }} deduction
 										</p>
 										<p v-if="item.id" class="text-sm whitespace-nowrap">
-											<button :disabled="earningInfo.status !== 'pending-payout'" class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, false)">
+											<button
+												:disabled="earningInfo.status !== 'pending-payout'"
+												class="btn-primary border border-dark bg-transparent text-dark py-3"
+												@click="updateDeduction(item.data.id, false)"
+											>
 												Detach
 											</button>
 										</p>
@@ -182,24 +256,41 @@
 								</Table>
 							</div>
 						</div>
-						<div v-if="earningInfo.status === 'pending-payout'" class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto">
+						<div
+							v-if="earningInfo.status === 'pending-payout'"
+							class="bg-light rounded-md border d-flex flex-col w-full flex-grow overflow-auto"
+						>
 							<h3 class="p-4 text-dark font-medium border-b">
 								Other Partner's deduction
 							</h3>
 							<div>
-								<Table :loading="loading_unapplied_deductions" :has-index="true" :headers="tableFields" :table-data="unappliedDeductions" :page="1">
+								<Table
+									:loading="loading_unapplied_deductions"
+									:has-index="true"
+									:headers="tableFields"
+									:table-data="unappliedDeductions"
+									:page="1"
+								>
 									<template #item="{ item }">
 										<p v-if="item.amount" class="text-sm whitespace-nowrap text-red">
 											-₦{{ item.data?.amount || 0 }}
 										</p>
 										<p v-if="item.date" class="text-sm whitespace-nowrap">
-											{{ item.data.createdAt ? moment(item.data.createdAt).format('LL') : 'N/A' }}
+											{{
+												item.data.createdAt
+													? moment(item.data.createdAt).format("LL")
+													: "N/A"
+											}}
 										</p>
 										<p v-if="item.type" class="text-sm whitespace-nowrap">
-											{{ item.data?.type === 'trip' ? 'Revenue' : 'Earning' }} deduction
+											{{ item.data?.type === "trip" ? "Revenue" : "Earning" }} deduction
 										</p>
 										<p v-if="item.id" class="text-sm whitespace-nowrap">
-											<button :disabled="earningInfo.status !== 'pending-payout'" class="btn-primary border border-dark bg-transparent text-dark py-3" @click="updateDeduction(item.data.id, true)">
+											<button
+												:disabled="earningInfo.status !== 'pending-payout'"
+												class="btn-primary border border-dark bg-transparent text-dark py-3"
+												@click="updateDeduction(item.data.id, true)"
+											>
 												Attach
 											</button>
 										</p>
@@ -213,38 +304,58 @@
 
 			<div class="flex flex-col gap-4">
 				<div class="flex items-center justify-end gap-4">
-					<button class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg" @click="usePayoutModal().openResyncRevenue()">
+					<button
+						class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg"
+						@click="usePayoutModal().openResyncRevenue()"
+					>
 						Resync Revenues
 					</button>
-					<button class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg" @click="markMultiple">
+					<button
+						class="p-2 bg-[rgb(237,242,249)] text-dark font-medium text-sm px-4 rounded-lg"
+						@click="markMultiple"
+					>
 						Mark multiple revenues as paid
 					</button>
 				</div>
-				<Table :loading="loading" :has-index="true" :headers="revenueFields" :table-data="revenues" :page="page">
+				<Table
+					:loading="loading"
+					:has-index="true"
+					:headers="revenueFields"
+					:table-data="revenues"
+					:page="page"
+				>
 					<template #header>
-						<TableFilter :filter-type="{
-							showSearchBar: false,
-							showDateRange: true,
-							showDownloadButton: true
-						}" @filter="onFilterUpdate" @download="downloadRevenues" />
+						<TableFilter
+							:filter-type="{
+								showSearchBar: false,
+								showDateRange: true,
+								showDownloadButton: true,
+							}"
+							@filter="onFilterUpdate"
+							@download="downloadRevenues"
+						/>
 					</template>
 					<template #sub_header>
 						<ModulesPartnersPayoutsEarningsGrid :obj="revenueMeta" :loading="loading" />
 					</template>
 					<template #item="{ item }">
 						<p v-if="item.date" class="text-sm whitespace-nowrap">
-							{{ moment(item.data.tripStartTime).format('LL') }} <br>
-							{{ moment.utc(item.data.tripStartTime).format('LT') }}
+							{{ moment(item.data.tripStartTime).format("LL") }} <br>
+							{{ moment.utc(item.data.tripStartTime).format("LT") }}
 						</p>
 						<p v-if="item.creation_date" class="text-sm whitespace-nowrap">
-							{{ moment(item.data.createdAt).format('LL') }} <br>
-							Marked by: {{ item.data?.metadata?.actor?.fname || '' }} {{ item.data?.metadata?.actor?.lname || '' }}
+							{{ moment(item.data.createdAt).format("LL") }} <br>
+							Marked by: {{ item.data?.metadata?.actor?.fname || "" }}
+							{{ item.data?.metadata?.actor?.lname || "" }}
 						</p>
 						<div v-if="item.route" class="text-sm">
-							<RouteDescription :pickup="item.data.metadata?.pickup" :destination="item.data.metadata?.dropoff" />
+							<RouteDescription
+								:pickup="item.data.metadata?.pickup"
+								:destination="item.data.metadata?.dropoff"
+							/>
 						</div>
 						<p v-if="item.route_code" class="text-sm whitespace-nowrap">
-							{{ item.data?.metadata?.routeCode || 'N/A' }}
+							{{ item.data?.metadata?.routeCode || "N/A" }}
 						</p>
 						<p v-if="item.partnersRevenue" class="text-sm whitespace-nowrap">
 							{{ convertToCurrency(item.data?.partnersRevenue) }}
@@ -255,16 +366,32 @@
 						<p v-if="item.finalPartnersRevenue" class="text-sm whitespace-nowrap">
 							{{ convertToCurrency(item.data?.finalPartnersRevenue) }}
 						</p>
-						<p v-if="item.status" class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit" :class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'">
-							{{ item.data?.isSettled ? 'Settled' : 'Not settled' }}
+						<p
+							v-if="item.status"
+							class="text-xs p-1 rounded text-dark whitespace-nowrap font-medium w-fit"
+							:class="item.data?.isSettled ? 'bg-green7' : 'bg-orange-400'"
+						>
+							{{ item.data?.isSettled ? "Settled" : "Not settled" }}
 						</p>
 						<span v-if="item.action">
-							<ButtonIconDropdown :index="item.index" :children="dropdownChildren(item.data)" :data="item.data" class-name="w-40" />
+							<ButtonIconDropdown
+								:index="item.index"
+								:children="dropdownChildren(item.data)"
+								:data="item.data"
+								class-name="w-40"
+							/>
 						</span>
 					</template>
 
 					<template #footer>
-						<TablePaginator :current-page="page" :total-pages="total" :loading="loading" @move-to="moveTo($event)" @next="next" @prev="prev" />
+						<TablePaginator
+							:current-page="page"
+							:total-pages="total"
+							:loading="loading"
+							@move-to="moveTo($event)"
+							@next="next"
+							@prev="prev"
+						/>
 					</template>
 				</Table>
 			</div>
@@ -275,20 +402,48 @@
 <script setup lang="ts">
 import moment from 'moment'
 import { convertToCurrency } from '@/composables/utils/formatter'
-import { usePayoutDetails, useEarningsRevenues, useMarkRevenueAsPaid, useApprove } from '@/composables/modules/partners/payouts/details'
+import {
+  usePayoutDetails,
+  useEarningsRevenues,
+  useMarkRevenueAsPaid,
+  useApprove
+} from '@/composables/modules/partners/payouts/details'
 import { useDeductPayout } from '@/composables/modules/partners/payouts'
 import { useAlert } from '@/composables/core/notification'
 import { usePayoutModal } from '@/composables/core/modals'
 import { AdminCanAttachPartnerDeductions } from '@/composables/flagging/flags'
 
 const {
- loading_partners, loading_earnings, fetchParnersInfo,
-	fetchEarningInfo, partnerInfo, earningInfo, fetchUnappliedDeductions,
-	unappliedDeductions, loading_unapplied_deductions, approvers, updateDeduction, fetchWalletBalance,
-	fetchApprovers, appliedDeductions, loading_applied_deductions, fetchAppliedDeductions, walletBalance
-
+  loading_partners,
+  loading_earnings,
+  fetchParnersInfo,
+  fetchEarningInfo,
+  partnerInfo,
+  earningInfo,
+  fetchUnappliedDeductions,
+  unappliedDeductions,
+  loading_unapplied_deductions,
+  approvers,
+  updateDeduction,
+  fetchWalletBalance,
+  fetchApprovers,
+  appliedDeductions,
+  loading_applied_deductions,
+  fetchAppliedDeductions,
+  walletBalance
 } = usePayoutDetails()
-const { loading, revenues, revenueMeta, onFilterUpdate, moveTo, page, total, next, prev, downloadRevenues } = useEarningsRevenues()
+const {
+  loading,
+  revenues,
+  revenueMeta,
+  onFilterUpdate,
+  moveTo,
+  page,
+  total,
+  next,
+  prev,
+  downloadRevenues
+} = useEarningsRevenues()
 const { initDeduct } = useDeductPayout()
 const { initMarkRevenueAsPaid } = useMarkRevenueAsPaid()
 
@@ -296,96 +451,134 @@ const earningId = useRoute().params.earningId as string
 const id = useRoute().params.id as string
 
 onMounted(async () => {
-	await fetchParnersInfo()
-	fetchEarningInfo()
-	fetchUnappliedDeductions()
-	fetchAppliedDeductions()
-	fetchApprovers()
-	fetchWalletBalance()
+  await fetchParnersInfo()
+  fetchEarningInfo()
+  fetchUnappliedDeductions()
+  fetchAppliedDeductions()
+  fetchApprovers()
+  fetchWalletBalance()
 })
 const partner_info = computed(() => {
-	return [
-		{ key: 'Name', value: `${partnerInfo.value.owner?.fname || ''} ${partnerInfo.value.owner?.lname || ''}` },
-		{ key: 'Company', value: partnerInfo.value?.company_name || 'N/A' },
-		{ key: 'Partner\'s Email', value: partnerInfo.value?.owner?.email || 'N/A' },
-		{ key: 'Company\'s Email', value: partnerInfo.value?.company_email || 'N/A' }
-	]
+  return [
+    {
+      key: 'Name',
+      value: `${partnerInfo.value.owner?.fname || ''} ${
+        partnerInfo.value.owner?.lname || ''
+      }`
+    },
+    { key: 'Company', value: partnerInfo.value?.company_name || 'N/A' },
+    { key: 'Partner\'s Email', value: partnerInfo.value?.owner?.email || 'N/A' },
+    { key: 'Company\'s Email', value: partnerInfo.value?.company_email || 'N/A' }
+  ]
 })
 
 const payout_info = computed(() => {
-	const data = [
-		{ key: 'Total amount', value: convertToCurrency(earningInfo.value?.totalRevenue || 0) },
-		{ key: 'VAT', value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${earningInfo.value?.vat}%)` },
-		{ key: 'Deductions', value: convertToCurrency(earningInfo.value?.appliedDeduction || 0) },
-		{ key: 'WHT applied', value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${earningInfo.value?.whithholdingTax}%)` },
-		{ key: 'Status', value: earningInfo.value?.status || '' },
-		{ key: 'Reference', value: earningInfo.value?.reference || 'N/A' }
-	]
+  const data = [
+    {
+      key: 'Total amount',
+      value: convertToCurrency(earningInfo.value?.totalRevenue || 0)
+    },
+    {
+      key: 'VAT',
+      value: `${convertToCurrency(earningInfo.value?.vatApplied || 0)} (${
+        earningInfo.value?.vat
+      }%)`
+    },
+    {
+      key: 'Deductions',
+      value: convertToCurrency(earningInfo.value?.appliedDeduction || 0)
+    },
+    {
+      key: 'WHT applied',
+      value: `${convertToCurrency(earningInfo.value?.whithholdingTaxApplied || 0)} (${
+        earningInfo.value?.whithholdingTax
+      }%)`
+    },
+    { key: 'Status', value: earningInfo.value?.status || '' },
+    { key: 'Reference', value: earningInfo.value?.reference || 'N/A' }
+  ]
 
-	if (earningInfo.value?.status === 'failed') {
-		const formattedMessages = earningInfo.value?.statusMessages?.map((msg) =>
-			msg.charAt(0).toUpperCase() + msg.slice(1)
-		).join('. ') || 'N/A'
-		data.push({ key: 'Reason for failure', value: formattedMessages })
-	}
+  if (earningInfo.value?.status === 'failed') {
+    const formattedMessages =
+      earningInfo.value?.statusMessages
+        ?.map((msg) => msg.charAt(0).toUpperCase() + msg.slice(1))
+        .join('. ') || 'N/A'
+    data.push({ key: 'Reason for failure', value: formattedMessages })
+  }
 
-	return data
+  return data
 })
 
 const backUrl = computed(() => {
-	return earningInfo.value?.status === 'failed' ? '/partners/payouts/failed' : earningInfo.value?.status === 'settled' ? '/partners/payouts/completed' : '/partners/payouts'
+  return earningInfo.value?.status === 'failed'
+    ? '/partners/payouts/failed'
+    : earningInfo.value?.status === 'settled'
+    ? '/partners/payouts/completed'
+    : '/partners/payouts'
 })
 
 const tableFields = ref([
-	{ text: 'DATE CREATED', value: 'date' },
-	{ text: 'DEDUCTION', value: 'amount' },
-	{ text: 'REASON', value: 'descriptio,n' },
-	{ text: 'TYPE', value: 'type' },
-	{ text: '', value: 'id' }
+  { text: 'DATE CREATED', value: 'date' },
+  { text: 'DEDUCTION', value: 'amount' },
+  { text: 'REASON', value: 'description' },
+  { text: 'TYPE', value: 'type' },
+  { text: '', value: 'id' }
 ])
 
 const revenueFields = ref([
-	{ text: 'TRIP DATE', value: 'date' },
-	{ text: 'TIME OF CREATION', value: 'creation_date' },
-	{ text: 'route', value: 'route' },
-	{ text: 'route code', value: 'route_code' },
-	{ text: 'Amount earned', value: 'partnersRevenue' },
-	{ text: 'Deduction', value: 'deduction' },
-	{ text: 'Net income', value: 'finalPartnersRevenue' },
-	{ text: 'Description', value: 'description' },
-	{ text: 'Status', value: 'status' },
-	{ text: 'Action', value: 'action' }
+  { text: 'TRIP DATE', value: 'date' },
+  { text: 'TIME OF CREATION', value: 'creation_date' },
+  { text: 'route', value: 'route' },
+  { text: 'route code', value: 'route_code' },
+  { text: 'Amount earned', value: 'partnersRevenue' },
+  { text: 'Deduction', value: 'deduction' },
+  { text: 'Net income', value: 'finalPartnersRevenue' },
+  { text: 'Description', value: 'description' },
+  { text: 'Status', value: 'status' },
+  { text: 'Action', value: 'action' }
 ])
 
 const dropdownChildren = (option) => [
-	{ name: 'Mark as paid', func: (data) => { initMarkRevenueAsPaid(data) }, hide: option.isSettled },
-	{ name: 'Deduct from revenue', func: (data) => { initDeduct(data, true, true) }, class: '!text-red' }
+  {
+    name: 'Mark as paid',
+    func: (data) => {
+      initMarkRevenueAsPaid(data)
+    },
+    hide: option.isSettled
+  },
+  {
+    name: 'Deduct from revenue',
+    func: (data) => {
+      initDeduct(data, true, true)
+    },
+    class: '!text-red'
+  }
 ]
 
 const markMultiple = () => {
-	if (revenues.value.length) {
-		initMarkRevenueAsPaid(revenues.value[0], true)
-	} else {
-		useAlert().openAlert({ type: 'ERROR', msg: 'No Revenue available' })
-	}
+  if (revenues.value.length) {
+    initMarkRevenueAsPaid(revenues.value[0], true)
+  } else {
+    useAlert().openAlert({ type: 'ERROR', msg: 'No Revenue available' })
+  }
 }
 
 definePageMeta({
-	layout: 'dashboard',
-	middleware: ['is-authenticated']
+  layout: 'dashboard',
+  middleware: ['is-authenticated']
 })
 </script>
 
 <style scoped>
 .key {
-	@apply uppercase font-medium text-grey5 text-sm
+  @apply uppercase font-medium text-grey5 text-sm;
 }
 
 .value {
-	@apply text-sm text-dark text-right
+  @apply text-sm text-dark text-right;
 }
 
-.attach-btn{
-	@apply border border-[#D0D5DD] text-[#344054] rounded-xl text-sm py-2 px-3 font-bold
+.attach-btn {
+  @apply border border-[#D0D5DD] text-[#344054] rounded-xl text-sm py-2 px-3 font-bold;
 }
 </style>
