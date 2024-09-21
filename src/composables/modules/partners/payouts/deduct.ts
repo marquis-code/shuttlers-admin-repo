@@ -85,7 +85,8 @@ export const useDeductPayout = () => {
 			usePayoutModal().closeDeductPayout()
 			if (isFromDetailsPage.value) {
 				useEarningsRevenues().fetchRevenues()
-				usePayoutDetails().fetchDeductions()
+				usePayoutDetails().fetchAppliedDeductions()
+				usePayoutDetails().fetchUnappliedDeductions()
 				usePayoutDetails().fetchEarningInfo()
 			} else {
 				usePendingPayouts().fetchPendingPayouts()
@@ -106,7 +107,8 @@ export const useDeductPayout = () => {
 			usePayoutModal().closeDeductPayout()
 			useEarningsRevenues().fetchRevenues()
 			usePayoutDetails().fetchEarningInfo()
-			usePayoutDetails().fetchDeductions()
+			usePayoutDetails().fetchAppliedDeductions()
+			usePayoutDetails().fetchUnappliedDeductions()
         }
 		loading.value = false
 	}
