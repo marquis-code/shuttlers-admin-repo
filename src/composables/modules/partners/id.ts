@@ -16,6 +16,7 @@ export const usePartnerIdDetails = () => {
     const loading = ref(false)
 
     const getPartnerById = async (id: string) => {
+        selectedPartner.value = {}
         selectedPartnerId.value = id
         loading.value = true
         const res = await partners_api.$_get_partner_by_id(id) as CustomAxiosResponse

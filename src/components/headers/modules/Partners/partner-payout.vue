@@ -25,15 +25,15 @@
 							<span class="text-sm text-gray-500 font-bold">Bank info</span>
 
 							<div class="flex flex-col gap-3">
-								<div class="flex justify-between items-center">
+								<div class="flex justify-between items-center gap-3">
 									<span class="text-sm text-gray-500">Bank name</span>
 									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.bankName || 'N/A' }}</span>
 								</div>
-								<div class="flex justify-between items-center">
+								<div class="flex justify-between items-center gap-3">
 									<span class="text-sm text-gray-500">Account name</span>
 									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.fundingAccountName || 'N/A' }}</span>
 								</div>
-								<div class="flex justify-between items-center">
+								<div class="flex justify-between items-center gap-3">
 									<span class="text-sm text-gray-500">Account number</span>
 									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.accountNumber || 'N/A' }}</span>
 								</div>
