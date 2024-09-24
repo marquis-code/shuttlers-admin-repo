@@ -27,15 +27,15 @@
 							<div class="flex flex-col gap-3">
 								<div class="flex justify-between items-center">
 									<span class="text-sm text-gray-500">Bank name</span>
-									<span class="text-sm font-medium">{{ shuttlersBalancePartners.bankName }}</span>
+									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.bankName || 'N/A' }}</span>
 								</div>
 								<div class="flex justify-between items-center">
 									<span class="text-sm text-gray-500">Account name</span>
-									<span class="text-sm font-medium">{{ shuttlersBalancePartners.accountName }}</span>
+									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.fundingAccountName || 'N/A' }}</span>
 								</div>
 								<div class="flex justify-between items-center">
 									<span class="text-sm text-gray-500">Account number</span>
-									<span class="text-sm font-medium">{{ shuttlersBalancePartners.accountNumber }}</span>
+									<span class="text-sm font-medium">{{ shuttlersBalancePartners?.accountNumber || 'N/A' }}</span>
 								</div>
 							</div>
 						</div>
