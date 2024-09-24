@@ -325,7 +325,7 @@ const partnerAssetStats = computed(() => {
 })
 
 getPartnerById(id)
-getPartnerKyc(account_sid)
+// getPartnerKyc(account_sid)
 // getPartnerEarning(account_sid)
 
 watch(() => selectedPartner.value?.account_sid, () => {
@@ -333,6 +333,7 @@ watch(() => selectedPartner.value?.account_sid, () => {
 	if (sid) {
 		getPartnerEarning(sid)
 		getPartnerConfigs(sid)
+		getPartnerKyc(sid)
 	}
 })
 

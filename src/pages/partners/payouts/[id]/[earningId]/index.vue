@@ -64,8 +64,9 @@
 							</p>
 						</div>
 					</div>
+					<!-- :to="`/partners/${id}/${earningId}/partner-info`" -->
 					<NuxtLink
-						:to="`/partners/${id}/${earningId}/partner-info`"
+						:to="`/partners/${id}/${partnerInfo?.account_sid}/partner-info`"
 						class="text-sm p-2 border rounded-md font-medium px-4 text-grey7"
 					>
 						View Details
