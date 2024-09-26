@@ -31,15 +31,6 @@
 					</div>
 				</div>
 				<UserMultiSelect v-if="selectMethod === 'manual'" label="" @update:model-value="handleSelectedUsers" />
-				<div class="flex items-center gap-x-2">
-					<label class="form-label">Upload Customer emails (csv only)</label>
-					<button :disabled="downloading" class="font-medium text-xs text-white px-3 py-2 bg-black rounded-md" @click.prevent="downloadCsv">
-						{{ downloading ? 'downloading..' : 'Download' }} csv template
-					</button>
-				</div>
-				<div>
-					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
-				</div>
 
 				<div class="field relative w-full">
 					<RouteSelector class="w-full" @selected="(val) => selectedRoute = val" />
