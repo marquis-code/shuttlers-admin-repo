@@ -10,12 +10,33 @@
 			</div>
 			<hr>
 			<form class="space-y-6 p-6 mt-5" @submit.prevent="batchBookTrip">
+				<div>
+					<label for="booking-option">Please select batch booking option</label>
+					<select id="booking-option" v-model="selectMethod" name="booking-option" class="border-red-500 text-sm w-full border outline-none py-3 rounded-md px-3">
+						<option value="upload">
+							Upload file
+						</option>
+						<option value="manual">
+							Select user(s)
+						</option>
+					</select>
+				</div>
+				<div v-if="selectMethod === 'upload'" class="flex items-center gap-x-2">
+					<label class="form-label">Upload Customer emails (csv only)</label>
+					<button :disabled="downloading" class="font-medium text-xs text-white px-3 py-2 bg-black rounded-md" @click.prevent="downloadCsv">
+						{{ downloading ? 'downloading..' : 'Download' }} csv template
+					</button>
+					<div>
+						<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
+					</div>
+				</div>
+				<UserMultiSelect v-if="selectMethod === 'manual'" label="" @update:model-value="handleSelectedUsers" />
 				<div class="flex items-center gap-x-2">
 					<label class="form-label">Upload Customer emails (csv only)</label>
 					<button :disabled="downloading" class="font-medium text-xs text-white px-3 py-2 bg-black rounded-md" @click.prevent="downloadCsv">
 						{{ downloading ? 'downloading..' : 'Download' }} csv template
 					</button>
-				</div>s
+				</div>
 				<div>
 					<ModulesUsersBatchBookingCsvFileUploadInput @emails="handleUploadedEmails" />
 				</div>
@@ -279,6 +300,16 @@ const handleDaysSelection = (index:number) => {
 			days_ids.value.splice(pos, 1)
 		}
 	}
+}
+
+const selectMethod = ref('upload')
+const selectedUsersList = ref([])
+
+const handleSelectedUsers = (val:any) => {
+  if (Object.keys(val).length) {
+    selectedUsersList.value.push(val.email)
+    emails.value = selectedUsersList.value
+  }
 }
 
 const handleUploadedEmails = (val:string[]) => {
